@@ -758,9 +758,6 @@
 .epkbfa-twitter-square:before {
   content: "" !important; }
 
-.epkbfa-facebook-square:before {
-  content: "" !important; }
-
 .epkbfa-camera-retro:before {
   content: "" !important; }
 
@@ -827,10 +824,6 @@
 
 .epkbfa-twitter:before {
   content: "" !important; }
-
-.epkbfa-facebook-f:before,
-.epkbfa-facebook:before {
-  content: "" !important; }
 
 .epkbfa-github:before {
   content: "" !important; }
@@ -1416,9 +1409,6 @@
 .epkbfa-stack-overflow:before {
   content: "" !important; }
 
-.epkbfa-instagram:before {
-  content: "" !important; }
-
 .epkbfa-flickr:before {
   content: "" !important; }
 
@@ -1985,14 +1975,8 @@
 .epkbfa-genderless:before {
   content: "" !important; }
 
-.epkbfa-facebook-official:before {
-  content: "" !important; }
-
 .epkbfa-pinterest-p:before {
   content: "" !important; }
-
-.epkbfa-whatsapp:before {
-  content: "" !important; }
 
 .epkbfa-server:before {
   content: "" !important; }
@@ -3156,12 +3140,12 @@
         flex-grow: 1;
         padding: 20px;
         border-top: 1px solid #3e3e3e; }
-    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt {
+    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai {
       display: flex;
       flex-direction: column;
       flex-grow: 1;
       padding: 0 20px; }
-    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-wrap {
+    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-wrap {
       position: relative;
       display: flex;
       flex-direction: column;
@@ -3169,34 +3153,34 @@
       align-self: normal;
       width: 100%;
       margin-bottom: 20px; }
-    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-input-wrap {
+    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-input-wrap {
       margin-bottom: 30px; }
-    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-prompt {
+    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-prompt {
       display: flex;
       flex-direction: row;
       padding: 20px; }
-      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-prompt .epkb-ai-help-sidebar__chatgpt-response-prompt-icon {
+      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-prompt .epkb-ai-help-sidebar__ai-response-prompt-icon {
         font-size: 21px; }
-      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-prompt .epkb-ai-help-sidebar__chatgpt-response-prompt-text {
+      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-prompt .epkb-ai-help-sidebar__ai-response-prompt-text {
         margin-left: 10px; }
-    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-result {
+    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-result {
       display: flex;
       flex-direction: row;
       padding: 20px;
       background-color: #333333; }
-      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-result .epkb-ai-help-sidebar__chatgpt-response-result-icon {
+      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-result .epkb-ai-help-sidebar__ai-response-result-icon {
         font-size: 21px;
         color: #10a37f;
         font-weight: 700; }
-      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-result .epkb-ai-help-sidebar__chatgpt-response-result-text {
+      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-result .epkb-ai-help-sidebar__ai-response-result-text {
         margin-left: 10px;
         white-space: pre-line; }
-    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-title {
+    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-title {
       position: relative; }
-      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-title .epkb-ai-help-sidebar__chatgpt-response-title-text {
+      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-title .epkb-ai-help-sidebar__ai-response-title-text {
         font-size: 21px;
         padding: 5px 0; }
-    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-input-container input[type="text"] {
+    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-input-container input[type="text"] {
       width: 100%;
       color: #fff;
       box-shadow: none;
@@ -3204,14 +3188,14 @@
       border: 1px solid #3e3e3e;
       border-radius: 7px;
       padding: 10px 20px; }
-      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-input-container input[type="text"]:focus {
+      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-input-container input[type="text"]:focus {
         border: 1px solid #6e1fb8; }
-      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-input-container input[type="text"]::placeholder {
+      .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-input-container input[type="text"]::placeholder {
         color: #fafafa; }
-    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-input-title .epkb-ai-help-sidebar__chatgpt-input-title-text {
+    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-input-title .epkb-ai-help-sidebar__ai-input-title-text {
       font-size: 21px;
       padding: 5px 0; }
-    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__chatgpt-response-container {
+    .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__ai-response-container {
       display: flex;
       flex-direction: column;
       flex-grow: 1;

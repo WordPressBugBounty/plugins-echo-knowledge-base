@@ -7,8 +7,8 @@ Tags: knowledge base, knowledgebase, documentation, documents, faqs
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 6.6
-Stable tag: 12.40.0
-License: GPL2+
+Stable tag: 12.41.0
+License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Easily organize your knowledge base documentation, FAQs, and wiki with rich features and AI Writing Support.
@@ -18,11 +18,11 @@ Easily organize your knowledge base documentation, FAQs, and wiki with rich feat
 
 Our Knowledge Base plugin is a powerful documentation tool that helps you create and organize your documentation, FAQs, and articles. It's easy to use and includes many features to help you build a visually appealing Knowledge Base.
 
-Designed with a modern and professional appearance by default, it also offers numerous customization options to align with your brand's identity. Features include premade designs, popular articles, a Table of Contents (TOC), FAQs, a navigation sidebar, analytics, and customizable archive pages.
+Designed with a modern and professional appearance by default, it offers extensive customization options to align with your brand identity. Key features include pre-made designs, popular articles, a Table of Contents (TOC), FAQs, a navigation sidebar, analytics, and customizable archive pages.
 
 https://www.youtube.com/watch?v=sLwj8FpfBWc
 
-Our Knowledge Base is optimized for search engines. See our documentation for details on how this is achieved. The plugin supports multilingual and RTL languages, ensuring accessibility for an international audience. Our articles are responsive and retina-ready, ensuring your knowledge base looks great on all devices.
+Our knowledge base is optimized for search engines to enhance your online visibility. It supports multilingual and RTL languages, ensuring accessibility for an international audience. All articles are responsive and retina-ready, guaranteeing your knowledge base looks great on all devices.
 
 <strong>Examples of Included Professional Layouts</strong>
 * Basic Layout [here](https://www.echoknowledgebase.com/demo-1-knowledge-base-basic-layout/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=demo1 "Basic Layout")
@@ -34,31 +34,32 @@ Our Knowledge Base is optimized for search engines. See our documentation for de
 See our knowledgebase documentation [here](https://www.echoknowledgebase.com/documentation/ "KB documentation")
 
 ## KEY FEATURES
-## ✅ Fast search bar with listed results
-## ✅ Five levels of hierarchical documentation
-## ✅ Article view counter with Popular and Recent Articles (NEW)
-## ✅ FAQs Module and Shortcode (NEW)
-## ✅ Professional layouts including Basic, Tabs, Category Focused, Classic (NEW) and Drill Down (NEW)
-## ✅ Customizable Category Archive Page
-## ✅ Articles with breadcrumb, back button, navigation, print button, TOC and more
-## ✅ Navigation sidebar listing categories and articles
-## ✅ AI Content Writing Like ChatGPT
+✅ Fast Search Bar enabling users to find articles quickly.
+✅ Organize content into categories and subcategories up to five levels deep.
+✅ Article Views Counter with Popular and Recent Articles.
+✅ FAQs Layouts and Shortcode to easily display FAQs on your site.
+✅ Categories & Articles Layouts including Basic, Tabs, Category Focused, Classic, and Drill Down layouts.
+✅ Customizable Category Archive Page
+✅ Article enhancements including breadcrumbs, back buttons, navigation, print options, table of contents, and more.
+✅ Article Pages with a sidebar to show categories and articles for easy navigation.
+✅ AI Content Writing Support to assist with content creation and editing.
 
 ## ⭐ MORE FEATURES ##
-* Set up in minutes
-* Organize your documentation by team, product, and service using the Tabs Layout
-* Order articles and categories alphabetically, chronologically, or in any other order using drag and drop.
-* Optimized for the best SEO results to enhance online visibility
-* Counts your Article Views and displays Popular and Recent Articles
-* Analytics to track your Knowledge Base usage
-* Supports RTL languages, WCAG accessibility standards, and works with WPML and Polylang
-* Responsive design that works with any theme and mobile devices
-* Frequently Asked Questions (FAQ) Module and shortcode.
+* Set up quickly in minutes.
+* Organize documentation by team, product, or service using the Tabs Layout.
+* Order articles and categories alphabetically, chronologically, or with drag-and-drop.
+* Optimized for SEO to enhance online visibility.
+* Track article views and display popular and recent articles.
+* Analytics to monitor your knowledge base usage.
+* Supports RTL languages, complies with WCAG accessibility standards, and works with WPML and Polylang.
+* Responsive design compatible with any theme and mobile devices.
+* Includes a Frequently Asked Questions (FAQ) module and shortcode.
+* Offers Articles Index Directory shortcodes. Learn More
+* Customize typography for article and category names, TOC, breadcrumbs, and more.
 * Articles Index Directory shortcodes. [Learn More](https://www.echoknowledgebase.com/documentation/shortcode-articles-index-directory/)
-* Change typography (font family and size) for article and category names, TOC, breadcrumbs, and more.
 
-## 💡 GET WRITING HELP WITH ChatGPT AI ##
-* Check your spelling and grammar with GPT.
+## 💡 GET WRITING HELP WITH AI ##
+* Check your spelling and grammar with AI.
 * Verify spelling and grammar, and generate article outlines.
 
 ## 💡 EASY TO STYLE WITH PRE-MADE DESIGNS ##
@@ -75,12 +76,12 @@ See our knowledgebase documentation [here](https://www.echoknowledgebase.com/doc
 The free Help Dialog Chat plugin offers a chatbot-like dialog for better customer support and increased leads and sales. The Help Dialog Chat shows FAQs, search, and a contact form. [Learn More](https://wordpress.org/plugins/help-dialog/)
 
 ## ✅ Why Choose Echo Knowledge Base? ##
-* It's an easy-to-use plugin for your WordPress website.
-* Choose from ready to use professional designs.
-* Match your theme with a simple visual Editor, no coding required.
-* Organize your articles and categories into five levels of hierarchy.
-* All essential features are free, plus get access control and more with add-ons.
-* Friendly and timely support from our team.
+* User-Friendly: Designed for ease of use, with no coding required.
+* Professional Designs: Access to 26 ready-to-use designs.
+* Customizable: Easily match your brand with extensive customization options.
+* Organized Content: Five levels of hierarchy for structured documentation.
+* Comprehensive Features: All essential features are free, with advanced options available.
+* Reliable Support: Friendly and timely assistance from our support team.
 
 ## 🚀 PRO Features ##
 * Control access and permissions based on groups, WordPress users and roles, and custom roles.
@@ -182,11 +183,30 @@ You can install the Knowledge Base for Documents and FAQs from your WordPress Da
 
 == Frequently Asked Questions ==
 
-= Where can I find complete documentation on your knowledgebase? =
+= Where can I find complete documentation on your knowledge base? =
 Full searchable docs can be found at [Knowledge Base](http://www.echoknowledgebase.com/documentation/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=docs "plugin documentation")
 
-= What is ChatGPT ? =
-Read about ChatGPT at [ChatGPT](https://en.wikipedia.org/wiki/ChatGPT "Chat GPT")
+
+= Is Echo Knowledge Base compatible with my theme? =
+
+Yes, Echo Knowledge Base is designed to work seamlessly with any WordPress theme.
+
+= Can I customize the appearance of my knowledge base? =
+
+Absolutely! Choose from 26 pre-made designs and customize colors, fonts, and layouts without any coding.
+
+= Does the plugin support multilingual sites? =
+
+Yes, it supports RTL languages and works with WPML and Polylang for multilingual support.
+
+= Is there an option for AI content writing assistance? =
+
+Yes, Echo Knowledge Base includes AI writing support for checking spelling and grammar, and generating article outlines.
+
+= How can I get support if I need help? =
+
+Please contact us at [Learn More](https://www.echoknowledgebase.com/contact-us/)
+
 
 
 == Screenshots ==
@@ -217,9 +237,9 @@ Read about ChatGPT at [ChatGPT](https://en.wikipedia.org/wiki/ChatGPT "Chat GPT"
 
 13. Article Index Directory Shortcode
 
-14. ChatGPT AI content writing assistant to correct spelling and grammar
+14. AI content writing assistant to correct spelling and grammar
 
-15. ChatGPT AI to improve article outline
+15. AI to improve article outline
 
 16. Article views counter tracks the number of times articles are viewed and display a view counter on article pages and in analytics
 
@@ -234,6 +254,11 @@ Read about ChatGPT at [ChatGPT](https://en.wikipedia.org/wiki/ChatGPT "Chat GPT"
 
 
 == Changelog ==
+
+= 12.41.0 =
+Release Date: Sept 29, 2024
+* Update: Improvements to Visual Helper
+* Fix: Cleanup and minor fixes
 
 = 12.40.0 =
 Release Date: Sept 21, 2024
@@ -379,14 +404,14 @@ Release Date: June 27, 2023
 = 10.1.0 =
 Release Date: Apr 6, 2023
 
-* New: ChatGPT helper for article outline
-* New: ChatGPT helper for text improvements
+* New: AI helper for article outline
+* New: AI helper for text improvements
 * Fix: Cleanup and minor fixes
 
 = 10.0.0 =
 Release Date: Feb 27, 2023
 
-* New: ChatGPT content writing assistant powered by GPT-3 from OpenAI
+* New: AI content writing assistant
 * New: Advanced search param definition
 * Fix: Cleanup and minor fixes
 

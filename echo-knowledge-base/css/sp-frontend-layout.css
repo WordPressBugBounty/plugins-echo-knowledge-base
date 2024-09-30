@@ -177,15 +177,6 @@
     transform: rotate(360deg); } }
 .eckb-kb-template {
   width: 100%; }
-  .eckb-kb-template .eckb_main_title {
-    width: 100%;
-    max-width: 1080px;
-    margin: 0 auto;
-    font-size: 2.5em;
-    padding-bottom: 10px;
-    color: #333;
-    font-weight: 500;
-    line-height: 1em; }
 
 /* Search Results Page Styles
 --------------------------------------------------------------*/

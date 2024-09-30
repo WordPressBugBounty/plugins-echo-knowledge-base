@@ -19,7 +19,7 @@ class EPKB_KB_Search {
 
 		// we don't need nonce and permission check here
 
-		$kb_id = EPKB_Utilities::sanitize_get_id( $_GET['epkb_kb_id'] );
+		$kb_id = EPKB_Utilities::sanitize_get_id( sanitize_text_field( $_GET['epkb_kb_id'] ) );
 		if ( is_wp_error( $kb_id ) ) {
 			wp_die( wp_json_encode( array( 'status' => 'success', 'search_result' => EPKB_Utilities::report_generic_error( 5 ) ) ) );
 		}

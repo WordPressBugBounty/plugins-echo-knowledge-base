@@ -469,7 +469,7 @@ class EPKB_KB_Demo_Data {
 		        <li>Article view counter with Popular and Recent Articles</li>
 		        <li>Frequently Asked Questions (FAQ) Module and shortcode.</li>
 		        <li>Customizable Category Archive Page</li>
-		        <li>AI Content Writing Like ChatGPT</li>
+		        <li>AI Content Writing</li>
 		        <li>Organize articles and categories alphabetically, chronologically, or in any custom order with drag and drop.</li>
 		        <li>Optimized for the best SEO results to boost online visibility</li>
 		        <li>Analytics to track your Knowledge Base usage</li>

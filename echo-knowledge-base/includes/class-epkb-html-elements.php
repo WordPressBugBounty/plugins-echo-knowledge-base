@@ -561,9 +561,13 @@ class EPKB_HTML_Elements {
                     </div> <?php
 
 					$ix++;
-				} //foreach				?>
+				} //foreach
 
-            </div> <?php
+				if ( ! empty( $args['tooltip_external_links'] ) ) {
+					self::display_input_bottom_external_links( $args['tooltip_external_links'], [ 'css_class' => 'epkb-input-desc--radio-horizontal-buttons' ] );
+				}				?>
+
+            </div>	<?php
 
 			if ( $args['desc'] ) {
 
@@ -579,8 +583,7 @@ class EPKB_HTML_Elements {
 					$showDesc = 'radio-buttons-horizontal-desc--show';
 				}
 				echo '<span class="radio-buttons-horizontal-desc ' . esc_attr( $showDesc ) . '">' . wp_kses_post( $args['desc'] ) . '</span>';
-
-			} ?>
+			}	?>
 
         </div>	<?php
 
@@ -997,7 +1000,11 @@ class EPKB_HTML_Elements {
 	 * @return void
 	 */
 	public static function display_tooltip( $title, $body_escaped, $args = array(), $external_links = array() ) {
-		if ( empty( $body_escaped ) && empty( $external_links ) ) {
+
+		$empty_external_links = count( $external_links ) == count( array_column( $external_links, 'is_bottom_link' ) );
+
+		// do nothing if no context to show
+		if ( empty( $title ) && empty( $body_escaped ) && empty( $args ) && $empty_external_links ) {
 			return;
 		}
 
@@ -1009,40 +1016,45 @@ class EPKB_HTML_Elements {
 			'link_url'      => '',
 			'link_target'   => '_blank'
 		);
-		$args = array_merge( $defaults, $args ); ?>
+		$args = array_merge( $defaults, $args );	?>
 
-			<div class="epkb__option-tooltip <?php echo esc_attr( $args['class'] ); ?>">
+		<div class="epkb__option-tooltip <?php echo esc_attr( $args['class'] ); ?>">
 			<span class="epkb__option-tooltip__button <?php echo $args['open-icon'] ? 'epkbfa epkbfa-' . esc_attr( $args['open-icon'] ) : ''; ?>">  <?php
 				echo esc_html( $args['open-text'] );  ?>
 			</span>
-				<div class="epkb__option-tooltip__contents">    <?php
-					if ( ! empty( $title ) ) {   ?>
-						<div class="epkb__option-tooltip__header">						<?php
-							echo esc_html( $title );  ?>
-						</div>  <?php
-					}   ?>
+			<div class="epkb__option-tooltip__contents">    <?php
+				if ( ! empty( $title ) ) {   ?>
+					<div class="epkb__option-tooltip__header">						<?php
+						echo esc_html( $title );  ?>
+					</div>  <?php
+				}
+
+				if ( ! empty( $body_escaped ) || ! $empty_external_links ) {	?>
 					<div class="epkb__option-tooltip__body">					<?php
 						//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $body_escaped;
 
-						if ( ! empty( $external_links ) ) {
-							foreach ( $external_links as $external_link ) { ?>
-								<div class="epkb__option-tooltip__body__external_link">
-									<a target="_blank" href="<?php echo esc_url( $external_link['link_url'] ); ?>"><?php echo esc_html( $external_link['link_text'] ); ?></a><span class="epkbfa epkbfa-external-link"></span>
-								</div> <?php
-							}
-						} ?>
+						foreach ( $external_links as $one_link ) {
+							if ( ! empty( $one_link['is_bottom_link'] ) ) {
+								continue;
+							}	?>
+							<div class="epkb__option-tooltip__body__external_link">
+								<a target="_blank" href="<?php echo esc_url( $one_link['link_url'] ); ?>"><?php echo esc_html( $one_link['link_text'] ); ?></a><span class="epkbfa epkbfa-external-link"></span>
+							</div> <?php
+						}	?>
 
 					</div>  <?php
-					if ( ! empty( $args['link_url'] ) ) { ?>
-						<div class="epkb__option-tooltip__footer">
-							<a href="<?php echo esc_url( $args['link_url'] ); ?>" class="epkb__option-tooltip__button" target="<?php echo esc_attr( $args['link_target'] ); ?>">  <?php
-								echo esc_html( $args['link_text'] );    ?>
-							</a>
-						</div>  <?php
-					}  ?>
-				</div>
-			</div>		<?php 
+				}
+
+				if ( ! empty( $args['link_url'] ) ) { ?>
+					<div class="epkb__option-tooltip__footer">
+						<a href="<?php echo esc_url( $args['link_url'] ); ?>" class="epkb__option-tooltip__button" target="<?php echo esc_attr( $args['link_target'] ); ?>">  <?php
+							echo esc_html( $args['link_text'] );    ?>
+						</a>
+					</div>  <?php
+				}  ?>
+			</div>
+		</div>		<?php
 
 	}
 
@@ -1223,17 +1235,24 @@ class EPKB_HTML_Elements {
 	 * Display external links at the bottom of input field
 	 *
 	 * @param $external_links
+	 * @param array $args
 	 * @return void
 	 */
-	public static function display_input_bottom_external_links( $external_links ) {	?>
-		<div class="epkb-input-desc">	<?php
-			foreach ( $external_links as $one_link ) { ?>
+	public static function display_input_bottom_external_links( $external_links, $args=array() ) {
+		$args = wp_parse_args( $args, [
+			'css_class' => '',
+		] );
+		foreach ( $external_links as $one_link ) {
+			if ( empty( $one_link['is_bottom_link'] ) ) {
+				continue;
+			}	?>
+			<div class="epkb-input-desc <?php echo esc_attr( $args['css_class'] ); ?>">
 				<div class="epkb-input-desc_text">
 					<?php echo isset( $one_link['link_desc'] ) ? wp_kses_post( $one_link['link_desc'] ) : ''; ?>
 					<a  class="epkb-input-desc__link" target="_blank" href="<?php echo esc_url( $one_link['link_url'] ); ?>"><?php echo esc_html( $one_link['link_text'] ); ?></a><span class="epkbfa epkbfa-external-link"></span>
-				</div>  <?php
-			}	?>
-		</div>	<?php
+				</div>
+			</div>  <?php
+		}
 	}
 
 	/**

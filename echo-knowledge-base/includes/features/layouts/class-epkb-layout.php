@@ -137,7 +137,7 @@ abstract class EPKB_Layout {
 	 *
 	 * @return bool
 	 */
-	private function kb_has_categories() {
+	protected function kb_has_categories() {
 
 		// if non-empty categories sequence in DB then nothing to do
 		if ( ! empty( $this->category_seq_data ) && is_array( $this->category_seq_data ) ) {

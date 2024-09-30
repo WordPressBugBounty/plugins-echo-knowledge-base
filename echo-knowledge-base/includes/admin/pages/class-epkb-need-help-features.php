@@ -526,7 +526,7 @@ class EPKB_Need_Help_Features {
 				'icon'      => '',
 				'name'      => esc_html__( 'Search Box on KB Article Pages', 'echo-knowledge-base' ),
 				'desc'      => esc_html__( 'Fast search bar on KB Article Pages with listed results.', 'echo-knowledge-base' ),
-				'config'    => self::get_settings_link( $kb_id, 'settings', 'article-page', 'article-page-search-box', 'advanced_search_ap' ),
+				'config'    => self::get_settings_link( $kb_id, 'settings', 'article-page', 'article-page-search-box', 'search-options-ap--search-style-ap' ),
 				'docs'      => '',
 				'video'     => '',
 				'min_capability'   => EPKB_Admin_UI_Access::get_context_required_capability( 'admin_eckb_access_frontend_editor_write' ),

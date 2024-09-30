@@ -321,7 +321,7 @@ class EPKB_Config_Page {
 
 		// Box: Help box with Docs link for URL changing
 		$kb_url_boxes[] = array(
-			'title' => esc_html__( 'How To Change KB URLs', 'echo-knowledge-base' ),
+			'class' => 'epkb-admin__boxes-list__box--kb-url-learn-more',
 			'html' => EPKB_HTML_Forms::notification_box_middle( array(
 					'type'  => 'info',
 					'title' => esc_html__( 'Need to change KB URLs?', 'echo-knowledge-base' ),
@@ -347,29 +347,26 @@ class EPKB_Config_Page {
 				'html' => $this->get_kb_location_box(),
 			);
 
+			$wizard_global = new EPKB_KB_Wizard_Global( $wizard_kb_config );
+
 			// Box: Category Name in KB URL
 			$kb_url_boxes[] = array(
 				'title' => esc_html__( 'Category Name in KB URL', 'echo-knowledge-base' ),
-				'html' => EPKB_HTML_Elements::checkbox_toggle( array(
-					'id'            => 'categories_in_url_enabled__toggle',
-					'textLoc'       => 'baseline',
-					'data'          => 'on',
-					'toggleOnText'  => esc_html__( 'yes', 'echo-knowledge-base' ),
-					'toggleOffText' => esc_html__( 'no', 'echo-knowledge-base' ),
-					'checked'       => $this->kb_config['categories_in_url_enabled'] == 'on',
-					'return_html'   => true,
-					'topDesc'       => esc_html__( 'Should article URLs contain the slug of their categories?', 'echo-knowledge-base' ),
-				) ),
+				'html' => $wizard_global->show_category_slug_toggle(),
 				'class' => 'epkb-admin__toggle-box',
 			);
 
-			// Box: Your Knowledge Base URL
-			$wizard_global = new EPKB_KB_Wizard_Global( $wizard_kb_config );
-
+			// Box: Knowledge Base URL
 			$kb_url_boxes[] = array(
 				'title' => esc_html__( 'Knowledge Base URL', 'echo-knowledge-base' ),
-				'html' => $wizard_global->show_kb_urls_global_wizard(),
+				'html' => $wizard_global->show_kb_urls(),
 				'class' => 'epkb-admin__wizard-box',
+			);
+
+			// Apply button
+			$kb_url_boxes[] = array(
+				'html' => $wizard_global->show_apply_button(),
+				'class' => 'epkb-admin__wizard-apply-btn-box',
 			);
 		}
 

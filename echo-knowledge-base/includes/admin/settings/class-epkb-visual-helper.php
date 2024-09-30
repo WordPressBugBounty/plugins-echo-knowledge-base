@@ -6,9 +6,6 @@
  */
 class EPKB_Visual_Helper {
 
-	/**
-	 * Constructor - add actions for Visual Helper functionality
-	 */
 	public function __construct() {
 		add_action( 'wp_ajax_epkb_visual_helper_update_switch_settings',  array( $this, 'update_switch_settings_handler' ) );
 		add_action( 'wp_ajax_nopriv_epkb_visual_helper_update_switch_settings', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
@@ -19,7 +16,8 @@ class EPKB_Visual_Helper {
 	/**
 	 * Add Visual Helper Elements to KB Main Page
 	 */
-	public function epkb_generate_page_content( $settings_info_icons, $kb_config ) {
+	public function epkb_generate_page_content( $settings_info_icons, $kb_config, $settings_side_menu = array() ) {
+
 		wp_enqueue_style( 'epkb-frontend-visual-helper' );
 		wp_enqueue_script( 'epkb-frontend-visual-helper' );
 
@@ -27,7 +25,9 @@ class EPKB_Visual_Helper {
 
 		<div class="epkb-vshelp__wrapper">  <?php
 			$this->epkb_visual_helper_toggle();
-			$this->epkb_visual_helper_side_menu( $kb_config ); ?>
+            if ( count( $settings_side_menu ) ) {
+	            $this->epkb_visual_helper_side_menu( $kb_config, $settings_side_menu );
+            } ?>
 		</div>  <?php
 
 		$this->generate_info_components( $settings_info_icons );
@@ -39,6 +39,7 @@ class EPKB_Visual_Helper {
 	 * Generate Visual Helper Toggle HTML element
 	 */
 	private function epkb_visual_helper_toggle() {
+
 		$kb_id = EPKB_Utilities::get_eckb_kb_id();
 		ob_start(); ?>
 
@@ -56,7 +57,7 @@ class EPKB_Visual_Helper {
 					<span class="epkb-settings-control__input__handle"></span>
 				</label>
 			</div>
-			<div class="epkb-vshelp-hide-switcher epkb-vshelp-hide-switcher--hidden" data-kbid="<?php echo $kb_id; ?>">
+			<div class="epkb-vshelp-hide-switcher epkb-vshelp-hide-switcher--hidden" data-kbid="<?php echo esc_attr( $kb_id ); ?>">
 				<span class="epkb-vshelp-hide-switcher__icon epkbfa epkbfa-times-circle"></span>
 			</div>
 		</div>		<?php
@@ -67,52 +68,22 @@ class EPKB_Visual_Helper {
 	/**
 	 * Generate Visual Helper Side Menu HTML element
 	 */
-	private function epkb_visual_helper_side_menu( $kb_config ) {
+	private function epkb_visual_helper_side_menu( $kb_config, $settings_side_menu ) {
 
-
-		$keys_to_check                                  = ['ml_row_1_module', 'ml_row_2_module', 'ml_row_3_module', 'ml_row_4_module', 'ml_row_5_module'];
-
-		$search_row_desktop_width_location              = 'ml_row_1_desktop_width_units';
-		$search_row_desktop_width_units_location        = 'ml_row_1_desktop_width_units_units';
-		$category_row_desktop_width_location            = 'ml_row_2_desktop_width_units';
-		$category_row_desktop_width_units_location      = 'ml_row_2_desktop_width_units_units';
-		$category_row_num = 1;
-		$search_row_num = 1;
-		$search_active = false;
-		$category_article_active = false;
+		$keys_to_check = ['ml_row_1_module', 'ml_row_2_module', 'ml_row_3_module', 'ml_row_4_module', 'ml_row_5_module'];
 
 		foreach ( $keys_to_check as $key ) {
 			if ( isset( $kb_config[$key] ) ) {
 				if ( $kb_config[$key] === 'categories_articles' ) {
-
-					$category_row                                = substr($key, 0,-7 );
-					$category_row_desktop_width_location         = $category_row.'_desktop_width';
-					$category_row_desktop_width_units_location   = $category_row.'_desktop_width_units';
-
-					preg_match('/\d+/', $category_row, $matches);
-					$category_row_num = $matches[0];
-					$category_article_active = true;
+					$category_row = substr($key, 0,-7 );
+					preg_match( '/\d+/', $category_row, $matches );
 
 				} elseif ( $kb_config[$key] === 'search' ) {
-					$search_row                                = substr($key, 0,-7 );
-					$search_row_desktop_width_location         = $search_row.'_desktop_width';
-					$search_row_desktop_width_units_location   = $search_row.'_desktop_width_units';
-
-					preg_match('/\d+/', $search_row, $matches);
-					$search_row_num = $matches[0];
-					$search_active = true;
+					$search_row = substr($key, 0,-7 );
+					preg_match( '/\d+/', $search_row, $matches );
 				}
 			}
 		}
-
-
-		$current_page_template  = $kb_config[ 'templates_for_kb' ];
-		$search_row_width = $kb_config[ $search_row_desktop_width_location ];
-		$search_row_width_units = $kb_config[ $search_row_desktop_width_units_location ];
-
-		$category_row_width = $kb_config[ $category_row_desktop_width_location ];
-		$category_row_width_units = $kb_config[ $category_row_desktop_width_units_location ];
-        $kb_id = $kb_config['id'];
 
 		ob_start(); ?>
 		<div class="epkb-vshelp-side-menu-wrapper">
@@ -124,101 +95,29 @@ class EPKB_Visual_Helper {
 					<span><?php esc_html_e( 'Page Information', 'echo-knowledge-base' ); ?></span>
 				</div>
 			</div>
-			<div class="epkb-vshelp-side-menu-body">
-				<div class="epkb-vshelp-accordion-wrapper">
-					<div class="epkb-vshelp-accordion-header">
-						<span><?php esc_html_e( 'Issues with the page layout, header, or menu?', 'echo-knowledge-base' ); ?></span>
-						<button class="epkb-vshelp-accordion-header__button js-epkb-accordion-toggle" id="epkb-vshelp-switch-template"><?php esc_html_e( 'Details', 'echo-knowledge-base' ); ?></button>
-					</div>
-					<div class="epkb-vshelp-accordion-body" style="display: none">
-						<div class="epkb-vshelp-accordion-body-content">
-							<p> <?php
-								echo sprintf( esc_html__( 'Knowledge Base provides two template choices: %sKB Template%s and %sCurrent Theme Template%s.', 'echo-knowledge-base' ), '<strong>', '</strong>', '<strong>', '</strong>' ) . ' ' .
-									 esc_html__( 'Select the most suitable option according to their requirements or their theme’s behavior.', 'echo-knowledge-base' ) . ' ' .
-									'<a href="https://www.echoknowledgebase.com/documentation/current-theme-template-vs-kb-template/" target="_blank" rel="nofollow">' . esc_html__(  'Learn More', 'echo-knowledge-base' ) . '</a> <span class="epkbfa epkbfa-external-link"></span>';  ?>
-							</p>
-							<hr>
-							<p><?php echo esc_html__( 'Try to switch the template if having layout issues', 'echo-knowledge-base' ) . ':'; ?></p>
-                            <div class="epkb-vshelp-accordion-body__template-toggle epkb-settings-control">
-                                <label class="epkb-settings-control-circle-radio">
-                                    <?php esc_html_e( 'KB Template', 'echo-knowledge-base' ); ?>
-                                    <input type="radio" name="ekb_current_template" value="kb_templates" data-kbid="<?php echo esc_attr( $kb_id ); ?>" class="epkb-settings-control-circle-radio__radio" <?php echo esc_attr( $current_page_template === 'kb_templates' ? 'checked="checked"' : '' ); ?>>
-                                    <span class="epkb-settings-control-circle-radio__checkmark"></span>
-                                </label>
-                                <label class="epkb-settings-control-circle-radio">
-		                            <?php esc_html_e( 'Current Theme Template', 'echo-knowledge-base' ); ?>
-                                    <input type="radio" name="ekb_current_template" value="current_theme_templates" data-kbid="<?php echo esc_attr( $kb_id ); ?>" class="epkb-settings-control-circle-radio__radio" <?php echo esc_attr( $current_page_template === 'current_theme_templates' ? 'checked="checked"' : '' ); ?>>
-                                    <span class="epkb-settings-control-circle-radio__checkmark"></span>
-                                </label>
+			<div class="epkb-vshelp-side-menu-body">    <?php
+                foreach (  $settings_side_menu as $section ) {
+
+					$button_wrapper_id  = $section['details_button_id'] ?? '';
+                    $section_title = $section['box_title'] ?? '';
+                    $section_content_escaped = $section['box_content'] ?? '';
+
+                    if ( ! empty( $section_content_escaped ) ): ?>
+                        <div class="epkb-vshelp-accordion-wrapper">
+                            <div class="epkb-vshelp-accordion-header">                                <?php
+	                            if ( ! empty( $section_title ) ): ?>
+                                    <span><?php echo esc_html( $section_title ); ?></span>                                <?php
+	                            endif; ?>
+                                <button class="epkb-vshelp-accordion-header__button js-epkb-accordion-toggle" <?php echo ( ! empty( $button_wrapper_id ) ? 'id="' . esc_attr( $button_wrapper_id ) . '"' : '') ?>><?php
+	                                esc_html_e( 'Details', 'echo-knowledge-base' ); ?>
+                                </button>
                             </div>
-						</div>
-					</div>
-				</div>
-				<div class="epkb-vshelp-accordion-wrapper">
-					<div class="epkb-vshelp-accordion-header">
-						<span><?php esc_html_e( 'Is this page or search box too narrow?', 'echo-knowledge-base' ); ?></span>
-						<button class="epkb-vshelp-accordion-header__button js-epkb-accordion-toggle"><?php esc_html_e( 'Details', 'echo-knowledge-base' ); ?></button>
-					</div>
-					<div class="epkb-vshelp-accordion-body" style="display: none">
-						<div class="epkb-vshelp-accordion-body-content">							<?php
-
-							if ( $search_active ) { ?>
-								<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Search Box Width', 'echo-knowledge-base' ); ?></strong></h5>
-								<table>
-									<tr>
-										<td><?php echo sprintf( esc_html__( 'Total Page width is', 'echo-knowledge-base' ), $search_row_num ) . ' '; ?><span class='js-epkb-mp-width'>-</span></td>
-									</tr>
-									<tr>
-										<td><?php echo sprintf( esc_html__( 'The KB setting is set to ', 'echo-knowledge-base' ), $search_row_num ); echo ' ' . $search_row_width . $search_row_width_units .
-												( $search_row_width_units == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?></td>
-									</tr>
-									<tr>
-										<td><?php echo esc_html__( 'The actual search box width is', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-mp-search-width">-</span></td>
-									</tr>
-								</table><?php
-								/* if ( $search_row_width_units == '%' ) { ?>
-									<div class="epkb-vshelp-accordion-body-content__note"><?php
-										esc_html_e( 'Note: The px value for the width should be the configured percentage.', 'echo-knowledge-base' ); ?>
-									</div>								<?php
-								} */ ?>
-								<div class="epkb-vshelp-accordion-body-content__spacer"></div><?php
-							}
-							if ( $category_article_active ) { ?>
-								<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Categories and Articles Width', 'echo-knowledge-base' ); ?></strong></h5>
-								<table>
-									<tr>
-										<td><?php echo sprintf( esc_html__( 'The KB setting is set to ', 'echo-knowledge-base' ), $category_row_num ); echo ' ' . $category_row_width . $category_row_width_units .
-												( $category_row_width_units == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?></td>
-									</tr>
-									<tr>
-										<td><?php echo esc_html__( 'The actual Categories and Articles width is', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-mp-width-container">-</span></td>
-									</tr>
-								</table>    <?php
-								/* if ( $category_row_width_units == '%' ) { ?>
-									<div class="epkb-vshelp-accordion-body-content__note"><?php
-										esc_html_e( 'Note: The detected px value should be a percentage of your page width.', 'echo-knowledge-base' ); ?>
-									</div>								<?php
-								} */ ?>
-								<div class="epkb-vshelp-accordion-body-content__spacer"></div>  <?php
-							} ?>
-
-							<h5><strong><?php esc_html_e( 'Troubleshooting', 'echo-knowledge-base' ); ?></strong></h5>
-							<p><?php echo esc_html__( 'If the value you set in the KB settings does not match the actual value, it may be because your theme or page
-								builder is limiting the overall width. In such cases, the KB settings cannot exceed the maximum width allowed
-								by your theme or page builder. Try the following', 'echo-knowledge-base' ) . ':'; ?></p>
-							<ul>
-								<li><?php echo esc_html__( 'Check your theme settings.', 'echo-knowledge-base' ); ?></li>
-								<li><?php echo sprintf( esc_html__( 'If the KB Shortcode is inserted inside your page builder then you will need to check the section width of that page builder. %s', 'echo-knowledge-base' ),
-										'<a href="https://www.echoknowledgebase.com/documentation/main-page-width-and-page-builders/" target="_blank" rel="nofollow">' . esc_html__( 'Learn more', 'echo-knowledge-base' ) . '</a> <span class="epkbfa epkbfa-external-link"> </span>' ); ?></li>  <?php
-
-								if ( $current_page_template == 'current_theme_templates' ) { ?>
-									<li><?php echo sprintf( esc_html__( 'You are currently using the Current theme template, which may be restricting the widths. Consider switching to the KB template. %s', 'echo-knowledge-base' ),
-											'<a href="https://www.echoknowledgebase.com/documentation/current-theme-template-vs-kb-template/" target="_blank" rel="nofollow">' . esc_html__( 'Learn more', 'echo-knowledge-base' ) . '</a> <span class="epkbfa epkbfa-external-link"></span>' ); ?></li>								<?php
-								}								?>
-							</ul>
-						</div>
-					</div>
-				</div>
+                            <div class="epkb-vshelp-accordion-body" style="display: none">                                <?php
+	                            echo $section_content_escaped; ?>
+                            </div>
+                        </div>                    <?php
+                    endif;
+                } ?>
 			</div>
 		</div>        <?php
 
@@ -259,7 +158,7 @@ class EPKB_Visual_Helper {
 						foreach ( $modalSections as $section ) {
 							$section_title = $section['title'] ?? false;
 							$section_location = $section['location'] ?? false;
-							$section_content = $section['content'] ?? false;
+							$section_content_escaped = $section['content'] ?? false;
 							$section_link = $section['link'] ?? array(); ?>
 
 							<div class="epkb-vshelp-info-modal__section">   <?php
@@ -275,10 +174,10 @@ class EPKB_Visual_Helper {
 									</div>   <?php
 								}
 
-								if ( $section_content ) { ?>
+								if ( $section_content_escaped ) { ?>
 
 									<p class="epkb-vshelp-info-modal__section-content">     <?php
-										echo $section_content; ?>
+										echo $section_content_escaped; ?>
 									</p>    <?php
 
 									if ( ! empty( $section_link ) ) { ?>
@@ -318,10 +217,11 @@ class EPKB_Visual_Helper {
      */
     public function switch_template_handler() {
 
-        $kb_id = EPKB_Utilities::post( 'kb_id', EPKB_KB_Config_DB::DEFAULT_KB_ID );
-        $template = EPKB_Utilities::post( 'current_template', 'kb_templates' );
+        $kb_id     = EPKB_Utilities::post( 'kb_id', EPKB_KB_Config_DB::DEFAULT_KB_ID );
+        $template  = EPKB_Utilities::post( 'current_template', 'kb_templates' );
+        $prop_name = EPKB_Utilities::post( 'prop_name', 'templates_for_kb' );
 
-        epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'templates_for_kb', $template );
+        epkb_get_instance()->kb_config_obj->set_value( $kb_id, $prop_name, $template );
 
         wp_send_json_success( esc_html__( 'Settings saved', 'echo-knowledge-base' ) );
     }

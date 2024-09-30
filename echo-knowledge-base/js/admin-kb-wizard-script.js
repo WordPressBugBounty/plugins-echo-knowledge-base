@@ -714,10 +714,10 @@ jQuery(document).ready(function($) {
 	/**
 	 * Handle Apply Button
 	 */
-	wizard.find( '.epkb-wizard-button-apply' ).on( 'click' , function(e){
+	$( '.epkb-wizard-button-apply' ).on( 'click' , function(e){
 
 		// Get currently active wizard
-		let current_wizard = $( this ).closest( '#epkb-config-wizard-content, .epkb-config-wizard-content' );
+		let current_wizard = $( this ).closest( '.epkb-admin__section-wrap' );
 
 		let wizard_type = $(this).data('wizard-type');
 		let kb_config = {};
@@ -728,7 +728,7 @@ jQuery(document).ready(function($) {
 			action: 'epkb_apply_wizard_changes',
 			_wpnonce_epkb_ajax_action: current_wizard.find( '#_wpnonce_epkb_ajax_action' ).val(),
 			epkb_wizard_kb_id: current_wizard.find( '#epkb_wizard_kb_id' ).val(),
-			kb_main_page_id: current_wizard.data( 'kb-main-page-id' ),
+			kb_main_page_id: current_wizard.find( '.epkb-config-wizard-content' ).data( 'kb-main-page-id' ),
 		};
 
 		if ( wizard_type == 'ordering' ) {

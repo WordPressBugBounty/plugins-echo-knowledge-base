@@ -467,7 +467,7 @@ class EPKB_Utilities {
 	 */
 	public static function sanitize_int( $number, $default=0 ) {
 
-		if ( $number === null || ! is_numeric($number) ) {
+		if ( $number === null || ! is_numeric( $number ) ) {
 			return $default;
 		}
 
@@ -476,9 +476,9 @@ class EPKB_Utilities {
 			return 0;
 		}
 
-		$number = intval($number);
+		$number = intval( $number );
 
-		return empty($number) ? $default : (int) $number;
+		return empty( $number ) ? $default : (int) $number;
 	}
 
 	/**
@@ -1536,14 +1536,14 @@ class EPKB_Utilities {
 		$link = '';
 		if ( has_filter( 'eckb_single_article_filter' ) ) {
 
-			$result = apply_filters('eckb_single_article_filter', $article_id, array( $kb_config['id'], $title, $outer_span, $article_color_escaped, $icon_color_escaped ) );
+			$result = apply_filters( 'eckb_single_article_filter', $article_id, array( $kb_config['id'], $title, $outer_span, $article_color_escaped, $icon_color_escaped ) );
 
 			// keep for old compatibility for links to output separately
 			if ( ! empty( $result ) && $result === true ) {
 				return;
 			}
 
-			if ( is_array( $result) && isset( $result['url_value'] ) ) {
+			if ( is_array( $result ) && isset( $result['url_value'] ) ) {
 				$link = $result['url_value'];
 				$title_attr_escaped = 'title="' . esc_attr( $result['title_attr_value'] ) . '"';
 				$new_tab = $result['new_tab'];
@@ -1557,7 +1557,7 @@ class EPKB_Utilities {
 			if ( empty( $epkb_single_article_link ) ) {
 
 				$result = apply_filters( 'eckb_article_list_icon_filter', $article_id, array( $kb_config['id'], $type) );
-				if ( !empty( $result['icon'] ) ) {
+				if ( ! empty( $result['icon'] ) ) {
 					$icon_class = $result['icon'];
 					$epkb_single_article_link = $icon_class;
 				}

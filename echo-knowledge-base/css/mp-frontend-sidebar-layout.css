@@ -2495,7 +2495,7 @@
       padding-left: 5px !important;
       padding-right: 5px !important;
       margin-left: -5px !important; }
-      #epkb-sidebar-container-v2 .epkb-sidebar__cat-container li .active .article_active_bold span {
+      #epkb-sidebar-container-v2 .epkb-sidebar__cat-container li .active.article-on-active-bold span {
         font-weight: bold !important; }
     #epkb-sidebar-container-v2 .epkb-sidebar__cat-container .epkb-hide-elem {
       display: none !important; }

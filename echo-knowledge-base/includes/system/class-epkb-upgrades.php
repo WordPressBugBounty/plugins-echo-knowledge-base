@@ -11,7 +11,7 @@ class EPKB_Upgrades {
 	const NOT_INITIALIZED = '12.30.99';
 
 	public function __construct() {
-        // will run after plugin is updated but not always like front-end rendering
+		// will run after plugin is updated but not always like front-end rendering
 		add_action( 'admin_init', array( 'EPKB_Upgrades', 'update_plugin_version' ) );
 
 		// show initial page after install addons

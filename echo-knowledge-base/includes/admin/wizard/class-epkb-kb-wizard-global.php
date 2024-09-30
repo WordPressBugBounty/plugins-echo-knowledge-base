@@ -49,9 +49,9 @@ class EPKB_KB_Wizard_Global {
 	/**
 	 * Get Wizard page
 	 *
-	 * @return false|string|void
+	 * @return false|string
 	 */
-	public function show_kb_urls_global_wizard() {
+	public function show_kb_urls() {
 
         $html = new EPKB_HTML_Forms();
 
@@ -85,11 +85,6 @@ class EPKB_KB_Wizard_Global {
 				<div class="epkb-wizard-content">
 					<?php self::show_loader_html(); ?>
 					<?php $this->slug_options(); ?>
-				</div>
-
-				<!------- Wizard Footer ---------->
-				<div class="epkb-wizard-footer">
-					<?php $this->wizard_buttons_v2(); ?>
 				</div>
 
 				<div id='epkb-ajax-in-progress' style="display:none;">
@@ -226,19 +221,22 @@ class EPKB_KB_Wizard_Global {
 
 	/**
 	 * Wizard: Previous / Next Buttons / Apply Buttons
+	 * @return false|string
 	 */
-	private function wizard_buttons_v2() {
+	public function show_apply_button() {
 
 		if ( empty( $this->kb_config['kb_main_pages'] ) ) {
-			return;
-		}  ?>
+			return '';
+		}
 
-		<div class="epkb-wizard-button-container epkb-wizard-button-container--first-step">
-			<div class="epkb-wizard-button-container__inner">
-				<button value="apply" id="epkb-wizard-button-apply" class="epkb-wizard-button epkb-wizard-button-apply"  data-wizard-type="global"><?php esc_html_e( 'Apply', 'echo-knowledge-base' ); ?></button>
-				<input type="hidden" id="_wpnonce_epkb_ajax_action" name="_wpnonce_epkb_ajax_action" value="<?php echo wp_create_nonce( "_wpnonce_epkb_ajax_action" ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?>">
-			</div>
+		ob_start();	?>
+
+		<div class="epkb-wizard-button-container__inner">
+			<button value="apply" id="epkb-wizard-button-apply" class="epkb-wizard-button epkb-wizard-button-apply"  data-wizard-type="global"><?php esc_html_e( 'Apply', 'echo-knowledge-base' ); ?></button>
+			<input type="hidden" id="_wpnonce_epkb_ajax_action" name="_wpnonce_epkb_ajax_action" value="<?php echo wp_create_nonce( "_wpnonce_epkb_ajax_action" ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?>">
 		</div>	<?php
+
+		return ob_get_clean();
 	}
 
 	/**
@@ -252,5 +250,22 @@ class EPKB_KB_Wizard_Global {
 			</div>
 		</div>
 		<div class="epkb-admin-dialog-box-overlay"></div> <?php
+	}
+
+	/**
+	 * Show Category Slug in KB URL Toggle
+	 * @return false|string
+	 */
+	public function show_category_slug_toggle() {
+		return EPKB_HTML_Elements::checkbox_toggle( array(
+			'id'            => 'categories_in_url_enabled__toggle',
+			'textLoc'       => 'baseline',
+			'data'          => 'on',
+			'toggleOnText'  => esc_html__( 'yes', 'echo-knowledge-base' ),
+			'toggleOffText' => esc_html__( 'no', 'echo-knowledge-base' ),
+			'checked'       => $this->kb_config['categories_in_url_enabled'] == 'on',
+			'return_html'   => true,
+			'topDesc'       => esc_html__( 'Should article URLs contain the slug of their categories?', 'echo-knowledge-base' ),
+		) );
 	}
 }

@@ -101,8 +101,7 @@ class EPKB_Add_Ons_Features {
 		$features['2023.03.01'] = array(
 			'plugin'            => esc_html__( 'KB Core', 'echo-knowledge-base'),
 			'title'             => esc_html__( 'AI Assisted Writing', 'echo-knowledge-base'),
-			'description'       => '<p>' . esc_html__( 'ChatGPT like AI assistance is available to help you write your articles.', 'echo-knowledge-base') . '</p>',
-			'image'             => 'https://www.echoknowledgebase.com/wp-content/uploads/2023/02/ai-chatgpt-assisted-writing.png',
+			'description'       => '<p>' . esc_html__( 'AI assistance is available to help you write your articles.', 'echo-knowledge-base') . '</p>',
 			'learn_more_url'    => 'https://www.echoknowledgebase.com/documentation/ai-help-sidebar/',
 			'plugin-type'       => 'core',
 			'type'              => 'new-feature'

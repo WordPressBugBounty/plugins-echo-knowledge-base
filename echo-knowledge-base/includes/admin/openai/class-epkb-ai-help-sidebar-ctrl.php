@@ -38,8 +38,8 @@ class EPKB_AI_Help_Sidebar_Ctrl {
 			case 'epkb_ai_generate_outline':
 				$this->generate_outline();
 				break;
-			case 'epkb_ai_chatgpt':
-				$this->chat_gpt();
+			case 'epkb_ai_chat':
+				$this->ai_chat();
 				break;
 			case 'epkb_ai_dismiss_main_intro':
 				$this->dismiss_main_intro();
@@ -249,9 +249,9 @@ class EPKB_AI_Help_Sidebar_Ctrl {
 	}
 
 	/**
-	 * ChatGPT
+	 * AI Chat
 	 */
-	private function chat_gpt() {
+	private function ai_chat() {
 		$input_text = EPKB_Utilities::post( 'input_text', '', 'text-area' );
 
 		$openai_handler = new EPKB_OpenAI();

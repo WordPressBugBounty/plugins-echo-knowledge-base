@@ -88,7 +88,7 @@ class EPKB_KB_Config_Sequence {
 	 */
 	public function get_new_sequence() {
 
-		$new_sequence = isset($_POST['epkb_new_sequence']) ? $this->sanitize_sequence( $_POST['epkb_new_sequence'] ) : false;
+		$new_sequence = isset( $_POST['epkb_new_sequence'] ) ? $this->sanitize_sequence( $_POST['epkb_new_sequence'] ) : false;
 		if ( $new_sequence === false ) {
 			return false;
 		}

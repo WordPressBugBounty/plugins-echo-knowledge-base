@@ -78,8 +78,8 @@ class EPKB_Articles_Setup {
 		// add theme name to Div for specific targeting
 		$activeWPTheme = EPKB_Utilities::get_active_theme_classes( 'ap' );
 		
-		$article_seq_no = empty($_REQUEST['seq_no']) ? '' : EPKB_Utilities::sanitize_int( $_REQUEST['seq_no'] );
-		$article_seq_no = empty($article_seq_no) ? '' : ' data-kb_article_seq_no=' . $article_seq_no;
+		$article_seq_no = empty( $_REQUEST['seq_no'] ) ? '' : EPKB_Utilities::sanitize_int( $_REQUEST['seq_no'] );
+		$article_seq_no = empty( $article_seq_no ) ? '' : ' data-kb_article_seq_no=' . $article_seq_no;
 
 		$mobile_breakpoint = $kb_config['article-mobile-break-point-v2'];
 		if ( is_numeric( $mobile_breakpoint ) && ! empty( $_REQUEST['epkb-editor-page-loaded'] ) ) {

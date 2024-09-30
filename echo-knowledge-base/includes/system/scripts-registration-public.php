@@ -21,7 +21,7 @@ function epkb_load_public_resources() {
 	wp_register_style( 'epkb-frontend-visual-helper', Echo_Knowledge_Base::$plugin_url . 'css/frontend-visual-helper' . $suffix . '.css', array( 'epkb-icon-fonts' ), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-public-scripts', Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-faq-shortcode-scripts', Echo_Knowledge_Base::$plugin_url . 'js/faq-shortcode-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
-	wp_register_script( 'epkb-frontend-visual-helper', Echo_Knowledge_Base::$plugin_url . 'js/frontend-visual-helper' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
+	wp_register_script( 'epkb-frontend-visual-helper', Echo_Knowledge_Base::$plugin_url . 'js/frontend-visual-helper' . $suffix . '.js', array('jquery', 'epkb-public-scripts'), Echo_Knowledge_Base::$version );
 
 	$epkb_vars = array(
 		'ajaxurl'                       => admin_url( 'admin-ajax.php', 'relative' ),
@@ -32,7 +32,6 @@ function epkb_load_public_resources() {
 		'reload_try_again'              => esc_html__( 'Please reload the page and try again.', 'echo-knowledge-base' ),
 		'save_config'                   => esc_html__( 'Saving configuration', 'echo-knowledge-base' ),
 		'input_required'                => esc_html__( 'Input is required', 'echo-knowledge-base' ),
-		'load_template'                 => esc_html__( 'Loading Template...', 'echo-knowledge-base' ),
 		'nonce'                         => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
 		'toc_editor_msg'                => esc_html__( 'The TOC is not displayed because there are no matching headers in the article.', 'echo-knowledge-base' ),
 		'creating_demo_data'            => esc_html__( 'Creating a Knowledge Base with demo categories and articles. It will be completed shortly.', 'echo-knowledge-base' )

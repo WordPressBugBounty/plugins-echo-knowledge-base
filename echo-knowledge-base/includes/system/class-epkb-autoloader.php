@@ -48,6 +48,8 @@ class EPKB_Autoloader {
 				'epkb_debug_controller'             =>  'includes/admin/settings/class-epkb-debug-controller.php',
 				'epkb_visual_helper'                =>  'includes/admin/settings/class-epkb-visual-helper.php',
 				'epkb_main_page_visual_helper'      =>  'includes/admin/settings/class-epkb-main-page-visual-helper.php',
+				'epkb_article_page_visual_helper'   =>  'includes/admin/settings/class-epkb-article-page-visual-helper.php',
+				'epkb_category_page_visual_helper'  =>  'includes/admin/settings/class-epkb-category-page-visual-helper.php',
 
 				// ADMIN PAGES
 				'epkb_config_page'                  =>  'includes/admin/pages/class-epkb-config-page.php',

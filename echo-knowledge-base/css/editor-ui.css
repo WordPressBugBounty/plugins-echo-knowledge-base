@@ -1094,14 +1094,6 @@ TABLE OF CONTENTS:
 	content: "\f504";
 }
 
-.dashicons-facebook-alt:before {
-	content: "\f305";
-}
-
-.dashicons-facebook:before {
-	content: "\f304";
-}
-
 .dashicons-feedback:before {
 	content: "\f175";
 }
@@ -1274,9 +1266,6 @@ TABLE OF CONTENTS:
 	content: "\f10f";
 }
 
-.dashicons-instagram:before {
-	content: "\f12d";
-}
 
 .dashicons-laptop:before {
 	content: "\f547";
@@ -1780,10 +1769,6 @@ TABLE OF CONTENTS:
 
 .dashicons-welcome-write-blog:before {
 	content: "\f119";
-}
-
-.dashicons-whatsapp:before {
-	content: "\f19a";
 }
 
 .dashicons-wordpress-alt:before {

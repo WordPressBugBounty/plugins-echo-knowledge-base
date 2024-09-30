@@ -125,7 +125,7 @@ class EPKB_Export_Import {
 		}
 
 		//phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce is verified in the calling function
-		$import_file_name = $_FILES['import_file']['tmp_name'];
+		$import_file_name = isset( $_FILES['import_file']['tmp_name'] ) ? sanitize_text_field( $_FILES['import_file']['tmp_name'] ) : '';
 		if ( empty( $import_file_name ) ) {
 			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (0)';
 			return $this->message;

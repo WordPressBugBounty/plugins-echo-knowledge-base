@@ -763,9 +763,6 @@
 .epkbfa-twitter-square:before {
   content: "" !important; }
 
-.epkbfa-facebook-square:before {
-  content: "" !important; }
-
 .epkbfa-camera-retro:before {
   content: "" !important; }
 
@@ -832,10 +829,6 @@
 
 .epkbfa-twitter:before {
   content: "" !important; }
-
-.epkbfa-facebook-f:before,
-.epkbfa-facebook:before {
-  content: "" !important; }
 
 .epkbfa-github:before {
   content: "" !important; }
@@ -1421,9 +1414,6 @@
 .epkbfa-stack-overflow:before {
   content: "" !important; }
 
-.epkbfa-instagram:before {
-  content: "" !important; }
-
 .epkbfa-flickr:before {
   content: "" !important; }
 
@@ -1990,14 +1980,8 @@
 .epkbfa-genderless:before {
   content: "" !important; }
 
-.epkbfa-facebook-official:before {
-  content: "" !important; }
-
 .epkbfa-pinterest-p:before {
   content: "" !important; }
-
-.epkbfa-whatsapp:before {
-  content: "" !important; }
 
 .epkbfa-server:before {
   content: "" !important; }
@@ -17391,73 +17375,6 @@
       background-size: cover; }
       .epkb-admin__form .epkb-admin__form__body .epkb-radio-buttons-icon-selection .epkbfa-input-icon:before {
         display: none; }
-    .epkb-admin__form .epkb-admin__form__body #templates_for_kb_group {
-      margin-top: 10px; }
-    .epkb-admin__form .epkb-admin__form__body #templates_for_kb {
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: reverse;
-          -ms-flex-direction: column-reverse;
-              flex-direction: column-reverse; }
-      .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkb-label {
-        width: 150px;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: reverse;
-            -ms-flex-direction: column-reverse;
-                flex-direction: column-reverse;
-        -webkit-box-pack: center;
-            -ms-flex-pack: center;
-                justify-content: center;
-        text-align: center; }
-      .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkb-label__text {
-        display: block !important;
-        margin-top: 15px; }
-      .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkbfa-input-icon {
-        width: 150px;
-        height: 150px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover; }
-        .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkbfa-input-icon:before {
-          display: none; }
-      .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkbfa-kb_templates {
-        background-image: url("../img/setting-icons/kb-template-option.jpg"); }
-      .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkbfa-current_theme_templates {
-        background-image: url("../img/setting-icons/current-theme-option.jpg"); }
-      .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkb-input-container {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-            -ms-flex-align: center;
-                align-items: center;
-        margin-bottom: 10px; }
-        .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkb-input-container .epkb-templates-description {
-          padding-left: 15px;
-          margin-bottom: 20px; }
-          .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkb-input-container .epkb-templates-description .epkb-editor-settings-accordeon-item__description-line {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            margin-bottom: 10px;
-            line-height: 1; }
-            .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkb-input-container .epkb-templates-description .epkb-editor-settings-accordeon-item__description-line .epkb-editor-settings-accordeon-item__description-icon {
-              margin-right: 5px;
-              width: 20px;
-              text-align: center;
-              font-size: 18px;
-              color: #78b956; }
-              .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkb-input-container .epkb-templates-description .epkb-editor-settings-accordeon-item__description-line .epkb-editor-settings-accordeon-item__description-icon .epkbfa-times {
-                color: #d95651; }
-              .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkb-input-container .epkb-templates-description .epkb-editor-settings-accordeon-item__description-line .epkb-editor-settings-accordeon-item__description-icon .epkbfa-question {
-                color: #2EA3F2; }
-        .epkb-admin__form .epkb-admin__form__body #templates_for_kb .epkb-input-container .epkb-label .epkb-input:checked + .epkbfa-input-icon {
-          border: 3px solid #fff !important;
-          outline: solid 7px #dcff1c;
-          -webkit-box-shadow: 0px 6px 9px 7px #00000094;
-                  box-shadow: 0px 6px 9px 7px #00000094; }
     .epkb-admin__form .epkb-admin__form__body #ml_resource_links_icon_location_group .epkb-label {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -17802,6 +17719,8 @@
     margin: -16px 0 20px 270px;
     font-size: 13px;
     font-style: italic; }
+    .epkb-admin__form .epkb-input-desc.epkb-input-desc--radio-horizontal-buttons {
+      margin: 0; }
     .epkb-admin__form .epkb-input-desc .epkbfa-external-link {
       margin-left: 6px;
       font-size: 12px; }
@@ -18960,8 +18879,47 @@
         margin: 0; }
       #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url .eckb-wizard-step-1 {
         padding-top: 0; }
+      #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url .epkb-admin__wizard-apply-btn-box {
+        background: transparent;
+        border: none; }
+        #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url .epkb-admin__wizard-apply-btn-box .epkb-admin__boxes-list__box__content {
+          padding: 0; }
       #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url #epkb-wizard-button-apply {
-        display: block; }
+        display: inline-block;
+        height: -webkit-fit-content;
+        height: -moz-fit-content;
+        height: fit-content;
+        background-color: #78b956;
+        padding: 10px;
+        position: relative;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 12px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        border: solid 1px #609c40;
+        background-image: -webkit-gradient(linear, left bottom, left top, from(#78b956), to(#95c87a));
+        background-image: linear-gradient(bottom, #78b956, #95c87a);
+        background-image: -ms-linear-gradient(bottom, #78b956, #95c87a);
+        background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #78b956), color-stop(1, #95c87a));
+        border-radius: 5px;
+        -webkit-box-shadow: inset 0px 1px 0px #b2d79e, 0px 1px 0px #fff;
+                box-shadow: inset 0px 1px 0px #b2d79e, 0px 1px 0px #fff;
+        font-size: 21px;
+        display: block;
+        margin: 0 auto;
+        min-width: 200px; }
+        #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url #epkb-wizard-button-apply a {
+          text-decoration: none; }
+        #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url #epkb-wizard-button-apply:hover {
+          cursor: pointer;
+          background-image: -webkit-gradient(linear, left bottom, left top, from(#609c40), to(#95c87a));
+          background-image: linear-gradient(bottom, #609c40, #95c87a);
+          background-image: -ms-linear-gradient(bottom, #609c40, #95c87a);
+          background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #609c40), color-stop(1, #95c87a));
+          border-radius: 5px; }
+        #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url #epkb-wizard-button-apply:focus {
+          outline: 0; }
       #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url .epkb-wso__option__edit-button {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -19064,6 +19022,8 @@
                     justify-content: flex-end; } }
       #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url .epkb-admin__boxes-list__box__kb-location .epkb-admin__items-list {
         margin-left: 20px; }
+      #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__kb-url .epkb-admin__boxes-list__box--kb-url-learn-more .epkb-admin__boxes-list__box__content {
+        padding: 0; }
     #ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-setting-box__list-tools__access-control .radio-buttons-vertical ul {
       float: initial;
       display: -webkit-box;

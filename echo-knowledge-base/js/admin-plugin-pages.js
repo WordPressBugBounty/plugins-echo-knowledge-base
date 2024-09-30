@@ -1803,13 +1803,13 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
-	// Link to open General Tab
+	// Link to open Categories & Articles Tab
 	$( document ).on( 'click', '.epkb-admin__form .epkb-admin__form-tab-content--manage-theme-compat .epkb-admin__form-tab-content-desc__link' +
 		', .epkb-admin__form .epkb-admin__form-tab-content--layout .epkb-admin__form-tab-content__to-settings-link', function( e ) {
 		e.preventDefault();
-		$( '.epkb-admin__form .epkb-admin__form-sub-tab[data-target="general-settings"]' ).click();
+		$( '.epkb-admin__form .epkb-admin__form-sub-tab[data-selected-module="categories_articles"]' ).click();
 		$( [document.documentElement, document.body] ).animate( {
-			scrollTop: 0
+			scrollTop: $( '[data-target="theme-compatibility-mode"]' ).offset().top - 50
 		}, 300 );
 		return false;
 	});
@@ -1884,9 +1884,27 @@ jQuery(document).ready(function($) {
 
 	$('.epkb-admin__color-field input').wpColorPicker({
 		change: function( colorEvent, ui) {
+
+			// Do nothing if the change event was manually triggered for sync purpose
+			if ( ! $( this ).closest( '.epkb-admin__form-tab-wrap' ).hasClass( 'epkb-admin__form-tab-wrap--active' ) ) {
+				return;
+			}
+
+			// Get current color value
+			let color_value = $( colorEvent.target ).wpColorPicker( 'color' );
+			let setting_name = $( colorEvent.target ).attr( 'name' );
+
+			// Sync all color pickers that have the same name
+			$( '.epkb-admin__color-field input[name="' + setting_name + '"]' ).each( function () {
+				if ( ! $( this ).closest( '.epkb-admin__form-tab-wrap' ).hasClass( 'epkb-admin__form-tab-wrap--active' ) ) {
+					$( this ).wpColorPicker( 'color', color_value );
+				}
+			} );
+
+			// Ensure the input element updated
 			setTimeout( function() {
-				$( colorEvent.target).trigger('change');
-			}, 50);
+				$( colorEvent.target ).trigger( 'change' );
+			}, 50 );
 		},
 	});
 
@@ -2509,7 +2527,11 @@ jQuery(document).ready(function($) {
 		$('.epkb-admin__form-tab-content-learn-more').removeClass('epkb-admin__form-tab-content-learn-more--active');
 	});
 
-	// Change Modular Main Page
+	/*************************************************************************************************
+	 *
+	 *          Change Modular Main Page
+	 *
+	 ************************************************************************************************/
 	$( document ).on( 'click', '#modular_main_page_toggle .epkb-settings-control-toggle', function() {
 		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-kb-modular-main-page--active' );
 		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_modular_main_page_toggle );
@@ -2577,7 +2599,12 @@ jQuery(document).ready(function($) {
 		$confirmation_dialog.removeClass( 'epkb-kb-main-page-layout--active' );
 	} );
 
-	// Change Theme Compatibility Mode
+	/*************************************************************************************************
+	 *
+	 *          Change Theme Compatibility Mode
+	 *
+	 ************************************************************************************************/
+	// Activate dialog
 	let $templates_for_kb;
 	$( document ).on( 'click', 'input[name="templates_for_kb"]', function() {
 
@@ -2597,7 +2624,7 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
-	// Initialize confirmation button for Theme Compatibility Mode
+	// Save settings
 	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation .epkb-dbf__footer__accept__btn', function() {
 
 		// Do nothing if the confirmation dialog is called not for Theme Compatibility Mode
@@ -2615,12 +2642,196 @@ jQuery(document).ready(function($) {
 		save_config_tab_settings( false, true );
 	} );
 
-	// Deactivate confirmation box for Theme Compatibility Mode
+	// Deactivate dialog
 	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation .epkb-dbf__footer__cancel__btn', function() {
 		$( '#epkb-admin-page-reload-confirmation' ).removeClass( 'epkb-template-for-kb--active' );
 	} );
 
-	// allow duplicate text fields
+	/*************************************************************************************************
+	 *
+	 *          Change Category Archive Page Theme Compatibility Mode
+	 *
+	 ************************************************************************************************/
+	// Activate dialog
+	let $template_for_archive_page;
+	$( document ).on( 'click', 'input[name="template_for_archive_page"]', function() {
+
+		// Do nothing if user clicked on currently active option
+		if ( $( this ).attr( 'checked' ) ) {
+			return false;
+		}
+
+		$template_for_archive_page = $(this);
+		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-template-for-archive-page--active' );
+		if ( $( this ).val() === 'kb_templates' ){
+			$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_kb_templates );
+		} else {
+			$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_current_theme_templates );
+		}
+
+		return false;
+	});
+
+	// Save settings
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation .epkb-dbf__footer__accept__btn', function() {
+
+		// Do nothing if the confirmation dialog is called not for Theme Compatibility Mode
+		if ( ! $confirmation_dialog.hasClass( 'epkb-template-for-archive-page--active' ) ) {
+			return;
+		}
+
+		// Apply changes for Theme Compatibility Mode
+		if ( $template_for_archive_page ) {
+			$template_for_archive_page.prop( 'checked', true );
+		}
+
+		// Hide confirmation dialog and save settings with page reload
+		$( '#epkb-admin-page-reload-confirmation' ).removeClass( 'epkb-dialog-box-form--active' );
+		save_config_tab_settings( false, true );
+	} );
+
+	// Deactivate dialog
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation .epkb-dbf__footer__cancel__btn', function() {
+		$( '#epkb-admin-page-reload-confirmation' ).removeClass( 'epkb-template-for-archive-page--active' );
+	} );
+
+	/*************************************************************************************************
+	 *
+	 *          Toggle to sync Article Page Search settings with Main Page Search settings
+	 *
+	 ************************************************************************************************/
+	// Activate dialog
+	$( document ).on( 'click', '#article_search_sync_toggle .epkb-settings-control-toggle', function() {
+		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-kb-article-search-sync--active' );
+		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_article_search_sync_toggle );
+		return false;
+	});
+
+	// Save settings
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-article-search-sync--active .epkb-dbf__footer__accept__btn', function() {
+
+		// Apply changes
+		let article_search_sync_toggle = $( 'input[name="article_search_sync_toggle"]' );
+		article_search_sync_toggle.prop( 'checked', ! article_search_sync_toggle.prop( 'checked' ) );
+
+		// Hide confirmation dialog and save settings with page reload
+		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-kb-article-search-sync--active' );
+		save_config_tab_settings( false, true );
+	} );
+
+	// Deactivate dialog
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-article-search-sync--active .epkb-dbf__footer__cancel__btn', function() {
+		$confirmation_dialog.removeClass( 'epkb-kb-article-search-sync--active' );
+	} );
+
+	/*************************************************************************************************
+	 *
+	 *          Toggle Article Page Search
+	 *
+	 ************************************************************************************************/
+	// Activate dialog
+	$( document ).on( 'click', '#article_search_toggle .epkb-settings-control-toggle', function() {
+		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-kb-article-search--active' );
+		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_article_search_toggle );
+		return false;
+	});
+
+	// Save settings
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-article-search--active .epkb-dbf__footer__accept__btn', function() {
+
+		// Apply changes
+		let article_search_toggle = $( 'input[name="article_search_toggle"]' );
+		article_search_toggle.prop( 'checked', ! article_search_toggle.prop( 'checked' ) );
+
+		// Hide confirmation dialog and save settings with page reload
+		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-kb-article-search--active' );
+		save_config_tab_settings( false, true );
+	} );
+
+	// Deactivate dialog
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-article-search--active .epkb-dbf__footer__cancel__btn', function() {
+		$confirmation_dialog.removeClass( 'epkb-kb-article-search--active' );
+	} );
+
+
+	/*************************************************************************************************
+	 *
+	 *          ADVANCED SEARCH PRESETS
+	 *
+	 ************************************************************************************************/
+	// Activate dialog
+	$( document ).on( 'change', '#advanced_search_mp_presets input, #advanced_search_ap_presets input', function() {
+		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-asea-presets-selection--active' );
+		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_asea_presets_selection );
+		return false;
+	} );
+
+	// Save settings
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-asea-presets-selection--active .epkb-dbf__footer__accept__btn', function() {
+		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-asea-presets-selection--active' );
+		save_config_tab_settings( false, true );
+	} );
+
+	// Deactivate dialog
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-asea-presets-selection--active .epkb-dbf__footer__cancel__btn', function() {
+		$( '#advanced_search_mp_presets input[value="current"], #advanced_search_ap_presets input[value="current"]' ).prop( 'checked', true );
+		$confirmation_dialog.removeClass( 'epkb-asea-presets-selection--active' );
+	} );
+
+	/*************************************************************************************************
+	 *
+	 *          CATEGORY ARCHIVE PAGE PRESETS
+	 *
+	 ************************************************************************************************/
+	// Activate dialog
+	$( document ).on( 'change', '#archive_content_sub_categories_display_mode input', function() {
+		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-archive-presets-selection--active' );
+		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_archive_presets_selection );
+		return false;
+	} );
+
+	// Save settings
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-archive-presets-selection--active .epkb-dbf__footer__accept__btn', function() {
+		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-archive-presets-selection--active' );
+		save_config_tab_settings( false, true );
+	} );
+
+	// Deactivate dialog
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-archive-presets-selection--active .epkb-dbf__footer__cancel__btn', function() {
+		$( '#archive_content_sub_categories_display_mode input[value="current"]' ).prop( 'checked', true );
+		$confirmation_dialog.removeClass( 'epkb-archive-presets-selection--active' );
+	} );
+
+	/*************************************************************************************************
+	 *
+	 *          FAQs MODULE PRESETS
+	 *
+	 ************************************************************************************************/
+	// Active dialog
+	$( document ).on( 'change', '#faq_preset_name input', function() {
+		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-faqs-module-presets-selection--active' );
+		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_faqs_presets_selection );
+		return false;
+	} );
+
+	// Save settings
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-faqs-module-presets-selection--active .epkb-dbf__footer__accept__btn', function() {
+		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-faqs-module-presets-selection--active' );
+		save_config_tab_settings( false, true );
+	} );
+
+	// Deactivate dialog
+	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-faqs-module-presets-selection--active .epkb-dbf__footer__cancel__btn', function() {
+		$( '#faq_preset_name input[value="current"]' ).prop( 'checked', true );
+		$confirmation_dialog.removeClass( 'epkb-faqs-module-presets-selection--active' );
+	} );
+
+	/*************************************************************************************************
+	 *
+	 *          Miscellaneous
+	 *
+	 ************************************************************************************************/
+	// Allow duplicate text fields
 	$('#epkb-admin__boxes-list__settings input[type=text], #epkb-admin__boxes-list__settings textarea').on('keyup', function(){
 		let name = $(this).prop('name');
 		let val = $(this).val();
@@ -3008,111 +3219,6 @@ jQuery(document).ready(function($) {
 
 		let sidebar_width_value = $( this ).closest( '.epkb-settings-control-container' ).data( 'default-value-pc' );
 		$( '[name="ml_categories_articles_sidebar_desktop_width"]' ).val( sidebar_width_value );
-	} );
-
-	// Toggle to sync Article Page Search settings with Main Page Search settings
-	$( document ).on( 'click', '#article_search_sync_toggle .epkb-settings-control-toggle', function() {
-		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-kb-article-search-sync--active' );
-		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_article_search_sync_toggle );
-		return false;
-	});
-
-	// Initialize confirmation button for Article Page Search sync toggle
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-article-search-sync--active .epkb-dbf__footer__accept__btn', function() {
-
-		// Apply changes
-		let article_search_sync_toggle = $( 'input[name="article_search_sync_toggle"]' );
-		article_search_sync_toggle.prop( 'checked', ! article_search_sync_toggle.prop( 'checked' ) );
-
-		// Hide confirmation dialog and save settings with page reload
-		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-kb-article-search-sync--active' );
-		save_config_tab_settings( false, true );
-	} );
-
-	// Deactivate confirmation box for Article Page Search sync toggle
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-article-search-sync--active .epkb-dbf__footer__cancel__btn', function() {
-		$confirmation_dialog.removeClass( 'epkb-kb-article-search-sync--active' );
-	} );
-
-	// Toggle Article Page Search
-	$( document ).on( 'click', '#article_search_toggle .epkb-settings-control-toggle', function() {
-		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-kb-article-search--active' );
-		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_article_search_toggle );
-		return false;
-	});
-
-	// Initialize confirmation button for Article Page Search toggle
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-article-search--active .epkb-dbf__footer__accept__btn', function() {
-
-		// Apply changes
-		let article_search_toggle = $( 'input[name="article_search_toggle"]' );
-		article_search_toggle.prop( 'checked', ! article_search_toggle.prop( 'checked' ) );
-
-		// Hide confirmation dialog and save settings with page reload
-		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-kb-article-search--active' );
-		save_config_tab_settings( false, true );
-	} );
-
-	// Deactivate confirmation box for Article Page Search toggle
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-article-search--active .epkb-dbf__footer__cancel__btn', function() {
-		$confirmation_dialog.removeClass( 'epkb-kb-article-search--active' );
-	} );
-
-	// ADVANCED SEARCH PRESETS - active dialog
-	$( document ).on( 'change', '#advanced_search_mp_presets input, #advanced_search_ap_presets input', function() {
-		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-asea-presets-selection--active' );
-		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_asea_presets_selection );
-		return false;
-	} );
-
-	// ADVANCED SEARCH PRESETS - save settings
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-asea-presets-selection--active .epkb-dbf__footer__accept__btn', function() {
-		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-asea-presets-selection--active' );
-		save_config_tab_settings( false, true );
-	} );
-
-	// ADVANCED SEARCH PRESETS - deactivate dialog
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-asea-presets-selection--active .epkb-dbf__footer__cancel__btn', function() {
-		$( '#advanced_search_mp_presets input[value="current"], #advanced_search_ap_presets input[value="current"]' ).prop( 'checked', true );
-		$confirmation_dialog.removeClass( 'epkb-asea-presets-selection--active' );
-	} );
-
-	// CATEGORY ARCHIVE PAGE PRESETS - active dialog
-	$( document ).on( 'change', '#archive_content_sub_categories_display_mode input', function() {
-		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-archive-presets-selection--active' );
-		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_archive_presets_selection );
-		return false;
-	} );
-
-	// CATEGORY ARCHIVE PAGE PRESETS - save settings
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-archive-presets-selection--active .epkb-dbf__footer__accept__btn', function() {
-		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-archive-presets-selection--active' );
-		save_config_tab_settings( false, true );
-	} );
-
-	// // CATEGORY ARCHIVE PAGE PRESETS - deactivate dialog
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-archive-presets-selection--active .epkb-dbf__footer__cancel__btn', function() {
-		$( '#archive_content_sub_categories_display_mode input[value="current"]' ).prop( 'checked', true );
-		$confirmation_dialog.removeClass( 'epkb-archive-presets-selection--active' );
-	} );
-
-	// FAQs MODULE PRESETS - active dialog
-	$( document ).on( 'change', '#faq_preset_name input', function() {
-		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-faqs-module-presets-selection--active' );
-		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_faqs_presets_selection );
-		return false;
-	} );
-
-	// FAQS MODULE PRESETS - save settings
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-faqs-module-presets-selection--active .epkb-dbf__footer__accept__btn', function() {
-		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-faqs-module-presets-selection--active' );
-		save_config_tab_settings( false, true );
-	} );
-
-	// FAQS MODULE PRESETS - deactivate dialog
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-faqs-module-presets-selection--active .epkb-dbf__footer__cancel__btn', function() {
-		$( '#faq_preset_name input[value="current"]' ).prop( 'checked', true );
-		$confirmation_dialog.removeClass( 'epkb-faqs-module-presets-selection--active' );
 	} );
 
 	// Load Font Icons for Resource Links feature on demand

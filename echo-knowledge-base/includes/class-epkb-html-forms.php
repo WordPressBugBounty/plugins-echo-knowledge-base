@@ -270,7 +270,7 @@ class EPKB_HTML_Forms {
 				}
 
                 if ( ! empty( $args['html'] ) ) {
-                    echo $args['html'];
+                    echo wp_kses_post( $args['html'] );
                 }   ?>
 			</div>
 

@@ -291,11 +291,12 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 
 				$article_num ++;
 				$hide_class = $article_num > $nof_articles_displayed ? 'epkb-hide-elem' : '';
+				$on_active_bold = $this->kb_config['sidebar_article_active_bold'] == 'on' ? 'article-on-active-bold' : '';
 				$seq_no = isset( $this->displayed_article_ids[ $article_id ] ) ? $this->displayed_article_ids[ $article_id ] + 1 : 1;
 				$style2 = 'sidebar_link_' . $article_id . ( $seq_no > 1 ? '_' . $seq_no : '' );
 
 				/** DISPLAY ARTICLE LINK */ ?>
-				<li class="<?php echo esc_attr( $hide_class ); ?>" id="<?php echo esc_attr( $style2 ); ?>" <?php echo $this->get_inline_style( 'padding-bottom:: article_list_spacing,padding-top::article_list_spacing' ); ?> >   <?php
+				<li class="<?php echo esc_attr( $hide_class . ' ' . $on_active_bold ); ?>" id="<?php echo esc_attr( $style2 ); ?>" <?php echo $this->get_inline_style( 'padding-bottom:: article_list_spacing,padding-top::article_list_spacing' ); ?> >   <?php
 					$this->single_article_link( $article_title, $article_id, 'Article_Sidebar' ); ?>
 				</li> <?php
 			}
@@ -303,8 +304,8 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 			// if article list is longer than initial article list size then show expand/collapse message
 			if ( $article_num > $nof_articles_displayed ) { ?>
 				<li class="epkb-show-all-articles" aria-expanded="false">
-					<span class="epkb-show-text">
-						<?php echo esc_html( $this->kb_config['sidebar_show_all_articles_msg'] ). ' (' . ( $article_num - $nof_articles_displayed ) . ')' ; ?>
+					<span class="epkb-show-text">						<?php
+						echo esc_html( $this->kb_config['sidebar_show_all_articles_msg'] ). ' (' . esc_html( $article_num - $nof_articles_displayed ) . ')' ; ?>
 					</span>
 					<span class="epkb-hide-text epkb-hide-elem"><?php echo esc_html( $this->kb_config['sidebar_collapse_articles_msg'] ); ?></span>
 				</li>                    <?php

@@ -356,6 +356,9 @@ class EPKB_KB_Wizard_Cntrl {
 			$new_config['ml_categories_articles_sidebar_desktop_width'] = 28;
 		}
 
+		// always enable Sidebar Article Active Bold
+		$new_config['sidebar_article_active_bold'] = 'on';
+
 		// add menu link
 		$this->add_kb_link_to_top_menu( $new_config['kb_main_pages'] );
 

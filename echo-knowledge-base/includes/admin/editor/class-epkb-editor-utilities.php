@@ -169,7 +169,7 @@ class EPKB_Editor_Utilities {
 
 		$orig_config = $kb_config;
 
-		$new_kb_config = json_decode(stripcslashes($_REQUEST['epkb-editor-settings'] ), true);
+		$new_kb_config = json_decode( stripcslashes( $_REQUEST['epkb-editor-settings'] ), true );
 		if ( empty( $new_kb_config ) || ! is_array($new_kb_config) ) {
 			return $kb_config;
 		}

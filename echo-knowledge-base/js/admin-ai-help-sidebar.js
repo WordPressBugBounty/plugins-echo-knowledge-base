@@ -316,8 +316,8 @@ jQuery(document).ready(function($) {
 		}, undefined, false, false, $( '.epkb-ai-help-sidebar__article-outline' ) );
 	});
 
-	/* TAB: ChatGPT --------------------------------------------------------------------*/
-	$( document ).on( 'keypress', '.epkb-ai-help-sidebar__chatgpt-input', function( e ) {
+	/* TAB: AI --------------------------------------------------------------------*/
+	$( document ).on( 'keypress', '.epkb-ai-help-sidebar__ai-input', function( e ) {
 
 		// Send request only for 'Enter' key
 		if ( e.which !== 13 ) {
@@ -328,9 +328,9 @@ jQuery(document).ready(function($) {
 
 		let prompt = ai_help_sidebar_sanitize_user_input( input.val() );
 
-		$( '.epkb-ai-help-sidebar__chatgpt-response-container' ).html( '<div class="epkb-ai-help-sidebar__chatgpt-response-prompt">' +
-			'<span class="epkbfa epkbfa-user epkb-ai-help-sidebar__chatgpt-response-prompt-icon"></span>' +
-			'<div class="epkb-ai-help-sidebar__chatgpt-response-prompt-text">' + prompt + '</div>' +
+		$( '.epkb-ai-help-sidebar__ai-response-container' ).html( '<div class="epkb-ai-help-sidebar__ai-response-prompt">' +
+			'<span class="epkbfa epkbfa-user epkb-ai-help-sidebar__ai-response-prompt-icon"></span>' +
+			'<div class="epkb-ai-help-sidebar__ai-response-prompt-text">' + prompt + '</div>' +
 		'</div>' );
 
 		// Prevent next request until the current request is finished
@@ -340,21 +340,21 @@ jQuery(document).ready(function($) {
 			action: 'epkb_ai_request',
 			_wpnonce_epkb_ajax_action: epkb_ai_vars.nonce,
 			input_text: prompt,
-			ai_action: 'epkb_ai_chatgpt'
+			ai_action: 'epkb_ai_chat'
 		}
 
 		epkb_send_ajax( postData, function( response ){
 			if ( typeof response.result != 'undefined' && response.result.length > 0 ) {
 				$( '.epkb-ai-help-sidebar__screen-usage' ).show().find( '.epkb-ai-help-sidebar__screen-usage-tokens span' ).html( response.tokens_used );
-				$( '.epkb-ai-help-sidebar__chatgpt-response-container' ).append( '<div class="epkb-ai-help-sidebar__chatgpt-response-result">' +
-					'<span class="ep_font_icon_light_bulb epkb-ai-help-sidebar__chatgpt-response-result-icon"></span>' +
-					'<div class="epkb-ai-help-sidebar__chatgpt-response-result-text">' + ai_help_sidebar_sanitize_user_input( response.result ) + '</div>' +
+				$( '.epkb-ai-help-sidebar__ai-response-container' ).append( '<div class="epkb-ai-help-sidebar__ai-response-result">' +
+					'<span class="ep_font_icon_light_bulb epkb-ai-help-sidebar__ai-response-result-icon"></span>' +
+					'<div class="epkb-ai-help-sidebar__ai-response-result-text">' + ai_help_sidebar_sanitize_user_input( response.result ) + '</div>' +
 				'</div>' );
 			}
 		}, undefined, false, function() {
 			// Enable input and return focus to it
 			input.removeAttr( 'disabled' ).focus();
-		}, $( '.epkb-ai-help-sidebar__chatgpt-response-container' ) );
+		}, $( '.epkb-ai-help-sidebar__ai-response-container' ) );
 	} );
 
 	/* Feedback Form --------------------------------------------------------------------*/

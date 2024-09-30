@@ -308,7 +308,7 @@ class EPKB_Articles_Admin {
 		$kb_id = is_wp_error( $kb_id ) ? '' : $kb_id;
 
 		$taxonomy = EPKB_KB_Handler::get_category_taxonomy_name( $kb_id );
-		$selected = isset( $_GET[$taxonomy] ) ? $_GET[$taxonomy] : '';
+		$selected = isset( $_GET[$taxonomy] ) ? EPKB_Utilities::get( $taxonomy ) : '';
 
 		$info_taxonomy = get_taxonomy( $taxonomy );
 		if ( empty( $info_taxonomy ) ) {

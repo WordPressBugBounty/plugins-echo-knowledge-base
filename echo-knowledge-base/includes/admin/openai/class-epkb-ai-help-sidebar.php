@@ -85,7 +85,7 @@ class EPKB_AI_Help_Sidebar {
 						<div class="epkb-ai-help-sidebar__nav-back-btn__text"><?php esc_html_e( 'Back', 'echo-knowledge-base' ); ?></div>
 					</div>
 					<div class="epkb-ai-help-sidebar__nav-link epkb-ai-help-sidebar__nav-link--active" data-target="helper-functions"><?php esc_html_e( 'Helper Functions', 'echo-knowledge-base' ); ?></div>
-					<div class="epkb-ai-help-sidebar__nav-link" data-target="chatgpt"><?php esc_html_e( 'ChatGPT', 'echo-knowledge-base' ); ?></div>
+					<div class="epkb-ai-help-sidebar__nav-link" data-target="ai"><?php esc_html_e( 'AI', 'echo-knowledge-base' ); ?></div>
 					<div class="epkb-ai-help-sidebar__nav-link" data-target="resources"><?php esc_html_e( 'Resources', 'echo-knowledge-base' ); ?></div>    <?php
 
 					// limit access to AI settings tab
@@ -103,9 +103,9 @@ class EPKB_AI_Help_Sidebar {
 
 				</div>
 
-				<!-- Body: ChatGPT -->
-				<div class="epkb-ai-help-sidebar__body epkb-ai-help-sidebar__body-chatgpt">    <?php
-					self::show_chatgpt_screen();    ?>
+				<!-- Body: AI -->
+				<div class="epkb-ai-help-sidebar__body epkb-ai-help-sidebar__body-ai">    <?php
+					self::show_ai_screen();    ?>
 				</div>
 
 				<!-- Body: Resources -->
@@ -233,30 +233,30 @@ class EPKB_AI_Help_Sidebar {
 	}
 
 	/**
-	 * ChatGPT
+	 * Chat AI
 	 */
-	private static function show_chatgpt_screen() {    ?>
+	private static function show_ai_screen() {    ?>
 
-		<!-- Screen for ChatGPT -->
-		<div class="epkb-ai-help-sidebar__chatgpt">
+		<!-- Screen for Chat AI -->
+		<div class="epkb-ai-help-sidebar__ai">
 			<div class="epkb-ai-help-sidebar__screen-title">
-				<div class="epkb-ai-help-sidebar__screen-title-text"><?php esc_html_e( 'ChatGPT', 'echo-knowledge-base' ); ?></div>
+				<div class="epkb-ai-help-sidebar__screen-title-text"><?php esc_html_e( 'Chat AI', 'echo-knowledge-base' ); ?></div>
 			</div>
 
-			<div class="epkb-ai-help-sidebar__chatgpt-response-wrap">
-				<div class="epkb-ai-help-sidebar__chatgpt-response-title">
-					<div class="epkb-ai-help-sidebar__chatgpt-response-title-text"><?php esc_html_e( 'AI Response', 'echo-knowledge-base' ); ?></div>   <?php
+			<div class="epkb-ai-help-sidebar__ai-response-wrap">
+				<div class="epkb-ai-help-sidebar__ai-response-title">
+					<div class="epkb-ai-help-sidebar__ai-response-title-text"><?php esc_html_e( 'AI Response', 'echo-knowledge-base' ); ?></div>   <?php
 					self::display_tokens_used_html();   ?>
 				</div>
-				<div class="epkb-ai-help-sidebar__chatgpt-response-container"></div>
+				<div class="epkb-ai-help-sidebar__ai-response-container"></div>
 			</div>
 
-			<div class="epkb-ai-help-sidebar__chatgpt-input-wrap">
-				<div class="epkb-ai-help-sidebar__chatgpt-input-title">
-					<div class="epkb-ai-help-sidebar__chatgpt-input-title-text"><?php esc_html_e( 'Enter your request to ChatGPT', 'echo-knowledge-base' ); ?></div>
+			<div class="epkb-ai-help-sidebar__ai-input-wrap">
+				<div class="epkb-ai-help-sidebar__ai-input-title">
+					<div class="epkb-ai-help-sidebar__ai-input-title-text"><?php esc_html_e( 'Enter your request to Chat AI', 'echo-knowledge-base' ); ?></div>
 				</div>
-				<div class="epkb-ai-help-sidebar__chatgpt-input-container">
-					<input class="epkb-ai-help-sidebar__chatgpt-input" type="text" value="" placeholder="">
+				<div class="epkb-ai-help-sidebar__ai-input-container">
+					<input class="epkb-ai-help-sidebar__ai-input" type="text" value="" placeholder="">
 				</div>
 			</div>
 		</div>  <?php
@@ -280,7 +280,7 @@ class EPKB_AI_Help_Sidebar {
 					EPKB_HTML_Elements::text( [
 						'label'         => esc_html__( 'OpenAI API Key', 'echo-knowledge-base' ),
 						'name'          => 'openai_api_key',
-						'max'           => '100',
+						'max'           => '500',
 						'min'           => '0',
 						'default'       => '',
 						'value'         => EPKB_Utilities::get_wp_option( 'epkb_openai_api_key', '' ),
@@ -351,7 +351,6 @@ class EPKB_AI_Help_Sidebar {
                     <h3><?php esc_html_e( 'OpenAI Information', 'echo-knowledge-base' ); ?></h3>
                     <ul>
                         <li><a href="<?php echo esc_url('https://platform.openai.com/docs/introduction'); ?>" target="_blank" rel="nofollow"><?php esc_html_e( 'Introduction', 'echo-knowledge-base' ); ?></a></li>
-                        <li><a href="<?php echo esc_url('https://openai.com/blog/chatgpt'); ?>" target="_blank" rel="nofollow"><?php esc_html_e( 'What is ChatGPT?', 'echo-knowledge-base' ); ?></a></li>
                         <li><a href="<?php echo esc_url('https://openai.com/safety'); ?>" target="_blank" rel="nofollow"><?php esc_html_e( 'Artificial general intelligence Safety', 'echo-knowledge-base' ); ?></a></li>
                         <li><a href="<?php echo esc_url('https://openai.com/blog'); ?>" target="_blank" rel="nofollow"><?php esc_html_e( 'OpenAI Blog', 'echo-knowledge-base' ); ?></a></li>
                     </ul>
@@ -376,11 +375,11 @@ class EPKB_AI_Help_Sidebar {
 	}
 
 	/**
-	 * ChatGPT
+	 * Chat AI
 	 */
 	private static function show_feedback_screen() {    ?>
 
-		<!-- Screen for ChatGPT -->
+		<!-- Screen for Chat AI -->
 		<div class="epkb-ai-help-sidebar__feedback">
 		<div class="epkb-ai-help-sidebar__screen-title">
 			<div class="epkb-ai-help-sidebar__screen-title-text"><?php esc_html_e( 'Send us Feedback', 'echo-knowledge-base' ); ?></div>

@@ -751,9 +751,6 @@
 .epkbfa-twitter-square:before {
   content: "" !important; }
 
-.epkbfa-facebook-square:before {
-  content: "" !important; }
-
 .epkbfa-camera-retro:before {
   content: "" !important; }
 
@@ -820,10 +817,6 @@
 
 .epkbfa-twitter:before {
   content: "" !important; }
-
-.epkbfa-facebook-f:before,
-.epkbfa-facebook:before {
-  content: "" !important; }
 
 .epkbfa-github:before {
   content: "" !important; }
@@ -1409,9 +1402,6 @@
 .epkbfa-stack-overflow:before {
   content: "" !important; }
 
-.epkbfa-instagram:before {
-  content: "" !important; }
-
 .epkbfa-flickr:before {
   content: "" !important; }
 
@@ -1978,14 +1968,8 @@
 .epkbfa-genderless:before {
   content: "" !important; }
 
-.epkbfa-facebook-official:before {
-  content: "" !important; }
-
 .epkbfa-pinterest-p:before {
   content: "" !important; }
-
-.epkbfa-whatsapp:before {
-  content: "" !important; }
 
 .epkbfa-server:before {
   content: "" !important; }

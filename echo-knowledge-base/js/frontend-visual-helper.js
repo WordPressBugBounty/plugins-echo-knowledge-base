@@ -66,6 +66,7 @@ jQuery(document).ready(function($) {
 			action: 'epkb_visual_helper_switch_template',
 			kb_id: $(this).data('kbid'),
 			current_template: $(this).val(),
+			prop_name: $(this).attr('name'),
 		};
 
 		$.ajax({
@@ -93,28 +94,57 @@ jQuery(document).ready(function($) {
 	})
 
 	//Collect Page Parameters
+	const pageConfigs = [
+		{
+			checkSelector: '#epkb-modular-main-page-container',
+			prefix: 'mp',
+			containerSelector: '#epkb-ml__module-categories-articles',
+			searchSelector: '#epkb-ml__row-1',
+		},
+		{
+			checkSelector: '#eckb-article-page-container-v2',
+			prefix: 'ap',
+			containerSelector: '#eckb-article-body',
+			searchSelector: '#eckb-article-header',
+		},
+		{
+			checkSelector: '#eckb-archive-body',
+			prefix: 'cp',
+			containerSelector: '#eckb-archive-body',
+			searchSelector: '#eckb-archive-header',
+		},
+	];
+
 	function epkbVisualHelperGetParams() {
-		// Start with the element of interest
+		const windowWidth = $( 'body' ).width();
+		let prefix = '';
+		let containerWidth = 0;
+		let searchWidth = 0;
 
-		let windowWidth = parseInt($('body').width()),
-			containerWidth = parseInt($('#epkb-ml__module-categories-articles').width()),
-			searchWidth = parseInt($('#epkb-ml__row-1').width());
-
-		if ( searchWidth ) {
-			$('.js-epkb-mp-search-width').text(searchWidth + 'px');
+		for ( const config of pageConfigs ) {
+			if ( $( config.checkSelector ).length ) {
+				prefix = config.prefix;
+				containerWidth = Math.round( $( config.containerSelector ).width() );
+				searchWidth = Math.round( $( config.searchSelector ).width() );
+				break;
+			}
 		}
 
-		if ( windowWidth ) {
-			$('.js-epkb-mp-width-container').text(containerWidth + 'px');
+		if ( prefix ) {
+			if ( searchWidth ) {
+				$( `.js-epkb-${prefix}-search-width` ).text(`${searchWidth}px` );
+			}
+
+			if ( containerWidth ) {
+				$( `.js-epkb-${prefix}-width-container`).text(`${containerWidth}px` );
+			}
+
+			if ( windowWidth ) {
+				$( `.js-epkb-${prefix}-width` ).text(`${windowWidth}px` );
+			}
 		}
-
-		if ( containerWidth ) {
-			$('.js-epkb-mp-width').text(windowWidth + 'px');
-		}
-
-
-
 	}
+
 
 	//Initialize Visual Helper Collect Page Parameters
 	epkbVisualHelperGetParams();
@@ -154,23 +184,24 @@ jQuery(document).ready(function($) {
 	createInfoIcons();
 
 	//Event for toggle info modal
-	$('body').on('click', '.epkb-vshelp-info-icon', function (e) {
+	$(document).on('click', '.epkb-vshelp-info-icon', function (e) {
+		e.stopPropagation();
 		e.preventDefault();
 
 		let dataSectionId = $(this).data('section-id'),
-			elementPosition =  $(this).offset(),
-			elementPosY = elementPosition.top,
-			elementPosX = elementPosition.left,
-			modal = $('.epkb-vshelp-info-modal[data-section-id="' + dataSectionId + '"]'),
-			triangleCssClass = 'epkb-vshelp-info-modal--triangle-right';
+				elementPosition = $(this).offset(),
+				elementPosY = elementPosition.top,
+				elementPosX = elementPosition.left,
+				modal = $('.epkb-vshelp-info-modal[data-section-id="' + dataSectionId + '"]'),
+				triangleCssClass = 'epkb-vshelp-info-modal--triangle-right';
 
 		if (modal.length) {
 			if ($(this).hasClass('epkb-vshelp-info-modal--active')) {
 				$(this).removeClass('epkb-vshelp-info-modal--active');
 				modal.hide();
-				$( '.epkb-vshelp-background' ).remove();
+				$('.epkb-vshelp-background').remove();
 			} else {
-				$( '#epkb-modular-main-page-container' ).append( '<div class="epkb-vshelp-background"></div>')
+				$('#epkb-modular-main-page-container').append('<div class="epkb-vshelp-background"></div>')
 				let positionCase = '';
 
 				if (elementPosY > (modal.find('.epkb-vshelp-info-modal__title').outerHeight() + 35)) {

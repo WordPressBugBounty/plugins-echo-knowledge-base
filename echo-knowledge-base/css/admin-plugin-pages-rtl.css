@@ -582,8 +582,6 @@
     content: "" !important; }
   [dir=rtl] .epkbfa-twitter-square:before {
     content: "" !important; }
-  [dir=rtl] .epkbfa-facebook-square:before {
-    content: "" !important; }
   [dir=rtl] .epkbfa-camera-retro:before {
     content: "" !important; }
   [dir=rtl] .epkbfa-key:before {
@@ -629,9 +627,6 @@
     content: "" !important; }
   [dir=rtl] .epkbfa-twitter:before {
     content: "" !important; }
-  [dir=rtl] .epkbfa-facebook-f:before,
-  [dir=rtl] .epkbfa-facebook:before {
-    content: "" !important; }
   [dir=rtl] .epkbfa-github:before {
     content: "" !important; }
   [dir=rtl] .epkbfa-unlock:before {
@@ -1033,8 +1028,6 @@
     content: "" !important; }
   [dir=rtl] .epkbfa-stack-overflow:before {
     content: "" !important; }
-  [dir=rtl] .epkbfa-instagram:before {
-    content: "" !important; }
   [dir=rtl] .epkbfa-flickr:before {
     content: "" !important; }
   [dir=rtl] .epkbfa-adn:before {
@@ -1422,12 +1415,8 @@
     content: "" !important; }
   [dir=rtl] .epkbfa-genderless:before {
     content: "" !important; }
-  [dir=rtl] .epkbfa-facebook-official:before {
-    content: "" !important; }
   [dir=rtl] .epkbfa-pinterest-p:before {
     content: "" !important; }
-  [dir=rtl] .epkbfa-whatsapp:before {
-    content: "" !important; }
   [dir=rtl] .epkbfa-server:before {
     content: "" !important; }
   [dir=rtl] .epkbfa-user-plus:before {

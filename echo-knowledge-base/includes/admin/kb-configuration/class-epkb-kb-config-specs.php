@@ -88,7 +88,7 @@ class EPKB_KB_Config_Specs {
 			 *
 			 ******************************************************************************/
 			'id' => array(
-				'label'       => 'kb_id',
+				'label'       => 'KB ID',
 				'type'        => EPKB_Input_Filter::ID,
 				'internal'    => true,
 				'default'     => $kb_id
@@ -282,8 +282,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'templates_for_kb',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'current_theme_templates'    => esc_html__( 'Current Theme Template', 'echo-knowledge-base' ),
 					'kb_templates'       => esc_html__( 'Knowledge Base Template', 'echo-knowledge-base' ),
+					'current_theme_templates'    => esc_html__( 'Current Theme Template', 'echo-knowledge-base' ),
 				),
 				'default'     => 'kb_templates'
 			),

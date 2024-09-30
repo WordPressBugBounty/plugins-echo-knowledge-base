@@ -36,6 +36,21 @@ class EPKB_Articles_Index_Shortcode {
 			return ob_get_clean();
 		}
 
+		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
+
+		$setting_names = EPKB_Core_Utilities::get_style_setting_name( $kb_config['kb_main_page_layout'] );
+		$article_color_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $setting_names['article_font_color'], $kb_config );
+		$icon_color_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $setting_names['article_icon_color'], $kb_config );
+		$icon_class = 'ep_font_icon_document';
+
+		// custom article list icon
+		if ( empty( $link ) && EPKB_Utilities::is_elegant_layouts_enabled() && has_filter( 'eckb_article_list_icon_filter' ) ) {
+			$result = apply_filters( 'eckb_article_list_icon_filter', 0, array( $kb_config['id'], $kb_config['kb_main_page_layout'] ) );
+			if ( ! empty( $result['icon'] ) ) {
+				$icon_class = $result['icon'];
+			}
+		}
+
 		// DISPLAY INDEXED ARTICLES
 		ob_start(); ?>
 		<div id="epkb-article-index-dir-container">
@@ -62,9 +77,9 @@ class EPKB_Articles_Index_Shortcode {
                                         continue;
                                     }  ?>
                                     <li id="epkb-aid-article-<?php echo esc_html( $article_id ); ?>" class="epkb-aid-list__item">
-                                        <a href="<?php echo esc_url( $article_url ); ?>">
-                                            <span class="epkb-aid-list__item__icon">
-                                                <span aria-hidden="true" class="epkbfa epkb-aid-article-icon ep_font_icon_document"></span>
+                                        <a href="<?php echo esc_url( $article_url ); ?>" <?php echo $article_color_escaped; ?>>
+                                            <span class="epkb-aid-list__item__icon" <?php echo $icon_color_escaped; ?> >
+                                                <span aria-hidden="true" class="epkbfa epkb-aid-article-icon <?php echo esc_attr( $icon_class ); ?>"></span>
                                             </span>
                                             <span class="epkb-aid-list__item__text"><?php echo esc_html( $article_title ); ?></span>
                                         </a>

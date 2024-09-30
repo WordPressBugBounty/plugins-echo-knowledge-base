@@ -1430,9 +1430,9 @@ class EPKB_Core_Utilities {
 		$ip_params = array( 'HTTP_CF_CONNECTING_IP', 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' );
 		foreach ( $ip_params as $ip_param ) {
 			//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			if ( ! empty($_SERVER[$ip_param]) ) {
+			if ( ! empty( $_SERVER[$ip_param] ) ) {
 				//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				foreach ( explode( ',', $_SERVER[$ip_param] ) as $ip ) {
+				foreach ( explode( ',', sanitize_text_field( wp_unslash( $_SERVER[$ip_param] ) ) ) as $ip ) {
 					$ip = trim( $ip );
 
 					// validate IP address

@@ -261,8 +261,9 @@ class EPKB_KB_Handler {
 
 		// REST API
 		//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) && strpos($_SERVER['REQUEST_URI'], '/wp-json/wp/') !== false && strpos( $_SERVER['REQUEST_URI'], '/' . self::KB_POST_TYPE_PREFIX ) !== false ) {
-			return self::get_kb_id_from_rest_endpoint( $_SERVER['REQUEST_URI'] );
+		$request_uri = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+		if ( ! empty( $request_uri ) && strpos( $request_uri, '/wp-json/wp/' ) !== false && strpos( $request_uri, '/' . self::KB_POST_TYPE_PREFIX ) !== false ) {
+			return self::get_kb_id_from_rest_endpoint( $request_uri );
 		}
 
 		return '';

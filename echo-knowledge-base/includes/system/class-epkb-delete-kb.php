@@ -169,7 +169,7 @@ class EPKB_Delete_KB {
 	 */
     public static function reset_config_button_handler( $kb_id ) {
 
-		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die( EPKB_Utilities::ADMIN_CAPABILITY );
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
 
 		$action = EPKB_Utilities::post( 'action' );
 		if ( $action != 'epkb_reset_config' ) {
@@ -183,7 +183,7 @@ class EPKB_Delete_KB {
 		// open Setup Wizard
 		if ( ! is_wp_error( $result ) ) {			?>
 			<script type="text/javascript">
-				window.location.href="<?php echo admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_id ) . '&page=epkb-kb-configuration&setup-wizard-on' ); ?>";
+				window.location.href="<?php echo esc_url( admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_id ) ) . '&page=epkb-kb-configuration&setup-wizard-on' ); ?>";
 			</script>            <?php
 			exit;
 		}
