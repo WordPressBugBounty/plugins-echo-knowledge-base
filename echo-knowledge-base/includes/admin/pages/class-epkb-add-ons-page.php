@@ -366,24 +366,37 @@ class EPKB_Add_Ons_Page {
 	 */
 	private static function display_our_free_plugin_box_html( $plugin ) {
 
-		$plugins_allowed_tags = array(
-			'a'       => array(
-				'href'   => array(),
-				'title'  => array(),
-				'target' => array(),
+		$links_allowed_tags = array(
+			'a' => array(
+				'id'		=> true,
+				'class'		=> true,
+				'href'		=> true,
+				'title'		=> true,
+				'target'	=> true,
+				'aria-*'	=> true,
+				'data-*'	=> true,
 			),
-			'abbr'    => array( 'title' => array() ),
-			'acronym' => array( 'title' => array() ),
-			'code'    => array(),
-			'pre'     => array(),
-			'em'      => array(),
-			'strong'  => array(),
-			'ul'      => array(),
-			'ol'      => array(),
-			'li'      => array(),
-			'p'       => array(),
-			'br'      => array(),
+			'button' => array(
+				'id'		=> true,
+				'class'		=> true,
+				'disabled'	=> true,
+				'type'		=> true,
+			),
 		);
+		$plugins_allowed_tags = array_merge_recursive( $links_allowed_tags, array(
+			'abbr'		=> array( 'title' => true ),
+			'acronym'	=> array( 'title' => true ),
+			'code'		=> array(),
+			'pre'		=> array(),
+			'em'		=> array(),
+			'strong'	=> array(),
+			'ul'		=> array(),
+			'ol'		=> array(),
+			'li'		=> array(),
+			'p'			=> array(),
+			'br'		=> array(),
+			'cite'		=> array(),
+		) );
 
 		if ( is_object( $plugin ) ) {
 			$plugin = (array) $plugin;
@@ -436,6 +449,7 @@ class EPKB_Add_Ons_Page {
 		}
 
 		$action_links = apply_filters( 'plugin_install_action_links', $action_links, $plugin );
+		$action_links = empty( $action_links ) || ! is_array( $action_links ) ? array() : $action_links;
 
 		$last_updated_timestamp = strtotime( $plugin['last_updated'] ); ?>
 
@@ -452,10 +466,12 @@ class EPKB_Add_Ons_Page {
 						</a>
 					</h3>
 				</div>
-				<div class="action-links">  <?php
-					if ( $action_links ) {  ?>
-                        <ul class="plugin-action-buttons"><li><?php echo wp_kses_post( implode( '</li><li>', $action_links ) ); ?></li></ul>   <?php
-                    }   ?>
+				<div class="action-links">
+					<ul class="plugin-action-buttons">	<?php
+						foreach ( $action_links as $one_link ) {	?>
+							<li><?php echo wp_kses( $one_link, $links_allowed_tags ); ?></li>	<?php
+						}	?>
+					</ul>
 				</div>
 				<div class="desc column-description">
 					<p><?php echo ( empty( $plugin['short_description'] ) ? '' : esc_html( wp_strip_all_tags( $plugin['short_description'] ) ) ); ?></p>

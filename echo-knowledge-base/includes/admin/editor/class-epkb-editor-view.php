@@ -549,7 +549,7 @@ class EPKB_Editor_View {
 	}
 
 	public static function error_user_not_logged_in() {
-		$link = sprintf( '<a href="%s">%s</a>', wp_login_url( empty( $_REQUEST['current_url'] ) ? '' : esc_url_raw( $_REQUEST['current_url'] ) ), esc_html__( 'Login here', 'echo-knowledge-base' ) );
+		$link = sprintf( '<a href="%s">%s</a>', wp_login_url( empty( $_REQUEST['current_url'] ) ? '' : esc_url_raw( wp_unslash( $_REQUEST['current_url'] ) ) ), esc_html__( 'Login here', 'echo-knowledge-base' ) );
 		EPKB_HTML_Forms::notification_box_popup( [
                 'type' => 'error',
                 'title' => esc_html__( 'Cannot open the visual Editor', 'echo-knowledge-base' ),

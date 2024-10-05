@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Elements of form UI and others
@@ -238,6 +238,9 @@ class EPKB_HTML_Elements {
 		<label class="<?php echo esc_attr( $args['label_class'] ); ?>" for="<?php echo esc_attr( $args['name'] ); ?>">
 			<?php echo wp_kses_post( $args['label'] );
 
+			if ( ! empty( $args['tooltip_body'] ) ) {
+				self::display_tooltip( $args['tooltip_title'], $args['tooltip_body'] );
+			}
 			if ( $args['is_pro'] ) {
 				self::display_pro_setting_tag( $args['pro_tooltip_args'] );
 			}
@@ -261,6 +264,10 @@ class EPKB_HTML_Elements {
 		</div>
 
 		</<?php echo esc_attr( $html_tag_escaped ); ?>>		<?php
+
+		if ( ! empty( $args['info'] ) ) { ?>
+			<span class="epkb-info-icon"><p class="hidden"><?php echo esc_html( $args['info'] ); ?></p></span>		<?php
+		}
 
 		if ( $return_html ) {
 			return ob_get_clean();
@@ -1223,8 +1230,7 @@ class EPKB_HTML_Elements {
 		$args = self::add_defaults( $args );
 		$group_data_escaped = self::get_data_escaped( $args['group_data'] );    ?>
 		<div class="epkb-admin__input-field <?php echo esc_attr( $args['input_group_class'] ); ?>" <?php echo $group_data_escaped; ?>>
-			<p>
-				<span class="epkb__option-pro-tag"><?php esc_html_e( 'PRO', 'echo-knowledge-base' ); ?></span>				<?php
+			<p>		<?php
 				echo wp_kses_post( $args['desc'] ); ?>
 				<a href="<?php echo esc_url( $args['more_info_url'] ); ?>" target="_blank"><?php echo esc_html( $args['more_info_text'] );  ?></a>
 			</p>

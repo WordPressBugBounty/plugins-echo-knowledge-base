@@ -82,7 +82,7 @@ class EPKB_Config_Page {
 		if ( isset( $_GET['archived-kbs'] ) ) {
 			$admin_page_views = self::get_archived_kbs_views_config();
 
-		} else if ( EPKB_Core_Utilities::is_run_setup_wizard_first_time() && $this->kb_config['modular_main_page_toggle'] == 'on' ) {
+		} else if ( EPKB_Core_Utilities::run_setup_wizard_first_time() && $this->kb_config['modular_main_page_toggle'] == 'on' ) {
 			$admin_page_views = self::get_run_setup_first_views_config();
 
 		} else {
@@ -923,13 +923,13 @@ class EPKB_Config_Page {
             'type'  => 'error',
             'title' => esc_html__( 'We did not detect any page with KB shortcode for your knowledge base', 'echo-knowledge-base' ) . ': ' . esc_html( $kb_config['kb_name'] ) . ' . ' . esc_html__( 'You can do the following:', 'echo-knowledge-base' ),
             'desc'  => '<ul>
-                            <li>' . esc_html__( 'If you have this page, please re-save it and come back', 'echo-knowledge-base' ) . '</li>
-                            <li>' . esc_html__( 'Create or update a page and add KB shortcode to that page. Save the page and then come back here.', 'echo-knowledge-base' ) .
-	                                EPKB_Shortcodes::get_copy_custom_box( EPKB_KB_Handler::KB_MAIN_PAGE_SHORTCODE_NAME, [ 'id' => $this->kb_config['id'] ], '', false ) . '</li>' .
-	                    ( $kb_config['modular_main_page_toggle'] == 'on' ?
-                            '<li>' . esc_html__( 'Run Setup Wizard to create a new KB Main Page ', 'echo-knowledge-base' ) . '<a href="'.esc_url( admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) .
-                                  '&page=epkb-kb-configuration&setup-wizard-on' ) ) . '" target="_blank">' . esc_html__( 'Run Setup Wizard', 'echo-knowledge-base' ) . '</a></li>' : '' ) .
-                        '</ul>'
+                            <li>If you have a page with KB shortcode, please re-save it and then come back</li>
+                            <li>Add the KB shortcode to a new or existing page. Save the page and then come back here.</li>
+                            <li>Run Setup Wizard to create a new page with KB shortcode <a href="'.esc_url( admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) .
+                                  '&page=epkb-kb-configuration&setup-wizard-on' ) ) . '" target="_blank">Run Setup Wizard</a></li>
+                        </ul><br/>
+                		<div class="epkb-admin__chapter">' . esc_html__( 'Your knowledge base will be displayed on the page with KB shortcode: ', 'echo-knowledge-base' ) .
+                        EPKB_Shortcodes::get_copy_custom_box( EPKB_KB_Handler::KB_MAIN_PAGE_SHORTCODE_NAME, [ 'id' => $kb_config['id'] ], '', false ) . '</div>'
         ), $return_html  );
 
         if ( $return_html ) {

@@ -40,7 +40,7 @@ class EPKB_Editor_Utilities {
 			$params['preopen_setting'] = $preopen_setting;
 		}
 
-		$main_page_zone_name = EPKB_Core_Utilities::is_run_setup_wizard_first_time() ? 'templates' : $main_page_zone_name;
+		$main_page_zone_name = EPKB_Core_Utilities::run_setup_wizard_first_time() ? 'templates' : $main_page_zone_name;
 
 		$first_main_page_url = EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config );
 		$main_url = empty( $first_main_page_url ) ? '' : add_query_arg( $params + ( empty( $main_page_zone_name ) ? [] : array( 'preopen_zone' => $main_page_zone_name ) ), $first_main_page_url );
@@ -169,8 +169,8 @@ class EPKB_Editor_Utilities {
 
 		$orig_config = $kb_config;
 
-		$new_kb_config = json_decode( stripcslashes( $_REQUEST['epkb-editor-settings'] ), true );
-		if ( empty( $new_kb_config ) || ! is_array($new_kb_config) ) {
+		$new_kb_config = EPKB_Utilities::post( 'epkb-editor-settings', [], 'db-config-json' );
+		if ( empty( $new_kb_config ) || ! is_array( $new_kb_config ) ) {
 			return $kb_config;
 		}
 

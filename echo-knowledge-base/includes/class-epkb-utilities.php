@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Various utility functions
@@ -672,7 +672,7 @@ class EPKB_Utilities {
 
 		// config is sanitizing with its own specs separately
 		if ( $value_type == 'db-config-json' ) {
-			$decoded_value = json_decode( stripcslashes( $_POST[$key] ), true );
+			$decoded_value = $key == 'epkb_article_views_counter' ? json_decode( stripslashes( $_COOKIE[$key] ), true ) : json_decode( stripcslashes( $_POST[$key] ), true );
 			return empty( $decoded_value ) ? $default : $decoded_value;
 		}
 
@@ -849,13 +849,24 @@ class EPKB_Utilities {
 			return self::$wp_options_cache[$option_name];
 		}
 
+		// retrieve KB setting from WP Options table
+		$option = get_option( $option_name );
+		if ( empty( $option ) || ( $is_array && ! is_array( $option ) ) ) {
+			$option = false;
+		}
+
+		// return found KB setting
+		if ( ! empty( $option ) ) {
+			return $option;
+		}
+
 		// retrieve specific WP option
 		$option = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s", $option_name ) );
 		if ( $option !== null ) {
 			$option = maybe_unserialize( $option );
 		}
 
-		if ( $return_error && $option === null && ! empty($wpdb->last_error) ) {
+		if ( $return_error && $option === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: " . $wpdb_last_error, 'Option Name: ' . $option_name );
 			return new WP_Error( __( 'Error occurred', 'echo-knowledge-base' ), $wpdb_last_error );
@@ -913,6 +924,18 @@ class EPKB_Utilities {
 		// do not store null
 		if ( $option_value === null ) {
 			$option_value = '';
+		}
+
+		// return if no change in configuration detected
+		$old_value = get_option( $option_name );
+		if ( $option_value === $old_value || maybe_serialize( $option_value ) === maybe_serialize( $old_value ) ) {
+			return $option_value;
+		}
+
+		// update configuration if possible
+		$result = update_option( $option_name, $option_value );
+		if ( $result !== false ) {
+			return $option_value;
 		}
 
 		// add or update the option
@@ -978,7 +1001,7 @@ class EPKB_Utilities {
 		if ( $return_error && $option === null && ! empty($wpdb->last_error) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: " . $wpdb_last_error, 'Meta Key: ' . $meta_key );
-			return new WP_Error(__( 'Error occurred', 'echo-knowledge-base' ), $wpdb_last_error);
+			return new WP_Error( 'Error occurred', $wpdb_last_error );
 		}
 
 		// if the option is missing then return defaults
@@ -1433,7 +1456,7 @@ class EPKB_Utilities {
 				continue;
 			}
 
-			$output .= ( $is_config ? esc_attr( $config[$class_name] ) : $class ) . ' ';
+			$output .= ( $is_config ? esc_attr( $config[$class_name] ) : esc_attr( $class ) ) . ' ';
 		}
 		return trim( $output ) . '"';
 	}
@@ -2334,7 +2357,7 @@ class EPKB_Utilities {
 		$l = strlen( $css );
 		$offset = $line_break_position;
 		while ( preg_match( '/(?<!\\\\)\}(?!\n)/S', $css, $matches, PREG_OFFSET_CAPTURE, $offset ) ) {
-			$matchIndex = $matches[0][1];
+			$matchIndex = (int)$matches[0][1];
 			$css = substr_replace( $css, "\n", $matchIndex + 1, 0 );
 			$offset = $matchIndex + 2 + $line_break_position;
 			$l += 1;
@@ -2344,5 +2367,100 @@ class EPKB_Utilities {
 		}
 
 		return $css;
+	}
+
+	/**
+	 * Encrypt data using OpenSSL functions if available
+	 * @param $data
+	 * @return string
+	 */
+	public static function encrypt_data( $data = '' ) {
+
+		if ( empty( $data ) ) {
+			return $data;
+		}
+
+		// Check if OpenSSL functions are available
+		if ( ! function_exists( 'openssl_encrypt' ) || ! function_exists( 'openssl_random_pseudo_bytes' ) ) {
+			return base64_encode( $data );
+		}
+
+		// Generate a key
+		$key = wp_hash( 'epkb_encrypt' );
+		if ( empty( $key ) ) {
+			return base64_encode( $data );
+		}
+
+		// Get the cipher method and IV length
+		$cipher_method = 'aes-256-cbc';
+		$iv_length = openssl_cipher_iv_length( $cipher_method );
+		if ( empty( $iv_length ) ) {
+			return base64_encode( $data );
+		}
+
+		// Generate an initialization vector
+		$iv = openssl_random_pseudo_bytes( $iv_length );
+
+		// Encrypt the data
+		$encrypted_data = openssl_encrypt( $data, $cipher_method, $key, 0, $iv );
+		if ( empty( $encrypted_data ) ) {
+			return base64_encode( $data );
+		}
+
+		// Concatenate the encrypted data and IV
+		$encrypted_string = base64_encode( $encrypted_data . '::' . $iv );
+
+		return $encrypted_string;
+	}
+
+	/**
+	 * Decrypt data using OpenSSL functions if available
+	 * @param $data
+	 * @return false|string
+	 */
+	public static function decrypt_data( $data = '' ) {
+
+		if ( empty( $data ) ) {
+			return $data;
+		}
+
+		// Validate input data
+		if ( ! is_string( $data ) ) {
+			return false;
+		}
+
+		// Base64 decode the data
+		$decoded_data = base64_decode( $data, true );
+		if ( empty( $decoded_data ) ) {
+			return false;
+		}
+
+		// Split the encrypted data and IV; if missing we have just base64 encoded data
+		$separator = '::';
+		$parts = explode( $separator, $decoded_data, 2 );
+		if ( count( $parts ) !== 2 ) {
+			return $decoded_data;
+		}
+
+		// Check if OpenSSL functions are available
+		if ( ! function_exists( 'openssl_decrypt' ) || ! function_exists( 'openssl_cipher_iv_length' ) ) {
+			return false;
+		}
+
+		// Generate the decryption key
+		$key = wp_hash( 'epkb_encrypt' );
+		if ( empty( $key ) ) {
+			return false;
+		}
+
+		list( $encrypted_data, $iv ) = $parts;
+
+		// Decrypt the data
+		$decrypted_data = openssl_decrypt( $encrypted_data, 'aes-256-cbc', $key, 0, $iv );
+		if ( empty( $decrypted_data ) ) {
+			return false;
+		}
+
+		return $decrypted_data;
 	}
 }

@@ -92,21 +92,21 @@ $breadcrumb_style1 = EPKB_Utilities::get_inline_style( '
 							margin-left:: breadcrumb_margin_left,
 							typography::breadcrumb_typography', $kb_config );
 $breadcrumb_style2 = EPKB_Utilities::get_inline_style( 'color:: breadcrumb_text_color', $kb_config );
-$breadcrumb_style_3 = EPKB_Utilities::get_inline_style( 'typography::breadcrumb_typography', $kb_config ); ?>
+$breadcrumb_style3 = EPKB_Utilities::get_inline_style( 'typography::breadcrumb_typography', $kb_config ); ?>
 
-	<div class="eckb-breadcrumb" <?php echo $breadcrumb_style1; ?>>    <?php
+	<div class="eckb-breadcrumb" <?php echo esc_attr( $breadcrumb_style1 ); ?>>    <?php
 
 		if ( !empty( $kb_config['breadcrumb_description_text'] ) || !empty( $_REQUEST['epkb-editor-page-loaded'] ) ) { ?>
 			<div class="eckb-breadcrumb-label">
 				<?php echo esc_html( $kb_config['breadcrumb_description_text'] ); ?>
 			</div>    <?php
 		} ?>
-		<nav class="eckb-breadcrumb-outline" aria-label="Breadcrumb">
+		<nav class="eckb-breadcrumb-outline" aria-label="<?php esc_html_e( 'Breadcrumb', 'echo-knowledge-base' ); ?>">
 			<ul class="eckb-breadcrumb-nav">       <?php
 				$ix = 0;
 				foreach ( $breadcrumb as $text => $link ) {
 
-					echo '<li ' . $breadcrumb_style_3 . '>';
+					echo '<li ' . esc_attr( $breadcrumb_style3 ) . '>';
 					echo '	<span class="eckb-breadcrumb-link">';
 
 					$ix++;
@@ -116,13 +116,13 @@ $breadcrumb_style_3 = EPKB_Utilities::get_inline_style( 'typography::breadcrumb_
 					// output URL if not the last crumb
 					if ( $ix < sizeof( $breadcrumb ) ) {
 						if ( empty( $link ) ) {
-							echo '<span ' . $breadcrumb_style2 . ' >' . esc_html( $text ) . '</span>';
+							echo '<span ' . esc_attr( $breadcrumb_style2 ) . ' >' . esc_html( $text ) . '</span>';
 						} else {
-							echo '<a tabindex="0" href="' . esc_url( $link ) . '"><span ' . $breadcrumb_style2 . ' >' . esc_html( $text ) . '</span></a>';
+							echo '<a tabindex="0" href="' . esc_url( $link ) . '"><span ' . esc_attr( $breadcrumb_style2 ) . ' >' . esc_html( $text ) . '</span></a>';
 						}
 						echo '<span class="eckb-breadcrumb-link-icon ' . esc_html( $kb_config['breadcrumb_icon_separator'] ) . '" aria-hidden="true"></span>';
 					} else {
-						echo '<span aria-current="page"' . $breadcrumb_style2 . ' >' . esc_html( $text ) . '</span>';
+						echo '<span aria-current="page"' . esc_attr( $breadcrumb_style2 ) . ' >' . esc_html( $text ) . '</span>';
 					}
 
 					echo '	</span>';

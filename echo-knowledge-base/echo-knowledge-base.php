@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 12.41.0
+ * Version: 12.42.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '12.41.0';
+	public static $version = '12.42.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -141,7 +141,8 @@ final class Echo_Knowledge_Base {
 		}
 
 		// catch saving and creating of Post in Gutenberg
-		if ( ! empty( $_SERVER['HTTP_REFERER'] ) && ( strpos( $_SERVER['HTTP_REFERER'], '/wp-admin/post.php' ) !== false || strpos( $_SERVER['HTTP_REFERER'], '/wp-admin/post-new.php' ) !== false ) ) {
+		$server_referrer = isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '';
+		if ( ! empty( $server_referrer ) && ( strpos( $server_referrer, '/wp-admin/post.php' ) !== false || strpos( $server_referrer, '/wp-admin/post-new.php' ) !== false ) ) {
 			require_once self::$plugin_dir . 'includes/admin/admin-functions.php';
 		}
 
@@ -292,7 +293,7 @@ final class Echo_Knowledge_Base {
 		// article edit page - include scripts to show categories box
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 		if ( $pagenow == 'post.php' && ! empty( $_REQUEST['post'] ) && ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) {
-			$kb_post_type = get_post_type( sanitize_text_field( $_REQUEST['post'] ) );
+			$kb_post_type = get_post_type( sanitize_text_field( wp_unslash( $_REQUEST['post'] ) ) );
 			if ( EPKB_KB_Handler::is_kb_post_type( $kb_post_type ) ) {
 				new EPKB_AI_Help_Sidebar();
 				add_action( 'admin_enqueue_scripts', 'epkb_load_admin_article_page_styles' );

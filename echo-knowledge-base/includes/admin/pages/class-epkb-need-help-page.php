@@ -149,7 +149,7 @@ class EPKB_Need_Help_Page {
 			);
 		}
 
-		if ( ! EPKB_Core_Utilities::is_run_setup_wizard_first_time() ) {
+		if ( ! EPKB_Core_Utilities::run_setup_wizard_first_time() ) {
 
 			// KB Articles and KB Categories
 			$steps_list[] = array(
@@ -206,7 +206,7 @@ class EPKB_Need_Help_Page {
 					<p class="epkb-kbnh__header__desc"><?php esc_html_e( 'Thanks for using our Knowledge Base!', 'echo-knowledge-base' ); ?></p>    <?php
 
 					// Show this block only if user completed Setup Wizard
-					if ( ! EPKB_Core_Utilities::is_run_setup_wizard_first_time() ) {
+					if ( ! EPKB_Core_Utilities::run_setup_wizard_first_time() ) {
 						//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo EPKB_Core_Utilities::get_current_kb_main_page_link( $this->kb_config, esc_html__( 'View My Knowledge Base', 'echo-knowledge-base' ), 'epkb-success-btn' );
 					}   ?>

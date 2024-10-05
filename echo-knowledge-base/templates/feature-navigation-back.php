@@ -17,14 +17,14 @@
 
 //$button_class1 = EPKB_Utilities::get_css_class('::section_box_shadow', $kb_config);
 
-$button_style1 = EPKB_Utilities::get_inline_style(
+$button_style1_escaped = EPKB_Utilities::get_inline_style(
                 'margin-top:: back_navigation_margin_top,
                  margin-right:: back_navigation_margin_right,
                  margin-bottom:: back_navigation_margin_bottom,
                  margin-left:: back_navigation_margin_left',
 				 $kb_config );
 
-$button_style2 = EPKB_Utilities::get_inline_style(
+$button_style2_escaped = EPKB_Utilities::get_inline_style(
 	           'padding-top:: back_navigation_padding_top,
                       padding-right:: back_navigation_padding_right,
                       padding-bottom:: back_navigation_padding_bottom,
@@ -38,18 +38,18 @@ $button_style2 = EPKB_Utilities::get_inline_style(
                       border-color:: back_navigation_border_color', $kb_config );
 
 echo '<div class="eckb-navigation-back  ' . //$kb_config['back_navigation_hover'] .  // what is the hover for? not in configuration specs
-          '" ' . $button_style1 . '>';
+          '" ' . $button_style1_escaped . '>';
 
 if ( $kb_config['back_navigation_mode'] == 'navigate_kb_main_page' ) {
 	echo '<div class="eckb-navigation-button">';
-    echo '<a tabindex="0" href="' . esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '" ' . $button_style2 . '>' . esc_html( $kb_config['back_navigation_text'] ) .  '</a>';
+    echo '<a tabindex="0" href="' . esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '" ' . $button_style2_escaped . '>' . esc_html( $kb_config['back_navigation_text'] ) .  '</a>';
     echo '</div>';
 } else {
 	
 	if (  empty( $_REQUEST['epkb-editor-page-loaded'] ) ) {
-		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2 . ' onclick="history.go(-1);" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';
+		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2_escaped . ' onclick="history.go(-1);" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';
 	} else {
-		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2 . ' onclick="return false;" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';
+		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2_escaped . ' onclick="return false;" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';
 	}
 }
 

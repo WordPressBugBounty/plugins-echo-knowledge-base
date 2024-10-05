@@ -78,7 +78,7 @@ class EPKB_Articles_Setup {
 		// add theme name to Div for specific targeting
 		$activeWPTheme = EPKB_Utilities::get_active_theme_classes( 'ap' );
 		
-		$article_seq_no = empty( $_REQUEST['seq_no'] ) ? '' : EPKB_Utilities::sanitize_int( $_REQUEST['seq_no'] );
+		$article_seq_no = empty( $_REQUEST['seq_no'] ) ? '' : EPKB_Utilities::sanitize_int( wp_unslash( sanitize_key( $_REQUEST['seq_no'] ) ) );
 		$article_seq_no = empty( $article_seq_no ) ? '' : ' data-kb_article_seq_no=' . $article_seq_no;
 
 		$mobile_breakpoint = $kb_config['article-mobile-break-point-v2'];
@@ -623,8 +623,8 @@ class EPKB_Articles_Setup {
 			}
 		';
 
-		$prev_navigation_text = empty($kb_config['prev_navigation_text']) ? esc_html__( 'Previous', 'echo-knowledge-base' ) : $kb_config['prev_navigation_text'];
-		$next_navigation_text = empty($kb_config['next_navigation_text']) ? esc_html__( 'Next', 'echo-knowledge-base' ) : $kb_config['next_navigation_text'];
+		$prev_navigation_text = empty( $kb_config['prev_navigation_text'] ) ? esc_html__( 'Previous', 'echo-knowledge-base' ) : $kb_config['prev_navigation_text'];
+		$next_navigation_text = empty( $kb_config['next_navigation_text'] ) ? esc_html__( 'Next', 'echo-knowledge-base' ) : $kb_config['next_navigation_text'];
 
 		$demo_prev_link =
             '<a href="#" rel="prev">
@@ -651,7 +651,7 @@ class EPKB_Articles_Setup {
 
 		// Condition To set Demo for admin wizards
 		if ( self::is_configuring_article() ) {
-			self::prev_next_navigation_html ($styles, $demo_prev_link, $demo_next_link );
+			self::prev_next_navigation_html( $styles, $demo_prev_link, $demo_next_link );
 			return;
 		}
 
@@ -775,7 +775,7 @@ class EPKB_Articles_Setup {
 
 			$next_seq_no = isset( $repeat_cat_id[$next_post_id][$category_id] ) ? $repeat_cat_id[$next_post_id][$category_id] : 1;
 			$next_link = get_permalink( $next_post_id );
-			$next_link = empty($next_seq_no) || $next_seq_no < 2 ? $next_link : add_query_arg( 'seq_no', $next_seq_no, $next_link );
+			$next_link = empty( $next_seq_no ) || $next_seq_no < 2 ? $next_link : add_query_arg( 'seq_no', $next_seq_no, $next_link );
 
 			// linked articles have their own icon
 			$article_title_icon = 'ep_font_icon_document';

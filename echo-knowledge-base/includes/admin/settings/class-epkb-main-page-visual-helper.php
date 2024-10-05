@@ -273,18 +273,18 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 
 		ob_start();
 			if ( $search_active ) { ?>
-				<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Search Box Width', 'echo-knowledge-base' ); ?></strong></h5>
+
+				<h5 class="epkb-vshelp-accordion-body-content__title"><?php echo esc_html__( 'Page width:', 'echo-knowledge-base' ) . ' '; ?><span class='js-epkb-mp-width'>-</span></h5>
+
+				<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Search Box', 'echo-knowledge-base' ); ?></strong></h5>
 				<table>
-				<tr>
-					<td><?php echo esc_html__( 'Total Page width is', 'echo-knowledge-base' ) . ' '; ?><span class='js-epkb-mp-width'>-</span></td>
-				</tr>
-				<tr>
-					<td><?php echo esc_html__( 'The KB setting is set to ', 'echo-knowledge-base' ) . ' ' . esc_attr( $search_row_width . $search_row_width_units ) .
-							( $search_row_width_units == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo esc_html__( 'The actual search box width is', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-mp-search-width">-</span></td>
-				</tr>
+					<tr>
+						<td><?php echo esc_html__( 'Actual width:', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-mp-search-width">-</span></td>
+					</tr>
+					<tr>
+						<td><?php echo esc_html__( 'KB setting for Search Width:', 'echo-knowledge-base' ) . ' ' . esc_attr( $search_row_width . $search_row_width_units ) .
+								( $search_row_width_units == '%' ? ' ' . esc_html__( 'of the page.', 'echo-knowledge-base' ) : '' ); ?></td>
+					</tr>
 				</table><?php
 				/* if ( $search_row_width_units == '%' ) { ?>
 					<div class="epkb-vshelp-accordion-body-content__note"><?php

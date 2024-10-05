@@ -8,7 +8,7 @@
 class EPKB_Upgrades {
 
 	const GRID_UPGRADE_DONE = 3;
-	const NOT_INITIALIZED = '12.30.99';
+	const NOT_INITIALIZED = '12.30.99'; // TODO remove 2025
 
 	public function __construct() {
 		// will run after plugin is updated but not always like front-end rendering
@@ -80,7 +80,7 @@ class EPKB_Upgrades {
 		delete_transient( '_epkb_plugin_installed' );
 
 		// if setup ran then do not proceed
-		if ( ! EPKB_Core_Utilities::is_run_setup_wizard_first_time() ) {
+		if ( ! EPKB_Core_Utilities::run_setup_wizard_first_time() ) {
 			return;
 		}
 
@@ -98,7 +98,7 @@ class EPKB_Upgrades {
 		$last_version = EPKB_Utilities::get_wp_option( 'epkb_version', null );
 		if ( empty( $last_version ) ) {
 			EPKB_Utilities::save_wp_option( 'epkb_version', Echo_Knowledge_Base::$version );
-			epkb_get_instance()->kb_config_obj->set_value( EPKB_KB_Config_DB::DEFAULT_KB_ID, 'first_plugin_version', Echo_Knowledge_Base::$version );
+			epkb_get_instance()->kb_config_obj->set_value( EPKB_KB_Config_DB::DEFAULT_KB_ID, 'first_plugin_version', Echo_Knowledge_Base::$version ); // TODO 2025 remove and in the specs
 			return;
 		}
 
@@ -144,7 +144,7 @@ class EPKB_Upgrades {
 		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs();
 		foreach ( $all_kb_configs as $kb_config ) {
 
-			self::run_upgrade( $kb_config, $last_version );
+			self::run_upgrades( $kb_config, $last_version );
 
 			$kb_config['upgrade_plugin_version'] = Echo_Knowledge_Base::$version;
 
@@ -156,23 +156,7 @@ class EPKB_Upgrades {
 		epkb_get_instance()->kb_config_obj->set_value( EPKB_KB_Config_DB::DEFAULT_KB_ID, 'upgrade_plugin_version', Echo_Knowledge_Base::$version );
 	}
 
-	public static function run_upgrade( &$kb_config, $last_version ) {
-
-	    if ( version_compare( $last_version, '9.0.0', '<' ) ) {
-		    self::upgrade_to_v900( $kb_config );
-	    }
-
-	    if ( version_compare( $last_version, '9.1.0', '<' ) ) {
-		    self::upgrade_to_v910( $kb_config );
-	    }
-
-	    if ( version_compare( $last_version, '9.11.0', '<' ) ) {
-		    self::upgrade_to_v9_11_0( $kb_config );
-	    }
-
-		if ( version_compare( $last_version, '9.12.0', '<' ) ) {
-			self::upgrade_to_v9_12_0( $kb_config );
-		}
+	public static function run_upgrades( &$kb_config, $last_version ) {
 
 	    if ( version_compare( $last_version, '11.0.1', '<' ) ) {
 		    self::upgrade_to_v11_0_1( $kb_config );
@@ -216,6 +200,24 @@ class EPKB_Upgrades {
 
 		if ( version_compare( $last_version, '12.32.0', '<' ) ) {
 			self::upgrade_to_v12_32_0( $kb_config );
+		}
+
+		if ( version_compare( $last_version, '12.42.0', '<' ) ) {
+			self::upgrade_to_v12_42_0( $kb_config );
+		}
+	}
+
+	private static function upgrade_to_v12_42_0( &$kb_config ) {
+		$api_key = EPKB_Utilities::get_wp_option( 'epkb_openai_api_key', '' );
+		if ( empty( $api_key ) || ! is_string( $api_key ) ) {
+			$api_key = '';
+		}
+
+		$api_key = EPKB_Utilities::encrypt_data( $api_key );
+
+		$result = EPKB_Utilities::save_wp_option('epkb_openai_key', $api_key );
+		if ( ! is_wp_error( $result ) ) {
+			delete_option( 'epkb_openai_api_key' );
 		}
 	}
 
@@ -535,103 +537,6 @@ class EPKB_Upgrades {
 		if ( isset( $kb_config['ml_faqs_category_ids'] ) ) {
 			$faqs_category_ids = explode( ',', $kb_config['ml_faqs_category_ids'] );
 			EPKB_Utilities::save_kb_option( $kb_config['id'], EPKB_ML_FAQs::FAQS_CATEGORY_IDS, $faqs_category_ids );
-		}
-	}
-
-	private static function upgrade_to_v9_12_0( &$kb_config ) {
-		if ( ! in_array( $kb_config['search_title_html_tag'], ['div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'p'] ) ) {
-			$kb_config['search_title_html_tag'] = 'div';
-		}
-
-		if ( ! in_array( $kb_config['article_search_title_html_tag'], ['div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'p'] ) ) {
-			$kb_config['article_search_title_html_tag'] = 'div';
-		}
-	}
-
-	private static function upgrade_to_v9_11_0( &$kb_config ) {
-		if ( $kb_config['templates_for_kb'] == 'current_theme_templates' ) {
-			$kb_config['article_content_enable_article_title'] = 'off';
-		}
-	}
-
-	private static function upgrade_to_v910( &$kb_config ) {
-		if ( isset( $kb_config['last_udpated_on_text'] ) ) {
-			$kb_config['last_updated_on_text'] = $kb_config['last_udpated_on_text'];
-		}
-
-		if ( isset( $kb_config['last_udpated_on_footer_toggle'] ) ) {
-			$kb_config['last_updated_on_footer_toggle'] = $kb_config['last_udpated_on_footer_toggle'];
-		}
-	}
-
-	private static function upgrade_to_v900( &$kb_config ) {
-
-		// handle Elegant Layouts upgrade
-		if ( ! EPKB_Utilities::is_elegant_layouts_enabled() ) {
-			return;
-		}
-
-		if ( function_exists( 'elay_get_instance' ) && isset( elay_get_instance()->kb_config_obj ) ) {
-			$elay_config = elay_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_config['id'] );
-		} else {
-			return;
-		}
-
-		$sidebar_settings = [
-			'sidebar_side_bar_height_mode',
-			'sidebar_side_bar_height',
-			'sidebar_scroll_bar',
-			'sidebar_section_category_typography',
-			'sidebar_section_category_typography_desc',
-			'sidebar_section_body_typography',
-			'sidebar_top_categories_collapsed',
-			'sidebar_nof_articles_displayed',
-			'sidebar_show_articles_before_categories',
-			'sidebar_expand_articles_icon',
-			'sidebar_section_head_alignment',
-			'sidebar_section_head_padding_top',
-			'sidebar_section_head_padding_bottom',
-			'sidebar_section_head_padding_left',
-			'sidebar_section_head_padding_right',
-			'sidebar_section_desc_text_on',
-			'sidebar_section_border_radius',
-			'sidebar_section_border_width',
-			'sidebar_section_box_shadow',
-			'sidebar_section_divider',
-			'sidebar_section_divider_thickness',
-			'sidebar_section_box_height_mode',
-			'sidebar_section_body_height',
-			'sidebar_section_body_padding_top',
-			'sidebar_section_body_padding_bottom',
-			'sidebar_section_body_padding_left',
-			'sidebar_section_body_padding_right',
-			'sidebar_article_underline',
-			'sidebar_article_active_bold',
-			'sidebar_article_list_margin',
-			'sidebar_background_color',
-			'sidebar_article_font_color',
-			'sidebar_article_icon_color',
-			'sidebar_article_active_font_color',
-			'sidebar_article_active_background_color',
-			'sidebar_section_head_font_color',
-			'sidebar_section_head_background_color',
-			'sidebar_section_head_description_font_color',
-			'sidebar_section_border_color',
-			'sidebar_section_divider_color',
-			'sidebar_section_category_font_color',
-			'sidebar_section_subcategory_typography',
-			'sidebar_section_category_icon_color',
-			'sidebar_category_empty_msg',
-			'sidebar_collapse_articles_msg',
-			'sidebar_show_all_articles_msg'
-		];
-
-		foreach ( $sidebar_settings as $setting_name ) {
-			if ( ! isset( $elay_config[$setting_name] ) ) {
-				continue;
-			}
-
-			$kb_config[$setting_name] = $elay_config[$setting_name];
 		}
 	}
 

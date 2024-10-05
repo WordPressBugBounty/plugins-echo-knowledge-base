@@ -467,7 +467,7 @@ function epkb_main_content( $args ) {
                                 } if ( $meta_author_on == 'on' ) { ?>
                                     <li class="eckb-article-byline"><span class="eckb-article-meta-name"><?php echo esc_html( $meta_author_text ) . '</span> ' . esc_html( get_the_author() ); ?></li><?php
                                 } if ( $meta_categories_on == 'on' ) { ?>
-                                    <li class="eckb-article-categories"><span class="eckb-article-meta-name"><?php echo esc_html( $meta_categories_text ) . '</span> ' . get_the_category_list(', '); ?></li><?php
+                                    <li class="eckb-article-categories"><span class="eckb-article-meta-name"><?php echo esc_html( $meta_categories_text ) . '</span> ' . wp_kses_post( get_the_category_list(', ' ) ); ?></li><?php
                                 } ?>
                             </ul>
                         </div><?php

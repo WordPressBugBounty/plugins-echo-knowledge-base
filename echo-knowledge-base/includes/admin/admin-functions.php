@@ -263,6 +263,9 @@ add_action( 'admin_init', 'epkb_crel_notice' );
  */
 new EPKB_Site_Builders();
 
+/**
+ * All user to filter All Articles page based by categories
+ */
 function epkb_categories_sorting_link() {
 
 	$kb_id = EPKB_KB_Handler::get_current_kb_id();

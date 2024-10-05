@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * OpenAI utility class
@@ -154,8 +154,13 @@ class EPKB_OpenAI {
 		$this->is_openai_error = false;
 
 		// validate API key
-		$api_key = EPKB_Utilities::get_wp_option( 'epkb_openai_api_key', '' );
-		if ( empty( $api_key ) || ! is_string( $api_key ) ) {
+		$api_key = self::get_openai_api_key();
+		if ( is_wp_error( $api_key ) ) {
+			$error_message = $api_key->get_error_message();
+			EPKB_Logging::add_log( 'Cannot retrieve API key. Error details: ' . $error_message );
+			$this->error_message = EPKB_Utilities::report_generic_error( 602, $error_message );
+			return [];
+		} else if ( empty( $api_key ) || ! is_string( $api_key ) ) {
 			$openai_settings_capability = EPKB_Admin_UI_Access::get_admin_capability();
 			if ( current_user_can( $openai_settings_capability ) ) {
 				$this->error_message = sprintf( esc_html__( 'Please enter your OpenAI API key in the %s AI Settings %s', 'echo-knowledge-base' ),  '<a href="#" class="epkb-ai-help-sidebar__open-settings-tab-btn">', '</a>' );
@@ -252,5 +257,36 @@ class EPKB_OpenAI {
 		}
 
 		return $args;
+	}
+
+	public static function get_openai_api_key() {
+
+		$old_api_key = EPKB_Utilities::get_wp_option( 'epkb_openai_api_key', '', false, true );
+		$new_api_key = EPKB_Utilities::get_wp_option( 'epkb_openai_key', '', false, true );
+
+		if ( ! is_wp_error( $new_api_key ) && ! empty( $new_api_key ) ) {
+			$api_key = EPKB_Utilities::decrypt_data( $new_api_key );
+			$api_key = $api_key ?: '';
+
+		} else if ( ! is_wp_error( $old_api_key ) && ! empty( $old_api_key ) ) {
+			$api_key = $old_api_key;
+			$result = self::save_openai_api_key( $api_key );
+			if ( ! is_wp_error( $result ) ) {
+				delete_option( 'epkb_openai_api_key' );
+			}
+
+		} else {
+			$api_key = '';
+		}
+
+		return $api_key;
+	}
+
+	public static function save_openai_api_key( $openai_api_key ) {
+
+		$api_key = EPKB_Utilities::encrypt_data( $openai_api_key );
+		$result = EPKB_Utilities::save_wp_option( 'epkb_openai_key', $api_key );
+
+		return $result;
 	}
 }

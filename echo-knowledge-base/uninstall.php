@@ -45,6 +45,7 @@ class EPKB_Uninstall {
         delete_option( 'epkb_delete_all_kb_data' );
 	    delete_option( 'epkb_flags' );
 	    delete_option( 'epkb_openai_api_key' );
+	    delete_option( 'epkb_openai_key' );
 	    delete_option( 'epkb_ml_custom_css_1' );
 	    delete_option( 'epkb_ml_faqs_kb_id_1' );
 	    delete_option( 'epkb_ml_faqs_category_ids_1' );

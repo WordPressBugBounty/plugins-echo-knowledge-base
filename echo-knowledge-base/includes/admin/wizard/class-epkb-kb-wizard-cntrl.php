@@ -280,7 +280,7 @@ class EPKB_KB_Wizard_Cntrl {
 	 */
 	public function apply_setup_wizard_changes() {
 
-		$is_setup_run_first_time = EPKB_Core_Utilities::is_run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
+		$is_setup_run_first_time = EPKB_Core_Utilities::run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
 
 		// wp_die if nonce invalid or user does not have correct permission
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );

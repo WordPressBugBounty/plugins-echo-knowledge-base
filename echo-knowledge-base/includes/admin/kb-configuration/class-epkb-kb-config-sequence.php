@@ -84,11 +84,11 @@ class EPKB_KB_Config_Sequence {
 	/**
 	 * Retrieve new sequence passed in (categories + articles) and remove duplicate categories
 	 *
-	 * @return string|false
+	 * @return array|bool
 	 */
 	public function get_new_sequence() {
 
-		$new_sequence = isset( $_POST['epkb_new_sequence'] ) ? $this->sanitize_sequence( $_POST['epkb_new_sequence'] ) : false;
+		$new_sequence = isset( $_POST['epkb_new_sequence'] ) ? $this->sanitize_sequence( wp_unslash( $_POST['epkb_new_sequence'] ) ) : false;
 		if ( $new_sequence === false ) {
 			return false;
 		}
@@ -101,7 +101,7 @@ class EPKB_KB_Config_Sequence {
 				continue;
 			}
 			$item_id = $item[0];
-			if ( isset($item[1]) && $item[1] == 'category' ) {
+			if ( $item[1] == 'category' ) {
 				if ( $item_id == $last_category_id ) {
 					unset( $new_sequence[ $key ] );
 				}

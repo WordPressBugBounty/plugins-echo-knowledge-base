@@ -258,6 +258,7 @@ class EPKB_HTML_Forms {
 							'strong'    => array(),
 							'ul'        => array(),
 							'li'        => array(),
+							'div'       => array()
 						) ); ?>
 					</div> <?php
 				}

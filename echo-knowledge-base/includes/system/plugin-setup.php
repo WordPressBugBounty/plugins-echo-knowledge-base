@@ -33,11 +33,12 @@ function epkb_activate_plugin_do() {
 
 		// prepare KB configuration
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+		$kb_config['upgrade_plugin_version'] = Echo_Knowledge_Base::$version;   // TODO 2025 remove and in the specs
+		$kb_config['first_plugin_version'] = Echo_Knowledge_Base::$version;     // TODO 2025 remove and in the specs
 		epkb_get_instance()->kb_config_obj->update_kb_configuration( EPKB_KB_Config_DB::DEFAULT_KB_ID, $kb_config );
 
 		// update KB versions
 		EPKB_Utilities::save_wp_option( 'epkb_version', Echo_Knowledge_Base::$version );
-		EPKB_Utilities::save_wp_option( 'epkb_version_first', Echo_Knowledge_Base::$version );  // TODO REMOVE end 2024
 	}
 
 	set_transient( '_epkb_plugin_activated', true, 3600 );

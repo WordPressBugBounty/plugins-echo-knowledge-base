@@ -7,7 +7,7 @@ Tags: knowledge base, knowledgebase, documentation, documents, faqs
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 6.6
-Stable tag: 12.41.0
+Stable tag: 12.42.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,8 +255,14 @@ Please contact us at [Learn More](https://www.echoknowledgebase.com/contact-us/)
 
 == Changelog ==
 
+= 12.42.0 =
+Release Date: Oct 5, 2024
+* Update: Security improvements
+* Update: Improvements to Visual Helper
+* Fix: Cleanup and minor fixes
+
 = 12.41.0 =
-Release Date: Sept 29, 2024
+Release Date: Sept 28, 2024
 * Update: Improvements to Visual Helper
 * Fix: Cleanup and minor fixes
 

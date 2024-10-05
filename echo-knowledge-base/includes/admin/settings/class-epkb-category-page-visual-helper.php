@@ -201,17 +201,17 @@ class EPKB_Category_Page_Visual_Helper extends EPKB_Visual_Helper {
 			</p>		<?php 
 		} else {
 			if ( $category_search_toggle ) { ?>
-				<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Search Box Width', 'echo-knowledge-base' ); ?></strong></h5>
+
+				<h5 class="epkb-vshelp-accordion-body-content__title"><?php echo esc_html__( 'Page width:', 'echo-knowledge-base' ); ?> <span class='js-epkb-cp-width'>-</span></h5>
+
+				<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Search Box', 'echo-knowledge-base' ); ?></strong></h5>
 				<table>
 					<tr>
-						<td><?php echo esc_html__( 'Total Page width is', 'echo-knowledge-base' ); ?> <span class='js-epkb-cp-width'>-</span></td>
+						<td><?php echo esc_html__( 'Actual width:', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-cp-search-width">-</span></td>
 					</tr>
 					<tr>
-						<td><?php echo esc_html__( 'The KB setting is set to ', 'echo-knowledge-base' ) . ' ' . esc_attr( $category_search_width . $category_search_width_units ) .
-								( $category_search_width_units == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?></td>
-					</tr>
-					<tr>
-						<td><?php echo esc_html__( 'The actual search box width is', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-cp-search-width">-</span></td>
+						<td><?php echo esc_html__( 'KB setting for Search Width:', 'echo-knowledge-base' ) . ' ' . esc_attr( $category_search_width . $category_search_width_units ) .
+								( $category_search_width_units == '%' ? ' ' . esc_html__( 'of the page.', 'echo-knowledge-base' ) : '' ); ?></td>
 					</tr>
 				</table>
 

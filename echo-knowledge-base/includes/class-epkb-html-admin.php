@@ -773,7 +773,7 @@ class EPKB_HTML_Admin {
 				esc_html_e( 'Labels', 'echo-knowledge-base' );	?>
 			</div>
 			<div class="epkb-admin__form-tab-content-desc">
-				<span><?php esc_html_e( 'Labels are the text descriptions that appear on the front-end of your site, such as on buttons or search fields, helping users understand the function of various elements. ' .
+				<span><?php esc_html_e( 'Labels are the text elements displayed on your website\'s front end, such as button names and custom headings. ' .
 											'Customize these labels to match your website\'s language and tone.', 'echo-knowledge-base' ); ?></span>
 				<a class="epkb-admin__form-tab-content-desc__link" href="#" target="_blank"><?php esc_html_e( 'click here to customize the labels', 'echo-knowledge-base' ); ?></a>
 			</div>

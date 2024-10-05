@@ -265,11 +265,12 @@ class EPKB_Category_Archive_Setup {
 
 	private static function display_article( $kb_config, $article_id, $article_class ) {
 
-		$article = get_post( $article_id );     ?>
+		$article = get_post( $article_id );
+		$inline_style_escaped = EPKB_Utilities::get_inline_style( 'padding-bottom:: article_list_spacing,padding-top::article_list_spacing', $kb_config ); ?>
 
 		<div class="eckb-article-container<?php echo esc_attr( $article_class ); ?>" id="post-<?php echo esc_attr( $article_id ); ?>">
 
-			<div class="eckb-article-header" <?php echo EPKB_Utilities::get_inline_style( 'padding-bottom:: article_list_spacing,padding-top::article_list_spacing', $kb_config ); ?> >   <?php
+			<div class="eckb-article-header" <?php echo $inline_style_escaped; ?> >   <?php
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				EPKB_Utilities::get_single_article_link( $kb_config, $article->post_title, $article_id, 'Category_Archive_Page' ) ?>
 			</div> <?php

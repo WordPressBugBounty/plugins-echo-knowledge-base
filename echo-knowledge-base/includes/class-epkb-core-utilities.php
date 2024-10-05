@@ -76,7 +76,7 @@ class EPKB_Core_Utilities {
 	}
 
 	// true if demo KB not yet created after installation
-	public static function is_run_setup_wizard_first_time() {
+	public static function run_setup_wizard_first_time() {
 
 		$run_setup = self::is_kb_flag_set( 'epkb_run_setup' );
 		if ( ! $run_setup ) {
@@ -410,7 +410,7 @@ class EPKB_Core_Utilities {
 			EPKB_Utilities::ajax_show_error_die( esc_html__( 'Could not save the new configuration.', 'echo-knowledge-base' ) . ' ' . $update_kb_msg . '. (32) ' . EPKB_Utilities::contact_us_for_support() );
 		}
 
-		if ( ! self::is_run_setup_wizard_first_time() ) {
+		if ( ! self::run_setup_wizard_first_time() ) {
 			self::add_kb_flag( 'settings_tab_visited' );
 		}
 	}

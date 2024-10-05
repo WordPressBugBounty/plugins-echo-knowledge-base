@@ -130,7 +130,8 @@ class EPKB_Visual_Helper {
 	private function generate_info_components( $settings_info_icons ) {
 		ob_start();
 		foreach ( $settings_info_icons as $key => $info_icon ) {
-			echo $this->display_info_modal( $key, $info_icon );
+			$output_escaped = $this->display_info_modal( $key, $info_icon );
+			echo $output_escaped;
 		}
 		echo ob_get_clean();
 	}

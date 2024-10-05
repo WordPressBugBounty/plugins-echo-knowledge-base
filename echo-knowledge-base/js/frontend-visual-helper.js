@@ -187,7 +187,8 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.epkb-vshelp-info-icon', function (e) {
 		e.stopPropagation();
 		e.preventDefault();
-
+		$('.epkb-vshelp-background').remove();
+		
 		let dataSectionId = $(this).data('section-id'),
 				elementPosition = $(this).offset(),
 				elementPosY = elementPosition.top,
@@ -199,9 +200,9 @@ jQuery(document).ready(function($) {
 			if ($(this).hasClass('epkb-vshelp-info-modal--active')) {
 				$(this).removeClass('epkb-vshelp-info-modal--active');
 				modal.hide();
-				$('.epkb-vshelp-background').remove();
 			} else {
-				$('#epkb-modular-main-page-container').append('<div class="epkb-vshelp-background"></div>')
+
+				$('#epkb-modular-main-page-container, #eckb-article-page-container-v2, #eckb-archive-page-container').append('<div class="epkb-vshelp-background"></div>')
 				let positionCase = '';
 
 				if (elementPosY > (modal.find('.epkb-vshelp-info-modal__title').outerHeight() + 35)) {

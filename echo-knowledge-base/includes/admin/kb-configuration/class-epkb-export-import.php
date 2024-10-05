@@ -70,7 +70,7 @@ class EPKB_Export_Import {
 		// process each plugin (KB core and add-ons)
 		foreach ($this->add_ons_info as $add_on_class => $add_on_prefix) {
 
-			if ( ! class_exists($add_on_class) ) {
+			if ( ! class_exists( $add_on_class ) ) {
 				continue;
 			}
 
@@ -124,31 +124,70 @@ class EPKB_Export_Import {
 			return $this->message;
 		}
 
-		//phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce is verified in the calling function
-		$import_file_name = isset( $_FILES['import_file']['tmp_name'] ) ? sanitize_text_field( $_FILES['import_file']['tmp_name'] ) : '';
-		if ( empty( $import_file_name ) ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (0)';
+		// sanitize the file name
+		$sanitized_file_name = empty( $_FILES['import_file']['name'] ) ? '' : sanitize_file_name( $_FILES['import_file']['name'] );
+		if ( empty( $sanitized_file_name ) ) {
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' (4)';
 			return $this->message;
 		}
 
-		// check the file
-		if ( empty( is_uploaded_file( $import_file_name ) ) ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (3)';
+		// only check if the file tmp name is set - sanitization for the temporary file name is not appropriate
+		$safe_file_tmp_name = empty( $_FILES['import_file']['tmp_name'] ) ? '' : $_FILES['import_file']['tmp_name'];// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -> sanitized below
+		if ( empty( $safe_file_tmp_name ) ) {
+			$this->message['error'] = esc_html__( 'Import tmp file format is not correct.', 'help-dialog' ) . ' (4b)';;
+			return $this->message;
+		}
+
+		// check if the uploaded temporary file exists
+		if ( ! file_exists( $safe_file_tmp_name ) ) {
+			$this->message['error'] = esc_html__( 'Import tmp file format is not correct.', 'help-dialog' ) . ' (4c)';;
+			return $this->message;
+		}
+
+		// check if the uploaded temporary file is readable
+		if ( ! is_readable( $safe_file_tmp_name ) ) {
+			$this->message['error'] = esc_html__( 'Import tmp file format is not correct.', 'help-dialog' ) . ' (4d)';;
+			return $this->message;
+		}
+
+		// validate that the file was uploaded via HTTP POST
+		if ( empty( is_uploaded_file( $safe_file_tmp_name ) ) ) {
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' (2)';
+			return $this->message;
+		}
+
+		// check for upload errors
+		$file_error = empty( $_FILES['import_file']['error'] ) ? '' : sanitize_text_field( $_FILES['import_file']['error'] );
+		if ( ! empty( $file_error ) ) {
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' ' . $file_error . ' (3)';;
+			return $this->message;
+		}
+
+		// check the file type and extension
+		$file_info = wp_check_filetype_and_ext( $safe_file_tmp_name, $sanitized_file_name, [ 'json' => 'application/json' ] );
+		if ( empty( $file_info['ext'] ) || empty( $file_info['type'] ) ) {
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' (5)';;
+			return $this->message;
+		}
+
+		// check the MIME type is JSON
+		if ( $file_info['type'] != 'application/json' || $file_info['ext'] != 'json' ) {
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' (6)';;
 			return $this->message;
 		}
 
 		// retrieve content of the imported file
 		//phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$import_data_file = file_get_contents( $import_file_name );
+		$import_data_file = file_get_contents( $safe_file_tmp_name );
 		if ( empty( $import_data_file ) ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (1)';
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (7)';
 			return $this->message;
 		}
 
 		// validate imported data
 		$import_data = json_decode( $import_data_file, true );
 		if ( empty( $import_data ) || ! is_array( $import_data ) ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (2)';
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (8)';
 			return $this->message;
 		}
 
@@ -271,7 +310,7 @@ class EPKB_Export_Import {
 			case 'epkb':
 				$last_version = empty($import_plugin_version) ? '6.9.9' : $import_plugin_version;
 				if ( $last_version != Echo_Knowledge_Base::$version ) {
-					EPKB_Upgrades::run_upgrade( $plugin_config, $last_version );
+					EPKB_Upgrades::run_upgrades( $plugin_config, $last_version );
 				}
 				break;
 

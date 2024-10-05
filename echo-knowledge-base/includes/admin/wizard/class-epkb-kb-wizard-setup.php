@@ -27,7 +27,7 @@ class EPKB_KB_Wizard_Setup {
 
 	function __construct( $kb_config=array() ) {
 		$this->kb_config = $kb_config;
-		$this->is_setup_run_first_time = EPKB_Core_Utilities::is_run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
+		$this->is_setup_run_first_time = EPKB_Core_Utilities::run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
 
 		$this->elay_enabled = EPKB_Utilities::is_elegant_layouts_enabled();
 		$this->is_old_elay = $this->elay_enabled && class_exists( 'Echo_Elegant_Layouts' ) && version_compare( Echo_Elegant_Layouts::$version, '2.14.1', '<=' );
@@ -149,10 +149,11 @@ class EPKB_KB_Wizard_Setup {
 					<div class="epkb-wizard-content">   <?php
 
 						if ( $this->kb_config['modular_main_page_toggle'] == 'off' ) {
-							echo EPKB_HTML_Forms::notification_box_middle( array(
+							$notification_escaped = EPKB_HTML_Forms::notification_box_middle( array(
 								'type' => 'error',
 								'desc' => esc_html__( 'Please switch to Modules in Settings UI before proceeding with Setup Wizard', 'echo-knowledge-base' ),
 							), true );
+							echo $notification_escaped;
 						} else {
 							foreach ( $setup_steps_config as $step_index => $step_config ) {
 								//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -734,7 +735,7 @@ class EPKB_KB_Wizard_Setup {
 				echo wp_kses( $args['info_html'], EPKB_Utilities::get_admin_ui_extended_html_tags() );
 			}   ?>
 		</div>  <?php
-		$first_time = EPKB_Core_Utilities::is_run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
+		$first_time = EPKB_Core_Utilities::run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
 		if ( ! $first_time && isset( $args['content_show_option'] ) ) { ?>
 			<div class="epkb-setup-wizard-theme-content-show-option" data-current-layout="<?php echo esc_attr( $args['content_show_option']['current_layout'] ); ?>">
 				<h5 class="epkb-setup-wizard-theme-content-show-option__text"><?php echo esc_html( $args['content_show_option']['text'] ); ?></h5> <?php

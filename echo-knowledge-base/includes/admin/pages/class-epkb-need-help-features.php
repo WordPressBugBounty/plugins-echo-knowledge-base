@@ -116,7 +116,7 @@ class EPKB_Need_Help_Features {
 				}
 
 				// Link to Configure ( only if dedicated plugin is active and initial KB installation is completed )
-				if ( ! empty( $feature['config'] ) && EPKB_Utilities::is_plugin_enabled( $feature['plugin'] ) && ! EPKB_Core_Utilities::is_run_setup_wizard_first_time() && ( current_user_can( EPKB_Admin_UI_Access::get_admin_capability() ) || ( ! empty( $feature['min_capability'] ) && current_user_can( $feature['min_capability'] ) ) ) ) {   ?>
+				if ( ! empty( $feature['config'] ) && EPKB_Utilities::is_plugin_enabled( $feature['plugin'] ) && ! EPKB_Core_Utilities::run_setup_wizard_first_time() && ( current_user_can( EPKB_Admin_UI_Access::get_admin_capability() ) || ( ! empty( $feature['min_capability'] ) && current_user_can( $feature['min_capability'] ) ) ) ) {   ?>
 					<a class="epkb-kbnh__feature-link" href="<?php echo esc_url( $feature['config'] ); ?>" target="_blank"><span><?php esc_html_e( 'Configure', 'echo-knowledge-base' ); ?></span></a>    <?php
 				}
 

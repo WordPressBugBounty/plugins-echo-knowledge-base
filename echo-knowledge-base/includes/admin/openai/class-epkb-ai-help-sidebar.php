@@ -62,7 +62,7 @@ class EPKB_AI_Help_Sidebar {
 			return;
 		}
 
-		$openai_api_key = EPKB_Utilities::get_wp_option( 'epkb_openai_api_key', '' );
+		$openai_api_key = EPKB_OpenAI::get_openai_api_key();
 		$openai_settings_capability = EPKB_Admin_UI_Access::get_admin_capability(); ?>
 
 		<!-- AI Help Sidebar -->
@@ -277,13 +277,14 @@ class EPKB_AI_Help_Sidebar {
 
                 <!-- OpenAI API Key -->
                 <div class="epkb-ai-help-sidebar__settings-group">  <?php
+	                $api_key = EPKB_OpenAI::get_openai_api_key();
 					EPKB_HTML_Elements::text( [
 						'label'         => esc_html__( 'OpenAI API Key', 'echo-knowledge-base' ),
 						'name'          => 'openai_api_key',
 						'max'           => '500',
 						'min'           => '0',
 						'default'       => '',
-						'value'         => EPKB_Utilities::get_wp_option( 'epkb_openai_api_key', '' ),
+						'value'         =>  empty( $api_key ) ? '' : substr( $api_key, 0, 2 ) . '...' . substr( $api_key, -4 ),
 						'tooltip_body'  => esc_html__( 'Enter your OpenAI API key.', 'echo-knowledge-base' ) . ' <a href="https://beta.openai.com/account/api-keys" target="_blank" rel="noopener">' . esc_html__( 'Get OpenAI API Key', 'echo-knowledge-base' ) . '</a>',
 						'tooltip_args'  => [ 'open-icon' => 'info' ],
 					] );    ?>

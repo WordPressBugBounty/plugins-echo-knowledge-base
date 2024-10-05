@@ -49,13 +49,15 @@ class EPKB_ML_FAQs {
 
 		$faq_groups = EPKB_FAQs_Utilities::get_faq_groups( $selected_faq_group_ids, 'include' );
 		if ( is_wp_error( $faq_groups ) ) {
-			echo EPKB_FAQs_Utilities::display_error( $faq_groups->get_error_message() );
+			echo EPKB_FAQs_Utilities::display_error( $faq_groups->get_error_message() );//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		$faq_groups_questions = EPKB_FAQs_Utilities::get_faq_groups_questions( $faq_groups );
 
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo EPKB_FAQs_Utilities::display_faqs( $this->kb_config, $faq_groups_questions, $this->kb_config['ml_faqs_title_text'] );
+		$faqs_html_escaped = EPKB_FAQs_Utilities::display_faqs( $this->kb_config, $faq_groups_questions, $this->kb_config['ml_faqs_title_text'] );
+
+		echo $faqs_html_escaped;//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	private function get_faqs_as_categories_legacy( $faqs_category_ids ) {

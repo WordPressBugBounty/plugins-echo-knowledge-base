@@ -230,9 +230,11 @@ class EPKB_AI_Help_Sidebar_Ctrl {
 		// API key
 		$openai_api_key = EPKB_Utilities::post( 'openai_api_key' );
 
-		$result = EPKB_Utilities::save_wp_option( 'epkb_openai_api_key', $openai_api_key );
-		if ( is_wp_error( $result ) ) {
-			self::ajax_show_error_die( $result->get_error_message() );
+		if ( empty( $openai_api_key ) || strpos( $openai_api_key, '...' ) === false ) {
+			$result = EPKB_OpenAI::save_openai_api_key( $openai_api_key );
+			if ( is_wp_error( $result ) ) {
+				self::ajax_show_error_die($result->get_error_message());
+			}
 		}
 
 		$disable_openai = EPKB_Utilities::post( 'disable_openai', 'on' ) == 'on';

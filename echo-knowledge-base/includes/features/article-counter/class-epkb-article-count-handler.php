@@ -159,7 +159,7 @@ class EPKB_Article_Count_Handler {
 		}
 
 		// check is cookie set to track articles and their last view time
-		$article_views = isset( $_COOKIE['epkb_article_views_counter'] ) ? json_decode( stripslashes( $_COOKIE['epkb_article_views_counter'] ), true ) : null;
+		$article_views = EPKB_Utilities::post( 'epkb_article_views_counter', [], 'db-config-json' );
 		if ( ! is_array( $article_views ) ) {
 			setcookie( 'epkb_article_views_counter', wp_json_encode( [] ), time() + MONTH_IN_SECONDS, '/' );
 			return false;
@@ -191,7 +191,7 @@ class EPKB_Article_Count_Handler {
 			return;
 		}
 
-		$article_views = empty( $_COOKIE['epkb_article_views_counter'] ) ? [] : json_decode( stripslashes( $_COOKIE['epkb_article_views_counter'] ), true );
+		$article_views = EPKB_Utilities::post( 'epkb_article_views_counter', [], 'db-config-json' );
 		if ( ! is_array( $article_views ) ) {
 			$article_views = [];
 		}

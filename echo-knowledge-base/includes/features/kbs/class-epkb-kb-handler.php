@@ -260,8 +260,7 @@ class EPKB_KB_Handler {
 		}
 
 		// REST API
-		//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$request_uri = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+		$request_uri = empty( $_SERVER['REQUEST_URI'] ) ? '' : sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 		if ( ! empty( $request_uri ) && strpos( $request_uri, '/wp-json/wp/' ) !== false && strpos( $request_uri, '/' . self::KB_POST_TYPE_PREFIX ) !== false ) {
 			return self::get_kb_id_from_rest_endpoint( $request_uri );
 		}
@@ -574,8 +573,7 @@ class EPKB_KB_Handler {
 			$content = $found_post->post_content;
 		} else {
 			$content = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta " .
-			                           "WHERE post_id = %d and meta_value LIKE '%%" . self::KB_MAIN_PAGE_SHORTCODE_NAME . "%%'",
-										$found_post->ID ) );
+			                           "WHERE post_id = %d AND meta_value LIKE %s", $found_post->ID, '%' . $wpdb->esc_like( self::KB_MAIN_PAGE_SHORTCODE_NAME ) . '%' ) );
 		}
 
 		// does page have KB shortcode?

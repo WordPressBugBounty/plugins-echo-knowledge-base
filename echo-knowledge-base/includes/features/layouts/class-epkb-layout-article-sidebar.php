@@ -96,15 +96,15 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 		$category_name = isset( $this->articles_seq_data[ $category_id ][0] ) ? $this->articles_seq_data[ $category_id ][0] : 'Uncategorized';
 		$category_desc = isset( $this->articles_seq_data[ $category_id ][1] ) && $this->kb_config['sidebar_section_desc_text_on'] == 'on' ? $this->articles_seq_data[ $category_id ][1] : '';
 
-		$class1 = $this->get_css_class( '::sidebar_expand_articles_icon, epkb_sidebar_expand_category_icon' );
+		$class1_escaped = $this->get_css_class( '::sidebar_expand_articles_icon, epkb_sidebar_expand_category_icon' );
 
 		$sidebar_top_categories_collapsed = $this->kb_config['sidebar_top_categories_collapsed'];
 		$topClassCollapse = $this->kb_config['sidebar_top_categories_collapsed'] == 'on' ? ' epkb-top-class-collapse-on' : '';
 
-		$top_category_style = $this->get_inline_style(
+		$top_category_style_escaped = $this->get_inline_style(
 			'typography:: sidebar_section_category_typography'
 		);
-		$top_category_desc_style = $this->get_inline_style(
+		$top_category_desc_style_escaped = $this->get_inline_style(
 			'typography:: sidebar_section_category_typography_desc'
 		); ?>
 
@@ -113,15 +113,15 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 
 				<!-- CATEGORY ICON -->
 				<div class="epkb-sidebar__heading__inner__name">					<?php
-					if ( $sidebar_top_categories_collapsed == 'on' ) echo '<span ' . $class1 . '></span>'; ?>
-					<h2 class="epkb-sidebar__heading__inner__cat-name" <?php echo $top_category_style; ?>><?php echo  esc_html( $category_name ); ?></h2>
+					if ( $sidebar_top_categories_collapsed == 'on' ) echo '<span ' . $class1_escaped . '></span>'; ?>
+					<h2 class="epkb-sidebar__heading__inner__cat-name" <?php echo $top_category_style_escaped; ?>><?php echo  esc_html( $category_name ); ?></h2>
 				</div>
 
 
 				<!-- CATEGORY DESC --> <?php
 				if ( $category_desc ) { ?>
 					<div class="epkb-sidebar__heading__inner__desc">
-						<p <?php echo $top_category_desc_style; ?>><?php echo wp_kses_post( $category_desc ); ?></p>
+						<p <?php echo $top_category_desc_style_escaped; ?>><?php echo wp_kses_post( $category_desc ); ?></p>
 					</div>
 					<?php
 				} ?>
@@ -131,11 +131,11 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 
 	private function display_section_body_V2( $subcategories, $category_id, $current_category_id ) {
 
-		$top_category_body_style = $this->get_inline_style(
+		$top_category_body_style_escaped = $this->get_inline_style(
 			'typography:: sidebar_section_body_typography'
 		); ?>
 
-		<div class="epkb-sidebar__cat__top-cat__body-container" <?php echo $top_category_body_style; ?>>  <?php
+		<div class="epkb-sidebar__cat__top-cat__body-container" <?php echo $top_category_body_style_escaped; ?>>  <?php
 
 			$sub_category_list = is_array( $subcategories ) ? $subcategories : array();
 
@@ -152,13 +152,14 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 						$sub_category_name = isset( $this->articles_seq_data[ $sub_category_id ][0] ) ?
 							$this->articles_seq_data[ $sub_category_id ][0] : _x( 'Category', 'taxonomy singular name' );
 
-						$class1 = $this->get_css_class( '::sidebar_expand_articles_icon, epkb_sidebar_expand_category_icon' );
-						$style1 = $this->get_inline_style( 'color:: sidebar_section_category_icon_color' ); ?>
+						$class1_escaped = $this->get_css_class( '::sidebar_expand_articles_icon, epkb_sidebar_expand_category_icon' );
+						$style1_escaped = $this->get_inline_style( 'color:: sidebar_section_category_icon_color' );
+						$style2_escaped = $this->get_inline_style( 'padding-bottom:: article_list_spacing,padding-top::article_list_spacing' ); ?>
 
 						<li>
 							<div class="epkb-category-level-2-3<?php echo ( $current_category_id == $sub_category_id ? ' ' . 'epkb-sidebar__cat__current-cat' : '' ); ?>" <?php
-								echo $this->get_inline_style( 'padding-bottom:: article_list_spacing,padding-top::article_list_spacing' ); ?>>
-								<span <?php echo $class1 . ' ' . $style1; ?> ></span>
+								echo $style2_escaped; ?>>
+								<span <?php echo $class1_escaped . ' ' . $style1_escaped; ?> ></span>
 								<a class="epkb-category-level-2-3__cat-name">
 									<h3><?php echo esc_html( $sub_category_name ); ?></h3>
 								</a>
@@ -204,15 +205,15 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 					$sub_category_name = isset( $this->articles_seq_data[ $sub_sub_category_id ][0] ) ?
 						$this->articles_seq_data[ $sub_sub_category_id ][0] : 'Category.';
 
-					$class1 = $this->get_css_class( '::sidebar_expand_articles_icon, epkb_sidebar_expand_category_icon' );
-					$style1 = $this->get_inline_style( 'color:: sidebar_section_category_icon_color' );
-					$style2 = $this->get_inline_style( 'color:: sidebar_section_category_font_color' ); ?>
+					$class1_escaped = $this->get_css_class( '::sidebar_expand_articles_icon, epkb_sidebar_expand_category_icon' );
+					$style1_escaped = $this->get_inline_style( 'color:: sidebar_section_category_icon_color' );
+					$style2_escaped = $this->get_inline_style( 'color:: sidebar_section_category_font_color' ); ?>
 
 					<li>
 						<div class="epkb-category-level-2-3<?php echo ( $current_category_id == $sub_sub_category_id ? ' ' . 'epkb-sidebar__cat__current-cat' : '' ); ?>" <?php
 								echo $this->get_inline_style( 'padding-bottom:: article_list_spacing, padding-top::article_list_spacing' ); ?>>
-							<span <?php echo $class1 . ' ' . $style1; ?> ></span>
-							<a class="epkb-category-level-2-3__cat-name" <?php echo $style2; ?> >
+							<span <?php echo $class1_escaped . ' ' . $style1_escaped; ?> ></span>
+							<a class="epkb-category-level-2-3__cat-name" <?php echo $style2_escaped; ?> >
 								<h<?php echo esc_attr( $levelNum ); ?>><?php echo esc_html( $sub_category_name ); ?></h<?php echo esc_attr( $levelNum ); ?> >
 							</a>
 						</div> <?php

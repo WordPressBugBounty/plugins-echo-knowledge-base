@@ -117,7 +117,7 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'first_plugin_version',
 				'type'        => EPKB_Input_Filter::TEXT,
 				'internal'    => true,
-				'default'     => '12.30.99'     // TODO Echo_Knowledge_Base::$version
+				'default'     => EPKB_Upgrades::NOT_INITIALIZED    // TODO 2025 Echo_Knowledge_Base::$version
 			),
 			'upgrade_plugin_version' => array(
 				'label'       => 'upgrade_plugin_version',
@@ -125,7 +125,7 @@ class EPKB_KB_Config_Specs {
 				'min'         => '0',
 				'type'        => EPKB_Input_Filter::TEXT,
 				'internal'    => true,
-				'default'     => '12.30.99',    // TODO Echo_Knowledge_Base::$version
+				'default'     => EPKB_Upgrades::NOT_INITIALIZED,    // TODO 2025 Echo_Knowledge_Base::$version
 			),
 
 

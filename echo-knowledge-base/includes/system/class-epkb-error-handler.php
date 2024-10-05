@@ -8,7 +8,6 @@
 class EPKB_Error_Handler {
 
 	public static function add_assets() {
-
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		// CSS
@@ -24,7 +23,8 @@ class EPKB_Error_Handler {
 	 * Show JS errors caught by JS error handler
 	 */
 	public static function add_error_popup() {
-	   echo '
+		$support_html_escaped = EPKB_Utilities::contact_us_for_support();
+		echo '
 			<div style="display:none;" class="epkb-js-error-notice">
 				<div class="epkb-js-error-close">&times;</div>
 				<div class="epkb-js-error-title">' . esc_html__( 'We found a JavaScript error on this page caused by a plugin', 'echo-knowledge-base' ) . '</div>
@@ -32,7 +32,7 @@ class EPKB_Error_Handler {
 					<div class="epkb-js-error-msg"></div>' .
 					' ' . esc_html__( 'in', 'echo-knowledge-base' ) . ' <div class="epkb-js-error-url"></div>' . '
 				</div>
-				<div>' . EPKB_Utilities::contact_us_for_support() . '</div>
+				<div>' . $support_html_escaped /** phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ . '</div>
 				<div class="epkb-js-error-about">' . esc_html__( 'Check browser console for more information', 'echo-knowledge-base' ) . '</div>
 			</div>';
 	}
