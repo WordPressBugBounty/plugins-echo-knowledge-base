@@ -1906,7 +1906,8 @@ class EPKB_Config_Settings_Page {
 					'title'     => esc_html__( 'Article Content Settings', 'echo-knowledge-base' ),
 					'fields'    => [
 						'article-body-desktop-width-v2' => '',
-					]
+					],
+                    'data'      => [ 'target' => 'article_content' ],
 				),
 				array(
 					'title'     => esc_html__( 'Article Views Counter', 'echo-knowledge-base' ),

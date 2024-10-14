@@ -663,7 +663,7 @@ class EPKB_Articles_Setup {
 
 		end( $breadcrumb_tree );
 		$category_id = key( $breadcrumb_tree );
-		if ( empty($category_id) ) {
+		if ( empty( $category_id ) ) {
 			return;
 		}
 
@@ -684,20 +684,23 @@ class EPKB_Articles_Setup {
 		}
 
 		// articles ids considering category and article sequences
-		$articles_general_seq_ids = self::get_article_general_seq_ids( $category_seq_data, $articles_seq_data );
+		$articles_general_seq_ids = self::get_article_general_seq_ids( $category_seq_data, $articles_seq_data, $kb_config );
 
 		/* Fetch all article Ids in sequence End*/
 
-		$current_post_key = array_search( $post_id, $articles_general_seq_ids );
-		if ( $current_post_key === false ) {
+		$repeat_current_post_keys = array_keys( $articles_general_seq_ids, $post_id );
+		if ( empty( $repeat_current_post_keys ) ) {
 			return;
 		}
+		$current_post_seq_no = (int)EPKB_Utilities::get( 'seq_no', 0 );
+		$current_post_seq_index = $current_post_seq_no > 0 ? $current_post_seq_no - 1 : $current_post_seq_no;
+		$current_post_key = $repeat_current_post_keys[ $current_post_seq_index ];
 
 		// search previous post id depends on user access
 		$index = $current_post_key - 1;
 		$prev_post_id = 0;
 		while ( $index >= 0 ) {
-			if ( ! empty($articles_general_seq_ids[$index]) && EPKB_Utilities::is_article_allowed_for_current_user( $articles_general_seq_ids[$index] ) ) {
+			if ( ! empty( $articles_general_seq_ids[$index] ) && EPKB_Utilities::is_article_allowed_for_current_user( $articles_general_seq_ids[$index] ) ) {
 				$prev_post_id = $articles_general_seq_ids[$index];
 				break;
 			}
@@ -708,7 +711,7 @@ class EPKB_Articles_Setup {
 		$index = $current_post_key + 1;
 		$next_post_id = 0;
 		while ( $index < count( $articles_general_seq_ids ) ) {
-			if ( ! empty($articles_general_seq_ids[$index]) && EPKB_Utilities::is_article_allowed_for_current_user( $articles_general_seq_ids[$index] ) ) {
+			if ( ! empty( $articles_general_seq_ids[$index] ) && EPKB_Utilities::is_article_allowed_for_current_user( $articles_general_seq_ids[$index] ) ) {
 				$next_post_id = $articles_general_seq_ids[$index];
 				break;
 			}
@@ -719,15 +722,15 @@ class EPKB_Articles_Setup {
 		$category_seq_array = self::epkb_get_array_keys_multiarray( $category_seq_data, $kb_config );
 
 		$repeat_cat_id = array(); // Array of articles id with seq_no
-		if ( ! empty($category_seq_array) ) {
+		if ( ! empty( $category_seq_array ) ) {
 			$repeat_id = array();
 
 			foreach( $category_seq_array as $cat_seq_id ) {
 
-				if ( ! empty($articles_seq_data[$cat_seq_id]) ) {
+				if ( ! empty( $articles_seq_data[$cat_seq_id] ) ) {
 					foreach( $articles_seq_data[$cat_seq_id] as $key => $value ) {
 						if ( $key > 1 ) {
-							$repeat_id[$key] = isset($repeat_id[$key]) ? $repeat_id[$key] + 1 : 1;
+							$repeat_id[$key] = isset( $repeat_id[$key] ) ? $repeat_id[$key] + 1 : 1;
 							$repeat_cat_id[$key][$cat_seq_id] = $repeat_id[$key];
 						}
 					}
@@ -743,7 +746,7 @@ class EPKB_Articles_Setup {
 
 			$prev_seq_no = isset( $repeat_cat_id[$prev_post_id][$category_id] ) ? $repeat_cat_id[$prev_post_id][$category_id] : 1;
 			$prev_link = get_permalink( $prev_post_id );
-			$prev_link = empty($prev_seq_no) || $prev_seq_no < 2 ? $prev_link : add_query_arg( 'seq_no', $prev_seq_no, $prev_link );
+			$prev_link = empty( $prev_seq_no ) || $prev_seq_no < 2 ? $prev_link : add_query_arg( 'seq_no', $prev_seq_no, $prev_link );
 
 			// linked articles have their own icon
 			$article_title_icon = 'ep_font_icon_document';
@@ -756,9 +759,13 @@ class EPKB_Articles_Setup {
 			if ( has_filter( 'eckb_link_newtab_filter' ) ) {
 				$new_tab = apply_filters( 'eckb_link_newtab_filter', $prev_post_id );
 			}
+			$new_tab = ! empty( $new_tab );
+
+			// external links have rel="noopener noreferrer", while internal links have rel="prev"
+			$prev_rel_escaped = EPKB_Utilities::is_internal_url( $prev_link ) ? 'prev' : 'noopener noreferrer';
 
 			$prev_link =
-				'<a href="' . esc_url( $prev_link ) . '" ' . esc_attr( $new_tab ) . ' rel="prev">
+				'<a href="' . esc_url( $prev_link ) . '" ' . ( $new_tab ? "target='_blank' " : '' ) . 'rel="' . $prev_rel_escaped . '">
 					<span class="epkb-article-navigation__label">
 					    <span class="epkb-article-navigation__label__previous__icon epkbfa epkbfa-caret-left"></span>
 					    ' . esc_html( $prev_navigation_text ) . '
@@ -771,7 +778,7 @@ class EPKB_Articles_Setup {
 		}
 
 		$next_link = '';
-		if ( ! empty($next_post_id) ) {
+		if ( ! empty( $next_post_id ) ) {
 
 			$next_seq_no = isset( $repeat_cat_id[$next_post_id][$category_id] ) ? $repeat_cat_id[$next_post_id][$category_id] : 1;
 			$next_link = get_permalink( $next_post_id );
@@ -788,9 +795,13 @@ class EPKB_Articles_Setup {
 			if ( has_filter('eckb_link_newtab_filter' ) ) {
 				$new_tab = apply_filters( 'eckb_link_newtab_filter', $next_post_id );
 			}
+			$new_tab = ! empty( $new_tab );
+
+			// external links have rel="noopener noreferrer", while internal links have rel="next"
+			$next_rel_escaped = EPKB_Utilities::is_internal_url( $next_link ) ? 'next' : 'noopener noreferrer';
 
 			$next_link =
-				'<a href="' . esc_url( $next_link ) . '" ' . esc_attr( $new_tab ) . ' rel="next">
+				'<a href="' . esc_url( $next_link ) . '" ' . ( $new_tab ? "target='_blank' " : '' ) . 'rel="' . $next_rel_escaped . '">
 					<span class="epkb-article-navigation__label">
 					    ' . esc_html( $next_navigation_text ) . '
 					    <span class="epkb-article-navigation__label__next__icon epkbfa epkbfa-caret-right"></span>
@@ -1670,34 +1681,64 @@ class EPKB_Articles_Setup {
 	 *
 	 * @param $category_seq_data
 	 * @param $articles_seq_data
+	 * @param $kb_config
 	 * @return array
 	 */
-	private static function get_article_general_seq_ids( $category_seq_data, $articles_seq_data ) {
+	private static function get_article_general_seq_ids( $category_seq_data, $articles_seq_data, $kb_config ) {
 
 		$categories_general_seq_ids = array();
+		$show_articles_before_categories = $kb_config['show_articles_before_categories'] == 'on';
 
 		// collect category ids lvl 1
 		foreach ( $category_seq_data as $cat_lvl1_id => $cat_lvl2_data ) {
-			$categories_general_seq_ids[] = $cat_lvl1_id;
+
+			if ( $show_articles_before_categories ) {
+				$categories_general_seq_ids[] = $cat_lvl1_id;
+			}
 
 			// collect category ids lvl 2
 			foreach ( $cat_lvl2_data as $one_cat_lvl2_id => $cat_lvl3_data ) {
-				$categories_general_seq_ids[] = $one_cat_lvl2_id;
+
+				if ( $show_articles_before_categories ) {
+					$categories_general_seq_ids[] = $one_cat_lvl2_id;
+				}
 
 				// collect category ids lvl 3
 				foreach ( $cat_lvl3_data as $one_cat_lvl3_id => $cat_lvl4_data ) {
-					$categories_general_seq_ids[] = $one_cat_lvl3_id;
+
+					if ( $show_articles_before_categories ) {
+						$categories_general_seq_ids[] = $one_cat_lvl3_id;
+					}
 
 					// collect category ids lvl 4
 					foreach ( $cat_lvl4_data as $one_cat_lvl4_id => $cat_lvl5_data ) {
-						$categories_general_seq_ids[] = $one_cat_lvl4_id;
+
+						if ( $show_articles_before_categories ) {
+							$categories_general_seq_ids[] = $one_cat_lvl4_id;
+						}
 
 						// collect category ids lvl 5
 						foreach ( $cat_lvl5_data as $one_cat_lvl5_id => $cat_lvl6_data ) {
 							$categories_general_seq_ids[] = $one_cat_lvl5_id;
 						}
+
+						if ( ! $show_articles_before_categories ) {
+							$categories_general_seq_ids[] = $one_cat_lvl4_id;
+						}
+					}
+
+					if ( ! $show_articles_before_categories ) {
+						$categories_general_seq_ids[] = $one_cat_lvl3_id;
 					}
 				}
+
+				if ( ! $show_articles_before_categories ) {
+					$categories_general_seq_ids[] = $one_cat_lvl2_id;
+				}
+			}
+
+			if ( ! $show_articles_before_categories ) {
+				$categories_general_seq_ids[] = $cat_lvl1_id;
 			}
 		}
 

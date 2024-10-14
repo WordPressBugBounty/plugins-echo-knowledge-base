@@ -69,18 +69,17 @@ jQuery(document).ready(function($) {
 			prop_name: $(this).attr('name'),
 		};
 
+		if ( ! $('.eckb-kb-no-content').length ) {
+			$('body').append('<div class="eckb-kb-no-content"></div>');
+		}
+
+		epkb_loading_Dialog( 'show', '', $('body .eckb-kb-no-content') );
+
 		$.ajax({
 			type: 'POST',
 			dataType: 'json',
 			data: postData,
 			url: epkb_vars.ajaxurl,
-			beforeSend: function (xhr) {
-				if ( ! $('.eckb-kb-no-content').length ) {
-					$('#epkb-modular-main-page-container').append('<div class="eckb-kb-no-content"></div>');
-				}
-
-				epkb_loading_Dialog( 'show', '', $('#epkb-modular-main-page-container .eckb-kb-no-content') );
-			}
 		}).success(function (response) {
 			if ( response.success ) {
 				//create local storage

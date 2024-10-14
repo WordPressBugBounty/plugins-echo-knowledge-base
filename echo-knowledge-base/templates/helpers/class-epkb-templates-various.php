@@ -203,8 +203,6 @@ class EPKB_Templates_Various {
                         continue;
                     }
 
-
-
                     // find it on the fourth level
                     foreach( $sub_sub_sub_categories as $sub_sub_sub_category_id => $sub_sub_sub_sub_categories ) {
 
@@ -212,15 +210,12 @@ class EPKB_Templates_Various {
                             continue;
                         }
 
-
-
                         // find it on the fifth level
                         foreach( $sub_sub_sub_sub_categories as $sub_sub_sub_sub_category_id => $sub_sub_sub_sub_sub_categories ) {
 
                             if ( empty($articles_seq_data[$sub_sub_sub_sub_category_id][0]) ) {
                                 continue;
                             }
-
 
                             // find it on the sixth level
                             foreach( $sub_sub_sub_sub_sub_categories as $sub_sub_sub_sub_sub_category_id => $sub_sub_sub_sub_sub_sub_categories ) {

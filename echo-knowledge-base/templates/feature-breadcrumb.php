@@ -46,7 +46,7 @@ if ( EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
 }
 
 // setup breadcrumb links
-$breadcrumb = array($kb_config['breadcrumb_home_text'] => $kb_main_page_url);
+$breadcrumb = array( $kb_config['breadcrumb_home_text'] => $kb_main_page_url );
 
 // breadcrumb for the article
 if ( $article_rec ) {
@@ -58,7 +58,7 @@ if ( $article_rec ) {
 		$breadcrumb += array($category_name => $term_link);
 	}
 
-	$breadcrumb += array($article_rec->post_title => '#');
+	$breadcrumb += array( $article_rec->post_title => '#' );
 }
 
 // breadcrumb for the category
@@ -73,15 +73,15 @@ if ( $term_rec ) {
 		}
 
 		$term_link = EPKB_Utilities::get_term_url( $category_id, $term_rec->taxonomy );
-		$breadcrumb += array($term->name => $term_link);
+		$breadcrumb += array( $term->name => $term_link );
 	}
 
-	$breadcrumb += array($term_rec->name => '#');
+	$breadcrumb += array( $term_rec->name => '#' );
 }
 
 
 //Saved Setting values
-$breadcrumb_style1 = EPKB_Utilities::get_inline_style( '
+$breadcrumb_style1_escaped = EPKB_Utilities::get_inline_style( '
 							padding-top::    breadcrumb_padding_top, 
 							padding-right:: breadcrumb_padding_right,
 							padding-bottom:: breadcrumb_padding_bottom, 
@@ -91,10 +91,10 @@ $breadcrumb_style1 = EPKB_Utilities::get_inline_style( '
 							margin-bottom:: ' . ( isset( $kb_config['use_old_margin_bottom'] ) && $kb_config['use_old_margin_bottom'] ? 'breadcrumb_margin_bottom_old' : 'breadcrumb_margin_bottom' ) . ', ' . '
 							margin-left:: breadcrumb_margin_left,
 							typography::breadcrumb_typography', $kb_config );
-$breadcrumb_style2 = EPKB_Utilities::get_inline_style( 'color:: breadcrumb_text_color', $kb_config );
-$breadcrumb_style3 = EPKB_Utilities::get_inline_style( 'typography::breadcrumb_typography', $kb_config ); ?>
+$breadcrumb_style2_escaped = EPKB_Utilities::get_inline_style( 'color:: breadcrumb_text_color', $kb_config );
+$breadcrumb_style3_escaped = EPKB_Utilities::get_inline_style( 'typography::breadcrumb_typography', $kb_config ); ?>
 
-	<div class="eckb-breadcrumb" <?php echo esc_attr( $breadcrumb_style1 ); ?>>    <?php
+	<div class="eckb-breadcrumb" <?php echo $breadcrumb_style1_escaped; ?>>    <?php    //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		if ( !empty( $kb_config['breadcrumb_description_text'] ) || !empty( $_REQUEST['epkb-editor-page-loaded'] ) ) { ?>
 			<div class="eckb-breadcrumb-label">
@@ -106,7 +106,7 @@ $breadcrumb_style3 = EPKB_Utilities::get_inline_style( 'typography::breadcrumb_t
 				$ix = 0;
 				foreach ( $breadcrumb as $text => $link ) {
 
-					echo '<li ' . esc_attr( $breadcrumb_style3 ) . '>';
+					echo '<li ' . $breadcrumb_style3_escaped . '>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '	<span class="eckb-breadcrumb-link">';
 
 					$ix++;
@@ -116,13 +116,13 @@ $breadcrumb_style3 = EPKB_Utilities::get_inline_style( 'typography::breadcrumb_t
 					// output URL if not the last crumb
 					if ( $ix < sizeof( $breadcrumb ) ) {
 						if ( empty( $link ) ) {
-							echo '<span ' . esc_attr( $breadcrumb_style2 ) . ' >' . esc_html( $text ) . '</span>';
+							echo '<span ' .  $breadcrumb_style2_escaped . ' >' . esc_html( $text ) . '</span>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						} else {
-							echo '<a tabindex="0" href="' . esc_url( $link ) . '"><span ' . esc_attr( $breadcrumb_style2 ) . ' >' . esc_html( $text ) . '</span></a>';
+							echo '<a tabindex="0" href="' . esc_url( $link ) . '"><span ' . $breadcrumb_style2_escaped . ' >' . esc_html( $text ) . '</span></a>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						}
 						echo '<span class="eckb-breadcrumb-link-icon ' . esc_html( $kb_config['breadcrumb_icon_separator'] ) . '" aria-hidden="true"></span>';
 					} else {
-						echo '<span aria-current="page"' . esc_attr( $breadcrumb_style2 ) . ' >' . esc_html( $text ) . '</span>';
+						echo '<span aria-current="page"' . $breadcrumb_style2_escaped . ' >' . esc_html( $text ) . '</span>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					}
 
 					echo '	</span>';

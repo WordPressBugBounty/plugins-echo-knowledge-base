@@ -42,14 +42,14 @@ echo '<div class="eckb-navigation-back  ' . //$kb_config['back_navigation_hover'
 
 if ( $kb_config['back_navigation_mode'] == 'navigate_kb_main_page' ) {
 	echo '<div class="eckb-navigation-button">';
-    echo '<a tabindex="0" href="' . esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '" ' . $button_style2_escaped . '>' . esc_html( $kb_config['back_navigation_text'] ) .  '</a>';
+    echo '<a tabindex="0" href="' . esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '" ' . $button_style2_escaped . '>' . esc_html( $kb_config['back_navigation_text'] ) .  '</a>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo '</div>';
 } else {
 	
 	if (  empty( $_REQUEST['epkb-editor-page-loaded'] ) ) {
-		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2_escaped . ' onclick="history.go(-1);" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';
+		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2_escaped . ' onclick="history.go(-1);" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	} else {
-		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2_escaped . ' onclick="return false;" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';
+		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2_escaped . ' onclick="return false;" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
 

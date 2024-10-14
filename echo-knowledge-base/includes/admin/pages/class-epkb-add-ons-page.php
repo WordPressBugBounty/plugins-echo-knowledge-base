@@ -313,7 +313,7 @@ class EPKB_Add_Ons_Page {
 		if ( ! function_exists( 'plugins_api' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 		}
-        
+
 		remove_all_filters( 'plugins_api' );
 
 		$our_free_plugins = array();
@@ -340,8 +340,8 @@ class EPKB_Add_Ons_Page {
 
 		ob_start(); ?>
 		<div class="wrap recommended-plugins">
-            <div class="wp-list-table widefat plugin-install">
-                <div class="the-list">  <?php
+			<div class="wp-list-table widefat plugin-install">
+				<div class="the-list">  <?php
 
 					foreach( $our_free_plugins as $plugin ) {
 						self::display_our_free_plugin_box_html( $plugin );

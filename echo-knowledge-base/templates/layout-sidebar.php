@@ -43,7 +43,7 @@ $template_style_escaped = EPKB_Utilities::get_inline_style(
 				$article_class_escaped .= 'eckb-article-defaults ';
 			}		?>
 
-	<div class="eckb-kb-template <?php echo $article_class_escaped; ?>" <?php echo $template_style_escaped; ?>>	        <?php
+	<div class="eckb-kb-template <?php echo $article_class_escaped; ?>" <?php echo $template_style_escaped; ?>>	        <?php //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	    echo $kb_main_pg_title_escaped;
 

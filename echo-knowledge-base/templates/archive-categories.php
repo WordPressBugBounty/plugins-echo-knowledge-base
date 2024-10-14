@@ -444,6 +444,7 @@ function epkb_main_content( $args ) {
 			if ( has_filter('eckb_link_newtab_filter' ) ) {
 				$new_tab = apply_filters( 'eckb_link_newtab_filter', $post->ID );
 			}
+			$new_tab = ! empty( $new_tab );
 
 			$article_link = get_permalink( $post_id );
 			if ( ! has_filter( 'article_with_seq_no_in_url_enable' ) ) {
@@ -457,8 +458,8 @@ function epkb_main_content( $args ) {
 				</div>
 				<div class="eckb-article-header">
 					<div class="eckb-article-title">
-						<h2><a href="<?php echo esc_url( $article_link ); ?>"  <?php echo esc_attr( $new_tab ); ?>><?php the_title(); ?></a></h2>
-						<span class="eckb-article-title-icon epkbfa <?php esc_attr_e($article_title_icon); ?>"></span>
+						<h2><a href="<?php echo esc_url( $article_link ); ?>" <?php echo $new_tab ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>><?php the_title(); ?></a></h2>
+						<span class="eckb-article-title-icon epkbfa <?php esc_attr_e( $article_title_icon ); ?>"></span>
 					</div><?php
                     if ( $meta_date_on == 'on' || $meta_author_on == 'on' || $meta_categories_on == 'on' ) { ?>
                         <div class="eckb-article-metadata">

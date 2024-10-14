@@ -1614,7 +1614,7 @@ class EPKB_Utilities {
 		}   ?>
 
 		<a href="<?php echo esc_url( $link ); ?>" <?php echo $title_attr_escaped; ?> class="<?php echo esc_attr( $a_tag_class ) . ' ' . esc_attr( $icon_toggle_class ); ?>"
-		            data-kb-article-id="<?php echo esc_attr( $article_id ); ?>" <?php echo ( empty( $new_tab ) ? '' : 'target="_blank"' ); ?>>
+		            data-kb-article-id="<?php echo esc_attr( $article_id ); ?>" <?php echo ( empty( $new_tab ) ? '' : 'target="_blank" rel="noopener noreferrer"' ); ?>>
 			<span class="<?php echo esc_attr( $outer_span ); ?>" <?php echo $article_color_escaped; ?> >
 				<span class="<?php echo esc_attr( $icon_class ); ?>" <?php echo $icon_color_escaped; ?> aria-hidden="true"></span>
 				<span class="<?php echo esc_attr( $title_class ); ?>" <?php echo $title_style_escaped; ?>><?php echo esc_html( $title ); ?></span>
@@ -2462,5 +2462,27 @@ class EPKB_Utilities {
 		}
 
 		return $decrypted_data;
+	}
+
+	/**
+	 * Defines whether the given URL is internal or external
+	 * @param $url
+	 * @return bool
+	 */
+	public static function is_internal_url( $url ) {
+
+		// get the site's host
+		$site_host = parse_url( home_url(), PHP_URL_HOST );
+
+		// parse the URL to get its host
+		$url_host = parse_url( $url, PHP_URL_HOST );
+
+		// handle relative URLs (no host) - relative URLs are considered internal
+		if ( empty( $url_host ) ) {
+			return true;
+		}
+
+		// Compare hosts (case-insensitive)
+		return strcasecmp( $site_host, $url_host ) === 0;
 	}
 }

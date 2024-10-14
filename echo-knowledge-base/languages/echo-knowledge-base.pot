@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Knowledge Base by Echo Plugins\n"
 "Report-Msgid-Bugs-To: http://www.echoknowledgebase.com/contact-us/\n"
-"POT-Creation-Date: 2024-10-05 10:27-0700\n"
+"POT-Creation-Date: 2024-10-14 10:37-0700\n"
 "PO-Revision-Date: 2017-02-05 17:08-0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -196,8 +196,8 @@ msgstr ""
 #: includes/admin/faqs/class-epkb-faqs-utilities.php:527
 #: includes/admin/pages/class-epkb-config-settings-page.php:815
 #: includes/admin/pages/class-epkb-config-settings-page.php:1462
-#: includes/admin/pages/class-epkb-config-settings-page.php:2833
-#: includes/admin/pages/class-epkb-config-settings-page.php:2863
+#: includes/admin/pages/class-epkb-config-settings-page.php:2834
+#: includes/admin/pages/class-epkb-config-settings-page.php:2864
 #: includes/class-epkb-utilities.php:416
 #: includes/features/layouts/class-epkb-layout.php:217
 #: includes/system/class-epkb-error-handler.php:50
@@ -401,50 +401,50 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-page.php:416
 #: includes/admin/pages/class-epkb-config-settings-page.php:1168
 #: includes/admin/pages/class-epkb-config-settings-page.php:1527
-#: includes/admin/pages/class-epkb-config-settings-page.php:2232
-#: includes/admin/pages/class-epkb-config-settings-page.php:2578
-#: includes/admin/pages/class-epkb-config-settings-page.php:2585
-#: includes/admin/pages/class-epkb-config-settings-page.php:2592
-#: includes/admin/pages/class-epkb-config-settings-page.php:2695
-#: includes/admin/pages/class-epkb-config-settings-page.php:2705
-#: includes/admin/pages/class-epkb-config-settings-page.php:2711
-#: includes/admin/pages/class-epkb-config-settings-page.php:2714
-#: includes/admin/pages/class-epkb-config-settings-page.php:2717
-#: includes/admin/pages/class-epkb-config-settings-page.php:2720
-#: includes/admin/pages/class-epkb-config-settings-page.php:2723
-#: includes/admin/pages/class-epkb-config-settings-page.php:2726
-#: includes/admin/pages/class-epkb-config-settings-page.php:2736
-#: includes/admin/pages/class-epkb-config-settings-page.php:2739
-#: includes/admin/pages/class-epkb-config-settings-page.php:2742
-#: includes/admin/pages/class-epkb-config-settings-page.php:2745
-#: includes/admin/pages/class-epkb-config-settings-page.php:2750
-#: includes/admin/pages/class-epkb-config-settings-page.php:2755
-#: includes/admin/pages/class-epkb-config-settings-page.php:2760
-#: includes/admin/pages/class-epkb-config-settings-page.php:2765
-#: includes/admin/pages/class-epkb-config-settings-page.php:2770
-#: includes/admin/pages/class-epkb-config-settings-page.php:2775
-#: includes/admin/pages/class-epkb-config-settings-page.php:2780
-#: includes/admin/pages/class-epkb-config-settings-page.php:2807
-#: includes/admin/pages/class-epkb-config-settings-page.php:2815
-#: includes/admin/pages/class-epkb-config-settings-page.php:2822
-#: includes/admin/pages/class-epkb-config-settings-page.php:2839
-#: includes/admin/pages/class-epkb-config-settings-page.php:2869
-#: includes/admin/pages/class-epkb-config-settings-page.php:2934
+#: includes/admin/pages/class-epkb-config-settings-page.php:2233
+#: includes/admin/pages/class-epkb-config-settings-page.php:2579
+#: includes/admin/pages/class-epkb-config-settings-page.php:2586
+#: includes/admin/pages/class-epkb-config-settings-page.php:2593
+#: includes/admin/pages/class-epkb-config-settings-page.php:2696
+#: includes/admin/pages/class-epkb-config-settings-page.php:2706
+#: includes/admin/pages/class-epkb-config-settings-page.php:2712
+#: includes/admin/pages/class-epkb-config-settings-page.php:2715
+#: includes/admin/pages/class-epkb-config-settings-page.php:2718
+#: includes/admin/pages/class-epkb-config-settings-page.php:2721
+#: includes/admin/pages/class-epkb-config-settings-page.php:2724
+#: includes/admin/pages/class-epkb-config-settings-page.php:2727
+#: includes/admin/pages/class-epkb-config-settings-page.php:2737
+#: includes/admin/pages/class-epkb-config-settings-page.php:2740
+#: includes/admin/pages/class-epkb-config-settings-page.php:2743
+#: includes/admin/pages/class-epkb-config-settings-page.php:2746
+#: includes/admin/pages/class-epkb-config-settings-page.php:2751
+#: includes/admin/pages/class-epkb-config-settings-page.php:2756
+#: includes/admin/pages/class-epkb-config-settings-page.php:2761
+#: includes/admin/pages/class-epkb-config-settings-page.php:2766
+#: includes/admin/pages/class-epkb-config-settings-page.php:2771
+#: includes/admin/pages/class-epkb-config-settings-page.php:2776
+#: includes/admin/pages/class-epkb-config-settings-page.php:2781
+#: includes/admin/pages/class-epkb-config-settings-page.php:2808
+#: includes/admin/pages/class-epkb-config-settings-page.php:2816
+#: includes/admin/pages/class-epkb-config-settings-page.php:2823
+#: includes/admin/pages/class-epkb-config-settings-page.php:2840
+#: includes/admin/pages/class-epkb-config-settings-page.php:2870
+#: includes/admin/pages/class-epkb-config-settings-page.php:2935
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:60
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:72
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:89
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:95
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:107
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:131
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:153
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:77
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:94
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:100
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:112
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:136
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:158
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:163
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:169
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:180
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:192
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:198
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:221
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:154
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:168
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:174
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:185
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:197
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:203
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:226
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:156
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:60
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:86
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:116
@@ -542,9 +542,9 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:142
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:176
 #: includes/admin/pages/class-epkb-config-settings-page.php:201
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:263
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:207
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:279
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:268
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:210
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:253
 msgid "Search Box"
 msgstr ""
 
@@ -613,11 +613,11 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1222
 #: includes/admin/pages/class-epkb-config-settings-page.php:1610
 #: includes/admin/pages/class-epkb-config-settings-page.php:1619
-#: includes/admin/pages/class-epkb-config-settings-page.php:1998
-#: includes/admin/pages/class-epkb-config-settings-page.php:2011
+#: includes/admin/pages/class-epkb-config-settings-page.php:1999
+#: includes/admin/pages/class-epkb-config-settings-page.php:2012
 #: includes/admin/pages/class-epkb-need-help-features.php:362
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:190
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:109
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:195
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:111
 msgid "Right Sidebar"
 msgstr ""
 
@@ -629,11 +629,11 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1222
 #: includes/admin/pages/class-epkb-config-settings-page.php:1610
 #: includes/admin/pages/class-epkb-config-settings-page.php:1619
-#: includes/admin/pages/class-epkb-config-settings-page.php:1998
-#: includes/admin/pages/class-epkb-config-settings-page.php:2011
+#: includes/admin/pages/class-epkb-config-settings-page.php:1999
+#: includes/admin/pages/class-epkb-config-settings-page.php:2012
 #: includes/admin/pages/class-epkb-need-help-features.php:361
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:178
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:98
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:183
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:100
 msgid "Left Sidebar"
 msgstr ""
 
@@ -730,7 +730,7 @@ msgid "Enable this option if your theme does not add styling to the article."
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:758
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:148
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:153
 msgid "Article Content"
 msgstr ""
 
@@ -780,7 +780,7 @@ msgid "Scroll Time, (ms)"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1113
-#: includes/admin/pages/class-epkb-config-settings-page.php:2090
+#: includes/admin/pages/class-epkb-config-settings-page.php:2091
 msgid "Header Range"
 msgstr ""
 
@@ -808,7 +808,7 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1376
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2112
 #: includes/admin/pages/class-epkb-config-settings-page.php:1766
-#: includes/admin/pages/class-epkb-config-settings-page.php:1955
+#: includes/admin/pages/class-epkb-config-settings-page.php:1956
 #: includes/admin/pages/class-epkb-need-help-features.php:455
 msgid "Back Navigation"
 msgstr ""
@@ -846,7 +846,7 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1639
 #: includes/admin/pages/class-epkb-add-ons-features.php:92
 #: includes/admin/pages/class-epkb-config-settings-page.php:1746
-#: includes/admin/pages/class-epkb-config-settings-page.php:1912
+#: includes/admin/pages/class-epkb-config-settings-page.php:1913
 #: includes/admin/pages/class-epkb-need-help-features.php:406
 msgid "Article Views Counter"
 msgstr ""
@@ -859,7 +859,7 @@ msgid "Breadcrumb"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1810
-#: includes/admin/pages/class-epkb-config-settings-page.php:1946
+#: includes/admin/pages/class-epkb-config-settings-page.php:1947
 #: includes/admin/pages/class-epkb-need-help-features.php:371
 msgid "Breadcrumbs"
 msgstr ""
@@ -913,7 +913,7 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:2196
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2931
 #: includes/admin/pages/class-epkb-config-settings-page.php:1800
-#: includes/admin/pages/class-epkb-config-settings-page.php:1966
+#: includes/admin/pages/class-epkb-config-settings-page.php:1967
 msgid "Prev/Next Navigation"
 msgstr ""
 
@@ -970,7 +970,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:147
-#: includes/admin/pages/class-epkb-config-settings-page.php:2631
+#: includes/admin/pages/class-epkb-config-settings-page.php:2632
 msgid ""
 "We have detected that you are using the Current Theme Template option. If "
 "your width is not expanding the way you want, it is because the theme is "
@@ -998,7 +998,7 @@ msgid "Categories"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:514
-#: includes/admin/pages/class-epkb-config-settings-page.php:2625
+#: includes/admin/pages/class-epkb-config-settings-page.php:2626
 msgid "Edit Categories Icons"
 msgstr ""
 
@@ -1007,8 +1007,8 @@ msgid "Edit Categories Descriptions"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:574
-#: includes/admin/pages/class-epkb-config-settings-page.php:2371
-#: includes/admin/pages/class-epkb-config-settings-page.php:3376
+#: includes/admin/pages/class-epkb-config-settings-page.php:2372
+#: includes/admin/pages/class-epkb-config-settings-page.php:3377
 msgid "Category Header"
 msgstr ""
 
@@ -1019,8 +1019,8 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:715
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:716
 #: includes/admin/pages/class-epkb-config-settings-page.php:1706
-#: includes/admin/pages/class-epkb-config-settings-page.php:2390
-#: includes/admin/pages/class-epkb-config-settings-page.php:3398
+#: includes/admin/pages/class-epkb-config-settings-page.php:2391
+#: includes/admin/pages/class-epkb-config-settings-page.php:3399
 msgid "Category Body"
 msgstr ""
 
@@ -1041,8 +1041,8 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:877
 #: includes/admin/editor/class-epkb-editor-view.php:345
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:160
-#: includes/admin/pages/class-epkb-config-settings-page.php:2342
-#: includes/admin/pages/class-epkb-config-settings-page.php:3342
+#: includes/admin/pages/class-epkb-config-settings-page.php:2343
+#: includes/admin/pages/class-epkb-config-settings-page.php:3343
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:498
 msgid "Tabs"
 msgstr ""
@@ -1173,8 +1173,8 @@ msgid "Choose how KB is displayed with your theme:"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-view.php:271
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:228
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:161
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:233
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:163
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:214
 msgid "KB Template"
 msgstr ""
@@ -1200,8 +1200,8 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-view.php:295
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:286
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:296
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:233
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:166
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:238
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:168
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:219
 msgid "Current Theme Template"
 msgstr ""
@@ -1216,12 +1216,12 @@ msgid "Category Archive displayed by theme"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-view.php:319
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:295
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:299
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:239
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:243
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:321
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:325
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:301
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:305
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:244
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:248
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:299
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:303
 msgid "Learn more"
 msgstr ""
 
@@ -1529,57 +1529,60 @@ msgstr ""
 msgid "Login or refresh this page to export KB configuration."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:91
-#: includes/admin/kb-configuration/class-epkb-export-import.php:256
+#: includes/admin/kb-configuration/class-epkb-export-import.php:92
+#: includes/admin/kb-configuration/class-epkb-export-import.php:250
 msgid "Found invalid data."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:123
+#: includes/admin/kb-configuration/class-epkb-export-import.php:124
 msgid "You do not have permission."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:130
-#: includes/admin/kb-configuration/class-epkb-export-import.php:155
-#: includes/admin/kb-configuration/class-epkb-export-import.php:162
+#: includes/admin/kb-configuration/class-epkb-export-import.php:131
+#: includes/admin/kb-configuration/class-epkb-export-import.php:156
+#: includes/admin/kb-configuration/class-epkb-export-import.php:163
 #: includes/admin/kb-configuration/class-epkb-export-import.php:169
-#: includes/admin/kb-configuration/class-epkb-export-import.php:175
-#: includes/admin/kb-configuration/class-epkb-export-import.php:183
-#: includes/admin/kb-configuration/class-epkb-export-import.php:190
+#: includes/admin/kb-configuration/class-epkb-export-import.php:177
+#: includes/admin/kb-configuration/class-epkb-export-import.php:184
 msgid "Import file format is not correct."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:137
-#: includes/admin/kb-configuration/class-epkb-export-import.php:143
-#: includes/admin/kb-configuration/class-epkb-export-import.php:149
+#: includes/admin/kb-configuration/class-epkb-export-import.php:138
+#: includes/admin/kb-configuration/class-epkb-export-import.php:144
+#: includes/admin/kb-configuration/class-epkb-export-import.php:150
 msgid "Import tmp file format is not correct."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:196
+#: includes/admin/kb-configuration/class-epkb-export-import.php:169
+msgid "File"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-export-import.php:190
 msgid "Knowledge Base data is missing"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:212
+#: includes/admin/kb-configuration/class-epkb-export-import.php:206
 msgid ""
 "Import failed because found import data for a plugin that is not active: "
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:225
+#: includes/admin/kb-configuration/class-epkb-export-import.php:219
 msgid "Import failed because found invalid data."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:264
+#: includes/admin/kb-configuration/class-epkb-export-import.php:258
 msgid "Import failed"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:271
+#: includes/admin/kb-configuration/class-epkb-export-import.php:265
 msgid "Elegant Layouts needs to be active."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:299
+#: includes/admin/kb-configuration/class-epkb-export-import.php:293
 msgid "Import finished successfully"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-export-import.php:369
+#: includes/admin/kb-configuration/class-epkb-export-import.php:363
 msgid "is the plugin active?"
 msgstr ""
 
@@ -1698,7 +1701,7 @@ msgid "Modular Main Page"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:27
-#: includes/admin/pages/class-epkb-config-settings-page.php:2217
+#: includes/admin/pages/class-epkb-config-settings-page.php:2218
 msgid "Custom CSS"
 msgstr ""
 
@@ -1981,7 +1984,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3578
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3725
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4000
-#: includes/admin/pages/class-epkb-config-settings-page.php:2098
+#: includes/admin/pages/class-epkb-config-settings-page.php:2099
 msgid "Title"
 msgstr ""
 
@@ -2091,7 +2094,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3629
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3648
 #: includes/admin/pages/class-epkb-add-ons-features.php:277
-#: includes/admin/pages/class-epkb-config-settings-page.php:2188
+#: includes/admin/pages/class-epkb-config-settings-page.php:2189
 #: includes/admin/pages/class-epkb-need-help-features.php:244
 msgid "Typography"
 msgstr ""
@@ -2255,7 +2258,7 @@ msgid "Space Between Articles"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:224
-#: includes/admin/pages/class-epkb-config-settings-page.php:2203
+#: includes/admin/pages/class-epkb-config-settings-page.php:2204
 msgid "Visual Helper"
 msgstr ""
 
@@ -2349,8 +2352,8 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:333
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3375
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:105
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:129
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:110
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:134
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:58
 msgid "Search Box Width"
 msgstr ""
@@ -3044,7 +3047,7 @@ msgid "Active Background"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1846
-#: includes/admin/pages/class-epkb-config-settings-page.php:2107
+#: includes/admin/pages/class-epkb-config-settings-page.php:2108
 msgid "Headings"
 msgstr ""
 
@@ -3536,7 +3539,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2943
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:110
 #: includes/features/articles/class-epkb-articles-setup.php:627
-#: templates/archive-categories.php:503
+#: templates/archive-categories.php:504
 msgid "Next"
 msgstr ""
 
@@ -3547,7 +3550,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2952
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:107
 #: includes/features/articles/class-epkb-articles-setup.php:626
-#: templates/archive-categories.php:502
+#: templates/archive-categories.php:503
 msgid "Previous"
 msgstr ""
 
@@ -3748,9 +3751,9 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3442
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3599
-#: includes/admin/pages/class-epkb-config-settings-page.php:2323
-#: includes/admin/pages/class-epkb-config-settings-page.php:2442
-#: includes/admin/pages/class-epkb-config-settings-page.php:3238
+#: includes/admin/pages/class-epkb-config-settings-page.php:2324
+#: includes/admin/pages/class-epkb-config-settings-page.php:2443
+#: includes/admin/pages/class-epkb-config-settings-page.php:3239
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:66
 msgid "Layout"
 msgstr ""
@@ -4058,15 +4061,15 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-settings-page.php:194
 #: includes/admin/pages/class-epkb-config-settings-page.php:247
 #: includes/admin/pages/class-epkb-config-settings-page.php:1628
-#: includes/admin/pages/class-epkb-config-settings-page.php:2450
-#: includes/admin/pages/class-epkb-config-settings-page.php:3246
-#: includes/admin/pages/class-epkb-config-settings-page.php:3267
-#: includes/admin/pages/class-epkb-config-settings-page.php:3288
-#: includes/admin/pages/class-epkb-config-settings-page.php:3309
-#: includes/admin/pages/class-epkb-config-settings-page.php:3330
-#: includes/admin/pages/class-epkb-config-settings-page.php:3592
-#: includes/admin/pages/class-epkb-config-settings-page.php:3603
-#: includes/admin/pages/class-epkb-config-settings-page.php:3617
+#: includes/admin/pages/class-epkb-config-settings-page.php:2451
+#: includes/admin/pages/class-epkb-config-settings-page.php:3247
+#: includes/admin/pages/class-epkb-config-settings-page.php:3268
+#: includes/admin/pages/class-epkb-config-settings-page.php:3289
+#: includes/admin/pages/class-epkb-config-settings-page.php:3310
+#: includes/admin/pages/class-epkb-config-settings-page.php:3331
+#: includes/admin/pages/class-epkb-config-settings-page.php:3593
+#: includes/admin/pages/class-epkb-config-settings-page.php:3604
+#: includes/admin/pages/class-epkb-config-settings-page.php:3618
 msgid "Settings"
 msgstr ""
 
@@ -5824,27 +5827,27 @@ msgid "KB Main Page"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:130
-#: includes/admin/pages/class-epkb-config-settings-page.php:3222
+#: includes/admin/pages/class-epkb-config-settings-page.php:3223
 msgid "Row 1"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:141
-#: includes/admin/pages/class-epkb-config-settings-page.php:3260
+#: includes/admin/pages/class-epkb-config-settings-page.php:3261
 msgid "Row 2"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:152
-#: includes/admin/pages/class-epkb-config-settings-page.php:3281
+#: includes/admin/pages/class-epkb-config-settings-page.php:3282
 msgid "Row 3"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:163
-#: includes/admin/pages/class-epkb-config-settings-page.php:3302
+#: includes/admin/pages/class-epkb-config-settings-page.php:3303
 msgid "Row 4"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:174
-#: includes/admin/pages/class-epkb-config-settings-page.php:3323
+#: includes/admin/pages/class-epkb-config-settings-page.php:3324
 msgid "Row 5"
 msgstr ""
 
@@ -5952,7 +5955,7 @@ msgid "On the Backend"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:707
-#: includes/admin/pages/class-epkb-config-settings-page.php:2024
+#: includes/admin/pages/class-epkb-config-settings-page.php:2025
 msgid "Categories and Articles Navigation"
 msgstr ""
 
@@ -6256,14 +6259,14 @@ msgid ""
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:1550
-#: includes/admin/pages/class-epkb-config-settings-page.php:2314
-#: includes/admin/pages/class-epkb-config-settings-page.php:3229
+#: includes/admin/pages/class-epkb-config-settings-page.php:2315
+#: includes/admin/pages/class-epkb-config-settings-page.php:3230
 msgid "Template Setup"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:1579
-#: includes/admin/pages/class-epkb-config-settings-page.php:2413
-#: includes/admin/pages/class-epkb-config-settings-page.php:3426
+#: includes/admin/pages/class-epkb-config-settings-page.php:2414
+#: includes/admin/pages/class-epkb-config-settings-page.php:3427
 msgid "List of Articles"
 msgstr ""
 
@@ -6304,8 +6307,8 @@ msgid "FAQs Feature"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:1876
-#: includes/admin/pages/class-epkb-config-settings-page.php:2430
-#: includes/admin/pages/class-epkb-config-settings-page.php:3523
+#: includes/admin/pages/class-epkb-config-settings-page.php:2431
+#: includes/admin/pages/class-epkb-config-settings-page.php:3524
 msgid "Sidebar Layout Introduction Page"
 msgstr ""
 
@@ -6313,7 +6316,7 @@ msgstr ""
 msgid "Article Content Settings"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1919
+#: includes/admin/pages/class-epkb-config-settings-page.php:1920
 msgid ""
 "The counter provides an approximate measure of user views, but bot-"
 "generated views cannot be fully filtered out. Comparing view counts "
@@ -6321,75 +6324,75 @@ msgid ""
 "counts."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1923
+#: includes/admin/pages/class-epkb-config-settings-page.php:1924
 msgid "Article Features - Top"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1935
+#: includes/admin/pages/class-epkb-config-settings-page.php:1936
 msgid "Article Features - Bottom"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1977
+#: includes/admin/pages/class-epkb-config-settings-page.php:1978
 msgid "Article Content Toolbar: Button"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1989
+#: includes/admin/pages/class-epkb-config-settings-page.php:1990
 msgid "Widgets/Shortcodes"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2058
+#: includes/admin/pages/class-epkb-config-settings-page.php:2059
 msgid "Categories and Articles Navigation - Colors"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2079
+#: includes/admin/pages/class-epkb-config-settings-page.php:2080
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1073
 msgid "Location"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2120
+#: includes/admin/pages/class-epkb-config-settings-page.php:2121
 msgid "User Rating and Feedback"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2132
+#: includes/admin/pages/class-epkb-config-settings-page.php:2133
 msgid "User Rating - Stars Mode"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2144
+#: includes/admin/pages/class-epkb-config-settings-page.php:2145
 msgid "User Rating - Like/Dislike Mode"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2156
+#: includes/admin/pages/class-epkb-config-settings-page.php:2157
 msgid "Top Statistics"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2162
+#: includes/admin/pages/class-epkb-config-settings-page.php:2163
 msgid "Bottom Statistics"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2170
+#: includes/admin/pages/class-epkb-config-settings-page.php:2171
 msgid "Open Feedback Button"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2196
+#: includes/admin/pages/class-epkb-config-settings-page.php:2197
 msgid "FAQs Shortcode"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2210
+#: includes/admin/pages/class-epkb-config-settings-page.php:2211
 msgid "KB Nickname"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2211
+#: includes/admin/pages/class-epkb-config-settings-page.php:2212
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:250
 msgid ""
 "Give your Knowledge Base a name. The name will show when we refer to it or "
 "when you see a list of post types."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2225
+#: includes/admin/pages/class-epkb-config-settings-page.php:2226
 msgid "Visual Editor Launch Mode"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2226
+#: includes/admin/pages/class-epkb-config-settings-page.php:2227
 msgid ""
 "This toggle controls how the buttons above open the Editor. The Editor can "
 "be shown either on the frontend or backend. If you experience "
@@ -6397,129 +6400,129 @@ msgid ""
 "vice versa."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2246
-#: includes/admin/pages/class-epkb-config-settings-page.php:2502
-#: includes/admin/pages/class-epkb-config-settings-page.php:3480
-#: includes/admin/pages/class-epkb-config-settings-page.php:3627
+#: includes/admin/pages/class-epkb-config-settings-page.php:2247
+#: includes/admin/pages/class-epkb-config-settings-page.php:2503
+#: includes/admin/pages/class-epkb-config-settings-page.php:3481
+#: includes/admin/pages/class-epkb-config-settings-page.php:3628
 msgid "Search Box Designs"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2252
-#: includes/admin/pages/class-epkb-config-settings-page.php:3487
+#: includes/admin/pages/class-epkb-config-settings-page.php:2253
+#: includes/admin/pages/class-epkb-config-settings-page.php:3488
 msgid "Main Page Search Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2298
-#: includes/admin/pages/class-epkb-config-settings-page.php:3509
+#: includes/admin/pages/class-epkb-config-settings-page.php:2299
+#: includes/admin/pages/class-epkb-config-settings-page.php:3510
 msgid "Search Results Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2331
+#: includes/admin/pages/class-epkb-config-settings-page.php:2332
 #: includes/class-epkb-utilities.php:2253
-#: templates/archive-categories.php:504
+#: templates/archive-categories.php:505
 msgid "Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2350
-#: includes/admin/pages/class-epkb-config-settings-page.php:3351
+#: includes/admin/pages/class-epkb-config-settings-page.php:2351
+#: includes/admin/pages/class-epkb-config-settings-page.php:3352
 msgid "Using Tabs Layout"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2354
-#: includes/admin/pages/class-epkb-config-settings-page.php:3356
+#: includes/admin/pages/class-epkb-config-settings-page.php:2355
+#: includes/admin/pages/class-epkb-config-settings-page.php:3357
 msgid "Categories Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2367
-#: includes/admin/pages/class-epkb-config-settings-page.php:3371
+#: includes/admin/pages/class-epkb-config-settings-page.php:2368
+#: includes/admin/pages/class-epkb-config-settings-page.php:3372
 msgid "Categories additional styles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2397
-#: includes/admin/pages/class-epkb-config-settings-page.php:3407
+#: includes/admin/pages/class-epkb-config-settings-page.php:2398
+#: includes/admin/pages/class-epkb-config-settings-page.php:3408
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:120
 msgid "Category Icons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2408
-#: includes/admin/pages/class-epkb-config-settings-page.php:3421
+#: includes/admin/pages/class-epkb-config-settings-page.php:2409
+#: includes/admin/pages/class-epkb-config-settings-page.php:3422
 msgid "Set Image and Font Icons for Categories"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2463
-#: includes/admin/pages/class-epkb-config-settings-page.php:2477
-#: includes/admin/pages/class-epkb-config-settings-page.php:2489
-#: includes/admin/pages/class-epkb-config-settings-page.php:2508
-#: includes/admin/pages/class-epkb-config-settings-page.php:3578
-#: includes/admin/pages/class-epkb-config-settings-page.php:3633
+#: includes/admin/pages/class-epkb-config-settings-page.php:2464
+#: includes/admin/pages/class-epkb-config-settings-page.php:2478
+#: includes/admin/pages/class-epkb-config-settings-page.php:2490
+#: includes/admin/pages/class-epkb-config-settings-page.php:2509
+#: includes/admin/pages/class-epkb-config-settings-page.php:3579
+#: includes/admin/pages/class-epkb-config-settings-page.php:3634
 msgid "Article Page Search Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2532
+#: includes/admin/pages/class-epkb-config-settings-page.php:2533
 msgid "Article Page Search Labels Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2545
+#: includes/admin/pages/class-epkb-config-settings-page.php:2546
 msgid "Article Page Search Style Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2575
+#: includes/admin/pages/class-epkb-config-settings-page.php:2576
 msgid "Getting Started"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2576
+#: includes/admin/pages/class-epkb-config-settings-page.php:2577
 msgid "Set up your Knowledge Base name, url, and design"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2582
+#: includes/admin/pages/class-epkb-config-settings-page.php:2583
 #: includes/admin/pages/class-epkb-need-help-page.php:184
 msgid "Explore Features"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2583
+#: includes/admin/pages/class-epkb-config-settings-page.php:2584
 msgid "Get familiar with features and how they function"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2589
+#: includes/admin/pages/class-epkb-config-settings-page.php:2590
 msgid "Online Documentation"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2590
+#: includes/admin/pages/class-epkb-config-settings-page.php:2591
 msgid "Read our detailed documentation about all KB features."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2596
+#: includes/admin/pages/class-epkb-config-settings-page.php:2597
 #: includes/admin/pages/class-epkb-need-help-contact-us.php:26
 msgid "Contact Us"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2597
+#: includes/admin/pages/class-epkb-config-settings-page.php:2598
 msgid "Support question for something that is not working correctly"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2599
+#: includes/admin/pages/class-epkb-config-settings-page.php:2600
 #: includes/admin/pages/class-epkb-need-help-contact-us.php:88
 msgid "Ask a Question"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2656
+#: includes/admin/pages/class-epkb-config-settings-page.php:2657
 msgid "Bottom Rating Statistics"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2693
+#: includes/admin/pages/class-epkb-config-settings-page.php:2694
 msgid ""
 "The width of the sidebar is determined by the Row Width setting. If the "
 "Row Width is set to 100%, the Sidebar Width can be assigned, for example, "
 "as 30% (Large), leaving the remaining 70% for the rest of the row. "
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2699
+#: includes/admin/pages/class-epkb-config-settings-page.php:2700
 msgid ""
 "If the sidebar is enabled and it causes the categories to become visually "
 "compressed, consider setting the number of columns to two."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2706
+#: includes/admin/pages/class-epkb-config-settings-page.php:2707
 msgid ""
 "The article width varies based on the chosen template. With the KB "
 "template, the article can expand to the browser's maximum width if "
@@ -6527,145 +6530,145 @@ msgid ""
 "by the theme’s overall settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2786
+#: includes/admin/pages/class-epkb-config-settings-page.php:2787
 msgid "Leave empty to hide the title."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2790
+#: includes/admin/pages/class-epkb-config-settings-page.php:2791
 msgid ""
 "When the toggle is ON, then Article Page Search uses Main Page Search "
 "settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2794
+#: includes/admin/pages/class-epkb-config-settings-page.php:2795
 #, php-format
 msgid "To change FAQ Title %sclick here%s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2798
+#: includes/admin/pages/class-epkb-config-settings-page.php:2799
 #, php-format
 msgid "To change Articles List Title %sclick here%s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2808
+#: includes/admin/pages/class-epkb-config-settings-page.php:2809
 msgid ""
 "Setting the row width will only set the width of its contents. However, if "
 "your theme has a smaller width, it will adhere to that limit, as explained "
 "in the following article."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2816
+#: includes/admin/pages/class-epkb-config-settings-page.php:2817
 msgid ""
 "Set the overall font family. Additional adjustments to font size and "
 "weight are described in our article."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2834
-#: includes/admin/pages/class-epkb-config-settings-page.php:2864
+#: includes/admin/pages/class-epkb-config-settings-page.php:2835
+#: includes/admin/pages/class-epkb-config-settings-page.php:2865
 msgid "After you switch templates, see how it looks on the frontend"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2840
-#: includes/admin/pages/class-epkb-config-settings-page.php:2870
+#: includes/admin/pages/class-epkb-config-settings-page.php:2841
+#: includes/admin/pages/class-epkb-config-settings-page.php:2871
 msgid ""
 "The difference between KB Template and Current Theme Template is explained "
 "in detail"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2845
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:200
+#: includes/admin/pages/class-epkb-config-settings-page.php:2846
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:203
 msgid "Current Theme Template vs KB Template"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2847
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:195
+#: includes/admin/pages/class-epkb-config-settings-page.php:2848
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:198
 msgid ""
 "Since you currently have the \"Current Theme\" option selected, the HTML "
 "and CSS output is entirely controlled by your active WordPress theme."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2848
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:196
+#: includes/admin/pages/class-epkb-config-settings-page.php:2849
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:199
 msgid ""
 "The Knowledge Base (KB) no longer handles any visual display or styling "
 "functionality. To customize this archive page, you'll need to review and "
 "adjust your theme settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2849
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:197
+#: includes/admin/pages/class-epkb-config-settings-page.php:2850
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:200
 msgid ""
 "However, if your theme lacks features for customizing this type of page, "
 "we recommend using the KB template option, which allows you to make "
 "adjustments through the KB settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2850
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:199
+#: includes/admin/pages/class-epkb-config-settings-page.php:2851
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:202
 msgid ""
 "For more details, please refer to this article on the differences between "
 "the KB template and the Current Theme template:"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2858
+#: includes/admin/pages/class-epkb-config-settings-page.php:2859
 msgid "Template to use for KB Main Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2938
+#: includes/admin/pages/class-epkb-config-settings-page.php:2939
 msgid "Learn more about these settings in the following articles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2949
+#: includes/admin/pages/class-epkb-config-settings-page.php:2950
 msgid "For all other Articles Browser Our Documentation."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3220
-#: includes/admin/pages/class-epkb-config-settings-page.php:3258
-#: includes/admin/pages/class-epkb-config-settings-page.php:3279
-#: includes/admin/pages/class-epkb-config-settings-page.php:3300
-#: includes/admin/pages/class-epkb-config-settings-page.php:3321
+#: includes/admin/pages/class-epkb-config-settings-page.php:3221
+#: includes/admin/pages/class-epkb-config-settings-page.php:3259
+#: includes/admin/pages/class-epkb-config-settings-page.php:3280
+#: includes/admin/pages/class-epkb-config-settings-page.php:3301
+#: includes/admin/pages/class-epkb-config-settings-page.php:3322
 msgid "Feature Selection"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3455
+#: includes/admin/pages/class-epkb-config-settings-page.php:3456
 msgid "Content Above the Resources"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3459
+#: includes/admin/pages/class-epkb-config-settings-page.php:3460
 msgid "All Resources - Boxes Styling"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3463
+#: includes/admin/pages/class-epkb-config-settings-page.php:3464
 msgid "All Resources - Icons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3467
+#: includes/admin/pages/class-epkb-config-settings-page.php:3468
 msgid "All Resources - Buttons / Links"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3471
+#: includes/admin/pages/class-epkb-config-settings-page.php:3472
 msgid "Resource Link Individual Settings"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3494
-#: includes/admin/pages/class-epkb-config-settings-page.php:3663
+#: includes/admin/pages/class-epkb-config-settings-page.php:3495
+#: includes/admin/pages/class-epkb-config-settings-page.php:3664
 msgid "Search Labels"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3501
-#: includes/admin/pages/class-epkb-config-settings-page.php:3676
+#: includes/admin/pages/class-epkb-config-settings-page.php:3502
+#: includes/admin/pages/class-epkb-config-settings-page.php:3677
 msgid "Search Style"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3517
+#: includes/admin/pages/class-epkb-config-settings-page.php:3518
 msgid "Modular Sidebar"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:4203
+#: includes/admin/pages/class-epkb-config-settings-page.php:4204
 msgid "Padding Top ( px )"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:4210
+#: includes/admin/pages/class-epkb-config-settings-page.php:4211
 msgid "Padding Bottom ( px )"
 msgstr ""
 
@@ -7314,7 +7317,7 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-need-help-features.php:347
 #: includes/admin/pages/class-epkb-need-help-features.php:995
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:196
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:201
 msgid "Table of Contents (TOC)"
 msgstr ""
 
@@ -7372,7 +7375,7 @@ msgid "Last Update"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-need-help-features.php:432
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:161
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:166
 msgid "Article Comments"
 msgstr ""
 
@@ -7804,144 +7807,152 @@ msgstr ""
 msgid "Change the article title."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:67
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:64
+msgid "Article Title Visibility"
+msgstr ""
+
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:65
+msgid "Change the article title visibility."
+msgstr ""
+
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:72
 msgid "Article Breadcrumb Settings"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:70
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:75
 msgid "Article Breadcrumb"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:71
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:76
 msgid "Change the article breadcrumb."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:79
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:84
 msgid "Article Metadata Settings"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:82
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:87
 msgid "Article Metadata"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:83
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:88
 msgid "Change the article metadata."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:87
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:92
 msgid "Article View Counter"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:88
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:94
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:93
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:99
 msgid "Change the article counter."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:93
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:98
 msgid "Article Print Button"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:102
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:126
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:107
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:131
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:55
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:74
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:76
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:54
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:80
 msgid "Search Settings"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:106
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:130
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:162
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:179
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:111
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:135
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:167
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:184
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:59
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:78
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:99
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:110
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:80
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:101
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:112
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:59
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:85
 msgid "Adjust the whole search box width or width of the input box."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:111
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:135
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:116
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:140
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:63
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:82
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:84
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:64
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:90
 msgid "Labels for Search Title, Search Button Text, and Other"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:113
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:136
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:83
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:118
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:141
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:85
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:66
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:92
 msgid ""
 "Customize text for the search box title, search button, and other elements."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:117
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:140
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:67
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:87
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:122
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:145
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:68
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:89
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:70
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:96
 msgid "Colors, Padding, Title, and More"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:119
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:141
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:88
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:124
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:146
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:90
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:72
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:98
 msgid ""
 "The search box also has settings for colors, padding, title, and more."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:151
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:156
 msgid "Adding PDFs to Knowledge Base"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:152
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:157
 msgid "PDF documents can be linked to or embedded in articles."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:156
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:161
 msgid "Embedding Google Documents"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:157
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:162
 msgid "Embedding Google Documents in Articles"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:167
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:172
 msgid "Article Page Customizations"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:168
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:173
 msgid "Adding custom section to articles using hooks and custom styling etc."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:175
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:95
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:180
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:97
 msgid "Left Sidebar Settings"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:187
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:106
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:192
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:108
 msgid "Right Sidebar Settings"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:191
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:196
 msgid "Configure right sidebar content."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:197
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:202
 msgid "Adjust TOC colors and behavior."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:220
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:225
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:206
 #, php-format
 msgid ""
@@ -7949,69 +7960,63 @@ msgid ""
 "Pages: %sKB Template%s and %sCurrent Theme Template%s."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:224
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:157
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:229
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:159
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:210
 msgid ""
 "If you're experiencing layout issues or want to see a different look, try "
 "switching the template"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:261
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:205
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:277
-msgid "Page width:"
-msgstr ""
-
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:266
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:210
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:282
-msgid "Actual width:"
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:208
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:251
+msgid "Page width"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:269
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:271
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:284
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:213
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:285
-msgid "KB setting for Search Width:"
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:227
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:256
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:276
+msgid "Actual width"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:270
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:214
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:286
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:274
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:217
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:260
+msgid "KB setting for Search Width"
+msgstr ""
+
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:275
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:218
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:261
 msgid "of the page."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:276
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:220
-msgid "Width of left sidebar + content + right sidebar"
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:281
+msgid "Width of Left Sidebar + Content + Right Sidebar"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:279
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:223
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:300
-msgid "The KB setting is set to "
-msgstr ""
-
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:280
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:224
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:301
-msgid "of the total page width."
-msgstr ""
-
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:283
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:227
-msgid "The actual width is"
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:288
+msgid "KB setting for Article Width"
 msgstr ""
 
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:289
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:233
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:315
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:232
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:281
+msgid "of the total page width."
+msgstr ""
+
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:295
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:238
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:293
 msgid "Troubleshooting"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:290
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:234
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:316
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:296
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:239
 msgid ""
 "If the value you set in the KB settings does not match the actual value, "
 "it may be because your theme or page\n"
@@ -8020,16 +8025,16 @@ msgid ""
 "\t\t\t\t\t\t\t\t\tby your theme or page builder. Try the following"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:294
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:300
 #, php-format
 msgid ""
 "Article Page width is controlled by search box width, sidebar widths and "
 "other settings. %s"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:298
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:242
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:324
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:304
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:247
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:302
 #, php-format
 msgid ""
 "You are currently using the Current theme template. Check your theme "
@@ -8040,45 +8045,53 @@ msgstr ""
 msgid "Search labels are controlled by the KB Main Page settings."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:68
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:69
 msgid "These settings are controlled by the KB Main Page settings."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:117
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:119
 msgid "Archive Article List Settings"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:120
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:122
 msgid "Article List"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:121
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:132
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:123
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:134
 msgid ""
 "Choose a preset design, then customize the number of columns and other "
 "settings."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:128
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:130
 msgid "Archive Subcategories List Settings"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:131
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:133
 msgid "Sub-Categories List"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:153
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:155
 #, php-format
 msgid ""
 "The Knowledge Base offers two template options: %sKB Template%s and "
 "%sCurrent Theme Template%s."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:193
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:196
 msgid "Current Theme Settings"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:238
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:224
+msgid "Width of left sidebar + content + right sidebar"
+msgstr ""
+
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:231
+msgid "KB setting for Archive Width"
+msgstr ""
+
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:243
 #, php-format
 msgid ""
 "Category Archive Page width is controlled by search box width, sidebar "
@@ -8168,15 +8181,24 @@ msgid ""
 "their colors and styles."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:297
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:272
 msgid "Categories and Articles Width"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:304
-msgid "The actual Categories and Articles width is"
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:280
+msgid "KB setting for categories list width"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:320
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:294
+msgid ""
+"If the value you set in the KB settings does not match the actual value, "
+"it may be because your theme or page\n"
+"\t\t\t\t\t\t\t\tbuilder is limiting the overall width. In such cases, the "
+"KB settings cannot exceed the maximum width allowed\n"
+"\t\t\t\t\t\t\t\tby your theme or page builder. Try the following"
+msgstr ""
+
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:298
 #, php-format
 msgid ""
 "If the KB Shortcode is inserted inside your page builder then you will "
@@ -9281,15 +9303,15 @@ msgstr ""
 msgid "Next Article"
 msgstr ""
 
-#: includes/features/articles/class-epkb-articles-setup.php:964
+#: includes/features/articles/class-epkb-articles-setup.php:975
 msgid "Demo"
 msgstr ""
 
-#: includes/features/articles/class-epkb-articles-setup.php:1611
+#: includes/features/articles/class-epkb-articles-setup.php:1622
 msgid "No widgets"
 msgstr ""
 
-#: includes/features/articles/class-epkb-articles-setup.php:1612
+#: includes/features/articles/class-epkb-articles-setup.php:1623
 msgid "Add your widgets here"
 msgstr ""
 

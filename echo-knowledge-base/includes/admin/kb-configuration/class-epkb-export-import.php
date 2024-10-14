@@ -47,6 +47,7 @@ class EPKB_Export_Import {
 			set_time_limit( 0 );
 		}
 
+		// phpcs:disable WordPress.DateTime.RestrictedFunctions.date_date
 		nocache_headers();
 		header( 'Content-Type: application/json; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=kb_' . $kb_id . '_config_export_' . date('Y_m_d_H_i_s') . '.json' );
@@ -127,52 +128,45 @@ class EPKB_Export_Import {
 		// sanitize the file name
 		$sanitized_file_name = empty( $_FILES['import_file']['name'] ) ? '' : sanitize_file_name( $_FILES['import_file']['name'] );
 		if ( empty( $sanitized_file_name ) ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' (4)';
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (4)';
 			return $this->message;
 		}
 
 		// only check if the file tmp name is set - sanitization for the temporary file name is not appropriate
 		$safe_file_tmp_name = empty( $_FILES['import_file']['tmp_name'] ) ? '' : $_FILES['import_file']['tmp_name'];// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -> sanitized below
 		if ( empty( $safe_file_tmp_name ) ) {
-			$this->message['error'] = esc_html__( 'Import tmp file format is not correct.', 'help-dialog' ) . ' (4b)';;
+			$this->message['error'] = esc_html__( 'Import tmp file format is not correct.', 'echo-knowledge-base' ) . ' (4b)';
 			return $this->message;
 		}
 
 		// check if the uploaded temporary file exists
 		if ( ! file_exists( $safe_file_tmp_name ) ) {
-			$this->message['error'] = esc_html__( 'Import tmp file format is not correct.', 'help-dialog' ) . ' (4c)';;
+			$this->message['error'] = esc_html__( 'Import tmp file format is not correct.', 'echo-knowledge-base' ) . ' (4c)';
 			return $this->message;
 		}
 
 		// check if the uploaded temporary file is readable
 		if ( ! is_readable( $safe_file_tmp_name ) ) {
-			$this->message['error'] = esc_html__( 'Import tmp file format is not correct.', 'help-dialog' ) . ' (4d)';;
+			$this->message['error'] = esc_html__( 'Import tmp file format is not correct.', 'echo-knowledge-base' ) . ' (4d)';
 			return $this->message;
 		}
 
 		// validate that the file was uploaded via HTTP POST
 		if ( empty( is_uploaded_file( $safe_file_tmp_name ) ) ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' (2)';
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (2)';
 			return $this->message;
 		}
 
 		// check for upload errors
 		$file_error = empty( $_FILES['import_file']['error'] ) ? '' : sanitize_text_field( $_FILES['import_file']['error'] );
 		if ( ! empty( $file_error ) ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' ' . $file_error . ' (3)';;
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' ' . $file_error . ' (3)';
 			return $this->message;
 		}
 
-		// check the file type and extension
-		$file_info = wp_check_filetype_and_ext( $safe_file_tmp_name, $sanitized_file_name, [ 'json' => 'application/json' ] );
-		if ( empty( $file_info['ext'] ) || empty( $file_info['type'] ) ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' (5)';;
-			return $this->message;
-		}
-
-		// check the MIME type is JSON
-		if ( $file_info['type'] != 'application/json' || $file_info['ext'] != 'json' ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'help-dialog' ) . ' (6)';;
+		// validate file extension
+		if ( pathinfo( $sanitized_file_name, PATHINFO_EXTENSION ) !== 'json' ) {
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (5)' . esc_html__( 'File', 'echo-knowledge-base' ) . ': ' . esc_html( $sanitized_file_name );
 			return $this->message;
 		}
 
@@ -184,10 +178,10 @@ class EPKB_Export_Import {
 			return $this->message;
 		}
 
-		// validate imported data
+		// validate the file is JSON and imported data is an array
 		$import_data = json_decode( $import_data_file, true );
-		if ( empty( $import_data ) || ! is_array( $import_data ) ) {
-			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' (8)';
+		if ( json_last_error() !== JSON_ERROR_NONE || empty( $import_data ) || ! is_array( $import_data ) ) {
+			$this->message['error'] = esc_html__( 'Import file format is not correct.', 'echo-knowledge-base' ) . ' ' . json_last_error_msg() . ' (8)';
 			return $this->message;
 		}
 
@@ -198,7 +192,7 @@ class EPKB_Export_Import {
 		}
 
 		// process each plugin (KB core and add-ons)
-		foreach ($this->add_ons_info as $add_on_class => $add_on_prefix) {
+		foreach ( $this->add_ons_info as $add_on_class => $add_on_prefix ) {
 
 			$plugin_name = $this->get_plugin_name( $add_on_class );
 			
@@ -227,7 +221,7 @@ class EPKB_Export_Import {
 			}
 
 			// verify most data is preset
-			$specs_class_name = strtoupper($add_on_prefix) . '_KB_Config_Specs';
+			$specs_class_name = strtoupper( $add_on_prefix ) . '_KB_Config_Specs';
 			if ( ! class_exists($specs_class_name) || ! method_exists( $specs_class_name, 'get_specs_item_names' ) ) {
 				$this->message['error'] = 'E34 (' . $plugin_name . ')'; // do not translate
 				return $this->message;
@@ -244,7 +238,7 @@ class EPKB_Export_Import {
 			$specs_not_found = 0;
 			$fields_specification = $specs_class_name::get_specs_item_names();
 			foreach( $fields_specification as $key ) {
-				if ( isset($add_on_config[$key]) ) {
+				if ( isset( $add_on_config[$key] ) ) {
 					$specs_found++;
 				} else {
 					$specs_not_found++;
@@ -274,8 +268,8 @@ class EPKB_Export_Import {
 
 			// remove protected fields
 			foreach( $this->ignored_fields as $ignored_field ) {
-				if ( isset($add_on_config[$ignored_field]) )  {
-					unset($add_on_config[$ignored_field]);
+				if ( isset( $add_on_config[$ignored_field] ) )  {
+					unset( $add_on_config[$ignored_field] );
 				}
 			}
 			
@@ -383,5 +377,17 @@ class EPKB_Export_Import {
 	private function is_function_disabled( $function ) {
 		$disabled = explode( ',',  ini_get( 'disable_functions' ) );
 		return in_array( $function, $disabled );
+	}
+
+	/**
+	 * Add JSON as allowed mime type for configuration import
+	 * @param $allowed_mimes
+	 * @return mixed
+	 */
+	public function add_config_import_mimes( $allowed_mimes ) {
+		if ( empty( $allowed_mimes['json'] ) ) {
+			$allowed_mimes['json'] = 'application/json';
+		}
+		return $allowed_mimes;
 	}
 }

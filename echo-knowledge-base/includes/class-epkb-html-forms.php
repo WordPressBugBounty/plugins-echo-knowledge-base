@@ -270,9 +270,9 @@ class EPKB_HTML_Forms {
 					</div>     <?php
 				}
 
-                if ( ! empty( $args['html'] ) ) {
+				if ( ! empty( $args['html'] ) ) {
                     echo wp_kses_post( $args['html'] );
-                }   ?>
+				}   ?>
 			</div>
 
 		</div>    <?php
@@ -403,15 +403,7 @@ class EPKB_HTML_Forms {
 		
 		<div id="<?php echo esc_attr( $args[ 'id' ] ); ?>" class="<?php echo esc_attr( $class ); ?>">  <?php
 
-			if ( ! empty( $args['img_list'] ) ) {
-				self:: pro_feature_ad_box_with_images( array(
-					'title'             => $args['title'],
-					'footer_desc'       => $args['footer_desc'] ?? '',
-					'img_list'          => $args['img_list'] ?? [],
-					'btn_text'          => $args['btn_text'] ?? '',
-					'btn_url'           => $args['btn_url'] ?? '',
-				) );
-			} else {
+			if ( empty( $args['img_list'] ) ) {
 				self::pro_feature_ad_box( array(
 					'title'             => $args['title'],
 					'footer_desc'       => $args['footer_desc'] ?? '',
@@ -422,6 +414,14 @@ class EPKB_HTML_Forms {
 				if ( ! empty( $args['show_close_btn'] ) && $args['show_close_btn'] === 'yes' ) { 		?>
 					<div class="epkb-dbf__close epkbfa epkbfa-times"></div>             <?php
 				}
+			} else {
+				self:: pro_feature_ad_box_with_images( array(
+					'title'             => $args['title'],
+					'footer_desc'       => $args['footer_desc'] ?? '',
+					'img_list'          => $args['img_list'] ?? [],
+					'btn_text'          => $args['btn_text'] ?? '',
+					'btn_url'           => $args['btn_url'] ?? '',
+				) );
 			} 			?>
 
 		</div>
@@ -524,18 +524,17 @@ class EPKB_HTML_Forms {
 	 * CSS ---------------------------------------------------------------
 	 * @param: string $args['id']              ( Optional ) Container ID, used for targeting with other JS
 	 * @param: string $args['class']           ( Optional ) Container CSS, used for targeting with CSS
-	 *
-	 *
-	 * CONTENT ------------------------------------------------------------
+	 * @param: string $args['icon']            ( Optional ) Icon to display ( from this list: https://fontawesome.com/v4.7.0/icons/ )
 	 * @param: string $args['title']           ( Required ) The text title
 	 * @param: string $args['img_url']         ( Required ) URL of image.
 	 * @param: string $args['desc']            ( Optional ) Paragraph Text
 	 * @param: array  $args['list']            ( Optional ) array() of list items.
 	 * @param: string $args['btn_text']        ( Optional ) Button Text
 	 * @param: string $args['btn_url']         ( Optional ) Button URL
+	 * @param: string $args['btn_color']       ( Required ) blue,yellow,orange,red,green
 	 * @param: string $args['more_info_text']  ( Optional ) More Info Text
 	 * @param: string $args['more_info_url']   ( Optional ) More Info URL
-	 *
+	 * @param: string $args['more_info_color'] ( Required ) blue,yellow,orange,red,green
 	 *
 	 * @return false|string
 	 */
@@ -880,8 +879,9 @@ class EPKB_HTML_Forms {
 				}
 
 				// Display HTML Content
-				$box_options['extra_tags'] = isset( $box_options['extra_tags'] ) ? $box_options['extra_tags'] : array();   ?>
-				<div class="epkb-admin__boxes-list__box__content"><?php echo EPKB_Utilities::admin_ui_wp_kses( $box_options['html'], $box_options['extra_tags'] ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?></div>
+				$box_options['extra_tags'] = isset( $box_options['extra_tags'] ) ? $box_options['extra_tags'] : array();
+				$admin_ui_escaped = EPKB_Utilities::admin_ui_wp_kses( $box_options['html'], $box_options['extra_tags'] ); ?>
+				<div class="epkb-admin__boxes-list__box__content"><?php echo $admin_ui_escaped;//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 
 			</div>
 
@@ -1046,8 +1046,8 @@ class EPKB_HTML_Forms {
 			</thead>    <?php
 
 			// Items list body
-			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo self::get_html_table_rows( $list_of_items, $item_primary_key, $item_column_fields, $item_row_fields, $item_optional_row_fields, $columns_count );    ?>
+			$table_rows_escaped = self::get_html_table_rows( $list_of_items, $item_primary_key, $item_column_fields, $item_row_fields, $item_optional_row_fields, $columns_count );
+			echo $table_rows_escaped; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped    ?>
 
 			<!-- Items List No Results -->
 			<tbody class="epkb-admin__items-list__no-results">

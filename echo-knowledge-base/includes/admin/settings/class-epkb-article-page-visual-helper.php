@@ -59,6 +59,11 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 						'content' => esc_html__( 'Change the article title.', 'echo-knowledge-base' ) .
 							' <a href="https://www.echoknowledgebase.com/documentation/article-title/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>',
 						'link' => esc_url( get_edit_post_link( $post->ID ) ),
+					),
+					array(
+						'title' => esc_html__( 'Article Title Visibility', 'echo-knowledge-base' ),
+						'content' => esc_html__( 'Change the article title visibility.', 'echo-knowledge-base' ),
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-settings__article_features_top' ) ),
 					)
 				)
 			),
@@ -70,7 +75,7 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 						'title' => esc_html__( 'Article Breadcrumb', 'echo-knowledge-base' ),
 						'content' => esc_html__( 'Change the article breadcrumb.', 'echo-knowledge-base' ) .
 							' <a href="https://www.echoknowledgebase.com/documentation/article-breadcrumb/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>',
-						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__module--article-page-settings__breadcrumb' ) ),
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-settings__breadcrumb' ) ),
 					)
 				)
 			),
@@ -81,19 +86,19 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 					array(
 						'title' => esc_html__( 'Article Metadata', 'echo-knowledge-base' ),
 						'content' => esc_html__( 'Change the article metadata.', 'echo-knowledge-base' ),
-						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__module--article-page-settings__article_features_top' ) ),
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-settings__article_features_top' ) ),
 					),
 					array(
 						'title' => esc_html__( 'Article View Counter', 'echo-knowledge-base' ),
 						'content' => esc_html__( 'Change the article counter.', 'echo-knowledge-base' ) .
 							' <a href="https://www.echoknowledgebase.com/documentation/article-views-counter/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>',
-						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__module--article-page-settings__article_features_top' ) ),
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-settings__article_features_top' ) ),
 					),
 					array(
 						'title' => esc_html__( 'Article Print Button', 'echo-knowledge-base' ),
 						'content' => esc_html__( 'Change the article counter.', 'echo-knowledge-base' ) .
 							' <a href="https://www.echoknowledgebase.com/documentation/print-button/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>',
-						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__module--article-page-settings__article_features_top' ) ),
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-settings__article_features_top' ) ),
 					)
 				)
 			),
@@ -105,7 +110,7 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 						'title' => esc_html__( 'Search Box Width', 'echo-knowledge-base' ),
 						'content' => esc_html__( 'Adjust the whole search box width or width of the input box.', 'echo-knowledge-base' ) .
 							' <a href="https://www.echoknowledgebase.com/documentation/article-page-width/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>',
-						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-search-box__search-settings-ap--search-options-ap' ) )
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-search-box__search-settings-ap' ) )
 					),
 					array(
 						'title' => esc_html__( 'Labels for Search Title, Search Button Text, and Other', 'echo-knowledge-base' ),
@@ -129,7 +134,7 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 						'title' => esc_html__( 'Search Box Width', 'echo-knowledge-base' ),
 						'content' => esc_html__( 'Adjust the whole search box width or width of the input box.', 'echo-knowledge-base' ) .
 							' <a href="https://www.echoknowledgebase.com/documentation/article-page-width/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>',
-						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-search-box__search-settings-ap--search-options-ap' ) )
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-search-box__search-settings-ap' ) )
 					),
 					array(
 						'title' => esc_html__( 'Labels for Search Title, Search Button Text, and Other', 'echo-knowledge-base' ),
@@ -161,7 +166,7 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 	                    'title' => esc_html__( 'Article Comments', 'echo-knowledge-base' ),
 	                    'content' => esc_html__( 'Adjust the whole search box width or width of the input box.', 'echo-knowledge-base' ) .
 		                    ' <a href="https://www.echoknowledgebase.com/documentation/wordpress-article-comments/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>',
-	                    'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__module--article-page-settings__article_features_bottom' ) )
+	                    'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-settings__article_features_bottom' ) )
                     ),
 	                array(
 		                'title' => esc_html__( 'Article Page Customizations', 'echo-knowledge-base' ),
@@ -252,37 +257,38 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 		$article_content_width_units = $kb_config['article-body-desktop-width-units-v2'];
 
 		$current_page_template  = $kb_config[ 'templates_for_kb' ];
+        $kb_id                  = $kb_config['id'];
 
 
 		ob_start();
 			if ( $article_search_toggle ) { ?>
 
-
-				<h5 class="epkb-vshelp-accordion-body-content__title"><?php echo esc_html__( 'Page width:', 'echo-knowledge-base' ); ?> <span class='js-epkb-ap-width'>-</span></h5>
+				<h5 class="epkb-vshelp-accordion-body-content__title"><?php echo esc_html__( 'Page width', 'echo-knowledge-base' ) . ':'; ?> <span class='js-epkb-ap-width'>-</span></h5>
 
 				<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Search Box', 'echo-knowledge-base' ); ?></strong></h5>
-				<table>
-					<tr>
-						<td><?php echo esc_html__( 'Actual width:', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-ap-search-width">-</span></td>
-					</tr>
-					<tr>
-						<td><?php echo esc_html__( 'KB setting for Search Width:', 'echo-knowledge-base' ) . ' ' . esc_attr( $article_search_width . $article_search_width_units ) .
-								( $article_search_width_units == '%' ? ' ' . esc_html__( 'of the page.', 'echo-knowledge-base' ) : '' ); ?></td>
-					</tr>
-				</table>
+
+				<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
+					<?php echo esc_html__( 'Actual width', 'echo-knowledge-base' ) . ': '; ?><span class="js-epkb-ap-search-width">-</span>
+				</div>
+				<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
+				<?php echo esc_html__( 'KB setting for Search Width', 'echo-knowledge-base' ) . ': ' . esc_attr( $article_search_width . $article_search_width_units ) .
+								( $article_search_width_units == '%' ? ' ' . esc_html__( 'of the page.', 'echo-knowledge-base' ) : '' ); ?>
+                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-search-box__search-settings-ap' ) ); ?>" target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
+				</div>
 
 				<div class="epkb-vshelp-accordion-body-content__spacer"></div><?php
 			} ?>
-				<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Width of left sidebar + content + right sidebar', 'echo-knowledge-base' ); ?></strong></h5>
-				<table>
-					<tr>
-						<td><?php echo esc_html__( 'The KB setting is set to ', 'echo-knowledge-base' ) . ' ' . esc_attr( $article_content_width . $article_content_width_units ) .
-								( $article_content_width_units == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?></td>
-					</tr>
-					<tr>
-						<td><?php echo esc_html__( 'The actual width is', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-ap-width-container">-</span></td>
-					</tr>
-				</table>
+				<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Width of Left Sidebar + Content + Right Sidebar', 'echo-knowledge-base' ); ?></strong></h5>
+
+				<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
+					<?php echo esc_html__( 'Actual width', 'echo-knowledge-base' ) . ': '; ?><span class="js-epkb-ap-width-container">-</span>
+				</div>
+
+				<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
+					<?php echo esc_html__( 'KB setting for Article Width', 'echo-knowledge-base' ) . ': ' . esc_attr( $article_content_width . $article_content_width_units ) .
+								( $article_content_width_units == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?>
+                    <a href="<?php echo esc_url(admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-settings__article_content' ) ); ?>" target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
+				</div>
 
 				<div class="epkb-vshelp-accordion-body-content__spacer"></div>
 

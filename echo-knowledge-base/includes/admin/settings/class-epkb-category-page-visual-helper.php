@@ -62,10 +62,12 @@ class EPKB_Category_Page_Visual_Helper extends EPKB_Visual_Helper {
 					array(
 						'title' => esc_html__( 'Labels for Search Title, Search Button Text, and Other', 'echo-knowledge-base' ),
 						'content' => esc_html__( 'Search labels are controlled by the KB Main Page settings.', 'echo-knowledge-base' ),
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__labels____search-labels-mp' ) )
 					),
 					array(
 						'title' => esc_html__( 'Colors, Padding, Title, and More', 'echo-knowledge-base' ),
 						'content' => esc_html__( 'These settings are controlled by the KB Main Page settings.', 'echo-knowledge-base' ),
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__main-page__module--search__search-options-mp' ) )
 					),
 				)
 			),
@@ -86,7 +88,7 @@ class EPKB_Category_Page_Visual_Helper extends EPKB_Visual_Helper {
 					array(
 						'title' => esc_html__( 'Colors, Padding, Title, and More', 'echo-knowledge-base' ),
 						'content' => esc_html__( 'The search box also has settings for colors, padding, title, and more.', 'echo-knowledge-base' ),
-						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__archive-page__archive-page__search-options-archive' ) )
+						'link' => esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__main-page__module--search__search-options-mp--search-style-mp' ) )
 					),
 				)
 			),
@@ -185,6 +187,7 @@ class EPKB_Category_Page_Visual_Helper extends EPKB_Visual_Helper {
 		$category_content_width_units = $kb_config['archive_content_desktop_width_units'];
 
 		$current_page_template  = $kb_config[ 'template_for_archive_page' ];
+        $kb_id                  = $kb_config['id'];
 
 
 		ob_start();
@@ -202,31 +205,33 @@ class EPKB_Category_Page_Visual_Helper extends EPKB_Visual_Helper {
 		} else {
 			if ( $category_search_toggle ) { ?>
 
-				<h5 class="epkb-vshelp-accordion-body-content__title"><?php echo esc_html__( 'Page width:', 'echo-knowledge-base' ); ?> <span class='js-epkb-cp-width'>-</span></h5>
+				<h5 class="epkb-vshelp-accordion-body-content__title"><?php echo esc_html__( 'Page width', 'echo-knowledge-base' ) . ':'; ?> <span class='js-epkb-cp-width'>-</span></h5>
 
 				<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Search Box', 'echo-knowledge-base' ); ?></strong></h5>
-				<table>
-					<tr>
-						<td><?php echo esc_html__( 'Actual width:', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-cp-search-width">-</span></td>
-					</tr>
-					<tr>
-						<td><?php echo esc_html__( 'KB setting for Search Width:', 'echo-knowledge-base' ) . ' ' . esc_attr( $category_search_width . $category_search_width_units ) .
-								( $category_search_width_units == '%' ? ' ' . esc_html__( 'of the page.', 'echo-knowledge-base' ) : '' ); ?></td>
-					</tr>
-				</table>
+
+				<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
+					<?php echo esc_html__( 'Actual width', 'echo-knowledge-base' ) . ': '; ?><span class="js-epkb-cp-search-width">-</span>
+				</div>
+
+				<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
+				<?php echo esc_html__( 'KB setting for Search Width', 'echo-knowledge-base' ) . ': ' . esc_attr( $category_search_width . $category_search_width_units ) .
+								( $category_search_width_units == '%' ? ' ' . esc_html__( 'of the page.', 'echo-knowledge-base' ) : '' ); ?>
+                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__archive-page__archive-page__search-options-archive' ) ); ?>" target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
+				</div>
 
 				<div class="epkb-vshelp-accordion-body-content__spacer"></div><?php
 			} ?>
 			<h5 class="epkb-vshelp-accordion-body-content__title"><strong><?php echo esc_html__( 'Width of left sidebar + content + right sidebar', 'echo-knowledge-base' ); ?></strong></h5>
-			<table>
-				<tr>
-					<td><?php echo esc_html__( 'The KB setting is set to ', 'echo-knowledge-base' ) ; echo ' ' . esc_attr( $category_content_width . $category_content_width_units ) .
-							( $category_content_width_units == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo esc_html__( 'The actual width is', 'echo-knowledge-base' ) . ' '; ?><span class="js-epkb-cp-width-container">-</span></td>
-				</tr>
-			</table>
+
+			<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
+				<?php echo esc_html__( 'Actual width', 'echo-knowledge-base' ) . ': '; ?><span class="js-epkb-cp-width-container">-</span>
+			</div>
+
+			<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
+			<?php echo esc_html__( 'KB setting for Archive Width', 'echo-knowledge-base' ) . ': ' . esc_attr( $category_content_width . $category_content_width_units ) .
+							( $category_content_width_units == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?>
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__archive-page__archive-page__content-archive' ) ); ?>" target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
+			</div>
 
 			<div class="epkb-vshelp-accordion-body-content__spacer"></div>
 

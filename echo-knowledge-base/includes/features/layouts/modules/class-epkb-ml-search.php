@@ -260,7 +260,7 @@ class EPKB_ML_Search {
 				}    ?>
 
 				<li>
-					<a href="<?php echo esc_url( $article_url ); ?>" <?php echo $new_tab_escaped; ?> class="epkb-ml-article-container" data-kb-article-id="<?php echo esc_attr( $article->ID ); ?>">
+					<a href="<?php echo esc_url( $article_url ); ?>" <?php echo $new_tab_escaped; ?> class="epkb-ml-article-container" data-kb-article-id="<?php echo esc_attr( $article->ID ); ?>" <?php echo empty( $new_tab_escaped ) ? '' : 'rel="noopener noreferrer"'; ?>>
 						<span class="epkb-article-inner">
 							<span class="epkb-article__icon epkbfa <?php echo esc_attr( $article_title_icon ); ?>" aria-hidden="true"></span>
 							<span class="epkb-article__text"><?php echo esc_html( $article->post_title ); ?>    <?php
