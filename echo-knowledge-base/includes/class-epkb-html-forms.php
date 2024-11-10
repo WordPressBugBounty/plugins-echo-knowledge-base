@@ -117,8 +117,6 @@ class EPKB_HTML_Forms {
 		switch ( $args['type']) {
 			case 'error':   $icon = 'epkbfa-exclamation-triangle';
 				break;
-			case 'error-no-icon':   $icon = '';
-				break;
 			case 'success': $icon = 'epkbfa-check-circle';
 				break;
 			case 'warning': $icon = 'epkbfa-exclamation-circle';
@@ -415,7 +413,7 @@ class EPKB_HTML_Forms {
 					<div class="epkb-dbf__close epkbfa epkbfa-times"></div>             <?php
 				}
 			} else {
-				self:: pro_feature_ad_box_with_images( array(
+				self::pro_feature_ad_box_with_images( array(
 					'title'             => $args['title'],
 					'footer_desc'       => $args['footer_desc'] ?? '',
 					'img_list'          => $args['img_list'] ?? [],
@@ -913,6 +911,7 @@ class EPKB_HTML_Forms {
 			'custom_links'   => '', // html format for custom links
 			'config'         => '', // url
 			'docs'           => '', // url
+			'demo'           => '', // url
 			'video'          => '', // url
 			'learn_more'     => '', // url
 			'active_status'  => false,
@@ -964,6 +963,12 @@ class EPKB_HTML_Forms {
 				if ( ! empty( $feature['docs'] ) ) { ?>
 					<a class="epkb-kbnh__feature-link" href="<?php echo esc_url( $feature['docs'] ); ?>"
 					   target="_blank"><span><?php esc_html_e( 'Documentation', 'echo-knowledge-base' ); ?></span></a>    <?php
+				}
+
+				// Link to demo
+				if ( ! empty( $feature['demo'] ) ) { ?>
+					<a class="epkb-kbnh__feature-link" href="<?php echo esc_url( $feature['demo'] ); ?>"
+					   target="_blank"><span><?php esc_html_e( 'Demo', 'echo-knowledge-base' ); ?></span></a>    <?php
 				}
 
 				// Link to Video Tutorial

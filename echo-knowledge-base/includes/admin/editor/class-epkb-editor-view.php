@@ -64,6 +64,11 @@ class EPKB_Editor_View {
 	}
 	
 	public function init( $template ) {
+
+		// do not load FE Editor for blocks
+		if ( EPKB_Block_Utilities::current_post_has_kb_layout_blocks() ) {
+			return $template;
+		}
 		
 		if ( ! function_exists('wp_get_current_user')) {
 			include(ABSPATH . "wp-includes/pluggable.php");
@@ -86,7 +91,7 @@ class EPKB_Editor_View {
 		global $eckb_kb_id;
 
 		if ( empty( $eckb_kb_id ) ) {
-			$kb_id = EPKB_KB_Handler::get_kb_id_from_kb_main_shortcode();
+			$kb_id = EPKB_KB_Handler::get_kb_id_from_kb_main_page();
 			$kb_id = empty( $kb_id ) ? EPKB_Core_Utilities::get_kb_id() : $kb_id;
 			$eckb_kb_id = empty( $kb_id ) ? EPKB_KB_Config_DB::DEFAULT_KB_ID : $kb_id;
 		}
@@ -589,7 +594,7 @@ class EPKB_Editor_View {
 
 		// get KB ID except on Category Archive Page without any article - we need KB ID here to have the Access Control working
 		global $eckb_kb_id;
-		$eckb_kb_id = empty( $eckb_kb_id ) ? EPKB_KB_Handler::get_kb_id_from_kb_main_shortcode() : $eckb_kb_id;
+		$eckb_kb_id = empty( $eckb_kb_id ) ? EPKB_KB_Handler::get_kb_id_from_kb_main_page() : $eckb_kb_id;
 		$eckb_kb_id = empty( $eckb_kb_id ) ? EPKB_Core_Utilities::get_kb_id() : $eckb_kb_id;
 
 		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {

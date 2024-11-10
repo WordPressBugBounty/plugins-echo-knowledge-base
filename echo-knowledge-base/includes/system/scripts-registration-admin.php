@@ -276,6 +276,11 @@ function epkb_add_admin_bar_button( WP_Admin_Bar $wp_admin_bar ) {
 		return;
 	}
 
+	// do not load FE Editor for blocks
+	if ( EPKB_Block_Utilities::current_post_has_kb_layout_blocks() ) {
+		return;
+	}
+
 	// show frontend Editor link on KB Main Page, KB Article Pages
 	$title = epkb_front_end_editor_title();
 	if ( ! empty( $title ) ) {
@@ -424,7 +429,7 @@ function epkb_load_editor_styles() {
 		'wrong_select' 					=> esc_html__( 'No value to select', 'echo-knowledge-base' ),
 		'article_header_rows' 			=> esc_html__( 'Article Header Rows', 'echo-knowledge-base' ),
 		'typography_defaults' 			=> EPKB_Typography::$typography_defaults,
-		'typography_fonts' 				=> EPKB_Typography::$font_data,
+		// 'typography_fonts' 				=> EPKB_Typography::$font_data, TODO: is not used - probably remove
 		'typography_title' 				=> esc_html__( 'Typograhy', 'echo-knowledge-base' ),
 		'typography_font_family' 		=> esc_html__( 'Font Family', 'echo-knowledge-base' ),
 		'typography_font_size' 			=> esc_html__( 'Font Size (px)', 'echo-knowledge-base' ),

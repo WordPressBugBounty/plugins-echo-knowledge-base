@@ -1513,7 +1513,8 @@
       #epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-top-categories-button-container .epkb-ml-top__cat-container .epkb-ml-top__cat-title {
         font-size: 18px;
         margin: 0;
-        padding: 0; }
+        padding: 0;
+        text-align: center; }
       #epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-top-categories-button-container .epkb-ml-top__cat-container:hover {
         opacity: 1;
         cursor: pointer;

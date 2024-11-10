@@ -193,7 +193,7 @@ class EPKB_Layout_Categories extends EPKB_Layout {
 
 								if ( $category_icon['type'] == 'image' ) { ?>
 									<img class="epkb-cat-icon epkb-cat-icon--image"
-									     src="<?php echo esc_url($category_icon['image_thumbnail_url']); ?>" alt="<?php echo esc_attr( $category_icon['image_alt'] ); ?>"<?php echo $header_image_style_escaped; ?>
+									     src="<?php echo esc_url( $category_icon['image_thumbnail_url'] ); ?>" alt="<?php echo esc_attr( $category_icon['image_alt'] ); ?>"<?php echo $header_image_style_escaped; ?>
 									>								<?php
 								} else { ?>
 									<span class="epkb-cat-icon epkbfa <?php echo esc_attr( $category_icon['name'] ); ?>" data-kb-category-icon="<?php echo esc_attr( $category_icon['name'] ); ?>" <?php echo $header_icon_style_escaped; ?>></span>	<?php
@@ -262,7 +262,7 @@ class EPKB_Layout_Categories extends EPKB_Layout {
 											$this->articles_seq_data[$box_sub_category_id][0] : _x( 'Category', 'taxonomy singular name' );
 
 				$default_icon_name = $this->kb_config['expand_articles_icon'];
-				$category_icon = EPKB_KB_Config_Category::get_category_icon( $box_sub_category_id, $categories_icons, $default_icon_name );
+				$category_icon = EPKB_KB_Config_Category::get_category_icon( $box_sub_category_id, $categories_icons );
 				$style1_escaped = $this->get_inline_style( 'color:: section_category_icon_color' );
 				$style2_escaped = $this->get_inline_style( 'color:: section_category_font_color' ); 	?>
 
@@ -369,7 +369,6 @@ class EPKB_Layout_Categories extends EPKB_Layout {
 				<span class="epkb-hide-text epkb-hide-elem"><?php echo esc_html( $this->kb_config['collapse_articles_msg'] ); ?></span>
 			</button>					<?php
 		}
-
 	}
 
 	/**

@@ -6,6 +6,8 @@ jQuery(document).ready(function($) {
 	// If Module Layout is active
 	if ( $( '#epkb-modular-main-page-container' ).length ) {
 		knowledgebase = $( '#epkb-modular-main-page-container' );
+	} else if ( $( '.epkb-block-main-page-container' ).length ) {
+		knowledgebase = $( '.epkb-block-main-page-container' );
 	} else {
 		// Use Legacy Layouts as a fallback if the modular Main Page doesn't exist
 		knowledgebase = $( '#epkb-main-page-container' );
@@ -95,15 +97,22 @@ jQuery(document).ready(function($) {
 	$( 'body' ).on( 'submit', '#epkb-ml-search-form', function( e ) {
 		e.preventDefault();  // do not submit the form
 
+		if ( $( this ).closest( '.eckb-block-editor-preview' ).length ) {
+			return;
+		}
+
 		if ( $( '.epkb-ml-search-box__input' ).val() === '' ) {
 			return;
 		}
+
+		const kb_block_post_id = $( this ).data( 'kb-block-post-id' );
 
 		let postData = {
 			action: 'epkb-search-kb',
 			epkb_kb_id: $( '#epkb_kb_id' ).val(),
 			search_words: $( '.epkb-ml-search-box__input' ).val(),
-			is_kb_main_page: $( '.eckb_search_on_main_page' ).length
+			is_kb_main_page: $( '.eckb_search_on_main_page' ).length || ( !!kb_block_post_id ? 1 : 0 ),
+			kb_block_post_id: !!kb_block_post_id ? kb_block_post_id : 0,
 		};
 
 		let msg = '';
@@ -254,15 +263,17 @@ jQuery(document).ready(function($) {
 	});
 
 	// Tabs Layout: MOBILE: switch to the top category user selected
-	$( "#main-category-selection" ).on( 'change', function() {
-			tabContainer.find(tabPanel).removeClass('active');
-			// drop down
-			$( "#main-category-selection option:selected" ).each(function() {
-				let selected_index = $( this ).index();
-				changePanels ( selected_index );
+	$( document ).on( 'change', "#main-category-selection", function() {
+		$('#epkb-content-container').find('.epkb-tab-panel').removeClass('active');
+		// drop down
+		$( "#main-category-selection option:selected" ).each(function() {
+			let selected_index = $( this ).index();
+			changePanels ( selected_index );
+			if ( ! $( this ).closest( '.eckb-block-editor-preview' ).length ) {
 				updateTabURL( $(this).attr('id'), $(this).data('cat-name') );
-			});
+			}
 		});
+	});
 
 	// Tabs Layout: Level 1 Show more if articles are assigned to top categories
 	$( '#epkb-ml-tabs-layout .epkb-ml-articles-show-more' ).on( 'click',function( e ) {
@@ -284,7 +295,7 @@ jQuery(document).ready(function($) {
 
 
 	/********************************************************************
-	 *                      Sections
+	 *                      Categories
 	 ********************************************************************/
 
 	//Detect if a div is inside a list item then it's a sub category
@@ -462,7 +473,7 @@ jQuery(document).ready(function($) {
 					let html = `
 						<div class="eckb-article-toc__inner">
 							<h4 class="eckb-article-toc__title">${title}</h4>
-							<nav class="eckb-article-toc-outline" role="navigation" aria-label="Article outline">
+							<nav class="eckb-article-toc-outline" role="navigation" aria-label="${epkb_vars.toc_aria_label}">
 							<ul>
 								<li>${epkb_vars.toc_editor_msg}</li>
 							</ul>
@@ -652,7 +663,7 @@ jQuery(document).ready(function($) {
 				html = `
 					<div class="eckb-article-toc__inner">
 						<${titleTag} class="eckb-article-toc__title">${title}</${titleTag}>
-						<nav class="eckb-article-toc-outline" role="navigation" aria-label="Article outline">
+						<nav class="eckb-article-toc-outline" role="navigation" aria-label="${epkb_vars.toc_aria_label}">
 						<ul>
 					`;
 					
@@ -668,7 +679,7 @@ jQuery(document).ready(function($) {
 				let url = new URL( location.href );
 				url.hash = header.id;
 				url = url.toString();
-				html += `<li class="eckb-article-toc__level eckb-article-toc__level-${header.level}"><a href="${url}" aria-label="Scrolls down the page to this heading" data-target="${header.id}">${header.title}</a></li>`;
+				html += `<li class="eckb-article-toc__level eckb-article-toc__level-${header.level}"><a href="${url}" data-target="${header.id}">${header.title}</a></li>`;
 			});
 				
 			html += `
@@ -816,13 +827,13 @@ jQuery(document).ready(function($) {
 
 
 	/********************************************************************
-	 *                      Logged in users
+	 *                      Create Demo Data
 	 ********************************************************************/
 	$( document ).on( 'click', '#eckb-kb-create-demo-data', function( e ) {
 		e.preventDefault();
 
 		// Do nothing on Editor preview mode
-		if ( $( this ).closest( '.epkb-editor-preview' ).length ) {
+		if ( $( this ).closest( '.epkb-editor-preview, .eckb-block-editor-preview' ).length ) {
 			return;
 		}
 
@@ -1105,13 +1116,19 @@ jQuery(document).ready(function($) {
 
 	// Show main content of Category.
 	$( document ).on( 'click', '#epkb-ml-classic-layout .epkb-ml-articles-show-more', function() {
+
+		$( this ).parent().parent().toggleClass( 'epkb-category-section--active');
+
 		$( this ).parent().parent().find( '.epkb-category-section__body' ).slideToggle();
+
 		$( this ).find( '.epkb-ml-articles-show-more__show-more__icon' ).toggleClass( 'epkbfa-plus epkbfa-minus' );
+
 		const isExpanded = $( this ).find( '.epkb-ml-articles-show-more__show-more__icon' ).hasClass( 'epkbfa-minus' );
+
 		if ( isExpanded ) {
-			$( this ).parent().find( '.epkb-ml-article-count span' ).hide();
+			$( this ).parent().find( '.epkb-ml-article-count' ).hide();
 		} else {
-			$( this ).parent().find( '.epkb-ml-article-count span' ).show();
+			$( this ).parent().find( '.epkb-ml-article-count' ).show();
 		}
 	} );
 
@@ -1157,26 +1174,20 @@ jQuery(document).ready(function($) {
 	// Drill Down Layout --------------------------------------------------------------/
 
 	// Define frequently used selectors
-	const $allCatContent            = $( '.epkb-ml-all-categories-content-container' );
+	const $catContent_ShowClass     			= 'epkb-ml__cat-content--show';
+	const $topCatButton_ActiveClass 			= 'epkb-ml-top__cat-container--active';
+	const $catButton_ActiveClass    			= 'epkb-ml__cat-container--active';
+	const $catButtonContainers_ActiveClass  	= 'epkb-ml-categories-button-container--active';
+	const $catButtonContainers_ShowClass    	= 'epkb-ml-categories-button-container--show';
 
-	const $catContent               = $( '.epkb-ml__cat-content' );
-	const $catContent_ShowClass     = 'epkb-ml__cat-content--show';
-
-	const $topCatButton 		    = $( '.epkb-ml-top__cat-container' );
-	const $topCatButton_ActiveClass = 'epkb-ml-top__cat-container--active';
-
-	const $catButton                = $( '.epkb-ml__cat-container' );
-	const $catButton_ActiveClass    = 'epkb-ml__cat-container--active';
-
-	const $catButtonContainers 	            = $( '.epkb-ml-categories-button-container' );
-	const $catButtonContainers_ActiveClass  = 'epkb-ml-categories-button-container--active';
-	const $catButtonContainers_ShowClass    = 'epkb-ml-categories-button-container--show';
-
-	const $backButton = $allCatContent.find( '.epkb-back-button' );
 	const $backButton_ActiveClass = 'epkb-back-button--active';
 
 	// Top Category Button Trigger
-	$topCatButton.on('click', function() {
+	$( document ).on('click', '.epkb-ml-top__cat-container', function() {
+
+		const $allCatContent            = $( '.epkb-ml-all-categories-content-container' );
+
+		$( '.epkb-ml-top__cat-container' ).removeClass( $topCatButton_ActiveClass );
 
 		// Hide content when clicked on active Top Category button
 		if ( $( this ).hasClass( $topCatButton_ActiveClass ) ) {
@@ -1186,20 +1197,22 @@ jQuery(document).ready(function($) {
 		}
 
 		// Do not show Back button for Top Category content
-		$backButton.removeClass( $backButton_ActiveClass );
+		$allCatContent.find( '.epkb-back-button' ).removeClass( $backButton_ActiveClass );
 
 		let currentTopCat = $( this );
 
 		// Highlight current Top Category button
-		$topCatButton.removeClass( $topCatButton_ActiveClass );
+		$( this ).removeClass( $topCatButton_ActiveClass );
 		currentTopCat.addClass( $topCatButton_ActiveClass );
 
 		moveCategoriesBoxUnderTopCategoryButton( currentTopCat );
 
 		// Remove all Classes
-		$catButtonContainers.removeClass( $catButtonContainers_ActiveClass + ' ' + $catButtonContainers_ShowClass );
-		$catContent.removeClass( $catContent_ShowClass );
-		$catButton.removeClass( $catButton_ActiveClass );
+		$( '.epkb-ml-categories-button-container' ).removeClass( $catButtonContainers_ActiveClass + ' ' + $catButtonContainers_ShowClass );
+		$( '.epkb-ml__cat-content' ).removeClass( $catContent_ShowClass );
+		$( '.epkb-ml__cat-container' ).removeClass( $catButton_ActiveClass );
+
+
 
 		$allCatContent.show();
 
@@ -1234,13 +1247,15 @@ jQuery(document).ready(function($) {
 	// Move content box under the category row
 	function moveCategoriesBoxUnderTopCategoryButton( currentTopCat ) {
 
+		const $allCatContent = $( '.epkb-ml-all-categories-content-container' );
+
 		$allCatContent.hide();
 
 		let currentTopCatOffset = currentTopCat.offset().top;
 		let isBoxMoved = false;
 
 		// Current Top Category is not the last one in the list
-		$topCatButton.each( function() {
+		$( '.epkb-ml-top__cat-container' ).each( function() {
 			let catOffset = $( this ).offset().top;
 			if ( catOffset - currentTopCatOffset > 0 ) {
 				$allCatContent.insertAfter( $( this ).prev( '.epkb-ml-top__cat-container' ) );
@@ -1257,7 +1272,7 @@ jQuery(document).ready(function($) {
 	}
 
 	// Category Button Trigger
-	$catButton.on('click', function() {
+	$( document ).on('click', '.epkb-ml__cat-container', function() {
 
 		// Check if the button already has the active class
 		if ( $( this) .hasClass( $catButton_ActiveClass ) ) {
@@ -1265,7 +1280,7 @@ jQuery(document).ready(function($) {
 		}
 
 		// Show Back button
-		$backButton.addClass( $backButton_ActiveClass );
+		$( '.epkb-ml-all-categories-content-container .epkb-back-button' ).addClass( $backButton_ActiveClass );
 
 		// Get Level and ID of current Category
 		const catLevel = parseInt( $( this ).data( 'cat-level' ) );
@@ -1304,8 +1319,8 @@ jQuery(document).ready(function($) {
 
 		// Return to the Top Categories view if Level 1 Content is currently shown
 		if ( catLevel === 1 ) {
-			$topCatButton.removeClass( $topCatButton_ActiveClass );
-			$allCatContent.hide();
+			$( '.epkb-ml-top__cat-container' ).removeClass( $topCatButton_ActiveClass );
+			$( '.epkb-ml-all-categories-content-container' ).hide();
 			return;
 		}
 
@@ -1315,7 +1330,7 @@ jQuery(document).ready(function($) {
 
 		// Do not show Back button for Top Category content
 		if ( parentCatLevel === 1 ) {
-			$backButton.removeClass( $backButton_ActiveClass );
+			$( '.epkb-ml-all-categories-content-container .epkb-back-button' ).removeClass( $backButton_ActiveClass );
 		}
 
 		// Hide elements of the current Category

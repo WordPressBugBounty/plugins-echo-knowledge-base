@@ -6,8 +6,8 @@ Donate link: https://www.echoknowledgebase.com
 Tags: knowledge base, knowledgebase, documentation, documents, faqs
 Requires at least: 5.2
 Requires PHP: 5.6
-Tested up to: 6.6
-Stable tag: 12.42.1
+Tested up to: 6.7
+Stable tag: 12.43.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -254,6 +254,11 @@ Please contact us at [Learn More](https://www.echoknowledgebase.com/contact-us/)
 
 
 == Changelog ==
+
+= 12.43.0 =
+Release Date: Nov 10, 2024
+* Update: WordPress 6.7
+* Fix: Cleanup and minor fixes
 
 = 12.42.1 =
 Release Date: Oct 13, 2024

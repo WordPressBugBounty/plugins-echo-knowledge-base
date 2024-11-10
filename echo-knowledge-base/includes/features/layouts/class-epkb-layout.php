@@ -117,7 +117,7 @@ abstract class EPKB_Layout {
 
 	/**
 	 * Retrieve category icons.
-	 * @return array|string|null
+	 * @return array
 	 */
 	protected function get_category_icons() {
 
@@ -146,7 +146,7 @@ abstract class EPKB_Layout {
 
 		// if no categories in the sequence then query DB directly; return if error
 		$category_seq_data = EPKB_KB_Handler::get_refreshed_kb_categories( $this->kb_id, $this->category_seq_data );
-		if ( $category_seq_data === null || ! is_array( $category_seq_data ) ) {
+		if ( ! is_array( $category_seq_data ) ) {
 			return true;
 		}
 
@@ -178,7 +178,7 @@ abstract class EPKB_Layout {
 		<section class="eckb-kb-no-content">   <?php
 
 			// when in Ordering Wizard if user has multi-language site and did not select particular language (categories and articles do not show) ask them to switch to a particular language
-			if ( EPKB_Utilities::is_wpml_enabled( $this->kb_config ) && !empty( $_POST['action'] ) && $_POST['action'] == 'epkb_wizard_update_order_view' ) {
+			if ( EPKB_Utilities::is_wpml_enabled( $this->kb_config ) && ! empty( $_POST['action'] ) && $_POST['action'] == 'epkb_wizard_update_order_view' ) {
 
 				EPKB_HTML_Forms::notification_box_middle( array(
 					'type'      => 'error',
@@ -187,16 +187,29 @@ abstract class EPKB_Layout {
 				) );
 				
 			// for users with at least Author access
-			} else if ( current_user_can( EPKB_Admin_UI_Access::get_author_capability() ) ) {    ?>
-				<h2 class="eckb-kb-no-content-title"><?php esc_html_e( 'You do not have any KB categories. What would you like to do?', 'echo-knowledge-base' ); ?></h2>  <?php
+			} else if ( current_user_can( EPKB_Admin_UI_Access::get_author_capability() ) ) {
+
+				$is_block_main_page = EPKB_Block_Utilities::current_post_has_kb_layout_blocks();
+				$is_editor_on = EPKB_Utilities::get( 'action' ) == 'edit' || EPKB_Utilities::get( 'context' ) == 'edit';     ?>
+				<h2 class="eckb-kb-no-content-title"><?php $is_block_main_page ?
+						printf( esc_html__( 'KB %s Layout Block', 'echo-knowledge-base' ) . '<br>' . esc_html__( 'You do not have any KB categories.', 'echo-knowledge-base' ), $this->kb_config['kb_main_page_layout'] )
+						: esc_html_e( 'You do not have any KB categories. What would you like to do?', 'echo-knowledge-base' ); ?></h2>  <?php
 
 				// for users with at least Editor access - if WPML enabled, then show action buttons only for original KB Main Page
-				if ( EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) && EPKB_PLL::is_original_language_page( $this->kb_config ) ) {   ?>
-					<div class="eckb-kb-no-content-body">
-						<p><a id="eckb-kb-create-demo-data" class="eckb-kb-no-content-btn" href="#" data-id="<?php echo esc_attr( $this->kb_id ); ?>"><?php esc_html_e( 'Generate Demo Categories and Articles', 'echo-knowledge-base' ); ?></a></p>
-						<p><a class="eckb-kb-no-content-btn" href="<?php echo esc_url( $manage_articles_url ); ?>" target="_blank"><?php esc_html_e( 'Create Categories', 'echo-knowledge-base' ); ?></a></p>
-						<p><a class="eckb-kb-no-content-btn" href="<?php echo esc_url( $import_url ); ?>" target="_blank"><?php esc_html_e( 'Import Articles and Categories', 'echo-knowledge-base' ); ?></a></p>
-					</div><?php
+				if ( EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) && EPKB_PLL::is_original_language_page( $this->kb_config ) ) {
+
+					if ( $is_block_main_page && $is_editor_on ) {   ?>
+						<div class='eckb-kb-no-content-body'>
+							<span><?php printf( esc_html__( 'To fix this issue, go to the page frontend %s', 'echo-knowledge-base' ),
+							'<a href="' . EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config ). '" target="_blank">' . esc_html__( 'here', 'echo-knowledge-base' ) ); ?></a></span>
+						</div><?php
+					} else {			?>
+						<div class="eckb-kb-no-content-body">
+							<p><a id="eckb-kb-create-demo-data" class="eckb-kb-no-content-btn" href="#" data-id="<?php echo esc_attr( $this->kb_id ); ?>"><?php esc_html_e( 'Generate Demo Categories and Articles', 'echo-knowledge-base' ); ?></a></p>
+							<p><a class="eckb-kb-no-content-btn" href="<?php echo esc_url( $manage_articles_url ); ?>" target="_blank"><?php esc_html_e( 'Create Categories', 'echo-knowledge-base' ); ?></a></p>
+							<p><a class="eckb-kb-no-content-btn" href="<?php echo esc_url( $import_url ); ?>" target="_blank"><?php esc_html_e( 'Import Articles and Categories', 'echo-knowledge-base' ); ?></a></p>
+						</div><?php
+					}
 
 					EPKB_HTML_Forms::dialog_confirm_action( array(
 						'id'                => 'epkb-created-kb-content',
@@ -211,7 +224,7 @@ abstract class EPKB_Layout {
 				}   ?>
 
 				<div class="eckb-kb-no-content-footer">
-					<p><?php esc_html_e( 'Ensure all articles are assigned to categories.', 'echo-knowledge-base' ); ?></p>
+					<p><?php echo $is_block_main_page && $is_editor_on ? '' : esc_html__( 'Ensure all articles are assigned to categories.', 'echo-knowledge-base' ); ?></p>
 					<p>
 						<span><?php esc_html_e( 'If you need help, please contact us', 'echo-knowledge-base' ); ?></span>
 						<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank"> <?php esc_html_e( 'here', 'echo-knowledge-base' ); ?></a>

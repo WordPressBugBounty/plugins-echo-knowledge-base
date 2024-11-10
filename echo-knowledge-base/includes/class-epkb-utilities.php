@@ -1530,15 +1530,10 @@ class EPKB_Utilities {
 				$a_tag_class = 'epkb-ml-article-container';
 				$outer_span = 'epkb-article-inner';
 				$icon_class = 'epkb-article__icon ep_font_icon_document';
-				$article_color_escaped = self::get_inline_style( 'color:: article_font_color', $kb_config );
+				$setting_names = EPKB_Core_Utilities::get_style_setting_name( $kb_config['kb_main_page_layout'] );
+				$article_color_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $setting_names['article_font_color'] , $kb_config );
+				$icon_color_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $setting_names['article_icon_color'] , $kb_config );
 				$title_class = 'epkb-article__text';
-				switch ( $kb_config['kb_main_page_layout'] ) {
-					case EPKB_Layout::SIDEBAR_LAYOUT:
-						$icon_color_escaped = self::get_inline_style( 'color:: sidebar_article_icon_color', $kb_config );
-						break;
-					default:
-						$icon_color_escaped = self::get_inline_style( 'color:: article_icon_color', $kb_config );
-				}
 				break;
 
 			case EPKB_Layout::BASIC_LAYOUT:
@@ -1548,8 +1543,9 @@ class EPKB_Utilities {
 				$a_tag_class = 'epkb-mp-article';
 				$outer_span = 'eckb-article-title';
 				$icon_class = 'eckb-article-title__icon ep_font_icon_document';
-				$article_color_escaped = self::get_inline_style( 'color:: article_font_color', $kb_config );
-				$icon_color_escaped = self::get_inline_style( 'color:: article_icon_color', $kb_config );
+				$setting_names = EPKB_Core_Utilities::get_style_setting_name( $kb_config['kb_main_page_layout'] );
+				$article_color_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $setting_names['article_font_color'] , $kb_config );
+				$icon_color_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $setting_names['article_icon_color'] , $kb_config );
 				$title_class = 'eckb-article-title__text';
 		}
 
@@ -2301,14 +2297,6 @@ class EPKB_Utilities {
 		}
 
 		return false;
-	}
-
-	public static function parse_blocks( $post ) {
-		$blocks = [];
-		if ( isset( $post->post_content ) && function_exists( 'parse_blocks' ) ) { // added  in wp 5.0
-			$blocks = parse_blocks( $post->post_content );
-		}
-		return $blocks;
 	}
 
 	/**

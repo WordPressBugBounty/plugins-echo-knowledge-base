@@ -111,7 +111,12 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	/**
 	 * MODULE: Categories and Articles
 	 */
-	private function categories_articles_module() {
+	public function categories_articles_module( $kb_config = null ) {
+
+		// allow block to use its own configuration
+		if ( ! empty( $kb_config ) ) {
+			$this->kb_config = $kb_config;
+		}
 
 		$categories_articles_sidebar_class = '';
 		if ( $this->kb_config['ml_categories_articles_sidebar_toggle'] == 'on' ) {
@@ -326,7 +331,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	}
 
 	/**
-	 * Returns inline styles for Modular Main Page
+	 * Returns inline styles for the Modular Main Page
 	 *
 	 * @param $kb_config
 	 *
@@ -338,7 +343,27 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 		/* CSS for Modular Main Page
 		-----------------------------------------------------------------------*/';
 
-		$output .= self::get_inline_styles( $kb_config );
+		// General Typography ----------------------------------------------/
+		if ( ! empty( $kb_config['general_typography']['font-family'] ) ) {
+			$output .= ' 
+			#epkb-modular-main-page-container, 
+			#epkb-modular-main-page-container #epkb-ml__module-search, 
+			#epkb-modular-main-page-container .epkb-nav-tabs, 
+			#epkb-modular-main-page-container .epkb-top-category-box, 
+			#epkb-modular-main-page-container .epkb-category-section, 
+			#epkb-modular-main-page-container .epkb-ml-drill-down-layout-categories-container, 
+			#epkb-modular-main-page-container .epkb-ml-faqs-container, 
+			#epkb-modular-main-page-container .epkb-ml-article-section, 
+			#epkb-modular-main-page-container .elay-top-category-box, 
+			#epkb-modular-main-page-container #epkb-ml-cat-article-sidebar, 
+			#epkb-modular-main-page-container #elay-sidebar-container-v2, 
+			#epkb-modular-main-page-container #eckb-article-content-body, 
+			#epkb-modular-main-page-container #elay-ml__module-resource-links { 
+			    ' . 'font-family:' . $kb_config['general_typography']['font-family'] . ' !important;' . ' 
+			}';
+		}
+
+		$output .= self::get_layout_sidebar_inline_styles( $kb_config );
 
 		for ( $row_number = 1; $row_number <= self::MAX_ROWS; $row_number ++ ) {
 
@@ -410,29 +435,9 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 		return $output;
 	}
 
-	private static function get_inline_styles( $kb_config ) {
+	public static function get_layout_sidebar_inline_styles( $kb_config ) {
 
 		$output = '';
-
-		// General Typography ----------------------------------------------/
-		if ( ! empty( $kb_config['general_typography']['font-family'] ) ) {
-			$output .= ' 
-			#epkb-modular-main-page-container, 
-			#epkb-modular-main-page-container #epkb-ml__module-search, 
-			#epkb-modular-main-page-container .epkb-nav-tabs, 
-			#epkb-modular-main-page-container .epkb-top-category-box, 
-			#epkb-modular-main-page-container .epkb-category-section, 
-			#epkb-modular-main-page-container .epkb-ml-drill-down-layout-categories-container, 
-			#epkb-modular-main-page-container .epkb-ml-faqs-container, 
-			#epkb-modular-main-page-container .epkb-ml-article-section, 
-			#epkb-modular-main-page-container .elay-top-category-box, 
-			#epkb-modular-main-page-container #epkb-ml-cat-article-sidebar, 
-			#epkb-modular-main-page-container #elay-sidebar-container-v2, 
-			#epkb-modular-main-page-container #eckb-article-content-body, 
-			#epkb-modular-main-page-container #elay-ml__module-resource-links { 
-			    ' . 'font-family:' . $kb_config['general_typography']['font-family'] . ' !important;' . ' 
-			}';
-		}
 
 		// Sidebar ---------------------------------------------------------/
 		if ( $kb_config['ml_categories_articles_sidebar_toggle'] == 'on' ) {
@@ -559,12 +564,63 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 		            line-height: 1 !important;
 			    }';
 
-		} // End of Sidebar Condition
+		} else {	// End of Sidebar Condition
+			// Update inline CSS for block editor preview
+			$output .= '
+				.eckb-kb-block #epkb-ml__module-categories-articles .epkb-layout-container {
+					width: 100%;
+				}';
+		}
 
 		return $output;
 	}
 
 	public function set_sidebar_layout_content( $sidebar_layout_content) {
 		$this->sidebar_layout_content = $sidebar_layout_content;
+	}
+
+	/**
+	 * Set up data for layout without rendering entire Main Page
+	 *
+	 * @param $kb_config
+	 * @return void
+	 */
+	public function setup_layout_data_for_blocks( $kb_config ) {
+
+		// set up data only once
+		if ( ! empty( $this->kb_config ) ) {
+			return;
+		}
+
+		// set initial data
+		$this->kb_config = $kb_config;
+		$this->kb_id = $kb_config['id'];
+
+		// set category and article sequence
+		$this->category_seq_data = EPKB_Utilities::get_kb_option( $this->kb_id, EPKB_Categories_Admin::KB_CATEGORIES_SEQ_META, array(), true );
+		$this->articles_seq_data = EPKB_Utilities::get_kb_option( $this->kb_id, EPKB_Articles_Admin::KB_ARTICLES_SEQ_META, array(), true );
+
+		// for WPML filter categories and articles given active language
+		if ( EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
+			$this->category_seq_data = EPKB_WPML::apply_category_language_filter( $this->category_seq_data );
+			$this->articles_seq_data = EPKB_WPML::apply_article_language_filter( $this->articles_seq_data );
+		}
+
+		// check we have categories defined
+		$this->has_kb_categories = $this->kb_has_categories();
+
+		// articles with no categories - temporary add one
+		if ( isset( $this->articles_seq_data[0] ) ) {
+			$this->category_seq_data[0] = array();
+		}
+	}
+
+	/**
+	 * Public read access to 'has_kb_categories'
+	 *
+	 * @return bool
+	 */
+	public function has_kb_categories() {
+		return $this->has_kb_categories;
 	}
 }

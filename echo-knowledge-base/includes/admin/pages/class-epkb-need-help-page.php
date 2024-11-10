@@ -168,7 +168,7 @@ class EPKB_Need_Help_Page {
 				'content_icon_class' => EPKB_Core_Utilities::is_kb_flag_set( 'settings_tab_visited' ) ? 'epkbfa epkbfa-check-circle' : '',
 				'icon_img_url' => 'img/need-help/palette.jpg',
 				'title' => $step_number++ . '. ' . esc_html__( 'Customize Colors, Labels, and Fonts', 'echo-knowledge-base' ),
-				'desc' => esc_html__( 'Easily change the style and look of KB pages with our visual Editor.', 'echo-knowledge-base' ),
+				'desc' => esc_html__( 'Easily change the style and look of KB pages.', 'echo-knowledge-base' ),
 				'html' => '<a class="epkb-kb__wizard-link" href="' . admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_id ) . '&page=epkb-kb-configuration#settings__main-page' ) . '" target="_blank">' . esc_html__( 'Customize KB Main Page', 'echo-knowledge-base' ) . '</a>' . ' ' .
 				          '<a class="epkb-kb__wizard-link" href="' . admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_id ) . '&page=epkb-kb-configuration#settings__article-page' ) . '" target="_blank">' . esc_html__( 'Customize KB Article Page', 'echo-knowledge-base' ) . '</a>'
 			);

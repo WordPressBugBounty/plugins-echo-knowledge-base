@@ -35,7 +35,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 
 		$class2_escaped = $this->get_css_class( '::width' );		    ?>
 
-		<div id="epkb-main-page-container" role="main" aria-labelledby="Knowledge Base" class="epkb-css-full-reset epkb-basic-template <?php echo  esc_attr( EPKB_Utilities::get_active_theme_classes( 'mp' ) ); ?>">
+		<div id="epkb-main-page-container" role="main" aria-labelledby="<?php esc_html_e( 'Knowledge Base', 'echo-knowledge-base' ); ?>" class="epkb-css-full-reset epkb-basic-template <?php echo  esc_attr( EPKB_Utilities::get_active_theme_classes( 'mp' ) ); ?>">
 			<div <?php echo $class2_escaped; ?>>  <?php
 
 				//  KB Search form
@@ -182,7 +182,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 							if ( $icon_location == 'right' ) {
 
 								if ( $category_icon['type'] == 'image' ) { ?>
-									<img class="epkb-cat-icon epkb-cat-icon--image "
+									<img class="epkb-cat-icon epkb-cat-icon--image"
 									     src="<?php echo esc_url( $category_icon['image_thumbnail_url'] ); ?>" alt="<?php echo esc_attr( $category_icon['image_alt'] ); ?>"<?php echo $header_image_style_escaped; ?>
 									>								<?php
 								} else { ?>
@@ -207,7 +207,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 							$this->display_articles_list( 1, $box_category_id, ! empty( $box_sub_categories ) );
 						}
 						
-						if ( ! empty($box_sub_categories) ) {
+						if ( ! empty( $box_sub_categories ) ) {
 							$this->display_box_sub_categories( $box_sub_categories );
 						}
 						
@@ -410,26 +410,29 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 
 		$output = '';
 
-			$output .= ' 
-				#epkb-ml-basic-layout, 
-				#epkb-ml-basic-layout #epkb-ml__module-search, 
-				#epkb-ml-basic-layout .epkb-cat-name, 
-				#epkb-ml-basic-layout .epkb-cat-desc, 
-				#epkb-ml-basic-layout .eckb-article-title, 
-				#epkb-ml-basic-layout .epkb-category-level-2-3__cat-name,
-				#epkb-ml-basic-layout .epkb-articles-coming-soon,
-				#epkb-ml-basic-layout .epkb-show-all-articles { 
-				    	font-family: ' . ( ! empty( $kb_config['general_typography']['font-family'] ) ? $kb_config['general_typography']['font-family'] .'!important' : 'inherit !important' ) . ';
-				}';
+
+		/** IF UPDATING THIS CODE, UPDATE BLOCK INLINE STYLE IF APPLICABLE */
 
 		// Container -----------------------------------------/
-		if ( !empty( $kb_config['background_color'] ) ) {
+		if ( ! empty( $kb_config['background_color'] ) ) {
 			$output .= '
-			#epkb-content-container {
-				padding: 20px!important;
-				background-color: ' . $kb_config['background_color'] . '!important;
-			}';
+				#epkb-content-container {
+					padding: 20px!important;
+					background-color: ' . sanitize_hex_color( $kb_config['background_color'] ) . '!important;
+				}';
 		}
+
+		$output .= ' 
+			#epkb-ml-basic-layout, 
+			#epkb-ml-basic-layout #epkb-ml__module-search, 
+			#epkb-ml-basic-layout .epkb-cat-name, 
+			#epkb-ml-basic-layout .epkb-cat-desc, 
+			#epkb-ml-basic-layout .eckb-article-title, 
+			#epkb-ml-basic-layout .epkb-category-level-2-3__cat-name,
+			#epkb-ml-basic-layout .epkb-articles-coming-soon,
+			#epkb-ml-basic-layout .epkb-show-all-articles { 
+				font-family: ' . ( ! empty( $kb_config['general_typography']['font-family'] ) ? $kb_config['general_typography']['font-family'] .'!important' : 'inherit !important' ) . ';
+			}';
 
 		// Headings  -----------------------------------------/
 		$output .= '

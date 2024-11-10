@@ -76,6 +76,7 @@ jQuery(document).ready(function($) {
 		postData.row_4_module = row_4_module;
 		postData.row_5_module = row_5_module;
 		postData.categories_articles_preset_name = categories_articles_preset_name;
+		postData.kb_main_page_type = $( '[name="epkb-main-page-type"]' ).length ? $( '[name="epkb-main-page-type"]:checked' ).val() : '';
 
 		epkb_send_ajax ( postData );
 	});
@@ -107,19 +108,20 @@ jQuery(document).ready(function($) {
 
 		// Header
 		$( '.epkb-wc-step-header' ).removeClass( 'epkb-wc-step-header--active' );
-		$( '.epkb-wc-step-header--' + nextStep ).addClass( 'epkb-wc-step-header--active' );
+		const next_step_header = $( '.epkb-wc-step-header--' + nextStep );
+		next_step_header.addClass( 'epkb-wc-step-header--active' );
 
 		modular_setup_wizard_switch_step( nextStep );
 
 		// Presets Content Show Option
 		const content_show_option = $('.epkb-config-setup-wizard-modular .epkb-setup-wizard-theme-content-show-option');
-		if ( content_show_option.length > 0 && nextStep === 4 ) {
+		if ( content_show_option.length > 0 && next_step_header.hasClass( 'epkb-wc-step-header--design' ) ) {
 
 			let selected_layout = $('.epkb-config-setup-wizard-modular input[name="epkb-layout"]:checked').val();
 			if ( typeof selected_layout == 'undefined' ) {
 				selected_layout = '';
 			}
-			const wizard_content = $('.epkb-config-setup-wizard-modular .epkb-wizard-content .eckb-wizard-step-4');
+			const wizard_content = $('.epkb-config-setup-wizard-modular .epkb-wizard-content .eckb-wizard-step-design');
 			content_show_option.show();
 			if ( $( '.epkb-config-setup-wizard-modular input[name=epkb-setup-wizard-theme-content-show-option__toggle]' ).prop('checked') ) {
 				wizard_content.addClass('epkb-wc-step-panel--active');
@@ -132,9 +134,8 @@ jQuery(document).ready(function($) {
 		wizard_scroll_to_top();
 	}
 
-
 	$( document ).on( 'change', '.epkb-config-setup-wizard-modular input[name=epkb-setup-wizard-theme-content-show-option__toggle]', function() {
-		const wizard_content = $('.epkb-config-setup-wizard-modular .epkb-wizard-content .eckb-wizard-step-4');
+		const wizard_content = $('.epkb-config-setup-wizard-modular .epkb-wizard-content .eckb-wizard-step-design');
 		if ( $( this ).prop('checked') ) {
 			wizard_content.addClass('epkb-wc-step-panel--active');
 		} else {
@@ -250,8 +251,16 @@ jQuery(document).ready(function($) {
 		$( this ).closest( '.epkb-setup-wizard-step__item-content' ).find('.epkb-setup-option-container').addClass( 'epkb-setup-option-container--active' );
 	});
 
-	// For wizard step 3: click on image will popup
-	$('#epkb-wsb-step-3-panel .epkb-setup-option__featured-img').on( 'click', function(){
+	/**
+	 * Highlight selected main page type
+	 */
+	$( '.epkb-setup-wizard-features-choice__option__label' ).on( 'click', function () {
+		$( this ).closest( '.epkb-wc-step-panel' ).find( '.epkb-setup-wizard-features-choice' ).removeClass( 'epkb-setup-wizard-features-choice--active' );
+		$( this ).closest( '.epkb-setup-wizard-features-choice' ).addClass( 'epkb-setup-wizard-features-choice--active' );
+	});
+
+	// For wizard step layout: click on image will popup
+	$('.eckb-wizard-step-layout .epkb-setup-option__featured-img').on( 'click', function(){
 		let imageUrl = $( this ).attr( 'src' );
 
 		let popupHtml = `

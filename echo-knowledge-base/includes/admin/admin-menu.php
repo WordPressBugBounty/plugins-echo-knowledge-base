@@ -28,7 +28,7 @@ function epkb_add_plugin_menus() {
 	add_submenu_page( 'edit.php?post_type=' . $post_type_name, esc_html__( 'Analytics - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'Analytics', 'echo-knowledge-base' ),
 		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_search_analytics_read'] ), 'epkb-plugin-analytics', array( new EPKB_Analytics_Page(), 'display_plugin_analytics_page' ) );
 
-	add_submenu_page( 'edit.php?post_type=' . $post_type_name, esc_html__( 'Add-ons / News - Echo Knowledge Base', 'echo-knowledge-base' ), EPKB_Add_Ons_Page::get_menu_item_title(),
+	add_submenu_page( 'edit.php?post_type=' . $post_type_name, esc_html__( 'Add-ons - Echo Knowledge Base', 'echo-knowledge-base' ), EPKB_Add_Ons_Page::get_menu_item_title(),
 		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_addons_news_read'] ), 'epkb-add-ons', array( new EPKB_Add_Ons_Page(), 'display_add_ons_page') );
 }
 add_action( 'admin_menu', 'epkb_add_plugin_menus', 10 );

@@ -225,7 +225,7 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 				echo sprintf( esc_html__( 'The Knowledge Base offers two template options for both Main and Article Pages: %sKB Template%s and %sCurrent Theme Template%s.', 'echo-knowledge-base' ), '<strong>', '</strong>', '<strong>', '</strong>' ) . ' ' .
 					'<a href="https://www.echoknowledgebase.com/documentation/current-theme-template-vs-kb-template/" target="_blank" rel="nofollow">' . esc_html__(  'Learn More', 'echo-knowledge-base' ) . '</a> <span class="epkbfa epkbfa-external-link"></span>';  ?>
 			</p>
-			<hr>
+			<div class="epkb-vshelp-accordion-body__divider"></div>
 			<p><?php echo esc_html__( 'If you\'re experiencing layout issues or want to see a different look, try switching the template', 'echo-knowledge-base' ) . ':'; ?></p>
 			<div class="epkb-vshelp-accordion-body__template-toggle epkb-settings-control">
 				<label class="epkb-settings-control-circle-radio">

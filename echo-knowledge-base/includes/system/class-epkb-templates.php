@@ -10,17 +10,15 @@ class EPKB_Templates {
 
 	public function __construct() {
 
-		// WP doesn't use template_include for block themes
+		// automatically load KB templates or KB Custom Block Template if configured
+
+		// a) block theme - use KB custom block template with blocks
 		if ( EPKB_Utilities::is_block_theme() ) {
-			// block admin customizer.
-			// TODO: Remove in November 2024. Defect was fixed in WP 6.4
-			if ( ! empty( $_REQUEST['_wp-find-template'] ) ) {
-				return;
-			}
-			// END remove in 2024
 
 			add_action( 'init', array( $this, 'register_block' ) );
 			add_filter( 'get_block_templates', array( __CLASS__, 'block_template_loader' ), 99999, 3 );
+
+		// b) classic theme - use KB Template if configured
 		} else {
 			add_filter( 'template_include', array( __CLASS__, 'template_loader' ), 99999 );
 		}
@@ -44,7 +42,6 @@ class EPKB_Templates {
 		
 		// handle Category Archive page
 		$is_kb_taxonomy = ! empty( $GLOBALS['taxonomy'] ) && ( EPKB_KB_Handler::is_kb_category_taxonomy( $GLOBALS['taxonomy'] ) || EPKB_KB_Handler::is_kb_tag_taxonomy( $GLOBALS['taxonomy'] ) );
-
 		if ( $is_kb_taxonomy && self::is_kb_template_active( [], true ) ) {
 
 			$kb_id = EPKB_KB_Handler::get_kb_id_from_any_taxonomy( $GLOBALS['taxonomy'] );
@@ -280,7 +277,7 @@ class EPKB_Templates {
 
 		// Return the part that is found
 		$template_path = self::locate_template( $templates );
-		if ( ( true == $load ) && ! empty( $template_path ) ) {
+		if ( $load && ! empty( $template_path ) ) {
 			include( $template_path );
 		}
 
@@ -346,16 +343,21 @@ class EPKB_Templates {
 	public static function block_template_loader( $query_result, $query, $template_type ) {
 		global $eckb_is_kb_main_page;
 
-		// get KB template name or nothing
+		// if page contains any KB Blocks we will not load KB Template
+		if ( EPKB_Block_Utilities::current_post_has_kb_layout_blocks() ) {
+			return $query_result;
+		}
+
+		// get KB Template for Main, Article or Category page if available and configured to be used
 		$kb_template_name = self::template_loader( '' );
 
-		// return if this is not KB page
+		// return if this is not KB page or KB template setting is not active
 		if ( ! $kb_template_name ) {
 			return $query_result;
 		}
 
 		// WP has templates for the page with page-{slug} i.e. page-knowledge-base and in general for post/page ( 'single' general slug ).
-		// We need only template for the page, not for all general single/posts
+		// We only need template for the page, not for all general single/posts
 		if ( empty( $query['slug__in'] ) ) {
 			return $query_result;
 		}

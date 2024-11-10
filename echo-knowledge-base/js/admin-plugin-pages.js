@@ -1882,29 +1882,27 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	let isColorInputSync = false;
 	$('.epkb-admin__color-field input').wpColorPicker({
 		change: function( colorEvent, ui) {
 
-			// Do nothing if the change event was manually triggered for sync purpose
-			if ( ! $( this ).closest( '.epkb-admin__form-tab-wrap' ).hasClass( 'epkb-admin__form-tab-wrap--active' ) ) {
+			// Do nothing for programmatically changed value (for sync purpose)
+			if ( isColorInputSync ) {
 				return;
 			}
+
+			isColorInputSync = true;
 
 			// Get current color value
 			let color_value = $( colorEvent.target ).wpColorPicker( 'color' );
 			let setting_name = $( colorEvent.target ).attr( 'name' );
 
-			// Sync all color pickers that have the same name
-			$( '.epkb-admin__color-field input[name="' + setting_name + '"]' ).each( function () {
-				if ( ! $( this ).closest( '.epkb-admin__form-tab-wrap' ).hasClass( 'epkb-admin__form-tab-wrap--active' ) ) {
-					$( this ).wpColorPicker( 'color', color_value );
-				}
+			// Sync other color pickers that have the same name
+			$( '.epkb-admin__color-field input[name="' + setting_name + '"]' ).not( colorEvent.target ).each( function () {
+				$( this ).wpColorPicker( 'color', color_value );
 			} );
 
-			// Ensure the input element updated
-			setTimeout( function() {
-				$( colorEvent.target ).trigger( 'change' );
-			}, 50 );
+			isColorInputSync = false;
 		},
 	});
 
@@ -3280,8 +3278,9 @@ jQuery(document).ready(function($) {
 
 	//Scroll to top
 	$( '.epkb-admin__link-scroll-top' ).on( 'click',  function() {
-		console.log('test')
 		$( 'html, body' ).animate( { scrollTop: 0 }, 300 );
 		return false;
 	} );
+
+
 });

@@ -35,7 +35,7 @@ class EPKB_Editor_Controller {
 
 		// get new KB configuration
 		$new_config = EPKB_Utilities::post( 'kb_config', [], 'db-config-json' );
-		if ( empty($new_config) ) {
+		if ( empty( $new_config ) ) {
 			EPKB_Utilities::ajax_show_error_die( esc_html__( 'Invalid parameters. Please refresh your page.', 'echo-knowledge-base' ) );
 		}
 
@@ -46,7 +46,7 @@ class EPKB_Editor_Controller {
 		}
 
 		// overwrite current KB configuration with new configuration from this editor
-		$new_config = array_merge($orig_config, $new_config);
+		$new_config = array_merge( $orig_config, $new_config );
 
 		// save based on type of page
 		switch( $page_type ) {

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Various KB Core utility functions
@@ -322,8 +322,8 @@ class EPKB_Core_Utilities {
 				if ( ! empty( $ap_search_setting_name ) && isset( $new_config[$setting_name] ) ) {
 					$new_config[$ap_search_setting_name] = $new_config[$setting_name];
 				// still sync Article Page Search setting from origin config if the value is not set in the new config
-				} else if ( ! empty( $ap_search_setting_name ) && isset( $orig_config[$setting_name] ) ) {
-					$new_config[$ap_search_setting_name] = $orig_config[$setting_name];
+				} else if ( ! empty( $ap_search_setting_name ) && isset( $orig_setting_value ) ) {
+					$new_config[$ap_search_setting_name] = $orig_setting_value;
 				}
 			}
 		}
@@ -429,7 +429,7 @@ class EPKB_Core_Utilities {
 		$new_config['article_sidebar_component_priority'] = $article_sidebar_component_priority;
 
 		// Sidebar Layout needs to have at least one navigation sidebar enabled
-		if ( $new_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ) {
+		if ( isset( $new_config['kb_main_page_layout'] ) && $new_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ) {
 			if ( $new_config['article-left-sidebar-toggle'] != 'on' && $new_config['article-right-sidebar-toggle'] != 'on' ) {
 				$new_config['article-left-sidebar-toggle'] = 'on';
 			}
@@ -462,7 +462,8 @@ class EPKB_Core_Utilities {
 
 	public static function is_module_present( $kb_config, $module_name ) {
 		for ( $row_number = 1; $row_number <= 5; $row_number ++ ) {
-			if ( $kb_config['ml_row_' . $row_number . '_module'] == $module_name ) {
+			$row_key = 'ml_row_' . $row_number . '_module';
+			if ( isset( $kb_config[ $row_key ] ) && $kb_config[ $row_key ] == $module_name ) {
 				return true;
 			}
 		}

@@ -34,6 +34,7 @@ function epkb_load_public_resources() {
 		'input_required'                => esc_html__( 'Input is required', 'echo-knowledge-base' ),
 		'nonce'                         => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
 		'toc_editor_msg'                => esc_html__( 'The TOC is not displayed because there are no matching headers in the article.', 'echo-knowledge-base' ),
+		'toc_aria_label'                => esc_html__( 'Article outline', 'echo-knowledge-base' ),
 		'creating_demo_data'            => esc_html__( 'Creating a Knowledge Base with demo categories and articles. It will be completed shortly.', 'echo-knowledge-base' )
 	);
 
@@ -135,8 +136,13 @@ add_action( 'wp_enqueue_scripts', 'epkb_load_public_resources', 500 );
  */
 function epkb_enqueue_public_resources( $kb_id=0 ) {
 
+	// KB blocks handle their styles and scripts themselves
+	if ( EPKB_Block_Utilities::current_post_has_kb_layout_blocks() ) {
+		return;
+	}
+
 	$eckb_kb_id = EPKB_Utilities::get_eckb_kb_id( '' );
-	$kb_id = empty( $eckb_kb_id ) ? EPKB_KB_Handler::get_kb_id_from_kb_main_shortcode() : $eckb_kb_id;
+	$kb_id = empty( $eckb_kb_id ) ? EPKB_KB_Handler::get_kb_id_from_kb_main_page() : $eckb_kb_id;
 	if ( empty( $kb_id ) ) {
 		return;
 	}

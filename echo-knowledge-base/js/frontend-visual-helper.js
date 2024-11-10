@@ -22,8 +22,8 @@ jQuery(document).ready(function($) {
 	});
 
 	//Event for toggle accordion inside the side menu
-	$('.js-epkb-side-menu-toggle').on('click', function (e) {
-		let checkboxInput = $(this).find('input[type="checkbox"]'),
+	$('.js-epkb-side-menu-toggle').on('change', function (e) {
+		let checkboxInput = $(this),
 			sideMenu = $('.epkb-vshelp-side-menu-wrapper'),
 			infoIcons = $('.epkb-vshelp-info-icon'),
 			infoModal = $('.epkb-vshelp-info-modal'),
@@ -39,6 +39,19 @@ jQuery(document).ready(function($) {
 			infoModal.hide();
 			closeSwitcher.removeClass('epkb-vshelp-hide-switcher--hidden');
 		}
+
+		let postData = {
+			action: 'epkb_visual_helper_update_switch_settings',
+			setting_name: checkboxInput.attr('name'),
+			kb_id: $(this).data('kbid'),
+		};
+
+		$.ajax({
+			type: 'POST',
+			dataType: 'json',
+			data: postData,
+			url: epkb_vars.ajaxurl,
+		}).success(function (response) {});
 	})
 
 	//Event for hide switcher
@@ -158,6 +171,9 @@ jQuery(document).ready(function($) {
 		//Hide all modal winows
 		let infoModals = $('.epkb-vshelp-info-modal');
 
+		// If Visual Helper Toggle is 'off', then still render the info icons, but make them invisible; else render initially visible
+		const infoIconVisibilityStyle = $('.js-epkb-side-menu-toggle').prop('checked') ? '' : ' ' + 'style="display: none;"';
+
 		infoModals.each(function (index, element) {
 			// Collect icon position parameters
 			let currentElement = $(element),
@@ -172,7 +188,7 @@ jQuery(document).ready(function($) {
 					let modalId = currentElement.data('section-id');
 
 					selectorElement.addClass('epkb-vshelp--has-info-icon');
-					selectorElement.append('<span class="ep_font_icon_info epkb-vshelp-info-icon epkb-vshelp-info-icon--'+ modalId +'-'+ i +'" id="epkb-vshelp-info-icon epkb-vshelp-info-icon--'+ modalId +'-'+ i +'" data-section-id="'+ modalId +'"></span>');
+					selectorElement.append('<span class="ep_font_icon_info epkb-vshelp-info-icon epkb-vshelp-info-icon--'+ modalId +'-'+ i +'" data-section-id="'+ modalId +'"' + infoIconVisibilityStyle + '></span>');
 					i++;
 				}
 			}

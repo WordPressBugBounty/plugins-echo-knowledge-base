@@ -129,6 +129,11 @@ class EPKB_Need_Help_Features {
 					<a class="epkb-kbnh__feature-link" href="<?php echo esc_url( $feature['video'] ); ?>" target="_blank"><span><?php esc_html_e( 'Video Tutorial', 'echo-knowledge-base' ); ?></span></a>    <?php
 				}
 
+				// Link to Demo
+				if ( ! empty( $feature['demo'] ) ) {  ?>
+                    <a class="epkb-kbnh__feature-link" href="<?php echo esc_url( $feature['demo'] ); ?>" target="_blank"><span><?php esc_html_e( 'Demo', 'echo-knowledge-base' ); ?></span></a>    <?php
+				}
+
 				// if plugin is not enabled, then show Learn More
 				/* if ( ! EPKB_Utilities::is_plugin_enabled( $feature['plugin'] ) ) {  ?>
 					<a class="epkb-kbnh__feature-link" href="<?php echo EPKB_Core_Utilities::get_plugin_sales_page( $feature['plugin'] ); ?>" target="_blank"><span><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></span></a>    <?php
@@ -870,6 +875,71 @@ class EPKB_Need_Help_Features {
 				'hide_term' => 'week'
 			],
 			[
+				'plugin'    => 'core',
+                'category'  => 'blocks',
+				'icon'      => 'epkbfa epkbfa-list-alt',
+				'name'      => esc_html__( 'KB Search', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'Fast search bar on KB Main Page with listed results.', 'echo-knowledge-base' ),
+				'docs'      => 'https://www.echoknowledgebase.com/documentation/elementor-widgets-for-documentation/',
+				'video'     => '',
+				'hide_term' => 'week'
+			],
+			[
+				'plugin'    => 'core',
+                'category'  => 'blocks',
+				'icon'      => 'epkbfa epkbfa-list-alt',
+				'name'      => esc_html__( 'KB Basic Layout', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'The Basic Layout offers a user-friendly grid format for viewing categories, subcategories, and articles. Expand and collapse article lists for easy navigation.', 'echo-knowledge-base' ),
+				'demo'      => 'https://www.echoknowledgebase.com/demo-1-knowledge-base-basic-layout/',
+				'docs'      => 'https://www.echoknowledgebase.com/documentation/basic-layout/',
+				'video'     => '',
+				'hide_term' => 'week'
+			],
+			[
+				'plugin'    => 'core',
+                'category'  => 'blocks',
+				'icon'      => 'epkbfa epkbfa-list-alt',
+				'name'      => esc_html__( 'KB Tabs Layout', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'The Tabs Layout clearly organizes top categories for subject-specific browsing. Within each tab, find related articles and sub-categories.', 'echo-knowledge-base' ),
+				'demo'      => 'https://www.echoknowledgebase.com/demo-3-knowledge-base-tabs-layout/',
+				'docs'      => 'https://www.echoknowledgebase.com/documentation/using-tabs-layout/',
+				'video'     => '',
+				'hide_term' => 'week'
+			],
+			[
+				'plugin'    => 'core',
+                'category'  => 'blocks',
+				'icon'      => 'epkbfa epkbfa-list-alt',
+				'name'      => esc_html__( 'KB Classic Layout', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'The Classic Layout offers a simple, compressed view of top-level categories. Click to expand each category and see its associated articles and subcategories.', 'echo-knowledge-base' ),
+				'demo'      => 'https://www.echoknowledgebase.com/demo-12-knowledge-base-image-layout/',
+				'docs'      => 'https://www.echoknowledgebase.com/documentation/classic-layout/',
+				'video'     => '',
+				'hide_term' => 'week'
+			],
+			[
+				'plugin'    => 'core',
+                'category'  => 'blocks',
+				'icon'      => 'epkbfa epkbfa-list-alt',
+				'name'      => esc_html__( 'KB Drill Down Layout', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'The Drill Down Layout helps you navigate large knowledge bases easily. Click top categories to progressively reveal articles and subcategories.', 'echo-knowledge-base' ),
+				'demo'      => 'https://www.echoknowledgebase.com/demo-4-knowledge-base-tabs-layout/',
+				'docs'      => 'https://www.echoknowledgebase.com/documentation/drill-down-layout/',
+				'video'     => '',
+				'hide_term' => 'week'
+			],
+			[
+				'plugin'    => 'core',
+                'category'  => 'blocks',
+				'icon'      => 'epkbfa epkbfa-list-alt',
+				'name'      => esc_html__( 'KB Categories Layout', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'The Categories layout resembles the Basic layout but includes the number of articles beside each category name.', 'echo-knowledge-base' ),
+				'demo'      => 'https://www.echoknowledgebase.com/demo-14-category-layout/',
+				'docs'      => 'https://www.echoknowledgebase.com/documentation/categories-focused-layout/',
+				'video'     => '',
+				'hide_term' => 'week'
+			],
+			[
 				'plugin'    => 'emkb',
 				'category'  => 'advanced',
 				'icon'      => '',
@@ -1027,6 +1097,11 @@ class EPKB_Need_Help_Features {
 				'name'  => 'search',
 				'title' => esc_html__( 'Search', 'echo-knowledge-base' ),
 				'icon'  => 'epkbfa epkbfa-search',
+			],
+			[
+				'name'  => 'blocks',
+				'title' => esc_html__( 'Blocks', 'echo-knowledge-base' ),
+				'icon'  => 'epkbfa epkbfa-list-alt',
 			],
 			[
 				'name'  => 'shortcodes',

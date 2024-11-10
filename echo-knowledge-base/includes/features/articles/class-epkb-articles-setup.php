@@ -1183,7 +1183,9 @@ class EPKB_Articles_Setup {
 				data-max="' . esc_attr( $args['config']['article_toc_hy_level'] ) . '"
 				data-speed="' . esc_attr( $args['config']['article_toc_scroll_speed'] ) . '"
 				data-exclude_class="' . esc_attr( $args['config']['article_toc_exclude_class'] ) . '"
-				>' . ( empty( $args['config']['article_toc_title'] ) ? '' : '<div class="eckb-article-toc__title">' . esc_html( $args['config']['article_toc_title'] ) . '</div>' ) . '</div>
+				>' .
+					( empty( $args['config']['article_toc_title'] ) ? '' : '<div class="eckb-article-toc__title">' . esc_html( $args['config']['article_toc_title'] ) . '</div>' ) .
+			'</div>
 			';
 	}
 

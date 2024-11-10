@@ -120,7 +120,7 @@ class EPKB_KB_Wizard_Global {
 					$current_url = $this->article_path_matches ? $main_page_slug : $this->kb_config['kb_articles_common_path'];
 					$this->url_options_for_kb_main_page( $current_url, $site_url, $input_index, $this->main_page_id );   ?>
 					<div class="epkb-wso__option__edit-button">
-						<a class="epkb-kb__wizard-link" href="<?php echo esc_url( get_edit_post_link( $this->main_page_id ) ); ?>" target="_blank"><?php esc_html_e( 'Edit Page with KB Shortcode', 'echo-knowledge-base' ); ?></a>
+						<a class="epkb-kb__wizard-link" href="<?php echo esc_url( get_edit_post_link( $this->main_page_id ) ); ?>" target="_blank"><?php esc_html_e( 'Edit Page', 'echo-knowledge-base' ); ?></a>
 					</div>
 				</div>
 			</div>      <?php

@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 12.42.1
+ * Version: 12.43.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '12.42.1';
+	public static $version = '12.43.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -99,8 +99,6 @@ final class Echo_Knowledge_Base {
 		require_once self::$plugin_dir . 'includes/system/scripts-registration-admin.php';
 		require_once self::$plugin_dir . 'includes/system/plugin-links.php';
 
-		// add_action( 'init', array( self::$instance, 'epkb_stop_heartbeat' ), 1 );
-
 		new EPKB_Upgrades();
 
 		// setup custom core features
@@ -110,6 +108,16 @@ final class Echo_Knowledge_Base {
 
 		// subscribe to category actions create/edit/delete including for REST requests in Gutenberg
 		new EPKB_Categories_Admin();
+
+		// blocks
+		if ( EPKB_Block_Utilities::is_block_enabled() ) {
+			new EPKB_Search_Block();
+			new EPKB_Basic_Layout_Block();
+			new EPKB_Tabs_Layout_Block();
+			new EPKB_Categories_Layout_Block();
+			new EPKB_Classic_Layout_Block();
+			new EPKB_Drill_Down_Layout_Block();
+		}
 	}
 
 	/**
@@ -355,15 +363,6 @@ final class Echo_Knowledge_Base {
 	// Don't allow un-serializing of the class except when testing
 	public function __wakeup() {
 		_doing_it_wrong( __FUNCTION__, 'Invalid (#1)', '4.0' );
-	}
-
-	/**
-	 * When developing and debugging we don't need heartbeat
-	 */
-	public function epkb_stop_heartbeat() {
-		if ( defined( 'RUNTIME_ENVIRONMENT' ) && RUNTIME_ENVIRONMENT == 'ECHODEV' ) {
-			wp_deregister_script( 'heartbeat' );
-		}
 	}
 
     private function is_kb_plugin_active_for_network( $plugin ) {

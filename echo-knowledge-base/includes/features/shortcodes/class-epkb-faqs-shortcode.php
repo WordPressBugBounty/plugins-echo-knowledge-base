@@ -87,6 +87,9 @@ class EPKB_Faqs_Shortcode {
 		$faq_value = empty( $attributes['open_mode'] ) ? $kb_config['faq_open_mode'] : esc_html( wp_strip_all_tags( trim( $attributes['open_mode'] ) ) );
 		$kb_config['faq_open_mode'] = in_array( $faq_value, array( 'accordion_mode', 'toggle_mode', 'show_all_mode' ) ) ? $faq_value : 'all_around';
 
+		$faq_value = empty( $attributes['schema'] ) ? $kb_config['faq_schema_toggle'] : esc_html( wp_strip_all_tags( trim( $attributes['schema'] ) ) );
+		$kb_config['faq_schema_toggle'] = in_array( $faq_value, array( 'on', 'off' ) ) ? $faq_value : 'off';
+
 		// colors
 		$faq_question_background_color = self::retrieve_shortcode_color( $kb_config['faq_question_background_color'], $attributes, 'question_background_color' );
 		$kb_config['faq_question_background_color'] = empty( $faq_question_background_color ) ?: $faq_question_background_color;

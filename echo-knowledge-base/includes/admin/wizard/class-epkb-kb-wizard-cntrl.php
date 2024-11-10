@@ -484,7 +484,16 @@ class EPKB_KB_Wizard_Cntrl {
 		$kb_slug = EPKB_Utilities::post( 'kb_slug', '', 'text', 100 );
 		$kb_slug = empty( $kb_slug ) ? EPKB_KB_Handler::get_default_slug( $kb_id ) : sanitize_title_with_dashes( $kb_slug );
 
-		$new_kb_main_page = EPKB_KB_Handler::create_kb_main_page( $kb_id, $kb_nickname, $kb_slug );
+		// create new KB Main Page using blocks if user selected blocks
+		$use_kb_blocks = EPKB_Utilities::post( 'kb_main_page_type' ) === 'kb-blocks';
+		$kb_blocks = array();
+		if ( $use_kb_blocks ) {
+			for ( $i = 1; $i <= 5; $i++ ) {
+				// TODO: define blocks config depending on selected modules
+			}
+		}
+
+		$new_kb_main_page = EPKB_KB_Handler::create_kb_main_page( $kb_id, $kb_nickname, $kb_slug, $use_kb_blocks, $kb_blocks );
 		if ( is_wp_error( $new_kb_main_page ) ) {
 			EPKB_Logging::add_log( 'Could not create KB main page', $kb_id, $new_kb_main_page );
 		} else {

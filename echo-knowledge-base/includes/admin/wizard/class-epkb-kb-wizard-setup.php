@@ -13,6 +13,7 @@ class EPKB_KB_Wizard_Setup {
 	private $is_setup_run_first_time;
 	private $elay_enabled;
 	private $is_old_elay;   // TODO: remove in December 2024
+	private $is_main_page_missing;
 
 	private static $sidebar_images = array(
 		0 => 'setup-wizard/step-5/Article-Setup-No-sidebar.jpg',
@@ -31,6 +32,9 @@ class EPKB_KB_Wizard_Setup {
 
 		$this->elay_enabled = EPKB_Utilities::is_elegant_layouts_enabled();
 		$this->is_old_elay = $this->elay_enabled && class_exists( 'Echo_Elegant_Layouts' ) && version_compare( Echo_Elegant_Layouts::$version, '2.14.1', '<=' );
+
+		$existing_main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $this->kb_config );
+		$this->is_main_page_missing = empty( $existing_main_page_id );
 	}
 
 	/**
@@ -39,18 +43,39 @@ class EPKB_KB_Wizard_Setup {
 	public function display_kb_setup_wizard() {
 
 		// Step: URL
+		$step_number = 1;
 		$setup_steps_config[] = [
 			'label'     => esc_html__( 'URL', 'echo-knowledge-base' ),
 			'header_escaped'    => $this->wizard_step_header( array(
 				'title_html'            => esc_html__( 'Setup Your Knowledge Base', 'echo-knowledge-base' ),
 				'info_title'            => esc_html__( 'Set your Knowledge Base nickname, create a slug, and add it to the menu.', 'echo-knowledge-base' ),
 			) ),
-			'content_escaped'   => $this->wizard_step_title_url_content(),
+			'content_escaped'   => $this->wizard_step_title_url_content( $step_number ),
+			'step_number_label'	=> 1,
 		];
 
-		// Step: Modules
+		// Step: Modules - Part 1 of 2
+		if ( EPKB_Block_Utilities::is_block_enabled() && $this->is_main_page_missing ) {
+			$step_number++;
+			$setup_steps_config[] = [
+				'label'     => esc_html__( 'Features Part 1 of 2', 'echo-knowledge-base' ),
+				'sub_label'	=> esc_html__( 'Main Page', 'echo-knowledge-base' ),
+				'header_escaped'    => $this->wizard_step_header( array(
+					'title_html'        => '',
+					'info_title'        => '',
+					'info_description'  => '',
+				) ),
+				'content_escaped'   => $this->wizard_step_blocks_or_shortcode( $step_number ),
+				'step_number_label'	=> 2,
+				'steps_bar_css_class' => 'epkb-setup-wizard-step-part-1-of-2',
+				'header_css_class'	=> 'epkb-wc-step-header--mp-type',
+			];
+		}
+
+		// Step: Modules Part 2 of 2
+		$step_number++;
 		$setup_steps_config[] = [
-			'label'     => esc_html__( 'Features', 'echo-knowledge-base' ),
+			'label'     => EPKB_Block_Utilities::is_block_enabled() && $this->is_main_page_missing ? esc_html__( 'Features Part 2 of 2', 'echo-knowledge-base' ) : esc_html__( 'Features', 'echo-knowledge-base' ),
 			'sub_label' => esc_html__( 'Main Page', 'echo-knowledge-base' ),
 			'header_escaped'    => $this->wizard_step_header( array(
 				'title_html'        => esc_html__( 'Customize KB Main Page', 'echo-knowledge-base' ),
@@ -58,10 +83,13 @@ class EPKB_KB_Wizard_Setup {
 											'<span class="epkb-setup-wizard-step__topic">' . esc_html__( 'Modules', 'echo-knowledge-base' ) . '</span>' ),
 				'info_description'  => esc_html__( 'Feel free to experiment with different arrangements. You can make additional changes at any time, either on this page or in the Knowledge Base Settings.', 'echo-knowledge-base' ),
 			) ),
-			'content_escaped'   => $this->wizard_step_modules_content(),
+			'content_escaped'   => $this->wizard_step_modules_content( $step_number ),
+			'step_number_label'	=> 2,
+			'steps_bar_css_class' => EPKB_Block_Utilities::is_block_enabled() && $this->is_main_page_missing ? 'epkb-setup-wizard-step-part-2-of-2' : '',
 		];
 
 		// Step: Layout
+		$step_number++;
 		$setup_steps_config[] = [
 			'label'     => esc_html__( 'Layout', 'echo-knowledge-base' ),
 			'sub_label' => esc_html__( 'Main Page', 'echo-knowledge-base' ),
@@ -77,10 +105,12 @@ class EPKB_KB_Wizard_Setup {
 						), true )
 						: '',
 				) ),
-			'content_escaped'   => $this->wizard_step_modular_layout_content(),
+			'content_escaped'   => $this->wizard_step_modular_layout_content( $step_number ),
+			'step_number_label'	=> 3,
 		];
 
 		// Step: Designs
+		$step_number++;
 		$setup_steps_config[] = [
 			'label'     => esc_html__( 'Designs', 'echo-knowledge-base' ),
 			'sub_label' => esc_html__( 'Main Page', 'echo-knowledge-base' ),
@@ -94,17 +124,22 @@ class EPKB_KB_Wizard_Setup {
 					'text'          => esc_html__( 'Do you want to change the style and colors of the KB Main Page using one of our designs?', 'echo-knowledge-base' ),
 				)
 			) ),
-			'content_escaped'   => $this->wizard_step_designs_content(),
+			'content_escaped'   => $this->wizard_step_designs_content( $step_number ),
+			'step_number_label'	=> 4,
+			'header_css_class'	=> 'epkb-wc-step-header--design',
 		];
 
 		// Step: Article Page
+		$step_number++;
 		$setup_steps_config[] = [
 			'label'     => esc_html__( 'Article Page', 'echo-knowledge-base' ),
 			'header_escaped'    => $this->wizard_step_header( array(
 				'title_html'        => esc_html__( 'Setup Your Article Page', 'echo-knowledge-base' ),
 				'info_title'        => esc_html__( 'Article pages can have navigation links in the left sidebar or in the right sidebar.', 'echo-knowledge-base' ),
 			) ),
-			'content_escaped'   => $this->wizard_step_modular_navigation_content(),
+			'content_escaped'   => $this->wizard_step_modular_navigation_content( $step_number ),
+			'step_number_label'	=> 5,
+			'header_css_class'	=> 'epkb-wc-step-header--article-page',
 		];  ?>
 
 		<div id="ekb-admin-page-wrap" class="ekb-admin-page-wrap epkb-wizard-container">
@@ -113,9 +148,9 @@ class EPKB_KB_Wizard_Setup {
 				<!------- Wizard Steps Bar ------------>
 				<div class="epkb-setup-wizard-steps-bar">   <?php
 					foreach ( $setup_steps_config as $step_index => $step_config ) {   ?>
-						<div data-step="<?php echo esc_attr( $step_index + 1 ); ?>" class="epkb-setup-wizard-step-tab epkb-setup-wizard-step-tab--<?php echo esc_attr( $step_index + 1 ); echo $step_index == 0 ? ' ' . 'epkb-setup-wizard-step-tab--active' : ''; ?>">
+						<div data-step="<?php echo esc_attr( $step_index + 1 ); ?>" class="epkb-setup-wizard-step-tab epkb-setup-wizard-step-tab--<?php echo esc_attr( $step_index + 1 ); echo $step_index == 0 ? ' ' . 'epkb-setup-wizard-step-tab--active' : ''; echo empty( $step_config['steps_bar_css_class'] ) ? '' : ' ' . esc_attr( $step_config['steps_bar_css_class'] ); ?>">
 							<div class="epkbfa epkbfa-check-circle epkb-setup-wizard-step-tab__icon"></div>
-							<div class="epkb-setup-wizard-step-tab__number"><?php echo esc_html( $step_index + 1 ); ?></div>
+							<div class="epkb-setup-wizard-step-tab__number"><?php echo esc_html( $step_config['step_number_label'] ); ?></div>
 							<div class="epkb-setup-wizard-step-tab__label"><?php
 								if ( ! empty( $step_config['sub_label'] ) ) {   ?>
 									<span class="epkb-setup-wizard-step-tab__sub-label"><?php echo esc_html( $step_config['sub_label'] ); ?></span><?php
@@ -138,7 +173,7 @@ class EPKB_KB_Wizard_Setup {
 					<div class="epkb-wizard-header">    <?php
 						foreach ( $setup_steps_config as $step_index => $step_config ) {
 							$class = ( $step_index + 1 ) . ( $step_index == 0 ? ' ' . 'epkb-wc-step-header--active' : '' ); ?>
-							<div class="epkb-wc-step-header epkb-wc-step-header--<?php echo esc_attr( $class ); ?>"> <?php
+							<div class="epkb-wc-step-header epkb-wc-step-header--<?php echo esc_attr( $class ); echo empty( $step_config['header_css_class'] ) ? '' : ' ' . $step_config['header_css_class']; ?>"> <?php
 								//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								echo $step_config['header_escaped'];   ?>
 							</div>  <?php
@@ -226,13 +261,14 @@ class EPKB_KB_Wizard_Setup {
 	/**
 	 * Setup Wizard: Step 1 - Title & URL
 	 *
+	 * @param $step_number
 	 * @return false|string
 	 */
-	private function wizard_step_title_url_content() {
+	private function wizard_step_title_url_content( $step_number ) {
 
 		ob_start();     ?>
 
-		<div id="epkb-wsb-step-1-panel" class="epkb-wc-step-panel eckb-wizard-step-1 epkb-wc-step-panel--active epkb-wizard-theme-step-1">  <?php
+		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-wc-step-panel eckb-wizard-step-url eckb-wizard-step-<?php echo esc_attr( $step_number ); ?> epkb-wc-step-panel--active epkb-wizard-theme-step-<?php echo esc_attr( $step_number ); ?>">  <?php
 
 			// KB Name
 		    EPKB_HTML_Elements::text(
@@ -423,11 +459,12 @@ class EPKB_KB_Wizard_Setup {
 	}
 
 	/**
-	 * Setup Wizard: Modular Step 3 - Choose Layout
+	 *  Setup Wizard: Modular Step - Choose Layout
 	 *
+	 * @param $step_number
 	 * @return false|string
 	 */
-	private function wizard_step_modular_layout_content() {
+	private function wizard_step_modular_layout_content( $step_number ) {
 
 		$layouts_config = [];
 
@@ -590,7 +627,7 @@ class EPKB_KB_Wizard_Setup {
 
 		ob_start();  ?>
 
-		<div id="epkb-wsb-step-3-panel" class="epkb-setup-wizard-theme epkb-wc-step-panel eckb-wizard-step-3">
+		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-setup-wizard-theme epkb-wc-step-panel eckb-wizard-step-layout eckb-wizard-step-<?php echo esc_attr( $step_number ); ?>">
 
 			<div class="epkb-setup-wizard-no-categories-articles-message"><?php esc_html_e( 'Categories & Articles module was not selected in previous step.', 'echo-knowledge-base' ); ?></div>
 
@@ -750,11 +787,61 @@ class EPKB_KB_Wizard_Setup {
 	}
 
 	/**
-	 * Setup Wizard: Modular Step 2 - Choose which Modules on which Row to display
+	 * Setup Wizard: Modular Step - Choose blocks or shortcode to use for KB Main Page
+	 *
+	 * @param $step_number
+	 * @return false|string
+	 */
+	private function wizard_step_blocks_or_shortcode( $step_number ) {
+
+		ob_start();	?>
+		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-wc-step-panel eckb-wizard-step-<?php echo esc_attr( $step_number ); ?>">
+			<div class="epkb-setup-wizard-features-choices-list">
+
+				<!-- Need Help -->
+				<div class="epkb-setup-wizard-features-choice-info">
+					<p><?php esc_html_e( 'KB Main Page displays categories and articles. Please decide how to display it, using either blocks or a shortcode.', 'echo-knowledge-base' ); ?></p>
+					<p><?php esc_html_e( 'Need help deciding between Blocks and Shortcodes?', 'echo-knowledge-base' ); ?></p>
+					<p><a class="epkb-setup-wizard-features-choice-info-link" href="#" target="_blank"><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); /* TODO: update URL */ ?></a></p>
+				</div>
+
+
+				<!-- Use Blocks -->
+				<div class="epkb-setup-wizard-features-choice epkb-setup-wizard-features-choice--active">
+					<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use Blocks', 'echo-knowledge-base' ); ?></span><span class="epkb-setup-wizard-features-choice__header-label"><?php esc_html_e( 'Recommended', 'echo-knowledge-base' ); ?></span></div>
+					<div class="epkb-setup-wizard-features-choice__body">
+						<img alt="Blocks" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-2/blocks-choice.png' ); ?>">
+					</div>
+					<p class="epkb-setup-wizard-features-choice__footer"><?php esc_html_e( 'Create and customize your main page directly in the editor using drag-and-drop blocks.', 'echo-knowledge-base' ); ?></p>
+					<label class="epkb-setup-wizard-features-choice__option__label">
+						<input type="radio" name="epkb-main-page-type" value="kb-blocks"<?php checked( true ); ?>>
+					</label>
+				</div>
+
+				<!-- Use Shortcode -->
+				<div class="epkb-setup-wizard-features-choice">
+					<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use Shortcode', 'echo-knowledge-base' ); ?></span></div>
+					<div class="epkb-setup-wizard-features-choice__body">
+						<img alt="Shortcode" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-2/shortcode-choice.png' ); ?>">
+					</div>
+					<p class="epkb-setup-wizard-features-choice__footer"><?php esc_html_e( 'Insert a shortcode into your page and manage settings from the admin panel.', 'echo-knowledge-base' ); ?></p>
+					<label class="epkb-setup-wizard-features-choice__option__label">
+						<input type="radio" name="epkb-main-page-type" value="kb-shortcode"<?php checked( false ); ?>>
+					</label>
+				</div>
+
+			</div>
+		</div>	<?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Setup Wizard: Modular Step - Choose which Modules on which Row to display
 	 *
 	 * @return false|string
 	 */
-	private function wizard_step_modules_content() {
+	private function wizard_step_modules_content( $step_number ) {
 
 		$modules_rows_config = $this->get_modules_rows_config();
 		$modules_presets_config = $this->get_modules_presets_config();
@@ -770,7 +857,7 @@ class EPKB_KB_Wizard_Setup {
 
 		ob_start();  ?>
 
-		<div id="epkb-wsb-step-2-panel" class="epkb-wc-step-panel eckb-wizard-step-2">
+		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-wc-step-panel eckb-wizard-step-features eckb-wizard-step-<?php echo esc_attr( $step_number ); ?>">
 
 			<div class="epkb-setup-wizard-step-container epkb-setup-wizard-step-container--modules">
 				<input type="hidden" id="_wpnonce_epkb_ajax_action" name="_wpnonce_epkb_ajax_action" value="<?php echo wp_create_nonce( "_wpnonce_epkb_ajax_action" );//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?>"/>
@@ -931,17 +1018,18 @@ class EPKB_KB_Wizard_Setup {
 	}
 
 	/**
-	 * Setup Wizard: Modular Step 4 - Choose Presets for selected Modules
+	 * Setup Wizard: Modular Step - Choose Presets for selected Modules
 	 *
+	 * @param $step_number
 	 * @return false|string
 	 */
-	private function wizard_step_designs_content() {
+	private function wizard_step_designs_content( $step_number ) {
 
 		$modules_presets_config = $this->get_modules_presets_config();
 
 		ob_start();  ?>
 
-		<div id="epkb-wsb-step-4-panel" class="epkb-wc-step-panel eckb-wizard-step-4">
+		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-wc-step-panel eckb-wizard-step-design eckb-wizard-step-<?php echo esc_attr( $step_number ); ?>">
 
 			<div class="epkb-setup-wizard-no-categories-articles-message"><?php esc_html_e( 'Categories & Articles module was not selected in previous step.', 'echo-knowledge-base' ); ?></div>
 
@@ -1013,11 +1101,12 @@ class EPKB_KB_Wizard_Setup {
 	}
 
 	/**
-	 * Setup Wizard: Modular Step 5 - Choose article page navigation on left or right sidebar
+	 * Setup Wizard: Modular Step - Choose article page navigation on left or right sidebar
 	 *
+	 * @param $step_number
 	 * @return false|string
 	 */
-	private function wizard_step_modular_navigation_content() {
+	private function wizard_step_modular_navigation_content( $step_number ) {
 
 		$groups = $this->get_sidebar_groups();
 
@@ -1025,7 +1114,7 @@ class EPKB_KB_Wizard_Setup {
 
 		ob_start(); ?>
 
-		<div id="epkb-wsb-step-5-panel" class="epkb-setup-wizard-sidebar epkb-wc-step-panel eckb-wizard-step-article-page eckb-wizard-step-5">
+		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-setup-wizard-sidebar epkb-wc-step-panel eckb-wizard-step-article-page eckb-wizard-step-<?php echo esc_attr( $step_number ); ?>">
 			<div class="epkb-setup-wizard-theme-preview">
 				<div class="epkb-wizard-theme-tab-container">
 					<div class="epkb-setup-wizard-article__container">

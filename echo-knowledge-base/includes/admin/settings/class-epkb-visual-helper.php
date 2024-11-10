@@ -24,7 +24,7 @@ class EPKB_Visual_Helper {
 		ob_start(); ?>
 
 		<div class="epkb-vshelp__wrapper">  <?php
-			$this->epkb_visual_helper_toggle();
+			$this->epkb_visual_helper_toggle( $kb_config );
             if ( count( $settings_side_menu ) ) {
 	            $this->epkb_visual_helper_side_menu( $kb_config, $settings_side_menu );
             } ?>
@@ -38,9 +38,11 @@ class EPKB_Visual_Helper {
 	/**
 	 * Generate Visual Helper Toggle HTML element
 	 */
-	private function epkb_visual_helper_toggle() {
+	private function epkb_visual_helper_toggle( $kb_config ) {
 
 		$kb_id = EPKB_Utilities::get_eckb_kb_id();
+        $active_state = $kb_config['visual_helper_switch_show_state'] ?? 'off';
+
 		ob_start(); ?>
 
 		<div class="epkb-vshelp-toggle-wrapper">
@@ -51,13 +53,13 @@ class EPKB_Visual_Helper {
 				<span class="epkb-vshelp-title__text"><?php esc_html_e( 'Toggle Visual Helper', 'echo-knowledge-base' ); ?></span>
 			</div>
 			<div class="epkb-settings-control">
-				<label class="epkb-settings-control-toggle js-epkb-side-menu-toggle">
-					<input type="checkbox" class="epkb-settings-control__input__toggle" value="on" name="article_content_enable_article_title" checked="checked">
+				<label class="epkb-settings-control-toggle">
+					<input type="checkbox" class="epkb-settings-control__input__toggle js-epkb-side-menu-toggle" value="<?php esc_attr( $active_state ) ?>" name="visual_helper_switch_show_state" <?php checked( $active_state, 'on' ); ?> data-kbid="<?php echo esc_attr( $kb_id ); ?>">
 					<span class="epkb-settings-control__input__label" data-on="<?php esc_html_e( 'On', 'echo-knowledge-base' ); ?>" data-off="<?php esc_html_e( 'Off', 'echo-knowledge-base' ); ?>"></span>
 					<span class="epkb-settings-control__input__handle"></span>
 				</label>
 			</div>
-			<div class="epkb-vshelp-hide-switcher epkb-vshelp-hide-switcher--hidden" data-kbid="<?php echo esc_attr( $kb_id ); ?>">
+			<div class="epkb-vshelp-hide-switcher<?php echo ( $active_state === 'on' ) ? ' epkb-vshelp-hide-switcher--hidden' : ''; ?>" data-kbid="<?php echo esc_attr( $kb_id ); ?>">
 				<span class="epkb-vshelp-hide-switcher__icon epkbfa epkbfa-times-circle"></span>
 			</div>
 		</div>		<?php
@@ -72,6 +74,8 @@ class EPKB_Visual_Helper {
 
 		$keys_to_check = ['ml_row_1_module', 'ml_row_2_module', 'ml_row_3_module', 'ml_row_4_module', 'ml_row_5_module'];
 
+        $switch_toggle_active = $kb_config['visual_helper_switch_show_state'] ?? 'off';
+
 		foreach ( $keys_to_check as $key ) {
 			if ( isset( $kb_config[$key] ) ) {
 				if ( $kb_config[$key] === 'categories_articles' ) {
@@ -85,8 +89,10 @@ class EPKB_Visual_Helper {
 			}
 		}
 
-		ob_start(); ?>
-		<div class="epkb-vshelp-side-menu-wrapper">
+		ob_start();
+
+        $side_menu_styles =  $switch_toggle_active === 'off' ? 'style="display: none;"' : '';        ?>
+		<div class="epkb-vshelp-side-menu-wrapper <?php echo esc_attr( EPKB_Utilities::get_active_theme_classes() ); ?>" <?php echo $side_menu_styles != '' ? $side_menu_styles : ''; ?>>
 			<div class="epkb-vshelp-side-menu-header">
 				<div class="epkb-vshelp-icon-wrapper">
 					<span class="ep_font_icon_info"></span>
@@ -207,8 +213,11 @@ class EPKB_Visual_Helper {
 	 */
 	public function update_switch_settings_handler() {
 
+        $setting_name = EPKB_Utilities::post( 'setting_name', 'visual_helper_switch_visibility_toggle' );
 		$kb_id = EPKB_Utilities::post( 'kb_id', EPKB_KB_Config_DB::DEFAULT_KB_ID );
-		epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'visual_helper_switch_visibility_toggle', 'off' );
+        $current_state = epkb_get_instance()->kb_config_obj->get_value( $kb_id, $setting_name );
+
+		epkb_get_instance()->kb_config_obj->set_value( $kb_id, $setting_name, $current_state === 'on' ? 'off' : 'on' );
 
 		wp_send_json_success( esc_html__( 'Settings saved', 'echo-knowledge-base' ) );
 	}

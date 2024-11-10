@@ -161,6 +161,16 @@ class EPKB_Autoloader {
 				'epkb_openai'                       =>  'includes/admin/openai/class-epkb-openai.php',
 				'epkb_ai_help_sidebar'              =>  'includes/admin/openai/class-epkb-ai-help-sidebar.php',
 				'epkb_ai_help_sidebar_ctrl'         =>  'includes/admin/openai/class-epkb-ai-help-sidebar-ctrl.php',
+
+				// BLOCKS
+				'epkb_abstract_block'               =>  'includes/admin/blocks/class-epkb-abstract-block.php',
+				'epkb_search_block'                 =>  'includes/admin/blocks/search/class-epkb-search-block.php',
+				'epkb_basic_layout_block'           =>  'includes/admin/blocks/basic-layout/class-epkb-basic-layout-block.php',
+				'epkb_tabs_layout_block'            =>  'includes/admin/blocks/tabs-layout/class-epkb-tabs-layout-block.php',
+				'epkb_categories_layout_block'      =>  'includes/admin/blocks/categories-layout/class-epkb-categories-layout-block.php',
+				'epkb_classic_layout_block'         =>  'includes/admin/blocks/classic-layout/class-epkb-classic-layout-block.php',
+				'epkb_drill_down_layout_block'      =>  'includes/admin/blocks/drill-down-layout/class-epkb-drill-down-layout-block.php',
+				'epkb_block_utilities'              =>  'includes/class-epkb-block-utilities.php',
 			);
 		}
 

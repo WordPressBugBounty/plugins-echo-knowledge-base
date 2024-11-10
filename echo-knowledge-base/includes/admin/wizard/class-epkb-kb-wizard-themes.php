@@ -149,8 +149,9 @@ class EPKB_KB_Wizard_Themes {
 
 			'sidebar_article_icon_color' => [1 => '#b3b3b3', 2 => '#b3b3b3', 3 => '#525252', 4 => '#525252', 5 => '#43596e', 6 => '#e3474b', 7 => '#1e1e1e', 8 => '#566e8b', 9 => '#dd9933', 10 => '#000000', 11 => '#00b4b3', 12 => '#1e73be',
 											13 => '#adadad', 14 => '#000000', 15 => '#000000', 16 => '#e8a298', 17 => '#6fb24c'],
-			'sidebar_section_head_font_color' => [ 3 => '#ffffff', 4 => '#ffffff', 5 => '#000000'],
-			'sidebar_section_head_background_color' => [ 3 => '#90b4c4', 4 => '#90b4c4', 5 => '#ffffff'],
+			'sidebar_section_head_font_color' => [ 2 => '#1e73be', 3 => '#ffffff', 4 => '#ffffff', 5 => '#ffffff', 6 => '#ffffff', 8 => '#000000', 9 => '#dd9933', 21 => '#000000' ],
+			'sidebar_section_head_background_color' => [ 3 => '#90b4c4', 4 => '#90b4c4', 5 => '#5a748d', 6 => '#f96e5a'],
+			'sidebar_section_divider_color' => [ 5 => '#5a748d', 6 => '#f96e5a'],
 			'sidebar_section_category_font_color' => [ 5 => '#000000'],
 			'sidebar_article_active_font_color' => [ 3 => '#000000', 4 => '#000000', 5 => '#000000'],
 			'sidebar_article_active_background_color' => [ 3 => '#f9f9f9', 4 => '#f9f9f9', 5 => '#f7f7f7'],

@@ -96,10 +96,11 @@ class EPKB_KB_Handler {
 	 * @param $kb_id
 	 * @param string $kb_main_page_title
 	 * @param string $kb_main_page_slug
-	 *
+	 * @param bool $use_kb_blocks - determines whether to use blocks or shortcode TODO: set to default true on blocks release
+	 * @param array $kb_blocks - list of block configs in desired sequence
 	 * @return WP_Error|WP_Post
 	 */
-	public static function create_kb_main_page( $kb_id, $kb_main_page_title, $kb_main_page_slug ) {
+	public static function create_kb_main_page( $kb_id, $kb_main_page_title, $kb_main_page_slug, $use_kb_blocks = false, $kb_blocks = array() ) {
 
 		// we add new KB Page here so remove hook
 		remove_filter('save_post', 'epkb_add_main_page_if_required', 10 );
@@ -108,8 +109,43 @@ class EPKB_KB_Handler {
 		remove_shortcode( EPKB_KB_Handler::KB_MAIN_PAGE_SHORTCODE_NAME );
 
 		$shortcode = '[' . self::KB_MAIN_PAGE_SHORTCODE_NAME . ' id=' . $kb_id . ']';
+
+		// case: block Theme
 		if ( EPKB_Utilities::is_block_theme() ) {
-			$post_content = '<!-- wp:shortcode -->' . $shortcode . '<!-- /wp:shortcode -->';    // TODO use KB block
+
+			// case: KB blocks
+			if ( $use_kb_blocks ) {
+
+				// if required to create the page via KB blocks but no blocks were specified, then create the default set of blocks
+				$default_block_attributes = json_encode( array(
+					'kb_id' => $kb_id,
+				) );
+
+				if ( empty( $kb_blocks ) ) {
+					$kb_blocks = array(
+						array(
+							'name' => EPKB_Search_Block::EPKB_BLOCK_NAME,
+							'attributes' => $default_block_attributes,
+						),
+						array(
+							'name' => EPKB_Basic_Layout_Block::EPKB_BLOCK_NAME,
+							'attributes' => $default_block_attributes,
+						),
+					);
+				}
+
+				$post_content = '';
+				foreach ( $kb_blocks as $one_block_config ) {
+					$block_attributes = empty( $one_block_config['attributes'] ) ? $default_block_attributes : $one_block_config['attributes'];
+					$post_content .= '<!-- wp:' . EPKB_Abstract_Block::EPKB_BLOCK_NAMESPACE . '/' . $one_block_config['name'] . ' ' . $block_attributes . ' /-->';
+				}
+
+			// case: WordPress block with KB shortcode
+			} else {
+				$post_content = '<!-- wp:shortcode -->' . $shortcode . '<!-- /wp:shortcode -->';
+			}
+
+		// case: non-block Theme
 		} else {
 			$post_content = $shortcode;
 		}
@@ -551,11 +587,11 @@ class EPKB_KB_Handler {
 	}
 
 	/**
-	 * Determine if the current page is KB main page i.e. it contains KB shortcode and return its KB ID if any
+	 * Determine if the current page is KB main page i.e. it contains KB shortcode or KB layout block and return its KB ID if any
 	 * @param null $the_post - either pass post to the method or use current post
 	 * @return int|null return KB ID if current page is KB main page otherwise null
 	 */
-	public static function get_kb_id_from_kb_main_shortcode( $the_post=null ) {
+	public static function get_kb_id_from_kb_main_page( $the_post=null ) {
 		/** @var $wpdb Wpdb */
 		global $wpdb;
 
@@ -563,6 +599,12 @@ class EPKB_KB_Handler {
 		$found_post = empty( $the_post ) ? $global_post : $the_post;
 		if ( empty( $found_post ) || ! isset( $found_post->post_content ) || empty( $found_post->ID ) ) {
 			return null;
+		}
+
+		// search for KB Main Page block - the block attributes can be empty if all of them have default value (use default KB id then)
+		$block_attributes = EPKB_Block_Utilities::parse_block_attributes_from_post( $found_post, '-layout' );
+		if ( $block_attributes !== false ) {
+			return isset( $block_attributes['kb_id'] ) ? $block_attributes['kb_id'] : EPKB_KB_Config_DB::DEFAULT_KB_ID;
 		}
 
 		// ensure WP knows about the shortcode
@@ -668,8 +710,8 @@ class EPKB_KB_Handler {
 				continue;
 			}
 
-			// remove page that does not contain KB shortcode anymore
-			$kb_id = self::get_kb_id_from_kb_main_shortcode( $post );
+			// remove page that does not contain KB shortcode or KB layout block anymore
+			$kb_id = self::get_kb_id_from_kb_main_page( $post );
 			if ( empty( $kb_id ) || $kb_id != $kb_config['id'] ) {
 				unset( $kb_main_pages[ $post_id ] );
 				continue;
@@ -744,7 +786,7 @@ class EPKB_KB_Handler {
 
 		foreach ( $kb_main_pages as $post_id => $post_title ) {
 
-			if ( count($kb_main_pages) == 1 ) {
+			if ( count( $kb_main_pages ) == 1 ) {
 				return $post_id;
 			}
 

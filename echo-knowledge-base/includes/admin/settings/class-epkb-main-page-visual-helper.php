@@ -18,7 +18,7 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 	 */
 	public function epkb_main_page_generate_page_content() {
 
-		if ( ! EPKB_Utilities::is_kb_main_page() ) {
+		if ( ! EPKB_Utilities::is_kb_main_page() || EPKB_Utilities::get( 'kbsearch' ) ) {
 			return;
 		}
 
@@ -27,6 +27,11 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 		}
 
 		$kb_id = EPKB_Utilities::get_eckb_kb_id();
+
+		// TODO for now Visual Helper is disabled for blocks
+		if ( EPKB_Block_Utilities::current_post_has_kb_layout_blocks() ) {
+			return;
+		}
 
 		$visual_helper_state = epkb_get_instance()->kb_config_obj->get_value( $kb_id, 'visual_helper_switch_visibility_toggle' );
 		if ( $visual_helper_state === 'off' ) {
@@ -206,7 +211,7 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 				echo sprintf( esc_html__( 'The Knowledge Base offers two template options for both Main and Article Pages: %sKB Template%s and %sCurrent Theme Template%s.', 'echo-knowledge-base' ), '<strong>', '</strong>', '<strong>', '</strong>' ) . ' ' .
 					'<a href="https://www.echoknowledgebase.com/documentation/current-theme-template-vs-kb-template/" target="_blank" rel="nofollow">' . esc_html__(  'Learn More', 'echo-knowledge-base' ) . '</a> <span class="epkbfa epkbfa-external-link"></span>';  ?>
 			</p>
-			<hr>
+			<div class="epkb-vshelp-accordion-body__divider"></div>
 			<p><?php echo esc_html__( 'If you\'re experiencing layout issues or want to see a different look, try switching the template', 'echo-knowledge-base' ) . ':'; ?></p>
 			<div class="epkb-vshelp-accordion-body__template-toggle epkb-settings-control">
 				<label class="epkb-settings-control-circle-radio">

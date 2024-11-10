@@ -18,7 +18,7 @@ class EPKB_FAQs_Utilities {
 	 */
 	public static function display_faqs( $kb_config, $faq_groups, $faq_title, $is_shortcode=false, $use_content_filter=false ) {
 
-		$is_faq_schema = false;
+		$is_faq_schema = isset( $kb_config['faq_schema_toggle'] ) && $kb_config['faq_schema_toggle'] == 'on';
 
 		// Set Icon Type from User settings
 		switch ( $kb_config['faq_icon_type'] ) {
@@ -103,6 +103,23 @@ class EPKB_FAQs_Utilities {
 
 							foreach ( $column as $one_faq ) {
 
+								// add article title and content to the FAQ schema
+								if ( $is_faq_schema ) {
+
+									$text = wp_strip_all_tags( $one_faq->post_content );
+									$text = html_entity_decode( $text, ENT_QUOTES, 'UTF-8' );
+									$text = preg_replace('/\s+/', ' ', $text );
+
+									$faq_schema_json['mainEntity'][] = array(
+										'@type' => 'Question',
+										'name' => $one_faq->post_title,
+										'acceptedAnswer' => array(
+											'@type' => 'Answer',
+											'text' => $text,
+										)
+									);
+								}
+
 								// add article title and content to the FAQ schema	?>
 								<div class="epkb-faqs__item-container" id="epkb-faqs-article-<?php echo esc_attr( $one_faq->ID ); ?>" >
 
@@ -139,12 +156,12 @@ class EPKB_FAQs_Utilities {
 
 					</div>  <?php
 				} ?>
-			</div>			<?php 
+			</div>			<?php
 
 			if ( $is_faq_schema ) {			?>
 				<!--suppress JSUnresolvedVariable -->
 				<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema_json ); ?></script>   <?php
-			}   ?>
+			}  ?>
 
 		</div>	<?php
 

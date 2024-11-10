@@ -369,7 +369,7 @@ class EPKB_KB_Demo_Data {
 
 		$first_article = true;
 		foreach ( $article_titles as $article_title ) {
-			$article_id = self:: create_sample_article( $new_kb_id, $category_id, $article_title );
+			$article_id = self::create_sample_article( $new_kb_id, $category_id, $article_title );
 			if ( empty( $article_id ) || is_wp_error( $article_id ) ) {
 				return false;
 			}

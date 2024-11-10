@@ -78,10 +78,12 @@ class EPKB_KB_Config_Category {
 		}
 
 		$is_new_category = ! is_object( $category );
-		$message = esc_html__( 'Category Icons are disabled', 'echo-knowledge-base' );
 
 		// if icons disabled just show turn on/off link
 		if ( $location == 'no_icons' ) {
+
+			$message = esc_html__( 'Category Icons are disabled', 'echo-knowledge-base' );
+
 		    if ( $is_new_category ) {
 			    self::category_icon_message( 'epkb-icons-are-disabled', $message , $this->get_on_off_icons_link(),
 				                                'Turn Category Icons ON. See Categories & Articles Module settings.' );
@@ -104,6 +106,9 @@ class EPKB_KB_Config_Category {
 				break;
 			case 'Sidebar':
 				$category_icon_message = esc_html__( 'Sidebar Layout does not use icons for categories.', 'echo-knowledge-base' );
+				break;
+			case 'Categories':
+				$category_icon_message = '';
 				break;
 			default:
 				$category_icon_message = esc_html__( 'Only top-level categories have icons visible.', 'echo-knowledge-base' );
@@ -157,7 +162,10 @@ class EPKB_KB_Config_Category {
 		</<?php echo $is_new_category ? 'div' : 'tr'; ?>> <?php 
 	}
 
-	public static function category_icon_message( $class, $message , $url , $urlText ) {      ?>
+	public static function category_icon_message( $class, $message , $url , $urlText ) {
+		if ( empty( $message ) ) {
+			return;
+		}		?>
 		<div class="epkb-term-options-message <?php echo esc_attr( $class ); ?>">
 			<i class="epkbfa epkbfa-info-circle" aria-hidden="true"></i>
 			<p>				<?php
@@ -226,7 +234,7 @@ class EPKB_KB_Config_Category {
 	 *
 	 * @return array
 	 */
-	public static function get_category_icon( $term_id, $categories_data, $default_icon_name='' ) {
+	public static function get_category_icon( $term_id, $categories_data ) {
 		$result = array(
 			'type' => EPKB_Icons::DEFAULT_CATEGORY_TYPE, 
 			'name' => EPKB_Icons::DEFAULT_CATEGORY_ICON_NAME,
@@ -239,10 +247,6 @@ class EPKB_KB_Config_Category {
 			'is_draft' => false
 		);
 
-		// Categories Focused Layout sub-categories can have old style font icon if not defined explicitly by user
-		if ( empty( $categories_data[ $term_id]) && ! empty($default_icon_name) ) {
-			$result['name'] = $default_icon_name;
-		}
 
 		if ( ! empty( $categories_data[ $term_id]) ) {
 			$result = array_merge( $result, $categories_data[ $term_id] );

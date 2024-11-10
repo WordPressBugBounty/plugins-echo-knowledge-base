@@ -20,8 +20,8 @@ function epkb_add_main_page_if_required( $post_id, $post ) {
 		return;
 	}
 
-	// return if this page does not have KB shortcode or error occurred; we remove old pages elsewhere
-	$kb_id = EPKB_KB_Handler::get_kb_id_from_kb_main_shortcode( $post );
+	// return if this page does not have KB shortcode, KB layout block, or error occurred; we remove old pages elsewhere
+	$kb_id = EPKB_KB_Handler::get_kb_id_from_kb_main_page( $post );
 	if ( empty( $kb_id ) ) {
 		return;
 	}
@@ -58,7 +58,7 @@ function epkb_add_main_page_if_required( $post_id, $post ) {
 add_action( 'save_post', 'epkb_add_main_page_if_required', 10, 2 );
 
 /**
- * If user changed slug for page with KB shortcode and we do not have matching Article Common Path then let user know.
+ * If user changed slug for page with KB shortcode or KB layout block, and we do not have matching Article Common Path then let user know.
  * @param int     $post_id Post ID.
  * @param WP_Post $post    Post object.
  */
@@ -136,7 +136,7 @@ function epkb_does_path_for_articles_need_update( $post_id, $post ) {
 add_action( 'save_post', 'epkb_does_path_for_articles_need_update', 15, 2 );  // needs to run AFTER epkb_add_main_page_if_required()
 
 /**
- * If user deleted page then let them know if the page has active KB shortcode.
+ * If user deleted page then let them know if the page has active KB shortcode or KB layout block
  * @param $post_id
  */
 function epkb_add_delete_kb_page_warning( $post_id ) {
@@ -151,7 +151,7 @@ function epkb_add_delete_kb_page_warning( $post_id ) {
 		return;
 	}
 
-	$kb_id = EPKB_KB_Handler::get_kb_id_from_kb_main_shortcode( $post );
+	$kb_id = EPKB_KB_Handler::get_kb_id_from_kb_main_page( $post );
 	if ( empty( $kb_id ) ) {
 		return;
 	}
@@ -198,17 +198,8 @@ function epkb_add_post_state( $post_states, $post ) {
 		return $post_states;
 	}
 
-	/* $all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs();
-	foreach ( $all_kb_configs as $one_kb_config ) {
-		if ( in_array( $post->ID, array_keys( $kb_main_pages ) ) ) {
-			$kb_id = $one_kb_config['id'];
-			$kb_name = $one_kb_config[ 'kb_name' ];
-			break;
-		}
-	} */
-
 	if ( in_array( $post->ID, array_keys( $kb_config['kb_main_pages'] ) ) ) {
-		$post_states[] = $kb_config[ 'kb_name' ] . ' [ ' . __( 'KB', 'echo-knowledge-base' ) . ' #' . EPKB_KB_Config_DB::DEFAULT_KB_ID . ' ]';
+		$post_states[] = __( 'Knowledge Base', 'echo-knowledge-base' ) . ' #1';
 	}
 
 	return $post_states;
@@ -264,7 +255,7 @@ add_action( 'admin_init', 'epkb_crel_notice' );
 new EPKB_Site_Builders();
 
 /**
- * All user to filter All Articles page based by categories
+ * On Categories Page add link to order categories and articles
  */
 function epkb_categories_sorting_link() {
 

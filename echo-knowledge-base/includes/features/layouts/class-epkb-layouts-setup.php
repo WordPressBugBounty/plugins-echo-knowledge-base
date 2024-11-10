@@ -95,7 +95,7 @@ class EPKB_Layouts_Setup {
 	        }
         }
 
-		return self:: output_main_page( $kb_config );
+		return self::output_main_page( $kb_config );
 	}
 
 	/**

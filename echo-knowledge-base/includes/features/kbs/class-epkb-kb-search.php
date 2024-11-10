@@ -26,6 +26,12 @@ class EPKB_KB_Search {
 
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
 
+		// search block uses its own settings
+		$kb_block_post_id = (int)EPKB_Utilities::get( 'kb_block_post_id', 0 );
+		if ( $kb_block_post_id && has_filter( 'kb_search_block_config' ) ) {
+			$kb_config = apply_filters( 'kb_search_block_config', $kb_config, $kb_block_post_id );
+		}
+
 		// remove question marks
 		$search_terms = EPKB_Utilities::get( 'search_words' );
 		$search_terms = stripslashes( $search_terms );
@@ -244,9 +250,9 @@ class EPKB_KB_Search {
 		$title_style_escaped = '';
 		$icon_style_escaped  = '';
 		if ( $kb_config['search_box_results_style'] == 'on' ) {
-			$color_prefix = EPKB_Utilities::is_elegant_layouts_enabled() ? 'sidebar_' : '';  // are we taking color from Sidebar ?
-			$title_style_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $color_prefix . 'article_font_color' , $kb_config);
-			$icon_style_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $color_prefix . 'article_icon_color' , $kb_config);
+			$setting_names = EPKB_Core_Utilities::get_style_setting_name( $kb_config['kb_main_page_layout'] );
+			$title_style_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $setting_names['article_font_color'] , $kb_config );
+			$icon_style_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $setting_names['article_icon_color'] , $kb_config );
 		}
 
 		// display one line for each search result

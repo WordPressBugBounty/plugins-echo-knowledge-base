@@ -424,10 +424,11 @@ class EPKB_HTML_Admin {
 						<div class="epkb-admin__form-tab-content <?php echo empty( $content['css_class'] ) ? '' : esc_attr( $content['css_class'] ); ?>" <?php echo $data_escaped; ?>>
 
 							<div class="epkb-admin__form-tab-content-title">    <?php
-								echo esc_html( $content['title'] );
+								echo empty( $content['title_before_icon'] ) ? '' : esc_html( $content['title'] );
 								if ( ! empty( $content['icon'] ) || ! empty( $content['icon_text'] ) ) {    ?>
 									<span class="<?php echo esc_html( $content['icon'] ); ?> epkb-admin__form-tab-content-icon"><?php echo esc_html( $content['icon_text'] ); ?></span>   <?php
 								}
+								echo empty( $content['title_before_icon'] ) ? esc_html( $content['title'] ) : '';
 						        if ( ! empty( $content['help_links_html'] ) ) {
                                     echo wp_kses( $content['help_links_html'], EPKB_Utilities::get_admin_ui_extended_html_tags() );
                                 }   ?>
@@ -588,12 +589,13 @@ class EPKB_HTML_Admin {
 
 		// Default admin form tab in vertical_tabs
 		$default_admin_form_tab = array(
-			'title'     => '',
-			'icon'      => '',
-			'key'       => '',
-			'active'    => false,
-			'contents'  => [],
-			'sub_tabs'  => [],
+			'title'     		=> '',
+			'icon'      		=> '',
+			'title_before_icon'	=> true,
+			'key'       		=> '',
+			'active'    		=> false,
+			'contents'  		=> [],
+			'sub_tabs'  		=> [],
 			'bottom_labels_link' => false,
 		);
 
@@ -779,5 +781,35 @@ class EPKB_HTML_Admin {
 			</div>
 			<div class="epkb-admin__form-tab-content-body"></div>
 		</div>	<?php
+	}
+
+	/**
+	 * Display warning about missing main page
+	 *
+	 * @param $kb_config
+	 * @param bool $return_html
+	 *
+	 * @return string|void
+	 */
+	public static function display_no_main_page_warning( $kb_config, $return_html=false ) {
+
+		$notification_escaped = EPKB_HTML_Forms::notification_box_middle( array(
+			'type'  => 'error',
+			'title' => esc_html__( 'We did not detect any Main Page for your knowledge base', 'echo-knowledge-base' ) . ': ' . esc_html( $kb_config['kb_name'] ) . ' . ' . esc_html__( 'You can do the following:', 'echo-knowledge-base' ),
+			'desc'  => '<ul>
+							<li>' . esc_html__( 'If you have a KB Main Page, please re-save it and then come back', 'echo-knowledge-base' ) . '</li>
+                            <li>' . __( 'Run Setup Wizard to create a new KB Main Page', 'echo-knowledge-base' )
+				. ' ' . '<a href="'.esc_url( admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) . '&page=epkb-kb-configuration&setup-wizard-on' ) ) . '" target="_blank">' . __( 'Run Setup Wizard', 'echo-knowledge-base' ) . '</a></li>
+							<li>' . __( 'Create one manually as described here:', 'echo-knowledge-base' )
+				. ' ' . '<a href="https://www.echoknowledgebase.com/documentation/knowledge-base-shortcode/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a></li>
+                        </ul>'
+		), $return_html  );
+
+		if ( $return_html ) {
+			return $notification_escaped;
+		} else {
+			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $notification_escaped;
+		}
 	}
 }

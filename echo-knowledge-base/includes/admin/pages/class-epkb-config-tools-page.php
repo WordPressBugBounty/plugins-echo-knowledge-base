@@ -227,7 +227,7 @@ class EPKB_Config_Tools_Page {
 				'plugin'       => 'core',
 				'icon'         => 'epkbfa epkbfa-upload',
 				'title'        => esc_html__( 'Export KB Configuration', 'echo-knowledge-base' ),
-				'desc'         => esc_html__( 'Export core and add-ons configuration including colors, fonts, labels, and features settings.', 'echo-knowledge-base' ),
+				'desc'         => esc_html__( 'Export core and add-ons configuration including colors, fonts, labels, and features settings.', 'echo-knowledge-base' ) . ' ' . esc_html__( 'Block settings will not be exported.', 'echo-knowledge-base' ),
 				'custom_links' => self::get_export_button_html( $kb_config ),
 				'button_id'    => 'epkb_core_export',
 				'button_title' => esc_html__( 'Export Configuration', 'echo-knowledge-base' ),
@@ -267,15 +267,11 @@ class EPKB_Config_Tools_Page {
 
 		ob_start(); ?>
 
-	<form class="epkb-export-kbs"
-		  action="<?php echo esc_url( add_query_arg( array( 'active_kb_tab' => $kb_config['id'], 'active_action_tab' => 'export#tools__export' ) ) ); ?>"
-		  method="post">
-		<input type="hidden" name="_wpnonce_epkb_ajax_action"
-			   value="<?php echo wp_create_nonce( "_wpnonce_epkb_ajax_action" ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?>"/>
-		<input type="hidden" name="action" value="epkb_export_knowledge_base"/>
-		<input type="hidden" name="emkb_kb_id" value="<?php echo esc_attr( $kb_config['id'] ); ?>"/>
-		<input type="submit" class="epkb-primary-btn"
-			   value="<?php esc_attr_e( 'Export Configuration', 'echo-knowledge-base' ); ?>"/>
+		<form class="epkb-export-kbs" action="<?php echo esc_url( add_query_arg( array( 'active_kb_tab' => $kb_config['id'], 'active_action_tab' => 'export#tools__export' ) ) ); ?>" method="post">
+			<input type="hidden" name="_wpnonce_epkb_ajax_action" value="<?php echo wp_create_nonce( "_wpnonce_epkb_ajax_action" ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?>"/>
+			<input type="hidden" name="action" value="epkb_export_knowledge_base"/>
+			<input type="hidden" name="emkb_kb_id" value="<?php echo esc_attr( $kb_config['id'] ); ?>"/>
+			<input type="submit" class="epkb-primary-btn" value="<?php esc_attr_e( 'Export Configuration', 'echo-knowledge-base' ); ?>"/>
 		</form><?php
 
 		return ob_get_clean();
@@ -345,7 +341,7 @@ class EPKB_Config_Tools_Page {
 				'plugin'       => 'core',
 				'icon'         => 'epkbfa epkbfa-download',
 				'title'        => esc_html__( 'Import KB Configuration', 'echo-knowledge-base' ),
-				'desc'         => esc_html__( 'Import core and add-ons configuration including colors, fonts, labels, and features settings.', 'echo-knowledge-base' ),
+				'desc'         => esc_html__( 'Import core and add-ons configuration including colors, fonts, labels, and features settings.', 'echo-knowledge-base' ) . ' ' . esc_html__( 'Block settings cannot be imported.', 'echo-knowledge-base' ),
 				'button_id'    => 'epkb_core_import',
 				'button_title' => esc_html__( 'Import Configuration', 'echo-knowledge-base' ),
 			],
@@ -627,7 +623,7 @@ class EPKB_Config_Tools_Page {
 			<label class="epkb-form-label">
 			<input class="epkb-form-label__input epkb-form-label__input--checkbox import-kb-name-checkbox"
 				   type="checkbox" name="epkb_convert_post" required>
-			<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I want to convert articles into this KB:', 'echo-kb-import-export' ); ?>
+			<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I want to convert posts into this KB:', 'echo-kb-import-export' ); ?>
                 <span class="epkb-admin__distinct-box epkb-admin__distinct-box--middle"><?php echo esc_html( $kb_config['kb_name'] ); ?></span></span>
 			</label><?php
 		} ?>
