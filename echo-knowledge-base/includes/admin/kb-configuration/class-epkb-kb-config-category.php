@@ -230,8 +230,6 @@ class EPKB_KB_Config_Category {
 	 *
 	 * @param $term_id
 	 * @param $categories_data
-	 * @param string $default_icon_name
-	 *
 	 * @return array
 	 */
 	public static function get_category_icon( $term_id, $categories_data ) {
@@ -247,12 +245,11 @@ class EPKB_KB_Config_Category {
 			'is_draft' => false
 		);
 
-
-		if ( ! empty( $categories_data[ $term_id]) ) {
+		if ( ! empty( $categories_data[ $term_id] ) ) {
 			$result = array_merge( $result, $categories_data[ $term_id] );
 		}
-		
-		if (strpos( $result['name'], 'epkbfa' ) === false) {
+
+		if ( strpos( $result['name'], 'epkbfa' ) === false ) {
 			$result['name'] = str_replace( 'fa-', 'epkbfa-', $result['name'] );
 		}
 
@@ -266,7 +263,6 @@ class EPKB_KB_Config_Category {
 		}
 
 		if ( ! empty( $result['image_id'] ) && ! get_post_status( $result['image_id'] ) ) {
-
 			$result['image_id'] = EPKB_Icons::DEFAULT_CATEGORY_IMAGE_ID;
 			$result['image_size'] = EPKB_Icons::DEFAULT_CATEGORY_IMAGE_SIZE;
 			$result['image_thumbnail_url'] = Echo_Knowledge_Base::$plugin_url . EPKB_Icons::DEFAULT_IMAGE_SLUG;

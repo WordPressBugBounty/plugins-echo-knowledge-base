@@ -129,15 +129,6 @@ class EPKB_Add_Ons_Page {
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/advanced-search/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=advanced-search'
 			) );
 
-			/** TODO self::add_on_product( array(
-			'id'                => '',
-			'title'             => esc_html__( 'Article Features', 'echo-knowledge-base' ),
-			'special_note'      => esc_html__( 'Includes article rating and article change notifications.', 'echo-knowledge-base' ),
-			'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2019/11/EP'.'RF-featured-image.jpg',
-			'desc'              => esc_html__( 'Current features: article rating with analytics, and email notifications for new or updated articles.', 'echo-knowledge-base' ),
-			'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/article-rating-and-feedback/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=article-rating'
-			) ); */
-
 			self::add_on_product( array(
 				'id'                => '',
 				'title'             => esc_html__( 'Widgets', 'echo-knowledge-base' ),

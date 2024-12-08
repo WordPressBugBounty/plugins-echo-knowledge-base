@@ -13078,10 +13078,10 @@
         border-radius: 7px; }
       #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-content .epkb-setup-option-container .epkb-setup-option__featured-img-container {
         width: 100%;
-        cursor: pointer;
         position: relative; }
         #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-content .epkb-setup-option-container .epkb-setup-option__featured-img-container .epkb-setup-option__featured-img {
-          width: 100%; }
+          width: 100%;
+          cursor: zoom-in; }
       #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-content .epkb-setup-option-container .epkb-setup-option__featured-vid-container {
         width: 100%;
         cursor: pointer;
@@ -13461,9 +13461,9 @@
       width: 152px;
       white-space: break-spaces !important; }
     #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer {
-      margin: 30px -20px 10px -20px;
+      margin: 30px -20px -10px -20px;
       padding: 10px 0;
-      background-color: #f9f9f9;
+      background-color: #2E2E2E;
       border-top: solid 1px #c5c5c5;
       position: relative; }
       #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer.epkb-wizard-top-bar {
@@ -13508,7 +13508,6 @@
         #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-prev {
           display: inline-block;
           height: fit-content;
-          background-color: #3bb3e0;
           padding: 10px;
           position: relative;
           font-family: 'Open Sans', sans-serif;
@@ -13516,37 +13515,18 @@
           text-align: center;
           text-decoration: none;
           color: #fff;
-          border: solid 1px #186f8f;
-          background-image: linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -o-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -moz-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -webkit-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -ms-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #2CA0CA), color-stop(1, #3EB8E5));
+          border: solid 3px #176e29;
+          background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #315007), color-stop(1, #1ba512));
           border-radius: 5px;
-          box-shadow: inset 0px 1px 0px #7FD2F1, 0px 1px 0px #fff;
-          background-color: #0e8bdf; }
-          #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-prev a {
-            text-decoration: none; }
+          box-shadow: inset 0 1px 0 #31353600, 0 1px 0 #fff;
+          background-color: #3a3939; }
           #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-prev:hover {
-            cursor: pointer;
-            background-image: linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -o-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -moz-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -webkit-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -ms-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #237fa0), color-stop(1, #3EB8E5));
-            border-radius: 5px; }
-          #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-prev:focus {
-            outline: 0; }
-          #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-prev:hover {
-            background-color: #2ea3f2; }
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #46710b), color-stop(1, #21b118)); }
           #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-prev .epkb-setup-wizard-button-prev__icon {
             color: #fff; }
         #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-next {
           display: inline-block;
           height: fit-content;
-          background-color: #3bb3e0;
           padding: 10px;
           position: relative;
           font-family: 'Open Sans', sans-serif;
@@ -13554,37 +13534,18 @@
           text-align: center;
           text-decoration: none;
           color: #fff;
-          border: solid 1px #186f8f;
-          background-image: linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -o-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -moz-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -webkit-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -ms-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #2CA0CA), color-stop(1, #3EB8E5));
+          border: solid 3px #176e29;
+          background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #315007), color-stop(1, #1ba512));
           border-radius: 5px;
-          box-shadow: inset 0px 1px 0px #7FD2F1, 0px 1px 0px #fff;
-          background-color: #0e8bdf; }
-          #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-next a {
-            text-decoration: none; }
+          box-shadow: inset 0 1px 0 #31353600, 0 1px 0 #fff;
+          background-color: #3a3939; }
           #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-next:hover {
-            cursor: pointer;
-            background-image: linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -o-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -moz-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -webkit-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -ms-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #237fa0), color-stop(1, #3EB8E5));
-            border-radius: 5px; }
-          #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-next:focus {
-            outline: 0; }
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #46710b), color-stop(1, #21b118)); }
           #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-next .epkb-setup-wizard-button-next__icon {
             color: #fff; }
-          #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-next:hover {
-            background-color: #2ea3f2; }
         #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-apply {
           display: inline-block;
           height: fit-content;
-          background-color: #3bb3e0;
           padding: 10px;
           position: relative;
           font-family: 'Open Sans', sans-serif;
@@ -13592,37 +13553,13 @@
           text-align: center;
           text-decoration: none;
           color: #fff;
-          border: solid 1px #186f8f;
-          background-image: linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -o-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -moz-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -webkit-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -ms-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-          background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #2CA0CA), color-stop(1, #3EB8E5));
+          border: solid 3px #176e29;
+          background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #315007), color-stop(1, #1ba512));
           border-radius: 5px;
-          box-shadow: inset 0px 1px 0px #7FD2F1, 0px 1px 0px #fff;
-          background-color: #33b303;
-          background-image: none;
-          box-shadow: inset 0 1px 0 #38cc01;
-          border: solid 1px #33b303; }
-          #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-apply a {
-            text-decoration: none; }
+          box-shadow: inset 0 1px 0 #31353600, 0 1px 0 #fff;
+          background-color: #3a3939; }
           #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-apply:hover {
-            cursor: pointer;
-            background-image: linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -o-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -moz-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -webkit-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -ms-linear-gradient(bottom, #237fa0, #3EB8E5);
-            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #237fa0), color-stop(1, #3EB8E5));
-            border-radius: 5px; }
-          #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-apply:focus {
-            outline: 0; }
-          #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-setup-wizard-button-apply:hover {
-            background-color: #38cc01;
-            background-image: none;
-            box-shadow: inset 0 1px 0 #38cc01;
-            border: solid 1px #33b303; }
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #46710b), color-stop(1, #21b118)); }
         #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-wizard-button-container__support-wizard {
           position: absolute;
           top: 51px;
@@ -14213,10 +14150,15 @@
     border-radius: 7px;
     padding: 20px;
     border: 3px solid #c5c5c5;
-    background-color: #f9f9f9; }
+    background-color: #f9f9f9;
+    min-height: 634px; }
     .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice.epkb-setup-wizard-features-choice--active {
       border: 3px solid #36aeda; }
+      .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice.epkb-setup-wizard-features-choice--active img {
+        width: 800px;
+        max-width: inherit; }
     .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice img {
+      cursor: zoom-in;
       width: 100%; }
     .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice .epkb-setup-wizard-features-choice__option__label {
       position: relative;
@@ -14318,11 +14260,15 @@
           margin-top: 10px; } }
   .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__body {
     box-shadow: 0 4px 10px 0 #1010105e; }
+    .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__body img {
+      max-width: 550px; }
   .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__footer {
-    max-width: 70%;
+    max-width: 94%;
     margin-top: 20px;
     padding: 10px;
-    margin-bottom: 0; }
+    margin-bottom: 0;
+    font-size: 17px !important;
+    line-height: 1.2; }
   .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice-info {
     display: flex;
     flex-direction: column;
@@ -14332,21 +14278,47 @@
     border-radius: 7px;
     padding: 20px;
     margin-top: 70px;
-    max-width: 260px;
+    max-width: 320px;
     border: none;
     background-color: initial;
     box-shadow: 0 4px 10px 0 #1010105e; }
     @media (max-width: 1400px) {
       .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice-info {
         margin-top: 102px; } }
+    .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice-info p {
+      font-size: 20px !important;
+      line-height: 1.2; }
     .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice-info .epkb-setup-wizard-features-choice-info-link {
-      color: #fff;
-      background-color: #9b9b9b;
-      padding: 10px 25px;
-      border-radius: 7px;
-      text-decoration: none; }
+      text-decoration: underline; }
       .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice-info .epkb-setup-wizard-features-choice-info-link:hover {
-        background-color: #3bb3e0; }
+        color: #3bb3e0; }
+.epkb-config-setup-wizard-modular .epkb-setup-wizard-existing-block-main-page-options {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 0 20px;
+  justify-content: center; }
+  .epkb-config-setup-wizard-modular .epkb-setup-wizard-existing-block-main-page-options .epkb-setup-wizard-existing-block-main-page-info {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    align-items: center;
+    text-align: center;
+    border-radius: 7px;
+    padding: 20px;
+    margin-bottom: 70px;
+    border: none;
+    background-color: initial;
+    box-shadow: 0 4px 10px 0 #1010105e;
+    font-size: 20px;
+    width: 460px; }
+    .epkb-config-setup-wizard-modular .epkb-setup-wizard-existing-block-main-page-options .epkb-setup-wizard-existing-block-main-page-info p {
+      font-size: 20px !important;
+      line-height: 1.2; }
+    .epkb-config-setup-wizard-modular .epkb-setup-wizard-existing-block-main-page-options .epkb-setup-wizard-existing-block-main-page-info .epkb-setup-wizard-existing-block-main-page-info-link {
+      text-decoration: underline; }
+      .epkb-config-setup-wizard-modular .epkb-setup-wizard-existing-block-main-page-options .epkb-setup-wizard-existing-block-main-page-info .epkb-setup-wizard-existing-block-main-page-info-link:hover {
+        color: #3bb3e0; }
 
 .epkb-config-wizard-image-popup-overlay {
   position: fixed;
@@ -14382,7 +14354,14 @@
       right: 10px;
       color: #fff;
       font-size: 24px;
-      cursor: pointer; }
+      cursor: pointer;
+      background-color: #333;
+      display: flex;
+      width: 24px;
+      height: 24px;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 1px; }
       .epkb-config-wizard-image-popup-overlay .epkb-config-wizard-image-popup-container .epkb-config-wizard-image-close-popup:hover {
         color: #cecece; }
 

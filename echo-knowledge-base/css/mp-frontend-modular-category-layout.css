@@ -411,6 +411,11 @@
 .single-epkb_post_type_1#neve_body .wrapper {
   overflow: initial !important; }
 
+.eckb_mp_active_theme_hestia,
+.eckb_ap_active_theme_hestia,
+.eckb_cp_active_theme_hestia {
+  margin-top: 71px !important; }
+
 .eckb_mp_active_theme_shapely section {
   overflow: initial; }
 
@@ -1182,6 +1187,13 @@
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
+#epkb-ml__module-faqs .epkb-faqs-article-coming-soon {
+  font-size: 26px !important;
+  font-family: inherit;
+  font-weight: 500;
+  margin: 10px 0 10px 0;
+  width: 100%;
+  text-align: center !important; }
 #epkb-ml__module-faqs .epkb-faqs-container {
   font-family: inherit; }
   #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs-title {
@@ -1228,10 +1240,11 @@
       transition: opacity 0.5s;
       display: none;
       font-family: inherit !important; }
-      #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs__item-container .epkb-faqs__item__answer .epkbs-faqs__item__answer__text img {
+      #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs__item-container .epkb-faqs__item__answer .epkb-faqs__item__answer__text img {
         max-width: 100% !important; }
-  #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs-article-coming-soon {
-    font-style: italic; }
+      #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs__item-container .epkb-faqs__item__answer .epkb-faqs__item__answer__text p {
+        margin: 5px 0;
+        padding: 0; }
   #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs__item-container--active .epkb-faqs__item__question .epkb-faqs__item__question__icon-closed {
     display: none; }
   #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs__item-container--active .epkb-faqs__item__question .epkb-faqs__item__question__icon-open {
@@ -1239,7 +1252,7 @@
   #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs__item-container--active .epkb-faqs__item__answer {
     opacity: 1;
     display: block; }
-    #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs__item-container--active .epkb-faqs__item__answer .epkbs-faqs__item__answer__text {
+    #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs__item-container--active .epkb-faqs__item__answer .epkb-faqs__item__answer__text {
       padding-top: 1px;
       padding-bottom: 1px; }
   #epkb-ml__module-faqs .epkb-faqs-container .epkb-faqs__cat-header .epkb-faqs__cat-header__title {
@@ -1273,6 +1286,8 @@
   border-bottom: solid 1px #e8e8e8; }
 #epkb-ml__module-faqs .epkb-faqs-border-all-space-none .epkb-faqs__item-container {
   border-bottom: none; }
+  #epkb-ml__module-faqs .epkb-faqs-border-all-space-none .epkb-faqs__item-container:last-child {
+    border: 1px solid; }
 #epkb-ml__module-faqs .epkb-faqs-border-all-space-none.epkb-faqs-col-1 .epkb-faqs__items-list {
   width: calc(100% - 3px); }
 #epkb-ml__module-faqs .epkb-faqs-border-all-space-none.epkb-faqs-col-2 .epkb-faqs-cat-container {
@@ -1322,10 +1337,10 @@
 #epkb-ml__module-faqs .epkb-faqs-compact-medium .epkb-faqs__item__question .epkb-faqs__item__question__icon,
 #epkb-ml__module-faqs .epkb-faqs-compact-medium .epkb-faqs-article-coming-soon {
   font-size: 18px; }
-#epkb-ml__module-faqs .epkb-faqs-compact-medium .epkb-faqs__item__answer .epkbs-faqs__item__answer__text {
+#epkb-ml__module-faqs .epkb-faqs-compact-medium .epkb-faqs__item__answer .epkb-faqs__item__answer__text {
   font-size: 16px; }
 #epkb-ml__module-faqs .epkb-faqs-compact-medium .epkb-faqs__item__answer {
-  padding: 20px; }
+  padding: 10px 20px; }
 #epkb-ml__module-faqs #epkb-ml-faqs-classic-layout .epkb-faqs-title {
   font-size: 23px;
   text-transform: uppercase; }
@@ -1344,48 +1359,73 @@
     gap: 5px; }
   #epkb-ml__module-faqs .epkb-faqs-space-medium .epkb-faqs__items-list-container {
     gap: 10px; } }
-#epkb-ml__module-faqs #eckb-kb-faqs-not-assigned p {
-  padding: 10px 0; }
-#epkb-ml__module-faqs #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-btn {
-  display: inline-block;
-  height: fit-content;
-  background-color: #2EA3F2;
-  padding: 10px;
-  position: relative;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 12px;
-  text-align: center;
-  text-decoration: none;
-  color: #fff;
-  border: solid 1px #186f8f;
-  background-image: linear-gradient(bottom, #2EA3F2, #3EB8E5);
-  background-image: -o-linear-gradient(bottom, #2EA3F2, #3EB8E5);
-  background-image: -moz-linear-gradient(bottom, #2EA3F2, #3EB8E5);
-  background-image: -webkit-linear-gradient(bottom, #2EA3F2, #3EB8E5);
-  background-image: -ms-linear-gradient(bottom, #2EA3F2, #3EB8E5);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #2EA3F2), color-stop(1, #3EB8E5));
-  border-radius: 5px;
-  box-shadow: inset 0px 1px 0px #7FD2F1, 0px 1px 0px #fff;
-  font-size: 20px; }
-  #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-btn a {
-    text-decoration: none; }
-  #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-btn:hover {
-    cursor: pointer;
-    background-image: linear-gradient(bottom, #0e8bdf, #3EB8E5);
-    background-image: -o-linear-gradient(bottom, #0e8bdf, #3EB8E5);
-    background-image: -moz-linear-gradient(bottom, #0e8bdf, #3EB8E5);
-    background-image: -webkit-linear-gradient(bottom, #0e8bdf, #3EB8E5);
-    background-image: -ms-linear-gradient(bottom, #0e8bdf, #3EB8E5);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #0e8bdf), color-stop(1, #3EB8E5));
-    border-radius: 5px; }
-  #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-btn:focus {
-    outline: 0; }
+#epkb-ml__module-faqs #eckb-kb-faqs-not-assigned {
+  padding: 25px !important;
+  background-color: #eee;
+  margin: 50px auto;
+  width: 50%;
+  border: solid 1px #ddd;
+  border-radius: 10px;
+  font-family: sans-serif; }
+  #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-title {
+    text-align: center !important;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 29px; }
+  #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned p {
+    padding: 10px 0;
+    font-size: 16px !important; }
+  #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned a {
+    color: #2ea3f2 !important;
+    font-size: 16px !important; }
+  #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-btn {
+    display: inline-block;
+    height: fit-content;
+    background-color: #2EA3F2;
+    padding: 10px;
+    position: relative;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    border: solid 1px #186f8f;
+    background-image: linear-gradient(bottom, #2EA3F2, #3EB8E5);
+    background-image: -o-linear-gradient(bottom, #2EA3F2, #3EB8E5);
+    background-image: -moz-linear-gradient(bottom, #2EA3F2, #3EB8E5);
+    background-image: -webkit-linear-gradient(bottom, #2EA3F2, #3EB8E5);
+    background-image: -ms-linear-gradient(bottom, #2EA3F2, #3EB8E5);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #2EA3F2), color-stop(1, #3EB8E5));
+    border-radius: 5px;
+    box-shadow: inset 0px 1px 0px #7FD2F1, 0px 1px 0px #fff;
+    font-size: 20px; }
+    #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-btn a {
+      text-decoration: none; }
+    #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-btn:hover {
+      cursor: pointer;
+      background-image: linear-gradient(bottom, #0e8bdf, #3EB8E5);
+      background-image: -o-linear-gradient(bottom, #0e8bdf, #3EB8E5);
+      background-image: -moz-linear-gradient(bottom, #0e8bdf, #3EB8E5);
+      background-image: -webkit-linear-gradient(bottom, #0e8bdf, #3EB8E5);
+      background-image: -ms-linear-gradient(bottom, #0e8bdf, #3EB8E5);
+      background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #0e8bdf), color-stop(1, #3EB8E5));
+      border-radius: 5px; }
+    #epkb-ml__module-faqs #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-btn:focus {
+      outline: 0; }
 
 @media only screen and (max-width: 981px) {
   #epkb-ml__module-faqs .epkb-ml-faqs__row {
     width: 90%;
     margin: 0 auto; } }
 /* Module Categories & Articles - Category focused Layout */
+/**
+ * Category Layout styles
+ */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
 #epkb-ml__module-categories-articles #epkb-ml-categories-layout {
   position: relative;
   text-align: left; }

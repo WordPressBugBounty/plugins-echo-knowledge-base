@@ -314,7 +314,7 @@ class EPKB_HTML_Forms {
 			"<div class='eckb-bottom-notice-message'>
 				<div class='contents'>
 					<span class='" . esc_attr( $type ) . "'>" .
-			( empty( $title ) ? '' : '<h4>' . esc_html( $title ) . '</h4>' ) . "
+						( empty( $title ) ? '' : '<h4>' . esc_html( $title ) . '</h4>' ) . "
 						<p> " . wp_kses_post( $message ) . "</p>
 					</span>
 				</div>

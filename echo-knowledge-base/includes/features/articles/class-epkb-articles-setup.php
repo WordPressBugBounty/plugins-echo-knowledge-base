@@ -1479,9 +1479,9 @@ class EPKB_Articles_Setup {
 					order: 3;
 					margin-top: ' . $article_left_sidebar_starting_position_mobile . 'px!important;
 				}
-				#eckb-article-page-container-v2 #eckb-article-content { order: 2; }
+				#eckb-article-page-container-v2 #eckb-article-content { order: 1; }
 				#eckb-article-page-container-v2 #eckb-article-right-sidebar {
-					order: 1;
+					order: 2;
 					margin-top: ' . $article_right_sidebar_starting_position_mobile . 'px!important;
 				}
 			}

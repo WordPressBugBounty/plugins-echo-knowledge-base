@@ -121,8 +121,8 @@ abstract class EPKB_Layout {
 	 */
 	protected function get_category_icons() {
 
-		// handle Visual Editor with theme preset selection
-		if ( EPKB_Utilities::get( 'epkb-editor-page-loaded' ) == '1' && isset( $this->kb_config['theme_presets'] ) && $this->kb_config['theme_presets'] !== 'current' ) {
+		// handle block Editor or Visual Editor with theme preset selection
+		if ( ( EPKB_Utilities::get( 'is_editor_preview', null ) || EPKB_Utilities::get( 'epkb-editor-page-loaded' ) == '1' ) && ! empty( $this->kb_config['theme_presets'] ) && $this->kb_config['theme_presets'] !== 'current' ) {
 			$category_icons = EPKB_Core_Utilities::get_or_update_new_category_icons( $this->kb_config, $this->kb_config['theme_presets'] );
 			if ( ! empty( $category_icons ) ) {
 				return $category_icons;

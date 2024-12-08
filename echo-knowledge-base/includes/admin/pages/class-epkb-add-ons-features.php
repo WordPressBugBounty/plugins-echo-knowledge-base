@@ -258,20 +258,6 @@ class EPKB_Add_Ons_Features {
 			'type'              => 'new-feature'
 		);
 
-		/* TODO $features['2021.03.01'] = array(
-			'plugin'            => esc_html__( 'Article Features BETA', 'echo-knowledge-base'),
-			'title'             => esc_html__( 'Article Rating and Email Notifications', 'echo-knowledge-base'),
-			'description'       => '<p>' . esc_html__( 'Current features: article rating with analytics, and email notifications (beta) for articles created and updated.', 'echo-knowledge-base') . '</p>' .
-			                       ( EPKB_Utilities::is_elegant_layouts_enabled() || EPKB_Utilities::is_article_rating_enabled() || EPKB_Utilities::is_link_editor_enabled() ?
-			                       '<p>' . esc_html__( 'If you do not have the new Article Features add-on in your bundle, you can get it for free.', 'echo-knowledge-base') .
-			                       ' <a href="https://www.echoknowledgebase.com/documentation/bundle-users-get-article-features-for-free" target="_blank">' . esc_html__( 'Upgrade here', 'echo-knowledge-base') . '</a></p>' : '' ),
-			'image'             => 'https://www.echoknowledgebase.com/wp-content/uploads/2021/01/featured-screenshots-print-button.jpg',
-			'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/article-features/',
-			'button_name'       => esc_html__( 'Learn More', 'echo-knowledge-base'),
-			'plugin-type'       => 'add-on',
-			'type'              => 'new-addon'
-		); */
-
 		$features['2021.05.02'] = array(
 			'plugin'            => esc_html__( 'KB Core', 'echo-knowledge-base'),
 			'title'             => esc_html__( 'Typography', 'echo-knowledge-base'),

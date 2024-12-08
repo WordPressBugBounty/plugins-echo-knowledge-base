@@ -429,7 +429,6 @@ function epkb_load_editor_styles() {
 		'wrong_select' 					=> esc_html__( 'No value to select', 'echo-knowledge-base' ),
 		'article_header_rows' 			=> esc_html__( 'Article Header Rows', 'echo-knowledge-base' ),
 		'typography_defaults' 			=> EPKB_Typography::$typography_defaults,
-		// 'typography_fonts' 				=> EPKB_Typography::$font_data, TODO: is not used - probably remove
 		'typography_title' 				=> esc_html__( 'Typograhy', 'echo-knowledge-base' ),
 		'typography_font_family' 		=> esc_html__( 'Font Family', 'echo-knowledge-base' ),
 		'typography_font_size' 			=> esc_html__( 'Font Size (px)', 'echo-knowledge-base' ),

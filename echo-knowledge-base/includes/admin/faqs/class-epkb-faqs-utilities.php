@@ -13,10 +13,10 @@ class EPKB_FAQs_Utilities {
 	 * @param $faq_title
 	 * @param bool $is_shortcode
 	 * @param bool $use_content_filter
-	 *
+	 * @param bool $render_inline_css
 	 * @return false|string
 	 */
-	public static function display_faqs( $kb_config, $faq_groups, $faq_title, $is_shortcode=false, $use_content_filter=false ) {
+	public static function display_faqs( $kb_config, $faq_groups, $faq_title, $is_shortcode=false, $use_content_filter=false, $render_inline_css=true ) {
 
 		$is_faq_schema = isset( $kb_config['faq_schema_toggle'] ) && $kb_config['faq_schema_toggle'] == 'on';
 
@@ -38,11 +38,11 @@ class EPKB_FAQs_Utilities {
 				$open_icon      = 'epkbfa-minus';
 				$closed_icon    = 'epkbfa-plus';
 				break;
-			case 'icon_arrow_angle':
+			case 'icon_arrow_caret':
 				$open_icon      = 'epkbfa-angle-up';
 				$closed_icon    = 'epkbfa-angle-down';
 				break;
-			case 'icon_arrow_caret':
+			case 'icon_arrow_angle':
 			default:
 				$open_icon      = 'ep_font_icon_arrow_carrot_down';
 				$closed_icon    = 'ep_font_icon_arrow_carrot_right';
@@ -51,10 +51,13 @@ class EPKB_FAQs_Utilities {
 
 		$container_classes = self::get_faq_classes( $kb_config );
 
-		ob_start(); ?>
-		<style>	    <?php
-			self::get_faq_styles( $kb_config ); ?>
-		</style>
+		ob_start();
+
+		if ( $render_inline_css ) {	?>
+			<style>	    <?php
+				self::get_faq_styles( $kb_config ); ?>
+			</style>	<?php
+		}	?>
 
 		<div id="epkb-ml-faqs-<?php echo esc_attr( strtolower( $kb_config['kb_main_page_layout'] ) ); ?>-layout" class="epkb-faqs-container <?php echo esc_html( implode(' ', $container_classes ) ) ?>"> <?php
 
@@ -63,10 +66,6 @@ class EPKB_FAQs_Utilities {
 				<h2 class="epkb-faqs-title">
 					<span><?php echo esc_html( $faq_title ); ?></span>
 				</h2>		<?php
-			}
-
-			if ( empty( $faq_groups ) ) {
-				self::display_no_faqs_found_message( $kb_config );
 			}
 
 			// Loop through each Group and display its contents
@@ -132,7 +131,7 @@ class EPKB_FAQs_Utilities {
 									</div>
 
 									<div class="epkb-faqs__item__answer">
-										<div class="epkbs-faqs__item__answer__text">    <?php
+										<div class="epkb-faqs__item__answer__text">    <?php
 											$content = $use_content_filter ? apply_filters( 'the_content', $one_faq->post_content ) : $one_faq->post_content;
 											$content = str_replace( ']]>', ']]&gt;', $content );
 											echo $content; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?>
@@ -326,6 +325,7 @@ class EPKB_FAQs_Utilities {
 
 		$style .= '
 			.epkb-faqs__item__question { color: ' . esc_attr( $kb_config['faq_question_text_color'] ) . '!important; }
+			.epkb-faqs__item__answer { color: ' . esc_attr( $kb_config['faq_answer_text_color'] ) . '!important; }
 			
 			.epkb-faqs__item-container { border-color: ' . esc_attr( $kb_config['faq_border_color'] ) . '!important; }
 			.epkb-faqs__item-container--active .epkb-faqs__item__question { border-color: ' . esc_attr( $kb_config['faq_border_color'] ) . '!important; }
@@ -358,62 +358,67 @@ class EPKB_FAQs_Utilities {
 			'faq_question_background_color' => '#FFFFFF',
 			'faq_answer_background_color'   => '#FFFFFF',
 			'faq_question_text_color'       => '#000000',
+			'faq_answer_text_color'       => '#000000',
 		);
 
 		switch ( $design_name ) {
 			case '1':
 			default:
 				$design_settings = array(
-					'faq_border_style'              => 'sharp',
-					'faq_nof_columns'               => '2',
-					'faq_icon_type'                 => 'icon_arrow_angle',
+					'faq_compact_mode'              => 'compact_small',
+					'faq_question_space_between'    => 'space_small',
+					'faq_icon_type'                 => 'icon_plus_box',
+					'faq_border_mode'               => 'none',
 				);
 				break;
 			case '2':
 				$design_settings = array(
-					'faq_compact_mode'              => 'compact_small',
-					'faq_question_space_between'    => 'space_small',
+					'faq_border_style'              => 'sharp',
+					'faq_nof_columns'               => '2',
+					'faq_icon_type'                 => 'icon_arrow_angle',
 				);
 				break;
 			case '3':
 				$design_settings = array(
 					'faq_border_mode'               => 'none',
 					'faq_icon_type'                 => 'icon_arrow_angle',
-					'faq_question_background_color' => '#9ac9d7',
-					'faq_answer_background_color'   => '#F5F9FC',
+					'faq_question_background_color' => '#ececec',
+					'faq_answer_background_color'   => '#fbfbfb',
 				);
 				break;
 			case '4':
 				$design_settings = array(
-					'faq_border_color'              => '#e8e8e8',
-					'faq_icon_location'             => 'right',
+					'faq_border_style'              => 'sharp',
+					'faq_border_mode'               => 'separator',
+					'faq_border_color'              => '#D0E57C',
+					'faq_icon_type'                 => 'icon_plus',
+					'faq_icon_color'                => '#D0E57C',
+					'faq_question_background_color' => '',
+					'faq_answer_background_color'   => '',
 				);
 				break;
 			case '5':
 				$design_settings = array(
-					'faq_icon_type'                 => 'icon_arrow_caret',
-					'faq_border_style'              => 'sharp',
-					'faq_question_space_between'    => 'space_none',
-					'faq_answer_background_color'   => '#D9E4F7',
+					'faq_border_color'              => '#e8e8e8',
+					'faq_icon_location'             => 'right',
+					'faq_icon_type'                 => 'icon_plus_circle',
+					'faq_border_mode'               => 'separator',
 				);
 				break;
 			case '6':
 				$design_settings = array(
+					'faq_icon_type'                 => 'icon_arrow_caret',
 					'faq_border_style'              => 'sharp',
-					'faq_icon_type'                 => 'icon_plus_circle',
-					'faq_question_background_color' => '#c09ee2',
 					'faq_question_space_between'    => 'space_none',
+					'faq_answer_background_color'   => '#ececec',
 				);
 				break;
 			case '7':
 				$design_settings = array(
 					'faq_border_style'              => 'sharp',
-					'faq_border_mode'               => 'separator',
-					'faq_border_color'              => '#D0E57C',
-					'faq_icon_type'                 => 'icon_plus_box',
-					'faq_icon_color'                => '#D0E57C',
-					'faq_question_background_color' => '',
-					'faq_answer_background_color'   => '',
+					'faq_icon_type'                 => 'icon_plus_circle',
+					'faq_question_background_color' => '#e6e6fa',
+					'faq_question_space_between'    => 'space_none',
 				);
 				break;
 			case '8':
@@ -517,31 +522,62 @@ class EPKB_FAQs_Utilities {
 	}
 
 	/**
-	 * Display message for users with access to FAQs Module settings
+	 * Display message for users with access to FAQs Module settings if no FAQs selected
+	 *
+	 * @param $kb_config
+	 * @param $is_faqs_module
 	 */
-	private static function display_no_faqs_found_message( $kb_config ) {
+	public static function display_faqs_missing_message( $kb_config, $is_faqs_module ) {
 
 		// only users with at least Editor access can see the message
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_faqs_write' ) ) {
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_faqs_write' ) ) {    ?>
+			<div class='epkb-faqs-article-coming-soon'><?php echo esc_html( $kb_config['faq_empty_msg'] ); ?></div> <?php
 			return;
-		}   ?>
+		}
+
+		// Ensure that the selected FAQ groups are valid and not deleted
+		$all_faq_groups = EPKB_FAQs_Utilities::get_faq_groups();
+		if ( is_wp_error( $all_faq_groups ) ) {
+			echo EPKB_FAQs_Utilities::display_error( $all_faq_groups->get_error_message() );//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			return;
+		} ?>
 
 		<div class="epkb-faqs-cat-content-container epkb-faqs-show-all-mode">
 			<div class="epkb-faqs-cat-container">
 				<div class="epkb-faqs__item-container">
 					<div class="epkb-faqs__item__question">
 						<section id="eckb-kb-faqs-not-assigned">
-							<h2 class="eckb-kb-faqs-not-assigned-title"><?php esc_html_e( 'You do not have any FAQ Groups defined.', 'echo-knowledge-base' ); ?></h2>
+							<h2 class="eckb-kb-faqs-not-assigned-title"><?php
+								if ( empty( $all_faq_groups ) ) {
+									esc_html_e( 'No FAQs Defined', 'echo-knowledge-base' );
+								} else {
+									esc_html_e( 'Select At Least One FAQ Group', 'echo-knowledge-base' );
+								}
+							?></h2>
 							<div class="eckb-kb-faqs-not-assigned-body">
-								<p>
-									<a class="eckb-kb-faqs-not-assigned-btn" href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_config['id'] . '&page=epkb-faqs#faqs-groups' ) ); ?>">
-										<?php esc_html_e( 'Create FAQ Group', 'echo-knowledge-base' ); ?></a>
+								<p><?php
+									if ( empty( $all_faq_groups ) ) {
+										echo esc_html__( 'You do not have any FAQ Groups defined.', 'echo-knowledge-base' ) . ' ' . '<a href="' .
+											esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_config['id'] . '&page=epkb-faqs#faqs-groups' ) ) . '" target="_blank">' .
+											esc_html__( 'Create FAQ Group', 'echo-knowledge-base' ) . '
+                                            <span class="epkbfa epkbfa-external-link"></span>
+                                            </a>';
+									} else {
+										echo ( $is_faqs_module ?
+											esc_html__( 'Select an FAQ group in the module settings to display FAQs.', 'echo-knowledge-base' ) . ' ' . '<a href="' .
+													esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_config['id'] . '&page=epkb-kb-configuration#settings__main-page__module--faqs__module-settings' ) ) .
+													'" target="_blank">' . esc_html__( 'Module settings', 'echo-knowledge-base' ) . '</a>'
+											: esc_html__( 'Select an FAQ group in the block settings to display FAQs.', 'echo-knowledge-base' ) );
+									} ?>
 								</p>
-							</div>
-							<div class="eckb-kb-faqs-not-assigned-footer">
 								<p>
-									<span><?php esc_html_e( 'If you need help, please contact us', 'echo-knowledge-base' ); ?></span>
-									<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank"> <?php esc_html_e( 'here', 'echo-knowledge-base' ); ?></a>
+									<i>
+										<span><?php esc_html_e( 'If you need help, please contact us', 'echo-knowledge-base' ); ?></span>
+										<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank"> <?php esc_html_e( 'here', 'echo-knowledge-base' ); ?>
+											<span class="epkbfa epkbfa-external-link"></span>
+										</a>
+
+									</i>
 								</p>
 							</div>
 						</section>

@@ -16,7 +16,7 @@ class EPKB_Core_Utilities {
 	 */
 	public static function get_kb_post_secure( $post_id ) {
 
-		if ( empty($post_id) ) {
+		if ( empty( $post_id ) ) {
 			return null;
 		}
 
@@ -73,6 +73,19 @@ class EPKB_Core_Utilities {
 		$kb_ids = epkb_get_instance()->kb_config_obj->get_kb_ids();
 		$kb_id = EPKB_Utilities::sanitize_int( $kb_id, EPKB_KB_Config_DB::DEFAULT_KB_ID );
 		return in_array( $kb_id, $kb_ids ) ? $kb_id : EPKB_KB_Config_DB::DEFAULT_KB_ID;
+	}
+
+	public static function get_current_post() {
+		// Retrieve the global post if $the_post is not provided
+		$global_post = empty( $GLOBALS['post'] ) ? null : $GLOBALS['post'];
+		$found_post = empty( $the_post ) ? $global_post : $the_post;
+
+		// Validate the found post
+		if ( empty( $found_post ) || ! isset( $found_post->post_content ) || empty( $found_post->ID ) ) {
+			return false;
+		}
+
+		return $found_post;
 	}
 
 	// true if demo KB not yet created after installation
@@ -1048,7 +1061,7 @@ class EPKB_Core_Utilities {
 			return null;
 		}
 
-		$categories = $post_taxonomy_objs === null || ! is_array($post_taxonomy_objs) ? array() : $post_taxonomy_objs;
+		$categories = ! is_array( $post_taxonomy_objs ) ? array() : $post_taxonomy_objs;
 
 		// convert to term objects
 		$categories_obj = [];

@@ -477,7 +477,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'default'     => esc_html__( 'Back', 'echo-knowledge-base' )
 	        ),
 	        'ml_categories_articles_article_text'                   => array(
-		        'label'       => esc_html__( 'Article', 'echo-knowledge-base' ),
+		        'label'       => esc_html__( 'Singular Article Counter', 'echo-knowledge-base' ),
 		        'name'        => 'ml_categories_articles_article_text',
 		        'max'         => '150',
 		        'min'         => '1',
@@ -485,7 +485,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'default'     => esc_html__( 'ARTICLE', 'echo-knowledge-base' )
 	        ),
 	        'ml_categories_articles_articles_text'                  => array(
-		        'label'       => esc_html__( 'Articles', 'echo-knowledge-base' ),
+		        'label'       => esc_html__( 'Plural Articles Counter', 'echo-knowledge-base' ),
 		        'name'        => 'ml_categories_articles_articles_text',
 		        'max'         => '150',
 		        'min'         => '1',

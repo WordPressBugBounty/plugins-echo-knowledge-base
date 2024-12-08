@@ -433,13 +433,13 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 					}
 
 					/** RECURSION DISPLAY SUB-SUB-...-CATEGORIES */
-					if ( ! empty($box_sub_sub_category_list) && strlen($level_name) < 20 ) {
+					if ( ! empty( $box_sub_sub_category_list ) && strlen( $level_name ) < 20 ) {
 						$this->display_level_3_categories( $box_sub_sub_category_list, $level_name, $level_num + 1);
 					}
 					
 					/** DISPLAY TOP-CATEGORY ARTICLES LIST */
 					if (  $this->kb_config['show_articles_before_categories'] == 'off' ) {
-						$this->display_articles_list( $level_num, $box_sub_category_id, ! empty($box_sub_sub_category_list), $level_name );
+						$this->display_articles_list( $level_num, $box_sub_category_id, ! empty( $box_sub_sub_category_list ), $level_name );
 					}    ?>
 				</li>  <?php
 			}           ?>
@@ -460,10 +460,10 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 
 		// retrieve articles belonging to given (sub) category if any
 		$articles_list = array();
-		if ( isset($this->articles_seq_data[$category_id]) ) {
+		if ( isset( $this->articles_seq_data[$category_id] ) ) {
 			$articles_list = $this->articles_seq_data[$category_id];
-			unset($articles_list[0]);
-			unset($articles_list[1]);
+			unset( $articles_list[0] );
+			unset( $articles_list[1] );
 		}
 
 		// filter top level articles if the will be displayed elsewhere

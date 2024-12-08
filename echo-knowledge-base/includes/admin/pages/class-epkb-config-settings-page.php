@@ -41,7 +41,7 @@ class EPKB_Config_Settings_Page {
 
 		$this->current_main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $this->kb_config );
 		$current_main_page = get_post( $this->current_main_page_id );
-		$this->is_block_main_page = ! empty( $current_main_page ) && EPKB_Block_Utilities::current_post_has_kb_layout_blocks( $current_main_page );
+		$this->is_block_main_page = ! empty( $current_main_page ) && EPKB_Block_Utilities::content_has_kb_block( $current_main_page->post_content );
 
 		$this->kb_config_specs = EPKB_Core_Utilities::retrieve_all_kb_specs( $this->kb_config['id'] );
 
@@ -150,8 +150,8 @@ class EPKB_Config_Settings_Page {
 								) . '</p><p>' .
 								sprintf(
 								/* translators: %s is the link to the documentation */
-									esc_html__( 'For more information about KB shortcodes and blocks, see %s', 'echo-knowledge-base' ),
-									'<a href="' . esc_url( 'TODO' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>' // TODO
+									esc_html__( 'For more information about KB blocks, see %s', 'echo-knowledge-base' ),
+									'<a href="' . esc_url( 'https://www.echoknowledgebase.com/documentation/kb-blocks/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>'
 								) . '</p><p>' .
 								sprintf(
 								/* translators: %s is the contact link */
@@ -708,9 +708,6 @@ class EPKB_Config_Settings_Page {
 					'4-search' => esc_html__( 'Design', 'echo-knowledge-base' ) . ' ' . '4',
 					'5-search' => esc_html__( 'Design', 'echo-knowledge-base' ) . ' ' . '5',
 					'6-search' => esc_html__( 'Design', 'echo-knowledge-base' ) . ' ' . '6',
-					/* '7-search' => esc_html__( 'Design', 'echo-knowledge-base' ) . ' ' . '7',  TODO update for new designs
-					'8-search' => esc_html__( 'Design', 'echo-knowledge-base' ) . ' ' . '8',
-					'9-search' => esc_html__( 'Design', 'echo-knowledge-base' ) . ' ' . '9', */
 				),
 			] );
 		}
@@ -2241,7 +2238,7 @@ class EPKB_Config_Settings_Page {
 			// General
 			'general-settings' => [
 				array(
-					'title'     => esc_html__( 'Typography', 'echo-knowledge-base' ),
+					'title'     => $this->is_block_main_page ? esc_html__( 'Typography for Article Page and Category Archive Page', 'echo-knowledge-base' ) : esc_html__( 'Typography', 'echo-knowledge-base' ),
 					'desc'      => '',
 					'fields'    => [
 						'general_typography' => '',
@@ -2911,7 +2908,7 @@ class EPKB_Config_Settings_Page {
 				break;
 
 			case 'templates_for_kb':
-				$input_args['tooltip_body'] = esc_html__( 'Template to use for KB Main Page', 'echo-knowledge-base' );
+				$input_args['tooltip_body'] = $this->is_block_main_page ? esc_html__( 'Template to use for KB pages', 'echo-knowledge-base' ) : esc_html__( 'Template to use for KB Main Page', 'echo-knowledge-base' );
 				$input_args['tooltip_external_links'] = [];
 				$kb_main_page_url = EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config );
 				if ( ! empty( $kb_main_page_url ) ) {
@@ -3153,6 +3150,7 @@ class EPKB_Config_Settings_Page {
 					'faq_question_background_color'   						=> '',
 					'faq_answer_background_color'   						=> '',
 					'faq_question_text_color'                               => '',
+					'faq_answer_text_color'                                 => '',
 					'faq_icon_color'   								        => '',
 					'faq_border_color'                                      => '',
 					'ml_faqs_custom_css_class'                              => '',
@@ -3874,6 +3872,7 @@ class EPKB_Config_Settings_Page {
 			case 'faq_question_background_color':
 			case 'faq_answer_background_color':
 			case 'faq_question_text_color':
+			case 'faq_answer_text_color':
 			case 'faq_icon_color':
 			case 'faq_border_color':
 				$field_specs['dependency'] = ['ml_row_1_module', 'ml_row_2_module', 'ml_row_3_module', 'ml_row_4_module', 'ml_row_5_module'];
@@ -4377,7 +4376,8 @@ class EPKB_Config_Settings_Page {
 			|| ( ( in_array( 'not_use_faq_groups', $requirements ) && $this->use_faq_groups ) || ( in_array( 'only_use_faq_groups', $requirements ) && ! $this->use_faq_groups ) )
 			|| ( ( in_array( 'not_archive_page_v3', $requirements ) && $this->is_archive_page_v3 ) || ( in_array( 'only_archive_page_v3', $requirements ) && ! $this->is_archive_page_v3 ) )
 			|| ( ( in_array( 'not_archive_kb_templates', $requirements ) && $this->is_archive_kb_templates ) || ( in_array( 'only_archive_kb_templates', $requirements ) && ! $this->is_archive_kb_templates ) )
-			|| ( ( in_array( 'not_block_main_page', $requirements ) && $this->is_block_main_page ) || ( in_array( 'only_block_main_page', $requirements ) && ! $this->is_block_main_page ) ) ) {
+			|| ( ( in_array( 'not_block_main_page', $requirements ) && $this->is_block_main_page ) || ( in_array( 'only_block_main_page', $requirements ) && ! $this->is_block_main_page ) )
+			|| ( ( in_array( 'not_kb_templates', $requirements ) && $this->is_kb_templates ) || ( in_array( 'only_kb_templates', $requirements ) && ! $this->is_kb_templates ) ) ) {
 			return true;
 		}
 
@@ -4409,7 +4409,8 @@ class EPKB_Config_Settings_Page {
 			|| ( ( in_array( 'not_use_faq_groups', $requirements ) && ! $this->use_faq_groups ) || ( in_array( 'only_use_faq_groups', $requirements ) && $this->use_faq_groups ) )
 			|| ( ( in_array( 'not_archive_page_v3', $requirements ) && ! $this->is_archive_page_v3 ) || ( in_array( 'only_archive_page_v3', $requirements ) && $this->is_archive_page_v3 ) )
 			|| ( ( in_array( 'not_archive_kb_templates', $requirements ) && ! $this->is_archive_kb_templates ) || ( in_array( 'only_archive_kb_templates', $requirements ) && $this->is_archive_kb_templates ) )
-			|| ( ( in_array( 'not_block_main_page', $requirements ) && ! $this->is_block_main_page ) || ( in_array( 'only_block_main_page', $requirements ) && $this->is_block_main_page ) ) ) {
+			|| ( ( in_array( 'not_block_main_page', $requirements ) && ! $this->is_block_main_page ) || ( in_array( 'only_block_main_page', $requirements ) && $this->is_block_main_page ) )
+			|| ( ( in_array( 'not_kb_templates', $requirements ) && ! $this->is_kb_templates ) || ( in_array( 'only_kb_templates', $requirements ) && $this->is_kb_templates ) ) ) {
 			return true;
 		}
 

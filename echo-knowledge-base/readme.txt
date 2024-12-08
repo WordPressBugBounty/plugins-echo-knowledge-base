@@ -7,7 +7,7 @@ Tags: knowledge base, knowledgebase, documentation, documents, faqs
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 6.7
-Stable tag: 12.43.0
+Stable tag: 13.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -254,6 +254,20 @@ Please contact us at [Learn More](https://www.echoknowledgebase.com/contact-us/)
 
 
 == Changelog ==
+
+= 13.10.0 =
+Release Date: Dec 7, 2024
+* NEW: Search block
+* NEW: Basic Layout block
+* NEW: Tabs Layout block
+* NEW: Drill Down Layout block
+* NEW: Category Focused Layout block
+* NEW: Classic Layout block
+* NEW: FAQs block
+* NEW: Articles List block
+* NEW: KB Block Template
+* Mobile article view improvements
+* Fix: Cleanup and minor fixes
 
 = 12.43.0 =
 Release Date: Nov 10, 2024

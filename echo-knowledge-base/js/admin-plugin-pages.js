@@ -2195,6 +2195,42 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	// On right sidebar 'Categories and Articles Navigation' dropdown change
+	$( document ).on( 'change', '#nav_sidebar_right', function () {
+
+		// When unselected, then set current sidebar navigation type to none
+		const current_value = $( this ).val();
+		if ( current_value === '0' || current_value === 0 ) {
+			$( '[name="article_nav_sidebar_type_right"][value="eckb-nav-sidebar-none"]' ).parent().find( '.epkb-label' ).click();
+			return;
+		}
+
+		// When sidebar switched by 'Categories and Articles Navigation' dropdown, then keep its type in the selected sidebar (e.g. copy navigation type value from opposite sidebar to the current sidebar)
+		const current_left_sidebar_type = $( '[name="article_nav_sidebar_type_left"]:checked' ).val();
+		if ( current_left_sidebar_type !== 'eckb-nav-sidebar-none' ) {
+			$( '[name="article_nav_sidebar_type_left"][value="eckb-nav-sidebar-none"]' ).parent().find( '.epkb-label' ).click();
+			$( '[name="article_nav_sidebar_type_right"][value="' + current_left_sidebar_type + '"]' ).parent().find( '.epkb-label' ).click();
+		}
+	} );
+
+	// On left sidebar 'Categories and Articles Navigation' dropdown change
+	$( document ).on( 'change', '#nav_sidebar_left', function () {
+
+		// When unselected, then set current sidebar navigation type to none
+		const current_value = $( this ).val();
+		if ( current_value === '0' || current_value === 0 ) {
+			$( '[name="article_nav_sidebar_type_left"][value="eckb-nav-sidebar-none"]' ).parent().find( '.epkb-label' ).click();
+			return;
+		}
+
+		// When sidebar switched by 'Categories and Articles Navigation' dropdown, then keep its type in the selected sidebar (e.g. copy navigation type value from opposite sidebar to the current sidebar)
+		const current_right_sidebar_type = $( '[name="article_nav_sidebar_type_right"]:checked' ).val();
+		if ( current_right_sidebar_type !== 'eckb-nav-sidebar-none' ) {
+			$( '[name="article_nav_sidebar_type_right"][value="eckb-nav-sidebar-none"]' ).parent().find( '.epkb-label' ).click();
+			$( '[name="article_nav_sidebar_type_left"][value="' + current_right_sidebar_type + '"]' ).parent().find( '.epkb-label' ).click();
+		}
+	} );
+
 	/** Save config WPML settings */
 	$( 'body' ).on( 'change', '#epkb-setting-box__list-tools__other [name=wpml_is_enabled]', function(){
 

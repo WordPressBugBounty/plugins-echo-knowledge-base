@@ -500,6 +500,36 @@ class EPKB_Utilities {
 	}
 
 	/**
+	 * Sanitizes a hex color. Returns either '', a 3, or 6, or 8 digit hex color (with #), or nothing.
+	 * @param $color
+	 * @return mixed|string
+	 */
+	public static function sanitize_hex_color( $color ) {
+
+		// if the color is an empty string, return it as-is
+		if ( '' === $color ) {
+			return '';
+		}
+
+		// This regex pattern checks for:
+		// - A leading '#'
+		// - Either 3, 6, or 8 hexadecimal digits following the '#'
+		//
+		// Explanation:
+		// ^#                       Start with '#'
+		// (?:[A-Fa-f0-9]{3}        Matches exactly 3 hex chars
+		//   |[A-Fa-f0-9]{6}        OR matches exactly 6 hex chars
+		//   |[A-Fa-f0-9]{8})       OR matches exactly 8 hex chars (including alpha)
+		// $                        End of string
+		if ( preg_match( '/^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$/', $color ) ) {
+			return $color;
+		}
+
+		// If the input doesn't match any of the valid formats, return default gray color.
+		return '#a3a3a3';
+	}
+
+	/**
 	 * Retrieve ID or return error. Used for IDs.
 	 *
 	 * @param mixed $id is either $id number or array with 'id' index
@@ -2171,6 +2201,14 @@ class EPKB_Utilities {
 			return false;
 		}
 
+		// external plugins can override this check; we do not provide support for issues arising from custom implementations using this hook.
+		if ( has_filter( 'eckb_is_article_allowed_for_current_user' ) ) {
+			$is_article_allowed = apply_filters( 'eckb_is_article_allowed_for_current_user', false, $article );
+			if ( is_bool( $is_article_allowed ) ) {
+				return $is_article_allowed;
+			}
+		}
+
 		// only check permissions for private articles
 		if ( $article->post_status != 'private' ) {
 			return true;
@@ -2289,14 +2327,24 @@ class EPKB_Utilities {
 	 * @return bool
 	 */
 	public static function is_block_theme() {
-		if ( function_exists( 'wp_is_block_theme' ) ) {
-			return (bool) wp_is_block_theme();
-		}
-		if ( function_exists( 'gutenberg_is_fse_theme' ) ) {
-			return (bool) gutenberg_is_fse_theme();
+		static $is_block_theme = null;
+
+		if ( $is_block_theme !== null ) {
+			return $is_block_theme;
 		}
 
-		return false;
+		if ( function_exists( 'wp_is_block_theme' ) ) {
+			$is_block_theme = (bool) wp_is_block_theme();
+		}
+		if ( function_exists( 'gutenberg_is_fse_theme' ) ) {
+			$is_block_theme = (bool) gutenberg_is_fse_theme();
+		}
+
+		if ( $is_block_theme === null ) {
+			$is_block_theme = false;
+		}
+
+		return $is_block_theme;
 	}
 
 	/**

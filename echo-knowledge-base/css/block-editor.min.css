@@ -1,7 +1,3 @@
-.epkb-component-number-with-units .components-button-group{display:flex;flex-direction:row}
-.epkb-component-number-with-units .components-base-control{margin-bottom:0;margin-right:5px;display:flex;flex-direction:row;flex-grow:1;width:100%}
-.epkb-component-number-with-units .components-base-control .components-base-control__field{display:flex;flex-grow:1;flex-direction:row;width:100%}
-.epkb-component-number-with-units .components-base-control .components-base-control__field .components-input-base{width:100%}
 .epkb-inspector-control-wrapper{grid-column:1/-1;padding:5%}
 .epkb-button-group{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start}
 .epkb-block-editor-controls .epkb-block-editor-tabpanel .components-tab-panel__tabs button{flex-grow:1;font-size:20px}
@@ -33,3 +29,5 @@
 .epkb-block-editor-controls .epkb-block-ui-section:last-child .epkb-typography-controls:last-child{margin-bottom:160px}
 .epkb-block-editor-controls .epkb-block-ui-section .epkb-block-ui-section-description{margin-bottom:29px}
 .epkb-block-editor-controls .epkb-block-ui-section .epkb-block-ui-section-description a{margin-left:5px}
+.epkb-block-editor-controls .epkb-block-ui-section .epkb-block-ui-checkbox-multi-select-control{margin-bottom:29px}
+.epkb-block-editor-controls .epkb-block-ui-section .epkb-block-ui-presets-dropdown-control{margin-bottom:29px}

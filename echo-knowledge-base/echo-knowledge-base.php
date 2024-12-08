@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 12.43.0
+ * Version: 13.10.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '12.43.0';
+	public static $version = '13.10.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -98,6 +98,7 @@ final class Echo_Knowledge_Base {
 		require_once self::$plugin_dir . 'includes/system/scripts-registration-public.php';
 		require_once self::$plugin_dir . 'includes/system/scripts-registration-admin.php';
 		require_once self::$plugin_dir . 'includes/system/plugin-links.php';
+		require_once self::$plugin_dir . 'includes/admin/blocks/blocks-json.php';
 
 		new EPKB_Upgrades();
 
@@ -105,19 +106,10 @@ final class Echo_Knowledge_Base {
 		new EPKB_Articles_CPT_Setup();
 		new EPKB_Articles_Admin();
 		new EPKB_FAQs_CPT_Setup();
+		new EPKB_Blocks_Setup();
 
 		// subscribe to category actions create/edit/delete including for REST requests in Gutenberg
 		new EPKB_Categories_Admin();
-
-		// blocks
-		if ( EPKB_Block_Utilities::is_block_enabled() ) {
-			new EPKB_Search_Block();
-			new EPKB_Basic_Layout_Block();
-			new EPKB_Tabs_Layout_Block();
-			new EPKB_Categories_Layout_Block();
-			new EPKB_Classic_Layout_Block();
-			new EPKB_Drill_Down_Layout_Block();
-		}
 	}
 
 	/**
@@ -284,7 +276,7 @@ final class Echo_Knowledge_Base {
 		global $pagenow;
 
 		$is_kb_request = EPKB_KB_Handler::is_kb_request();
-		$request_page = empty($_REQUEST['page']) ? '' : EPKB_Utilities::request_key( 'page' );
+		$request_page = empty( $_REQUEST['page'] ) ? '' : EPKB_Utilities::request_key( 'page' );
 		$admin_pages = [ 'post.php', 'edit.php', 'post-new.php', 'edit-tags.php', 'term.php' ];
 
 		// show KB notice and AI Help Sidebar on our pages or when potential KB Main Page is being edited

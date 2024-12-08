@@ -110,6 +110,8 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 
 	/**
 	 * MODULE: Categories and Articles
+	 * @param $kb_config
+	 * @return void
 	 */
 	public function categories_articles_module( $kb_config = null ) {
 
@@ -195,7 +197,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	 */
 	private function display_categories_articles_sidebar() {
 
-		$sidebar_location = 'epkb-ml-sidebar--' . $this->kb_config['ml_categories_articles_sidebar_location']         ?>
+		$sidebar_location = 'epkb-ml-sidebar--' . $this->kb_config['ml_categories_articles_sidebar_location'];         ?>
 
 		<div id="epkb-ml-cat-article-sidebar" class="<?php echo esc_attr( $sidebar_location ); ?>">			<?php
 

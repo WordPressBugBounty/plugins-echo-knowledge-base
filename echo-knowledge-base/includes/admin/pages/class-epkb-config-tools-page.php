@@ -1375,7 +1375,11 @@ class EPKB_Config_Tools_Page {
 		HOME_URL:                 <?php echo esc_url( home_url() ) . "\n"; ?>
 		KB URL:                   <?php echo esc_url( $first_KB_URL ) . "\n"; ?>
 
-		Active Theme:             <?php echo esc_html( $theme ) . "\n";
+		Active Theme:             <?php echo esc_html( $theme ) . "\n"; ?>
+		Block Theme:              <?php echo EPKB_Utilities::is_block_theme() ? 'Yes' . "\n" : 'No' . "\n"; ?>
+		KB Block Template Available: <?php echo EPKB_Block_Utilities::is_kb_block_page_template_available() ? 'Yes' . "\n" : 'No' . "\n"; ?>
+		Blocks:                   <?php echo EPKB_Block_Utilities::current_theme_has_block_support() ? 'Yes' . "\n" : 'No' . "\n";
+
 
 		$plugins = get_plugins();
 		$active_plugins = get_option( 'active_plugins', array() );

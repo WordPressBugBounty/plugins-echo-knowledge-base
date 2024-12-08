@@ -241,7 +241,7 @@ class EPKB_Config_Page {
 			'secondary_tabs'  => array(
 
 				// SECONDARY VIEW: Blocks
-				/* array(    // TODO is_block_enabled()
+				array(
 
 					// Shared
 					'list_key'   => 'blocks',
@@ -251,7 +251,7 @@ class EPKB_Config_Page {
 
 					// Secondary Boxes List
 					'boxes_list' => self::get_widgets_boxes( self::get_blocks_boxes_config() )
-				), */
+				),
 
 				// SECONDARY VIEW: Shortcodes
 				array(
@@ -501,7 +501,7 @@ class EPKB_Config_Page {
 				'icon'      => 'epkbfa epkbfa-list-alt',
 				'title'     => esc_html__( 'KB Search', 'echo-knowledge-base' ),
 				'desc'      => esc_html__( 'Fast search bar on KB Main Page with listed results.', 'echo-knowledge-base' ),
-				'docs'      => 'https://www.echoknowledgebase.com/documentation/elementor-widgets-for-documentation/',
+				'docs'      => 'https://www.echoknowledgebase.com/documentation/search/',
 			],
 			[
 				'plugin'    => 'core',
@@ -569,7 +569,7 @@ class EPKB_Config_Page {
 				'plugin'    => 'ep'.'hd',
 				'icon'      => 'epkbfa epkbfa-list-alt',
 				'title'     => esc_html__( 'Help Dialog', 'echo-knowledge-base' ),
-				'desc'      => esc_html__( 'Help Dialog is a frontend dialog where users can easily search for answers, browse FAQs and submit contact form.', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'Help Dialog is a frontend dialog where users can ask AI questions, easily search for answers, browse FAQs and submit contact form.', 'echo-knowledge-base' ),
 				'docs'      => 'https://www.helpdialog.com/documentation/',
 				'video'     => '',
 			],
@@ -747,7 +747,7 @@ class EPKB_Config_Page {
 				'title'        => esc_html__( 'Popular Articles', 'echo-knowledge-base' ),
 				'desc'         => esc_html__( 'Show a list of the most popular articles based on article views.', 'echo-knowledge-base' ) ,
 				'desc_escaped' => EPKB_Shortcodes::get_copy_box( 'widg-popular-articles', $kb_id, esc_html__( 'Shortcode:', 'echo-knowledge-base' ) ),
-				'docs'         => 'https://www.echoknowledgebase.com/documentation/popular-articles-widget/',
+				'docs'         => 'https://www.echoknowledgebase.com/documentation/popular-articles-shortcode/',
 				'video'        => '',
 			],
 			[
