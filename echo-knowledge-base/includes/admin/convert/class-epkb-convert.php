@@ -25,7 +25,7 @@ class EPKB_Convert {
 		$table_header = [
 			$check_all_input . esc_html__( 'Selection', 'echo-knowledge-base' ),
 			__( 'Status', 'echo-knowledge-base' ),
-			( $is_post_conversion ? __( 'Post Title', 'echo-knowledge-base' ) : __( 'Article Title', 'echo-knowledge-base' ) ),
+			( $is_post_conversion ? esc_html__( 'Post Title', 'echo-knowledge-base' ) : esc_html__( 'Article Title', 'echo-knowledge-base' ) ),
 			__( 'Taxonomies', 'echo-knowledge-base' ),
 		];
 
@@ -164,7 +164,7 @@ class EPKB_Convert {
 		</div>
 		<div class="epkb-author-mapping__author-list">
 			<div class="epkb-author-mapping__author-list__author-container">
-				<div class="epkb-author__orig_auth"> <?php esc_html_e( 'Choose CPT category to map to Article category: ', 'echo-knowledge-base' ); ?></div>
+				<div class="epkb-author__orig_auth"> <?php esc_html_e( 'Choose CPT category to map to Article category', 'echo-knowledge-base' ) . ': '; ?></div>
 
 				<div class="epkb-author__curr_auth">
 					<select name="categories_taxonomy">
@@ -176,7 +176,7 @@ class EPKB_Convert {
 				</div>
 			</div>
 			<div class="epkb-author-mapping__author-list__author-container">
-				<div class="epkb-author__orig_auth"> <?php esc_html_e( 'Choose CPT tag to map to Article tag: ', 'echo-knowledge-base' ); ?></div>
+				<div class="epkb-author__orig_auth"> <?php esc_html_e( 'Choose CPT tag to map to Article tag', 'echo-knowledge-base' ) . ': '; ?></div>
 
 				<div class="epkb-author__curr_auth">
 					<select name="tags_taxonomy">

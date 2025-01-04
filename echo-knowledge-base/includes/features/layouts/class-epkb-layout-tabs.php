@@ -81,61 +81,123 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 
 		$nof_top_categories = count( $this->category_seq_data );
 
-		// show full KB main page if we have fewer categories (otherwise use 'mobile' style menu)
-
 		// loop through LEVEL 1 CATEGORIES
-		if ( $nof_top_categories <= 6 ) {
 
-			$class1_escaped = $this->get_css_class( 'epkb-main-nav'. ($this->kb_config[ 'tab_down_pointer' ] == 'on' ? ', epkb-down-pointer' : '') );
+		$overflow_mode_escaped = isset( $this->kb_config['tab_nav_overflow_mode'] )	? sanitize_key( $this->kb_config['tab_nav_overflow_mode'] )	: 'rows';
+		$max_tabs_per_row_escaped = isset( $this->kb_config['tab_nav_max_tabs_per_row'] ) ? absint( $this->kb_config['tab_nav_max_tabs_per_row'] ) : 6;
+		
+		if ( $overflow_mode_escaped == 'rows' ) {
+
+			$class1_escaped = $this->get_css_class( 'epkb-main-nav'. ( $this->kb_config[ 'tab_down_pointer' ] == 'on' ? ', epkb-down-pointer' : '' ) );
 			$style1_escaped = $this->get_inline_style( 'typography:: tab_typography, background-color:: tab_nav_background_color' );
-			$style2_escaped = $this->get_inline_style( 'background-color:: tab_nav_background_color, border-bottom-color:: tab_nav_border_color, border-bottom-style: solid, border-bottom-width: 1px' ); ?>
+			$ul_style_escaped = $this->get_inline_style( 'background-color:: tab_nav_background_color, border-bottom-color:: tab_nav_border_color, border-bottom-style: solid, border-bottom-width: 1px' ); ?>
 
-			<section <?php echo $class1_escaped . ' ' . $style1_escaped; ?> >
+			<section <?php echo $class1_escaped . ' ' . $style1_escaped; ?> >   <?php
 
-				<ul	class="epkb-nav-tabs epkb-top-categories-list" <?php echo $style2_escaped; ?> >					<?php
+				// Split $this->category_seq_data into chunks Based on user setting
+				$category_chunks = array_chunk( $this->category_seq_data, $max_tabs_per_row_escaped, true );
+				$ix = 0;  ?>
 
-					$ix = 0;
-					foreach ( $this->category_seq_data as $category_id => $subcategories ) {
+				<ul class="epkb-nav-tabs epkb-top-categories-list epkb-nav-tabs-multirow epkb-nav-tabs-multirow--max-<?php echo $max_tabs_per_row_escaped; ?>"<?php echo $ul_style_escaped; ?> > <?php
 
-						$category_name = isset( $this->articles_seq_data[$category_id][0] ) ?	$this->articles_seq_data[$category_id][0] : '';
-						if ( empty( $category_name ) ) {
-							continue;
-						}
+					// Loop over each array of tabs
+					foreach ( $category_chunks as $category_chunk ) {
+						$tab_count = count( $category_chunk ); ?>
 
-						$category_desc = isset($this->articles_seq_data[$category_id][1]) && $this->kb_config['section_desc_text_on'] == 'on' ? $this->articles_seq_data[$category_id][1] : '';
-						$tab_cat_name = sanitize_title_with_dashes( $category_name );
+						<ul class="epkb-nav-tabs-multirow__row epkb-nav-tabs-multirow__row--count-<?php echo esc_attr( $tab_count ); ?>">    <?php
 
-						$active = $active_cat_id == $category_id ? 'active' : '';
-						$class1_escaped = $this->get_css_class( $active . ', col-' . $nof_top_categories . ', epkb_top_categories');
-						$style2_escaped = $this->get_inline_style( 'color:: tab_nav_font_color' );  ?>
+						// Loop over each category in this chunk
+						foreach ( $category_chunk as $category_id => $subcategories ) {
 
-						<li id="epkb_tab_<?php echo esc_attr( ++$ix ); ?>" tabindex="0" <?php echo $class1_escaped; ?> data-cat-name="<?php echo esc_attr( $tab_cat_name ); ?>">
-							<div  class="epkb-category-level-1" data-kb-category-id="<?php echo esc_attr( $category_id ); ?>" <?php echo $style2_escaped; ?> >
-								<h2 class="epkb-cat-name"><?php echo esc_html( $category_name ); ?></h2>
-							</div>							<?php 
-							if ( $category_desc ) { ?>
-								<p class="epkb-cat-desc" <?php echo $style2_escaped; ?> ><?php echo wp_kses_post( $category_desc ); ?></p>							<?php
-							} ?>
-						</li> <?php
+							$category_name = isset( $this->articles_seq_data[$category_id][0] )	? $this->articles_seq_data[$category_id][0]	: '';
 
-					} //foreach					?>
+							if ( empty( $category_name ) ) {
+								continue;
+							}
+
+							$category_desc = ( isset( $this->articles_seq_data[$category_id][1] ) && $this->kb_config['section_desc_text_on'] == 'on' )	? $this->articles_seq_data[$category_id][1]	: '';
+
+							$tab_cat_name = sanitize_title_with_dashes( $category_name );
+
+							$active = ( $active_cat_id == $category_id ) ? 'active' : '';
+
+							$class1_li_escaped = $this->get_css_class( $active . ', epkb_top_categories' );
+							$style2_li_escaped = $this->get_inline_style( 'color:: tab_nav_font_color' ); ?>
+
+							<li id="epkb_tab_<?php echo esc_attr( ++$ix ); ?>" tabindex="0"	<?php echo $class1_li_escaped; ?> data-cat-name="<?php echo esc_attr( $tab_cat_name ); ?>" >
+
+								<div class="epkb-category-level-1" data-kb-category-id="<?php echo esc_attr( $category_id ); ?>" <?php echo $style2_li_escaped; ?> >
+									<h2 class="epkb-cat-name"><?php echo esc_html( $category_name ); ?></h2>
+								</div>  <?php
+
+								if ( $category_desc ) { ?>
+									<p class="epkb-cat-desc" <?php echo $style2_li_escaped; ?>><?php echo wp_kses_post( $category_desc ); ?></p>    <?php
+								} ?>
+							</li> <?php
+
+						} ?>
+
+					</ul>   <?php
+
+					}   ?>
 
 				</ul>
-			</section> <?php
+			</section>  <?php
+		}
 
-		} else {   ?>
+		if ( $overflow_mode_escaped == 'drop_down' ) {
 
-			<!-- Drop Down Menu -->  <?php
+			if ( $nof_top_categories <= 6 ) {
 
-			$class1_escaped = $this->get_css_class( 'main-category-selection-1' );
-			$style1_escaped = $this->get_inline_style( 'typography::tab_typography, background-color:: tab_nav_background_color' );
-			$style2_escaped = $this->get_inline_style( 'color:: tab_nav_font_color' );  		?>
+				$class1_escaped = $this->get_css_class( 'epkb-main-nav'. ($this->kb_config[ 'tab_down_pointer' ] == 'on' ? ', epkb-down-pointer' : '') );
+				$style1_escaped = $this->get_inline_style( 'typography:: tab_typography, background-color:: tab_nav_background_color' );
+				$style2_escaped = $this->get_inline_style( 'background-color:: tab_nav_background_color, border-bottom-color:: tab_nav_border_color, border-bottom-style: solid, border-bottom-width: 1px' ); ?>
 
-			<section <?php echo $class1_escaped . ' ' . $style1_escaped; ?> >
+				<section <?php echo $class1_escaped . ' ' . $style1_escaped; ?> >
+					<ul	class="epkb-nav-tabs epkb-top-categories-list" <?php echo $style2_escaped; ?> >					<?php
 
-				<div class="epkb-category-level-1" <?php echo $style2_escaped; ?>><?php echo esc_html( $this->kb_config['choose_main_topic'] ); ?></div>
+						$ix = 0;
+						foreach ( $this->category_seq_data as $category_id => $subcategories ) {
 
-				<select id="main-category-selection" class="epkb-top-categories-list"> <?php
+							$category_name = isset( $this->articles_seq_data[$category_id][0] ) ?	$this->articles_seq_data[$category_id][0] : '';
+							if ( empty( $category_name ) ) {
+								continue;
+							}
+
+							$category_desc = isset( $this->articles_seq_data[$category_id][1] ) && $this->kb_config['section_desc_text_on'] == 'on' ? $this->articles_seq_data[$category_id][1] : '';
+							$tab_cat_name = sanitize_title_with_dashes( $category_name );
+
+							$active = $active_cat_id == $category_id ? 'active' : '';
+							$class1_escaped = $this->get_css_class( $active . ', col-' . $nof_top_categories . ', epkb_top_categories');
+							$style2_escaped = $this->get_inline_style( 'color:: tab_nav_font_color' );  ?>
+
+							<li id="epkb_tab_<?php echo esc_attr( ++$ix ); ?>" tabindex="0" <?php echo $class1_escaped; ?> data-cat-name="<?php echo esc_attr( $tab_cat_name ); ?>">
+								<div  class="epkb-category-level-1" data-kb-category-id="<?php echo esc_attr( $category_id ); ?>" <?php echo $style2_escaped; ?> >
+									<h2 class="epkb-cat-name"><?php echo esc_html( $category_name ); ?></h2>
+								</div>							<?php
+								if ( $category_desc ) { ?>
+									<p class="epkb-cat-desc" <?php echo $style2_escaped; ?> ><?php echo wp_kses_post( $category_desc ); ?></p>							<?php
+								} ?>
+							</li> <?php
+
+						} //foreach					?>
+
+					</ul>
+				</section> <?php
+
+			} else { ?>
+
+				<!-- Drop Down Menu -->  <?php
+
+				$class1_escaped = $this->get_css_class( 'main-category-selection-1' );
+				$style1_escaped = $this->get_inline_style( 'typography::tab_typography, background-color:: tab_nav_background_color' );
+				$style2_escaped = $this->get_inline_style( 'color:: tab_nav_font_color' );  		?>
+
+				<section <?php echo $class1_escaped . ' ' . $style1_escaped; ?> >
+
+					<div class="epkb-category-level-1" <?php echo $style2_escaped; ?>><?php echo esc_html( $this->kb_config['choose_main_topic'] ); ?></div>
+
+					<select id="main-category-selection" class="epkb-top-categories-list"> <?php
 						$ix = 0;
 						foreach ( $this->category_seq_data as $category_id => $subcategories ) {
 
@@ -150,11 +212,12 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 							$active = $active_cat_id == $category_id ? 'selected' : ''; ?>
 							<option <?php echo esc_attr( $active ); ?> data-kb-category-id="<?php echo esc_attr( $category_id ); ?>" id="epkb_tab_<?php echo esc_attr( ++$ix ); ?>" data-cat-name="<?php echo esc_attr( $tab_cat_name ); ?>"><?php echo esc_html( $option ); ?></option>  <?php
 						} 	?>
+					</select>
 
-				</select>
-
-			</section> <?php
+				</section> <?php
+			}
 		}
+
 	}
 
 	/**

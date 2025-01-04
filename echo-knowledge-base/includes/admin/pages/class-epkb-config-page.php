@@ -429,7 +429,7 @@ class EPKB_Config_Page {
 
 			// If user has multiple pages with KB Shortcode or KB layout block then let them know this is normal for WPML users
 			if ( count( $this->kb_main_pages ) > 1 && ! EPKB_Utilities::is_wpml_enabled( $this->kb_config ) ) {        ?>
-				<div class="epkb-admin__chapter"><?php echo sprintf( esc_html__( 'Note: You have other pages with KB shortcode or KB layout block that are currently %snot used%s: ', 'echo-knowledge-base' ), '<strong>', '</strong>' ); ?></div>
+				<div class="epkb-admin__chapter"><?php echo sprintf( esc_html__( 'Note: You have other pages with KB shortcode or KB layout block that are currently %snot used%s', 'echo-knowledge-base' ) . ': ', '<strong>', '</strong>' ); ?></div>
 				<ul class="epkb-admin__items-list">    <?php
 
 					foreach ( $this->kb_main_pages as $page_id => $page_info ) {
@@ -700,7 +700,7 @@ class EPKB_Config_Page {
 				'icon'         => 'epkbfa epkbfa-list-alt',
 				'title'        => esc_html__( 'Knowledge Base Shortcode', 'echo-knowledge-base' ),
 				'desc'         => esc_html__( 'Display Echo Knowledge Base on a page.', 'echo-knowledge-base' ),
-				'desc_escaped' => EPKB_Shortcodes::get_copy_custom_box( EPKB_KB_Handler::KB_MAIN_PAGE_SHORTCODE_NAME, [ 'id' => $kb_id ], __( 'Shortcode:', 'echo-knowledge-base' ), false ),
+				'desc_escaped' => EPKB_Shortcodes::get_copy_custom_box( EPKB_KB_Handler::KB_MAIN_PAGE_SHORTCODE_NAME, [ 'id' => $kb_id ], esc_html__( 'Shortcode:', 'echo-knowledge-base' ), false ),
 				'docs'         => 'https://www.echoknowledgebase.com/documentation/knowledge-base-shortcode/',
 			],
 			[

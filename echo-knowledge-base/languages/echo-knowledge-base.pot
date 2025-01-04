@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Knowledge Base by Echo Plugins\n"
 "Report-Msgid-Bugs-To: http://www.echoknowledgebase.com/contact-us/\n"
-"POT-Creation-Date: 2024-12-08 07:59-0800\n"
+"POT-Creation-Date: 2025-01-04 13:47-0800\n"
 "PO-Revision-Date: 2017-02-05 17:08-0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,26 +25,27 @@ msgstr ""
 
 #: includes/access-manager/class-epkb-access-manager.php:225
 #: includes/system/class-epkb-admin-ui-access.php:380
-#, php-format
-msgid "%sAdmins%s"
+msgid "Admins"
 msgstr ""
 
 #: includes/access-manager/class-epkb-access-manager.php:229
 #: includes/system/class-epkb-admin-ui-access.php:392
-#, php-format
-msgid "%susers with \"%s\" capability%s"
+msgid "users with"
+msgstr ""
+
+#: includes/access-manager/class-epkb-access-manager.php:229
+#: includes/system/class-epkb-admin-ui-access.php:392
+msgid "capability"
 msgstr ""
 
 #: includes/access-manager/class-epkb-access-manager.php:237
 #: includes/system/class-epkb-admin-ui-access.php:384
-#, php-format
-msgid "%sEditors%s"
+msgid "Editors"
 msgstr ""
 
 #: includes/access-manager/class-epkb-access-manager.php:241
 #: includes/system/class-epkb-admin-ui-access.php:388
-#, php-format
-msgid "%sAuthors%s"
+msgid "Authors"
 msgstr ""
 
 #: includes/admin/admin-functions.php:131
@@ -58,10 +59,11 @@ msgid "Update Slug here"
 msgstr ""
 
 #: includes/admin/admin-functions.php:182
-#, php-format
-msgid ""
-"We detected that you deleted KB Main Page \"%s\". If you did this by "
-"accident you can restore here: "
+msgid "We detected that you deleted KB Main Page"
+msgstr ""
+
+#: includes/admin/admin-functions.php:182
+msgid "If you did this by accident you can restore here"
 msgstr ""
 
 #: includes/admin/admin-functions.php:183
@@ -91,7 +93,7 @@ msgstr ""
 msgid ""
 "Hey, did you know that makers of the Echo Knowledge Page plugin developed "
 "free Elementor widgets to help you create amazing documentation? See more "
-"details about our Creative Addons here: "
+"details about our Creative Addons here"
 msgstr ""
 
 #: includes/admin/admin-functions.php:246
@@ -107,7 +109,7 @@ msgid "Get Started - Echo Knowledge Base"
 msgstr ""
 
 #: includes/admin/admin-menu.php:17
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3146
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3147
 #: includes/admin/pages/class-epkb-config-settings-page.php:99
 #: includes/admin/pages/class-epkb-need-help-page.php:105
 #: includes/system/plugin-links.php:38
@@ -124,7 +126,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:111
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:145
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:179
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3168
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3169
 #: includes/admin/pages/class-epkb-config-page.php:709
 #: includes/admin/pages/class-epkb-need-help-features.php:654
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:162
@@ -157,16 +159,16 @@ msgstr ""
 msgid "Add-ons - Echo Knowledge Base"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:81
+#: includes/admin/blocks/class-epkb-abstract-block.php:82
 msgid "Please switch to Modular mode to use this block. Contact us for help."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:91
+#: includes/admin/blocks/class-epkb-abstract-block.php:92
 #: includes/features/layouts/class-epkb-layouts-setup.php:115
 msgid "This knowledge base was archived."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:149
+#: includes/admin/blocks/class-epkb-abstract-block.php:150
 #: includes/system/scripts-registration-admin.php:55
 #: includes/system/scripts-registration-admin.php:129
 #: includes/system/scripts-registration-admin.php:157
@@ -175,7 +177,7 @@ msgstr ""
 msgid "Please try again later."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:150
+#: includes/admin/blocks/class-epkb-abstract-block.php:151
 #: includes/admin/openai/class-epkb-ai-help-sidebar-ctrl.php:79
 #: includes/admin/openai/class-epkb-ai-help-sidebar-ctrl.php:125
 #: includes/admin/openai/class-epkb-ai-help-sidebar-ctrl.php:172
@@ -205,7 +207,7 @@ msgstr ""
 msgid "Error occurred"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:151
+#: includes/admin/blocks/class-epkb-abstract-block.php:152
 #: includes/system/scripts-registration-admin.php:58
 #: includes/system/scripts-registration-admin.php:132
 #: includes/system/scripts-registration-admin.php:160
@@ -214,7 +216,7 @@ msgstr ""
 msgid "Unknown error"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:152
+#: includes/admin/blocks/class-epkb-abstract-block.php:153
 #: includes/system/scripts-registration-admin.php:59
 #: includes/system/scripts-registration-admin.php:133
 #: includes/system/scripts-registration-admin.php:161
@@ -223,7 +225,7 @@ msgstr ""
 msgid "Please reload the page and try again."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:153
+#: includes/admin/blocks/class-epkb-abstract-block.php:154
 #: includes/admin/wizard/class-epkb-kb-wizard-global.php:91
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:69
 #: includes/system/scripts-registration-admin.php:60
@@ -232,7 +234,7 @@ msgstr ""
 msgid "Saving configuration"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:154
+#: includes/admin/blocks/class-epkb-abstract-block.php:155
 #: includes/system/scripts-registration-admin.php:61
 #: includes/system/scripts-registration-admin.php:135
 #: includes/system/scripts-registration-admin.php:162
@@ -240,7 +242,7 @@ msgstr ""
 msgid "Input is required"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:156
+#: includes/admin/blocks/class-epkb-abstract-block.php:157
 #: includes/system/scripts-registration-admin.php:170
 #: includes/system/scripts-registration-public.php:38
 msgid ""
@@ -262,15 +264,15 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-settings-page.php:237
 #: includes/admin/pages/class-epkb-config-settings-page.php:290
 #: includes/admin/pages/class-epkb-config-settings-page.php:1680
-#: includes/admin/pages/class-epkb-config-settings-page.php:2503
-#: includes/admin/pages/class-epkb-config-settings-page.php:3312
-#: includes/admin/pages/class-epkb-config-settings-page.php:3333
-#: includes/admin/pages/class-epkb-config-settings-page.php:3354
-#: includes/admin/pages/class-epkb-config-settings-page.php:3375
-#: includes/admin/pages/class-epkb-config-settings-page.php:3396
-#: includes/admin/pages/class-epkb-config-settings-page.php:3652
-#: includes/admin/pages/class-epkb-config-settings-page.php:3663
-#: includes/admin/pages/class-epkb-config-settings-page.php:3677
+#: includes/admin/pages/class-epkb-config-settings-page.php:2505
+#: includes/admin/pages/class-epkb-config-settings-page.php:3316
+#: includes/admin/pages/class-epkb-config-settings-page.php:3337
+#: includes/admin/pages/class-epkb-config-settings-page.php:3358
+#: includes/admin/pages/class-epkb-config-settings-page.php:3379
+#: includes/admin/pages/class-epkb-config-settings-page.php:3400
+#: includes/admin/pages/class-epkb-config-settings-page.php:3658
+#: includes/admin/pages/class-epkb-config-settings-page.php:3669
+#: includes/admin/pages/class-epkb-config-settings-page.php:3683
 msgid "Settings"
 msgstr ""
 
@@ -289,7 +291,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-search-block.php:147
 #: includes/admin/blocks/class-epkb-search-block.php:232
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:196
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:324
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:340
 #: includes/admin/pages/class-epkb-config-settings-page.php:284
 msgid "General"
 msgstr ""
@@ -299,8 +301,8 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:273
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:273
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:204
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3285
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3426
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3286
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3427
 msgid "Number of Columns"
 msgstr ""
 
@@ -312,8 +314,8 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:413
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:283
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:400
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:211
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:393
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:227
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:409
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:382
 msgid "Category Box"
 msgstr ""
@@ -325,8 +327,8 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:306
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:548
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:518
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:227
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:590
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:243
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:606
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:42
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:76
 msgid "Articles List"
@@ -336,7 +338,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:207
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:319
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:306
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:245
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:261
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:531
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:901
 #: includes/admin/editor/class-epkb-editor-view.php:397
@@ -353,9 +355,9 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:221
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:333
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:320
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:259
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3233
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3255
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:275
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3234
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3256
 #: includes/admin/pages/class-epkb-config-settings-page.php:1336
 msgid "Small"
 msgstr ""
@@ -368,12 +370,12 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:317
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:334
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:321
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:260
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:409
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3234
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3256
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3578
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3767
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:276
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:425
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3235
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3257
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3579
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3768
 #: includes/admin/pages/class-epkb-config-settings-page.php:1337
 msgid "Medium"
 msgstr ""
@@ -383,8 +385,8 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:223
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:335
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:322
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:261
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3579
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:277
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3580
 #: includes/admin/pages/class-epkb-config-settings-page.php:1313
 #: includes/admin/pages/class-epkb-config-settings-page.php:1319
 #: includes/admin/pages/class-epkb-config-settings-page.php:1338
@@ -398,7 +400,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-faqs-block.php:234
 #: includes/admin/blocks/class-epkb-featured-articles-block.php:185
 #: includes/admin/blocks/class-epkb-search-block.php:216
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:308
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:324
 #: includes/admin/pages/class-epkb-need-help-features.php:1123
 #: includes/system/scripts-registration-admin.php:385
 msgid "Advanced"
@@ -411,7 +413,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-faqs-block.php:244
 #: includes/admin/blocks/class-epkb-featured-articles-block.php:195
 #: includes/admin/blocks/class-epkb-search-block.php:226
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:318
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:334
 #: includes/system/scripts-registration-admin.php:383
 msgid "Style"
 msgstr ""
@@ -420,29 +422,29 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:292
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:404
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:391
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:330
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:346
 msgid "Apply Preset"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:311
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:315
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:407
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:423
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:805
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3765
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3766
 msgid "No Shadow"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:312
 #: includes/admin/blocks/class-epkb-blocks-settings.php:350
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:316
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:408
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3766
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:424
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3767
 msgid "Light"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:314
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:318
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:410
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:426
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:447
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:564
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:755
@@ -450,31 +452,31 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1576
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1654
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1686
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2246
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2278
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2594
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2626
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2825
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2857
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2911
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3082
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3557
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3714
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3768
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3805
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3870
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2247
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2279
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2595
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2627
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2826
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2858
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2912
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3083
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3558
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3715
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3769
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3806
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3871
 msgid "Bottom"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:319
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:323
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:415
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:431
 msgid "Show Section Divider"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:329
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:333
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:425
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:441
 msgid "Section Divider Color"
 msgstr ""
 
@@ -482,7 +484,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:343
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:429
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:416
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:435
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:451
 msgid "Category Box Header"
 msgstr ""
 
@@ -490,9 +492,9 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:348
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:443
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:430
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:440
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3265
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3846
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:456
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3266
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3847
 msgid "No Icons"
 msgstr ""
 
@@ -500,25 +502,26 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:349
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:444
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:431
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:441
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:457
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:431
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:548
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:747
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:846
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1568
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1646
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1678
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2238
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2270
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2586
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2618
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2817
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2849
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2903
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3549
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3706
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3797
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3847
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3862
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2239
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2271
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2587
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2619
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2818
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2850
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2904
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3550
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3707
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3798
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3848
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3863
 #: includes/admin/pages/class-epkb-config-settings-page.php:674
 msgid "Top"
 msgstr ""
@@ -527,9 +530,9 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:350
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:445
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:432
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:442
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3266
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3848
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:458
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3267
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3849
 msgid "Start"
 msgstr ""
 
@@ -539,8 +542,8 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:361
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:445
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:432
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:442
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:453
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:458
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:469
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:282
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:395
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:463
@@ -553,21 +556,37 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1616
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1662
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1694
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2254
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2286
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2602
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2634
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2833
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2865
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2919
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3266
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3533
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3690
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3813
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3835
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3837
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3848
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3878
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2097
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2098
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2142
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2143
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2255
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2287
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2360
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2361
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2430
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2431
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2500
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2501
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2555
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2556
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2603
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2635
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2716
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2717
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2834
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2866
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2920
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3044
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3045
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3267
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3534
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3691
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3814
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3836
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3838
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3849
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3879
 #: includes/admin/pages/class-epkb-config-settings-page.php:673
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:939
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1248
@@ -578,9 +597,9 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:351
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:446
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:433
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:443
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3267
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3849
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:459
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3268
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3850
 msgid "End"
 msgstr ""
 
@@ -590,8 +609,8 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:363
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:446
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:433
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:443
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:455
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:459
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:471
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:283
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:397
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:465
@@ -604,21 +623,37 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1624
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1670
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1702
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2262
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2294
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2610
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2642
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2841
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2873
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2927
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3267
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3541
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3698
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3821
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3835
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3837
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3849
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3886
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2097
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2098
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2142
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2143
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2263
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2295
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2360
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2361
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2430
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2431
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2500
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2501
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2555
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2556
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2611
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2643
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2716
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2717
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2842
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2874
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2928
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3044
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3045
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3268
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3542
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3699
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3822
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3836
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3838
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3850
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3887
 #: includes/admin/pages/class-epkb-config-settings-page.php:675
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:940
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1249
@@ -627,7 +662,7 @@ msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:357
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:362
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:454
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:470
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:396
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:464
 msgid "Center"
@@ -637,7 +672,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:383
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:473
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:454
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:475
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:491
 msgid "Category Title Typography"
 msgstr ""
 
@@ -645,14 +680,14 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:396
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:488
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:467
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:488
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:504
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:675
 msgid "Category Description Typography"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:407
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:412
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:504
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:520
 msgid "Section Header Padding"
 msgstr ""
 
@@ -660,35 +695,35 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:435
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:507
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:486
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:527
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:543
 msgid "Category Box Body"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:435
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:440
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:512
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:532
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:548
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:642
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:831
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3755
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3756
 msgid "Variable"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:436
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:441
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:513
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:533
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:549
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:832
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3756
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3757
 msgid "Minimum"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:437
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:442
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:514
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:534
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:550
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:833
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3757
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3758
 msgid "Maximum"
 msgstr ""
 
@@ -696,13 +731,13 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:463
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:532
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:500
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:554
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:570
 msgid "Subcategory Title Typography"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:470
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:476
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:567
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:583
 msgid "Category Body Padding"
 msgstr ""
 
@@ -711,58 +746,58 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:552
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:522
 #: includes/admin/blocks/class-epkb-featured-articles-block.php:263
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:594
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:610
 msgid "Show Article Icon"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:501
 #: includes/admin/blocks/class-epkb-faqs-block.php:287
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:598
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:614
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:724
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3276
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3444
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3277
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3445
 msgctxt "icon type"
 msgid "Plus Box"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:502
 #: includes/admin/blocks/class-epkb-faqs-block.php:296
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:599
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:615
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:725
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3278
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3445
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3279
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3446
 msgctxt "icon type"
 msgid "Plus Sign"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:503
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:600
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:616
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:726
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3446
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3447
 msgctxt "icon type"
 msgid "Arrow Triangle"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:504
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:601
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:617
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:727
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3447
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3448
 msgctxt "icon type"
 msgid "Arrow Caret"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:505
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:602
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:618
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:728
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3448
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3449
 msgctxt "icon type"
 msgid "Arrow Caret 2"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:506
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:603
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:619
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:729
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3449
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3450
 msgctxt "icon type"
 msgid "Folder"
 msgstr ""
@@ -771,13 +806,13 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:523
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:568
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:541
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:628
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:644
 msgid "Article Typography"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-basic-layout-block.php:544
 #: includes/admin/blocks/class-epkb-categories-layout-block.php:536
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:641
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:657
 msgid "Collapse Message Typography"
 msgstr ""
 
@@ -829,34 +864,34 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-settings-page.php:1208
 #: includes/admin/pages/class-epkb-config-settings-page.php:1579
 #: includes/admin/pages/class-epkb-config-settings-page.php:2285
-#: includes/admin/pages/class-epkb-config-settings-page.php:2631
-#: includes/admin/pages/class-epkb-config-settings-page.php:2638
-#: includes/admin/pages/class-epkb-config-settings-page.php:2645
-#: includes/admin/pages/class-epkb-config-settings-page.php:2748
-#: includes/admin/pages/class-epkb-config-settings-page.php:2758
-#: includes/admin/pages/class-epkb-config-settings-page.php:2764
-#: includes/admin/pages/class-epkb-config-settings-page.php:2767
-#: includes/admin/pages/class-epkb-config-settings-page.php:2770
-#: includes/admin/pages/class-epkb-config-settings-page.php:2773
-#: includes/admin/pages/class-epkb-config-settings-page.php:2776
-#: includes/admin/pages/class-epkb-config-settings-page.php:2779
-#: includes/admin/pages/class-epkb-config-settings-page.php:2789
-#: includes/admin/pages/class-epkb-config-settings-page.php:2792
-#: includes/admin/pages/class-epkb-config-settings-page.php:2795
-#: includes/admin/pages/class-epkb-config-settings-page.php:2798
-#: includes/admin/pages/class-epkb-config-settings-page.php:2803
-#: includes/admin/pages/class-epkb-config-settings-page.php:2808
-#: includes/admin/pages/class-epkb-config-settings-page.php:2813
-#: includes/admin/pages/class-epkb-config-settings-page.php:2818
-#: includes/admin/pages/class-epkb-config-settings-page.php:2823
-#: includes/admin/pages/class-epkb-config-settings-page.php:2828
-#: includes/admin/pages/class-epkb-config-settings-page.php:2833
-#: includes/admin/pages/class-epkb-config-settings-page.php:2860
-#: includes/admin/pages/class-epkb-config-settings-page.php:2868
-#: includes/admin/pages/class-epkb-config-settings-page.php:2875
-#: includes/admin/pages/class-epkb-config-settings-page.php:2892
-#: includes/admin/pages/class-epkb-config-settings-page.php:2922
-#: includes/admin/pages/class-epkb-config-settings-page.php:2998
+#: includes/admin/pages/class-epkb-config-settings-page.php:2633
+#: includes/admin/pages/class-epkb-config-settings-page.php:2640
+#: includes/admin/pages/class-epkb-config-settings-page.php:2647
+#: includes/admin/pages/class-epkb-config-settings-page.php:2750
+#: includes/admin/pages/class-epkb-config-settings-page.php:2760
+#: includes/admin/pages/class-epkb-config-settings-page.php:2766
+#: includes/admin/pages/class-epkb-config-settings-page.php:2769
+#: includes/admin/pages/class-epkb-config-settings-page.php:2772
+#: includes/admin/pages/class-epkb-config-settings-page.php:2775
+#: includes/admin/pages/class-epkb-config-settings-page.php:2778
+#: includes/admin/pages/class-epkb-config-settings-page.php:2781
+#: includes/admin/pages/class-epkb-config-settings-page.php:2791
+#: includes/admin/pages/class-epkb-config-settings-page.php:2794
+#: includes/admin/pages/class-epkb-config-settings-page.php:2797
+#: includes/admin/pages/class-epkb-config-settings-page.php:2800
+#: includes/admin/pages/class-epkb-config-settings-page.php:2805
+#: includes/admin/pages/class-epkb-config-settings-page.php:2810
+#: includes/admin/pages/class-epkb-config-settings-page.php:2815
+#: includes/admin/pages/class-epkb-config-settings-page.php:2820
+#: includes/admin/pages/class-epkb-config-settings-page.php:2825
+#: includes/admin/pages/class-epkb-config-settings-page.php:2830
+#: includes/admin/pages/class-epkb-config-settings-page.php:2835
+#: includes/admin/pages/class-epkb-config-settings-page.php:2862
+#: includes/admin/pages/class-epkb-config-settings-page.php:2870
+#: includes/admin/pages/class-epkb-config-settings-page.php:2877
+#: includes/admin/pages/class-epkb-config-settings-page.php:2896
+#: includes/admin/pages/class-epkb-config-settings-page.php:2926
+#: includes/admin/pages/class-epkb-config-settings-page.php:3002
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:60
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:77
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:94
@@ -889,7 +924,7 @@ msgid "Learn More"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-blocks-settings.php:141
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3395
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3396
 msgid "Full Width"
 msgstr ""
 
@@ -904,7 +939,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-blocks-settings.php:227
-msgid "Additional CSS Class(es)"
+msgid "Additional CSS Classes"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-blocks-settings.php:230
@@ -924,6 +959,7 @@ msgid "Appearance"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-blocks-settings.php:329
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:660
 #: includes/system/scripts-registration-admin.php:100
 #: includes/system/scripts-registration-admin.php:411
 msgid "Default"
@@ -1037,32 +1073,32 @@ msgid "Icons"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-faqs-block.php:292
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3277
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3278
 msgctxt "icon type"
 msgid "Plus circle"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-faqs-block.php:300
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3279
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3280
 msgctxt "icon type"
 msgid "Arrow Down Caret"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-faqs-block.php:304
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3280
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3281
 msgctxt "icon type"
 msgid "Arrow Right Angle"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-faqs-block.php:326
-#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:87
+#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:104
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1402
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1904
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2193
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2775
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3308
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4005
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4117
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1905
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2194
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2776
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3309
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4006
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4118
 msgid "Border"
 msgstr ""
 
@@ -1112,7 +1148,7 @@ msgstr ""
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:145
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1657
 #: includes/class-epkb-core-utilities.php:387
-#: includes/system/class-epkb-upgrades.php:261
+#: includes/system/class-epkb-upgrades.php:269
 msgid "Featured Articles"
 msgstr ""
 
@@ -1124,10 +1160,10 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-search-block.php:280
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:379
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:447
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1845
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3593
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3740
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4015
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1846
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3594
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3741
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4016
 #: includes/admin/pages/class-epkb-config-settings-page.php:2151
 msgid "Title"
 msgstr ""
@@ -1182,31 +1218,37 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:34
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:686
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1485
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1912
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1923
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2074
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2201
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2675
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3405
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3487
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3506
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3644
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3663
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1913
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1924
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2075
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2202
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2676
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3406
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3488
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3507
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3645
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3664
 #: includes/admin/pages/class-epkb-add-ons-features.php:263
 #: includes/admin/pages/class-epkb-config-settings-page.php:2241
 #: includes/admin/pages/class-epkb-need-help-features.php:249
 msgid "Typography"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:339
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:211
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:355
 msgid "Tab Navigation"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:364
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:215
+#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:51
+msgid "Overflow Mode"
+msgstr ""
+
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:380
 msgid "Tab Name Typography"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-tabs-layout-block.php:377
+#: includes/admin/blocks/class-epkb-tabs-layout-block.php:393
 msgid "Tab Description Typography"
 msgstr ""
 
@@ -1249,7 +1291,7 @@ msgid "Settings -> Beaver Builder -> Post Types"
 msgstr ""
 
 #: includes/admin/class-epkb-site-builders.php:79
-msgid "SiteOrigin\tBuilder"
+msgid "SiteOrigin Builder"
 msgstr ""
 
 #: includes/admin/class-epkb-site-builders.php:79
@@ -1261,8 +1303,8 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-settings-page.php:149
 #: includes/admin/pages/class-epkb-config-settings-page.php:855
 #: includes/admin/pages/class-epkb-config-settings-page.php:1502
-#: includes/admin/pages/class-epkb-config-settings-page.php:2886
-#: includes/admin/pages/class-epkb-config-settings-page.php:2916
+#: includes/admin/pages/class-epkb-config-settings-page.php:2890
+#: includes/admin/pages/class-epkb-config-settings-page.php:2920
 #: includes/class-epkb-utilities.php:416
 #: includes/features/layouts/class-epkb-layout.php:204
 #: includes/features/layouts/class-epkb-layout.php:230
@@ -1364,8 +1406,8 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1205
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1210
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:909
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2068
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4087
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2069
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4088
 #: includes/admin/pages/class-epkb-config-tools-page.php:663
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:58
 msgid "Article Title"
@@ -1428,7 +1470,7 @@ msgid "Map Categories and Tags from"
 msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:167
-msgid "Choose CPT category to map to Article category: "
+msgid "Choose CPT category to map to Article category"
 msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:171
@@ -1437,7 +1479,7 @@ msgid "Not selected"
 msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:179
-msgid "Choose CPT tag to map to Article tag: "
+msgid "Choose CPT tag to map to Article tag"
 msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:202
@@ -1446,9 +1488,9 @@ msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:242
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1160
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3602
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4245
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4279
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3603
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4246
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4280
 #: includes/admin/pages/class-epkb-config-settings-page.php:1608
 #: includes/admin/pages/class-epkb-need-help-features.php:569
 #: includes/admin/pages/class-epkb-need-help-features.php:1098
@@ -1521,9 +1563,9 @@ msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:290
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:253
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3965
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4223
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4257
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3966
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4224
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4258
 msgid "Search Title"
 msgstr ""
 
@@ -1578,6 +1620,8 @@ msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:524
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:894
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:174
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:175
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:204
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:210
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1223
@@ -1594,6 +1638,8 @@ msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:524
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:894
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:174
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:175
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:204
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:210
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1223
@@ -1652,7 +1698,7 @@ msgid "Article Header Row"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:706
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1965
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1966
 #: includes/system/scripts-registration-admin.php:430
 msgid "Article Header Rows"
 msgstr ""
@@ -1766,7 +1812,7 @@ msgid "Edit the row style under the Article Content here"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1376
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2119
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2120
 #: includes/admin/pages/class-epkb-config-settings-page.php:1818
 #: includes/admin/pages/class-epkb-config-settings-page.php:2008
 #: includes/admin/pages/class-epkb-need-help-features.php:460
@@ -1774,9 +1820,9 @@ msgid "Back Navigation"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1440
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1776
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2322
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2328
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1777
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2323
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2329
 #: includes/admin/pages/class-epkb-config-settings-page.php:1845
 #: includes/admin/pages/class-epkb-need-help-features.php:428
 msgid "Author"
@@ -1787,7 +1833,7 @@ msgid "Author Zone"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1507
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2392
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2393
 #: includes/admin/pages/class-epkb-config-settings-page.php:1831
 msgid "Created Date"
 msgstr ""
@@ -1798,7 +1844,7 @@ msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1575
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1583
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2462
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2463
 #: includes/admin/pages/class-epkb-config-settings-page.php:1838
 msgid "Last Updated Date"
 msgstr ""
@@ -1812,7 +1858,7 @@ msgid "Article Views Counter"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1806
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2532
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2533
 #: includes/admin/pages/class-epkb-config-settings-page.php:1811
 #: templates/feature-breadcrumb.php:104
 msgid "Breadcrumb"
@@ -1860,7 +1906,7 @@ msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:2064
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:2068
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2888
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2889
 #: includes/admin/pages/class-epkb-config-settings-page.php:1824
 #: includes/admin/pages/class-epkb-need-help-features.php:399
 msgid "Print Button"
@@ -1871,7 +1917,7 @@ msgid "Bottom Author and Dates"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:2196
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2938
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2939
 #: includes/admin/pages/class-epkb-config-settings-page.php:1852
 #: includes/admin/pages/class-epkb-config-settings-page.php:2019
 msgid "Prev/Next Navigation"
@@ -1930,7 +1976,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:147
-#: includes/admin/pages/class-epkb-config-settings-page.php:2684
+#: includes/admin/pages/class-epkb-config-settings-page.php:2686
 msgid ""
 "We have detected that you are using the Current Theme Template option. If "
 "your width is not expanding the way you want, it is because the theme is "
@@ -1946,7 +1992,7 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:450
 #: includes/admin/editor/class-epkb-editor-sidebar-config.php:131
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1550
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1782
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1783
 #: includes/admin/pages/class-epkb-analytics-page.php:72
 #: includes/admin/pages/class-epkb-config-settings-page.php:933
 #: includes/features/articles/class-epkb-articles-cpt-setup.php:92
@@ -1954,7 +2000,7 @@ msgid "Categories"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:514
-#: includes/admin/pages/class-epkb-config-settings-page.php:2678
+#: includes/admin/pages/class-epkb-config-settings-page.php:2680
 msgid "Edit Categories Icons"
 msgstr ""
 
@@ -1963,8 +2009,8 @@ msgid "Edit Categories Descriptions"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:574
-#: includes/admin/pages/class-epkb-config-settings-page.php:2424
-#: includes/admin/pages/class-epkb-config-settings-page.php:3439
+#: includes/admin/pages/class-epkb-config-settings-page.php:2426
+#: includes/admin/pages/class-epkb-config-settings-page.php:3445
 msgid "Category Header"
 msgstr ""
 
@@ -1975,8 +2021,8 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:715
 #: includes/admin/editor/class-epkb-editor-main-page-config.php:716
 #: includes/admin/pages/class-epkb-config-settings-page.php:1758
-#: includes/admin/pages/class-epkb-config-settings-page.php:2443
-#: includes/admin/pages/class-epkb-config-settings-page.php:3461
+#: includes/admin/pages/class-epkb-config-settings-page.php:2445
+#: includes/admin/pages/class-epkb-config-settings-page.php:3467
 msgid "Category Body"
 msgstr ""
 
@@ -1997,14 +2043,14 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-view.php:350
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:160
 #: includes/admin/pages/class-epkb-config-settings-page.php:2395
-#: includes/admin/pages/class-epkb-config-settings-page.php:3408
+#: includes/admin/pages/class-epkb-config-settings-page.php:3412
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:574
 msgid "Tabs"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-sidebar-config.php:39
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:947
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4127
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4128
 msgid "Category Name"
 msgstr ""
 
@@ -2012,8 +2058,8 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:779
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:963
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1195
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3910
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4143
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3911
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4144
 msgid "Category Description"
 msgstr ""
 
@@ -2166,12 +2212,12 @@ msgid "Category Archive displayed by theme"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-view.php:324
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:301
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:305
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:244
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:248
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:304
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:308
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:302
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:306
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:245
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:249
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:305
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:309
 msgid "Learn more"
 msgstr ""
 
@@ -2523,7 +2569,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-export-import.php:206
 msgid ""
-"Import failed because found import data for a plugin that is not active: "
+"Import failed because found import data for a plugin that is not active"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-export-import.php:219
@@ -2578,7 +2624,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-category.php:93
 #: includes/admin/kb-configuration/class-epkb-kb-config-category.php:134
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1396
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4183
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4184
 msgid "Category Icon"
 msgstr ""
 
@@ -2638,7 +2684,7 @@ msgid "Configuration saved"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:120
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3399
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3400
 #: includes/admin/pages/class-epkb-config-settings-page.php:1266
 #: includes/system/scripts-registration-admin.php:433
 msgid "Font Family"
@@ -2720,7 +2766,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1077
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1180
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1294
-msgctxt "echo-knowledge-base"
+msgctxt "pixels"
 msgid "px"
 msgstr ""
 
@@ -2736,7 +2782,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1078
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1181
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1295
-msgctxt "echo-knowledge-base"
+msgctxt "percentage"
 msgid "%"
 msgstr ""
 
@@ -2863,9 +2909,9 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:462
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:187
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:199
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1897
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3222
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3254
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1898
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3223
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3255
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:938
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1238
 msgid "None"
@@ -2884,19 +2930,19 @@ msgid "Recently Updated Articles Title"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:428
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3184
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3185
 msgid "Content Mode"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:432
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3188
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3189
 #: includes/admin/pages/class-epkb-config-settings-page.php:1617
 #: includes/system/scripts-registration-admin.php:382
 msgid "Content"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:433
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3189
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3190
 msgid "Excerpt"
 msgstr ""
 
@@ -2906,8 +2952,8 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:453
 #: includes/class-epkb-core-utilities.php:383
-#: includes/features/kbs/class-epkb-kb-demo-data.php:501
-#: includes/system/class-epkb-upgrades.php:257
+#: includes/features/kbs/class-epkb-kb-demo-data.php:504
+#: includes/system/class-epkb-upgrades.php:265
 msgid "Frequently Asked Questions"
 msgstr ""
 
@@ -2918,6 +2964,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:477
 #: includes/admin/openai/class-epkb-ai-help-sidebar.php:85
 #: includes/admin/pages/class-epkb-config-tools-page.php:146
+#: includes/admin/pages/class-epkb-config-tools-page.php:774
 msgid "Back"
 msgstr ""
 
@@ -2950,28 +2997,41 @@ msgid "Down Pointer"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:55
+msgid "Multiple Rows"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:56
+msgid "Drop Down"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:61
+msgid "Tabs Per Row"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:72
 msgid "Active Text Color"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:63
+#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:80
 msgid "Active Background Color"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:71
+#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:88
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1512
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2168
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2177
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2805
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2962
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2169
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2178
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2750
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2806
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2963
 msgid "Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:79
+#: includes/admin/kb-configuration/class-epkb-kb-config-layout-tabs.php:96
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:463
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:580
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2185
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2970
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4109
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2186
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2971
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4110
 msgid "Background"
 msgstr ""
 
@@ -3032,20 +3092,7 @@ msgstr ""
 msgid "Article Sidebar Location"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:174
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:175
-msgctxt "echo-knowledge-base"
-msgid "Right Sidebar"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:174
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:175
-msgctxt "echo-knowledge-base"
-msgid "Left Sidebar"
-msgstr ""
-
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:176
-msgctxt "echo-knowledge-base"
 msgid "No Sidebar"
 msgstr ""
 
@@ -3179,7 +3226,7 @@ msgid "Widget Sidebar Styling"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:339
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3390
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3391
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:110
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:134
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:58
@@ -3221,10 +3268,6 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:423
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:540
 msgid "Tablet Width ( % )"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:431
-msgid "Top "
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:471
@@ -3269,7 +3312,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:638
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:827
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3751
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3752
 msgid "Height Mode"
 msgstr ""
 
@@ -3287,13 +3330,8 @@ msgid "Scroll Bar style"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:659
-msgctxt "echo-knowledge-base"
+msgctxt "thickness of scrollbar"
 msgid "Slim"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:660
-msgctxt "echo-knowledge-base"
-msgid "Default"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:664
@@ -3305,22 +3343,22 @@ msgid "Top Categories Collapsed"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:711
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3416
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3417
 msgid "Show Articles"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:715
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3420
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3421
 msgid "Before Categories"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:716
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3421
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3422
 msgid "After Categories"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:721
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3441
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3442
 msgid "Icon to Expand/Collapse Articles"
 msgstr ""
 
@@ -3329,19 +3367,19 @@ msgid "Category Text Alignment"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:741
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3836
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3837
 msgid "Centered"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:785
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3773
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3774
 msgid "Corner Radius"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:793
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2230
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2789
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3781
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2231
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2790
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3782
 msgid "Border Thickness"
 msgstr ""
 
@@ -3370,7 +3408,7 @@ msgid "Thickness ( px )"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:878
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3934
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3935
 msgid "Article Underline Hover"
 msgstr ""
 
@@ -3388,8 +3426,8 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:917
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:925
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4095
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4103
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4096
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4104
 msgid "Article Icon"
 msgstr ""
 
@@ -3414,7 +3452,7 @@ msgid "Top Category Border Bottom"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:987
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4159
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4160
 msgid "Subcategory Name"
 msgstr ""
 
@@ -3427,12 +3465,12 @@ msgid "Subcategory: Expand Icon"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1017
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4315
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4316
 msgid "Empty Category Message"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1022
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4320
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4321
 msgid "Articles coming soon"
 msgstr ""
 
@@ -3441,7 +3479,7 @@ msgid "Collapse Articles Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1030
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4328
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4329
 msgid "Collapse Articles"
 msgstr ""
 
@@ -3450,7 +3488,7 @@ msgid "Show Remaining Articles Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1038
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4336
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4337
 msgid "Show Remaining Articles"
 msgstr ""
 
@@ -3514,7 +3552,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1192
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1731
-msgid "Category - "
+msgid "Category"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1203
@@ -3558,7 +3596,7 @@ msgid "Columns of Articles"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1346
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3224
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3225
 msgid "Separator"
 msgstr ""
 
@@ -3603,8 +3641,8 @@ msgid "Title Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1504
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1934
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4065
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1935
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4066
 msgid "Container Background"
 msgstr ""
 
@@ -3685,143 +3723,134 @@ msgid "Date:"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1752
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2334
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2335
 msgid "Author Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1758
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1759
 msgid "By:"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1761
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1762
 msgid "Categories Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1767
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1768
 msgid "Categories:"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1770
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1771
 msgid "Date"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1795
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1948
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1796
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1949
 msgid "Table of Contents"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1801
-msgid "From Hx"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1805
-msgid "H1"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1802
+msgid "From Tag"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1806
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1819
-msgid "H2"
+msgid "H1"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1807
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1820
-msgid "H3"
+msgid "H2"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1808
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1821
-msgid "H4"
+msgid "H3"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1809
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1822
-msgid "H5"
+msgid "H4"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1810
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1823
+msgid "H5"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1811
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1824
 msgid "H6"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1815
-msgid "To Hy"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1816
+msgid "To Tag"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1828
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1829
 msgid "CSS Class to exclude headers from the TOC"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1837
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1838
 msgid "Active Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1853
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1854
 #: includes/admin/pages/class-epkb-config-settings-page.php:2160
 msgid "Headings"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1861
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1862
 msgid "Active Heading"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1869
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2986
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1870
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2987
 msgid "Hover: Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1877
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2978
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1878
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2979
 msgid "Hover: Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1885
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1886
 msgid "Heading position is relative to the screen after scroll (px)"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1893
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3207
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1894
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3208
 msgid "Border Style"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1898
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1899
 msgid "Between Article and TOC"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1899
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1900
 msgid "Around TOC"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1942
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1943
 msgid "Title (optional)"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1951
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1952
 msgid "Scroll Time"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1971
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1989
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2007
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2025
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2043
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1972
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1990
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2008
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2026
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2044
 msgid "Bottom Gap"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1979
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1997
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2015
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2033
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2051
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1980
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1998
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2016
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2034
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2052
 msgid "Features Vertical Alignment"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1983
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2001
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2019
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2037
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2055
-msgctxt "echo-knowledge-base"
-msgid "Row Top"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1984
@@ -3829,8 +3858,8 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2020
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2038
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2056
-msgctxt "echo-knowledge-base"
-msgid "Row Center"
+msgctxt "location of element on the screen"
+msgid "Row Top"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1985
@@ -3838,153 +3867,75 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2021
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2039
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2057
-msgctxt "echo-knowledge-base"
+msgctxt "location of element on the screen"
+msgid "Row Center"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1986
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2004
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2022
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2040
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2058
+msgctxt "location of element on the screen"
 msgid "Row Bottom"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2080
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2125
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2343
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2413
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2483
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2538
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2699
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3027
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2081
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2126
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2344
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2414
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2484
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2539
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2700
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3028
 msgid "Row"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2084
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2129
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2347
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2417
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2487
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2542
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2703
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3031
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2085
+msgctxt "location of element on the screen"
 msgid "Row 1"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2085
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2130
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2348
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2418
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2488
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2543
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2704
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3032
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2086
+msgctxt "location of element on the screen"
 msgid "Row 2"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2086
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2131
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2349
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2419
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2489
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2544
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2705
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3033
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2087
+msgctxt "location of element on the screen"
 msgid "Row 3"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2087
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2132
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2350
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2420
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2490
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2545
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2706
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3034
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2088
+msgctxt "location of element on the screen"
 msgid "Row 4"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2088
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2133
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2351
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2421
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2491
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2546
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2707
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3035
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2089
+msgctxt "location of element on the screen"
 msgid "Row 5"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2092
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2137
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2355
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2425
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2495
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2550
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2711
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3039
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2093
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2138
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2356
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2426
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2496
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2551
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2712
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3040
 msgid "Alignment"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2096
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2097
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2141
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2142
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2359
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2360
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2429
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2430
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2499
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2500
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2554
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2555
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2715
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2716
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3043
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3044
-msgctxt "echo-knowledge-base"
-msgid "Right"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2096
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2097
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2141
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2142
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2359
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2360
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2429
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2430
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2499
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2500
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2554
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2555
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2715
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2716
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3043
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3044
-msgctxt "echo-knowledge-base"
-msgid "Left"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2101
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2146
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2364
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2434
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2504
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2559
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2720
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3048
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2102
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2147
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2365
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2435
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2505
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2560
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2721
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3049
 msgid "Sequence in the Alignment"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2105
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2150
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2368
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2438
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2508
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2563
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2724
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3052
-msgctxt "echo-knowledge-base"
-msgid "1"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2106
@@ -3995,8 +3946,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2564
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2725
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3053
-msgctxt "echo-knowledge-base"
-msgid "2"
+msgid "1"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2107
@@ -4007,8 +3957,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2565
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2726
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3054
-msgctxt "echo-knowledge-base"
-msgid "3"
+msgid "2"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2108
@@ -4019,8 +3968,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2566
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2727
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3055
-msgctxt "echo-knowledge-base"
-msgid "4"
+msgid "3"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2109
@@ -4031,71 +3979,134 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2567
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2728
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3056
-msgctxt "echo-knowledge-base"
+msgid "4"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2110
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2155
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2373
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2443
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2513
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2568
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2729
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3057
 msgid "5"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2158
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2130
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2348
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2418
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2488
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2543
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2704
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3032
+#: includes/admin/pages/class-epkb-config-settings-page.php:173
+#: includes/admin/pages/class-epkb-config-settings-page.php:3292
+msgid "Row 1"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2131
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2349
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2419
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2489
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2544
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2705
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3033
+#: includes/admin/pages/class-epkb-config-settings-page.php:184
+#: includes/admin/pages/class-epkb-config-settings-page.php:3330
+msgid "Row 2"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2132
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2350
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2420
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2490
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2545
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2706
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3034
+#: includes/admin/pages/class-epkb-config-settings-page.php:195
+#: includes/admin/pages/class-epkb-config-settings-page.php:3351
+msgid "Row 3"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2133
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2351
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2421
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2491
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2546
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2707
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3035
+#: includes/admin/pages/class-epkb-config-settings-page.php:206
+#: includes/admin/pages/class-epkb-config-settings-page.php:3372
+msgid "Row 4"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2134
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2352
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2422
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2492
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2547
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2708
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3036
+#: includes/admin/pages/class-epkb-config-settings-page.php:217
+#: includes/admin/pages/class-epkb-config-settings-page.php:3393
+msgid "Row 5"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2159
 msgid "Navigation Mode"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2162
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2163
 msgid "Browser Go Back Action"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2163
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2164
 msgid "Redirect to KB Main Page"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2174
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2175
 msgid "All Topics"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2212
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4055
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2213
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4056
 msgid "Button Border"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2216
-msgid "-- No Border --"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2217
+msgid "No Border"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2217
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2218
 msgid "Solid"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2222
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2781
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2223
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2782
 msgid "Border Radius"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2304
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2305
 msgid "Header Meta Data"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2310
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2311
 msgid "Meta Data at the Bottom"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2340
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2341
 msgid "By"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2376
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2446
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2516
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2763
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3060
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3300
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2377
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2447
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2517
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2749
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2764
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3061
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3301
 msgid "Icon"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2380
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2450
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2520
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3064
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3076
-msgid "Show icon"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2381
@@ -4103,229 +4114,223 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2521
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3065
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3077
+msgid "Show icon"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2382
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2452
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2522
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3066
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3078
 msgid "Hide icon"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2398
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2399
 msgid "Created On"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2404
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2405
 msgid "Created Date Prefix"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2410
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2411
 msgid "Posted"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2468
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2469
 msgid "Last Updated On"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2474
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2475
 msgid "Updated Date Prefix"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2480
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2481
 msgid "Updated"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2571
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2572
 msgid "Breadcrumb Separator"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2575
-msgid "-- No Icon --"
-msgstr ""
-
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2576
-msgid "Right Arrow"
+msgid "No Icon"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2577
-msgid "Left Arrow"
+msgid "Right Arrow"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2578
-msgid "Arrow Right Circle"
+msgid "Left Arrow"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2579
-msgid "Arrow Left Circle"
+msgid "Arrow Right Circle"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2580
-msgid "Arrow Caret Left"
+msgid "Arrow Left Circle"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2581
+msgid "Arrow Caret Left"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2582
 msgid "Arrow Caret Right"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2650
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2651
 msgid "Breadcrumb Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2658
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2659
 msgid "Breadcrumb Label"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2667
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2668
 msgid "Breadcrumb Home Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2672
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2673
 msgid "Main"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2693
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2694
 msgid "Content Toolbar"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2732
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3997
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4047
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2733
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3998
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4048
 msgid "Button Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2738
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2739
 msgid "Button Background Hover"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2744
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2745
 msgid "Button Format"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2748
-msgctxt "echo-knowledge-base"
-msgid "Icon"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2749
-msgctxt "echo-knowledge-base"
-msgid "Text"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2750
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2751
 msgid "Icon and Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2751
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2752
 msgid "Text and Icon"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2755
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2756
 msgid "Icon Size (px)"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2769
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2770
 msgid "Icon Hover"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2797
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2798
 msgid "Text Size (px)"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2811
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2812
 msgid "Text Hover"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2894
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2895
 msgid "Print Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2900
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2901
 msgid "Print"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2944
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2945
 msgid "Next Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2950
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2951
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:110
 #: includes/features/articles/class-epkb-articles-setup.php:627
 #: templates/archive-categories.php:504
 msgid "Next"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2953
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2954
 msgid "Previous Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2959
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2960
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:107
 #: includes/features/articles/class-epkb-articles-setup.php:626
 #: templates/archive-categories.php:503
 msgid "Previous"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2996
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2997
 msgid "Count Article Views"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3002
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3003
 msgid "Views Counter Method"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3006
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3007
 msgid "Delay"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3007
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3008
 msgid "After User Scroll"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3008
-msgctxt "echo-knowledge-base"
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3009
 msgid "PHP"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3012
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3013
 msgid "Display in Article Header"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3018
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3019
 msgid "Article Views Prefix"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3024
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3025
 #: includes/features/article-counter/class-epkb-article-count-handler.php:239
 msgid "Views"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3072
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3073
 msgid "Article Meta Icon"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3113
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3114
 msgid "Edit KB colors, fonts, labels and features"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3124
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3125
 #: includes/admin/pages/class-epkb-config-page.php:192
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:52
 msgid "Order Articles and Categories"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3135
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3136
 msgid "KB Analytics"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3157
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3158
 #: includes/admin/pages/class-epkb-add-ons-page.php:17
-msgid "Add-ons / News"
+#: includes/admin/pages/class-epkb-add-ons-page.php:664
+msgid "Add-ons"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3194
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3195
 msgid "FAQs Schema"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3211
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3212
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1337
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1394
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1442
@@ -4335,314 +4340,314 @@ msgstr ""
 msgid "Sharp"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3212
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3213
 msgid "Rounded"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3218
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3219
 msgid "Border Mode"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3223
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3224
 msgid "All Around"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3229
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3230
 msgid "Compact Mode"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3239
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3240
 msgid "Open Mode"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3243
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3244
 msgid "Accordion - Collapsed Articles"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3244
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3245
 msgid "Toggle - Show one Article at a time"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3245
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3246
 msgid "Show All - Show all Articles"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3250
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3251
 msgid "Space Between Questions"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3261
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3262
 msgid "Icons Location"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3272
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3273
 msgid "Icon to Expand/Collapse FAQs"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3292
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3293
 msgid "Empty FAQs Message"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3297
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3298
 msgid "FAQs coming soon"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3316
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3317
 msgid "Question Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3325
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3326
 msgid "Answer Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3334
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3335
 msgid "Question Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3342
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3343
 msgid "Answer Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3394
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3395
 msgid "Boxed Width"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3433
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3434
 msgid "Number of Articles Displayed"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3457
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3614
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3458
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3615
 #: includes/admin/pages/class-epkb-config-settings-page.php:2376
-#: includes/admin/pages/class-epkb-config-settings-page.php:2495
-#: includes/admin/pages/class-epkb-config-settings-page.php:3304
+#: includes/admin/pages/class-epkb-config-settings-page.php:2497
+#: includes/admin/pages/class-epkb-config-settings-page.php:3308
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:110
 msgid "Layout"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3461
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3618
-msgid "Rounded search button is on the right"
-msgstr ""
-
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3462
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3619
-msgid "Squared search Button is on the right"
+msgid "Rounded search button is on the right"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3463
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3620
-msgid "Search button is below"
+msgid "Squared search Button is on the right"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3464
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3621
-msgid "No search button"
+msgid "Search button is below"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3465
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3622
+msgid "No search button"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3466
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3623
 msgid "No search box"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3470
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3471
 msgid "Search Title HTML Tag"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3498
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3655
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3499
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3656
 msgid "Border (px)"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3517
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3674
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3518
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3675
 msgid "Padding Top"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3525
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3682
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3526
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3683
 msgid "Padding Bottom"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3565
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3722
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3566
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3723
 msgid "Search Input Width"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3573
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3574
 msgid "Search Input Height"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3577
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3578
 msgid "Narrow"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3583
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3730
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3584
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3731
 msgid "Search Results: Match Article Colors"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3589
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3736
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3590
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3737
 msgid "Search Results Mode"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3594
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3741
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3595
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3742
 msgid "Title and Excerpt"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3608
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3609
 msgid "Use Main Page Search Settings"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3627
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3628
 msgid "Search Title Html Tag"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3761
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3762
 msgid "Article List Shadow"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3789
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3790
 msgid "Height"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3831
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3832
 msgid "Category Name Alignment"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3842
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3843
 msgid "Icon Location"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3854
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3855
 msgid "Icon Size ( px )"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3894
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4151
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3895
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4152
 msgid "Divider"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3900
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3901
 msgid "Divider Thickness ( px )"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3916
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3917
 msgid "Click on Category"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3920
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3921
 msgid "Go to Category Archive Page"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3921
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3922
 msgid "Go to the first Article"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3926
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3927
 msgid "Category Link to Archive page"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3940
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3941
 msgid "Left offset for Articles List"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3948
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3949
 msgid "Left offset for Sub Articles List"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3973
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4023
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3974
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4024
 msgid "Search Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3981
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4031
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3982
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4032
 msgid "Input Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3989
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4039
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3990
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4040
 msgid "Input Border"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4076
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4077
 msgid "Article List Typography"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4135
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4136
 msgid "Category Name Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4167
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4168
 msgid "Subcategory Expand Icon"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4175
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4176
 msgid "Category Expand Hover"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4191
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4192
 msgid "Name Typography"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4202
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4203
 msgid "Description Typography"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4229
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4263
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4230
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4264
 msgid "How Can We Help?"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4232
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4266
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4233
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4267
 msgid "Search Hint"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4237
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4271
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4238
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4272
 msgid "Search the documentation..."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4240
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4274
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4241
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4275
 msgid "Search Button Name"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4248
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4282
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4249
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4283
 msgid "Search Results Message"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4253
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4287
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4254
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4288
 msgid "Search Results for"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4291
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4292
 msgid "No Matches Found Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4300
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4301
 msgid "No matches found"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4303
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4304
 msgid "Minimum Search Word Size Message"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4308
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4309
 msgid "Enter a word with at least one character."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4323
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4324
 msgid "Collapse Articles Message"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4331
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4332
 msgid "Show Remaining Articles Message"
 msgstr ""
 
@@ -4877,7 +4882,7 @@ msgid "Feedback"
 msgstr ""
 
 #: includes/admin/openai/class-epkb-ai-help-sidebar.php:412
-msgid "( Share your email to discuss your feedback. )"
+msgid "Share your email to discuss your feedback."
 msgstr ""
 
 #: includes/admin/openai/class-epkb-ai-help-sidebar.php:448
@@ -4892,35 +4897,35 @@ msgstr ""
 msgid "AI Disclaimer and Warnings"
 msgstr ""
 
-#: includes/admin/openai/class-epkb-ai-help-sidebar.php:482
+#: includes/admin/openai/class-epkb-ai-help-sidebar.php:481
 #, php-format
 msgid ""
-"Please read the <a href=\"%s\" target=\"_blank\">AI Disclaimer and "
-"Warnings</a> before using the AI features."
+"Please read the %s AI Disclaimer and Warnings %s before using the AI "
+"features."
 msgstr ""
 
-#: includes/admin/openai/class-epkb-ai-help-sidebar.php:497
+#: includes/admin/openai/class-epkb-ai-help-sidebar.php:490
 msgid ""
 "Welcome to AI-powered writing assistance for your content. Whether you "
 "need to generate new text or improve existing ones, we've got you covered "
 "with the tools below."
 msgstr ""
 
-#: includes/admin/openai/class-epkb-ai-help-sidebar.php:516
+#: includes/admin/openai/class-epkb-ai-help-sidebar.php:509
 msgid "Learn About Using AI (Based on OpenAI Technology)"
 msgstr ""
 
-#: includes/admin/openai/class-epkb-ai-help-sidebar.php:519
+#: includes/admin/openai/class-epkb-ai-help-sidebar.php:512
 msgid "AI Production Setup and Best Practices"
 msgstr ""
 
-#: includes/admin/openai/class-epkb-ai-help-sidebar.php:521
+#: includes/admin/openai/class-epkb-ai-help-sidebar.php:514
 msgid ""
 "Important: Using AI assistance will occur cost based on \"Davinci\" model "
 "and subject to your specific usage."
 msgstr ""
 
-#: includes/admin/openai/class-epkb-ai-help-sidebar.php:527
+#: includes/admin/openai/class-epkb-ai-help-sidebar.php:520
 msgid "Dismiss"
 msgstr ""
 
@@ -5455,7 +5460,7 @@ msgid "Configure article to display author and create date."
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-features.php:464
-#: includes/admin/pages/class-epkb-add-ons-page.php:153
+#: includes/admin/pages/class-epkb-add-ons-page.php:152
 msgid "Article Rating and Feedback"
 msgstr ""
 
@@ -5707,216 +5712,174 @@ msgid "Shortcodes, Widgets, Sidebars"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:137
-#, php-format
 msgid ""
-"Add KB Search, Most Recent Articles and other %sWidgets and shortcodes%s "
-"to your articles, sidebars and pages."
+"Add KB Search, Most Recent Articles and other Widgets and shortcodes to "
+"your articles, sidebars and pages."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:144
+#: includes/admin/pages/class-epkb-add-ons-page.php:143
 msgid "Custom Links for PDFs and More"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:145
+#: includes/admin/pages/class-epkb-add-ons-page.php:144
 msgid "Link to PDFs, posts and pages"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:147
+#: includes/admin/pages/class-epkb-add-ons-page.php:146
 #, php-format
 msgid ""
 "Set Articles to links to %sPDFs, pages, posts and websites%s. On KB Main "
 "Page, choose icons for your articles."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:154
+#: includes/admin/pages/class-epkb-add-ons-page.php:153
 msgid "Let users rate your articles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:156
+#: includes/admin/pages/class-epkb-add-ons-page.php:155
 msgid ""
 "Let your readers rate the quality of your articles and submit insightful "
 "feedback. Collect analytics on the most and least rated articles."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:162
+#: includes/admin/pages/class-epkb-add-ons-page.php:161
 msgid "Access Manager"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:163
+#: includes/admin/pages/class-epkb-add-ons-page.php:162
 msgid "Protect your KB content"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:165
+#: includes/admin/pages/class-epkb-add-ons-page.php:164
 #, php-format
 msgid ""
 "Restrict your Articles to certain %sGroups%s using KB Categories. Assign "
 "users to specific %sKB Roles%s within Groups."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:171
+#: includes/admin/pages/class-epkb-add-ons-page.php:170
 msgid "Migrate, Copy, Import and Export"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:172
+#: includes/admin/pages/class-epkb-add-ons-page.php:171
 msgid "Import, export and copy Articles, images and more"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:174
+#: includes/admin/pages/class-epkb-add-ons-page.php:173
 msgid ""
 "Powerful import and export plugin to migrate, create and copy articles and "
 "images from your Knowledge Base. You can also import articles from CSV and "
 "other sources."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:180
+#: includes/admin/pages/class-epkb-add-ons-page.php:179
 #: includes/admin/pages/class-epkb-need-help-features.php:975
 msgid "Help Dialog Chat"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:181
+#: includes/admin/pages/class-epkb-add-ons-page.php:180
 msgid "FAQs, Articles and Contact Form"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:183
-#, no-php-format
+#: includes/admin/pages/class-epkb-add-ons-page.php:182
 msgid ""
-"%s Engage %s your website visitors and %s gain new customers %s with page-"
-"specific %s FAQs %s and %s knowledge base articles %s. Help users "
-"communicate with you %s without leaving the page %s by using a simple % "
-"scontact form %s shown with the Help Dialog Chat."
+"Engage your website visitors and gain new customers with page-specific "
+"FAQs and knowledge base articles. Help users communicate with you without "
+"leaving the page by using a simple contact form shown with the Help Dialog "
+"Chat."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:222
+#: includes/admin/pages/class-epkb-add-ons-page.php:220
 msgid "Manage Licenses"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:247
+#: includes/admin/pages/class-epkb-add-ons-page.php:245
 msgid "New License"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:248
+#: includes/admin/pages/class-epkb-add-ons-page.php:246
 msgid "Please enter your new license below to ensure you receive updates."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:255
+#: includes/admin/pages/class-epkb-add-ons-page.php:253
 msgid "Licenses for add-ons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:272
+#: includes/admin/pages/class-epkb-add-ons-page.php:270
 #, php-format
 msgid ""
-"Please refer to the %s documentation%s for help with your license account "
+"Please refer to the %s documentation %s for help with your license account "
 "and any other issues."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:277
+#: includes/admin/pages/class-epkb-add-ons-page.php:275
 msgid "Licenses Dashboard"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:281
+#: includes/admin/pages/class-epkb-add-ons-page.php:279
 msgid "Change Your License Site URL"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:285
+#: includes/admin/pages/class-epkb-add-ons-page.php:283
 msgid "Download Your Add-ons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:289
+#: includes/admin/pages/class-epkb-add-ons-page.php:287
 msgid "Manage Subscriptions"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:406
+#: includes/admin/pages/class-epkb-add-ons-page.php:404
 #, php-format
 msgid "By %s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:427
+#: includes/admin/pages/class-epkb-add-ons-page.php:425
 #, php-format
 msgid "More information about %s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:429
+#: includes/admin/pages/class-epkb-add-ons-page.php:427
 msgid "More Details"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:485
+#: includes/admin/pages/class-epkb-add-ons-page.php:518
 msgid "Last Updated:"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:487
+#: includes/admin/pages/class-epkb-add-ons-page.php:520
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:494
-#, php-format
-msgctxt "Active plugin installations"
-msgid "%s+ Million"
-msgid_plural "%s+ Million"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/admin/pages/class-epkb-add-ons-page.php:498
+#: includes/admin/pages/class-epkb-add-ons-page.php:524
 msgctxt "Active plugin installations"
 msgid "Less Than 10"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:503
+#: includes/admin/pages/class-epkb-add-ons-page.php:529
 #, php-format
 msgid "%s Active Installations"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:507
+#: includes/admin/pages/class-epkb-add-ons-page.php:533
 msgid "Untested with your version of WordPress"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:509
+#: includes/admin/pages/class-epkb-add-ons-page.php:535
 msgid "Incompatible with your version of WordPress"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:511
+#: includes/admin/pages/class-epkb-add-ons-page.php:537
 msgid "Compatible with your version of WordPress"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:533
-msgid ""
-"This plugin doesn&#8217;t work with your versions of WordPress and PHP."
-msgstr ""
-
-#: includes/admin/pages/class-epkb-add-ons-page.php:537
-#, php-format
-msgid ""
-"<a href=\"%1$s\">Please update WordPress</a>, and then <a "
-"href=\"%2$s\">learn more about updating PHP</a>."
-msgstr ""
-
-#: includes/admin/pages/class-epkb-add-ons-page.php:545
-#: includes/admin/pages/class-epkb-add-ons-page.php:561
-#, php-format
-msgid "<a href=\"%s\">Please update WordPress</a>."
-msgstr ""
-
-#: includes/admin/pages/class-epkb-add-ons-page.php:551
-#: includes/admin/pages/class-epkb-add-ons-page.php:570
-#, php-format
-msgid "<a href=\"%s\">Learn more about updating PHP</a>."
-msgstr ""
-
-#: includes/admin/pages/class-epkb-add-ons-page.php:557
-msgid "This plugin doesn&#8217;t work with your version of WordPress."
-msgstr ""
-
-#: includes/admin/pages/class-epkb-add-ons-page.php:566
-msgid "This plugin doesn&#8217;t work with your version of PHP."
-msgstr ""
-
-#: includes/admin/pages/class-epkb-add-ons-page.php:608
+#: includes/admin/pages/class-epkb-add-ons-page.php:572
 #, php-format
 msgctxt "plugin"
 msgid "Install %s now"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:610
+#: includes/admin/pages/class-epkb-add-ons-page.php:574
 #: includes/admin/pages/class-epkb-need-help-features.php:156
 #: includes/admin/pages/class-epkb-need-help-features.php:158
 #: includes/class-epkb-html-forms.php:998
@@ -5924,84 +5887,80 @@ msgstr ""
 msgid "Install Now"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:613
+#: includes/admin/pages/class-epkb-add-ons-page.php:577
 msgctxt "plugin"
 msgid "Cannot Install"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:626
+#: includes/admin/pages/class-epkb-add-ons-page.php:590
 #, php-format
 msgctxt "plugin"
 msgid "Update %s now"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:628
+#: includes/admin/pages/class-epkb-add-ons-page.php:592
 msgid "Update Now"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:631
+#: includes/admin/pages/class-epkb-add-ons-page.php:595
 msgctxt "plugin"
 msgid "Cannot Update"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:640
+#: includes/admin/pages/class-epkb-add-ons-page.php:604
 msgctxt "plugin"
 msgid "Active"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:644
+#: includes/admin/pages/class-epkb-add-ons-page.php:608
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1017
 msgid "Activate"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:646
+#: includes/admin/pages/class-epkb-add-ons-page.php:610
 #, php-format
 msgctxt "plugin"
 msgid "Activate %s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:657
+#: includes/admin/pages/class-epkb-add-ons-page.php:621
 msgid "Network Activate"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:659
+#: includes/admin/pages/class-epkb-add-ons-page.php:623
 #, php-format
 msgctxt "plugin"
 msgid "Network Activate %s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:673
+#: includes/admin/pages/class-epkb-add-ons-page.php:637
 msgctxt "plugin"
 msgid "Installed"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:700
-msgid "Add-ons"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-add-ons-page.php:706
+#: includes/admin/pages/class-epkb-add-ons-page.php:670
 msgid "Go Further With Add-ons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:721
+#: includes/admin/pages/class-epkb-add-ons-page.php:685
 msgid "Our Free Plugins"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:739
+#: includes/admin/pages/class-epkb-add-ons-page.php:703
 msgid "Elementor Plugin"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:747
+#: includes/admin/pages/class-epkb-add-ons-page.php:711
 msgid "Create Amazing Articles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:748
+#: includes/admin/pages/class-epkb-add-ons-page.php:712
 msgid ""
 "Create amazing documentation using our Elementor Widgets from our new "
 "plugin called Creative Add-ons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-add-ons-page.php:925
+#: includes/admin/pages/class-epkb-add-ons-page.php:889
 msgid "Licenses"
 msgstr ""
 
@@ -6172,7 +6131,7 @@ msgstr ""
 #, php-format
 msgid ""
 "Note: You have other pages with KB shortcode or KB layout block that are "
-"currently %snot used%s: "
+"currently %snot used%s"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-page.php:442
@@ -6539,38 +6498,16 @@ msgstr ""
 msgid "contact us"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:173
-#: includes/admin/pages/class-epkb-config-settings-page.php:3288
-msgid "Row 1"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-config-settings-page.php:184
-#: includes/admin/pages/class-epkb-config-settings-page.php:3326
-msgid "Row 2"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-config-settings-page.php:195
-#: includes/admin/pages/class-epkb-config-settings-page.php:3347
-msgid "Row 3"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-config-settings-page.php:206
-#: includes/admin/pages/class-epkb-config-settings-page.php:3368
-msgid "Row 4"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-config-settings-page.php:217
-#: includes/admin/pages/class-epkb-config-settings-page.php:3389
-msgid "Row 5"
-msgstr ""
-
 #: includes/admin/pages/class-epkb-config-settings-page.php:231
 msgid "KB Article Page"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:254
 #: includes/admin/pages/class-epkb-config-settings-page.php:759
-msgid "Table of Contents ( TOC )"
+#: includes/admin/pages/class-epkb-need-help-features.php:352
+#: includes/admin/pages/class-epkb-need-help-features.php:1065
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:201
+msgid "Table of Contents (TOC)"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:259
@@ -6706,7 +6643,7 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:826
 #, php-format
-msgid "Unlock %sGrid and Sidebar Layout%s By Upgrading to PRO "
+msgid "Unlock %sGrid and Sidebar Layout%s By Upgrading to PRO"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:827
@@ -6824,15 +6761,13 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:1282
 msgid ""
-"The Resource Links feature is supported in \"KB - Elegant Layouts\" add-on "
-"versions higher than 2.14.1."
+"The Resource Links feature is supported in newer \"KB - Elegant Layouts\" "
+"add-on."
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:1283
-#, php-format
 msgid ""
-"Please %supgrade%s your \"KB - Elegant Layouts\" add-on to unlock this "
-"feature."
+"Please upgrade your \"KB - Elegant Layouts\" add-on to unlock this feature."
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:1292
@@ -6969,13 +6904,13 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:1602
 #: includes/admin/pages/class-epkb-config-settings-page.php:2367
-#: includes/admin/pages/class-epkb-config-settings-page.php:3295
+#: includes/admin/pages/class-epkb-config-settings-page.php:3299
 msgid "Template Setup"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:1631
-#: includes/admin/pages/class-epkb-config-settings-page.php:2466
-#: includes/admin/pages/class-epkb-config-settings-page.php:3486
+#: includes/admin/pages/class-epkb-config-settings-page.php:2468
+#: includes/admin/pages/class-epkb-config-settings-page.php:3492
 msgid "List of Articles"
 msgstr ""
 
@@ -7016,8 +6951,8 @@ msgid "FAQs Feature"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:1928
-#: includes/admin/pages/class-epkb-config-settings-page.php:2483
-#: includes/admin/pages/class-epkb-config-settings-page.php:3583
+#: includes/admin/pages/class-epkb-config-settings-page.php:2485
+#: includes/admin/pages/class-epkb-config-settings-page.php:3589
 msgid "Sidebar Layout Introduction Page"
 msgstr ""
 
@@ -7114,19 +7049,19 @@ msgid ""
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:2299
-#: includes/admin/pages/class-epkb-config-settings-page.php:2555
-#: includes/admin/pages/class-epkb-config-settings-page.php:3540
-#: includes/admin/pages/class-epkb-config-settings-page.php:3687
+#: includes/admin/pages/class-epkb-config-settings-page.php:2557
+#: includes/admin/pages/class-epkb-config-settings-page.php:3546
+#: includes/admin/pages/class-epkb-config-settings-page.php:3693
 msgid "Search Box Designs"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:2305
-#: includes/admin/pages/class-epkb-config-settings-page.php:3547
+#: includes/admin/pages/class-epkb-config-settings-page.php:3553
 msgid "Main Page Search Box"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:2351
-#: includes/admin/pages/class-epkb-config-settings-page.php:3569
+#: includes/admin/pages/class-epkb-config-settings-page.php:3575
 msgid "Search Results Page"
 msgstr ""
 
@@ -7136,104 +7071,104 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2403
-#: includes/admin/pages/class-epkb-config-settings-page.php:3417
+#: includes/admin/pages/class-epkb-config-settings-page.php:2405
+#: includes/admin/pages/class-epkb-config-settings-page.php:3423
 msgid "Using Tabs Layout"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2407
-#: includes/admin/pages/class-epkb-config-settings-page.php:3422
+#: includes/admin/pages/class-epkb-config-settings-page.php:2409
+#: includes/admin/pages/class-epkb-config-settings-page.php:3428
 msgid "Categories Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2420
+#: includes/admin/pages/class-epkb-config-settings-page.php:2422
 msgid "Categories additional styles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2450
-#: includes/admin/pages/class-epkb-config-settings-page.php:3470
+#: includes/admin/pages/class-epkb-config-settings-page.php:2452
+#: includes/admin/pages/class-epkb-config-settings-page.php:3476
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:125
 msgid "Category Icons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2461
+#: includes/admin/pages/class-epkb-config-settings-page.php:2463
 msgid "Set Image and Font Icons for Categories"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2516
-#: includes/admin/pages/class-epkb-config-settings-page.php:2530
-#: includes/admin/pages/class-epkb-config-settings-page.php:2542
-#: includes/admin/pages/class-epkb-config-settings-page.php:2561
-#: includes/admin/pages/class-epkb-config-settings-page.php:3638
-#: includes/admin/pages/class-epkb-config-settings-page.php:3693
+#: includes/admin/pages/class-epkb-config-settings-page.php:2518
+#: includes/admin/pages/class-epkb-config-settings-page.php:2532
+#: includes/admin/pages/class-epkb-config-settings-page.php:2544
+#: includes/admin/pages/class-epkb-config-settings-page.php:2563
+#: includes/admin/pages/class-epkb-config-settings-page.php:3644
+#: includes/admin/pages/class-epkb-config-settings-page.php:3699
 msgid "Article Page Search Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2585
+#: includes/admin/pages/class-epkb-config-settings-page.php:2587
 msgid "Article Page Search Labels Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2598
+#: includes/admin/pages/class-epkb-config-settings-page.php:2600
 msgid "Article Page Search Style Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2628
+#: includes/admin/pages/class-epkb-config-settings-page.php:2630
 msgid "Getting Started"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2629
+#: includes/admin/pages/class-epkb-config-settings-page.php:2631
 msgid "Set up your Knowledge Base name, url, and design"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2635
+#: includes/admin/pages/class-epkb-config-settings-page.php:2637
 #: includes/admin/pages/class-epkb-need-help-page.php:184
 msgid "Explore Features"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2636
+#: includes/admin/pages/class-epkb-config-settings-page.php:2638
 msgid "Get familiar with features and how they function"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2642
+#: includes/admin/pages/class-epkb-config-settings-page.php:2644
 msgid "Online Documentation"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2643
+#: includes/admin/pages/class-epkb-config-settings-page.php:2645
 msgid "Read our detailed documentation about all KB features."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2649
+#: includes/admin/pages/class-epkb-config-settings-page.php:2651
 #: includes/admin/pages/class-epkb-need-help-contact-us.php:26
 msgid "Contact Us"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2650
+#: includes/admin/pages/class-epkb-config-settings-page.php:2652
 msgid "Support question for something that is not working correctly"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2652
+#: includes/admin/pages/class-epkb-config-settings-page.php:2654
 #: includes/admin/pages/class-epkb-need-help-contact-us.php:88
 msgid "Ask a Question"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2709
+#: includes/admin/pages/class-epkb-config-settings-page.php:2711
 msgid "Bottom Rating Statistics"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2746
+#: includes/admin/pages/class-epkb-config-settings-page.php:2748
 msgid ""
 "The width of the sidebar is determined by the Row Width setting. If the "
 "Row Width is set to 100%, the Sidebar Width can be assigned, for example, "
-"as 30% (Large), leaving the remaining 70% for the rest of the row. "
+"as 30% (Large), leaving the remaining 70% for the rest of the row."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2752
+#: includes/admin/pages/class-epkb-config-settings-page.php:2754
 msgid ""
 "If the sidebar is enabled and it causes the categories to become visually "
 "compressed, consider setting the number of columns to two."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2759
+#: includes/admin/pages/class-epkb-config-settings-page.php:2761
 msgid ""
 "The article width varies based on the chosen template. With the KB "
 "template, the article can expand to the browser's maximum width if "
@@ -7241,64 +7176,64 @@ msgid ""
 "by the theme’s overall settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2839
+#: includes/admin/pages/class-epkb-config-settings-page.php:2841
 msgid "Leave empty to hide the title."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2843
+#: includes/admin/pages/class-epkb-config-settings-page.php:2845
 msgid ""
 "When the toggle is ON, then Article Page Search uses Main Page Search "
 "settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2847
+#: includes/admin/pages/class-epkb-config-settings-page.php:2849
 #, php-format
 msgid "To change FAQ Title %sclick here%s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2851
+#: includes/admin/pages/class-epkb-config-settings-page.php:2853
 #, php-format
 msgid "To change Articles List Title %sclick here%s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2861
+#: includes/admin/pages/class-epkb-config-settings-page.php:2863
 msgid ""
 "Setting the row width will only set the width of its contents. However, if "
 "your theme has a smaller width, it will adhere to that limit, as explained "
 "in the following article."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2869
+#: includes/admin/pages/class-epkb-config-settings-page.php:2871
 msgid ""
 "Set the overall font family. Additional adjustments to font size and "
 "weight are described in our article."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2887
-#: includes/admin/pages/class-epkb-config-settings-page.php:2917
+#: includes/admin/pages/class-epkb-config-settings-page.php:2891
+#: includes/admin/pages/class-epkb-config-settings-page.php:2921
 msgid "After you switch templates, see how it looks on the frontend"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2893
-#: includes/admin/pages/class-epkb-config-settings-page.php:2923
+#: includes/admin/pages/class-epkb-config-settings-page.php:2897
+#: includes/admin/pages/class-epkb-config-settings-page.php:2927
 msgid ""
 "The difference between KB Template and Current Theme Template is explained "
 "in detail"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2898
+#: includes/admin/pages/class-epkb-config-settings-page.php:2902
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:203
 msgid "Current Theme Template vs KB Template"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2900
+#: includes/admin/pages/class-epkb-config-settings-page.php:2904
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:198
 msgid ""
 "Since you currently have the \"Current Theme\" option selected, the HTML "
 "and CSS output is entirely controlled by your active WordPress theme."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2901
+#: includes/admin/pages/class-epkb-config-settings-page.php:2905
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:199
 msgid ""
 "The Knowledge Base (KB) no longer handles any visual display or styling "
@@ -7306,7 +7241,7 @@ msgid ""
 "adjust your theme settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2902
+#: includes/admin/pages/class-epkb-config-settings-page.php:2906
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:200
 msgid ""
 "However, if your theme lacks features for customizing this type of page, "
@@ -7314,81 +7249,81 @@ msgid ""
 "adjustments through the KB settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2903
+#: includes/admin/pages/class-epkb-config-settings-page.php:2907
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:202
 msgid ""
 "For more details, please refer to this article on the differences between "
 "the KB template and the Current Theme template:"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2911
+#: includes/admin/pages/class-epkb-config-settings-page.php:2915
 msgid "Template to use for KB pages"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2911
+#: includes/admin/pages/class-epkb-config-settings-page.php:2915
 msgid "Template to use for KB Main Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2931
+#: includes/admin/pages/class-epkb-config-settings-page.php:2935
 #, php-format
 msgid "Set Image and Font Icons for Categories. %sLearn More%s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3002
+#: includes/admin/pages/class-epkb-config-settings-page.php:3006
 msgid "Learn more about these settings in the following articles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3013
+#: includes/admin/pages/class-epkb-config-settings-page.php:3017
 msgid "For all other Articles Browser Our Documentation."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3286
-#: includes/admin/pages/class-epkb-config-settings-page.php:3324
-#: includes/admin/pages/class-epkb-config-settings-page.php:3345
-#: includes/admin/pages/class-epkb-config-settings-page.php:3366
-#: includes/admin/pages/class-epkb-config-settings-page.php:3387
+#: includes/admin/pages/class-epkb-config-settings-page.php:3290
+#: includes/admin/pages/class-epkb-config-settings-page.php:3328
+#: includes/admin/pages/class-epkb-config-settings-page.php:3349
+#: includes/admin/pages/class-epkb-config-settings-page.php:3370
+#: includes/admin/pages/class-epkb-config-settings-page.php:3391
 msgid "Feature Selection"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3515
+#: includes/admin/pages/class-epkb-config-settings-page.php:3521
 msgid "Content Above the Resources"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3519
+#: includes/admin/pages/class-epkb-config-settings-page.php:3525
 msgid "All Resources - Boxes Styling"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3523
+#: includes/admin/pages/class-epkb-config-settings-page.php:3529
 msgid "All Resources - Icons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3527
+#: includes/admin/pages/class-epkb-config-settings-page.php:3533
 msgid "All Resources - Buttons / Links"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3531
+#: includes/admin/pages/class-epkb-config-settings-page.php:3537
 msgid "Resource Link Individual Settings"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3554
-#: includes/admin/pages/class-epkb-config-settings-page.php:3723
+#: includes/admin/pages/class-epkb-config-settings-page.php:3560
+#: includes/admin/pages/class-epkb-config-settings-page.php:3729
 msgid "Search Labels"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3561
-#: includes/admin/pages/class-epkb-config-settings-page.php:3736
+#: includes/admin/pages/class-epkb-config-settings-page.php:3567
+#: includes/admin/pages/class-epkb-config-settings-page.php:3742
 msgid "Search Style"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3577
+#: includes/admin/pages/class-epkb-config-settings-page.php:3583
 msgid "Modular Sidebar"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:4270
+#: includes/admin/pages/class-epkb-config-settings-page.php:4276
 msgid "Padding Top ( px )"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:4277
+#: includes/admin/pages/class-epkb-config-settings-page.php:4283
 msgid "Padding Bottom ( px )"
 msgstr ""
 
@@ -7691,10 +7626,6 @@ msgstr ""
 msgid "Reading articles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-tools-page.php:774
-msgid "< Back"
-msgstr ""
-
 #: includes/admin/pages/class-epkb-config-tools-page.php:777
 msgid "Exit"
 msgstr ""
@@ -7804,7 +7735,7 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:1092
 #: includes/admin/pages/class-epkb-config-tools-page.php:1313
-msgid "Switching debug... "
+msgid "Switching debug"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:1114
@@ -8029,9 +7960,7 @@ msgid "Multi-language Support"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-need-help-features.php:323
-msgid ""
-"Change or translate any text label on the front-end using any of 12 "
-"translated languages."
+msgid "Change or translate any text label on the front-end."
 msgstr ""
 
 #: includes/admin/pages/class-epkb-need-help-features.php:332
@@ -8050,12 +7979,6 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-need-help-features.php:343
 msgid "Control the article page with WordPress hooks."
-msgstr ""
-
-#: includes/admin/pages/class-epkb-need-help-features.php:352
-#: includes/admin/pages/class-epkb-need-help-features.php:1065
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:201
-msgid "Table of Contents (TOC)"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-need-help-features.php:353
@@ -8296,7 +8219,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/pages/class-epkb-need-help-features.php:954
-msgid "Creative Add-ons Plugin "
+msgid "Creative Add-ons Plugin"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-need-help-features.php:960
@@ -8471,6 +8394,7 @@ msgid "Explore Add-ons"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-need-help-page.php:199
+#: includes/features/kbs/class-epkb-kb-demo-data.php:450
 msgid "Welcome to Echo Knowledge Base!"
 msgstr ""
 
@@ -8704,11 +8628,11 @@ msgid "Page width"
 msgstr ""
 
 #: includes/admin/settings/class-epkb-article-page-visual-helper.php:271
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:284
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:285
 #: includes/admin/settings/class-epkb-category-page-visual-helper.php:213
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:227
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:228
 #: includes/admin/settings/class-epkb-main-page-visual-helper.php:261
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:281
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:282
 msgid "Actual width"
 msgstr ""
 
@@ -8724,46 +8648,44 @@ msgstr ""
 msgid "of the page."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:281
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:282
 msgid "Width of Left Sidebar + Content + Right Sidebar"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:288
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:289
 msgid "KB setting for Article Width"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:289
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:232
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:286
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:290
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:233
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:287
 msgid "of the total page width."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:295
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:238
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:298
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:297
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:240
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:300
 msgid "Troubleshooting"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:296
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:239
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:298
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:241
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:301
 msgid ""
 "If the value you set in the KB settings does not match the actual value, "
-"it may be because your theme or page\n"
-"\t\t\t\t\t\t\t\t\tbuilder is limiting the overall width. In such cases, "
-"the KB settings cannot exceed the maximum width allowed\n"
-"\t\t\t\t\t\t\t\t\tby your theme or page builder. Try the following"
+"it may be because your theme or page builder is limiting the overall "
+"width. In such cases, the KB settings cannot exceed the maximum width "
+"allowed by your theme or page builder. Try the following"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:300
-#, php-format
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:301
 msgid ""
 "Article Page width is controlled by search box width, sidebar widths and "
-"other settings. %s"
+"other settings."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:304
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:247
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:307
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:305
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:308
 #, php-format
 msgid ""
 "You are currently using the Current theme template. Check your theme "
@@ -8812,19 +8734,24 @@ msgstr ""
 msgid "Current Theme Settings"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:224
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:225
 msgid "Width of left sidebar + content + right sidebar"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:231
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:232
 msgid "KB setting for Archive Width"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-category-page-visual-helper.php:243
-#, php-format
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:244
 msgid ""
 "Category Archive Page width is controlled by search box width, sidebar "
-"widths and other settings. %s"
+"widths and other settings."
+msgstr ""
+
+#: includes/admin/settings/class-epkb-category-page-visual-helper.php:248
+msgid ""
+"You are currently using the Current theme template. Check your theme "
+"settings or switch to the KB template."
 msgstr ""
 
 #: includes/admin/settings/class-epkb-debug-controller.php:109
@@ -8910,24 +8837,15 @@ msgid ""
 "their colors and styles."
 msgstr ""
 
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:277
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:278
 msgid "Categories and Articles Width"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:285
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:286
 msgid "KB setting for categories list width"
 msgstr ""
 
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:299
-msgid ""
-"If the value you set in the KB settings does not match the actual value, "
-"it may be because your theme or page\n"
-"\t\t\t\t\t\t\t\tbuilder is limiting the overall width. In such cases, the "
-"KB settings cannot exceed the maximum width allowed\n"
-"\t\t\t\t\t\t\t\tby your theme or page builder. Try the following"
-msgstr ""
-
-#: includes/admin/settings/class-epkb-main-page-visual-helper.php:303
+#: includes/admin/settings/class-epkb-main-page-visual-helper.php:304
 #, php-format
 msgid ""
 "If the KB Shortcode is inserted inside your page builder then you will "
@@ -8975,11 +8893,21 @@ msgid "Choose one of the other pages with KB shortcode:"
 msgstr ""
 
 #: includes/admin/wizard/class-epkb-kb-wizard-global.php:195
-msgid "kb-category"
+#: includes/features/articles/class-epkb-articles-cpt-setup.php:83
+#: includes/features/layouts/class-epkb-layout-article-sidebar.php:153
+#: includes/features/layouts/class-epkb-layout-basic.php:249
+#: includes/features/layouts/class-epkb-layout-basic.php:297
+#: includes/features/layouts/class-epkb-layout-categories.php:264
+#: includes/features/layouts/class-epkb-layout-tabs.php:481
+#: includes/system/class-epkb-reset.php:155
+msgctxt "taxonomy singular name"
+msgid "Category"
 msgstr ""
 
 #: includes/admin/wizard/class-epkb-kb-wizard-global.php:201
-msgid "kb-article"
+#: includes/features/articles/class-epkb-articles-cpt-setup.php:158
+msgctxt "post type singular name"
+msgid "Article"
 msgstr ""
 
 #: includes/admin/wizard/class-epkb-kb-wizard-global.php:205
@@ -9742,7 +9670,7 @@ msgid "PRO Feature"
 msgstr ""
 
 #: includes/class-epkb-html-forms.php:305
-msgid ". Database Error."
+msgid "Database Error"
 msgstr ""
 
 #: includes/class-epkb-html-forms.php:369
@@ -9765,16 +9693,16 @@ msgstr ""
 #: includes/class-epkb-input-filter.php:224
 #: includes/class-epkb-input-filter.php:418
 #, php-format
-msgid "The value is too long. Remove %d character."
-msgid_plural "The value is too long. Remove %d characters."
+msgid "The value is too long. Remove %s character."
+msgid_plural "The value is too long. Remove %s characters."
 msgstr[0] ""
 msgstr[1] ""
 
 #: includes/class-epkb-input-filter.php:232
 #: includes/class-epkb-input-filter.php:425
 #, php-format
-msgid "The value is too short. Add at least %d character."
-msgid_plural "The value is too short. Add at least %d characters."
+msgid "The value is too short. Add at least %s character."
+msgid_plural "The value is too short. Add at least %s characters."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -9931,17 +9859,6 @@ msgctxt "taxonomy general name"
 msgid "Categories"
 msgstr ""
 
-#: includes/features/articles/class-epkb-articles-cpt-setup.php:83
-#: includes/features/layouts/class-epkb-layout-article-sidebar.php:153
-#: includes/features/layouts/class-epkb-layout-basic.php:249
-#: includes/features/layouts/class-epkb-layout-basic.php:297
-#: includes/features/layouts/class-epkb-layout-categories.php:264
-#: includes/features/layouts/class-epkb-layout-tabs.php:418
-#: includes/system/class-epkb-reset.php:155
-msgctxt "taxonomy singular name"
-msgid "Category"
-msgstr ""
-
 #: includes/features/articles/class-epkb-articles-cpt-setup.php:84
 msgid "Search Categories"
 msgstr ""
@@ -10031,11 +9948,6 @@ msgstr ""
 #: includes/features/articles/class-epkb-articles-cpt-setup.php:142
 msgctxt "taxonomy singular name"
 msgid "tag"
-msgstr ""
-
-#: includes/features/articles/class-epkb-articles-cpt-setup.php:158
-msgctxt "post type singular name"
-msgid "Article"
 msgstr ""
 
 #: includes/features/articles/class-epkb-articles-cpt-setup.php:159
@@ -10391,38 +10303,188 @@ msgstr ""
 msgid "This is a demo article excerpt."
 msgstr ""
 
-#: includes/features/kbs/class-epkb-kb-demo-data.php:516
-msgid "Here's the process to submit a purchase order:"
+#: includes/features/kbs/class-epkb-kb-demo-data.php:451
+msgid ""
+"We're thrilled that you've chosen our plugin to enhance your Knowledge "
+"Base. We're here to assist you in making your Knowledge Base exceptional. "
+"If you need any help or have questions, just let us know!"
 msgstr ""
 
-#: includes/features/kbs/class-epkb-kb-demo-data.php:518
-msgid "Fill out the purchase order form."
+#: includes/features/kbs/class-epkb-kb-demo-data.php:453
+msgid "Create Articles Just Like You Create Posts"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:454
+msgid "Add instructional videos or product demos. Example of embedded video:"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:457
+msgid "Enhance your articles with visuals. Example of an image:"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:458
+msgid "Sample Image"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:460
+msgid ""
+"Effortlessly embed PDFs and other media using your page builder or blocks."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:462
+msgid "Main Features"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:463
+msgid ""
+"Our plugin includes the following features to make your Knowledge Base "
+"stand out:"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:465
+msgid "Fast search bar with listed results"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:466
+msgid "Five levels of hierarchical documentation"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:467
+msgid "Article view counter with Popular and Recent Articles"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:468
+msgid "Frequently Asked Questions (FAQ) Module and shortcode."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:469
+msgid "Customizable Category Archive Page"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:470
+msgid "AI Content Writing"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:471
+msgid ""
+"Organize articles and categories alphabetically, chronologically, or in "
+"any custom order with drag and drop."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:472
+msgid "Optimized for the best SEO results to boost online visibility"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:473
+msgid "Analytics to track your Knowledge Base usage"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:474
+msgid ""
+"Supports RTL languages, WCAG accessibility standards, and works with WPML "
+"and Polylang"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:477
+msgid "PRO Features"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:478
+msgid "Expand your Knowledge Base using our cost-effective add-ons:"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:480
+msgid ""
+"Control access and permissions based on groups, WordPress users and roles, "
+"and custom roles."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:481
+msgid ""
+"Manage public and private articles and control who can read, write, and "
+"edit articles."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:482
+msgid ""
+"Create unlimited Knowledge Bases with separate articles, categories, tags, "
+"and more."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:483
+msgid "Choose from Sidebar and Grid layouts."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:484
+msgid "Import and export articles and categories using CSV and XML"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:485
+msgid "Add article voting, a feedback form, and learn from analytics."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:486
+msgid ""
+"More widgets and shortcodes for categories, popular articles, and the "
+"search bar."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:487
+msgid ""
+"Replace articles with links to PDFs, external docs, video links, and more."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:488
+msgid ""
+"Utilize Advanced search analytics to identify popular and empty searches."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:491
+msgid "Need Help or Looking for a Feature?"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:494
+#, php-format
+msgid "Please don't hesitate to contact us %shere%s."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:499
+msgid ""
+"We're always eager to help and are open to suggestions for new features."
 msgstr ""
 
 #: includes/features/kbs/class-epkb-kb-demo-data.php:519
+msgid "Here's the process to submit a purchase order:"
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:521
+msgid "Fill out the purchase order form."
+msgstr ""
+
+#: includes/features/kbs/class-epkb-kb-demo-data.php:522
 msgid "Obtain the necessary approvals from your manager or department head."
 msgstr ""
 
-#: includes/features/kbs/class-epkb-kb-demo-data.php:520
+#: includes/features/kbs/class-epkb-kb-demo-data.php:523
 msgid "Submit the approved purchase order to the procurement team."
 msgstr ""
 
-#: includes/features/kbs/class-epkb-kb-demo-data.php:524
+#: includes/features/kbs/class-epkb-kb-demo-data.php:527
 msgid ""
 "We have a library of customer presentation templates within the Sales & "
 "Marketing section of our knowledge base."
 msgstr ""
 
-#: includes/features/kbs/class-epkb-kb-demo-data.php:528
+#: includes/features/kbs/class-epkb-kb-demo-data.php:531
 msgid "Access our Time Off Request form."
 msgstr ""
 
-#: includes/features/kbs/class-epkb-kb-demo-data.php:529
+#: includes/features/kbs/class-epkb-kb-demo-data.php:532
 msgid ""
 "Fill out the form, including your desired dates and any relevant notes."
 msgstr ""
 
-#: includes/features/kbs/class-epkb-kb-demo-data.php:530
+#: includes/features/kbs/class-epkb-kb-demo-data.php:533
 msgid "Submit the form to your manager for approval."
 msgstr ""
 
@@ -10725,19 +10787,19 @@ msgstr ""
 msgid "No Articles"
 msgstr ""
 
-#: includes/system/class-epkb-upgrades.php:560
+#: includes/system/class-epkb-upgrades.php:568
 msgid ""
 "We highly recommend you back up your site before upgrading. Next, run the "
 "update in a staging environment."
 msgstr ""
 
-#: includes/system/class-epkb-upgrades.php:561
+#: includes/system/class-epkb-upgrades.php:569
 msgid ""
 "After you run the update, clear your browser cache, hosting cache, and "
 "caching plugins."
 msgstr ""
 
-#: includes/system/class-epkb-upgrades.php:562
+#: includes/system/class-epkb-upgrades.php:570
 msgid ""
 "The latest update includes some substantial changes across different areas "
 "of the plugin"
@@ -10748,11 +10810,11 @@ msgid "What's New"
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:62
-msgid "Sending feedback ..."
+msgid "Sending feedback"
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:63
-msgid "Changing debug ..."
+msgid "Changing debug"
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:64
@@ -10786,7 +10848,7 @@ msgid "Articles converted"
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:73
-msgid "Converting articles, please wait..."
+msgid "Converting articles, please wait"
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:74
@@ -11077,7 +11139,7 @@ msgid "KB Home"
 msgstr ""
 
 #: templates/feature-breadcrumb.php:114
-msgid "Link "
+msgid "Link"
 msgstr ""
 
 #: templates/feature-comments.php:19

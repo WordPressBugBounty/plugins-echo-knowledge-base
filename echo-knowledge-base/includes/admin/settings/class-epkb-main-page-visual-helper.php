@@ -22,7 +22,7 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 			return;
 		}
 
-		if ( ! is_user_logged_in() || ! EPKB_Admin_UI_Access::is_user_admin_editor() ) {
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
 			return;
 		}
 
@@ -264,7 +264,8 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 			<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
 				<?php echo esc_html__( 'KB setting for Search Width', 'echo-knowledge-base' ) . ': ' . esc_attr( $kb_config[ $search_row_width_key ] . $kb_config[ $search_row_width_key . '_units' ] ) .
 							( $kb_config[ $search_row_width_key . '_units' ] == '%' ? ' ' . esc_html__( 'of the page.', 'echo-knowledge-base' ) : '' ); ?>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__main-page__module--search__module-settings' ) ); ?>" target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
+						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__main-page__module--search__module-settings' ) ); ?>" target="_blank"
+						   class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
 			</div>	<?php
 			/* if ( $search_row_width_units == '%' ) { ?>
 				<div class="epkb-vshelp-accordion-body-content__note"><?php
@@ -284,7 +285,8 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 			<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
 				<?php echo esc_html__( 'KB setting for categories list width', 'echo-knowledge-base' ); echo ': ' . esc_attr( $kb_config[ $category_row_width_key ] . $kb_config[ $category_row_width_key . '_units' ] ) .
 							( $kb_config[ $category_row_width_key . '_units' ] == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__main-page__module--categories_articles__module-settings' ) ); ?>" target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
+						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__main-page__module--categories_articles__module-settings' ) ); ?>" target="_blank"
+						   class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
 					   <?php
 			/* if ( $category_row_width_units == '%' ) { ?>
 				<div class="epkb-vshelp-accordion-body-content__note"><?php
@@ -296,9 +298,8 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 		}	?>
 
 		<h5><strong><?php esc_html_e( 'Troubleshooting', 'echo-knowledge-base' ); ?></strong></h5>
-		<p><?php echo esc_html__( 'If the value you set in the KB settings does not match the actual value, it may be because your theme or page
-								builder is limiting the overall width. In such cases, the KB settings cannot exceed the maximum width allowed
-								by your theme or page builder. Try the following', 'echo-knowledge-base' ) . ':'; ?></p>
+		<p><?php echo esc_html__( 'If the value you set in the KB settings does not match the actual value, it may be because your theme or page builder is limiting the overall width. In such cases, the KB settings cannot exceed the maximum width allowed ' .
+								'by your theme or page builder. Try the following', 'echo-knowledge-base' ) . ':'; ?></p>
 		<ul>
 			<li><?php echo sprintf( esc_html__( 'If the KB Shortcode is inserted inside your page builder then you will need to check the section width of that page builder. %s', 'echo-knowledge-base' ),
 						'<a href="https://www.echoknowledgebase.com/documentation/main-page-width-and-page-builders/" target="_blank" rel="nofollow">' . esc_html__( 'Learn more', 'echo-knowledge-base' ) . '</a> <span class="epkbfa epkbfa-external-link"> </span>' ); ?></li><?php

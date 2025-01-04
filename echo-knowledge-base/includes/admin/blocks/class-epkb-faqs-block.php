@@ -7,7 +7,7 @@ final class EPKB_FAQs_Block extends EPKB_Abstract_Block {
 	protected $block_var_name = 'faqs';
 	protected $block_title = 'KB FAQs';
 	protected $icon = 'editor-table';
-	protected $keywords = ['knowledge base','faqs','questions','frequently asked questions'];
+	protected $keywords = ['knowledge base', 'faqs', 'questions', 'frequently asked questions'];	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
 
 	public function __construct( $init_hooks = true ) {
 		parent::__construct( $init_hooks );
@@ -253,7 +253,7 @@ final class EPKB_FAQs_Block extends EPKB_Abstract_Block {
 							'block_max_width' => EPKB_Blocks_Settings::get_block_max_width_setting(),
 							'faq_presets' => array(
 								'setting_type' => 'presets_dropdown',
-								'label' => __( 'Apply Design', 'echo-knowledge-base' ),
+								'label' => esc_html__( 'Apply Design', 'echo-knowledge-base' ),
 								'presets' => self::get_all_preset_settings(),
 								'default' => '0',
 							),

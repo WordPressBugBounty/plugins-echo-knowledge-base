@@ -7,7 +7,7 @@ final class EPKB_Tabs_Layout_Block extends EPKB_Abstract_Block {
 	protected $block_var_name = 'tabs_layout';
 	protected $block_title = 'KB Tabs Layout';
 	protected $icon = 'editor-table';
-	protected $keywords = ['knowledge base','layout','articles','categories'];
+	protected $keywords = ['knowledge base', 'layout', 'articles', 'categories'];	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
 
 	public function __construct( $init_hooks = true ) {
 		parent::__construct( $init_hooks );
@@ -206,6 +206,22 @@ final class EPKB_Tabs_Layout_Block extends EPKB_Abstract_Block {
 						),
 					),
 
+					// GROUP: Tab Navigation
+					'tab-navigation' => array(
+						'title' => esc_html__( 'Tab Navigation', 'echo-knowledge-base' ),
+						'fields' => array(
+							'tab_nav_overflow_mode' => array(
+								'setting_type' => 'select_buttons_string',
+								'label' => esc_html__( 'Overflow Mode', 'echo-knowledge-base' ),
+							),
+							'tab_nav_max_tabs_per_row' => array(
+								'setting_type' => 'number',
+								'min' => 1,
+								'max' => 10,
+							),
+						),
+					),
+
 					// GROUP: Category Box
 					'category-box' => array(
 						'title' => esc_html__( 'Category Box', 'echo-knowledge-base' ),
@@ -327,7 +343,7 @@ final class EPKB_Tabs_Layout_Block extends EPKB_Abstract_Block {
 							'block_max_width' => EPKB_Blocks_Settings::get_block_max_width_setting(),
 							'block_presets' => array(
 								'setting_type' => 'presets_dropdown',
-								'label' => __( 'Apply Preset', 'echo-knowledge-base' ),
+								'label' => esc_html__( 'Apply Preset', 'echo-knowledge-base' ),
 								'presets' => EPKB_Blocks_Settings::get_all_preset_settings( self::EPKB_BLOCK_NAME, EPKB_Layout::TABS_LAYOUT ),
 								'default' => 'current',
 							),

@@ -59,8 +59,8 @@ function epkb_load_admin_plugin_pages_resources() {
 		'reload_try_again'              => esc_html__( 'Please reload the page and try again.', 'echo-knowledge-base' ),
 		'save_config'                   => esc_html__( 'Saving configuration', 'echo-knowledge-base' ),
 		'input_required'                => esc_html__( 'Input is required', 'echo-knowledge-base' ),
-		'sending_feedback'              => esc_html__('Sending feedback ...', 'echo-knowledge-base' ),
-		'changing_debug'                => esc_html__('Changing debug ...', 'echo-knowledge-base' ),
+		'sending_feedback'              => esc_html__('Sending feedback', 'echo-knowledge-base' ) . '...',
+		'changing_debug'                => esc_html__('Changing debug', 'echo-knowledge-base' ) . '...',
 		'help_text_coming'              => esc_html__('Help text is coming soon.', 'echo-knowledge-base' ),
 		'nonce'                         => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
 		'msg_reading_posts'             => esc_html__('Reading posts', 'echo-knowledge-base') . '...',
@@ -70,7 +70,7 @@ function epkb_load_admin_plugin_pages_resources() {
 		'msg_nothing_to_convert'        => esc_html__('No posts to convert.', 'echo-knowledge-base'),
 		'msg_select_article'            => esc_html__('Please select posts to convert.', 'echo-knowledge-base'),
 		'msg_articles_converted'        => esc_html__('Articles converted', 'echo-knowledge-base'),
-		'msg_converting'                => esc_html__('Converting articles, please wait...', 'echo-knowledge-base'),
+		'msg_converting'                => esc_html__('Converting articles, please wait', 'echo-knowledge-base') . '...',
 		'on_kb_main_page_layout'        => esc_html__( 'First, the selected layout will be saved.', 'echo-knowledge-base' ) .
 			' ' . esc_html__( 'Then, the page will reload and you can see the layout change on the KB frontend.', 'echo-knowledge-base' ),
 		'on_kb_templates'               => esc_html__( 'First, the KB Base Template will be enabled.', 'echo-knowledge-base' ) .

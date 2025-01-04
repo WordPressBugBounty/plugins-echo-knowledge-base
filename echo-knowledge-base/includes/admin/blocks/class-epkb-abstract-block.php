@@ -12,6 +12,7 @@ abstract class EPKB_Abstract_Block {
 	// each block should override the properties below
 	protected $block_name = '';
 	protected $block_var_name = '';
+	protected $keywords = array();	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
 
 	public function __construct( $init_hooks = true ) {
 
@@ -46,7 +47,7 @@ abstract class EPKB_Abstract_Block {
 				'category' => 'echo-knowledge-base',
 				'icon' => $this->icon,
 				'description' => '',
-				'keywords' => ['search', 'find', 'query', 'knowledge base'],   // TODO translation?
+				'keywords' => $this->keywords,	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
 				'attributes' => $this->get_attribute_types_and_defaults(),
 				'supports' => ['html' => false, 'align '=> true, 'reusable' => false, 'customClassName' => false ],
 				'editor_script_handles' => [ $this->get_the_block_script_handle_for_editor_only() ],

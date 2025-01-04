@@ -179,8 +179,8 @@ function epkb_add_delete_kb_page_warning( $post_id ) {
 	$main_page_slug = EPKB_Core_Utilities::get_main_page_slug( $post_id );
 	
 	if ( $kb_articles_common_path == $main_page_slug ) {
-		EPKB_Admin_Notices::add_one_time_notice( 'warning', sprintf( esc_html__( 'We detected that you deleted KB Main Page "%s". If you did this by accident you can restore here: ', 'echo-knowledge-base' ), $post->post_title ) .
-		                                                    ' <a href="' . esc_url( admin_url( 'edit.php?post_status=trash&post_type=page' ) ) . '">' . esc_html__( 'Restore', 'echo-knowledge-base' ) . '</a> ' );
+		EPKB_Admin_Notices::add_one_time_notice( 'warning', esc_html__( 'We detected that you deleted KB Main Page', 'echo-knowledge-base' ) . $post->post_title . esc_html__( 'If you did this by accident you can restore here', 'echo-knowledge-base' ) .
+		                                                    ': <a href="' . esc_url( admin_url( 'edit.php?post_status=trash&post_type=page' ) ) . '">' . esc_html__( 'Restore', 'echo-knowledge-base' ) . '</a> ' );
 	}
 }
 add_action( 'wp_trash_post', 'epkb_add_delete_kb_page_warning', 15, 2 ); 
@@ -199,7 +199,7 @@ function epkb_add_post_state( $post_states, $post ) {
 	}
 
 	if ( in_array( $post->ID, array_keys( $kb_config['kb_main_pages'] ) ) ) {
-		$post_states[] = __( 'Knowledge Base', 'echo-knowledge-base' ) . ' #1';
+		$post_states[] = esc_html__( 'Knowledge Base', 'echo-knowledge-base' ) . ' #1';
 	}
 
 	return $post_states;
@@ -239,7 +239,7 @@ function epkb_crel_notice() {
 	}
 
 	$link = '<a href="' . esc_url( 'https://wordpress.org/plugins/creative-addons-for-elementor/' ) . '" target="_blank">' . esc_html__( 'Free Download', 'echo-knowledge-base' ) . '</a>';
-	$message = esc_html__( 'Hey, did you know that makers of the Echo Knowledge Page plugin developed free Elementor widgets to help you create amazing documentation? See more details about our Creative Addons here: ' , 'echo-knowledge-base' ) . ' ' . $link;
+	$message = esc_html__( 'Hey, did you know that makers of the Echo Knowledge Page plugin developed free Elementor widgets to help you create amazing documentation? See more details about our Creative Addons here' , 'echo-knowledge-base' ) . ': ' . $link;
 
 	EPKB_Admin_Notices::add_ongoing_notice( 'large-info',  'epkb_crel_notice',
 		$message,

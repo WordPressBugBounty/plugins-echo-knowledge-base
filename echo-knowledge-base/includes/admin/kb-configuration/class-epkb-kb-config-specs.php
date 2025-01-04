@@ -171,9 +171,9 @@ class EPKB_KB_Config_Specs {
 					'name'        => 'kb_sidebar_location',
 					'type'        => EPKB_Input_Filter::SELECTION,
 					'options'     => array(
-							'left-sidebar'   => is_rtl() ? _x( 'Right Sidebar', 'echo-knowledge-base' ) : _x( 'Left Sidebar', 'echo-knowledge-base' ),
-							'right-sidebar'  => is_rtl() ? _x( 'Left Sidebar', 'echo-knowledge-base' ) : _x( 'Right Sidebar', 'echo-knowledge-base' ),
-							'no-sidebar'     => _x( 'No Sidebar', 'echo-knowledge-base' ) ),
+							'left-sidebar'   => is_rtl() ? esc_html__( 'Right Sidebar', 'echo-knowledge-base' ) : esc_html__( 'Left Sidebar', 'echo-knowledge-base' ),
+							'right-sidebar'  => is_rtl() ? esc_html__( 'Left Sidebar', 'echo-knowledge-base' ) : esc_html__( 'Right Sidebar', 'echo-knowledge-base' ),
+							'no-sidebar'     => esc_html__( 'No Sidebar', 'echo-knowledge-base' ) ),
 					'default'     => 'no-sidebar'
 			),
 			'article_nav_sidebar_type_left' => array(
@@ -248,7 +248,7 @@ class EPKB_KB_Config_Specs {
 				),
 				'default'     => 'off'
 			),
-			'category_slug' => array(   
+			'category_slug' => array(
 				'label'       => esc_html__( 'Category Slug', 'echo-knowledge-base' ),
 				'name'        => 'category_slug',
 				'max'         => '70',
@@ -348,8 +348,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article-container-desktop-width-units-v2',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'px'         => _x( 'px', 'echo-knowledge-base' ),
-					'%'    => _x( '%',  'echo-knowledge-base' )
+					'px'         => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+					'%'    => _x( '%', 'percentage', 'echo-knowledge-base' )
 				),
 				'default'     => '%'
 			),
@@ -366,8 +366,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article-container-tablet-width-units-v2',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'px'         => _x( 'px', 'echo-knowledge-base' ),
-					'%'    => _x( '%',  'echo-knowledge-base' )
+					'px'         => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+					'%'    => _x( '%', 'percentage', 'echo-knowledge-base' )
 				),
 				'default'     => '%'
 			),
@@ -386,8 +386,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article-body-desktop-width-units-v2',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'px'         => _x( 'px', 'echo-knowledge-base' ),
-					'%'    => _x( '%',  'echo-knowledge-base' )
+					'px'      => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+					'%'       => _x( '%', 'percentage',  'echo-knowledge-base' )
 				),
 				'default'     => 'px'
 			),
@@ -404,8 +404,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article-body-tablet-width-units-v2',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'px'         => _x( 'px', 'echo-knowledge-base' ),
-					'%'    => _x( '%',  'echo-knowledge-base' )
+					'px'      => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+					'%'       => _x( '%', 'percentage',  'echo-knowledge-base' )
 				),
 				'default'     => '%'
 			),
@@ -428,7 +428,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => 24
 			),
 			'article-left-sidebar-padding-v2_top' => array(
-				'label'       => esc_html__( 'Top ', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Top', 'echo-knowledge-base' ),
 				'name'        => 'article-left-sidebar-padding-v2_top',
 				'max'         => 200,
 				'min'         => 0,
@@ -656,8 +656,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'sidebar_scroll_bar',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'slim_scrollbar'    => _x( 'Slim','echo-knowledge-base' ),
-					'default_scrollbar' => _x( 'Default', 'echo-knowledge-base' ) ),
+					'slim_scrollbar'    => _x( 'Slim', 'thickness of scrollbar', 'echo-knowledge-base' ),
+					'default_scrollbar' => esc_html__( 'Default', 'echo-knowledge-base' ) ),
 				'default'     => 'slim_scrollbar'
 			),
 			'sidebar_section_category_typography' => array(
@@ -1074,8 +1074,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'archive-container-width-units-v2',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'px'         => _x( 'px', 'echo-knowledge-base' ),
-					'%'          => _x( '%',  'echo-knowledge-base' ),
+					'px'         => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+					'%'          => _x( '%', 'percentage',  'echo-knowledge-base' ),
 
 				),
 				'default'     => 'px'
@@ -1177,8 +1177,8 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'style'       => 'small',
 				'options'     => array(
-					'px'         => _x( 'px', 'echo-knowledge-base' ),
-					'%'         => _x( '%',  'echo-knowledge-base' )
+					'px'      => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+					'%'       => _x( '%', 'percentage', 'echo-knowledge-base' )
 				),
 				'default'     => '%'
 			),
@@ -1189,7 +1189,7 @@ class EPKB_KB_Config_Specs {
 				'min'         => '1',
 				'mandatory'   => false,
 				'type'        => EPKB_Input_Filter::TEXT,
-				'default'     => esc_html__( 'Category - ', 'echo-knowledge-base' )
+				'default'     => esc_html__( 'Category', 'echo-knowledge-base' ) . ' - '
 			),
 			'archive_category_desc_toggle' => array(
 				'label'       => esc_html__( 'Category Description', 'echo-knowledge-base' ),
@@ -1291,8 +1291,8 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'style'       => 'small',
 				'options'     => array(
-					'px'         => _x( 'px', 'echo-knowledge-base' ),
-					'%'    => _x( '%',  'echo-knowledge-base' )
+					'px'      => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+					'%'       => _x( '%', 'percentage', 'echo-knowledge-base' )
 				),
 				'default'     => 'px'
 			),
@@ -1728,7 +1728,7 @@ class EPKB_KB_Config_Specs {
 				'min'         => '1',
 				'mandatory'   => false,
 				'type'        => EPKB_Input_Filter::TEXT,
-				'default'     => esc_html__( 'Category - ', 'echo-knowledge-base' )
+				'default'     => esc_html__( 'Category', 'echo-knowledge-base' ) . ' - '
 			),
 			'template_category_archive_read_more' => array(
 				'label'       => esc_html__( 'Read More', 'echo-knowledge-base' ),
@@ -1755,6 +1755,7 @@ class EPKB_KB_Config_Specs {
 				'min'         => '1',
 				'mandatory'   => false,
 				'type'        => EPKB_Input_Filter::TEXT,
+				/* translators: %s: Plugin author. */
 				'default'     => esc_html__( 'By:', 'echo-knowledge-base' )
 			),
 			'template_category_archive_categories' => array(
@@ -1798,7 +1799,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => 'on'
 			),
 			'article_toc_hx_level' => array(
-				'label'       => esc_html__( 'From Hx', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'From Tag', 'echo-knowledge-base' ),
 				'name'        => 'article_toc_hx_level',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
@@ -1812,7 +1813,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => '2'
 			),
 			'article_toc_hy_level' => array(
-				'label'       => esc_html__( 'To Hy', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'To Tag', 'echo-knowledge-base' ),
 				'name'        => 'article_toc_hy_level',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
@@ -1980,9 +1981,9 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_content_enable_rows_1_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'flex-start'    => _x( 'Row Top', 'echo-knowledge-base' ),
-					'center'        => _x( 'Row Center', 'echo-knowledge-base' ),
-					'flex-end'      => _x( 'Row Bottom', 'echo-knowledge-base' ) ),
+					'flex-start'    => _x( 'Row Top', 'location of element on the screen', 'echo-knowledge-base' ),
+					'center'        => _x( 'Row Center', 'location of element on the screen', 'echo-knowledge-base' ),
+					'flex-end'      => _x( 'Row Bottom', 'location of element on the screen', 'echo-knowledge-base' ) ),
 				'default'     => 'center'
 			),
 			'article_content_enable_rows_2_gap'         => array(
@@ -1998,9 +1999,9 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_content_enable_rows_2_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'flex-start'    => _x( 'Row Top', 'echo-knowledge-base' ),
-					'center'        => _x( 'Row Center', 'echo-knowledge-base' ),
-					'flex-end'      => _x( 'Row Bottom', 'echo-knowledge-base' ) ),
+					'flex-start'    => _x( 'Row Top', 'location of element on the screen', 'echo-knowledge-base' ),
+					'center'        => _x( 'Row Center', 'location of element on the screen', 'echo-knowledge-base' ),
+					'flex-end'      => _x( 'Row Bottom', 'location of element on the screen', 'echo-knowledge-base' ) ),
 				'default'     => 'flex-end'
 			),
 			'article_content_enable_rows_3_gap'         => array(
@@ -2016,9 +2017,9 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_content_enable_rows_4_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'flex-start'    => _x( 'Row Top', 'echo-knowledge-base' ),
-					'center'        => _x( 'Row Center', 'echo-knowledge-base' ),
-					'flex-end'      => _x( 'Row Bottom', 'echo-knowledge-base' ) ),
+					'flex-start'    => _x( 'Row Top', 'location of element on the screen', 'echo-knowledge-base' ),
+					'center'        => _x( 'Row Center', 'location of element on the screen', 'echo-knowledge-base' ),
+					'flex-end'      => _x( 'Row Bottom', 'location of element on the screen', 'echo-knowledge-base' ) ),
 				'default'     => 'flex-end'
 			),
 			'article_content_enable_rows_4_gap'         => array(
@@ -2034,9 +2035,9 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_content_enable_rows_4_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'flex-start'    => _x( 'Row Top', 'echo-knowledge-base' ),
-					'center'        => _x( 'Row Center', 'echo-knowledge-base' ),
-					'flex-end'      => _x( 'Row Bottom', 'echo-knowledge-base' ) ),
+					'flex-start'    => _x( 'Row Top', 'location of element on the screen', 'echo-knowledge-base' ),
+					'center'        => _x( 'Row Center', 'location of element on the screen', 'echo-knowledge-base' ),
+					'flex-end'      => _x( 'Row Bottom', 'location of element on the screen', 'echo-knowledge-base' ) ),
 				'default'     => 'flex-end'
 			),
 			'article_content_enable_rows_5_gap'         => array(
@@ -2052,9 +2053,9 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_content_enable_rows_5_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'flex-start'    => _x( 'Row Top', 'echo-knowledge-base' ),
-					'center'        => _x( 'Row Center', 'echo-knowledge-base' ),
-					'flex-end'      => _x( 'Row Bottom', 'echo-knowledge-base' ) ),
+					'flex-start'    => _x( 'Row Top', 'location of element on the screen', 'echo-knowledge-base' ),
+					'center'        => _x( 'Row Center', 'location of element on the screen', 'echo-knowledge-base' ),
+					'flex-end'      => _x( 'Row Bottom', 'location of element on the screen', 'echo-knowledge-base' ) ),
 				'default'     => 'center'
 			),
 
@@ -2081,11 +2082,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_title_row',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( 'Row 1', 'echo-knowledge-base' ),
-					'2'  => _x( 'Row 2', 'echo-knowledge-base' ),
-					'3'  => _x( 'Row 3', 'echo-knowledge-base' ),
-					'4'  => _x( 'Row 4', 'echo-knowledge-base' ),
-					'5'  => _x( 'Row 5', 'echo-knowledge-base' ) ),
+					'1'  => _x( 'Row 1', 'location of element on the screen', 'echo-knowledge-base' ),
+					'2'  => _x( 'Row 2', 'location of element on the screen', 'echo-knowledge-base' ),
+					'3'  => _x( 'Row 3', 'location of element on the screen', 'echo-knowledge-base' ),
+					'4'  => _x( 'Row 4', 'location of element on the screen', 'echo-knowledge-base' ),
+					'5'  => _x( 'Row 5', 'location of element on the screen', 'echo-knowledge-base' ) ),
 				'default'     => '2'
 			),
 			'article_title_alignment'                   => array(
@@ -2093,8 +2094,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_title_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'left'  	        => is_rtl() ? _x( 'Right', 'echo-knowledge-base' ) : _x( 'Left', 'echo-knowledge-base' ),
-					'right'  	        => is_rtl() ? _x( 'Left', 'echo-knowledge-base' ) : _x( 'Right', 'echo-knowledge-base' ) ),
+					'left'  	        => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+					'right'  	        => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ) ),
 				'default'     => 'left'
 			),
 			'article_title_sequence'                    => array(
@@ -2102,11 +2103,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_title_sequence',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( '1', 'echo-knowledge-base' ),
-					'2'  => _x( '2', 'echo-knowledge-base' ),
-					'3'  => _x( '3', 'echo-knowledge-base' ),
-					'4'  => _x( '4', 'echo-knowledge-base' ),
-					'5'  => _x( '5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( '1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( '2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( '3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( '4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( '5', 'echo-knowledge-base' ) ),
 				'default'     => '1'
 			),
 
@@ -2126,11 +2127,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'back_navigation_row',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( 'Row 1', 'echo-knowledge-base' ),
-					'2'  => _x( 'Row 2', 'echo-knowledge-base' ),
-					'3'  => _x( 'Row 3', 'echo-knowledge-base' ),
-					'4'  => _x( 'Row 4', 'echo-knowledge-base' ),
-					'5'  => _x( 'Row 5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( 'Row 1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( 'Row 2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( 'Row 3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( 'Row 4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( 'Row 5', 'echo-knowledge-base' ) ),
 				'default'     => '1'
 			),
 			'back_navigation_alignment'     => array(
@@ -2138,8 +2139,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'back_navigation_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'left'  	        => is_rtl() ? _x( 'Right', 'echo-knowledge-base' ) : _x( 'Left', 'echo-knowledge-base' ),
-					'right'  	        => is_rtl() ? _x( 'Left', 'echo-knowledge-base' ) : _x( 'Right', 'echo-knowledge-base' ) ),
+					'left'  	        => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+					'right'  	        => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ) ),
 				'default'     => 'left'
 			),
 			'back_navigation_sequence'      => array(
@@ -2147,11 +2148,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'back_navigation_sequence',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( '1', 'echo-knowledge-base' ),
-					'2'  => _x( '2', 'echo-knowledge-base' ),
-					'3'  => _x( '3', 'echo-knowledge-base' ),
-					'4'  => _x( '4', 'echo-knowledge-base' ),
-					'5'  => _x( '5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( '1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( '2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( '3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( '4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( '5', 'echo-knowledge-base' ) ),
 				'default'     => '1'
 			),
 			'back_navigation_mode'          => array(
@@ -2213,7 +2214,7 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'back_navigation_border',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'none'    => esc_html__( '-- No Border --', 'echo-knowledge-base' ),
+					'none'    => '-- ' . esc_html__( 'No Border', 'echo-knowledge-base' ) . ' --',
 					'solid'   => esc_html__( 'Solid', 'echo-knowledge-base' ),
 				),
 				'default'     => 'solid'
@@ -2344,11 +2345,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'author_row',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( 'Row 1', 'echo-knowledge-base' ),
-					'2'  => _x( 'Row 2', 'echo-knowledge-base' ),
-					'3'  => _x( 'Row 3', 'echo-knowledge-base' ),
-					'4'  => _x( 'Row 4', 'echo-knowledge-base' ),
-					'5'  => _x( 'Row 5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( 'Row 1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( 'Row 2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( 'Row 3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( 'Row 4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( 'Row 5', 'echo-knowledge-base' ) ),
 				'default'     => '3'
 			),
 			'author_alignment'              => array(
@@ -2356,8 +2357,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'author_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'left'  	        => is_rtl() ? _x( 'Right', 'echo-knowledge-base' ) : _x( 'Left', 'echo-knowledge-base' ),
-					'right'  	        => is_rtl() ? _x( 'Left', 'echo-knowledge-base' ) : _x( 'Right', 'echo-knowledge-base' ) ),
+					'left'  	        => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+					'right'  	        => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ) ),
 				'default'     => 'left'
 			),
 			'author_sequence'               => array(
@@ -2365,11 +2366,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'author_sequence',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( '1', 'echo-knowledge-base' ),
-					'2'  => _x( '2', 'echo-knowledge-base' ),
-					'3'  => _x( '3', 'echo-knowledge-base' ),
-					'4'  => _x( '4', 'echo-knowledge-base' ),
-					'5'  => _x( '5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( '1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( '2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( '3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( '4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( '5', 'echo-knowledge-base' ) ),
 				'default'     => '3'
 			),
 			'author_icon_on'                => array(
@@ -2414,11 +2415,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'created_date_row',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( 'Row 1', 'echo-knowledge-base' ),
-					'2'  => _x( 'Row 2', 'echo-knowledge-base' ),
-					'3'  => _x( 'Row 3', 'echo-knowledge-base' ),
-					'4'  => _x( 'Row 4', 'echo-knowledge-base' ),
-					'5'  => _x( 'Row 5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( 'Row 1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( 'Row 2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( 'Row 3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( 'Row 4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( 'Row 5', 'echo-knowledge-base' ) ),
 				'default'     => '3'
 			),
 			'created_date_alignment'        => array(
@@ -2426,8 +2427,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'created_date_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'left'  	        => is_rtl() ? _x( 'Right', 'echo-knowledge-base' ) : _x( 'Left', 'echo-knowledge-base' ),
-					'right'  	        => is_rtl() ? _x( 'Left', 'echo-knowledge-base' ) : _x( 'Right', 'echo-knowledge-base' ) ),
+					'left'  	        => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+					'right'  	        => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ) ),
 				'default'     => 'left'
 			),
 			'created_date_sequence'         => array(
@@ -2435,11 +2436,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'created_date_sequence',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( '1', 'echo-knowledge-base' ),
-					'2'  => _x( '2', 'echo-knowledge-base' ),
-					'3'  => _x( '3', 'echo-knowledge-base' ),
-					'4'  => _x( '4', 'echo-knowledge-base' ),
-					'5'  => _x( '5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( '1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( '2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( '3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( '4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( '5', 'echo-knowledge-base' ) ),
 				'default'     => '1'
 			),
 			'created_date_icon_on'          => array(
@@ -2484,11 +2485,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'last_updated_date_row',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( 'Row 1', 'echo-knowledge-base' ),
-					'2'  => _x( 'Row 2', 'echo-knowledge-base' ),
-					'3'  => _x( 'Row 3', 'echo-knowledge-base' ),
-					'4'  => _x( 'Row 4', 'echo-knowledge-base' ),
-					'5'  => _x( 'Row 5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( 'Row 1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( 'Row 2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( 'Row 3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( 'Row 4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( 'Row 5', 'echo-knowledge-base' ) ),
 				'default'     => '3'
 			),
 			'last_updated_date_alignment'   => array(
@@ -2496,8 +2497,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'created_date_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'left'  	        => is_rtl() ? _x( 'Right', 'echo-knowledge-base' ) : _x( 'Left', 'echo-knowledge-base' ),
-					'right'  	        => is_rtl() ? _x( 'Left', 'echo-knowledge-base' ) : _x( 'Right', 'echo-knowledge-base' ) ),
+					'left'  	        => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+					'right'  	        => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ) ),
 				'default'     => 'left'
 			),
 			'last_updated_date_sequence'    => array(
@@ -2505,11 +2506,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'last_updated_date_sequence',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( '1', 'echo-knowledge-base' ),
-					'2'  => _x( '2', 'echo-knowledge-base' ),
-					'3'  => _x( '3', 'echo-knowledge-base' ),
-					'4'  => _x( '4', 'echo-knowledge-base' ),
-					'5'  => _x( '5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( '1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( '2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( '3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( '4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( '5', 'echo-knowledge-base' ) ),
 				'default'     => '2'
 			),
 			'last_updated_date_icon_on'     => array(
@@ -2539,11 +2540,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'breadcrumb_row',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( 'Row 1', 'echo-knowledge-base' ),
-					'2'  => _x( 'Row 2', 'echo-knowledge-base' ),
-					'3'  => _x( 'Row 3', 'echo-knowledge-base' ),
-					'4'  => _x( 'Row 4', 'echo-knowledge-base' ),
-					'5'  => _x( 'Row 5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( 'Row 1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( 'Row 2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( 'Row 3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( 'Row 4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( 'Row 5', 'echo-knowledge-base' ) ),
 				'default'     => '1'
 			),
 			'breadcrumb_alignment'          => array(
@@ -2551,8 +2552,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'breadcrumb_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'left'  	        => is_rtl() ? _x( 'Right', 'echo-knowledge-base' ) : _x( 'Left', 'echo-knowledge-base' ),
-					'right'  	        => is_rtl() ? _x( 'Left', 'echo-knowledge-base' ) : _x( 'Right', 'echo-knowledge-base' ) ),
+					'left'  	        => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+					'right'  	        => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ) ),
 				'default'     => 'left'
 			),
 			'breadcrumb_sequence'           => array(
@@ -2560,11 +2561,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'breadcrumb_sequence',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( '1', 'echo-knowledge-base' ),
-					'2'  => _x( '2', 'echo-knowledge-base' ),
-					'3'  => _x( '3', 'echo-knowledge-base' ),
-					'4'  => _x( '4', 'echo-knowledge-base' ),
-					'5'  => _x( '5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( '1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( '2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( '3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( '4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( '5', 'echo-knowledge-base' ) ),
 				'default'     => '2'
 			),
 			'breadcrumb_icon_separator'     => array(
@@ -2572,7 +2573,7 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'breadcrumb_icon_separator',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'ep_font_icon_none'    => esc_html__( '-- No Icon --',   'echo-knowledge-base' ),
+					'ep_font_icon_none'    => '-- ' . esc_html__( 'No Icon',   'echo-knowledge-base' ) . ' --',
 					'ep_font_icon_right_arrow'   => esc_html__( 'Right Arrow', 'echo-knowledge-base' ),
 					'ep_font_icon_left_arrow'    => esc_html__( 'Left Arrow', 'echo-knowledge-base' ),
 					'ep_font_icon_arrow_carrot_right_circle'    => esc_html__( 'Arrow Right Circle',   'echo-knowledge-base' ),
@@ -2700,11 +2701,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_content_toolbar_row',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( 'Row 1', 'echo-knowledge-base' ),
-					'2'  => _x( 'Row 2', 'echo-knowledge-base' ),
-					'3'  => _x( 'Row 3', 'echo-knowledge-base' ),
-					'4'  => _x( 'Row 4', 'echo-knowledge-base' ),
-					'5'  => _x( 'Row 5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( 'Row 1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( 'Row 2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( 'Row 3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( 'Row 4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( 'Row 5', 'echo-knowledge-base' ) ),
 				'default'     => '1'
 			),
 			'article_content_toolbar_alignment'             => array(
@@ -2712,8 +2713,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_content_toolbar_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'left'  	        => is_rtl() ? _x( 'Right', 'echo-knowledge-base' ) : _x( 'Left', 'echo-knowledge-base' ),
-					'right'  	        => is_rtl() ? _x( 'Left', 'echo-knowledge-base' ) : _x( 'Right', 'echo-knowledge-base' ) ),
+					'left'  	        => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+					'right'  	        => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ) ),
 				'default'     => 'right'
 			),
 			'article_content_toolbar_sequence'              => array(
@@ -2721,11 +2722,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_content_toolbar_sequence',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( '1', 'echo-knowledge-base' ),
-					'2'  => _x( '2', 'echo-knowledge-base' ),
-					'3'  => _x( '3', 'echo-knowledge-base' ),
-					'4'  => _x( '4', 'echo-knowledge-base' ),
-					'5'  => _x( '5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( '1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( '2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( '3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( '4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( '5', 'echo-knowledge-base' ) ),
 				'default'     => '1'
 			),
 			'article_content_toolbar_button_background'     => array(
@@ -2745,10 +2746,10 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_content_toolbar_button_format',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'icon'      => _x( 'Icon', 'echo-knowledge-base' ),
-					'text'      => _x( 'Text', 'echo-knowledge-base' ),
-					'icon_text' => _x( 'Icon and Text', 'echo-knowledge-base' ),
-					'text_icon' => _x( 'Text and Icon', 'echo-knowledge-base' ) ),
+					'icon'      => esc_html__( 'Icon', 'echo-knowledge-base' ),
+					'text'      => esc_html__( 'Text', 'echo-knowledge-base' ),
+					'icon_text' => esc_html__( 'Icon and Text', 'echo-knowledge-base' ),
+					'text_icon' => esc_html__( 'Text and Icon', 'echo-knowledge-base' ) ),
 				'default'     => 'text_icon'
 			),
 			'article_content_toolbar_icon_size'             => array(
@@ -3003,9 +3004,9 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_views_counter_method',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'delay'   => _x( 'Delay', 'echo-knowledge-base' ),
-					'scroll'  => _x( 'After User Scroll', 'echo-knowledge-base' ),
-					'php'     => _x( 'PHP', 'echo-knowledge-base' ) ),
+					'delay'   => esc_html__( 'Delay', 'echo-knowledge-base' ),
+					'scroll'  => esc_html__( 'After User Scroll', 'echo-knowledge-base' ),
+					'php'     => esc_html__( 'PHP', 'echo-knowledge-base' ) ),
 				'default'     => 'delay'
 			),
 			'article_content_enable_views_counter'  => array(   // header toggle
@@ -3028,11 +3029,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_views_counter_row',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( 'Row 1', 'echo-knowledge-base' ),
-					'2'  => _x( 'Row 2', 'echo-knowledge-base' ),
-					'3'  => _x( 'Row 3', 'echo-knowledge-base' ),
-					'4'  => _x( 'Row 4', 'echo-knowledge-base' ),
-					'5'  => _x( 'Row 5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( 'Row 1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( 'Row 2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( 'Row 3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( 'Row 4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( 'Row 5', 'echo-knowledge-base' ) ),
 				'default'     => '3'
 			),
 			'article_views_counter_alignment'   => array(
@@ -3040,8 +3041,8 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_views_counter_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'left'  	        => is_rtl() ? _x( 'Right', 'echo-knowledge-base' ) : _x( 'Left', 'echo-knowledge-base' ),
-					'right'  	        => is_rtl() ? _x( 'Left', 'echo-knowledge-base' ) : _x( 'Right', 'echo-knowledge-base' ) ),
+					'left'  	        => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+					'right'  	        => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ) ),
 				'default'     => 'left'
 			),
 			'article_views_counter_sequence'    => array(
@@ -3049,11 +3050,11 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'article_views_counter_sequence',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'1'  => _x( '1', 'echo-knowledge-base' ),
-					'2'  => _x( '2', 'echo-knowledge-base' ),
-					'3'  => _x( '3', 'echo-knowledge-base' ),
-					'4'  => _x( '4', 'echo-knowledge-base' ),
-					'5'  => _x( '5', 'echo-knowledge-base' ) ),
+					'1'  => esc_html__( '1', 'echo-knowledge-base' ),
+					'2'  => esc_html__( '2', 'echo-knowledge-base' ),
+					'3'  => esc_html__( '3', 'echo-knowledge-base' ),
+					'4'  => esc_html__( '4', 'echo-knowledge-base' ),
+					'5'  => esc_html__( '5', 'echo-knowledge-base' ) ),
 				'default'     => '5'
 			),
 			'article_views_counter_icon_on'     => array(
@@ -3152,9 +3153,9 @@ class EPKB_KB_Config_Specs {
 				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
 			),
 
-			// Access to Add-ons / News (read)
+			// Access to Add-ons (read)
 			'admin_eckb_access_addons_news_read' => array(
-				'label'       => esc_html__( 'Add-ons / News', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Add-ons', 'echo-knowledge-base' ),
 				'name'        => 'admin_eckb_access_addons_news_read',
 				'type'        => EPKB_Input_Filter::TEXT,
 				'max'         => '60',
@@ -4376,5 +4377,10 @@ class EPKB_KB_Config_Specs {
 			$keys[$key] = '';
 		}
 		return $keys;
+	}
+
+	// reset cached specs
+	public static function reset_cache_specs() {
+		self::$cached_specs = [];
 	}
 }

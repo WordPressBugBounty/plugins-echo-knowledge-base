@@ -396,7 +396,7 @@ class EPKB_KB_Handler {
 	 * @return string
 	 */
 	public static function get_post_type( $kb_id ) {
-		$kb_id = EPKB_Utilities::sanitize_int($kb_id, EPKB_KB_Config_DB::DEFAULT_KB_ID );
+		$kb_id = EPKB_Utilities::sanitize_int( $kb_id, EPKB_KB_Config_DB::DEFAULT_KB_ID );
 		return self::KB_POST_TYPE_PREFIX . $kb_id;
 	}
 

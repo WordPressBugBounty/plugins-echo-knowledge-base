@@ -73,7 +73,7 @@ class EPKB_KB_Wizard_Themes {
 													13 => '#868686', 14 => '#1e73be', 15 => '#8c1515', 16 => '#eb5a46', 17 => '#4EB3C4', 18 => '#8224e3', 19 => '#000000', 20 => '#1E4C5E' ],
 			'section_head_category_icon_location' => [1 => 'left', 2 => 'left', 3 => 'top', 4 => 'top', 5 => 'top', 6 => 'left', 7 => 'top', 8 => 'left', 9 => 'left', 10 => 'top', 11 => 'left', 12 => 'no_icons',
 														13 => 'no_icons', 14 => 'top', 15 => 'top', 16 => 'left', 17 => 'no_icons', 18 => 'no_icons', 19 => 'top', 20 => 'top', 21 => 'top' ],
-			'section_head_category_icon_size' => [1 => 50, 2 => 57, 3 => 121, 4 => 300, 5 => 50, 6 => 100, 7 => 300, 8 => 25, 9 => 87, 10 => 30, 11 => 57, 14 => 40,
+			'section_head_category_icon_size' => [1 => 50, 2 => 57, 3 => 121, 4 => 300, 5 => 50, 6 => 100, 7 => 300, 8 => 25, 9 => 67, 10 => 30, 11 => 57, 14 => 40,
 				15 => 30, 16 => 30, 17 => 30, 19 => 100, 20 => 130, 21 => 300 ],
 			'section_head_description_font_color' => [5 => '#444444',9 => '#b3b3b3', 11 => '#b3b3b3', 12 => '#828282', 13 => '#828282', 14 => '#b3b3b3', 17 => '#b3b3b3'],
 			'section_head_font_color' => [1 => '#40474f', 2 => '#40474f', 3 => '#827a74', 4 => '#827a74', 5 => '#000000', 6 => '#e3474b', 7 => '#ffa401', 8 => '#528ffe', 9 => '#000000', 10 => '#000000', 11 => '#40474f', 12 => '#ffffff',
@@ -226,7 +226,7 @@ class EPKB_KB_Wizard_Themes {
 		if ( empty( $add_on_themes ) || ! is_array( $add_on_themes ) ) {
 			$add_on_themes = array();
 		} else {
-			// remove empty values (legacy) TODO remove in future ( see empty values in ASEA_KB_Editor_Config::get_main_page_themes() and ELAY_KB_Editor_Config::get_main_page_themes() )
+			// remove empty values (legacy) TODO remove in future ( see empty values in A SEA_KB_Editor_Config::get_main_page_themes() and E LAY_KB_Editor_Config::get_main_page_themes() )
 			foreach( $add_on_themes as $config_name => $theme_values ) {
 				foreach ( $theme_values as $theme_id => $preset_value ) {
 					if ( empty( $preset_value ) && $preset_value !== '0' && $preset_value !== 0 ) {

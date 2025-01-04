@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 13.10.0
+ * Version: 13.11.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '13.10.0';
+	public static $version = '13.11.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -137,6 +137,7 @@ final class Echo_Knowledge_Base {
             } else {
                 $this->setup_backend_classes();
             }
+			add_action( 'after_setup_theme', array( self::$instance, 'load_features' ), 11 );
 			return;
 		}
 
@@ -334,17 +335,20 @@ final class Echo_Knowledge_Base {
 		if ( ! empty( $pagenow ) && in_array( $pagenow, [ 'plugins.php', 'plugins-network.php' ] ) ) {
 			new EPKB_Deactivate_Feedback();
 		}
-
-		// setup article views counter hooks
-		new EPKB_Article_Count_Handler();
 	}
 
-	/**
-	/**
-	 * Loads the plugin language files from ./languages directory.
-	 */
 	public function load_text_domain() {
+
+		EPKB_KB_Config_Specs::reset_cache_specs();
+
+		/** Check for a translation file in includes/languages/plugins/echo-knowledge-base-LOCALE.mo.
+			If it does not find one, it will try the default path you specify (the /languages directory in your plugin). */
 		load_plugin_textdomain( 'echo-knowledge-base', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	}
+
+	public function load_features() {
+		// setup article views counter hooks
+		new EPKB_Article_Count_Handler();
 	}
 
 	// Don't allow this singleton to be cloned.

@@ -19,6 +19,20 @@ import FaqsBlockSave from "./faqs-block-save";
 registerBlockType(
 	'echo-knowledge-base/faqs',
 	{
+		icon: {
+			src: (
+				<svg id="FAQs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 119.51 79.49" fill="none">
+					<path d="M0.6 0.73h17.61v15.75H0.6Z" stroke="#000" strokeMiterlimit="10" />
+					<path d="M29.15 0.95h89.69v15.31H29.15Z" stroke="#000" strokeMiterlimit="10" />
+					<path d="M0.53 63.24h17.61v15.75H0.53Z" stroke="#000" strokeMiterlimit="10" />
+					<path d="M29.07 63.46h89.69v15.31H29.07Z" stroke="#000" strokeMiterlimit="10" />
+					<path d="M0.53 21.79h17.61v15.75H0.53Z" stroke="#000" strokeMiterlimit="10" />
+					<path d="M29.07 22.01h89.69v15.31H29.07Z" stroke="#000" strokeMiterlimit="10" />
+					<path d="M0.53 42.51h17.61v15.75H0.53Z" stroke="#000" strokeMiterlimit="10" />
+					<path d="M29.07 42.73h89.69v15.31H29.07Z" stroke="#000" strokeMiterlimit="10" />
+				</svg>
+			),
+		},
 		edit: FaqsBlockEdit,
 		save: FaqsBlockSave,
 	}

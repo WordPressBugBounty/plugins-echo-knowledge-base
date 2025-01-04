@@ -20,6 +20,31 @@ import { unregister_block_for_non_page } from '../utils';
 registerBlockType(
 	'echo-knowledge-base/classic-layout',
 	{
+		icon: {
+			src: (
+				<svg id="Classic_Layout_2" data-name="Classic Layout 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 119.51 79.33" fill="none">
+					<circle cx="29.6" cy="16.8" r="15.04" stroke="#000" strokeMiterlimit="10" fill="none" />
+					<path
+						d="M1.58 22.15v56.68h56.04V22.15H1.58ZM52.86 75.42H4.65V26.28h48.21v49.14Z"
+						stroke="#000"
+						strokeMiterlimit="10"
+						fill="none"
+					/>
+					<path d="M8.72 42.96h40.07v4.48H8.72Z" stroke="#000" strokeMiterlimit="10" />
+					<path d="M9.56 60.09h40.07v4.48H9.56Z" stroke="#000" strokeMiterlimit="10" />
+					<path
+						d="M61.38 22.15v56.68h56.04V22.15H61.38ZM112.66 75.42h-48.21V26.28h48.21v49.14Z"
+						stroke="#000"
+						strokeMiterlimit="10"
+						fill="none"
+					/>
+					<path d="M68.52 42.96h40.07v4.48H68.52Z" stroke="#000" strokeMiterlimit="10" />
+					<path d="M69.36 60.09h40.07v4.48H69.36Z" stroke="#000" strokeMiterlimit="10" />
+					<circle cx="88.55" cy="16.8" r="15.04" stroke="#000" strokeMiterlimit="10" fill="none" />
+				</svg>
+
+			),
+		},
 		edit: ClassicLayoutBlockEdit,
 		save: ClassicLayoutBlockSave,
 	}

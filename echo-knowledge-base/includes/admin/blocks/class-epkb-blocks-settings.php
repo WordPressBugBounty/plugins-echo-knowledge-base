@@ -18,7 +18,7 @@ class EPKB_Blocks_Settings {
 		$kb_id_setting = array(
 			'setting_type' => 'custom_dropdown',
 			'default' => EPKB_KB_Config_DB::DEFAULT_KB_ID,
-			'label' => __( 'Selected KB', 'echo-knowledge-base' ),
+			'label' => esc_html__( 'Selected KB', 'echo-knowledge-base' ),
 			'options' => array(),
 		);
 
@@ -112,10 +112,10 @@ class EPKB_Blocks_Settings {
 		$setting_config = array(
 			'setting_type' => $show_toggle ? 'section_description' : '',
 			'description' => EPKB_Utilities::is_block_theme()
-				? __( 'Consider to use KB Block Page Template for this KB Main Page.', 'echo-knowledge-base' ) . ' ' .
-				( EPKB_Block_Utilities::is_kb_block_page_template_available() ? '' : __( 'You need to upgrade the WordPress core to version 6.7 or higher in order to use the KB template.', 'echo-knowledge-base' ) )
-				: __( 'Consider to use KB Template for this KB Main Page.', 'echo-knowledge-base' ) . ' ' . __( 'Note that the KB Template effect is not visible in this editor. Please check the page frontend.', 'echo-knowledge-base' ),
-			'link_text' => __( 'Learn More', 'echo-knowledge-base' ),
+				? esc_html__( 'Consider to use KB Block Page Template for this KB Main Page.', 'echo-knowledge-base' ) . ' ' .
+				( EPKB_Block_Utilities::is_kb_block_page_template_available() ? '' : esc_html__( 'You need to upgrade the WordPress core to version 6.7 or higher in order to use the KB template.', 'echo-knowledge-base' ) )
+				: esc_html__( 'Consider to use KB Template for this KB Main Page.', 'echo-knowledge-base' ) . ' ' . esc_html__( 'Note that the KB Template effect is not visible in this editor. Please check the page frontend.', 'echo-knowledge-base' ),
+			'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ),
 			'link_url' => EPKB_Utilities::is_block_theme() ? 'https://www.echoknowledgebase.com/documentation/kb-block-template/' : 'https://www.echoknowledgebase.com/documentation/current-theme-template-vs-kb-template/',
 			'hide_on_dependencies' => array(
 				'templates_for_kb' => 'kb_templates',
@@ -162,7 +162,7 @@ class EPKB_Blocks_Settings {
 			'max' => $default_args['max'],
 			'default' => $default_args['default'],
 			'help_text' => esc_html__( 'Block width may be limited by container or theme; check them if displayed width does not match settings.', 'echo-knowledge-base' ),
-			'help_link_text' => __( 'Learn More', 'echo-knowledge-base' ),
+			'help_link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ),
 			'help_link_url' => 'https://www.echoknowledgebase.com/documentation/main-page-width/',
 			'disable_on_dependencies' => array(
 				'block_full_width_toggle' => 'on',
@@ -224,10 +224,10 @@ class EPKB_Blocks_Settings {
 	 */
 	public static function get_custom_css_class_setting() {
 		return array(
-			'label' => __( 'Additional CSS Class(es)', 'echo-knowledge-base' ),
+			'label' => esc_html__( 'Additional CSS Classes', 'echo-knowledge-base' ),
 			'setting_type' => 'text',
 			'default' => '',
-			'description' => __( 'Separate multiple classes with spaces.', 'echo-knowledge-base' ),
+			'description' => esc_html__( 'Separate multiple classes with spaces.', 'echo-knowledge-base' ),
 		);
 	}
 
@@ -266,7 +266,7 @@ class EPKB_Blocks_Settings {
 	 */
 	public static function get_typography_control_font_family( $default = '' ) {
 		return array(
-			'label' => __( 'Font', 'echo-knowledge-base' ),
+			'label' => esc_html__( 'Font', 'echo-knowledge-base' ),
 			'default' => $default,
 		);
 	}
@@ -278,7 +278,7 @@ class EPKB_Blocks_Settings {
 	public static function get_typography_control_font_size( $size_options, $default_size ) {
 
 		$font_size_control = array(
-			'label' => __( 'Size', 'echo-knowledge-base' ),
+			'label' => esc_html__( 'Size', 'echo-knowledge-base' ),
 			'default' => $default_size,
 			'units' => 'px',
 			'options' => [],
@@ -286,15 +286,15 @@ class EPKB_Blocks_Settings {
 
 		$all_size_options = array(
 			'small' => array(
-				'name' => __( 'Small', 'echo-knowledge-base' ),
+				'name' => esc_html__( 'Small', 'echo-knowledge-base' ),
 				'size' => 24,
 			),
 			'normal' => array(
-				'name' => __( 'Medium', 'echo-knowledge-base' ),
+				'name' => esc_html__( 'Medium', 'echo-knowledge-base' ),
 				'size' => 36,
 			),
 			'big' => array(
-				'name' => __( 'Large', 'echo-knowledge-base' ),
+				'name' => esc_html__( 'Large', 'echo-knowledge-base' ),
 				'size' => 48,
 				'slug' => 'big',
 			),
@@ -322,74 +322,74 @@ class EPKB_Blocks_Settings {
 			'fontStyle' => 'normal',
 		) );
 		return array(
-			'label' => __( 'Appearance', 'echo-knowledge-base' ),
+			'label' => esc_html__( 'Appearance', 'echo-knowledge-base' ),
 			'default' => 'default',
 			'options' => array(
 				'default' => array(
-					'name' => __( 'Default', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Default', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => $default_args['fontWeight'],
 						'fontStyle' => $default_args['fontStyle'],
 					),
 				),
 				'thin' => array(
-					'name' => __( 'Thin', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Thin', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 100,
 						'fontStyle' => 'normal',
 					),
 				),
 				'extra_light' => array(
-					'name' => __( 'Extra Light', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Extra Light', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 200,
 						'fontStyle' => 'normal',
 					),
 				),
 				'light' => array(
-					'name' => __( 'Light', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Light', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 300,
 						'fontStyle' => 'normal',
 					),
 				),
 				'regular' => array(
-					'name' => __( 'Regular', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Regular', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 400,
 						'fontStyle' => 'normal',
 					),
 				),
 				'medium' => array(
-					'name' => __( 'Medium', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Medium', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 500,
 						'fontStyle' => 'normal',
 					),
 				),
 				'semi_bold' => array(
-					'name' => __( 'Semi Bold', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Semi Bold', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 600,
 						'fontStyle' => 'normal',
 					),
 				),
 				'bold' => array(
-					'name' => __( 'Bold', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Bold', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 700,
 						'fontStyle' => 'normal',
 					),
 				),
 				'extra_bold' => array(
-					'name' => __( 'Extra Bold', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Extra Bold', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 800,
 						'fontStyle' => 'normal',
 					),
 				),
 				'black' => array(
-					'name' => __( 'Black', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Black', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 900,
 						'fontStyle' => 'normal',
@@ -397,63 +397,63 @@ class EPKB_Blocks_Settings {
 				),
 				'thin_italic' => array(
 					'key' => 'thin_italic',
-					'name' => __( 'Thin Italic', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Thin Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 100,
 						'fontStyle' => 'italic',
 					),
 				),
 				'extra_light_italic' => array(
-					'name' => __( 'Extra Light Italic', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Extra Light Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 200,
 						'fontStyle' => 'italic',
 					),
 				),
 				'light_italic' => array(
-					'name' => __( 'Light Italic', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Light Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 300,
 						'fontStyle' => 'italic',
 					),
 				),
 				'regular_italic' => array(
-					'name' => __( 'Regular Italic', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Regular Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 400,
 						'fontStyle' => 'italic',
 					),
 				),
 				'medium_italic' => array(
-					'name' => __( 'Medium Italic', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Medium Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 500,
 						'fontStyle' => 'italic',
 					),
 				),
 				'semi_bold_italic' => array(
-					'name' => __( 'Semi Bold Italic', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Semi Bold Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 600,
 						'fontStyle' => 'italic',
 					),
 				),
 				'bold_italic' => array(
-					'name' => __( 'Bold Italic', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Bold Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 700,
 						'fontStyle' => 'italic',
 					),
 				),
 				'extra_bold_italic' => array(
-					'name' => __( 'Extra Bold Italic', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Extra Bold Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 800,
 						'fontStyle' => 'italic',
 					),
 				),
 				'black_italic' => array(
-					'name' => __( 'Black Italic', 'echo-knowledge-base' ),
+					'name' => esc_html__( 'Black Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 900,
 						'fontStyle' => 'italic',

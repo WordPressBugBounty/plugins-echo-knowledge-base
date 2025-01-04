@@ -76,7 +76,7 @@ class EPKB_Site_Builders {
 
 		// check SiteOrigin
 		if ( ! $this->check_so_cpt() ) {
-			$this->show_builder_notice( esc_html__( 'SiteOrigin	Builder', 'echo-knowledge-base' ), 'options-general.php?page=siteorigin_panels', esc_html__( 'General -> Post Types', 'echo-knowledge-base' ), self::SITE_ORIGIN_OPTION_NAME );
+			$this->show_builder_notice( esc_html__( 'SiteOrigin Builder', 'echo-knowledge-base' ), 'options-general.php?page=siteorigin_panels', esc_html__( 'General -> Post Types', 'echo-knowledge-base' ), self::SITE_ORIGIN_OPTION_NAME );
 		}
 	}
 

@@ -899,7 +899,7 @@ class EPKB_Utilities {
 		if ( $return_error && $option === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: " . $wpdb_last_error, 'Option Name: ' . $option_name );
-			return new WP_Error( __( 'Error occurred', 'echo-knowledge-base' ), $wpdb_last_error );
+			return new WP_Error( esc_html__( 'Error occurred', 'echo-knowledge-base' ), $wpdb_last_error );
 		}
 
 		// if WP option is missing then return defaults

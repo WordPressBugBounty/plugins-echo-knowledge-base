@@ -7,7 +7,7 @@ final class EPKB_Basic_Layout_Block extends EPKB_Abstract_Block {
 	protected $block_var_name = 'basic_layout';
 	protected $block_title = 'KB Basic Layout';
 	protected $icon = 'editor-table';
-	protected $keywords = ['knowledge base','layout','articles','categories'];
+	protected $keywords = ['knowledge base', 'layout', 'articles', 'categories'];	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
 
 	public function __construct( $init_hooks = true ) {
 		parent::__construct( $init_hooks );
@@ -285,7 +285,7 @@ final class EPKB_Basic_Layout_Block extends EPKB_Abstract_Block {
 							'block_max_width' => EPKB_Blocks_Settings::get_block_max_width_setting(),
 							'block_presets' => array(
 								'setting_type' => 'presets_dropdown',
-								'label' => __( 'Apply Preset', 'echo-knowledge-base' ),
+								'label' => esc_html__( 'Apply Preset', 'echo-knowledge-base' ),
 								'presets' => EPKB_Blocks_Settings::get_all_preset_settings( self::EPKB_BLOCK_NAME, EPKB_Layout::BASIC_LAYOUT ),
 								'default' => 'current',
 							),

@@ -200,7 +200,7 @@ jQuery(document).ready(function($) {
 	}
 
 	function changePanels( Index ){
-		$('.epkb-panel-container .epkb-tab-panel:nth-child(' + (Index + 1) + ')').addClass('active');
+		$('.epkb-panel-container .' + Index + '').addClass('active');
 	}
 
 	function updateTabURL( tab_id, tab_name ) {
@@ -257,7 +257,7 @@ jQuery(document).ready(function($) {
 			$(this).addClass('active');
 
 			tabContainer.find(tabPanel).removeClass('active');
-			changePanels ( $(this).index() );
+			changePanels ( $(this).attr('id') );
 			updateTabURL( $(this).attr('id'), $(this).data('cat-name') );
 		});
 	});
@@ -267,8 +267,8 @@ jQuery(document).ready(function($) {
 		$('#epkb-content-container').find('.epkb-tab-panel').removeClass('active');
 		// drop down
 		$( "#main-category-selection option:selected" ).each(function() {
-			let selected_index = $( this ).index();
-			changePanels ( selected_index );
+
+			changePanels ( $(this).attr('id') );
 			if ( ! $( this ).closest( '.eckb-block-editor-preview' ).length ) {
 				updateTabURL( $(this).attr('id'), $(this).data('cat-name') );
 			}

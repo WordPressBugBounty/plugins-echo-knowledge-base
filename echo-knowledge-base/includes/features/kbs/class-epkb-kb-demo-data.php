@@ -446,54 +446,57 @@ class EPKB_KB_Demo_Data {
 		$demo_img = Echo_Knowledge_Base::$plugin_url.'img/guy-on-laptop.jpg';
 		$youtube_vid = '<iframe width="560" height="315" src="https://www.youtube.com/embed/gOLT-IDT3UY?si=amjYFxs-Cf_CHqFM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
 
-		return "
-		    <h2 style='padding-top: 20px;'>Welcome to Echo Knowledge Base!</h2>
-		    <p>We're thrilled that you've chosen our plugin to enhance your Knowledge Base. We\'re here to assist you in making your Knowledge Base exceptional. If you need any help or have questions, just let us know!</p>
-		
-		    <h3 style='padding-top: 20px;'>Create Articles Just Like You Create Posts</h3>
-		    <p>Add instructional videos or product demos. Example of embedded video:</p>
-		    $youtube_vid
-		    
-		    
-		    
-		    <p>Enhance your articles with visuals. Example of an image:</p>
-		    <img src=\"$demo_img\" alt=\"Sample Image\" width=\"500\">
-		
-		    <p>Effortlessly embed PDFs and other media using your page builder or blocks.</p>
-		
-		    <h3 style='padding-top: 20px;'>Main Features</h3>
-		    <p>Our plugin includes the following features to make your Knowledge Base stand out:</p>
-		    <ul>
-		        <li>Fast search bar with listed results</li>
-		        <li>Five levels of hierarchical documentation</li>
-		        <li>Article view counter with Popular and Recent Articles</li>
-		        <li>Frequently Asked Questions (FAQ) Module and shortcode.</li>
-		        <li>Customizable Category Archive Page</li>
-		        <li>AI Content Writing</li>
-		        <li>Organize articles and categories alphabetically, chronologically, or in any custom order with drag and drop.</li>
-		        <li>Optimized for the best SEO results to boost online visibility</li>
-		        <li>Analytics to track your Knowledge Base usage</li>
-		        <li>Supports RTL languages, WCAG accessibility standards, and works with WPML and Polylang</li>
-		    </ul>
-		
-		    <h3 style='padding-top: 20px;'>PRO Features</h3>
-		    <p>Expand your Knowledge Base using our cost-effective add-ons:</p>
-		    <ul>
-		        <li>Control access and permissions based on groups, WordPress users and roles, and custom roles.</li>
-		        <li>Manage public and private articles and control who can read, write, and edit articles.</li>
-		        <li>Create unlimited Knowledge Bases with separate articles, categories, tags, and more.</li>
-		        <li>Choose from Sidebar and Grid layouts.</li>
-		        <li>Import and export articles and categories using CSV and XML</li>
-		        <li>Add article voting, a feedback form, and learn from analytics.</li>
-		        <li>More widgets and shortcodes for categories, popular articles, and the search bar.</li>
-		        <li>Replace articles with links to PDFs, external docs, video links, and more.</li>
-		        <li>Utilize Advanced search analytics to identify popular and empty searches.</li>
-		    </ul>
-		
-		    <h3 style='padding-top: 20px;'>Need Help or Looking for a Feature?</h3>
-		    <p>Please don't hesitate to contact us <a href=\"https://www.echoknowledgebase.com/pre-sale-question/\" target='_blank'>here</a>.</p>
-		    <p>We're always eager to help and are open to suggestions for new features.</p>
-		";
+		return
+			"<h2 style='padding-top: 20px;'>" . esc_html__( 'Welcome to Echo Knowledge Base!', 'echo-knowledge-base' ) . "</h2>" .
+			"<p>" . esc_html__( "We're thrilled that you've chosen our plugin to enhance your Knowledge Base. We're here to assist you in making your Knowledge Base exceptional. If you need any help or have questions, just let us know!", 'echo-knowledge-base' ) . "</p>" .
+
+			"<h3 style='padding-top: 20px;'>" . esc_html__( 'Create Articles Just Like You Create Posts', 'echo-knowledge-base' ) . "</h3>" .
+			"<p>" . esc_html__( 'Add instructional videos or product demos. Example of embedded video:', 'echo-knowledge-base' ) . "</p>" .
+				$youtube_vid .
+
+			"<p>" . esc_html__( 'Enhance your articles with visuals. Example of an image:', 'echo-knowledge-base' ) . "</p>" .
+			"<img src='" . esc_url( $demo_img ) . "' " . "alt='" . esc_attr__( 'Sample Image', 'echo-knowledge-base' ) . "' width='500'>" .
+
+			"<p>" . esc_html__( 'Effortlessly embed PDFs and other media using your page builder or blocks.', 'echo-knowledge-base' ) . "</p>" .
+
+			"<h3 style='padding-top: 20px;'>" . esc_html__( 'Main Features', 'echo-knowledge-base' ) . "</h3>" .
+			"<p>" . esc_html__( 'Our plugin includes the following features to make your Knowledge Base stand out:', 'echo-knowledge-base' ) . "</p>" .
+			"<ul>" .
+			    "<li>" . esc_html__('Fast search bar with listed results', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Five levels of hierarchical documentation', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Article view counter with Popular and Recent Articles', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Frequently Asked Questions (FAQ) Module and shortcode.', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Customizable Category Archive Page', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('AI Content Writing', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Organize articles and categories alphabetically, chronologically, or in any custom order with drag and drop.', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Optimized for the best SEO results to boost online visibility', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Analytics to track your Knowledge Base usage', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Supports RTL languages, WCAG accessibility standards, and works with WPML and Polylang', 'echo-knowledge-base' ) . "</li>" .
+			"</ul>" .
+
+			"<h3 style='padding-top: 20px;'>" . esc_html__( 'PRO Features', 'echo-knowledge-base' ) . "</h3>" .
+			"<p>" . esc_html__( 'Expand your Knowledge Base using our cost-effective add-ons:', 'echo-knowledge-base' ) . "</p>" .
+			"<ul>" .
+			    "<li>" . esc_html__('Control access and permissions based on groups, WordPress users and roles, and custom roles.', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Manage public and private articles and control who can read, write, and edit articles.', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Create unlimited Knowledge Bases with separate articles, categories, tags, and more.', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Choose from Sidebar and Grid layouts.', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Import and export articles and categories using CSV and XML', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Add article voting, a feedback form, and learn from analytics.', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('More widgets and shortcodes for categories, popular articles, and the search bar.', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Replace articles with links to PDFs, external docs, video links, and more.', 'echo-knowledge-base' ) . "</li>" .
+			    "<li>" . esc_html__('Utilize Advanced search analytics to identify popular and empty searches.', 'echo-knowledge-base' ) . "</li>" .
+			"</ul>" .
+
+			"<h3 style='padding-top: 20px;'>" . esc_html__( 'Need Help or Looking for a Feature?', 'echo-knowledge-base' ) . "</h3>" .
+			"<p>" .
+			    sprintf(
+			        __( "Please don't hesitate to contact us %shere%s.", 'echo-knowledge-base' ),
+			        '<a href="https://www.echoknowledgebase.com/pre-sale-question/" target="_blank">',
+			        '</a>'
+			    ) .
+			"</p>" .
+			"<p>" . esc_html__( "We're always eager to help and are open to suggestions for new features.", 'echo-knowledge-base' ) . "</p>";
 	}
 
 	public static function create_sample_faqs( $new_kb_id ) {

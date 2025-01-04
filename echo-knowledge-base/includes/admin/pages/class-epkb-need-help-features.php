@@ -320,7 +320,7 @@ class EPKB_Need_Help_Features {
 				'category'  => 'compatibility',
 				'icon'      => '',
 				'name'      => esc_html__( 'Multi-language Support', 'echo-knowledge-base' ),
-				'desc'      => esc_html__( 'Change or translate any text label on the front-end using any of 12 translated languages.', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'Change or translate any text label on the front-end.', 'echo-knowledge-base' ),
 				'config'    => '',
 				'docs'      => 'https://www.echoknowledgebase.com/documentation/set-multilingual-bilingual-site/',
 				'video'     => '',
@@ -951,7 +951,7 @@ class EPKB_Need_Help_Features {
 			[
 				'plugin'      => 'crel',
 				'category'    => 'advanced',
-				'box-heading' => esc_html__( 'Creative Add-ons Plugin ', 'echo-knowledge-base' ),
+				'box-heading' => esc_html__( 'Creative Add-ons Plugin', 'echo-knowledge-base' ),
 			],
 			[
 				'plugin'    => 'core',

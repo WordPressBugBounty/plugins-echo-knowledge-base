@@ -54,7 +54,7 @@ class EPKB_Blocks_Setup {
 		array_unshift( $block_categories,
 			array(
 				'slug' => EPKB_Abstract_Block::EPKB_BLOCK_CATEGORY,
-				'title' => __( 'Knowledge Base', 'echo-knowledge-base' ),
+				'title' => esc_html__( 'Knowledge Base', 'echo-knowledge-base' ),
 				'icon' => EPKB_Abstract_Block::EPKB_BLOCK_CATEGORY_ICON,
 			)
 		);
@@ -92,8 +92,8 @@ class EPKB_Blocks_Setup {
 
 		// register template
 		register_block_template( $template_name, [
-			'title' => __( 'KB Block Page Template', 'echo-knowledge-base' ),
-			'description' => __( 'The recommended template to use for creating the KB main page.', 'echo-knowledge-base' ),
+			'title' => esc_html__( 'KB Block Page Template', 'echo-knowledge-base' ),
+			'description' => esc_html__( 'The recommended template to use for creating the KB main page.', 'echo-knowledge-base' ),
 			'content' => $template_content,
 			'post_types'  => array( 'page' ),
 		] );

@@ -798,9 +798,9 @@ class EPKB_HTML_Admin {
 			'title' => esc_html__( 'We did not detect any Main Page for your knowledge base', 'echo-knowledge-base' ) . ': ' . esc_html( $kb_config['kb_name'] ) . ' . ' . esc_html__( 'You can do the following:', 'echo-knowledge-base' ),
 			'desc'  => '<ul>
 							<li>' . esc_html__( 'If you have a KB Main Page, please re-save it and then come back', 'echo-knowledge-base' ) . '</li>
-                            <li>' . __( 'Run Setup Wizard to create a new KB Main Page', 'echo-knowledge-base' )
-				. ' ' . '<a href="'.esc_url( admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) . '&page=epkb-kb-configuration&setup-wizard-on' ) ) . '" target="_blank">' . __( 'Run Setup Wizard', 'echo-knowledge-base' ) . '</a></li>
-							<li>' . __( 'Create one manually as described here:', 'echo-knowledge-base' )
+                            <li>' . esc_html__( 'Run Setup Wizard to create a new KB Main Page', 'echo-knowledge-base' )
+				. ' ' . '<a href="'.esc_url( admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) . '&page=epkb-kb-configuration&setup-wizard-on' ) ) . '" target="_blank">' . esc_html__( 'Run Setup Wizard', 'echo-knowledge-base' ) . '</a></li>
+							<li>' . esc_html__( 'Create one manually as described here:', 'echo-knowledge-base' )
 				. ' ' . '<a href="https://www.echoknowledgebase.com/documentation/main-page-faqs/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a></li>
                         </ul>'
 		), $return_html  );

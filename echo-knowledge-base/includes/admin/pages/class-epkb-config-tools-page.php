@@ -770,8 +770,8 @@ class EPKB_Config_Tools_Page {
 	 */
 	private static function show_convert_footer_html( $kb_config ) { ?>
 		<div class="epkb-import-footer">
-			<button type="button" class="epkb-default-btn epkb-convert-button-back">
-				<?php esc_html_e( '< Back', 'echo-knowledge-base' ); ?>
+			<button type="button" class="epkb-default-btn epkb-convert-button-back"> <?php
+				'< ' . esc_html_e( 'Back', 'echo-knowledge-base' ); ?>
 			</button>
 			<button type="button" class="epkb-default-btn epkb-hidden epkb-convert-button-exit">
 				<?php esc_html_e( 'Exit', 'echo-knowledge-base' ); ?>
@@ -1089,7 +1089,7 @@ class EPKB_Config_Tools_Page {
 			}   ?>
 
 			<div id='epkb-ajax-in-progress-debug-switch' style="display:none;">
-				<?php esc_html_e( 'Switching debug... ', 'echo-knowledge-base' ); ?><img class="epkb-ajax waiting" style="height: 30px;"
+				<?php esc_html_e( 'Switching debug', 'echo-knowledge-base' ) . '... '; ?><img class="epkb-ajax waiting" style="height: 30px;"
 				                                                                         src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/loading_spinner.gif' ); ?>">
 			</div>
 		</div> <?php
@@ -1310,7 +1310,7 @@ class EPKB_Config_Tools_Page {
 			}   ?>
 
 			<div id='epkb-ajax-in-progress-debug-switch' style="display:none;">
-				<?php esc_html_e( 'Switching debug... ', 'echo-knowledge-base' ); ?><img class="epkb-ajax waiting" style="height: 30px;" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/loading_spinner.gif' ); ?>">
+				<?php esc_html_e( 'Switching debug', 'echo-knowledge-base' ) . '... '; ?><img class="epkb-ajax waiting" style="height: 30px;" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/loading_spinner.gif' ); ?>">
 			</div>
 		</div> <?php
 

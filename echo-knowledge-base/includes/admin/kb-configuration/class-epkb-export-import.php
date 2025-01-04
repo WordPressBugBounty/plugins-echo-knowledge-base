@@ -203,7 +203,7 @@ class EPKB_Export_Import {
 			
 			// import data exists but plugin is not active
 			if ( isset( $import_data[$add_on_prefix] ) && ! class_exists( $add_on_class ) ) {
-				$this->message['error'] = esc_html__( 'Import failed because found import data for a plugin that is not active: ', 'echo-knowledge-base' ) . $plugin_name;
+				$this->message['error'] = esc_html__( 'Import failed because found import data for a plugin that is not active', 'echo-knowledge-base' ) . ': ' . $plugin_name;
 				return $this->message;
 			}
 

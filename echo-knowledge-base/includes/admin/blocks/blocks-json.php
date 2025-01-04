@@ -493,6 +493,12 @@ function epkb_get_block_attributes( $block_name ) {
 			'tab_nav_desc_typography_controls' => [
 				'type' => 'object'
 			],
+			'tab_nav_overflow_mode' => [
+				'type' => 'string'
+			],
+			'tab_nav_max_tabs_per_row' => [
+				'type' => 'number'
+			],
 			'block_full_width_toggle' => [
 				'type' => 'string'
 			],

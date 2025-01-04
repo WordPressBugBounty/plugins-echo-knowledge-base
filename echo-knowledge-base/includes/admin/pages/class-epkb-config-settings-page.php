@@ -251,7 +251,7 @@ class EPKB_Config_Settings_Page {
 			'bottom_labels_link' => true,
 		);
 		$tabs_config['article-page']['sub_tabs'][] = array(
-			'title'     => esc_html__( 'Table of Contents ( TOC )', 'echo-knowledge-base' ),
+			'title'     => esc_html__( 'Table of Contents (TOC)', 'echo-knowledge-base' ),
 			'key'       => 'article-page-toc',
 			'bottom_labels_link' => true,
 		);
@@ -756,7 +756,7 @@ class EPKB_Config_Settings_Page {
 					break;
 				case 'toc_left':
 				case 'toc_right':
-					$setting_label = esc_html__( 'Table of Contents ( TOC )', 'echo-knowledge-base' );
+					$setting_label = esc_html__( 'Table of Contents (TOC)', 'echo-knowledge-base' );
 					$setting_value = $this->kb_config[ 'article_sidebar_component_priority' ][ 'toc' . $sidebar_suffix ];
 					$group_data['custom-nonzero-unselection-group'] = 'article_sidebar_toc';
 					break;
@@ -823,7 +823,7 @@ class EPKB_Config_Settings_Page {
 					if ( ! $this->elay_enabled ) {
 						EPKB_HTML_Forms::dialog_pro_feature_ad( [
 							'id' => 'epkb-dialog-pro-feature-ad-kb_main_page_layout',
-							'title' => sprintf( esc_html__( "Unlock %sGrid and Sidebar Layout%s By Upgrading to PRO ", 'echo-knowledge-base' ), '<strong>', '</strong>' ),
+							'title' => sprintf( esc_html__( "Unlock %sGrid and Sidebar Layout%s By Upgrading to PRO", 'echo-knowledge-base' ), '<strong>', '</strong>' ),
 							'btn_text' => esc_html__( 'Upgrade Now', 'echo-knowledge-base' ),
 							'img_list' =>  [
 									[ 'Click to view demo',
@@ -1279,8 +1279,8 @@ class EPKB_Config_Settings_Page {
 			<div class="epkb-admin__input-field <?php echo esc_attr( $input_group_class ); ?>" <?php echo $group_data_escaped; ?>> <?php
 				EPKB_HTML_Forms::notification_box_middle( array(
 					'type' => 'error',
-					'desc' => '<p>' . esc_html__( 'The Resource Links feature is supported in "KB - Elegant Layouts" add-on versions higher than 2.14.1.', 'echo-knowledge-base' ) .
-						'<br>' . sprintf( esc_html__( 'Please %supgrade%s your "KB - Elegant Layouts" add-on to unlock this feature.', 'echo-knowledge-base' ), '<a href="https://www.echoknowledgebase.com/wordpress-plugin/elegant-layouts/" target="_blank">', '</a>' ) . '</p>',
+					'desc' => '<p>' . esc_html__( 'The Resource Links feature is supported in newer "KB - Elegant Layouts" add-on.', 'echo-knowledge-base' ) .
+							 '<br>' . esc_html__( 'Please upgrade your "KB - Elegant Layouts" add-on to unlock this feature.', 'echo-knowledge-base' ) . '</p>',
 				) );    ?>
 			</div>  <?php
 		}
@@ -2398,6 +2398,8 @@ class EPKB_Config_Settings_Page {
 					'tab_nav_active_font_color' => 'only_tabs',
 					'tab_nav_active_background_color' => 'only_tabs',
 					'tab_nav_background_color' => 'only_tabs',
+					'tab_nav_overflow_mode' => 'only_tabs',
+					'tab_nav_max_tabs_per_row' => 'only_tabs',
 				],
 				'learn_more_links' => [ // title => url
 					__( 'Using Tabs Layout', 'echo-knowledge-base' ) => 'https://www.echoknowledgebase.com/documentation/using-tabs-layout/',
@@ -2744,7 +2746,7 @@ class EPKB_Config_Settings_Page {
 
 			case 'ml_categories_articles_sidebar_desktop_width':
 				$input_args['tooltip_body'] =  esc_html__( 'The width of the sidebar is determined by the Row Width setting. If the Row Width is set to 100%, the Sidebar Width can be assigned, ' .
-													'for example, as 30% (Large), leaving the remaining 70% for the rest of the row. ', 'echo-knowledge-base' ) . '<br/><br/>' .
+													'for example, as 30% (Large), leaving the remaining 70% for the rest of the row.', 'echo-knowledge-base' ) . '<br/><br/>' .
 													'<a target="_blank" href="https://www.echoknowledgebase.com/documentation/modular-layout/">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>';
 				break;
 
@@ -2872,7 +2874,7 @@ class EPKB_Config_Settings_Page {
 				break;
 
 			case 'toc_toggler':
-				$input_args['tooltip_external_links'] = [ [ 'link_text' => __( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/table-of-content' ] ];
+				$input_args['tooltip_external_links'] = [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/table-of-content' ] ];
 				break;
 
 			case 'template_for_archive_page':
@@ -2882,6 +2884,8 @@ class EPKB_Config_Settings_Page {
 					'number' => 1,
 				) );
 				if ( ! empty( $example_terms ) && is_array( $example_terms ) ) {
+					// Force the array to have a zero-based index
+					$example_terms = array_values( $example_terms );
 					$input_args['tooltip_external_links'][] = [
 						'link_text' => esc_html__( 'here', 'echo-knowledge-base' ),
 						'link_desc' => esc_html__( 'After you switch templates, see how it looks on the frontend', 'echo-knowledge-base' ),
@@ -3412,6 +3416,8 @@ class EPKB_Config_Settings_Page {
 					'tab_nav_active_font_color' => 'only_tabs',
 					'tab_nav_active_background_color' => 'only_tabs',
 					'tab_nav_background_color' => 'only_tabs',
+					'tab_nav_overflow_mode' => 'only_tabs',
+					'tab_nav_max_tabs_per_row' => 'only_tabs',
 				],
 				'learn_more_links' => [ // title => url
 					__( 'Using Tabs Layout', 'echo-knowledge-base' ) => 'https://www.echoknowledgebase.com/documentation/using-tabs-layout/',

@@ -768,7 +768,7 @@ class EPKB_KB_Wizard_Setup {
 					if ( isset( $layout_config['get_pro_link'] ) ) {
 						EPKB_HTML_Forms::dialog_pro_feature_ad( array(
 							'id' => 'epkb-dialog-pro-feature-ad-' . strtolower( $layout_name ),
-							'title' => sprintf(__("Unlock %s" . $layout_config['layout_title'] . " Feature%s By Upgrading to PRO ", 'echo-knowledge-base'), '<strong>', '</strong>'),
+							'title' => sprintf(__("Unlock %s" . $layout_config['layout_title'] . " Feature%s By Upgrading to PRO", 'echo-knowledge-base'), '<strong>', '</strong>'),
 							'list' => array( esc_html__( 'Grid Layout for the Main Page', 'echo-knowledge-base'), esc_html__( 'Sidebar Layout for the Main Page', 'echo-knowledge-base'),
 											__( 'Resource Links feature for the Main Page', 'echo-knowledge-base')),
 							'btn_text' => esc_html__('Upgrade Now', 'echo-knowledge-base'),

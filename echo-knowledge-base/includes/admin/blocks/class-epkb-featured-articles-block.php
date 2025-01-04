@@ -7,7 +7,7 @@ final class EPKB_Featured_Articles_Block extends EPKB_Abstract_Block {
 	protected $block_var_name = 'featured_articles';
 	protected $block_title = 'KB Featured Articles';
 	protected $icon = 'editor-table';
-	protected $keywords = ['knowledge base','articles','popular articles','new articles'];
+	protected $keywords = ['knowledge base', 'articles', 'popular articles', 'new articles'];	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
 
 	public function __construct( $init_hooks = true ) {
 		parent::__construct( $init_hooks );

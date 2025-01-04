@@ -7,7 +7,7 @@ final class EPKB_Search_Block extends EPKB_Abstract_Block {
 	protected $block_var_name = 'search';
 	protected $block_title = 'KB Search';
 	protected $icon = 'search';
-	protected $keywords = ['search','find','query','knowledge base'];
+	protected $keywords = ['search', 'find', 'query', 'knowledge base'];	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
 
 	public function __construct( $init_hooks = true ) {
 		parent::__construct( $init_hooks );

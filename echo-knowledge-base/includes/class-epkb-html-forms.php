@@ -302,7 +302,7 @@ class EPKB_HTML_Forms {
 					if ( ! empty( $error['error_str'] ) && strpos( $error['error_str'], $table_name ) !== false ) {
 						//LOG Only Access Manager Error
 						EPKB_Logging::add_log( 'Database error', $EZSQL_ERROR );
-						$message .= esc_html__( '. Database Error.', 'echo-knowledge-base' );
+						$message .= '. ' . esc_html__( 'Database Error', 'echo-knowledge-base' );
 					}
 				}
 			}

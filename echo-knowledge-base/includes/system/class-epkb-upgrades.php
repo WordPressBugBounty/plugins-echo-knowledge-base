@@ -205,6 +205,14 @@ class EPKB_Upgrades {
 		if ( version_compare( $last_version, '12.42.0', '<' ) ) {
 			self::upgrade_to_v12_42_0( $kb_config );
 		}
+
+		if ( version_compare( $last_version, '13.11.0', '<' ) ) {
+			self::upgrade_to_v13_11_0( $kb_config );
+		}
+	}
+
+	private static function upgrade_to_v13_11_0( &$kb_config ) {
+		$kb_config['tab_nav_overflow_mode'] = 'drop_down';
 	}
 
 	private static function upgrade_to_v12_42_0( &$kb_config ) {

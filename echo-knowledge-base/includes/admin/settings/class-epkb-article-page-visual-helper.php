@@ -23,7 +23,7 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 			return;
 		}
 
-		if ( ! is_user_logged_in() || ! EPKB_Admin_UI_Access::is_user_admin_editor() ) {
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
 			return;
 		}
 
@@ -273,7 +273,8 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 				<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
 				<?php echo esc_html__( 'KB setting for Search Width', 'echo-knowledge-base' ) . ': ' . esc_attr( $article_search_width . $article_search_width_units ) .
 								( $article_search_width_units == '%' ? ' ' . esc_html__( 'of the page.', 'echo-knowledge-base' ) : '' ); ?>
-                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-search-box__search-settings-ap' ) ); ?>" target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
+                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-search-box__search-settings-ap' ) ); ?>"
+                       target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
 				</div>
 
 				<div class="epkb-vshelp-accordion-body-content__spacer"></div><?php
@@ -287,18 +288,18 @@ class EPKB_Article_Page_Visual_Helper extends EPKB_Visual_Helper {
 				<div class="epkb-vshelp-accordion-body-content__item"><span class="epkb-vshelp-accordion-body-content__item_icon">⮞</span>
 					<?php echo esc_html__( 'KB setting for Article Width', 'echo-knowledge-base' ) . ': ' . esc_attr( $article_content_width . $article_content_width_units ) .
 								( $article_content_width_units == '%' ? ' ' . esc_html__( 'of the total page width.', 'echo-knowledge-base' ) : '' ); ?>
-                    <a href="<?php echo esc_url(admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-settings__article_content' ) ); ?>" target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
+                    <a href="<?php echo esc_url(admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_id . '&page=epkb-kb-configuration#settings__article-page__article-page-settings__article_content' ) ); ?>"
+                       target="_blank" class="epkb-vshelp-accordion-body-content__note"><span class="epkbfa epkbfa-external-link"></span></a>
 				</div>
 
 				<div class="epkb-vshelp-accordion-body-content__spacer"></div>
 
 			<h5><strong><?php esc_html_e( 'Troubleshooting', 'echo-knowledge-base' ); ?></strong></h5>
-			<p><?php echo esc_html__( 'If the value you set in the KB settings does not match the actual value, it may be because your theme or page
-									builder is limiting the overall width. In such cases, the KB settings cannot exceed the maximum width allowed
-									by your theme or page builder. Try the following', 'echo-knowledge-base' ) . ':'; ?></p>
+			<p><?php echo esc_html__( 'If the value you set in the KB settings does not match the actual value, it may be because your theme or page builder is limiting the overall width. In such cases, the KB settings cannot exceed the maximum width allowed ' .
+									'by your theme or page builder. Try the following', 'echo-knowledge-base' ) . ':'; ?></p>
 			<ul>
-				<li><?php echo sprintf( esc_html__( 'Article Page width is controlled by search box width, sidebar widths and other settings. %s', 'echo-knowledge-base' ),
-						'<a href="https://www.echoknowledgebase.com/documentation/article-page-width/" target="_blank" rel="nofollow">' . esc_html__( 'Learn more', 'echo-knowledge-base' ) . '</a> <span class="epkbfa epkbfa-external-link"> </span>' ); ?></li>  <?php
+				<li><?php echo esc_html__( 'Article Page width is controlled by search box width, sidebar widths and other settings.', 'echo-knowledge-base' ) .
+						'<a href="https://www.echoknowledgebase.com/documentation/article-page-width/" target="_blank" rel="nofollow">' . esc_html__( 'Learn more', 'echo-knowledge-base' ) . '</a> <span class="epkbfa epkbfa-external-link"> </span>'; ?></li>  <?php
 
 				if ( $current_page_template == 'current_theme_templates' ) { ?>
 					<li><?php echo sprintf( esc_html__( 'You are currently using the Current theme template. Check your theme settings or switch to the KB template. %s', 'echo-knowledge-base' ),

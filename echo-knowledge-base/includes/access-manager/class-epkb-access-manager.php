@@ -222,11 +222,11 @@ class EPKB_Access_Manager {
 	}
 
 	private static function get_admins_distinct_box() {
-		return sprintf( esc_html__( '%sAdmins%s', 'echo-knowledge-base' ), '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--high">', '</span>' );
+		return '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--high">' . esc_html__( 'Admins', 'echo-knowledge-base' ) . '</span>';
 	}
 
 	private static function get_users_with_capability_distinct_box( $capability ) {
-		return sprintf( esc_html__( '%susers with "%s" capability%s', 'echo-knowledge-base' ), '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--lowest">', $capability, '</span>' );
+		return '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--lowest">' . esc_html__( 'users with', 'echo-knowledge-base' ) . '"' . $capability . '"' . esc_html__( 'capability', 'echo-knowledge-base' ) . '</span>';
 	}
 
 	public static function is_ui_access_loop( $context ) {
@@ -234,10 +234,10 @@ class EPKB_Access_Manager {
 	}
 
 	private static function get_editors_distinct_box() {
-		return sprintf( esc_html__( '%sEditors%s', 'echo-knowledge-base' ), '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--middle">', '</span>' );
+		return '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--middle">' . esc_html__( 'Editors', 'echo-knowledge-base' ) . '</span>';
 	}
 
 	private static function get_authors_distinct_box() {
-		return sprintf( esc_html__( '%sAuthors%s', 'echo-knowledge-base' ), '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--low">', '</span>' );
+		return '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--low">' . esc_html__( 'Authors', 'echo-knowledge-base' ) . '</span>';
 	}
 }

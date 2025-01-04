@@ -407,9 +407,9 @@ class EPKB_AI_Help_Sidebar {
 			</div>
 			<div class="epkb-ai-help-sidebar__feedback-input-wrap">
 				<div class="epkb-ai-help-sidebar__feedback-input-title">
-					<div class="epkb-ai-help-sidebar__feedback-input-title-text">
-                        <?php esc_html_e( 'Email', 'echo-knowledge-base' ); ?>
-                        <i><?php esc_html_e( '( Share your email to discuss your feedback. )', 'echo-knowledge-base' ); ?></i>
+					<div class="epkb-ai-help-sidebar__feedback-input-title-text">                        <?php
+						esc_html_e( 'Email', 'echo-knowledge-base' ); ?>
+                        <i><?php echo '( ' . esc_html__( 'Share your email to discuss your feedback.', 'echo-knowledge-base' ) . ' )'; ?></i>
                     </div>
 				</div>
 				<div class="epkb-ai-help-sidebar__feedback-input-container">
@@ -478,16 +478,9 @@ class EPKB_AI_Help_Sidebar {
 				'type' => 'warning',
 		        'title' => esc_html__( 'AI Disclaimer and Warnings', 'echo-knowledge-base' ),
 		        'desc' => sprintf(
-		            wp_kses(
-		                __( 'Please read the <a href="%s" target="_blank">AI Disclaimer and Warnings</a> before using the AI features.', 'echo-knowledge-base' ),
-		                array(
-		                    'a' => array(
-		                        'href' => array(),
-		                        'target' => array(),
-		                    ),
-		                )
-		            ),
-		            esc_url( 'https://www.echoknowledgebase.com/ai-disclaimer-and-warnings/' )
+			                esc_html__( 'Please read the %s AI Disclaimer and Warnings %s before using the AI features.', 'echo-knowledge-base' ),
+							'<a href="https://www.echoknowledgebase.com/ai-disclaimer-and-warnings/" target="_blank">',
+							'</a>'
 		        ),
 		    )
 		);		?>

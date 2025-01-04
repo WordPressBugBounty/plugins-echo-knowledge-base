@@ -58,8 +58,8 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_1_desktop_width_units',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'px'            => _x( 'px', 'echo-knowledge-base' ),
-			        '%'             => _x( '%',  'echo-knowledge-base' )
+			        'px'            => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+			        '%'             => _x( '%', 'percentage', 'echo-knowledge-base' )
 		        ),
 		        'default'     => '%'
 	        ),
@@ -92,8 +92,8 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_2_desktop_width_units',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'px'            => _x( 'px', 'echo-knowledge-base' ),
-			        '%'             => _x( '%',  'echo-knowledge-base' )
+			        'px'            => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+			        '%'             => _x( '%', 'percentage',  'echo-knowledge-base' )
 		        ),
 		        'default'     => 'px'
 	        ),
@@ -126,8 +126,8 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_3_desktop_width_units',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'px'            => _x( 'px', 'echo-knowledge-base' ),
-			        '%'             => _x( '%',  'echo-knowledge-base' )
+			        'px'            => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+			        '%'             => _x( '%', 'percentage',  'echo-knowledge-base' )
 		        ),
 		        'default'     => 'px'
 	        ),
@@ -160,8 +160,8 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_4_desktop_width_units',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'px'            => _x( 'px', 'echo-knowledge-base' ),
-			        '%'             => _x( '%',  'echo-knowledge-base' )
+			        'px'            => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+			        '%'             => _x( '%', 'percentage',  'echo-knowledge-base' )
 		        ),
 		        'default'     => 'px'
 	        ),
@@ -173,11 +173,11 @@ class EPKB_KB_Config_Layout_Modular {
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
 			        'none'                  => '-----',
-			        'search'                => esc_html__( 'Search Box',   'echo-knowledge-base' ),
-			        'categories_articles'   => esc_html__( 'Categories & Articles',   'echo-knowledge-base' ),
-			        'articles_list'         => esc_html__( 'Featured Articles',   'echo-knowledge-base' ),
-			        'faqs'                  => esc_html__( 'FAQs',   'echo-knowledge-base' ),
-			        'resource_links'        => esc_html__( 'Resource Links',   'echo-knowledge-base' ),
+			        'search'                => esc_html__( 'Search Box', 'echo-knowledge-base' ),
+			        'categories_articles'   => esc_html__( 'Categories & Articles', 'echo-knowledge-base' ),
+			        'articles_list'         => esc_html__( 'Featured Articles', 'echo-knowledge-base' ),
+			        'faqs'                  => esc_html__( 'FAQs', 'echo-knowledge-base' ),
+			        'resource_links'        => esc_html__( 'Resource Links', 'echo-knowledge-base' ),
 		        ),
 		        'default'     => 'none'
 	        ),
@@ -194,8 +194,8 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_5_desktop_width_units',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'px'            => _x( 'px', 'echo-knowledge-base' ),
-			        '%'             => _x( '%',  'echo-knowledge-base' )
+			        'px'            => _x( 'px', 'pixels', 'echo-knowledge-base' ),
+			        '%'             => _x( '%', 'percentage', 'echo-knowledge-base' )
 		        ),
 		        'default'     => 'px'
 	        ),
