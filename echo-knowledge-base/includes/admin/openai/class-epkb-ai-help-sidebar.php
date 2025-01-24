@@ -339,7 +339,7 @@ class EPKB_AI_Help_Sidebar {
 			<div class="epkb-ai-help-sidebar__resources-container">
 
                 <div class="epkb-ai-help-sidebar__resources-left-col">
-                    <h3><?php esc_html_e( 'Knowledge Base Documentation', 'echo-knowledge-base' ); ?></h3>
+                    <h3><?php esc_html_e( 'Echo Knowledge Base Documentation', 'echo-knowledge-base' ); ?></h3>
                     <ul>
                         <li><a href="<?php echo esc_url('https://www.echoknowledgebase.com/documentation/ai-help-sidebar/'); ?>" target="_blank" rel="nofollow"><?php esc_html_e( 'Overview', 'echo-knowledge-base' ); ?></a></li>
                         <li><a href="<?php echo esc_url('https://www.echoknowledgebase.com/documentation/how-to-get-an-open-ai-key/'); ?>" target="_blank" rel="nofollow"><?php esc_html_e( 'How to get an OpenAI Key?', 'echo-knowledge-base' ); ?></a></li>

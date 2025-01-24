@@ -16,6 +16,8 @@ class EPKB_Block_Utilities {
 	public static function current_post_has_kb_layout_blocks( $clear_cache = true ) {
 		static $cache = [];
 
+		// NOTE: any updates/fixes to be applied to Elegant Layouts and Advanced Search
+
 		if ( $clear_cache ) {
 			$cache = [];
 		}
@@ -98,6 +100,9 @@ class EPKB_Block_Utilities {
 			preg_quote( EPKB_Categories_Layout_Block::EPKB_BLOCK_NAME, '/' ),
 			preg_quote( EPKB_Classic_Layout_Block::EPKB_BLOCK_NAME, '/' ),
 			preg_quote( EPKB_Drill_Down_Layout_Block::EPKB_BLOCK_NAME, '/' ),
+			preg_quote( EPKB_Grid_Layout_Block::EPKB_BLOCK_NAME, '/' ),
+			preg_quote( EPKB_Sidebar_Layout_Block::EPKB_BLOCK_NAME, '/' ),
+			preg_quote( EPKB_Advanced_Search_Block::EPKB_BLOCK_NAME, '/' ),
 		);
 
 		if ( ! preg_match( '/wp:echo-knowledge-base\/(' . implode( '|', $quoted_layout_block_names ) . ')/i', $post->post_content, $matches ) ) {
@@ -169,7 +174,8 @@ class EPKB_Block_Utilities {
 	 * Return class handler of corresponding KB block depending on KB module name and KB Main Page layout; null if no corresponding block class found
 	 * @param $module_name
 	 * @param $layout
-	 * @return EPKB_FAQs_Block|EPKB_Featured_Articles_Block|EPKB_Basic_Layout_Block|EPKB_Categories_Layout_Block|EPKB_Classic_Layout_Block|EPKB_Drill_Down_Layout_Block|EPKB_Search_Block|EPKB_Tabs_Layout_Block|null
+	 * @return EPKB_FAQs_Block|EPKB_Featured_Articles_Block|EPKB_Basic_Layout_Block|EPKB_Categories_Layout_Block|EPKB_Classic_Layout_Block|EPKB_Drill_Down_Layout_Block|EPKB_Search_Block|EPKB_Tabs_Layout_Block|EPKB_Grid_Layout_Block|EPKB_Sidebar_Layout_Block|EPKB_Advanced_Search_Block|null
+	 *
 	 */
 	private static function get_block_class_by_module_name( $module_name, $layout ) {
 
@@ -196,6 +202,12 @@ class EPKB_Block_Utilities {
 					case EPKB_Layout::CATEGORIES_LAYOUT:
 						return new EPKB_Categories_Layout_Block( false );
 
+					case EPKB_Layout::GRID_LAYOUT:
+						return new EPKB_Grid_Layout_Block( false );
+
+					case EPKB_Layout::SIDEBAR_LAYOUT:
+						return new EPKB_Sidebar_Layout_Block( false );
+
 					default:
 						return null;
 				}
@@ -205,6 +217,9 @@ class EPKB_Block_Utilities {
 
 			case 'articles_list':
 				return new EPKB_Featured_Articles_Block();
+
+			case 'advanced-search':
+				return new EPKB_Advanced_Search_Block( false );
 
 			default:
 				return null;

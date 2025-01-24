@@ -13,6 +13,7 @@ abstract class EPKB_Abstract_Block {
 	protected $block_name = '';
 	protected $block_var_name = '';
 	protected $keywords = array();	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
+	protected $has_rtl_css = false;
 
 	public function __construct( $init_hooks = true ) {
 
@@ -23,7 +24,9 @@ abstract class EPKB_Abstract_Block {
 
 		add_action( 'init', array( $this, 'register_block_type' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_editor_assets' ) ); // Backend
-		add_filter( 'kb_' . $this->block_var_name . '_block_config', array( $this, 'filter_block_config_if_exists' ), 10, 2 );
+
+		// for Search blocks (KB core and AS.EA) we need to retrieve the block config in AJAX handlers - this filter is applied to get relevant configuration for each block in such cases
+		add_filter( 'kb_' . $this->block_var_name . '_block_config', array( $this, 'filter_block_config_if_exists' ), 10, 2 );  // e.g. kb_advanced_search_block_config
 	}
 
 	public function register_block_type() {
@@ -36,6 +39,16 @@ abstract class EPKB_Abstract_Block {
 
 		if ( WP_Block_Type_Registry::get_instance()->is_registered( 'echo-knowledge-base/' . $name ) ) {
 			return;
+		}
+
+		if ( ! self::is_block_available() ) {
+			return;
+		}
+
+		// if block provides RTL styles RTL always specify RTL handle on block registration - it is too earlier to use is_rtl() on 'init' hook; the RTL handle will be ignored if corresponding CSS file is not registered
+		$block_public_style_handles = [ $this->get_block_public_styles_handle() ];
+		if ( $this->has_rtl_css ) {
+			$block_public_style_handles[] = $this->get_block_public_styles_handle() . '-rtl';
 		}
 
 		register_block_type(
@@ -51,12 +64,12 @@ abstract class EPKB_Abstract_Block {
 				'attributes' => $this->get_attribute_types_and_defaults(),
 				'supports' => ['html' => false, 'align '=> true, 'reusable' => false, 'customClassName' => false ],
 				'editor_script_handles' => [ $this->get_the_block_script_handle_for_editor_only() ],
-				'script_handles' => ['epkb-blocks-public-scripts'],
+				'script_handles' => [ $this->get_block_public_scripts_handle() ],
 				'editor_style_handles' => ['echo-knowledge-base-block-editor'],
-				'style_handles' => ['epkb-' . $name . '-block'],
+				'style_handles' => $block_public_style_handles,
 				'render_callback' => array( $this, 'render_block' ),
-				'style' => 'epkb-' . $this->get_block_public_styles_handle(),	// TODO future RTL #1: for RTL specify RTL slug as main here and the LTR as its dependency during registration
-				'script' => 'epkb-blocks-public-scripts',
+				'style' => $block_public_style_handles,
+				'script' => $this->get_block_public_scripts_handle(),
 				'example' => array(
 					'viewportWidth' => 1200,
 					'attributes' => array(),
@@ -143,20 +156,8 @@ abstract class EPKB_Abstract_Block {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		// core KB JS - enqueued via register_block_type()
-		if ( ! wp_script_is( 'epkb-blocks-public-scripts', 'registered' ) ) {
-			wp_register_script( 'epkb-blocks-public-scripts', Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
-			$epkb_vars = array(
-				'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
-				'msg_try_again' => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
-				'error_occurred' => esc_html__( 'Error occurred', 'echo-knowledge-base' ) . ' (1936)',
-				'unknown_error' => esc_html__( 'Unknown error', 'echo-knowledge-base' ) . ' (1247)',
-				'reload_try_again' => esc_html__( 'Please reload the page and try again.', 'echo-knowledge-base' ),
-				'save_config' => esc_html__( 'Saving configuration', 'echo-knowledge-base' ),
-				'input_required' => esc_html__( 'Input is required', 'echo-knowledge-base' ),
-				'nonce' => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
-				'creating_demo_data' => esc_html__( 'Creating a Knowledge Base with demo categories and articles. It will be completed shortly.', 'echo-knowledge-base' )
-			);
-			wp_localize_script( 'epkb-blocks-public-scripts', 'epkb_vars', $epkb_vars );
+		if ( ! wp_script_is( $this->get_block_public_scripts_handle(), 'registered' ) ) {
+			$this->register_block_public_scripts( $suffix );
 		}
 
 		// register common public styles and scripts - enqueued as a dependency of main block style
@@ -165,22 +166,24 @@ abstract class EPKB_Abstract_Block {
 		}
 
 		// PER BLOCK: public styles and scripts - enqueued via register_block_type()
-		if ( ! wp_style_is( 'epkb-' . $this->get_block_public_styles_handle(), 'registered' ) ) {
+		if ( ! wp_style_is( $this->get_block_public_styles_handle(), 'registered' ) ) {
 
 			// main styles dependencies
 			$block_styles_dependencies = array_merge( array(  'epkb-icon-fonts' ), self::register_block_fonts( $block_attributes ) );
 
 			// register main styles for current block
-			wp_register_style( 'epkb-' . $this->get_block_public_styles_handle(), Echo_Knowledge_Base::$plugin_url . 'css/' . $this->get_block_public_styles_handle() . $suffix . '.css', $block_styles_dependencies, Echo_Knowledge_Base::$version );
+			$this->register_block_public_styles( $suffix, $block_styles_dependencies );
 
 			// register inline styles for current block
-			wp_add_inline_style( 'epkb-' . $this->get_block_public_styles_handle(), EPKB_Utilities::minify_css( $this->get_block_inline_styles( $block_attributes ) ) );
+			wp_add_inline_style( $this->get_block_public_styles_handle(), EPKB_Utilities::minify_css( $this->get_block_inline_styles( $block_attributes ) ) );
 
-			// TODO future RTL #2: add RTL files - use RTL slug as main slug and LTR slug as its dependency; then specify the RTL slug inside register_block_type() as main slug
-			/*if ( is_rtl() ) {
-				wp_register_style( 'epkb-' . $this->get_block_public_styles_handle() . '-rtl', Echo_Knowledge_Base::$plugin_url . 'css/' . $this->get_block_public_styles_handle() . '-rtl' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
-			}*/
+			// optional RTL styles - used only if the current block provides RTL styles
+			if ( $this->has_rtl_css && is_rtl() ) {
+				wp_register_style( $this->get_block_public_styles_handle() . '-rtl', Echo_Knowledge_Base::$plugin_url . 'css/' . $this->block_name . '-block' . '-rtl' . $suffix . '.css', array( $this->get_block_public_styles_handle() ), Echo_Knowledge_Base::$version );
+			}
 		}
+
+		return;
 	}
 
 	/**
@@ -268,7 +271,7 @@ abstract class EPKB_Abstract_Block {
 	 */
 	private function get_attribute_types_and_defaults() {
 
-		$kb_config_defaults = EPKB_KB_Config_Specs::get_default_kb_config( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+		$kb_config_defaults = EPKB_KB_Config_Specs::get_default_all_kb_config();
 		$block_config_defaults = $this->get_block_config_defaults();
 		$block_attributes = epkb_get_block_attributes( $this->block_name );
 		foreach ( $block_attributes as $block_setting_name => $block_spec ) {
@@ -290,6 +293,14 @@ abstract class EPKB_Abstract_Block {
 			}
 
 			$block_attributes[ $block_setting_name ]['default'] = isset( $kb_config_defaults[ $block_setting_name ] ) ? $kb_config_defaults[ $block_setting_name ] : '';
+
+			// ensure attributes type to avoid type errors on attributes validation by WordPress blocks core
+			if ( $block_spec['type'] === 'string' ) {
+				$block_attributes[ $block_setting_name ]['default'] = strval( $block_attributes[ $block_setting_name ]['default'] );
+			}
+			if ( $block_spec['type'] === 'number' ) {
+				$block_attributes[ $block_setting_name ]['default'] = intval( $block_attributes[ $block_setting_name ]['default'] );
+			}
 		}
 
 		return $block_attributes;
@@ -301,7 +312,7 @@ abstract class EPKB_Abstract_Block {
 	 */
 	public function get_block_attributes_defaults() {
 
-		$kb_config_defaults = EPKB_KB_Config_Specs::get_default_kb_config( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+		$kb_config_defaults = EPKB_KB_Config_Specs::get_default_all_kb_config();
 		$block_config_defaults = $this->get_block_config_defaults();
 		$block_attributes = epkb_get_block_attributes( $this->block_name );
 		$block_attributes_defaults = array();
@@ -381,10 +392,13 @@ abstract class EPKB_Abstract_Block {
 		}
 
 		$post = get_post( $post_id );
+		if ( empty( $post ) ) {
+			return $kb_config;
+		}
 
 		$block_attributes = $this->get_parsed_block_attributes_or_defaults( $post );
 
-		return empty( $block_attributes ) ? $kb_config : $this->add_internal_kb_settings( $block_attributes );
+		return empty( $block_attributes ) ? $kb_config : array_merge( $kb_config, $this->add_internal_kb_settings( $block_attributes ) );
 	}
 
 	/**
@@ -446,7 +460,7 @@ abstract class EPKB_Abstract_Block {
 		$block_attributes['first_plugin_version'] = $kb_config['first_plugin_version'];
 		$block_attributes['upgrade_plugin_version'] = $kb_config['upgrade_plugin_version'];
 		$block_attributes['modular_main_page_toggle'] = $kb_config['modular_main_page_toggle'];
-		$block_attributes['show_articles_before_categories'] = $kb_config['show_articles_before_categories'];
+		$block_attributes['show_articles_before_categories'] = $this->block_name == 'sidebar-layout' ? $kb_config['sidebar_show_articles_before_categories'] : $kb_config['show_articles_before_categories'];
 		$block_attributes['wpml_is_enabled'] = $kb_config['wpml_is_enabled'];
 
 		// let blocks to hard-code value of certain KB settings regardless of actual KB config value
@@ -488,7 +502,7 @@ abstract class EPKB_Abstract_Block {
 	private function get_block_ui_config() {
 
 		$block_ui_config = $this->get_this_block_ui_config();
-		$kb_config_specs = EPKB_KB_Config_Specs::get_fields_specification( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+		$kb_config_specs = EPKB_Core_Utilities::retrieve_all_kb_specs( EPKB_KB_Config_DB::DEFAULT_KB_ID );
 
 		foreach ( $block_ui_config as $tab_name => $tab_config ) {
 			foreach ( $tab_config['groups'] as $group_name => $group_config ) {
@@ -529,6 +543,17 @@ abstract class EPKB_Abstract_Block {
 		foreach ( $block_ui_config as $tab_key => $tab_config ) {
 			foreach ( $tab_config['groups'] as $group_key => $group_config ) {
 				foreach ( $group_config['fields'] as $field_key => $field_specs ) {
+
+					// combined settings
+					if ( isset( $field_specs['combined_settings'] ) ) {
+						foreach ( $field_specs['combined_settings'] as $combined_field_name => $combined_field_specs ) {
+							$block_ui_specs[ $combined_field_name ] = $combined_field_specs;
+							$block_ui_specs[ $combined_field_name ]['setting_type'] = 'range';
+						}
+						continue;
+					}
+
+					// single setting
 					$block_ui_specs[ $field_key ] = $field_specs;
 				}
 			}
@@ -563,8 +588,100 @@ abstract class EPKB_Abstract_Block {
 		return self::EPKB_BLOCK_NAMESPACE . '-' . $this->block_name . '-block';
 	}
 
-	private function get_block_public_styles_handle() {
-		return $this->block_name . '-block';
+	/**
+	 * Return handle for block public styles - add-on's block can override this method
+	 * @return string
+	 */
+	protected function get_block_public_styles_handle() {
+		return 'epkb-' . $this->block_name . '-block';
+	}
+
+	/**
+	 * Return handle for block public scripts - add-on's block can override this method
+	 * @return string
+	 */
+	protected function get_block_public_scripts_handle() {
+		return 'epkb-blocks-public-scripts';
+	}
+
+	/**
+	 * Add-on dedicated classes can override the method to control the block availability - add-on's block class needs to be checked inside hook handler when all available classes are registered
+	 * @return bool
+	 */
+	protected static function is_block_available() {
+		return true;
+	}
+
+	/**
+	 * Provides a possibility for add-on's block to register its own styles by overriding the method
+	 * @param $suffix
+	 * @param $block_styles_dependencies
+	 * @return void
+	 */
+	protected function register_block_public_styles( $suffix, $block_styles_dependencies ) {
+		wp_register_style( $this->get_block_public_styles_handle(), Echo_Knowledge_Base::$plugin_url . 'css/' . $this->block_name . '-block' . $suffix . '.css', $block_styles_dependencies, Echo_Knowledge_Base::$version );
+	}
+
+	/**
+	 * Provides a possibility for add-on's block to register its own public scripts by overriding the method
+	 * @param $suffix
+	 * @param $block_styles_dependencies
+	 * @return void
+	 */
+	protected function register_block_public_scripts( $suffix ) {
+		wp_register_script( $this->get_block_public_scripts_handle(), Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
+		$epkb_vars = array(
+			'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
+			'msg_try_again' => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
+			'error_occurred' => esc_html__( 'Error occurred', 'echo-knowledge-base' ) . ' (1936)',
+			'unknown_error' => esc_html__( 'Unknown error', 'echo-knowledge-base' ) . ' (1247)',
+			'reload_try_again' => esc_html__( 'Please reload the page and try again.', 'echo-knowledge-base' ),
+			'save_config' => esc_html__( 'Saving configuration', 'echo-knowledge-base' ),
+			'input_required' => esc_html__( 'Input is required', 'echo-knowledge-base' ),
+			'nonce' => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
+			'creating_demo_data' => esc_html__( 'Creating a Knowledge Base with demo categories and articles. It will be completed shortly.', 'echo-knowledge-base' )
+		);
+		wp_localize_script( $this->get_block_public_scripts_handle(), 'epkb_vars', $epkb_vars );
+	}
+
+	/**
+	 * Sanitize attributes before pass to KB legacy code (unlike to KB config, the block attributes can be modified in the post content and thus become unsafe)
+	 * (used for add-ons legacy code which renders inline styles directly in HTML until we update the add-ons code to sanitize values where they are applied)
+	 * @param $block_attributes
+	 * @return array
+	 */
+	protected function sanitize_block_attributes( $block_attributes ) {
+
+		$block_specs = $this->get_block_ui_specs();
+		foreach ( $block_attributes as $attribute_name => $attribute_value ) {
+
+			if ( empty( $block_specs[ $attribute_name ]['setting_type'] ) ) {
+				continue;
+			}
+
+			switch ( $block_specs[ $attribute_name ]['setting_type'] ) {
+				case 'range':
+					$block_attributes[ $attribute_name ] = intval( $attribute_value );
+					break;
+				case 'range_float':
+					$block_attributes[ $attribute_name ] = number_format( floatval( $attribute_value ), 2 );
+					break;
+				case 'color':
+					$block_attributes[ $attribute_name ] = EPKB_Utilities::sanitize_hex_color( $attribute_value );
+					break;
+				case 'select_buttons_string':
+				case 'toggle':
+				case 'dropdown':
+					$block_attributes[ $attribute_name ] = sanitize_text_field( $attribute_value );
+					break;
+				default:
+				case 'text':
+					// text and html is sanitized where they are applied accordingly to the place where they are used (e.g. via esc_attr(), esc_html(), or via wp_kses() with appropriate allowed tags)
+					break;
+			}
+		}
+
+		return $block_attributes;
 	}
 
 	abstract protected function get_this_block_inline_styles( $block_attributes );

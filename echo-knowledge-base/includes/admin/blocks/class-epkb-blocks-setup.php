@@ -20,6 +20,15 @@ class EPKB_Blocks_Setup {
 		new EPKB_FAQs_Block();
 		new EPKB_Featured_Articles_Block();
 
+		if ( EPKB_Utilities::is_elegant_layouts_enabled() ) {
+			//new EPKB_Grid_Layout_Block();
+			//new EPKB_Sidebar_Layout_Block();
+		}
+
+		if ( EPKB_Utilities::is_advanced_search_enabled() ) {
+			new EPKB_Advanced_Search_Block();
+		}
+
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_filter( 'get_block_templates', array( $this, 'reassign_kb_block_page_template_with_numerical_key' ), 1, 3 );
 	}
@@ -54,7 +63,7 @@ class EPKB_Blocks_Setup {
 		array_unshift( $block_categories,
 			array(
 				'slug' => EPKB_Abstract_Block::EPKB_BLOCK_CATEGORY,
-				'title' => esc_html__( 'Knowledge Base', 'echo-knowledge-base' ),
+				'title' => esc_html__( 'Echo Knowledge Base', 'echo-knowledge-base' ),
 				'icon' => EPKB_Abstract_Block::EPKB_BLOCK_CATEGORY_ICON,
 			)
 		);

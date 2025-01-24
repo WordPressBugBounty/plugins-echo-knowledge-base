@@ -418,7 +418,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 			$output .= '
 				#epkb-content-container {
 					padding: 20px!important;
-					background-color: ' . sanitize_hex_color( $kb_config['background_color'] ) . '!important;
+					background-color: ' . EPKB_Utilities::sanitize_hex_color( $kb_config['background_color'] ) . '!important;
 				}';
 		}
 

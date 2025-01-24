@@ -175,6 +175,9 @@ class EPKB_Autoloader {
 				'epkb_drill_down_layout_block'      =>  'includes/admin/blocks/class-epkb-drill-down-layout-block.php',
 				'epkb_faqs_block'                   =>  'includes/admin/blocks/class-epkb-faqs-block.php',
 				'epkb_featured_articles_block'      =>  'includes/admin/blocks/class-epkb-featured-articles-block.php',
+				'epkb_grid_layout_block'            =>  'includes/admin/blocks/class-epkb-grid-layout-block.php',
+				'epkb_sidebar_layout_block'         =>  'includes/admin/blocks/class-epkb-sidebar-layout-block.php',
+				'epkb_advanced_search_block'        =>  'includes/admin/blocks/class-epkb-advanced-search-block.php',
 			);
 		}
 

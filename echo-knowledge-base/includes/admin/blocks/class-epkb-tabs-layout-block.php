@@ -219,6 +219,12 @@ final class EPKB_Tabs_Layout_Block extends EPKB_Abstract_Block {
 								'min' => 1,
 								'max' => 10,
 							),
+							'choose_main_topic' => array(
+								'setting_type' => 'text',
+								'hide_on_dependencies' => array(
+									'tab_nav_overflow_mode' => 'rows',
+								),
+							),
 						),
 					),
 
@@ -354,9 +360,6 @@ final class EPKB_Tabs_Layout_Block extends EPKB_Abstract_Block {
 					'tab-navigation' => array(
 						'title' => esc_html__( 'Tab Navigation', 'echo-knowledge-base' ),
 						'fields' => array(
-							'choose_main_topic' => array(
-								'setting_type' => 'text',
-							),
 							'tab_nav_active_font_color' => array(
 								'setting_type' => 'color',
 							),

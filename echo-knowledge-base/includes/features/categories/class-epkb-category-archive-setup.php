@@ -266,6 +266,10 @@ class EPKB_Category_Archive_Setup {
 	private static function display_article( $kb_config, $article_id, $article_class ) {
 
 		$article = get_post( $article_id );
+		if ( empty( $article ) || ! isset( $article->post_title ) ) {
+			return;
+		}
+
 		$inline_style_escaped = EPKB_Utilities::get_inline_style( 'padding-bottom:: article_list_spacing,padding-top::article_list_spacing', $kb_config ); ?>
 
 		<div class="eckb-article-container<?php echo esc_attr( $article_class ); ?>" id="post-<?php echo esc_attr( $article_id ); ?>">

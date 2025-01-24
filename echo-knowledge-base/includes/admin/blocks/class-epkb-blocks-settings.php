@@ -396,7 +396,6 @@ class EPKB_Blocks_Settings {
 					),
 				),
 				'thin_italic' => array(
-					'key' => 'thin_italic',
 					'name' => esc_html__( 'Thin Italic', 'echo-knowledge-base' ),
 					'style' => array(
 						'fontWeight' => 100,

@@ -147,9 +147,9 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 
 		if ( $overflow_mode_escaped == 'drop_down' ) {
 
-			if ( $nof_top_categories <= 6 ) {
+			if ( $nof_top_categories <= $max_tabs_per_row_escaped ) {
 
-				$class1_escaped = $this->get_css_class( 'epkb-main-nav'. ($this->kb_config[ 'tab_down_pointer' ] == 'on' ? ', epkb-down-pointer' : '') );
+				$class1_escaped = $this->get_css_class( 'epkb-main-nav'. ( $this->kb_config[ 'tab_down_pointer' ] == 'on' ? ', epkb-down-pointer' : '' ) );
 				$style1_escaped = $this->get_inline_style( 'typography:: tab_typography, background-color:: tab_nav_background_color' );
 				$style2_escaped = $this->get_inline_style( 'background-color:: tab_nav_background_color, border-bottom-color:: tab_nav_border_color, border-bottom-style: solid, border-bottom-width: 1px' ); ?>
 
@@ -646,7 +646,7 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 			$output .= '
 				#epkb-content-container {
 					padding: 20px!important;
-					background-color: ' . sanitize_hex_color( $kb_config['background_color'] ) . '!important;
+					background-color: ' . EPKB_Utilities::sanitize_hex_color( $kb_config['background_color'] ) . '!important;
 				}';
 		}
 

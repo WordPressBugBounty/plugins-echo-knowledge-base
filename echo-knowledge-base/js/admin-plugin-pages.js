@@ -604,6 +604,66 @@ jQuery(document).ready(function($) {
 
 			return false;
 		});
+
+		// KB Category Slug Parameter
+		$( '#category_slug_param' ).on( 'keyup', function( e ) {
+			let val = $( this ).val();
+			// allow only letters, numbers, dash, underscore
+			if ( ! val.match( /^[a-zA-Z0-9-_]*$/ ) ) {
+				$( this ).val( val.replace( /[^a-zA-Z0-9-_]/g, '' ) );
+			}
+		});
+
+		$( '#epkb-category-slug-parameter__form' ).on( 'submit', function( e ) {
+			let form = $( this );
+			let postData = {
+				action: 'eckb_update_category_slug_parameter',
+				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+				category_slug_param: form.find( 'input[name="category_slug_param"]' ).val(),
+				epkb_kb_id: $( '#epkb-list-of-kbs' ).val(),
+			};
+
+			epkb_send_ajax( postData, function( response ) {
+				$( '.eckb-top-notice-message' ).remove();
+				if ( typeof response.message !== 'undefined' ) {
+					clear_bottom_notifications();
+					$( 'body' ).append( response.message );
+				}
+				clear_message_after_set_time();
+			} );
+
+			return false;
+		});
+
+		// KB Tag Slug Parameter
+		$( '#tag_slug_param' ).on( 'keyup', function( e ) {
+			let val = $( this ).val();
+			// allow only letters, numbers, dash, underscore
+			if ( ! val.match( /^[a-zA-Z0-9-_]*$/ ) ) {
+				$( this ).val( val.replace( /[^a-zA-Z0-9-_]/g, '' ) );
+			}
+		});
+
+		$( '#epkb-tag-slug-parameter__form' ).on( 'submit', function( e ) {
+			let form = $( this );
+			let postData = {
+				action: 'eckb_update_tag_slug_parameter',
+				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+				tag_slug_param: form.find( 'input[name="tag_slug_param"]' ).val(),
+				epkb_kb_id: $( '#epkb-list-of-kbs' ).val(),
+			};
+
+			epkb_send_ajax( postData, function( response ) {
+				$( '.eckb-top-notice-message' ).remove();
+				if ( typeof response.message !== 'undefined' ) {
+					clear_bottom_notifications();
+					$( 'body' ).append( response.message );
+				}
+				clear_message_after_set_time();
+			} );
+
+			return false;
+		});
 	})();
 
 	// Copy to clipboard button
@@ -3169,7 +3229,7 @@ jQuery(document).ready(function($) {
 
 	// Disallow 'enter' key inside specified textareas (to disable new lines)
 	$( document ).on( 'keypress', '.epkb-admin__input-field--disallow-new-lines textarea', function( event ) {
-		if ( ( event.keyCode || event.which ) === 13 ) {
+		if ( ( event.keyCode || event.which ) === 13 || event.key === 'Enter' ) {
 			return false;
 		}
 	} );

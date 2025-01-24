@@ -120,12 +120,13 @@ class EPKB_Config_Settings_Page {
 		$row_3_module = $this->kb_config['ml_row_3_module'];
 		$row_4_module = $this->kb_config['ml_row_4_module'];
 		$row_5_module = $this->kb_config['ml_row_5_module'];
+
 		$tabs_config['main-page'] = array(
 			'title'     => esc_html__( 'KB Main Page', 'echo-knowledge-base' ),
 			'icon'      => 'epkb-main-page-icon',
 			'key'       => 'main-page',
 			'active'    => ! $access_to_get_started,
-			'contents'	=> empty( $this->kb_main_pages )
+			'contents'  => empty( $this->kb_main_pages )
 				// CASE: Missing Main Page
 				? array(
 					array(
@@ -138,26 +139,39 @@ class EPKB_Config_Settings_Page {
 				)
 				: ( $this->is_block_main_page
 					// CASE: Block Main Page
-					? array(
+					? array_merge(
 						array(
-							'title_before_icon' => false,
-							'title' => esc_html__( 'KB Main Page Configuration', 'echo-knowledge-base' ),
+							array(
+								'title_before_icon' => false,
+								'title' => esc_html__( 'KB Main Page Configuration', 'echo-knowledge-base' ),
 							'body_html' => '<p>' . sprintf( esc_html__( 'The KB Main Page now uses WordPress %sblocks%s to display articles and categories.', 'echo-knowledge-base' ) . '</p><p>', '<strong>', '</strong>', '<strong>', '</strong>' ) .
-								sprintf(
-								/* translators: %s is the link to the KB Main Page configuration */
+									sprintf(
+									/* translators: %s is the link to the KB Main Page configuration */
 									esc_html__( 'To configure your KB Main Page, edit the page %s and adjust the %sKB Search%s and %s' . $this->kb_config['kb_main_page_layout'] . ' Layout%s blocks.', 'echo-knowledge-base' ),
 									'<a href="' . esc_url( get_edit_post_link( EPKB_KB_Handler::get_first_kb_main_page_id( $this->kb_config ) ) ) . '" target="_blank">' . esc_html__( 'here', 'echo-knowledge-base' ) . '</a>', '<strong>', '</strong>', '<strong>', '</strong>'
-								) . '</p><p>' .
-								sprintf(
-								/* translators: %s is the link to the documentation */
-									esc_html__( 'For more information about KB blocks, see %s', 'echo-knowledge-base' ),
+									) . '</p><p>' .
+									sprintf(
+									/* translators: %s is the link to the documentation */
+										esc_html__( 'For more information about KB blocks, see %s', 'echo-knowledge-base' ),
 									'<a href="' . esc_url( 'https://www.echoknowledgebase.com/documentation/kb-blocks/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>'
-								) . '</p><p>' .
-								sprintf(
-								/* translators: %s is the contact link */
-									esc_html__( 'If you have any questions, please %s.', 'echo-knowledge-base' ),
+									) . '</p><p>' .
+									sprintf(
+									/* translators: %s is the contact link */
+										esc_html__( 'If you have any questions, please %s.', 'echo-knowledge-base' ),
 									'<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'contact us', 'echo-knowledge-base' ) . '</a>'
-								) . '</p>',
+									) . '</p>',
+							)
+						),
+						( $this->kb_config['wpml_is_enabled'] === 'on'	?
+							array(
+								array(
+									'title_before_icon' => false,
+									'title'             => esc_html__( 'String Translations', 'echo-knowledge-base' ),
+									'body_html'         => EPKB_HTML_Admin::display_block_wpml_warning( $this->kb_config, true ),
+									'class'             => 'epkb-admin__warning-box',
+								)
+							)
+							: array()
 						)
 					)
 					// CASE: Shortcode Main Page
@@ -720,9 +734,9 @@ class EPKB_Config_Settings_Page {
 				'label'             => esc_html__( 'Apply Design', 'echo-knowledge-base' ),
 				'value'             => 'current',
 				'options'           => array(
-					'design-1'     => 'Standard',
-					'design-2'     => 'Basic',
-					'design-3'     => 'Detailed',
+					'design-1'     => esc_html__( 'Standard', 'echo-knowledge-base' ),
+					'design-2'     => esc_html__( 'Basic', 'echo-knowledge-base' ),
+					'design-3'     => esc_html__( 'Detailed', 'echo-knowledge-base' ),
 				),
 			] );
 		}
@@ -1704,7 +1718,6 @@ class EPKB_Config_Settings_Page {
 				'title'     => esc_html__( 'Search Input Box - Main Page', 'echo-knowledge-base' ),
 				'fields'    => [
 					'advanced_search_mp_title' => [ 'asea', 'not_block_main_page' ],
-					'advanced_search_mp_button_name' => [ 'asea', 'not_block_main_page' ],
 					'search_box_hint' => 'not_block_main_page',
 					'search_results_msg' => [ 'not_modular_main_page', 'not_block_main_page' ],
 					'advanced_search_mp_description_below_title' => [ 'asea', 'not_block_main_page' ],

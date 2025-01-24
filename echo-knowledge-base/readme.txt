@@ -7,7 +7,7 @@ Tags: knowledge base, knowledgebase, documentation, documents, faqs
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 6.7
-Stable tag: 13.11.0
+Stable tag: 13.20.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,7 +157,7 @@ The free Help Dialog Chat plugin offers a chatbot-like dialog for better custome
 > ✅ **[Show IDs](https://wordpress.org/plugins/echo-show-ids/)** reveals IDs on admin screens, including posts, pages, custom post types and taxonomies, and others. [Learn More](https://wordpress.org/plugins/echo-show-ids/)
 >
 >
-> ✅ The **[Content Down Arrow](https://wordpress.org/plugins/scroll-down-arrow/)** Scroll Down Arrow is an easy-to-use WordPress plugin that displays a downward-pointing arrow. It provides users with a visual cue that there is more content further down the page.
+> ✅ The **[Scroll Down Arrow](https://wordpress.org/plugins/scroll-down-arrow/)** Scroll Down Arrow is an easy-to-use WordPress plugin that displays a downward-pointing arrow. It provides users with a visual cue that there is more content further down the page.
 >
 >
 
@@ -254,6 +254,13 @@ Please contact us at [Learn More](https://www.echoknowledgebase.com/contact-us/)
 
 
 == Changelog ==
+
+= 13.20.0 =
+Release Date: Jan 24, 2025
+* NEW: Category slug setting
+* NEW: Tag slug setting
+* NEW: Advanced Search block (PRO)
+* Fix: Cleanup and minor fixes
 
 = 13.11.0 =
 Release Date: Jan 4, 2025

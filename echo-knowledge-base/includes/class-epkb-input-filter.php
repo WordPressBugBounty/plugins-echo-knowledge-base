@@ -22,7 +22,8 @@ class EPKB_Input_Filter {
 
 	// custom fields
 	const COLOR_HEX = 'color_hex';
-	const NUMBER = 'number';   // use Text input
+	const NUMBER = 'number';   // int number
+	const FLOAT_NUMBER = 'real_number';   // float number`
 	const TRUE_FALSE = 'true_false';
 
 	// special fields
@@ -176,6 +177,9 @@ class EPKB_Input_Filter {
 			case self::NUMBER:
 				return $this->filter_number( $value, $field_spec );
 
+			case self::FLOAT_NUMBER:
+				return $this->filter_float_number( $value, $field_spec );
+
 			case self::COLOR_HEX:
 				return $this->filter_color_hex( $value, $field_spec );
 
@@ -307,7 +311,36 @@ class EPKB_Input_Filter {
 		$number_int = EPKB_Utilities::sanitize_int( $number, null );
 		if ( $number != $number_int ) {
 			/* translators: %s: value entered by user. */
-			return new WP_Error('filter_not_number',sprintf( esc_html__( 'The value "%s" is not a number', 'echo-knowledge-base' ), $number ) );
+			return new WP_Error( 'filter_not_number', sprintf( esc_html__( 'The value "%s" is not a number', 'echo-knowledge-base' ), $number ) );
+		}
+
+		if ( $number > $field_spec['max'] ) {
+			/* translators: 1: value entered by user, 2: maximum length user should enter. */
+			$msg = sprintf( esc_html__( 'The value %1$s is larger than maximum of %2$s', 'echo-knowledge-base' ), $number, $field_spec['max'] );
+			return new WP_Error( 'filter_not_number', $msg );
+		} else if ( $number < $field_spec['min'] ) {
+			/* translators: 1: value entered by user, 2: minimum length user should enter. */
+			$msg = sprintf( esc_html__( 'The value %1$s is smaller than minimum of %2$s', 'echo-knowledge-base' ), $number, $field_spec['min'] );
+			return new WP_Error( 'filter_not_number', $msg );
+		}
+
+		return $number;
+	}
+
+	/**
+	 * Sanitize and validate a float number
+	 *
+	 * @param $number
+	 * @param array $field_spec
+	 * @return string|WP_Error returns sanitized and validated float number
+	 */
+	private function filter_float_number( $number, $field_spec=array() ) {
+
+		$number = empty( $number ) ? 0 : trim( $number );
+		$number_int = floatval( $number );
+		if ( $number != $number_int ) {
+			/* translators: %s: value entered by user. */
+			return new WP_Error('filter_not_number', sprintf( esc_html__( 'The value "%s" is not a number', 'echo-knowledge-base' ), $number ) );
 		}
 
 		if ( $number > $field_spec['max'] ) {

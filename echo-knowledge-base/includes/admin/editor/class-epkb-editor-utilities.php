@@ -66,7 +66,7 @@ class EPKB_Editor_Utilities {
 
 				$search_query_param = apply_filters( 'eckb_search_query_param', '', $kb_config['id'] );
 				if ( empty( $search_query_param ) ) {
-					$search_query_param = _x( 'kb-search', 'search query parameter in URL', 'echo-advanced-search' );
+					$search_query_param = _x( 'kb-search', 'search query parameter in URL', 'echo-knowledge-base' );
 				}
 				/** END remove */
 
@@ -143,7 +143,7 @@ class EPKB_Editor_Utilities {
 
 			$search_query_param = apply_filters( 'eckb_search_query_param', '', $kb_id );
 			if ( empty( $search_query_param ) ) {
-				$search_query_param = _x( 'kb-search', 'search query parameter in URL', 'echo-advanced-search' );
+				$search_query_param = _x( 'kb-search', 'search query parameter in URL', 'echo-knowledge-base' );
 			}
 			/** END remove */
 

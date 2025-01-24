@@ -344,11 +344,7 @@ function epkb_frontend_kb_theme_styles_now( $kb_config, $css_file_slug ) {
 	// Article Page CSS and Sidebar Layout Main Page CSS
 	if ( in_array( $css_file_slug, ['ap-frontend-layout', 'mp-frontend-sidebar-layout'] ) ) {
 		$output .= EPKB_Articles_Setup::generate_article_structure_css_v2( $kb_config );
-
-		// Elegant Layout outputs its own Sidebar and CSS - Elegant Layout version 2.15.3 and earlier does not have method get_inline_styles() and outputs the inline CSS directly itself
-		if ( EPKB_Utilities::is_elegant_layouts_enabled() && class_exists( 'ELAY_Layout_Sidebar_v2' ) && method_exists( 'ELAY_Layout_Sidebar_v2', 'get_inline_styles' ) ) {
-			$output .= ELAY_Layout_Sidebar_v2::get_inline_styles( $output, $kb_config );
-		}
+		$output .= EPKB_Core_Utilities::get_elay_styles( $output, $kb_config );
 
 		// KB Core Article Page Sidebar CSS
 		if ( ! in_array( $css_file_slug, ['mp-frontend-sidebar-layout'] ) ) {

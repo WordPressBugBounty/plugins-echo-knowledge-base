@@ -500,7 +500,7 @@ class EPKB_Utilities {
 	}
 
 	/**
-	 * Sanitizes a hex color. Returns either '', a 3, or 6, or 8 digit hex color (with #), or nothing.
+	 * Sanitizes a hex color. Returns either '', a 3, or 6, or 8 digit hex color (with #), or nothing (the WordPress sanitize_hex_color() does not handle 8 digits HEX with alpha channel, so KB has its own method to sanitize HEX)
 	 * @param $color
 	 * @return mixed|string
 	 */
@@ -1707,11 +1707,11 @@ class EPKB_Utilities {
 	/**
 	 * Is WPML enabled?
 	 *
-	 * @param array $config
+	 * @param array $kb_config
 	 * @return bool
 	 */
-	public static function is_wpml_enabled( $config=array() ) {
-		return ! empty( $config['wpml_is_enabled'] ) && $config['wpml_is_enabled'] === 'on' && ! defined( 'AMAG_PLUGIN_NAME' );
+	public static function is_wpml_enabled( $kb_config=array() ) {
+		return ! empty( $kb_config['wpml_is_enabled'] ) && $kb_config['wpml_is_enabled'] === 'on' && ! defined( 'AMAG_PLUGIN_NAME' );
 	}
 
 	/**

@@ -258,6 +258,16 @@ class EPKB_KB_Config_Specs {
 				'default'     => '',
 				'mandatory'   => false,
 			),
+			'tag_slug' => array(
+				'label'       => esc_html__( 'Tag Slug', 'echo-knowledge-base' ),
+				'name'        => 'tag_slug',
+				'max'         => '70',
+				'min'         => '1',
+				'reload'      => true,
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => '',
+				'mandatory'   => false,
+			),
 			'kb_main_page_category_link' => array(      // NOT USED; done in Grid Layout
 				'label'       => esc_html__( 'Main Page Category Link', 'echo-knowledge-base' ),
 				'name'        => 'kb_main_page_category_link',
@@ -1329,9 +1339,9 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'archive_content_articles_display_mode',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'title'             => 'No Preview',
-					'title_excerpt'     => 'Excerpt or Content Preview',
-					'title_content'     => 'Content Preview',
+					'title'             => esc_html__( 'No Preview', 'echo-knowledge-base' ),
+					'title_excerpt'     => esc_html__( 'Excerpt or Content Preview', 'echo-knowledge-base' ),
+					'title_content'     => esc_html__( 'Content Preview', 'echo-knowledge-base' ),
 				),
 				'default'     => 'title'
 			),
@@ -4347,12 +4357,29 @@ class EPKB_KB_Config_Specs {
 	 * @param int $kb_id is the ID of knowledge base to get default config for
 	 * @return array contains default values for KB configuration
 	 */
-	public static function get_default_kb_config( $kb_id ) {
+	public static function get_default_kb_config( $kb_id = EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
 		$config_specs = self::get_fields_specification( $kb_id );
 
 		$default_configuration = array();
 		foreach( $config_specs as $key => $spec ) {
-			$default = isset($spec['default']) ? $spec['default'] : '';
+			$default = isset( $spec['default'] ) ? $spec['default'] : '';
+			$default_configuration += array( $key => $default );
+		}
+
+		return $default_configuration;
+	}
+
+	/**
+	 * Get KB default configuration including add-ons
+	 *
+	 * @return array contains default values for KB configuration
+	 */
+	public static function get_default_all_kb_config() {
+		$kb_config_specs = EPKB_Core_Utilities::retrieve_all_kb_specs( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+
+		$default_configuration = array();
+		foreach( $kb_config_specs as $key => $spec ) {
+			$default = isset( $spec['default'] ) ? $spec['default'] : '';
 			$default_configuration += array( $key => $default );
 		}
 

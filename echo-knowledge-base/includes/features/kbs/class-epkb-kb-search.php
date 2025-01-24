@@ -26,7 +26,7 @@ class EPKB_KB_Search {
 
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
 
-		// search block uses its own settings
+		// search block uses its own settings (for kb_search_block_config filter see EP.KB_Abstract_Block::filter_block_config_if_exists())
 		$kb_block_post_id = (int)EPKB_Utilities::get( 'kb_block_post_id', 0 );
 		if ( $kb_block_post_id && has_filter( 'kb_search_block_config' ) ) {
 			$kb_config = apply_filters( 'kb_search_block_config', $kb_config, $kb_block_post_id );

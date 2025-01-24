@@ -462,10 +462,10 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 			// set Modular sidebar width
 			$output .= '
 				#epkb-ml__module-categories-articles .epkb-layout-container {
-					width: ' . ( 100 - $kb_config['ml_categories_articles_sidebar_desktop_width'] ) . '%;
+					width: ' . ( 100 - intval( $kb_config['ml_categories_articles_sidebar_desktop_width'] ) ) . '%;
 				}
 				#epkb-ml-cat-article-sidebar {
-					width: ' . $kb_config['ml_categories_articles_sidebar_desktop_width'] . '%;
+					width: ' . intval( $kb_config['ml_categories_articles_sidebar_desktop_width'] ) . '%;
 				}';
 
 			// Use CSS Settings from Layout selected to match the styling.
@@ -499,14 +499,14 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 						break;
 				}
 
-				$container_background = 'background-color: ' . $kb_config[$background_color_setting_name] . ';';
+				$container_background = 'background-color: ' . EPKB_Utilities::sanitize_hex_color( $kb_config[ $background_color_setting_name ] ) . ';';
 			}
 
 			$output .= '
 			#epkb-ml__module-categories-articles #epkb-ml-cat-article-sidebar .epkb-ml-article-section {
-				border-color: ' . $kb_config[$border_setting_prefix . '_color'] . ' !important;
-				border-width: ' . $kb_config[$border_setting_prefix . '_width'] . 'px !important;
-				border-radius: ' . $kb_config[$border_setting_prefix . '_radius'] . 'px !important;
+				border-color: ' . EPKB_Utilities::sanitize_hex_color( $kb_config[$border_setting_prefix . '_color'] ) . ' !important;
+				border-width: ' . intval( $kb_config[$border_setting_prefix . '_width'] ) . 'px !important;
+				border-radius: ' . intval( $kb_config[$border_setting_prefix . '_radius'] ) . 'px !important;
 				border-style: solid !important;' .
 				$container_shadow .
 				$container_background .
@@ -514,13 +514,13 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 			
 			// Headings  -----------------------------------------/
 			if ( in_array( $kb_config['kb_main_page_layout'], $legacy_layouts ) ) {
-				if ( ! empty( $kb_config[$head_typography_setting_name]['font-size'] ) || ! empty( $kb_config[$head_typography_setting_name]['font-weight'] ) ) {
+				if ( ! empty( $kb_config[ $head_typography_setting_name ]['font-size'] ) || ! empty( $kb_config[ $head_typography_setting_name ]['font-weight'] ) ) {
 					$output .= '#epkb-ml-cat-article-sidebar .epkb-ml-article-section__head {';
-					if ( ! empty( $kb_config[$head_typography_setting_name]['font-size'] ) ) {
-						$output .= 'font-size: ' . $kb_config[$head_typography_setting_name]['font-size'] . 'px !important;';
+					if ( ! empty( $kb_config[ $head_typography_setting_name ]['font-size'] ) ) {
+						$output .= 'font-size: ' . $kb_config[ $head_typography_setting_name ]['font-size'] . 'px !important;';
 					}
-					if ( ! empty( $kb_config[$head_typography_setting_name]['font-weight'] ) ) {
-						$output .= 'font-weight: ' . $kb_config[$head_typography_setting_name]['font-weight'] . ' !important;';
+					if ( ! empty( $kb_config[ $head_typography_setting_name ]['font-weight'] ) ) {
+						$output .= 'font-weight: ' . $kb_config[ $head_typography_setting_name ]['font-weight'] . ' !important;';
 					}
 					$output .= '}';
 				}
@@ -528,32 +528,32 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 
 			$output .= '
 			#epkb-ml__module-categories-articles #epkb-ml-cat-article-sidebar .epkb-ml-article-section__head {
-			        color: ' . $kb_config[$head_font_color_setting_name] . ' !important;
+			        color: ' . $kb_config[ $head_font_color_setting_name ] . ' !important;
 			    }';
 
 			// Articles  -----------------------------------------/
 			if ( in_array( $kb_config['kb_main_page_layout'], $legacy_layouts ) ) {
-				if ( ! empty( $kb_config[$article_typography_setting_name]['font-size'] ) || ! empty( $kb_config[$article_typography_setting_name]['font-weight'] ) ) {
+				if ( ! empty( $kb_config[ $article_typography_setting_name ]['font-size'] ) || ! empty( $kb_config[ $article_typography_setting_name ]['font-weight'] ) ) {
 					$output .= '#epkb-ml-cat-article-sidebar .epkb-article-inner {';
-					if ( ! empty( $kb_config[$article_typography_setting_name]['font-size'] ) ) {
-						$output .= 'font-size: ' . $kb_config[$article_typography_setting_name]['font-size'] . 'px !important;';
+					if ( ! empty( $kb_config[ $article_typography_setting_name ]['font-size'] ) ) {
+						$output .= 'font-size: ' . $kb_config[ $article_typography_setting_name ]['font-size'] . 'px !important;';
 					}
 					if ( ! empty( $kb_config[$article_typography_setting_name]['font-weight'] ) ) {
-						$output .= 'font-weight: ' . $kb_config[$article_typography_setting_name]['font-weight'] . ' !important;';
+						$output .= 'font-weight: ' . $kb_config[ $article_typography_setting_name ]['font-weight'] . ' !important;';
 					}
 					$output .= '}';
 				}
 			}
 			$output .= '
 			#epkb-ml-cat-article-sidebar .epkb-article__text {
-			    color: ' . $kb_config[$article_font_color_setting_name] . '; 
+			    color: ' . EPKB_Utilities::sanitize_hex_color( $kb_config[ $article_font_color_setting_name ] ) . '; 
 		    }
 			#epkb-ml-cat-article-sidebar .epkb-article__icon {
-			    color: ' . $kb_config[$article_icon_color_setting_name] . '; 
+			    color: ' . EPKB_Utilities::sanitize_hex_color( $kb_config[ $article_icon_color_setting_name ] ) . '; 
 		    }
 		    .epkb-show-all-articles {
-			        padding-top: ' . $kb_config['article_list_spacing'] . 'px !important;
-			        padding-bottom: ' . $kb_config['article_list_spacing'] . 'px !important;
+			        padding-top: ' . intval( $kb_config['article_list_spacing'] ) . 'px !important;
+			        padding-bottom: ' . intval( $kb_config['article_list_spacing'] ) . 'px !important;
 			    }
 		    
 		    ';
@@ -561,8 +561,8 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 			// Modular Sidebar -----------------------------------------/
 			$output .= '
 			#epkb-ml__module-categories-articles #epkb-ml-cat-article-sidebar .epkb-ml-articles-list li {
-			        padding-top: ' . $kb_config['article_list_spacing'] . 'px !important;
-			        padding-bottom: ' . $kb_config['article_list_spacing'] . 'px !important;
+			        padding-top: ' . intval( $kb_config['article_list_spacing'] ) . 'px !important;
+			        padding-bottom: ' . intval( $kb_config['article_list_spacing'] ) . 'px !important;
 		            line-height: 1 !important;
 			    }';
 
@@ -577,7 +577,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 		return $output;
 	}
 
-	public function set_sidebar_layout_content( $sidebar_layout_content) {
+	public function set_sidebar_layout_content( $sidebar_layout_content ) {
 		$this->sidebar_layout_content = $sidebar_layout_content;
 	}
 

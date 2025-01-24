@@ -187,9 +187,9 @@ class EPKB_ML_Search {
 
 			$output .= '
 				#epkb-ml__module-search {
-					padding-top: ' . $kb_config['search_box_padding_top'] . 'px !important;
-					padding-bottom: ' . $kb_config['search_box_padding_bottom'] . 'px !important;
-					background-color: ' . $kb_config['search_background_color'] . ' !important;
+					padding-top: ' . intval( $kb_config['search_box_padding_top'] ) . 'px !important;
+					padding-bottom: ' . intval( $kb_config['search_box_padding_bottom'] ) . 'px !important;
+					background-color: ' . EPKB_Utilities::sanitize_hex_color( $kb_config['search_background_color'] ) . ' !important;
 				}';
 
 			$output .= '

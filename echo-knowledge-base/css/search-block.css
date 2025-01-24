@@ -135,9 +135,6 @@
 
 /* Modules
 --------------------------------------------------------------*/
-/**
- * Module Layout General Settings
- */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -1147,5 +1144,4 @@
 .eckb-kb-block-search #epkb-ml__module-search #epkb-ml-search-modern-layout #epkb-ml-search-form #epkb-ml-search-box .epkb-ml-search-box__btn .epkbfa-ml-search-icon,
 .eckb-kb-block-search #epkb-ml__module-search #epkb-ml-search-modern-layout #epkb-ml-search-form #epkb-ml-search-box .epkb-ml-search-box__btn .epkbfa-ml-loading-icon {
   top: calc(50% - 12px) !important;
-  color: red;
 }

@@ -1155,7 +1155,6 @@ class EPKB_Core_Utilities {
 			switch ( $layout ) {
 				case EPKB_Layout::GRID_LAYOUT:
 					$shadow_setting_name = 'grid_section_box_shadow';
-					$border_setting_prefix = 'grid_section_border';
 					$head_typography_setting_name = 'grid_section_typography';
 					$article_font_color_setting_name = 'section_category_font_color';
 					break;
@@ -1511,5 +1510,75 @@ class EPKB_Core_Utilities {
 			EPKB_HTML_Forms::notification_box_middle( [ 'type' => 'error', 'title' => $message, 'html' => $html ] );  ?>
 		</div>  <?php
 
+	}
+
+
+	/********************************************************************************
+	 *
+	 *                                   ADD-ONS
+	 *
+	 ********************************************************************************/
+
+	public static function run_asea_upgrade( $last_version ) {
+		if ( class_exists( 'Echo_Advanced_Search' ) && $last_version != Echo_Advanced_Search::$version && class_exists('ASEA_Upgrades') && is_callable( array( 'ASEA_Upgrades', 'run_upgrade' ) ) ) {
+			ASEA_Upgrades::run_upgrade( $plugin_config, $last_version );
+		}
+	}
+
+	public static function run_elay_upgarde( $last_version ) {
+		if ( class_exists( 'Echo_Elegant_Layouts' ) && $last_version != Echo_Elegant_Layouts::$version && class_exists('ELAY_Upgrades') && is_callable( array( 'ELAY_Upgrades', 'run_upgrade' ) ) ) {
+			ELAY_Upgrades::run_upgrade( $plugin_config, $last_version );
+		}
+	}
+
+	public static function run_eprf_upgrade( $last_version ) {
+		if ( class_exists( 'Echo_Article_Rating_And_Feedback' ) && $last_version != Echo_Article_Rating_And_Feedback::$version && class_exists( 'EPRF_Upgrades' ) && is_callable( array( 'EPRF_Upgrades', 'run_upgrade' ) ) ) {
+			EPRF_Upgrades::run_upgrade( $plugin_config, $last_version );
+		}
+	}
+
+	public static function get_asea_plugin_url() {
+		return class_exists( 'Echo_Advanced_Search' ) && ! empty( Echo_Advanced_Search::$plugin_url ) ? Echo_Advanced_Search::$plugin_url . 'img/' : '';
+	}
+
+	public static function get_elay_plugin_url() {
+		return class_exists( 'Echo_Elegant_Layouts' ) && ! empty(Echo_Elegant_Layouts::$plugin_url) ? Echo_Elegant_Layouts::$plugin_url . 'img/' : '';
+	}
+
+	public static function get_eprf_plugin_url() {
+		return class_exists( 'Echo_Article_Rating_And_Feedback' ) && ! empty(Echo_Article_Rating_And_Feedback::$plugin_url) ? Echo_Article_Rating_And_Feedback::$plugin_url . 'img/' : '';
+	}
+
+	public static function register_asea_block_public_styles( $block_name, $suffix, $block_styles_dependencies ) {
+		if ( class_exists( 'ASEA_Blocks' ) ) {
+			ASEA_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );
+		}
+	}
+
+	public static function register_asea_block_public_scripts( $suffix ) {
+		if ( class_exists( 'ASEA_Blocks' ) ) {
+			ASEA_Blocks::register_block_public_scripts( $suffix );
+		}
+	}
+
+	public static function register_elay_block_public_styles( $block_name, $suffix, $block_styles_dependencies ) {
+		if ( class_exists( 'ELAY_Blocks' ) ) {
+			ELAY_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );
+		}
+	}
+
+	public static function register_elay_block_public_scripts( $suffix ) {
+		if ( class_exists( 'ELAY_Blocks' ) ) {
+			ELAY_Blocks::register_block_public_scripts( $suffix );
+		}
+	}
+
+	public static function get_elay_styles( $output, $kb_config ) {
+		// Elegant Layout outputs its own Sidebar and CSS - Elegant Layout version 2.15.3 and earlier does not have method get_inline_styles() and outputs the inline CSS directly itself
+		if ( EPKB_Utilities::is_elegant_layouts_enabled() && class_exists( 'ELAY_Layout_Sidebar_v2' ) && method_exists( 'ELAY_Layout_Sidebar_v2', 'get_inline_styles' ) ) {
+			return ELAY_Layout_Sidebar_v2::get_inline_styles( $output, $kb_config );
+		}
+
+		return $output;
 	}
 }

@@ -320,7 +320,7 @@ jQuery(document).ready(function($) {
 	$( document ).on( 'keypress', '.epkb-ai-help-sidebar__ai-input', function( e ) {
 
 		// Send request only for 'Enter' key
-		if ( e.which !== 13 ) {
+		if ( e.keyCode !== 13 && e.which !== 13 && e.key !== 'Enter' ) {
 			return;
 		}
 

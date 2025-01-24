@@ -134,9 +134,9 @@ function epkb_load_admin_kb_wizards_script() {
 		'save_config'           => esc_html__( 'Saving configuration', 'echo-knowledge-base' ),
 		'input_required'        => esc_html__( 'Input is required', 'echo-knowledge-base' ),
 		'wizard_help_images_path' => Echo_Knowledge_Base::$plugin_url . 'img/',
-		'asea_wizard_help_images_path' => class_exists( 'Echo_Advanced_Search' ) && ! empty(Echo_Advanced_Search::$plugin_url) ? Echo_Advanced_Search::$plugin_url . 'img/' : '',
-		'elay_wizard_help_images_path' => class_exists( 'Echo_Elegant_Layouts' ) && ! empty(Echo_Elegant_Layouts::$plugin_url) ? Echo_Elegant_Layouts::$plugin_url . 'img/' : '',
-		'eprf_wizard_help_images_path' => class_exists( 'Echo_Article_Rating_And_Feedback' ) && ! empty(Echo_Article_Rating_And_Feedback::$plugin_url) ? Echo_Article_Rating_And_Feedback::$plugin_url . 'img/' : ''
+		'asea_wizard_help_images_path' => EPKB_Core_Utilities::get_asea_plugin_url(),
+		'elay_wizard_help_images_path' => EPKB_Core_Utilities::get_elay_plugin_url(),
+		'eprf_wizard_help_images_path' => EPKB_Core_Utilities::get_eprf_plugin_url()
 	));
 }
 

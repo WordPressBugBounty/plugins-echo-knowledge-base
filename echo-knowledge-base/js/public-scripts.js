@@ -1227,7 +1227,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// Insure categories content box is right under the current Top Category button when window resized
-	$( window ).resize( function() {
+	$( window ).on( 'resize', function() {
 		let resizeTimeout = setTimeout( function() {
 
 			if ( resizeTimeout ) {

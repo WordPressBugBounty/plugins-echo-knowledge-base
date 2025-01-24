@@ -491,7 +491,7 @@ class EPKB_KB_Demo_Data {
 			"<h3 style='padding-top: 20px;'>" . esc_html__( 'Need Help or Looking for a Feature?', 'echo-knowledge-base' ) . "</h3>" .
 			"<p>" .
 			    sprintf(
-			        __( "Please don't hesitate to contact us %shere%s.", 'echo-knowledge-base' ),
+			        esc_html__( "Please don't hesitate to contact us %shere%s.", 'echo-knowledge-base' ),
 			        '<a href="https://www.echoknowledgebase.com/pre-sale-question/" target="_blank">',
 			        '</a>'
 			    ) .
@@ -515,7 +515,7 @@ class EPKB_KB_Demo_Data {
 			return;
 		} */
 
-		$faq_id1 = self::create_one_faq( 'What are the steps to submit a purchase order?',
+		$faq_id1 = self::create_one_faq( esc_html__( 'What are the steps to submit a purchase order?', 'echo-knowledge-base' ),
 			'<p>' . esc_html__( 'Here\'s the process to submit a purchase order:', 'echo-knowledge-base' ) . '<br>
 					    <ol>
 					        <li>' . esc_html__( 'Fill out the purchase order form.', 'echo-knowledge-base' ) . '</li>
@@ -523,10 +523,10 @@ class EPKB_KB_Demo_Data {
 					        <li>' . esc_html__( 'Submit the approved purchase order to the procurement team.', 'echo-knowledge-base' ) . '</li>
 					    </ol>
 			        </p>' );
-		$faq_id2 = self::create_one_faq( 'Where can I find templates for customer presentations?',
+		$faq_id2 = self::create_one_faq( esc_html__( 'Where can I find templates for customer presentations?', 'echo-knowledge-base' ),
 					"<p>" . esc_html__( 'We have a library of customer presentation templates within the Sales & Marketing section of our knowledge base.', 'echo-knowledge-base' ) . "
 				    </p>" );
-		$faq_id3 = self::create_one_faq( 'What is the process for requesting time off?',
+		$faq_id3 = self::create_one_faq( esc_html__( 'What is the process for requesting time off?', 'echo-knowledge-base' ),
 					"<ol>
 				        <li>" . esc_html__( 'Access our Time Off Request form.', 'echo-knowledge-base' ) . "</li>
 				        <li>" . esc_html__( "Fill out the form, including your desired dates and any relevant notes.", 'echo-knowledge-base' ) . "</li>

@@ -197,7 +197,6 @@ class EPKB_Config_Page {
 
 				array(
 					'class' => 'epkb-admin__boxes-list__box__ordering',
-					'title' => esc_html__( 'Ordering Settings', 'echo-knowledge-base' ),
 					'description' => '',
 					'html' => $wizard_ordering->show_article_ordering( $wizard_kb_config ),
 				),

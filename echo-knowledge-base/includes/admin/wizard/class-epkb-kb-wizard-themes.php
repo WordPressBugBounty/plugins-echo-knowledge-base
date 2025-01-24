@@ -424,7 +424,7 @@ class EPKB_KB_Wizard_Themes {
 	 */
 	private static function get_all_configuration_defaults() {
 
-		$kb_defaults = EPKB_KB_Config_Specs::get_default_kb_config( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+		$kb_defaults = EPKB_KB_Config_Specs::get_default_kb_config();
 
 		// add all configuration defaults from addons
 		$kb_all_defaults = apply_filters( 'eckb_editor_get_default_config', $kb_defaults );

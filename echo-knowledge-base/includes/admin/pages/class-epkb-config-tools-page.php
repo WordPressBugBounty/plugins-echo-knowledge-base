@@ -997,6 +997,18 @@ class EPKB_Config_Tools_Page {
 			'html'  => $delete_kb_handler->get_archive_or_delete_kb_form( $kb_config ),
 		);
 
+		if ( ! EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
+			$boxes_config[] = array(
+				'title' => esc_html__( 'Category Slug', 'echo-knowledge-base' ),
+				'html'  => self::display_category_slug_html( $kb_config ),
+			);
+
+			$boxes_config[] = array(
+				'title' => esc_html__( 'Tag Slug', 'echo-knowledge-base' ),
+				'html'  => self::display_tag_slug_html( $kb_config ),
+			);
+		}
+
 		// Search Query Parameter
 		if ( EPKB_Utilities::is_advanced_search_enabled() ) {
 			$kb_config = apply_filters( 'eckb_kb_config', $kb_config );
@@ -1008,6 +1020,7 @@ class EPKB_Config_Tools_Page {
 				);
 			}
 		}
+
 		// Optimization
 		$boxes_config[] = array(
 			'title' => esc_html__( 'Optimization', 'echo-knowledge-base' ),
@@ -1039,7 +1052,7 @@ class EPKB_Config_Tools_Page {
 
 		// Box: Delete All KBs Data
 		$boxes_config[] = array(
-			'title' => esc_html__( 'Delete All KBs Data', 'echo-knowledge-base' ),
+			'title' => esc_html__( 'Delete All Plugin Data', 'echo-knowledge-base' ),
 			'html'  => $delete_kb_handler->get_delete_all_kbs_data_form(),
 		);
 
@@ -1173,7 +1186,7 @@ class EPKB_Config_Tools_Page {
 
 		// General simple log for all errors
 		$output .= '<section><h3>';
-		$output .= esc_html__( 'Simple Error Log:', 'echo-knowledge-base' );
+		$output .= esc_html__( 'Simple Error Log', 'echo-knowledge-base' ) . ':';
 		$output .= '</h3></section>';
 		$output .= '<textarea rows="30" cols="150" style="overflow:scroll;">';
 		foreach( $logs as $log ) {
@@ -1456,6 +1469,62 @@ class EPKB_Config_Tools_Page {
 	}
 
 	/**
+	 * Display Category Slug parameter field
+	 * @param $kb_config
+	 * @return string
+	 */
+	private static function display_category_slug_html( $kb_config ) {
+
+		ob_start(); ?>
+
+		<form id="epkb-category-slug-parameter__form" class="epkb-category-slug-parameter__form epkb-admin__kb__form" method="POST">
+			<p class="epkb-category-slug-parameter__form-title">    <?php
+				esc_html_e( 'Do not change unless you need to define a different category slug for your category archive pages.', 'echo-knowledge-base' ); ?>
+			</p>    <?php
+			EPKB_HTML_Elements::text( array(
+				'title'     => '',
+				'label'     => esc_html__( 'Category Slug', 'echo-knowledge-base' ),
+				'value' => $kb_config['category_slug'],
+				'name'    => 'category_slug_param',
+				'specs' => 'category_slug_param',
+				'required' => false,
+				'input_size' => 'large',
+			) );
+			EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save', 'echo-knowledge-base' ), 'eckb_update_category_slug_parameter', '', '', false, '', 'epkb-error-btn' );  ?>
+		</form><?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Display Tag Slug parameter field
+	 * @param $kb_config
+	 * @return string
+	 */
+	private static function display_tag_slug_html( $kb_config ) {
+
+		ob_start(); ?>
+
+		<form id="epkb-tag-slug-parameter__form" class="epkb-tag-slug-parameter__form epkb-admin__kb__form" method="POST">
+		<p class="epkb-tag-slug-parameter__form-title">    <?php
+			esc_html_e( 'Do not change unless you need to define a different tag slug for your tag archive pages.', 'echo-knowledge-base' ); ?>
+		</p>    <?php
+		EPKB_HTML_Elements::text( array(
+			'title'     => '',
+			'label'     => esc_html__( 'Tag Slug', 'echo-knowledge-base' ),
+			'value' => $kb_config['tag_slug'],
+			'name'    => 'tag_slug_param',
+			'specs' => 'tag_slug_param',
+			'required' => false,
+			'input_size' => 'medium',
+		) );
+		EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save', 'echo-knowledge-base' ), 'eckb_update_tag_slug_parameter', '', '', false, '', 'epkb-error-btn' );  ?>
+		</form><?php
+
+		return ob_get_clean();
+	}
+
+	/**
 	 * Display search query parameter field
 	 * @param $kb_config
 	 * @return string
@@ -1463,18 +1532,19 @@ class EPKB_Config_Tools_Page {
 	private static function display_search_query_html( $kb_config ) {
 
 		ob_start(); ?>
+
 		<form id="epkb-search-query-parameter__form" class="epkb-search-query-parameter__form" method="POST">
-		<p class="epkb-search-query-parameter__form-title">    <?php
-			esc_html_e( 'Do not change unless you need to define a different query parameter for the search results page.', 'echo-knowledge-base' ); ?>
-		</p>    <?php
-		EPKB_HTML_Elements::text( array(
-			'title'     => '',
-			'value' => $kb_config['search_query_param'],
-			'name'    => 'search_query_param',
-			'specs' => 'search_query_param',
-			'required' => true,
-		) );
-		EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save', 'echo-knowledge-base' ), 'eckb_update_query_parameter', '', '', false, '', 'epkb-error-btn' );  ?>
+			<p class="epkb-search-query-parameter__form-title">    <?php
+				esc_html_e( 'Do not change unless you need to define a different query parameter for the search results page.', 'echo-knowledge-base' ); ?>
+			</p>    <?php
+			EPKB_HTML_Elements::text( array(
+				'title'     => '',
+				'value' => $kb_config['search_query_param'],
+				'name'    => 'search_query_param',
+				'specs' => 'search_query_param',
+				'required' => true,
+			) );
+			EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save', 'echo-knowledge-base' ), 'eckb_update_query_parameter', '', '', false, '', 'epkb-error-btn' );  ?>
 		</form><?php
 
 		return ob_get_clean();

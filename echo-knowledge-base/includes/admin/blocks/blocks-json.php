@@ -1141,6 +1141,720 @@ function epkb_get_block_attributes( $block_name ) {
 			],
 			'custom_css_class' => [
 				'type' => 'string'
+			],
+		],
+		'grid-layout' => [
+			'kb_id' => [
+				'type' => 'number'
+			],
+			'kb_block_template_toggle' => [
+				'type' => 'string'
+			],
+			'templates_for_kb' => [
+				'type' => 'string'
+			],
+			'grid_nof_columns' => [
+				'type' => 'string'
+			],
+			'grid_section_desc_text_on' => [
+				'type' => 'string'
+			],
+			'grid_category_link_text' => [
+				'type' => 'string'
+			],
+			'section_hyperlink_text_on' => [
+				'type' => 'string'
+			],
+			'grid_article_count_text' => [
+				'type' => 'string'
+			],
+			'grid_article_count_plural_text' => [
+				'type' => 'string'
+			],
+			'grid_section_box_height_mode' => [
+				'type' => 'string'
+			],
+			'grid_section_body_height' => [
+				'type' => 'number'
+			],
+			'section_border_radius' => [
+				'type' => 'number'
+			],
+			'section_border_width' => [
+				'type' => 'number'
+			],
+			'section_border_color' => [
+				'type' => 'string'
+			],
+			'grid_section_box_shadow' => [
+				'type' => 'string'
+			],
+			'grid_section_box_hover' => [
+				'type' => 'string'
+			],
+			'grid_section_body_alignment' => [
+				'type' => 'string'
+			],
+			'grid_section_body_padding_top' => [
+				'type' => 'number'
+			],
+			'grid_section_body_padding_bottom' => [
+				'type' => 'number'
+			],
+			'grid_section_body_padding_left' => [
+				'type' => 'number'
+			],
+			'grid_section_body_padding_right' => [
+				'type' => 'number'
+			],
+			'grid_background_color' => [
+				'type' => 'string'
+			],
+			'grid_section_head_alignment' => [
+				'type' => 'string'
+			],
+			'grid_section_head_padding_top' => [
+				'type' => 'number'
+			],
+			'grid_section_head_padding_bottom' => [
+				'type' => 'number'
+			],
+			'grid_section_head_padding_left' => [
+				'type' => 'number'
+			],
+			'grid_section_head_padding_right' => [
+				'type' => 'number'
+			],
+			'grid_category_icon_location' => [
+				'type' => 'string'
+			],
+			'grid_section_icon_size' => [
+				'type' => 'number'
+			],
+			'grid_category_icon_thickness' => [
+				'type' => 'number'
+			],
+			'grid_section_icon_padding_top' => [
+				'type' => 'number'
+			],
+			'grid_section_icon_padding_bottom' => [
+				'type' => 'number'
+			],
+			'grid_section_icon_padding_left' => [
+				'type' => 'number'
+			],
+			'grid_section_icon_padding_right' => [
+				'type' => 'number'
+			],
+			'section_head_background_color' => [
+				'type' => 'string'
+			],
+			'section_head_category_icon_color' => [
+				'type' => 'string'
+			],
+			'section_head_description_font_color' => [
+				'type' => 'string'
+			],
+			'grid_section_cat_name_padding_top' => [
+				'type' => 'number'
+			],
+			'grid_section_cat_name_padding_bottom' => [
+				'type' => 'number'
+			],
+			'grid_section_cat_name_padding_left' => [
+				'type' => 'number'
+			],
+			'grid_section_cat_name_padding_right' => [
+				'type' => 'number'
+			],
+			'grid_section_head_typography_controls' => [
+				'type' => 'object'
+			],
+			'grid_section_desc_padding_top' => [
+				'type' => 'number'
+			],
+			'grid_section_desc_padding_bottom' => [
+				'type' => 'number'
+			],
+			'grid_section_desc_padding_left' => [
+				'type' => 'number'
+			],
+			'grid_section_desc_padding_right' => [
+				'type' => 'number'
+			],
+			'grid_section_description_typography_controls' => [
+				'type' => 'object'
+			],
+			'grid_section_divider' => [
+				'type' => 'string'
+			],
+			'grid_section_divider_thickness' => [
+				'type' => 'number'
+			],
+			'grid_section_article_count' => [
+				'type' => 'string'
+			],
+			'grid_section_article_count_typography_controls' => [
+				'type' => 'object'
+			],
+			'ml_categories_articles_sidebar_toggle' => [
+				'type' => 'string'
+			],
+			'ml_categories_articles_sidebar_location' => [
+				'type' => 'string'
+			],
+			'ml_categories_articles_sidebar_desktop_width' => [
+				'type' => 'number'
+			],
+			'ml_categories_articles_sidebar_position_1' => [
+				'type' => 'string'
+			],
+			'ml_categories_articles_sidebar_position_2' => [
+				'type' => 'string'
+			],
+			'ml_articles_list_nof_articles_displayed' => [
+				'type' => 'number'
+			],
+			'ml_articles_list_popular_articles_msg' => [
+				'type' => 'string'
+			],
+			'ml_articles_list_newest_articles_msg' => [
+				'type' => 'string'
+			],
+			'ml_articles_list_recent_articles_msg' => [
+				'type' => 'string'
+			],
+			'section_category_font_color' => [
+				'type' => 'string'
+			],
+			'section_head_font_color' => [
+				'type' => 'string'
+			],
+			'section_body_background_color' => [
+				'type' => 'string'
+			],
+			'article_icon_toggle' => [
+				'type' => 'string'
+			],
+			'article_icon_color' => [
+				'type' => 'string'
+			],
+			'article_font_color' => [
+				'type' => 'string'
+			],
+			'article_list_margin' => [
+				'type' => 'number'
+			],
+			'article_list_spacing' => [
+				'type' => 'number'
+			],
+			'article_typography_controls' => [
+				'type' => 'object'
+			],
+			'block_full_width_toggle' => [
+				'type' => 'string'
+			],
+			'block_max_width' => [
+				'type' => 'number'
+			],
+			'theme_presets' => [
+				'type' => 'string'
+			],
+			'theme_name' => [
+				'type' => 'string'
+			],
+			'custom_css_class' => [
+				'type' => 'string'
+			]
+		],
+		'sidebar-layout' => [
+			'kb_id' => [
+				'type' => 'number'
+			],
+			'kb_block_template_toggle' => [
+				'type' => 'string'
+			],
+			'templates_for_kb' => [
+				'type' => 'string'
+			],
+			'sidebar_top_categories_collapsed' => [
+				'type' => 'string'
+			],
+			'sidebar_nof_articles_displayed' => [
+				'type' => 'number'
+			],
+			'sidebar_main_page_intro_text' => [
+				'type' => 'string'
+			],
+			'sidebar_section_desc_text_on' => [
+				'type' => 'string'
+			],
+			'sidebar_article_underline' => [
+				'type' => 'string'
+			],
+			'sidebar_collapse_articles_msg' => [
+				'type' => 'string'
+			],
+			'sidebar_show_all_articles_msg' => [
+				'type' => 'string'
+			],
+			'sidebar_category_empty_msg' => [
+				'type' => 'string'
+			],
+			'sidebar_side_bar_width' => [
+				'type' => 'number'
+			],
+			'sidebar_side_bar_height_mode' => [
+				'type' => 'string'
+			],
+			'sidebar_side_bar_height' => [
+				'type' => 'number'
+			],
+			'sidebar_scroll_bar' => [
+				'type' => 'string'
+			],
+			'sidebar_section_head_font_color' => [
+				'type' => 'string'
+			],
+			'sidebar_section_head_background_color' => [
+				'type' => 'string'
+			],
+			'sidebar_section_head_description_font_color' => [
+				'type' => 'string'
+			],
+			'sidebar_section_head_alignment' => [
+				'type' => 'string'
+			],
+			'sidebar_section_head_padding_top' => [
+				'type' => 'number'
+			],
+			'sidebar_section_head_padding_bottom' => [
+				'type' => 'number'
+			],
+			'sidebar_section_head_padding_left' => [
+				'type' => 'number'
+			],
+			'sidebar_section_head_padding_right' => [
+				'type' => 'number'
+			],
+			'sidebar_section_category_icon_color' => [
+				'type' => 'string'
+			],
+			'sidebar_section_category_font_color' => [
+				'type' => 'string'
+			],
+			'sidebar_section_category_typography_controls' => [
+				'type' => 'object'
+			],
+			'sidebar_section_category_typography_desc_controls' => [
+				'type' => 'object'
+			],
+			'sidebar_section_subcategory_typography_controls' => [
+				'type' => 'object'
+			],
+			'sidebar_section_box_height_mode' => [
+				'type' => 'string'
+			],
+			'sidebar_section_border_radius' => [
+				'type' => 'number'
+			],
+			'sidebar_section_border_width' => [
+				'type' => 'number'
+			],
+			'sidebar_section_border_color' => [
+				'type' => 'string'
+			],
+			'sidebar_section_box_shadow' => [
+				'type' => 'string'
+			],
+			'sidebar_section_divider' => [
+				'type' => 'string'
+			],
+			'sidebar_section_divider_thickness' => [
+				'type' => 'number'
+			],
+			'sidebar_section_divider_color' => [
+				'type' => 'string'
+			],
+			'sidebar_expand_articles_icon' => [
+				'type' => 'string'
+			],
+			'sidebar_section_body_height' => [
+				'type' => 'number'
+			],
+			'sidebar_section_body_padding_top' => [
+				'type' => 'number'
+			],
+			'sidebar_section_body_padding_bottom' => [
+				'type' => 'number'
+			],
+			'sidebar_section_body_padding_left' => [
+				'type' => 'number'
+			],
+			'sidebar_section_body_padding_right' => [
+				'type' => 'number'
+			],
+			'sidebar_section_body_typography_controls' => [
+				'type' => 'object'
+			],
+			'article-content-background-color-v2' => [
+				'type' => 'string'
+			],
+			'sidebar_article_active_bold' => [
+				'type' => 'string'
+			],
+			'article_icon_toggle' => [
+				'type' => 'string'
+			],
+			'article_icon_color' => [
+				'type' => 'string'
+			],
+			'article_font_color' => [
+				'type' => 'string'
+			],
+			'sidebar_article_list_margin' => [
+				'type' => 'number'
+			],
+			'article_list_spacing' => [
+				'type' => 'number'
+			],
+			'sidebar_article_active_font_color' => [
+				'type' => 'string'
+			],
+			'sidebar_article_active_background_color' => [
+				'type' => 'string'
+			],
+			'sidebar_background_color' => [
+				'type' => 'string'
+			],
+			'sidebar_article_font_color' => [
+				'type' => 'string'
+			],
+			'sidebar_article_icon_color' => [
+				'type' => 'string'
+			],
+			'ml_categories_articles_sidebar_toggle' => [
+				'type' => 'string'
+			],
+			'ml_categories_articles_sidebar_location' => [
+				'type' => 'string'
+			],
+			'ml_categories_articles_sidebar_desktop_width' => [
+				'type' => 'number'
+			],
+			'ml_categories_articles_sidebar_position_1' => [
+				'type' => 'string'
+			],
+			'ml_categories_articles_sidebar_position_2' => [
+				'type' => 'string'
+			],
+			'ml_articles_list_nof_articles_displayed' => [
+				'type' => 'number'
+			],
+			'ml_articles_list_popular_articles_msg' => [
+				'type' => 'string'
+			],
+			'ml_articles_list_newest_articles_msg' => [
+				'type' => 'string'
+			],
+			'ml_articles_list_recent_articles_msg' => [
+				'type' => 'string'
+			],
+			'article_typography_controls' => [
+				'type' => 'object'
+			],
+			'section_body_background_color' => [
+				'type' => 'string'
+			],
+			'block_full_width_toggle' => [
+				'type' => 'string'
+			],
+			'block_max_width' => [
+				'type' => 'number'
+			],
+			'theme_presets' => [
+				'type' => 'string'
+			],
+			'theme_name' => [
+				'type' => 'string'
+			],
+			'custom_css_class' => [
+				'type' => 'string'
+			]
+		],
+		'advanced-search' => [
+			'kb_id' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_auto_complete_wait' => [
+				'type' => 'number'
+			],
+			// 'advanced_search_mp_visibility' => [ not for Main Page
+			// 	'type' => 'string'
+			// ],
+			'advanced_search_mp_title_font_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_title_font_shadow_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_title_tag' => [
+				'type' => 'string'
+			],
+			'search_box_hint' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_btn_border_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_link_font_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_gradient_from_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_gradient_to_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_title_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_title_typography_controls' => [
+				'type' => 'object'
+			],
+			'advanced_search_mp_title' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_title_by_filter' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_title_clear_results' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_description_below_title_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_description_below_title' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_description_below_input_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_description_below_input' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_description_below_title_font_shadow_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_box_padding_top' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_box_padding_bottom' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_box_padding_left' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_box_padding_right' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_box_margin_top' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_box_margin_bottom' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_box_font_width' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_title_padding_bottom' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_title_text_shadow_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_title_text_shadow_x_offset' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_title_text_shadow_y_offset' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_title_text_shadow_blur' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_description_below_title_typography_controls' => [
+				'type' => 'object'
+			],
+			'advanced_search_mp_description_below_title_padding_top' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_description_below_title_padding_bottom' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_description_below_title_text_shadow_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_description_below_title_text_shadow_x_offset' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_description_below_title_text_shadow_y_offset' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_description_below_title_text_shadow_blur' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_border_width' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_box_input_width' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_radius' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_typography_controls' => [
+				'type' => 'object'
+			],
+			'advanced_search_mp_input_box_shadow_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_input_box_shadow_x_offset' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_shadow_y_offset' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_shadow_blur' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_shadow_spread' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_padding_top' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_padding_bottom' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_padding_left' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_padding_right' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_input_box_search_icon_placement' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_input_box_loading_icon_placement' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_text_input_background_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_text_input_border_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_filter_category_level' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_filter_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_filter_indicator_text' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_filter_dropdown_width' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_filter_box_font_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_filter_box_background_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_show_top_category' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_results_typography_controls' => [
+				'type' => 'object'
+			],
+			'advanced_search_mp_results_msg' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_no_results_found' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_more_results_found' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_search_result_category_color' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_results_list_size' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_results_page_size' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_description_below_input_typography_controls' => [
+				'type' => 'object'
+			],
+			'advanced_search_mp_description_below_input_padding_top' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_description_below_input_padding_bottom' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_background_image_url' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_image_position_x' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_image_position_y' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_pattern_image_url' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_pattern_image_position_x' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_pattern_image_position_y' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_pattern_image_opacity' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_gradient_degree' => [
+				'type' => 'number'
+			],
+			'advanced_search_mp_background_gradient_opacity' => [
+				'type' => 'string'
+			],
+			'advanced_search_mp_background_gradient_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_results_meta_created_on_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_results_meta_author_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_results_meta_categories_toggle' => [
+				'type' => 'string'
+			],
+			'block_full_width_toggle' => [
+				'type' => 'string'
+			],
+			'block_max_width' => [
+				'type' => 'number'
+			],
+			'custom_css_class' => [
+				'type' => 'string'
 			]
 		]
 	];

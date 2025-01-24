@@ -812,4 +812,29 @@ class EPKB_HTML_Admin {
 			echo $notification_escaped;
 		}
 	}
+
+	/**
+	 * Display warning about Block Main page + WPML On
+	 *
+	 * @param $kb_config
+	 * @param bool $return_html
+	 *
+	 * @return string|void
+	 */
+	public static function display_block_wpml_warning( $kb_config, $return_html=false ) {
+
+		$notification_escaped = EPKB_HTML_Forms::notification_box_middle( array(
+			'type'  => 'error',
+			'title' => esc_html__( 'We’ve Detected You’re Using Blocks for your KB Main Page and WPML', 'echo-knowledge-base' ),
+			'desc'  => '<p>' . esc_html__( 'To edit text strings, you’ll need to update each main page individually for each language. For more details, please refer to our article.', 'echo-knowledge-base' ) . '</p>
+						<a href="https://www.echoknowledgebase.com/documentation/setup-wpml-for-knowledge-base/#Main-Page-String-Translation---Blocks" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>'
+		), $return_html  );
+
+		if ( $return_html ) {
+			return $notification_escaped;
+		} else {
+			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $notification_escaped;
+		}
+	}
 }

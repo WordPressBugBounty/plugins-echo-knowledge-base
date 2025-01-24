@@ -171,9 +171,10 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'text':
 												return <TextControl
 													key={field_name}
+													__nextHasNoMarginBottom
 													disabled={isDisabled}
 													label={field_specs.label}
-													value={attributes[field_name] || field_specs.default}
+													value={attributes[field_name]}
 													onChange={(value) => setAttributes({[field_name]: value})}
 													help={field_specs.description || ''}
 													className="epkb-block-ui-text-control"
@@ -313,6 +314,7 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'range':
 												return <RangeControl
 													key={field_name}
+													__nextHasNoMarginBottom
 													disabled={isDisabled}
 													isShiftStepEnabled={true}
 													shiftStep={1}
@@ -321,6 +323,26 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 													label={field_specs.label}
 													value={(attributes[field_name] === "" || Number.isNaN(parseInt(attributes[field_name]))) ? parseInt(field_specs.default) : parseInt(attributes[field_name])}
 													onChange={(value) => setAttributes({[field_name]: (value === "" || Number.isNaN(parseInt(value))) ? 1 : parseInt(value)})}
+													className="epkb-block-ui-range-control"
+													help={<>
+														{field_specs.description && (<span className="epkb-help-description">{field_specs.description}</span>)}
+														{field_specs.help_text && (<span className="epkb-help-text">{field_specs.help_text}{" "}<a href={field_specs.help_link_url} target="_blank" rel="noopener noreferrer">{field_specs.help_link_text}</a></span>)}
+													</>}
+												/>
+
+											case 'range_float':
+												return <RangeControl
+													key={field_name}
+													__nextHasNoMarginBottom
+													disabled={isDisabled}
+													isShiftStepEnabled={true}
+													shiftStep={0.05}
+													step={0.05}
+													min={field_specs.min}
+													max={field_specs.max}
+													label={field_specs.label}
+													value={(attributes[field_name] === "" || Number.isNaN(parseFloat(attributes[field_name]))) ? parseFloat(field_specs.default) : parseFloat(attributes[field_name])}
+													onChange={(value) => setAttributes({[field_name]: (value === "" || Number.isNaN(parseFloat(value))) ? parseFloat(field_specs.default).toFixed(2) : parseFloat(value).toFixed(2)})}
 													className="epkb-block-ui-range-control"
 													help={<>
 														{field_specs.description && (<span className="epkb-help-description">{field_specs.description}</span>)}

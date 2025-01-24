@@ -221,7 +221,7 @@ class EPKB_KB_Wizard_Cntrl {
 		// ARTICLES: change to custom sequence if necessary
 		if ( $articles_sequence_new_value == 'user-sequenced' ) {
 			$article_seq_data = EPKB_Utilities::get_kb_option( $kb_id, EPKB_Articles_Admin::KB_ARTICLES_SEQ_META, null, true );
-			if ( ! empty($article_seq_data) ) {
+			if ( ! empty( $article_seq_data ) ) {
 				$article_seq = $article_seq_data;
 			}
 		}

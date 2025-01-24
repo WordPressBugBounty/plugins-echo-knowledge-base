@@ -10,6 +10,7 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 	 * Constructor - add actions for Visual Helper functionality
 	 */
 	public function __construct() {
+		parent::__construct();
 		add_action( 'wp_footer', array( $this, 'epkb_main_page_generate_page_content' ) );
 	}
 

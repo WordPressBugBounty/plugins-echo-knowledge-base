@@ -20882,6 +20882,15 @@
   outline: none;
   box-shadow: none;
 }
+#ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-admin__boxes-list__tools #epkb-setting-box__list-tools__other .epkb-admin__text-field {
+  margin-top: 25px;
+}
+#ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-admin__boxes-list__tools #epkb-setting-box__list-tools__other .epkb-delete-all-data__form-title {
+  margin-bottom: 25px;
+}
+#ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-admin__boxes-list__tools #epkb-setting-box__list-tools__other #epkb_delete_text {
+  margin-bottom: 25px;
+}
 #ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-admin__boxes-list__widgets .epkb-admin__section-wrap__widgets {
   flex-direction: unset;
   flex-wrap: wrap;

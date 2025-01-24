@@ -339,14 +339,7 @@
 
 /* Public
 --------------------------------------------------------------*/
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+/* Use Search Box styles as a function to let to include its styles inside CSS selectors via '@use/@include' instead of deprecated @import */
 #eckb-article-page-container-v2 {
   position: relative;
   text-align: left;
@@ -653,6 +646,14 @@
   display: inline-block;
   vertical-align: middle;
   margin-left: 6px;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 #eckb-article-page-container-v2 #eckb-article-body #eckb-article-content #eckb-article-content-header-v2 {
   width: 100%;

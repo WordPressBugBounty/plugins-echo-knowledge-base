@@ -10,6 +10,12 @@ class EPKB_KB_Config_Controller {
 		add_action( 'wp_ajax_epkb_wpml_enable', array( $this, 'wpml_enable' ) );
 		add_action( 'wp_ajax_nopriv_epkb_wpml_enable', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
+		add_action( 'wp_ajax_eckb_update_category_slug_parameter', array( $this, 'update_category_slug_param' ) );
+		add_action( 'wp_ajax_nopriv_eckb_update_query_parameter', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+
+		add_action( 'wp_ajax_eckb_update_tag_slug_parameter', array( $this, 'update_tag_slug_param' ) );
+		add_action( 'wp_ajax_nopriv_eckb_update_query_parameter', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+
 		add_action( 'wp_ajax_epkb_preload_fonts', array( $this, 'preload_fonts' ) );
 		add_action( 'wp_ajax_nopriv_epkb_preload_fonts', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
@@ -51,6 +57,65 @@ class EPKB_KB_Config_Controller {
 		if ( is_wp_error( $result ) ) {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 412, $result ) );
 		}
+
+		// flush rules in case category and/or tag slug has value
+		update_option( 'epkb_flush_rewrite_rules', true );
+
+		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );
+	}
+
+	/**
+	 * Triggered when user sets category slug.
+	 */
+	public function update_category_slug_param() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+
+		// get KB ID
+		$kb_id = (int)EPKB_Utilities::post( 'epkb_kb_id', 0 );
+		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 410 ) );
+		}
+
+		$category_slug_param = EPKB_Utilities::post( 'category_slug_param' );
+
+		// allow only letters, numbers, dash, underscore
+		$category_slug_param = preg_replace( '/[^a-zA-Z0-9-_]/', '', $category_slug_param );
+
+		$result = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'category_slug', $category_slug_param );
+		if ( is_wp_error( $result ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 412, $result ) );
+		}
+
+		update_option( 'epkb_flush_rewrite_rules', true );
+
+		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );
+	}
+
+	/**
+	 * Triggered when user sets tag slug.
+	 */
+	public function update_tag_slug_param() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+
+		// get KB ID
+		$kb_id = (int)EPKB_Utilities::post( 'epkb_kb_id', 0 );
+		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 410 ) );
+		}
+
+		$tag_slug_param = EPKB_Utilities::post( 'tag_slug_param' );
+
+		// allow only letters, numbers, dash, underscore
+		$tag_slug_param = preg_replace( '/[^a-zA-Z0-9-_]/', '', $tag_slug_param );
+
+		$result = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'tag_slug', $tag_slug_param );
+		if ( is_wp_error( $result ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 412, $result ) );
+		}
+
+		update_option( 'epkb_flush_rewrite_rules', true );
 
 		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );
 	}

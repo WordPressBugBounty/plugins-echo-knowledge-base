@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 13.11.0
+ * Version: 13.20.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '13.11.0';
+	public static $version = '13.20.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -205,7 +205,8 @@ final class Echo_Knowledge_Base {
 		} else if ( in_array( $action, array( EPKB_Need_Help_Features::FEATURES_TAB_VISITED_ACTION ) ) ) {
 			new EPKB_Need_Help_Features();
 			return;
-		} else if ( in_array( $action, array( 'epkb_wpml_enable', 'epkb_preload_fonts','epkb_disable_openai', 'epkb_load_resource_links_icons', 'epkb_load_general_typography', 'epkb_save_access_control', 'epkb_apply_settings_changes' ) ) ) {
+		} else if ( in_array( $action, array( 'epkb_wpml_enable', 'eckb_update_category_slug_parameter', 'eckb_update_tag_slug_parameter', 'epkb_preload_fonts','epkb_disable_openai',
+												'epkb_load_resource_links_icons', 'epkb_load_general_typography', 'epkb_save_access_control', 'epkb_apply_settings_changes' ) ) ) {
 			new EPKB_KB_Config_Controller();
 			return;
 		} else if ( in_array( $action, array( 'epkb_reset_sequence', 'epkb_show_sequence' ) ) ) {
@@ -341,7 +342,7 @@ final class Echo_Knowledge_Base {
 
 		EPKB_KB_Config_Specs::reset_cache_specs();
 
-		/** Check for a translation file in includes/languages/plugins/echo-knowledge-base-LOCALE.mo.
+		/** Check for a translation file in includes/languages/plugins/echo-knowledge-base-LOCALE.mo or .php.
 			If it does not find one, it will try the default path you specify (the /languages directory in your plugin). */
 		load_plugin_textdomain( 'echo-knowledge-base', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
