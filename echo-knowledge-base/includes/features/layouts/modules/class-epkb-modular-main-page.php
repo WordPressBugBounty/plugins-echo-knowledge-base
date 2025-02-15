@@ -459,7 +459,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 				$kb_config['ml_categories_articles_sidebar_desktop_width'] = EPKB_Upgrades::update_modular_sidebar_width( $kb_config );
 			}
 
-			// set Modular sidebar width
+			// set Featured Articles Sidebar width
 			$output .= '
 				#epkb-ml__module-categories-articles .epkb-layout-container {
 					width: ' . ( 100 - intval( $kb_config['ml_categories_articles_sidebar_desktop_width'] ) ) . '%;
@@ -558,7 +558,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 		    
 		    ';
 
-			// Modular Sidebar -----------------------------------------/
+			// Featured Articles Sidebar -----------------------------------------/
 			$output .= '
 			#epkb-ml__module-categories-articles #epkb-ml-cat-article-sidebar .epkb-ml-articles-list li {
 			        padding-top: ' . intval( $kb_config['article_list_spacing'] ) . 'px !important;

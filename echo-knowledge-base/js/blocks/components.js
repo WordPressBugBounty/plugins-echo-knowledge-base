@@ -154,8 +154,12 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 								if (!filteredFields.length) {
 									return null;
 								}
+								const GroupKeyClass =
+									typeof group_key === "string" && group_key.trim() !== ""
+										? " epkb-"+group_key
+										: "";
 
-								return <PanelBody key={group_key} title={title} className="epkb-block-ui-section">{
+								return <PanelBody key={group_key} title={title} className={"epkb-block-ui-section" + GroupKeyClass}>{
 
 									// Controls in the current group
 									filteredFields.map(([field_name, field_specs]) => {
@@ -383,7 +387,23 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 														name: field_specs.options[attributes[field_name] || field_specs.default],
 														style: {},
 													}}
-													onChange={(value) => setAttributes({[field_name]: value.selectedItem.key})}
+													onChange={(value) => {
+														setAttributes({[field_name]: value.selectedItem.key});
+
+														// EL.AY sidebar components - deselect the same component if it is selected in another sidebar
+														/*switch (field_name) {
+															case 'nav_sidebar_left':
+															case 'kb_sidebar_left':
+															case 'toc_left':
+																setAttributes({[field_name.replace('_left', '_right')]: '0'});
+																break;
+															case 'nav_sidebar_right':
+															case 'kb_sidebar_right':
+															case 'toc_right':
+																setAttributes({[field_name.replace('_right', '_left')]: '0'});
+																break;
+														}*/
+													}}
 													options={Object.entries(field_specs.options).map(([option_key, options_name]) => {
 														return {
 															key: option_key,
@@ -643,9 +663,10 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												</ToolsPanel>
 
 											case 'section_description':
+												const linkUrl = field_specs.link_text.length > 0 ? field_specs.link_url.replaceAll('epkb_post_type_1', 'epkb_post_type_' + attributes['kb_id']) : '';
 												return <div key={field_name} className="epkb-block-ui-section-description">
 													<span>{field_specs.description}</span>
-													{field_specs.link_text.length > 0 ? (<a href={field_specs.link_url} target="_blank" rel="noopener noreferrer">{field_specs.link_text}</a>) : null}
+													{field_specs.link_text.length > 0 ? (<a href={linkUrl} target="_blank" rel="noopener noreferrer">{field_specs.link_text}</a>) : null}
 												</div>;
 
 											default:

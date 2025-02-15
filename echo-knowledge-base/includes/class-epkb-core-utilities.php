@@ -341,6 +341,11 @@ class EPKB_Core_Utilities {
 			}
 		}
 
+		// sync 'elay_article_icon' with 'elay_sidebar_article_icon' because for Sidebar layout we show only 'elay_sidebar_article_icon' in UI
+		if ( $new_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ) {
+			$new_config['elay_article_icon'] = $new_config['elay_sidebar_article_icon'];
+		}
+
 		// Legacy: save KB ID for source of Modular Main Page FAQs Module
 		if ( ! empty( $new_config['ml_faqs_kb_id'] ) ) {
 			$result = EPKB_Utilities::save_kb_option( $kb_id, EPKB_ML_FAQs::FAQS_KB_ID, $new_config['ml_faqs_kb_id'] );
@@ -686,7 +691,6 @@ class EPKB_Core_Utilities {
 				if ( ! $is_theme_selected ) {
 					$default_theme = EPKB_KB_Wizard_Themes::get_theme( 'sidebar_basic', $orig_config );
 					$new_config['sidebar_section_head_alignment'] = $default_theme['sidebar_section_head_alignment'];
-					$new_config['sidebar_section_box_height_mode'] = $default_theme['sidebar_section_box_height_mode'];
 				}
 				$new_config['sidebar_section_desc_text_on'] = 'off';
 				break;
@@ -1184,7 +1188,6 @@ class EPKB_Core_Utilities {
 		);
 	}
 
-
 	/**
 	 * Retrieve the KB flag. If preset it indicates true and if missing it indicated false flag.
 	 *
@@ -1542,33 +1545,33 @@ class EPKB_Core_Utilities {
 	}
 
 	public static function get_elay_plugin_url() {
-		return class_exists( 'Echo_Elegant_Layouts' ) && ! empty(Echo_Elegant_Layouts::$plugin_url) ? Echo_Elegant_Layouts::$plugin_url . 'img/' : '';
+		return class_exists( 'Echo_Elegant_Layouts' ) && ! empty( Echo_Elegant_Layouts::$plugin_url ) ? Echo_Elegant_Layouts::$plugin_url . 'img/' : '';
 	}
 
 	public static function get_eprf_plugin_url() {
-		return class_exists( 'Echo_Article_Rating_And_Feedback' ) && ! empty(Echo_Article_Rating_And_Feedback::$plugin_url) ? Echo_Article_Rating_And_Feedback::$plugin_url . 'img/' : '';
+		return class_exists( 'Echo_Article_Rating_And_Feedback' ) && ! empty( Echo_Article_Rating_And_Feedback::$plugin_url ) ? Echo_Article_Rating_And_Feedback::$plugin_url . 'img/' : '';
 	}
 
 	public static function register_asea_block_public_styles( $block_name, $suffix, $block_styles_dependencies ) {
-		if ( class_exists( 'ASEA_Blocks' ) ) {
+		if ( class_exists( 'ASEA_Blocks' ) && is_callable( array( 'ASEA_Blocks', 'register_block_public_styles' ) ) ) {
 			ASEA_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );
 		}
 	}
 
 	public static function register_asea_block_public_scripts( $suffix ) {
-		if ( class_exists( 'ASEA_Blocks' ) ) {
+		if ( class_exists( 'ASEA_Blocks' ) && is_callable( array( 'ASEA_Blocks', 'register_block_public_scripts' ) ) ) {
 			ASEA_Blocks::register_block_public_scripts( $suffix );
 		}
 	}
 
 	public static function register_elay_block_public_styles( $block_name, $suffix, $block_styles_dependencies ) {
-		if ( class_exists( 'ELAY_Blocks' ) ) {
+		if ( class_exists( 'ELAY_Blocks' ) && is_callable( array( 'ELAY_Blocks', 'register_block_public_styles' ) ) ) {
 			ELAY_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );
 		}
 	}
 
 	public static function register_elay_block_public_scripts( $suffix ) {
-		if ( class_exists( 'ELAY_Blocks' ) ) {
+		if ( class_exists( 'ELAY_Blocks' ) && is_callable( array( 'ELAY_Blocks', 'register_block_public_scripts' ) ) ) {
 			ELAY_Blocks::register_block_public_scripts( $suffix );
 		}
 	}

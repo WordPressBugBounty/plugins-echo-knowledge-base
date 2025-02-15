@@ -37,6 +37,7 @@ class EPKB_KB_Handler {
 
 		// use default KB configuration ONLY if none exists
 		$kb_config = empty( $kb_config ) ? epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $new_kb_id ) : $kb_config;
+		$kb_config['id'] = $new_kb_id;
 
 		// 1. Add first KB Main page if none exists; first KB is just called Knowledge Base
 		$kb_main_pages = $kb_config['kb_main_pages'];

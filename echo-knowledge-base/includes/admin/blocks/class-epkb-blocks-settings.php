@@ -189,8 +189,8 @@ class EPKB_Blocks_Settings {
 			'label' => '-----',
 			'settings' => array(),
 		];
-		foreach( $presets_config['categories_articles'][$layout_name]['presets'] as $preset_name => $preset ) {
-			$all_design_settings[$preset_name] = [ 'label' => $preset['title'] ];
+		foreach( $presets_config['categories_articles'][ $layout_name ]['presets'] as $preset_name => $preset ) {
+			$all_design_settings[ $preset_name ] = [ 'label' => $preset['title'] ];
 		}
 
 		foreach ( $all_design_settings as $theme_name => $theme_label ) {

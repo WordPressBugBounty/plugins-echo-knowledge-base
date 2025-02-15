@@ -368,10 +368,11 @@ class EPKB_Config_Settings_Page {
 				$contents_config[$tab]['css_class'] = empty( $contents_config[$tab]['css_class'] )
 					? 'eckb-condition-depend__' . implode( ' eckb-condition-depend__', $tab_config['dependency'] )
 					: $contents_config[$tab]['css_class'] . ' eckb-condition-depend__' . implode( ' eckb-condition-depend__', $tab_config['dependency'] );
-				$contents_config[$tab]['data'] = array(
+				$contents_config[$tab]['data'] = empty( $contents_config[$tab]['data'] ) ? array() : $contents_config[$tab]['data'];
+				$contents_config[$tab]['data'] = array_merge( $contents_config[$tab]['data'], array(
 					'dependency-ids' => implode( ' ', $tab_config['dependency'] ),
 					'enable-on-values' => implode( ' ', $tab_config['enable_on'] )
-				);
+				) );
 			}
 
 			if ( ! empty( $tab_config['learn_more_links'] ) ) {
@@ -421,7 +422,7 @@ class EPKB_Config_Settings_Page {
 			'ml_resource_links_1_settings_tab_content', 'ml_resource_links_2_settings_tab_content', 'ml_resource_links_3_settings_tab_content', 'ml_resource_links_4_settings_tab_content',
 			'ml_resource_links_5_settings_tab_content', 'ml_resource_links_6_settings_tab_content', 'ml_resource_links_7_settings_tab_content', 'ml_resource_links_8_settings_tab_content',
 			'general_typography', 'ml_resource_links_settings_old_elay_warning', 'sidebar_main_page_intro_text_link', 'article_search_sidebar_layout_msg', 'article_list_spacing', 'ml_categories_articles_sidebar_desktop_width',
-			'archive_header_desktop_width', 'archive_content_desktop_width', 'article-container-desktop-width-v2', 'article-body-desktop-width-v2', 'archive_page_v3_requirement_message'] ) ) {
+			'archive_header_desktop_width', 'archive_content_desktop_width', 'article-container-desktop-width-v2', 'article-body-desktop-width-v2', 'archive_page_v3_requirement_message', 'article_sidebar_settings_link'] ) ) {
 			$this->show_custom_display_fields( $setting_name, $show_included );
 			return;
 		}
@@ -1377,6 +1378,16 @@ class EPKB_Config_Settings_Page {
 				) );    ?>
 			</div>  <?php
 		}
+
+		if ( $setting_name == 'article_sidebar_settings_link' ) {
+			$url = admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&page=epkb-kb-configuration#settings__article-page__article-page-sidebar__article_sidebar_categories_and_articles_navigation' ); ?>
+			<div class="epkb-admin__input-field ">
+				<p>
+					<?php esc_html_e( 'To Edit Articles List Settings', 'echo-knowledge-base' ); ?>
+					<a class="epkb-admin__form-tab-content-desc__link" href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Click here', 'echo-knowledge-base' ); ?></a>
+				</p>
+			</div>  <?php
+		}
 	}
 
 	/**
@@ -1940,7 +1951,7 @@ class EPKB_Config_Settings_Page {
 			array(
 				'title'         => esc_html__( 'Sidebar Layout Introduction Page', 'echo-knowledge-base' ),
 				'fields'        => [
-					'sidebar_main_page_intro_text' => [ 'elay', 'only_sidebar', 'not_block_main_page' ],
+					'sidebar_main_page_intro_text' => [ 'elay', [ 'only_sidebar', 'only_block_main_page' ] ],
 				],
 				'data'          => [ 'target' => 'sidebar_main_page_intro_text' ],
 			),
@@ -2099,6 +2110,7 @@ class EPKB_Config_Settings_Page {
 						'sidebar_expand_articles_icon' => '',
 						'sidebar_article_icon_toggle' => '',
 						'elay_sidebar_article_icon' => 'elay',
+						'article_list_spacing' => [ 'elay', ['only_sidebar', 'only_block_main_page'] ],
 						'sidebar_article_active_bold' => '',
 						'sidebar_side_bar_height_mode' => '',
 						'sidebar_side_bar_height' => '',
@@ -2119,6 +2131,7 @@ class EPKB_Config_Settings_Page {
 					],
 					'dependency'    => [ 'nav_sidebar_left', 'nav_sidebar_right' ],
 					'enable_on'     => [ '1', '2', '3' ],
+					'data'			=> [ 'target' => 'article_sidebar_categories_and_articles_navigation' ],
 				),
                 array(
                     'title'     => esc_html__( 'Categories and Articles Navigation - Colors', 'echo-knowledge-base' ),
@@ -2484,11 +2497,11 @@ class EPKB_Config_Settings_Page {
 					'section_box_shadow' => [ [ 'only_basic', 'only_tabs', 'only_categories' ] ],
 					'expand_articles_icon' => [ [ 'only_basic', 'only_tabs' ] ],
 					'article_icon_toggle' => ['not_grid', 'not_sidebar'],
-					'elay_article_icon' => 'elay',
+					'elay_article_icon' => ['elay', 'not_sidebar'],
 					'article_icon_color' => [ 'not_grid', 'not_sidebar' ],
-					'sidebar_article_icon_color' => [ 'elay', 'only_sidebar' ],
+					// 'sidebar_article_icon_color' => [ 'elay', 'only_sidebar' ],
 					'article_font_color' => [ 'not_grid', 'not_sidebar' ],
-					'sidebar_article_font_color' => [ 'elay', 'only_sidebar' ],
+					// 'sidebar_article_font_color' => [ 'elay', 'only_sidebar' ],
 
 					// PRO feature ad
 					'elay_pro_description' => 'not_elay',
@@ -2497,7 +2510,7 @@ class EPKB_Config_Settings_Page {
 			array(
 				'title'         => esc_html__( 'Sidebar Layout Introduction Page', 'echo-knowledge-base' ),
 				'fields'        => [
-					'sidebar_main_page_intro_text_link' => [ 'elay', 'only_sidebar' ],
+					'sidebar_main_page_intro_text_link' => [ 'elay', [ 'only_sidebar', 'only_block_main_page' ] ],
 				],
 				'css_class'     => 'epkb-admin__form-tab-content--sidebar_main_page_intro_text',
 			),
@@ -3127,7 +3140,7 @@ class EPKB_Config_Settings_Page {
 					'ml_categories_articles_kblk_pro'                       => 'not_kblk',
 				],
 				'sidebar-settings' => [
-					// Modular Sidebar settings
+					// Featured Articles Sidebar settings
 					'ml_categories_articles_sidebar_toggle'                 => '',
 					'ml_categories_articles_sidebar_desktop_width'          => '',
 					'ml_categories_articles_sidebar_location'               => '',
@@ -3136,7 +3149,7 @@ class EPKB_Config_Settings_Page {
 					'ml_articles_list_nof_articles_displayed'               => '',
 				],
 				'sidebar-layout-introduction' => [
-					'sidebar_main_page_intro_text_link' => [ 'elay', 'only_sidebar' ],
+					'sidebar_main_page_intro_text_link' => [ 'elay', [ 'only_sidebar', 'only_block_main_page' ] ],
 				],
 			],
 
@@ -3509,13 +3522,14 @@ class EPKB_Config_Settings_Page {
 					'section_box_shadow' => [ [ 'only_basic', 'only_tabs', 'only_categories' ] ],
 					'expand_articles_icon' => [ [ 'only_basic', 'only_tabs' ] ],
 					'article_icon_toggle' => ['not_grid', 'not_sidebar'],
-					'elay_article_icon' => 'elay',
+					'elay_article_icon' => ['elay', 'not_sidebar'],
 					'article_icon_color' => [ 'not_sidebar' ],
-					'sidebar_article_icon_color' => [ 'elay', 'only_sidebar' ],
+					// 'sidebar_article_icon_color' => [ 'elay', 'only_sidebar' ],
 					'article_font_color' => [ 'not_grid', 'not_sidebar' ],
-					'sidebar_article_font_color' => [ 'elay', 'only_sidebar' ],
+					// 'sidebar_article_font_color' => [ 'elay', 'only_sidebar' ],
 					'ml_categories_articles_article_bg_color' => [ 'only_drill_down' ],
-					'article_list_spacing' => [], // article spacing
+					'article_list_spacing' => 'not_sidebar', // article spacing
+					'article_sidebar_settings_link' => 'only_sidebar',
 
 					// PRO feature ad
 					'elay_pro_description' => 'not_elay',
@@ -3593,7 +3607,7 @@ class EPKB_Config_Settings_Page {
 		// Sidebar
 		$dedicated_module_boxes_config['sidebar-settings'] = [
 			'module'    => 'categories_articles',
-			'title'     => esc_html__( 'Modular Sidebar', 'echo-knowledge-base' ),
+			'title'     => esc_html__( 'Featured Articles Sidebar', 'echo-knowledge-base' ),
 		];
 
 		// Sidebar Layout Introduction Page
@@ -3816,7 +3830,7 @@ class EPKB_Config_Settings_Page {
 				$field_specs['dependency'] = ['ml_row_1_module', 'ml_row_2_module', 'ml_row_3_module', 'ml_row_4_module', 'ml_row_5_module'];
 				$field_specs['enable_on'] = ['categories_articles'];
 				$field_specs['input_group_class'] = 'eckb-ml-module__categories_articles eckb-conditional-setting-input' . ' ';
-				// adjust better 'ml_categories_articles_sidebar_desktop_width' when user toggle Modular Sidebar 'on'
+				// adjust better 'ml_categories_articles_sidebar_desktop_width' when user toggle Featured Articles Sidebar 'on'
 				$field_specs['group_data'] = [ 'default-value-pc' => '28' ];
 				break;
 			case 'ml_categories_articles_sidebar_desktop_width':

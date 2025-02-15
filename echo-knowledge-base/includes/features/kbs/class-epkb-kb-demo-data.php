@@ -441,7 +441,7 @@ class EPKB_KB_Demo_Data {
 		return $post_id;
 	}
 
-	public static function get_sample_post_content() {  // TODO translate
+	public static function get_sample_post_content() {
 
 		$demo_img = Echo_Knowledge_Base::$plugin_url.'img/guy-on-laptop.jpg';
 		$youtube_vid = '<iframe width="560" height="315" src="https://www.youtube.com/embed/gOLT-IDT3UY?si=amjYFxs-Cf_CHqFM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';

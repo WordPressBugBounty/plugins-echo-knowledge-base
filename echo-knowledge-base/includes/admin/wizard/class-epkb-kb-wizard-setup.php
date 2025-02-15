@@ -52,8 +52,7 @@ class EPKB_KB_Wizard_Setup {
 	 */
 	public function display_kb_setup_wizard() {
 
-		// TODO: remove ELAY check once we have blocks for ELAY as well
-		$show_blocks_or_shortcode_step = ! $this->is_block_theme && $this->current_theme_has_block_support && $this->is_main_page_missing && ! EPKB_Utilities::is_elegant_layouts_enabled();
+		$show_blocks_or_shortcode_step = ! $this->is_block_theme && $this->current_theme_has_block_support && $this->is_main_page_missing;
 
 		// Step: URL
 		$step_number = 1;
@@ -1544,13 +1543,13 @@ class EPKB_KB_Wizard_Setup {
 						'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-grid-simple.jpg',
 						'title'         => esc_html__( 'Simple', 'echo-knowledge-base' ),
 					],
-					'grid_demo_7' => [
-						'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-grid-left-icon.jpg',
-						'title'         => esc_html__( 'Left Icon Style', 'echo-knowledge-base' ),
-					],
 					'grid_demo_8' => [
 						'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-grid-simple-2.jpg',
 						'title'         => esc_html__( 'Simple 2', 'echo-knowledge-base' ),
+					],
+					'grid_demo_7' => [
+						'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-grid-left-icon.jpg',
+						'title'         => esc_html__( 'Left Icon Style', 'echo-knowledge-base' ),
 					],
 					'grid_demo_9' => [
 						'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-grid-icon-squares.jpg',

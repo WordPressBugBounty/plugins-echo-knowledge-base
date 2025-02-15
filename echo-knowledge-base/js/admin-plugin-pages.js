@@ -1929,6 +1929,16 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
+	// Link to open Article Page -> Sidebar -> Categories and Articles Navigation
+	$( document ).on( 'click', '.epkb-admin__form .epkb-admin__form-tab-content--categories_articles-box .epkb-admin__form-tab-content-desc__link', function( e ) {
+		e.preventDefault();
+		$( '.epkb-admin__form .epkb-admin__form-sub-tab[data-target="article-page-sidebar"]' ).click();
+		$( [document.documentElement, document.body] ).animate( {
+			scrollTop: $( '[data-target="article_sidebar_categories_and_articles_navigation"]' ).offset().top
+		}, 300 );
+		return false;
+	});
+
 	// Link to Settings tab inside admin notices when the same page is currently open
 	$( document ).on( 'click', '.epkb-notification-box-top__body__desc a', function( e ) {
 		let location_parts = $( this ).attr( 'href' ).split( '#' );
@@ -3305,7 +3315,7 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	// Set better default width of Modular Sidebar when user toggle it 'on'
+	// Set better default width of Featured Articles Sidebar when user toggle it 'on'
 	$( document ).on( 'change', '[name="ml_categories_articles_sidebar_toggle"]', function() {
 		if ( ! $( this ).prop( 'checked' ) ) {
 			return;

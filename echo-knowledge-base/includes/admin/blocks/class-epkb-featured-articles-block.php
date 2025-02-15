@@ -262,6 +262,12 @@ final class EPKB_Featured_Articles_Block extends EPKB_Abstract_Block {
 								'setting_type' => 'toggle',
 								'label' => esc_html__( 'Show Article Icon', 'echo-knowledge-base' ),
 							),
+							'elay_article_icon' => array(
+								'setting_type' => EPKB_Utilities::is_elegant_layouts_enabled() ? 'dropdown' : '',
+								'hide_on_dependencies' => array(
+									'article_icon_toggle' => 'off',
+								),
+							),
 							'article_list_spacing' => array(
 								'setting_type' => 'range',
 							),

@@ -230,7 +230,7 @@ class EPKB_KB_Wizard_Themes {
 			foreach( $add_on_themes as $config_name => $theme_values ) {
 				foreach ( $theme_values as $theme_id => $preset_value ) {
 					if ( empty( $preset_value ) && $preset_value !== '0' && $preset_value !== 0 ) {
-						unset( $add_on_themes[$config_name][$theme_id] );
+						unset( $add_on_themes[ $config_name ][ $theme_id ] );
 					}
 				}
 			}
@@ -244,10 +244,10 @@ class EPKB_KB_Wizard_Themes {
 
 		// merge core and add-ons theme configs
 		foreach ( $add_on_themes as $config_name => $theme_values ) {
-			if ( isset( $main_page_themes[$config_name] ) ) {
-				$main_page_themes[$config_name] += $theme_values;
+			if ( isset( $main_page_themes[ $config_name ] ) ) {
+				$main_page_themes[ $config_name ] += $theme_values;
 			} else {
-				$main_page_themes[$config_name] = $theme_values;
+				$main_page_themes[ $config_name ] = $theme_values;
 			}
 		}
 
@@ -264,7 +264,7 @@ class EPKB_KB_Wizard_Themes {
 			// first set defaults
 			if ( ! in_array( $config_name, ['theme_name','kb_name','kb_main_page_layout'] ) ) {
 				foreach ( array_keys( $theme_names ) as $theme_id ) {
-					$all_themes[$theme_names[$theme_id]][$config_name] = $all_default_configuration[ $config_name ];
+					$all_themes[ $theme_names[ $theme_id ] ][ $config_name ] = $all_default_configuration[ $config_name ];
 				}
 			}
 

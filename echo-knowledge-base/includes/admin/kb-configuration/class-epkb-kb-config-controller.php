@@ -287,29 +287,7 @@ class EPKB_KB_Config_Controller {
 		}
 
 		// prepare article sidebar component priority
-		$article_sidebar_component_priority = array();
-		foreach( EPKB_KB_Config_Specs::get_sidebar_component_priority_names() as $component ) {
-			$article_sidebar_component_priority[ $component ] = '0';
-
-			// set component priority
-			foreach ( [ '_left', '_right' ] as $sidebar_suffix ) {
-
-				// Categories and Articles Navigation
-				if ( $component == 'nav_sidebar' . $sidebar_suffix && isset( $new_config[ 'nav_sidebar' . $sidebar_suffix ] ) && $new_config[ 'nav_sidebar' . $sidebar_suffix ] > 0 ) {
-					$article_sidebar_component_priority[ $component ] = sanitize_text_field( $new_config[ 'nav_sidebar' . $sidebar_suffix ] );
-
-				// Widgets from KB Sidebar
-				} else if ( $component == 'kb_sidebar' . $sidebar_suffix && isset( $new_config[ 'kb_sidebar' . $sidebar_suffix ] ) && $new_config[ 'kb_sidebar' . $sidebar_suffix ] > 0 ) {
-					$article_sidebar_component_priority[ $component ] = sanitize_text_field( $new_config[ 'kb_sidebar' . $sidebar_suffix ] );
-
-				// Table of Contents ( TOC )
-				} else if ( $component == 'toc' . $sidebar_suffix && isset( $new_config[ 'toc' . $sidebar_suffix ] ) && $new_config[ 'toc' . $sidebar_suffix ] > 0 ) {
-					$article_sidebar_component_priority[ $component ] = sanitize_text_field( $new_config[ 'toc' . $sidebar_suffix ] );
-				}
-			}
-		}
-		$article_sidebar_component_priority['toc_content'] = sanitize_text_field( $new_config['toc_content'] );
-		$new_config['article_sidebar_component_priority'] = $article_sidebar_component_priority;
+		$new_config['article_sidebar_component_priority'] = self::convert_ui_data_to_article_sidebar_component_priority( $new_config );
 
 		EPKB_Core_Utilities::start_update_kb_configuration( $kb_id, $new_config );
 
@@ -321,5 +299,37 @@ class EPKB_KB_Config_Controller {
 		}
 
 		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );	
+	}
+
+	/**
+	 * In settings UI we display controls which represent individual component priority settings; while storing them as single combined setting (see 'article_sidebar_component_priority' in EPKB_KB_Config_Specs class)
+	 * @param $new_config
+	 * @return array
+	 */
+	public static function convert_ui_data_to_article_sidebar_component_priority( $new_config ) {
+		$article_sidebar_component_priority = array();
+		foreach( EPKB_KB_Config_Specs::get_sidebar_component_priority_names() as $component ) {
+			$article_sidebar_component_priority[ $component ] = '0';
+
+			// set component priority
+			foreach ( [ '_left', '_right' ] as $sidebar_suffix ) {
+
+				// Categories and Articles Navigation
+				if ( $component == 'nav_sidebar' . $sidebar_suffix && isset( $new_config[ 'nav_sidebar' . $sidebar_suffix ] ) && $new_config[ 'nav_sidebar' . $sidebar_suffix ] > 0 ) {
+					$article_sidebar_component_priority[ $component ] = sanitize_text_field( $new_config[ 'nav_sidebar' . $sidebar_suffix ] );
+
+					// Widgets from KB Sidebar
+				} else if ( $component == 'kb_sidebar' . $sidebar_suffix && isset( $new_config[ 'kb_sidebar' . $sidebar_suffix ] ) && $new_config[ 'kb_sidebar' . $sidebar_suffix ] > 0 ) {
+					$article_sidebar_component_priority[ $component ] = sanitize_text_field( $new_config[ 'kb_sidebar' . $sidebar_suffix ] );
+
+					// Table of Contents ( TOC )
+				} else if ( $component == 'toc' . $sidebar_suffix && isset( $new_config[ 'toc' . $sidebar_suffix ] ) && $new_config[ 'toc' . $sidebar_suffix ] > 0 ) {
+					$article_sidebar_component_priority[ $component ] = sanitize_text_field( $new_config[ 'toc' . $sidebar_suffix ] );
+				}
+			}
+		}
+		$article_sidebar_component_priority['toc_content'] = sanitize_text_field( $new_config['toc_content'] );
+
+		return $article_sidebar_component_priority;
 	}
 }

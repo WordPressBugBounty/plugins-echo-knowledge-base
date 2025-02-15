@@ -21,32 +21,31 @@ registerBlockType(
 	{
 		icon: {
 			src: (
-				<svg id="Featured_Articles" data-name="Featured Articles" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 119.57 79.49" fill="none">
-					<path d="M0.55 27.86h6.89v6.89H0.55Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M9.64 27.86h25.38v6.89H9.64Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M20.89 4.01h78.54v12.36H20.89Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M42.72 27.86h6.89v6.89H42.72Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M51.53 27.86h25.38v6.89H51.53Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M84.88 27.86h6.89v6.89H84.88Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M93.59 27.86h25.38v6.89H93.59Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M0.5 42.9h6.89v6.89H0.5Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M9.59 42.9h25.38v6.89H9.59Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M42.67 42.9h6.89v6.89H42.67Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M51.48 42.9h25.38v6.89H51.48Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M84.83 42.9h6.89v6.89H84.83Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M93.54 42.9h25.38v6.89H93.54Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M0.5 72.08h6.89v6.89H0.5Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M9.59 72.08h25.38v6.89H9.59Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M42.67 72.08h6.89v6.89H42.67Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M51.48 72.08h25.38v6.89H51.48Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M84.83 72.08h6.89v6.89H84.83Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M93.54 72.08h25.38v6.89H93.54Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M0.5 57.49h6.89v6.89H0.5Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M9.59 57.49h25.38v6.89H9.59Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M42.67 57.49h6.89v6.89H42.67Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M51.48 57.49h25.38v6.89H51.48Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M84.83 57.49h6.89v6.89H84.83Z" stroke="#000" strokeMiterlimit="10" />
-					<path d="M93.54 57.49h25.38v6.89H93.54Z" stroke="#000" strokeMiterlimit="10" />
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 119.41 101.85"
+					id="Featured_Articles"
+					data-name="Featured Articles"
+				>
+					<g>
+						<circle cx="7.96" cy="42.96" r="7.96" />
+						<rect x="19.06" y="35" width="38.77" height="15.92" />
+						<circle cx="69.54" cy="42.96" r="7.96" />
+						<rect x="80.64" y="35" width="38.77" height="15.92" />
+					</g>
+					<g>
+						<circle cx="8.32" cy="68.34" r="7.96" />
+						<rect x="19.41" y="60.38" width="38.77" height="15.92" />
+						<circle cx="69.9" cy="68.34" r="7.96" />
+						<rect x="81" y="60.38" width="38.77" height="15.92" />
+					</g>
+					<g>
+						<circle cx="7.96" cy="93.13" r="7.96" />
+						<rect x="19.06" y="85.17" width="38.77" height="15.92" />
+						<circle cx="69.54" cy="93.13" r="7.96" />
+						<rect x="80.64" y="85.17" width="38.77" height="15.92" />
+					</g>
+					<rect x="15.92" width="89.09" height="26.39" stroke="#000" strokeMiterlimit="10" />
 				</svg>
 			),
 		},

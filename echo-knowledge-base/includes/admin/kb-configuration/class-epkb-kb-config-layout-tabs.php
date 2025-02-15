@@ -63,7 +63,7 @@ class EPKB_KB_Config_Layout_Tabs {
 				'max'         => 10,
 				'min'         => 1,
 				'type'        => EPKB_Input_Filter::NUMBER,
-				'default'     => 5
+				'default'     => 6
 			),
 
 			/***  KB Main Page COLORS -> Category Tabs  ***/

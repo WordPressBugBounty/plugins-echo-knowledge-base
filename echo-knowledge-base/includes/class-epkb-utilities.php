@@ -502,12 +502,12 @@ class EPKB_Utilities {
 	/**
 	 * Sanitizes a hex color. Returns either '', a 3, or 6, or 8 digit hex color (with #), or nothing (the WordPress sanitize_hex_color() does not handle 8 digits HEX with alpha channel, so KB has its own method to sanitize HEX)
 	 * @param $color
-	 * @return mixed|string
+	 * @return string
 	 */
 	public static function sanitize_hex_color( $color ) {
 
 		// if the color is an empty string, return it as-is
-		if ( '' === $color ) {
+		if ( '' === $color || ! is_string( $color ) ) {
 			return '';
 		}
 
@@ -1530,6 +1530,7 @@ class EPKB_Utilities {
 
 	public static function get_single_article_link( $kb_config, $title, $article_id, $type, $seq_no='' ) {
 		static $epkb_single_article_link = null;
+		static $epkb_block_name = null;
 
 		$title_style_escaped = '';
 
@@ -1585,7 +1586,11 @@ class EPKB_Utilities {
 		$link = '';
 		if ( has_filter( 'eckb_single_article_filter' ) ) {
 
-			$result = apply_filters( 'eckb_single_article_filter', $article_id, array( $kb_config['id'], $title, $outer_span, $article_color_escaped, $icon_color_escaped ) );
+			// let blocks to pass their own values into article filter
+			$kb_main_page_layout = isset( $kb_config['kb_id'] ) && ! empty( $kb_config['kb_main_page_layout'] ) ? $kb_config['kb_main_page_layout'] : '';
+			$article_icon_toggle = isset( $kb_config['kb_id'] ) && ! empty( $kb_config['article_icon_toggle'] ) ? $kb_config['article_icon_toggle'] : '';
+
+			$result = apply_filters( 'eckb_single_article_filter', $article_id, array( $kb_config['id'], $title, $outer_span, $article_color_escaped, $icon_color_escaped, $kb_main_page_layout, $article_icon_toggle ) );
 
 			// keep for old compatibility for links to output separately
 			if ( ! empty( $result ) && $result === true ) {
@@ -1603,9 +1608,14 @@ class EPKB_Utilities {
 		// custom article list icon
 		if ( empty( $link ) && EPKB_Utilities::is_elegant_layouts_enabled() && has_filter( 'eckb_article_list_icon_filter' ) ) {
 
-			if ( empty( $epkb_single_article_link ) ) {
+			if ( empty( $epkb_single_article_link ) || ( isset( $kb_config['block_name'] ) && $kb_config['block_name'] != $epkb_block_name ) ) {
+				$epkb_block_name = isset( $kb_config['block_name'] ) ? $kb_config['block_name'] : null;
 
-				$result = apply_filters( 'eckb_article_list_icon_filter', $article_id, array( $kb_config['id'], $type) );
+				// blocks pass their own icon value (storing in the block attributes)
+				$result = isset( $kb_config['block_name'] ) && isset( $kb_config['elay_article_icon'] )
+					? apply_filters( 'eckb_article_list_icon_filter', $article_id, array( $kb_config['id'], $type, $kb_config['elay_article_icon'] ) )
+					: apply_filters( 'eckb_article_list_icon_filter', $article_id, array( $kb_config['id'], $type ) );
+
 				if ( ! empty( $result['icon'] ) ) {
 					$icon_class = $result['icon'];
 					$epkb_single_article_link = $icon_class;

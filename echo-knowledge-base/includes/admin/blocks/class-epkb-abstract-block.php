@@ -454,6 +454,9 @@ abstract class EPKB_Abstract_Block {
 		// retrieve selected KB configuration
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $block_attributes['kb_id'] );
 
+		// distinguish blocks for cache (article icon cache)
+		$block_attributes['block_name'] = $this->block_name;
+
 		$block_attributes['id'] = $kb_config['id'];
 		$block_attributes['status'] = $kb_config['status'];
 		$block_attributes['kb_main_pages'] = $kb_config['kb_main_pages'];

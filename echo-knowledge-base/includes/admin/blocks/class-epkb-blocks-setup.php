@@ -21,8 +21,8 @@ class EPKB_Blocks_Setup {
 		new EPKB_Featured_Articles_Block();
 
 		if ( EPKB_Utilities::is_elegant_layouts_enabled() ) {
-			//new EPKB_Grid_Layout_Block();
-			//new EPKB_Sidebar_Layout_Block();
+			new EPKB_Grid_Layout_Block();
+			new EPKB_Sidebar_Layout_Block();
 		}
 
 		if ( EPKB_Utilities::is_advanced_search_enabled() ) {

@@ -833,25 +833,6 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::NUMBER,
 				'default'     => 1
 			),
-			'sidebar_section_box_height_mode' => array(
-				'label'       => esc_html__( 'Height Mode', 'echo-knowledge-base' ),
-				'name'        => 'sidebar_section_box_height_mode',
-				'type'        => EPKB_Input_Filter::SELECTION,
-				'options'     => array(
-					'section_no_height' => esc_html__( 'Variable', 'echo-knowledge-base' ),
-					'section_min_height' => esc_html__( 'Minimum', 'echo-knowledge-base' ),
-					'section_fixed_height' => esc_html__( 'Maximum', 'echo-knowledge-base' )
-				),
-				'default'     => 'section_min_height'
-			),
-			'sidebar_section_body_height' => array(
-				'label'       => esc_html__( 'Height ( px )', 'echo-knowledge-base' ),
-				'name'        => 'sidebar_section_body_height',
-				'max'         => 1000,
-				'min'         => 0,
-				'type'        => EPKB_Input_Filter::NUMBER,
-				'default'     => 350
-			),
 			'sidebar_section_body_padding_top' => array(
 				'label'       => esc_html__( 'Top', 'echo-knowledge-base' ),
 				'name'        => 'sidebar_section_body_padding_top',

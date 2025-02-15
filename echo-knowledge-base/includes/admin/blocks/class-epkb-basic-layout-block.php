@@ -103,8 +103,10 @@ final class EPKB_Basic_Layout_Block extends EPKB_Abstract_Block {
 				font-weight: ' . intval( EPKB_Blocks_Settings::get_font_appearance_weight( $block_attributes['article_typography_controls'], $block_ui_specs['article_typography_controls'] ) ) . ' !important;
 			}' .
 			/* Article Title Font */
+			$block_selector . ' ' . '.epkb-article__text,' .
 			$block_selector . ' ' . '.eckb-article-title__text,' .
-			$sidebar_selector . ' ' . '.epkb-article__text {
+			$sidebar_selector . ' ' . '.epkb-article__text, ' .
+			$sidebar_selector . ' ' . '.eckb-article-title__text {
 				font-size: ' . intval( $block_attributes['article_typography_controls']['font_size'] ) . 'px !important;
 				font-weight: ' . intval( EPKB_Blocks_Settings::get_font_appearance_weight( $block_attributes['article_typography_controls'], $block_ui_specs['article_typography_controls'] ) ) . ' !important;
 				font-style: ' . esc_attr( EPKB_Blocks_Settings::get_font_appearance_style( $block_attributes['article_typography_controls'], $block_ui_specs['article_typography_controls'] ) ) . ' !important;
@@ -495,6 +497,12 @@ final class EPKB_Basic_Layout_Block extends EPKB_Abstract_Block {
 							'article_icon_toggle' => array(
 								'setting_type' => 'toggle',
 								'label' => esc_html__( 'Show Article Icon', 'echo-knowledge-base' ),
+							),
+							'elay_article_icon' => array(
+								'setting_type' => EPKB_Utilities::is_elegant_layouts_enabled() ? 'dropdown' : '',
+								'hide_on_dependencies' => array(
+									'article_icon_toggle' => 'off',
+								),
 							),
 							'expand_articles_icon' => array(
 								'setting_type' => 'dropdown',

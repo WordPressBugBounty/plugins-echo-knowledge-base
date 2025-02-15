@@ -66,6 +66,14 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 	 */
 	public function render_block_inner( $block_attributes ) {
 
+		// for add-on block it may be too early to render content in the Block Editor
+		if ( ! has_filter( 'grid_display_categories_and_articles' ) ) {
+			return;
+		}
+
+		// sync KB article icon toggle with EL.AY article icon toggle (unless we want to have both in block settings UI)
+		$block_attributes['article_icon_toggle'] = $block_attributes['sidebar_article_icon_toggle'];
+
 		$handler = new EPKB_Modular_Main_Page();
 		$handler->setup_layout_data_for_blocks( $block_attributes );
 
@@ -121,6 +129,14 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 	}
 
 	/**
+	 * Return handle for block public scripts
+	 * @return string
+	 */
+	protected function get_block_public_scripts_handle() {
+		return 'elay-public-scripts';
+	}
+
+	/**
 	 * Return list attributes with custom specs - they are not allowed in attributes when registering block, thus need to keep them separately
 	 * @return array[]
 	 */
@@ -152,21 +168,27 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 					'category-box' => array(
 						'title' => esc_html__( 'Category Box', 'echo-knowledge-base' ),
 						'fields' => array(
-							'grid_section_desc_text_on' => array(
-								'setting_type' => 'toggle',
-							),
-							'grid_category_link_text' => array(        // Category link to Category Archive Page
-								'setting_type' => 'text',
-							),
+
 							'section_hyperlink_text_on' => array(
 								'setting_type' => 'toggle',
 							),
 						),
 					),
-
-					// GROUP: Articles List
-					'articles-list' => array(
-						'title' => esc_html__( 'Articles List', 'echo-knowledge-base' ),
+					// GROUP: Category Box Header
+					'category-box-header' => array(
+						'title' => esc_html__( 'Category Box Header', 'echo-knowledge-base' ),
+						'fields' => array(
+							'grid_section_desc_text_on' => array(
+								'setting_type' => 'toggle',
+							),
+							'grid_section_divider' => array(
+								'setting_type' => 'toggle',
+							),
+						),
+					),
+					// GROUP: Category Box Body
+					'category-box-body' => array(
+						'title' => esc_html__( 'Category Box Body', 'echo-knowledge-base' ),
 						'fields' => array(
 							'grid_section_article_count' => array(
 								'setting_type' => 'toggle',
@@ -175,6 +197,12 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 								'setting_type' => 'text',
 							),
 							'grid_article_count_plural_text' => array(
+								'setting_type' => 'text',
+							),
+							'grid_category_link_text' => array(        // Category link to Category Archive Page
+								'setting_type' => 'text',
+							),
+							'category_empty_msg' => array(
 								'setting_type' => 'text',
 							),
 						),
@@ -319,38 +347,7 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 								),
 								'default'     => 'no_effect'
 							),
-							'grid_section_body_alignment' => array(
-								'setting_type' => 'select_buttons_string',
-								'options'     => array(
-									'left'   => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
-									'center' => esc_html__( 'Centered', 'echo-knowledge-base' ),
-									'right'  => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ),
-								),
-								'default'     => 'center'
-							),
-							'grid_section_body_padding' => array(
-								'setting_type' => 'box_control_combined',
-								'label' => esc_html__( 'Category Body Padding', 'echo-knowledge-base' ),
-								'min' => 0,
-								'max' => 200,
-								'combined_settings' => array(
-									'grid_section_body_padding_top' => array(
-										'side' => 'top',
-									),
-									'grid_section_body_padding_bottom' => array(
-										'side' => 'bottom',
-									),
-									'grid_section_body_padding_left' => array(
-										'side' => 'left',
-									),
-									'grid_section_body_padding_right' => array(
-										'side' => 'right',
-									),
-								),
-							),
-							'grid_background_color' => array(
-								'setting_type' => 'color',
-							),
+
 						),
 					),
 
@@ -387,62 +384,25 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 									),
 								),
 							),
-							'grid_category_icon_location' => array(
-								'setting_type' => 'select_buttons_string',
-								'options'     => array(
-									'no_icons' => esc_html__( 'No Icons', 'echo-knowledge-base' ),
-									'top' => esc_html__( 'Top', 'echo-knowledge-base' ),
-									'left'   => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
-									'right'  => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ),
-									'bottom' => esc_html__( 'Bottom', 'echo-knowledge-base' ),
-								),
-							),
-							'grid_section_icon_size' => array(
-								'setting_type' => 'range',
-							),
-							'grid_category_icon_thickness' => array(
-								'setting_type' => 'select_buttons_string',
-								'options'     => array(
-									'normal'    => esc_html__( 'Normal', 'echo-knowledge-base' ),
-									'bold'    => esc_html__( 'Bold', 'echo-knowledge-base' ),
-								),
-							),
-							'grid_section_icon_padding' => array(
-								'setting_type' => 'box_control_combined',
-								'label' => esc_html__( 'Icon Padding', 'echo-knowledge-base' ),
-								'min' => 0,
-								'max' => 200,
-								'combined_settings' => array(
-									'grid_section_icon_padding_top' => array(
-										'side' => 'top',
-									),
-									'grid_section_icon_padding_bottom' => array(
-										'side' => 'bottom',
-									),
-									'grid_section_icon_padding_left' => array(
-										'side' => 'left',
-									),
-									'grid_section_icon_padding_right' => array(
-										'side' => 'right',
-									),
-								),
+							'section_head_font_color' => array(
+								'setting_type' => 'color',
 							),
 							'section_head_background_color' => array(
 								'setting_type' => 'color',
 							),
-							'section_head_category_icon_color' => array(
-								'setting_type' => 'color',
+							'grid_section_head_typography_controls' => array(
+								'setting_type' => 'typography_controls',
+								'label' => esc_html__( 'Category Name Typography', 'echo-knowledge-base' ),
+								'controls' => array(
+									'font_family' => EPKB_Blocks_Settings::get_typography_control_font_family(),
+									'font_appearance' => EPKB_Blocks_Settings::get_typography_control_font_appearance(),
+									'font_size' => EPKB_Blocks_Settings::get_typography_control_font_size( array(
+										'small' => 18,
+										'normal' => 21,
+										'big' => 36,
+									), 21 ),
+								),
 							),
-							'section_head_description_font_color' => array(
-								'setting_type' => 'color',
-							),
-						),
-					),
-
-					// GROUP: Category Box Body
-					'category-box-body' => array(
-						'title' => esc_html__( 'Category Box Body', 'echo-knowledge-base' ),
-						'fields' => array(
 							'grid_section_cat_name_padding' => array(
 								'setting_type' => 'box_control_combined',
 								'label' => esc_html__( 'Category Name Padding', 'echo-knowledge-base' ),
@@ -463,17 +423,23 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 									),
 								),
 							),
-							'grid_section_head_typography_controls' => array(
+							'section_head_description_font_color' => array(
+								'setting_type' => 'color',
+							),
+							'grid_section_description_typography_controls' => array(
 								'setting_type' => 'typography_controls',
-								'label' => esc_html__( 'Name Typography', 'echo-knowledge-base' ),
+								'label' => esc_html__( 'Category Description Typography', 'echo-knowledge-base' ),
 								'controls' => array(
 									'font_family' => EPKB_Blocks_Settings::get_typography_control_font_family(),
 									'font_appearance' => EPKB_Blocks_Settings::get_typography_control_font_appearance(),
 									'font_size' => EPKB_Blocks_Settings::get_typography_control_font_size( array(
-										'small' => 18,
-										'normal' => 21,
-										'big' => 36,
-									), 21 ),
+										'small' => 14,
+										'normal' => 16,
+										'big' => 19,
+									), 14 ),
+								),
+								'hide_on_dependencies' => array(
+									'grid_section_desc_text_on' => 'off',
 								),
 							),
 							'grid_section_desc_padding' => array(
@@ -499,24 +465,12 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 									'grid_section_desc_text_on' => 'off',
 								),
 							),
-							'grid_section_description_typography_controls' => array(
-								'setting_type' => 'typography_controls',
-								'label' => esc_html__( 'Category Description Typography', 'echo-knowledge-base' ),
-								'controls' => array(
-									'font_family' => EPKB_Blocks_Settings::get_typography_control_font_family(),
-									'font_appearance' => EPKB_Blocks_Settings::get_typography_control_font_appearance(),
-									'font_size' => EPKB_Blocks_Settings::get_typography_control_font_size( array(
-										'small' => 16,
-										'normal' => 19,
-										'big' => 21,
-									), 19 ),
-								),
+							'section_divider_color' => array(
+								'setting_type' => 'color',
+								'label' => esc_html__( 'Section Divider Color', 'echo-knowledge-base' ),
 								'hide_on_dependencies' => array(
-									'grid_section_desc_text_on' => 'off',
+									'grid_section_divider' => 'off',
 								),
-							),
-							'grid_section_divider' => array(
-								'setting_type' => 'toggle',
 							),
 							'grid_section_divider_thickness' => array(
 								'setting_type' => 'range',
@@ -524,9 +478,80 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 									'grid_section_divider' => 'off',
 								),
 							),
+						),
+					),
+
+					// GROUP: Category Box Icons
+					'category-box-icons' => array(
+						'title' => esc_html__( 'Category Icons', 'echo-knowledge-base' ),
+						'fields' => array(
+							'grid_category_icon_location' => array(
+								'setting_type' => 'select_buttons_string',
+								'options'     => array(
+									'no_icons' => esc_html__( 'No Icons', 'echo-knowledge-base' ),
+									'top' => esc_html__( 'Top', 'echo-knowledge-base' ),
+									'left'   => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+									'right'  => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ),
+									'bottom' => esc_html__( 'Bottom', 'echo-knowledge-base' ),
+								),
+							),
+							'section_head_category_icon_color' => array(
+								'setting_type' => 'color',
+							),							'grid_section_icon_size' => array(
+								'setting_type' => 'range',
+							),
+							'grid_section_icon_padding' => array(
+								'setting_type' => 'box_control_combined',
+								'label' => esc_html__( 'Icon Padding', 'echo-knowledge-base' ),
+								'min' => 0,
+								'max' => 200,
+								'combined_settings' => array(
+									'grid_section_icon_padding_top' => array(
+										'side' => 'top',
+									),
+									'grid_section_icon_padding_bottom' => array(
+										'side' => 'bottom',
+									),
+									'grid_section_icon_padding_left' => array(
+										'side' => 'left',
+									),
+									'grid_section_icon_padding_right' => array(
+										'side' => 'right',
+									),
+								),
+							),
+						),
+					),
+
+					// GROUP: Category Box Body
+					'category-box-body' => array(
+						'title' => esc_html__( 'Category Box Body', 'echo-knowledge-base' ),
+						'fields' => array(
+							'grid_section_body_alignment' => array(
+								'setting_type' => 'select_buttons_string',
+								'options'     => array(
+									'left'   => is_rtl() ? esc_html__( 'Right', 'echo-knowledge-base' ) : esc_html__( 'Left', 'echo-knowledge-base' ),
+									'center' => esc_html__( 'Centered', 'echo-knowledge-base' ),
+									'right'  => is_rtl() ? esc_html__( 'Left', 'echo-knowledge-base' ) : esc_html__( 'Right', 'echo-knowledge-base' ),
+								),
+								'default'     => 'center'
+							),
+							'section_category_font_color' => array(
+								'setting_type' => 'color',
+								'label' => esc_html__( 'Body Text / Article', 'echo-knowledge-base' ),
+								'hide_on_dependencies' => array(
+									'ml_categories_articles_sidebar_toggle' => 'off',
+								),
+							),
+							'section_body_background_color' => array(
+								'setting_type' => 'color',
+								'hide_on_dependencies' => array(
+									'ml_categories_articles_sidebar_toggle' => 'off',
+								),
+							),
 							'grid_section_article_count_typography_controls' => array(
 								'setting_type' => 'typography_controls',
-								'label' => esc_html__( 'Article Counter Typography', 'echo-knowledge-base' ),
+								'label' => esc_html__( 'Body Typography', 'echo-knowledge-base' ),
 								'controls' => array(
 									'font_family' => EPKB_Blocks_Settings::get_typography_control_font_family(),
 									'font_appearance' => EPKB_Blocks_Settings::get_typography_control_font_appearance(),
@@ -537,6 +562,26 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 									), 14 ),
 								),
 							),
+							'grid_section_body_padding' => array(
+								'setting_type' => 'box_control_combined',
+								'label' => esc_html__( 'Category Body Padding', 'echo-knowledge-base' ),
+								'min' => 0,
+								'max' => 200,
+								'combined_settings' => array(
+									'grid_section_body_padding_top' => array(
+										'side' => 'top',
+									),
+									'grid_section_body_padding_bottom' => array(
+										'side' => 'bottom',
+									),
+									'grid_section_body_padding_left' => array(
+										'side' => 'left',
+									),
+									'grid_section_body_padding_right' => array(
+										'side' => 'right',
+									),
+								),
+							),
 						),
 					),
 
@@ -544,30 +589,24 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 					'sidebar' => array(
 						'title' => esc_html__( 'Sidebar', 'echo-knowledge-base' ),
 						'fields' => array(
-							'article_icon_toggle' => array(
+							'sidebar_article_icon_toggle' => array(
 								'setting_type' => 'toggle',
 								'label' => esc_html__( 'Show Article Icon', 'echo-knowledge-base' ),
 								'hide_on_dependencies' => array(
 									'ml_categories_articles_sidebar_toggle' => 'off',
 								),
 							),
+							'elay_article_icon' => array(
+								'setting_type' => 'dropdown',
+								'hide_on_dependencies' => array(
+									'sidebar_article_icon_toggle' => 'off',
+									'ml_categories_articles_sidebar_toggle' => 'off',
+								),
+							),
 							'article_icon_color' => array(
 								'setting_type' => 'color',
 								'hide_on_dependencies' => array(
-									'article_icon_toggle' => 'off',
-									'ml_categories_articles_sidebar_toggle' => 'off',
-								),
-							),
-							'article_font_color' => array(		// TODO: looks like is not used for this layout?
-								'setting_type' => 'color',
-								'hide_on_dependencies' => array(
-									'ml_categories_articles_sidebar_toggle' => 'off',
-								),
-							),
-							'article_list_margin' => array(		// TODO: looks like is not used for this layout?
-								'setting_type' => 'box_control',
-								'side' => 'left',
-								'hide_on_dependencies' => array(
+									'sidebar_article_icon_toggle' => 'off',
 									'ml_categories_articles_sidebar_toggle' => 'off',
 								),
 							),
@@ -589,24 +628,6 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 										'big' => 16,
 									), 14 ),
 								),
-								'hide_on_dependencies' => array(
-									'ml_categories_articles_sidebar_toggle' => 'off',
-								),
-							),
-							'section_category_font_color' => array(
-								'setting_type' => 'color',
-								'hide_on_dependencies' => array(
-									'ml_categories_articles_sidebar_toggle' => 'off',
-								),
-							),
-							'section_head_font_color' => array(
-								'setting_type' => 'color',
-								'hide_on_dependencies' => array(
-									'ml_categories_articles_sidebar_toggle' => 'off',
-								),
-							),
-							'section_body_background_color' => array(
-								'setting_type' => 'color',
 								'hide_on_dependencies' => array(
 									'ml_categories_articles_sidebar_toggle' => 'off',
 								),

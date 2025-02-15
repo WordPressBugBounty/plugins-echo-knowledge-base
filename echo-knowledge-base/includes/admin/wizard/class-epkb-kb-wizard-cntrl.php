@@ -351,7 +351,7 @@ class EPKB_KB_Wizard_Cntrl {
 		$row_5_module = EPKB_Utilities::post( 'row_5_module' );
 		$new_config['ml_row_5_module'] = empty( $row_5_module ) ? $new_config['ml_row_5_module'] : $row_5_module;
 
-		// apply Modular Sidebar location for Categories & Articles module
+		// apply Featured Articles Sidebar location for Categories & Articles module
 		$categories_articles_sidebar_location = EPKB_Utilities::post( 'categories_articles_sidebar_location' );
 		$new_config['ml_categories_articles_sidebar_toggle'] = empty( $categories_articles_sidebar_location )
 			? $new_config['ml_categories_articles_sidebar_toggle']
@@ -360,7 +360,7 @@ class EPKB_KB_Wizard_Cntrl {
 			? $new_config['ml_categories_articles_sidebar_location']
 			: $categories_articles_sidebar_location;
 
-		// set better Modular Sidebar width when user switched it 'on' (KB Main Page)
+		// set better Featured Articles Sidebar width when user switched it 'on' (KB Main Page)
 		if ( $new_config['ml_categories_articles_sidebar_toggle'] == 'on' && $orig_config['ml_categories_articles_sidebar_toggle'] == 'off' && EPKB_Core_Utilities::is_module_present( $new_config, 'categories_articles' ) ) {
 			$new_config['ml_categories_articles_sidebar_desktop_width'] = 28;
 		}

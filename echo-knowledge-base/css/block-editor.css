@@ -114,3 +114,6 @@
 .epkb-block-editor-controls .epkb-block-ui-section .epkb-block-ui-presets-dropdown-control {
   margin-bottom: 29px;
 }
+.epkb-block-editor-controls .epkb-config-settings {
+  background-color: #A9FFC6;
+}

@@ -205,7 +205,7 @@ class EPKB_Category_Archive_Setup {
 
 				<div class="eckb-article-list-container eckb-article-list-container-columns-<?php echo esc_attr( $nof_columns . ' ' . $article_list_separator_classes ); ?>"> <?php
 
-					self::display_category_articles( $kb_config, $articles_list, $kb_config['archive_content_articles_nof_articles_displayed'] );
+					self::display_category_articles( $kb_config, $articles_list, $nof_articles_displayed );
 
 					if ( $total_articles > $nof_articles_displayed ) { ?>
 						<div class="eckb-article-list-show-more-container">

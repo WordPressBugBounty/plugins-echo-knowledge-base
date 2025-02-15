@@ -305,7 +305,7 @@ class EPKB_Layout_Classic extends EPKB_Layout {
 				$articles_text = $category_articles_number == 1 ? $this->kb_config['ml_categories_articles_article_text'] : $this->kb_config['ml_categories_articles_articles_text'];			?>
 				<!-- Section Footer -->
 				<div class="epkb-category-section__footer">
-					<div class="epkb-ml-article-count"><span><?php echo esc_html( $category_articles_number . ' ' . $articles_text ); ?></span></div>
+					<div class="epkb-ml-article-count"><span><?php echo esc_html( $category_articles_number ); ?></span> <span><?php echo esc_html( $articles_text ); ?></span></div>
 					<div class="epkb-ml-articles-show-more">
 						<span class="epkbfa epkbfa-plus epkb-ml-articles-show-more__show-more__icon"></span>
 					</div>
