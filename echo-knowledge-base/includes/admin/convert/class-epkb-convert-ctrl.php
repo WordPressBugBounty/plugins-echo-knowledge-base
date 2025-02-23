@@ -38,7 +38,6 @@ class EPKB_Convert_Ctrl {
 		if ( empty( $from_post_type ) || ! post_type_exists( $from_post_type ) ) {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 30 ), '', 30 );
 		}
-		$is_post_conversion = $from_post_type == 'post';
 
 		$active_categories = EPKB_Utilities::post( 'categories', [] );
 		if ( empty( $active_categories ) || ! is_array( $active_categories ) ) {
@@ -63,11 +62,12 @@ class EPKB_Convert_Ctrl {
 			$filtered_taxonomies[ $tax_name ] = $taxonomy;
 		}
 
-		$response_html_1 = EPKB_Convert::get_posts_table( $query->posts, $taxonomies, $is_post_conversion );
+		$response_html_1 = EPKB_Convert::get_posts_table( $query->posts, $taxonomies, $from_post_type );
 		$response_html_2 = EPKB_Convert::get_convert_options( $filtered_taxonomies, $from_post_type );
 
 		$output_messages = [
-			count( $query->posts ) . ' ' . ( $is_post_conversion ? esc_html__( 'valid posts found', 'echo-knowledge-base' ) : esc_html__( 'valid articles found', 'echo-knowledge-base' ) )
+			count( $query->posts ) . ' ' . ( $from_post_type == 'post' ? esc_html__( 'valid posts found', 'echo-knowledge-base' ) :
+				( $from_post_type == 'article' || EPKB_KB_Handler::is_kb_post_type( $from_post_type ) ? esc_html__( 'valid articles found', 'echo-knowledge-base' ) : esc_html__( 'valid CPT articles found', 'echo-knowledge-base' ) ) )
 		];
 
 		wp_die( wp_json_encode( array( 'success' => $output_messages, 'response_html_1' => $response_html_1, 'response_html_2' => $response_html_2 ) ) );
@@ -102,7 +102,6 @@ class EPKB_Convert_Ctrl {
 		if ( empty( $from_post_type ) || ( $from_post_type != 'article' && ! post_type_exists( $from_post_type ) ) ) {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 343, esc_html__( 'Refresh your page', 'echo-knowledge-base' ) ), '', 343 );
 		}
-		$is_post_conversion = $from_post_type == 'post';
 
 		$step = (int)EPKB_Utilities::post( 'epkb_convert_step' );
 		if ( $step != 4 ) {
@@ -130,12 +129,12 @@ class EPKB_Convert_Ctrl {
 
 		$category_taxonomy = EPKB_Utilities::get( 'category_taxonomy' );
 		if ( ! empty( $category_taxonomy ) ) {
-			$taxonomies_names_relationship[ $category_taxonomy ] = $from_post_type == 'post' ? EPKB_KB_Handler::get_category_taxonomy_name( $kb_id ) : 'category';
+			$taxonomies_names_relationship[ $category_taxonomy ] = $from_post_type == 'article' ? 'category' : EPKB_KB_Handler::get_category_taxonomy_name( $kb_id );
 		}
 
 		$tag_taxonomy = EPKB_Utilities::get( 'tags_taxonomy' );
 		if ( ! empty( $tag_taxonomy ) ) {
-			$taxonomies_names_relationship[ $tag_taxonomy ] = $from_post_type == 'post' ? EPKB_KB_Handler::get_tag_taxonomy_name( $kb_id ) : 'post_tag';
+			$taxonomies_names_relationship[ $tag_taxonomy ] = $from_post_type == 'article' ? 'post_tag' : EPKB_KB_Handler::get_tag_taxonomy_name( $kb_id );
 		}
 
 		// old term id => new term_id
@@ -151,7 +150,7 @@ class EPKB_Convert_Ctrl {
 		foreach ( $selected_rows as $post_id ) {
 
 			if ( ! get_post_status( $post_id ) ) {
-				$errors[ $post_id ] = $is_post_conversion ? esc_html__( 'Post not found', 'echo-knowledge-base' ) : esc_html__( 'Article not found', 'echo-knowledge-base' );
+				$errors[ $post_id ] = $from_post_type == 'post' ? esc_html__( 'Post not found', 'echo-knowledge-base' ) : esc_html__( 'Article not found', 'echo-knowledge-base' );
 				continue;
 			}
 
@@ -272,8 +271,9 @@ class EPKB_Convert_Ctrl {
 
 			foreach ( array_keys( $old_terms_relationship ) as $old_term_id ) {
 
+				// only delete the term if it does not have any posts/articles attached to it
 				$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->term_taxonomy} WHERE term_id = %d AND taxonomy = %s", $old_term_id, $taxonomy_relationship[ $old_term_id ] ) );
-				if ( empty( $result ) || ! is_array( $result ) || (int)$result[0]->count ) {
+				if ( empty( $result ) || ! is_array( $result ) || (int)$result[0]->count > 0 ) {
 					continue;
 				}
 

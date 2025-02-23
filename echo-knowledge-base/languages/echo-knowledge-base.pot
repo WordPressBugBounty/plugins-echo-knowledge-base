@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Knowledge Base by Echo Plugins\n"
 "Report-Msgid-Bugs-To: http://www.echoknowledgebase.com/contact-us/\n"
-"POT-Creation-Date: 2025-02-14 09:08-0800\n"
+"POT-Creation-Date: 2025-02-23 10:26-0800\n"
 "PO-Revision-Date: 2017-02-05 17:08-0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -163,11 +163,11 @@ msgid "Please switch to Modular mode to use this block. Contact us for help."
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-abstract-block.php:105
-#: includes/features/layouts/class-epkb-layouts-setup.php:115
+#: includes/features/layouts/class-epkb-layouts-setup.php:132
 msgid "This knowledge base was archived."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:638
+#: includes/admin/blocks/class-epkb-abstract-block.php:649
 #: includes/system/scripts-registration-admin.php:55
 #: includes/system/scripts-registration-admin.php:129
 #: includes/system/scripts-registration-admin.php:157
@@ -176,7 +176,7 @@ msgstr ""
 msgid "Please try again later."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:639
+#: includes/admin/blocks/class-epkb-abstract-block.php:650
 #: includes/admin/openai/class-epkb-ai-help-sidebar-ctrl.php:79
 #: includes/admin/openai/class-epkb-ai-help-sidebar-ctrl.php:125
 #: includes/admin/openai/class-epkb-ai-help-sidebar-ctrl.php:172
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Error occurred"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:640
+#: includes/admin/blocks/class-epkb-abstract-block.php:651
 #: includes/system/scripts-registration-admin.php:58
 #: includes/system/scripts-registration-admin.php:132
 #: includes/system/scripts-registration-admin.php:160
@@ -215,7 +215,7 @@ msgstr ""
 msgid "Unknown error"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:641
+#: includes/admin/blocks/class-epkb-abstract-block.php:652
 #: includes/system/scripts-registration-admin.php:59
 #: includes/system/scripts-registration-admin.php:133
 #: includes/system/scripts-registration-admin.php:161
@@ -224,7 +224,7 @@ msgstr ""
 msgid "Please reload the page and try again."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:642
+#: includes/admin/blocks/class-epkb-abstract-block.php:653
 #: includes/admin/wizard/class-epkb-kb-wizard-global.php:91
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:69
 #: includes/system/scripts-registration-admin.php:60
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Saving configuration"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:643
+#: includes/admin/blocks/class-epkb-abstract-block.php:654
 #: includes/system/scripts-registration-admin.php:61
 #: includes/system/scripts-registration-admin.php:135
 #: includes/system/scripts-registration-admin.php:162
@@ -241,7 +241,7 @@ msgstr ""
 msgid "Input is required"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:645
+#: includes/admin/blocks/class-epkb-abstract-block.php:656
 #: includes/system/scripts-registration-admin.php:170
 #: includes/system/scripts-registration-public.php:38
 msgid ""
@@ -308,6 +308,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-advanced-search-block.php:470
 #: includes/admin/blocks/class-epkb-search-block.php:161
 #: includes/admin/blocks/class-epkb-search-block.php:280
+#: includes/admin/convert/class-epkb-convert.php:36
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:379
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:447
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1837
@@ -1067,7 +1068,7 @@ msgstr ""
 
 #: includes/admin/blocks/class-epkb-blocks-settings.php:118
 #: includes/admin/blocks/class-epkb-blocks-settings.php:165
-#: includes/admin/convert/class-epkb-convert.php:274
+#: includes/admin/convert/class-epkb-convert.php:282
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:28
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:32
 #: includes/admin/kb-configuration/class-epkb-kb-config-category.php:48
@@ -1246,18 +1247,18 @@ msgstr ""
 msgid "Black Italic"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-blocks-setup.php:66
+#: includes/admin/blocks/class-epkb-blocks-setup.php:67
 #: includes/system/scripts-registration-admin.php:381
 msgid "Echo Knowledge Base"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-blocks-setup.php:104
-#: includes/admin/blocks/class-epkb-blocks-setup.php:185
+#: includes/admin/blocks/class-epkb-blocks-setup.php:105
+#: includes/admin/blocks/class-epkb-blocks-setup.php:186
 msgid "KB Block Page Template"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-blocks-setup.php:105
-#: includes/admin/blocks/class-epkb-blocks-setup.php:186
+#: includes/admin/blocks/class-epkb-blocks-setup.php:106
+#: includes/admin/blocks/class-epkb-blocks-setup.php:187
 msgid "The recommended template to use for creating the KB main page."
 msgstr ""
 
@@ -1468,7 +1469,7 @@ msgstr ""
 
 #: includes/admin/blocks/class-epkb-sidebar-layout-block.php:86
 #: includes/admin/editor/class-epkb-editor-view.php:676
-#: includes/features/layouts/class-epkb-layouts-setup.php:158
+#: includes/features/layouts/class-epkb-layouts-setup.php:175
 msgid "Demo Article"
 msgstr ""
 
@@ -1601,7 +1602,7 @@ msgstr ""
 msgid "Please go to the %s settings, and then go to the %s."
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert-ctrl.php:70
+#: includes/admin/convert/class-epkb-convert-ctrl.php:69
 msgid "valid posts found"
 msgstr ""
 
@@ -1609,33 +1610,37 @@ msgstr ""
 msgid "valid articles found"
 msgstr ""
 
+#: includes/admin/convert/class-epkb-convert-ctrl.php:70
+msgid "valid CPT articles found"
+msgstr ""
+
 #: includes/admin/convert/class-epkb-convert-ctrl.php:85
 msgid "Only administrators can convert posts."
 msgstr ""
 
 #: includes/admin/convert/class-epkb-convert-ctrl.php:103
-#: includes/admin/convert/class-epkb-convert-ctrl.php:109
-#: includes/admin/convert/class-epkb-convert-ctrl.php:123
+#: includes/admin/convert/class-epkb-convert-ctrl.php:108
+#: includes/admin/convert/class-epkb-convert-ctrl.php:122
 msgid "Refresh your page"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert-ctrl.php:116
+#: includes/admin/convert/class-epkb-convert-ctrl.php:115
 msgid "Get Selected Rows"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert-ctrl.php:116
+#: includes/admin/convert/class-epkb-convert-ctrl.php:115
 msgid "No articles were selected for import."
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert-ctrl.php:154
+#: includes/admin/convert/class-epkb-convert-ctrl.php:153
 msgid "Post not found"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert-ctrl.php:154
+#: includes/admin/convert/class-epkb-convert-ctrl.php:153
 msgid "Article not found"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert-ctrl.php:216
+#: includes/admin/convert/class-epkb-convert-ctrl.php:215
 msgid "Can not create term"
 msgstr ""
 
@@ -1647,55 +1652,38 @@ msgstr ""
 msgid "Converting completed successfully"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:19
-msgid "No posts found"
+#: includes/admin/convert/class-epkb-convert.php:20
+#: includes/admin/convert/class-epkb-convert.php:23
+#: includes/class-epkb-utilities.php:2293
+msgid "Post"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:19
-msgid "No articles found"
+#: includes/admin/convert/class-epkb-convert.php:21
+#: includes/admin/convert/class-epkb-convert.php:23
+msgid "KB Article"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:22
-msgid "Below are posts that can be converted to KB articles"
+#: includes/admin/convert/class-epkb-convert.php:21
+msgid "CPT Article"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:22
-msgid "Below are KB articles that can be converted to posts"
-msgstr ""
-
-#: includes/admin/convert/class-epkb-convert.php:26
+#: includes/admin/convert/class-epkb-convert.php:34
 msgid "Selection"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:27
+#: includes/admin/convert/class-epkb-convert.php:35
 msgid "Status"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:28
-#: includes/admin/pages/class-epkb-config-tools-page.php:826
-msgid "Post Title"
-msgstr ""
-
-#: includes/admin/convert/class-epkb-convert.php:28
-#: includes/admin/editor/class-epkb-editor-article-page-config.php:1205
-#: includes/admin/editor/class-epkb-editor-article-page-config.php:1210
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:900
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2060
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4079
-#: includes/admin/pages/class-epkb-config-tools-page.php:587
-#: includes/admin/settings/class-epkb-article-page-visual-helper.php:59
-msgid "Article Title"
-msgstr ""
-
-#: includes/admin/convert/class-epkb-convert.php:29
+#: includes/admin/convert/class-epkb-convert.php:37
 msgid "Taxonomies"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:40
+#: includes/admin/convert/class-epkb-convert.php:48
 msgid "The default WordPress post can not be converted."
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:47
+#: includes/admin/convert/class-epkb-convert.php:55
 #: includes/class-epkb-input-filter.php:50
 #: includes/class-epkb-input-filter.php:206
 #: includes/class-epkb-input-filter.php:373
@@ -1705,62 +1693,56 @@ msgstr ""
 msgid "Error Occurred"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:69
-#: includes/admin/pages/class-epkb-config-tools-page.php:433
-#: includes/admin/pages/class-epkb-config-tools-page.php:506
-#: includes/admin/pages/class-epkb-config-tools-page.php:848
-msgid "Convert Posts"
+#: includes/admin/convert/class-epkb-convert.php:77
+msgid "Convert"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:69
-#: includes/admin/pages/class-epkb-config-tools-page.php:69
-#: includes/admin/pages/class-epkb-config-tools-page.php:452
-#: includes/admin/pages/class-epkb-config-tools-page.php:759
-msgid "Convert Articles"
+#: includes/admin/convert/class-epkb-convert.php:77
+msgid "to"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:124
+#: includes/admin/convert/class-epkb-convert.php:133
 msgid "How to convert terms?"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:128
+#: includes/admin/convert/class-epkb-convert.php:137
 msgid "Copy terms to KB and leave current terms as is"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:129
+#: includes/admin/convert/class-epkb-convert.php:138
 msgid "Categories/Tags/Other terms will not be removed"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:135
+#: includes/admin/convert/class-epkb-convert.php:144
 msgid "Move Categories and Tags"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:136
+#: includes/admin/convert/class-epkb-convert.php:145
 msgid "Original categories and tags are removed if they are empty."
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:159
+#: includes/admin/convert/class-epkb-convert.php:168
 msgid "Map Categories and Tags from"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:167
+#: includes/admin/convert/class-epkb-convert.php:176
 msgid "Choose CPT category to map to Article category"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:171
-#: includes/admin/convert/class-epkb-convert.php:183
+#: includes/admin/convert/class-epkb-convert.php:180
+#: includes/admin/convert/class-epkb-convert.php:191
 msgid "Not selected"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:179
+#: includes/admin/convert/class-epkb-convert.php:188
 msgid "Choose CPT tag to map to Article tag"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:202
+#: includes/admin/convert/class-epkb-convert.php:210
 msgid "All"
 msgstr ""
 
-#: includes/admin/convert/class-epkb-convert.php:242
+#: includes/admin/convert/class-epkb-convert.php:250
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1151
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3594
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4237
@@ -2067,6 +2049,16 @@ msgstr ""
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1685
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1896
 msgid "Edit the row style under the Article Content here"
+msgstr ""
+
+#: includes/admin/editor/class-epkb-editor-article-page-config.php:1205
+#: includes/admin/editor/class-epkb-editor-article-page-config.php:1210
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:900
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2060
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4079
+#: includes/admin/pages/class-epkb-config-tools-page.php:587
+#: includes/admin/settings/class-epkb-article-page-visual-helper.php:59
+msgid "Article Title"
 msgstr ""
 
 #: includes/admin/editor/class-epkb-editor-article-page-config.php:1376
@@ -3455,7 +3447,7 @@ msgid "Choose Template"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:301
-#: includes/system/class-epkb-templates.php:415
+#: includes/system/class-epkb-templates.php:416
 msgid "Knowledge Base Template"
 msgstr ""
 
@@ -7604,6 +7596,12 @@ msgstr ""
 msgid "Import KB"
 msgstr ""
 
+#: includes/admin/pages/class-epkb-config-tools-page.php:69
+#: includes/admin/pages/class-epkb-config-tools-page.php:452
+#: includes/admin/pages/class-epkb-config-tools-page.php:759
+msgid "Convert Articles"
+msgstr ""
+
 #: includes/admin/pages/class-epkb-config-tools-page.php:95
 msgid "Debug"
 msgstr ""
@@ -7744,6 +7742,12 @@ msgstr ""
 msgid "Convert your blog or regular posts into Knowledge Base articles."
 msgstr ""
 
+#: includes/admin/pages/class-epkb-config-tools-page.php:433
+#: includes/admin/pages/class-epkb-config-tools-page.php:506
+#: includes/admin/pages/class-epkb-config-tools-page.php:848
+msgid "Convert Posts"
+msgstr ""
+
 #: includes/admin/pages/class-epkb-config-tools-page.php:440
 msgid "Convert From Other Documentation KB to Echo KB"
 msgstr ""
@@ -7826,7 +7830,7 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:567
 #: includes/system/scripts-registration-admin.php:66
-msgid "Reading posts"
+msgid "Reading items"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:581
@@ -7869,6 +7873,10 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:806
 msgid "Reading articles"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-config-tools-page.php:826
+msgid "Post Title"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:847
@@ -9934,12 +9942,12 @@ msgid "Create one manually as described here:"
 msgstr ""
 
 #: includes/class-epkb-html-admin.php:828
-msgid "We’ve Detected You’re Using Blocks for your KB Main Page and WPML"
+msgid "We have Detected You are Using Blocks for your KB Main Page and WPML"
 msgstr ""
 
 #: includes/class-epkb-html-admin.php:829
 msgid ""
-"To edit text strings, you’ll need to update each main page individually "
+"To edit text strings, you will need to update each main page individually "
 "for each language. For more details, please refer to our article."
 msgstr ""
 
@@ -10130,10 +10138,6 @@ msgstr ""
 
 #: includes/class-epkb-utilities.php:1986
 msgid "Failed to send the email."
-msgstr ""
-
-#: includes/class-epkb-utilities.php:2293
-msgid "Post"
 msgstr ""
 
 #: includes/features/articles/class-epkb-articles-cpt-setup.php:78
@@ -11139,11 +11143,11 @@ msgid "Please select posts to convert."
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:72
-msgid "Articles converted"
+msgid "Items converted"
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:73
-msgid "Converting articles, please wait"
+msgid "Converting, please wait"
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:74

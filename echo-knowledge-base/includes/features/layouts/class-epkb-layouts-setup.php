@@ -80,18 +80,35 @@ class EPKB_Layouts_Setup {
 		global $eckb_kb_id, $post;
 
         // add page with KB shortcode to KB Main Pages if missing
-        if ( empty( $eckb_kb_id ) ) {
+		$kb_main_pages = $kb_config['kb_main_pages'];
+        if ( empty( $eckb_kb_id ) || empty( $kb_main_pages ) ) {
 
-            $kb_main_pages = $kb_config['kb_main_pages'];
 	        $query_post = empty( $GLOBALS['wp_the_query'] ) ? null : $GLOBALS['wp_the_query']->get_queried_object();
 			$post = empty( $query_post ) && ! empty( $post ) && $post instanceof WP_Post ? $post : $query_post;
 
 	        // add missing post to main pages
 	        if ( ! empty( $post->post_type ) && $post->post_type == 'page' && ! empty( $post->ID ) &&
 		        is_array( $kb_main_pages ) && ! in_array( $post->ID, array_keys( $kb_main_pages ) ) && ! in_array( $post->post_status, array( 'inherit', 'trash', 'auto-draft' ) ) ) {
+
+				$eckb_kb_id = $kb_config['id'];
 		        $post_id = $post->ID;
-		        $kb_main_pages[$post_id] = empty( $post->post_title ) ? '[KB Main Page]' : $post->post_title;
-		        epkb_get_instance()->kb_config_obj->set_value( $kb_config['id'], 'kb_main_pages', $kb_main_pages );
+		        $kb_main_pages[ $post_id ] = empty( $post->post_title ) ? '[KB Main Page]' : $post->post_title;
+		        epkb_get_instance()->kb_config_obj->set_value( $eckb_kb_id, 'kb_main_pages', $kb_main_pages );
+
+				// remove the page from other KBs
+		        $kb_ids = epkb_get_instance()->kb_config_obj->get_kb_ids();
+				if ( count( $kb_ids ) > 1 ) {
+					foreach ( $kb_ids as $kb_id ) {
+						if ( $kb_id != $eckb_kb_id ) {
+							$kb_config_tmp = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
+							$kb_main_pages = $kb_config_tmp['kb_main_pages'];
+							if ( in_array( $post_id, array_keys( $kb_main_pages ) ) ) {
+								unset( $kb_main_pages[ $post_id ] );
+								epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'kb_main_pages', $kb_main_pages );
+							}
+						}
+					}
+				}
 	        }
         }
 

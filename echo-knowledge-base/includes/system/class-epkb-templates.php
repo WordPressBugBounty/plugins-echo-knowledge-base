@@ -347,18 +347,19 @@ class EPKB_Templates {
 		if ( array_filter( $query_result, array( 'EPKB_Block_Utilities', 'is_kb_block_page_template' ) ) || EPKB_Block_Utilities::current_post_has_kb_layout_blocks() ) {
 
 			$found_post = EPKB_Core_Utilities::get_current_post();
-			if ( ! $found_post ) {
+			if ( ! $found_post || in_array( $found_post->post_type, [ 'post', 'attachment', 'revision', 'nav_menu_item' ] ) ) {
 				return $query_result;
 			}
 
 			// also initialize global KB ID
-			$eckb_is_kb_main_page = true;
-			$eckb_kb_id = EPKB_KB_Config_DB::DEFAULT_KB_ID;
+			$eckb_is_kb_main_page = false;
+			// $eckb_kb_id = empty( $eckb_kb_id ) ? EPKB_KB_Config_DB::DEFAULT_KB_ID : $eckb_kb_id; // do not assign the $eckb_kb_id here to prevent loading JS files on non-KB pages
 			$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs( true );
 			foreach ( $all_kb_configs as $one_kb_config ) {
 				if ( ! empty( $one_kb_config['kb_main_pages'] ) && is_array( $one_kb_config['kb_main_pages'] ) &&
 					in_array( $found_post->ID, array_keys( $one_kb_config['kb_main_pages'] ) ) ) {
 					$eckb_kb_id = $one_kb_config['id'];
+					$eckb_is_kb_main_page = true;
 					break;  // found matching KB Main Page
 				}
 			}

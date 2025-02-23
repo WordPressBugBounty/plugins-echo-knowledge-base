@@ -564,7 +564,7 @@ class EPKB_Config_Tools_Page {
 	 * HTML for convert step
 	 */
 	private static function show_convert_posts_step_2() {
-		self::progress_bar_html( esc_html__( 'Reading posts', 'echo-knowledge-base' ) );
+		self::progress_bar_html( esc_html__( 'Reading items', 'echo-knowledge-base' ) );
 	}
 
 	/**

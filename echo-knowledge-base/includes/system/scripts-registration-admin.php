@@ -63,14 +63,14 @@ function epkb_load_admin_plugin_pages_resources() {
 		'changing_debug'                => esc_html__('Changing debug', 'echo-knowledge-base' ) . '...',
 		'help_text_coming'              => esc_html__('Help text is coming soon.', 'echo-knowledge-base' ),
 		'nonce'                         => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
-		'msg_reading_posts'             => esc_html__('Reading posts', 'echo-knowledge-base') . '...',
+		'msg_reading_posts'             => esc_html__('Reading items', 'echo-knowledge-base') . '...',
 		'msg_confirm_kb'                => esc_html__('Please confirm Knowledge Base to import into.', 'echo-knowledge-base'),
 		'msg_confirm_backup'            => esc_html__('Please confirm you backed up your database or understand that import can potentially make undesirable changes.', 'echo-knowledge-base'),
 		'msg_empty_post_type'           => esc_html__('Please select post type.', 'echo-knowledge-base'),
 		'msg_nothing_to_convert'        => esc_html__('No posts to convert.', 'echo-knowledge-base'),
 		'msg_select_article'            => esc_html__('Please select posts to convert.', 'echo-knowledge-base'),
-		'msg_articles_converted'        => esc_html__('Articles converted', 'echo-knowledge-base'),
-		'msg_converting'                => esc_html__('Converting articles, please wait', 'echo-knowledge-base') . '...',
+		'msg_articles_converted'        => esc_html__('Items converted', 'echo-knowledge-base'),
+		'msg_converting'                => esc_html__('Converting, please wait', 'echo-knowledge-base') . '...',
 		'on_kb_main_page_layout'        => esc_html__( 'First, the selected layout will be saved.', 'echo-knowledge-base' ) .
 			' ' . esc_html__( 'Then, the page will reload and you can see the layout change on the KB frontend.', 'echo-knowledge-base' ),
 		'on_kb_templates'               => esc_html__( 'First, the KB Base Template will be enabled.', 'echo-knowledge-base' ) .

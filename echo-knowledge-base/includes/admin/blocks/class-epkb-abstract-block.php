@@ -139,6 +139,11 @@ abstract class EPKB_Abstract_Block {
 	public function register_block_assets() {
 		global $post;
 
+		// allow to register block assets only for 'page' post type
+		if ( empty( $post ) || $post->post_type != 'page' ) {
+			return;
+		}
+
 		// register block assets only if either in the editor (backend) or the post is not empty AND has KB blocks (frontend)
 		// (otherwise non-block Themes which support blocks enqueue KB block styles on every page regardless of KB block presence)
 		//		- edit action detects the editor view for existing pages
@@ -191,6 +196,12 @@ abstract class EPKB_Abstract_Block {
 	 * @return void
 	 */
 	public function register_block_editor_assets() {
+		global $post;
+
+		// allow to register block assets only for 'page' post type
+		if ( empty( $post->post_type ) || $post->post_type !== 'page' ) {
+			return;
+		}
 
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 

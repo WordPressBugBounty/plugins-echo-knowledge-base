@@ -1,17 +1,17 @@
-=== Knowledge Base - Excellent Documentation and FAQs Plugin with AI Assistance ===
+=== Advanced Knowledge Base Documentation, Articles and FAQ Tool with AI Assistance, Security, Support, Import/Export and Chat ===
 Author URI: https://www.echoknowledgebase.com/about-us/
 Plugin URI: https://www.echoknowledgebase.com/
 Contributors: echoplugins
 Donate link: https://www.echoknowledgebase.com
-Tags: knowledge base, documentation, documents, faqs, ai
+Tags: docs, documentation, knowledge base, faq, wiki
 Requires at least: 5.2
-Requires PHP: 5.6
 Tested up to: 6.7
-Stable tag: 13.30.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Requires PHP: 5.6
+Stable tag: 13.40.0
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-A fully-featured, easy-to-manage documentation plugin for individuals, businesses, and organizations of any size. Create articles, FAQs, docs, and wikis.
+A fully-featured, easy-to-manage documentation plugin for individuals, businesses, and orgs of any size. Create articles, FAQs, docs, and wikis.
 
 == Description ==
 
@@ -313,6 +313,10 @@ Please contact us at [Learn More](https://www.echoknowledgebase.com/contact-us/)
 
 
 == Changelog ==
+
+= 13.40.0 =
+Release Date: Feb 23, 2025
+* Fix: Cleanup and minor fixes
 
 = 13.30.0 =
 Release Date: Feb 14, 2025

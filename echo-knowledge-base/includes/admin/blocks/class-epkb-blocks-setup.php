@@ -20,7 +20,8 @@ class EPKB_Blocks_Setup {
 		new EPKB_FAQs_Block();
 		new EPKB_Featured_Articles_Block();
 
-		if ( EPKB_Utilities::is_elegant_layouts_enabled() ) {
+		$enable_elay_blocks = EPKB_Utilities::is_elegant_layouts_enabled() && class_exists( 'Echo_Elegant_Layouts' ) && version_compare( Echo_Elegant_Layouts::$version, '3.0.0', '>=' );
+		if ( $enable_elay_blocks ) {
 			new EPKB_Grid_Layout_Block();
 			new EPKB_Sidebar_Layout_Block();
 		}

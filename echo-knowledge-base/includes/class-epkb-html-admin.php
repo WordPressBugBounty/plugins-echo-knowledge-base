@@ -795,7 +795,7 @@ class EPKB_HTML_Admin {
 
 		$notification_escaped = EPKB_HTML_Forms::notification_box_middle( array(
 			'type'  => 'error',
-			'title' => esc_html__( 'We did not detect any Main Page for your knowledge base', 'echo-knowledge-base' ) . ': ' . esc_html( $kb_config['kb_name'] ) . ' . ' . esc_html__( 'You can do the following:', 'echo-knowledge-base' ),
+			'title' => esc_html__( 'We did not detect any Main Page for your knowledge base', 'echo-knowledge-base' ) . ': ' . esc_html( $kb_config['kb_name'] ) . '. ' . esc_html__( 'You can do the following:', 'echo-knowledge-base' ),
 			'desc'  => '<ul>
 							<li>' . esc_html__( 'If you have a KB Main Page, please re-save it and then come back', 'echo-knowledge-base' ) . '</li>
                             <li>' . esc_html__( 'Run Setup Wizard to create a new KB Main Page', 'echo-knowledge-base' )
@@ -825,8 +825,8 @@ class EPKB_HTML_Admin {
 
 		$notification_escaped = EPKB_HTML_Forms::notification_box_middle( array(
 			'type'  => 'error',
-			'title' => esc_html__( 'We’ve Detected You’re Using Blocks for your KB Main Page and WPML', 'echo-knowledge-base' ),
-			'desc'  => '<p>' . esc_html__( 'To edit text strings, you’ll need to update each main page individually for each language. For more details, please refer to our article.', 'echo-knowledge-base' ) . '</p>
+			'title' => esc_html__( 'We have Detected You are Using Blocks for your KB Main Page and WPML', 'echo-knowledge-base' ),
+			'desc'  => '<p>' . esc_html__( 'To edit text strings, you will need to update each main page individually for each language. For more details, please refer to our article.', 'echo-knowledge-base' ) . '</p>
 						<a href="https://www.echoknowledgebase.com/documentation/setup-wpml-for-knowledge-base/#Main-Page-String-Translation---Blocks" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>'
 		), $return_html  );
 
