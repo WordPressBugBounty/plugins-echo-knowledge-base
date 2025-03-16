@@ -2902,7 +2902,9 @@
   margin: 0 0 10px 0;
   line-height: 18px;
 }
-#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container {
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article {
   display: flex;
   text-decoration: none;
   font-family: inherit;
@@ -2910,24 +2912,66 @@
   font-size: 17px;
 }
 #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article.epkb-article--no-icon .eckb-article-title__text,
-#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article.epkb-article--no-icon .epkb-article__text, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container.epkb-article--no-icon .eckb-article-title__text,
-#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container.epkb-article--no-icon .epkb-article__text {
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article.epkb-article--no-icon .epkb-article__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container.epkb-article--no-icon .eckb-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container.epkb-article--no-icon .epkb-article__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article.epkb-article--no-icon .eckb-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article.epkb-article--no-icon .epkb-article__text {
   margin-left: 0 !important;
 }
-#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner {
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner {
   position: relative;
   font-size: 1em;
   display: block;
   font-family: inherit;
   font-weight: inherit;
 }
-#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .eckb-article-title__icon, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .epkb-article__icon, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .eckb-article-title__icon, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .epkb-article__icon, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .eckb-article-title__icon, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .epkb-article__icon, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .eckb-article-title__icon, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .epkb-article__icon {
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .eckb-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .epkb-article__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .elay-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .eckb-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .epkb-article__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .elay-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .eckb-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .epkb-article__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .elay-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .eckb-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .epkb-article__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .elay-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .eckb-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .epkb-article__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .elay-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .eckb-article-title__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .epkb-article__icon,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .elay-article-title__icon {
   font-size: 1em;
   position: absolute;
   top: 2px;
   left: 0;
 }
-#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .eckb-article-title__text, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .epkb-article__text, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .eckb-article-title__text, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .epkb-article__text, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .eckb-article-title__text, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .epkb-article__text, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .eckb-article-title__text, #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .epkb-article__text {
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .eckb-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .epkb-article__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .elay-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .eckb-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .epkb-article__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .elay-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .eckb-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .epkb-article__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .elay-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .eckb-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .epkb-article__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .elay-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .eckb-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .epkb-article__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .elay-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .eckb-article-title__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .epkb-article__text,
+#epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .elay-article-title__text {
   line-height: 1.3em;
   float: left;
   display: block;

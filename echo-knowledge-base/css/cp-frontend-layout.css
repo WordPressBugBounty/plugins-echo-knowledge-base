@@ -834,7 +834,9 @@ Note: We will NOT be using any v3 suffix. But using no suffix for V3
   margin: 0 0 10px 0;
   line-height: 18px;
 }
-#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container {
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article {
   display: flex;
   text-decoration: none;
   font-family: inherit;
@@ -842,24 +844,66 @@ Note: We will NOT be using any v3 suffix. But using no suffix for V3
   font-size: 17px;
 }
 #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article.epkb-article--no-icon .eckb-article-title__text,
-#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article.epkb-article--no-icon .epkb-article__text, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container.epkb-article--no-icon .eckb-article-title__text,
-#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container.epkb-article--no-icon .epkb-article__text {
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article.epkb-article--no-icon .epkb-article__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container.epkb-article--no-icon .eckb-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container.epkb-article--no-icon .epkb-article__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article.epkb-article--no-icon .eckb-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article.epkb-article--no-icon .epkb-article__text {
   margin-left: 0 !important;
 }
-#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner {
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner {
   position: relative;
   font-size: 1em;
   display: block;
   font-family: inherit;
   font-weight: inherit;
 }
-#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .eckb-article-title__icon, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .epkb-article__icon, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .eckb-article-title__icon, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .epkb-article__icon, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .eckb-article-title__icon, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .epkb-article__icon, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .eckb-article-title__icon, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .epkb-article__icon {
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .eckb-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .epkb-article__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .elay-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .eckb-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .epkb-article__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .elay-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .eckb-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .epkb-article__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .elay-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .eckb-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .epkb-article__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .elay-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .eckb-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .epkb-article__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .elay-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .eckb-article-title__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .epkb-article__icon,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .elay-article-title__icon {
   font-size: 1em;
   position: absolute;
   top: 2px;
   left: 0;
 }
-#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .eckb-article-title__text, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .epkb-article__text, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .eckb-article-title__text, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .epkb-article__text, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .eckb-article-title__text, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .epkb-article__text, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .eckb-article-title__text, #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .epkb-article__text {
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .eckb-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .epkb-article__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .eckb-article-title .elay-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .eckb-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .epkb-article__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-mp-article .epkb-article-inner .elay-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .eckb-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .epkb-article__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .eckb-article-title .elay-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .eckb-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .epkb-article__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-ml-article-container .epkb-article-inner .elay-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .eckb-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .epkb-article__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .eckb-article-title .elay-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .eckb-article-title__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .epkb-article__text,
+#eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-results ul li .epkb-sidebar-article .epkb-article-inner .elay-article-title__text {
   line-height: 1.3em;
   float: left;
   display: block;
@@ -1376,6 +1420,82 @@ Note: We will NOT be using any v3 suffix. But using no suffix for V3
   line-height: 1.4;
   margin-top: 10px;
 }
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article {
+  display: flex;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: inherit;
+}
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article.epkb-article--no-icon .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article.epkb-article--no-icon .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container.epkb-article--no-icon .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container.epkb-article--no-icon .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article.epkb-article--no-icon .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article.epkb-article--no-icon .epkb-article__text {
+  margin-left: 0 !important;
+}
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .eckb-article-title,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .epkb-article-inner,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .eckb-article-title,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .epkb-article-inner,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .eckb-article-title,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .epkb-article-inner {
+  position: relative;
+  font-size: 1em;
+  display: block;
+  font-family: inherit;
+  font-weight: inherit;
+}
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .eckb-article-title .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .eckb-article-title .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .eckb-article-title .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .epkb-article-inner .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .epkb-article-inner .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .epkb-article-inner .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .eckb-article-title .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .eckb-article-title .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .eckb-article-title .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .epkb-article-inner .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .epkb-article-inner .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .epkb-article-inner .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .eckb-article-title .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .eckb-article-title .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .eckb-article-title .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .epkb-article-inner .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .epkb-article-inner .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .epkb-article-inner .elay-article-title__icon {
+  font-size: 1em;
+  position: absolute;
+  top: 2px;
+  left: 0;
+}
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .eckb-article-title .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .eckb-article-title .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .eckb-article-title .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .epkb-article-inner .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .epkb-article-inner .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-mp-article .epkb-article-inner .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .eckb-article-title .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .eckb-article-title .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .eckb-article-title .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .epkb-article-inner .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .epkb-article-inner .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-ml-article-container .epkb-article-inner .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .eckb-article-title .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .eckb-article-title .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .eckb-article-title .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .epkb-article-inner .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .epkb-article-inner .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-sidebar-article .epkb-article-inner .elay-article-title__text {
+  line-height: 1.3em;
+  float: left;
+  display: block;
+  margin-left: 1.5em;
+  font-family: inherit;
+  font-weight: inherit;
+}
 #eckb-archive-page-container #eckb-archive-content .eckb-article-list-container .eckb-article-container .epkb-article-inner {
   position: relative;
 }
@@ -1538,6 +1658,82 @@ Note: We will NOT be using any v3 suffix. But using no suffix for V3
 #eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .eckb-article-body,
 #eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .eckb-article-footer {
   display: none;
+}
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article {
+  display: flex;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: inherit;
+}
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article.epkb-article--no-icon .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article.epkb-article--no-icon .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container.epkb-article--no-icon .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container.epkb-article--no-icon .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article.epkb-article--no-icon .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article.epkb-article--no-icon .epkb-article__text {
+  margin-left: 0 !important;
+}
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .eckb-article-title,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .epkb-article-inner,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .eckb-article-title,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .epkb-article-inner,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .eckb-article-title,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .epkb-article-inner {
+  position: relative;
+  font-size: 1em;
+  display: block;
+  font-family: inherit;
+  font-weight: inherit;
+}
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .eckb-article-title .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .eckb-article-title .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .eckb-article-title .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .epkb-article-inner .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .epkb-article-inner .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .epkb-article-inner .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .eckb-article-title .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .eckb-article-title .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .eckb-article-title .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .epkb-article-inner .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .epkb-article-inner .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .epkb-article-inner .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .eckb-article-title .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .eckb-article-title .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .eckb-article-title .elay-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .epkb-article-inner .eckb-article-title__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .epkb-article-inner .epkb-article__icon,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .epkb-article-inner .elay-article-title__icon {
+  font-size: 1em;
+  position: absolute;
+  top: 2px;
+  left: 0;
+}
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .eckb-article-title .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .eckb-article-title .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .eckb-article-title .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .epkb-article-inner .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .epkb-article-inner .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-mp-article .epkb-article-inner .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .eckb-article-title .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .eckb-article-title .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .eckb-article-title .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .epkb-article-inner .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .epkb-article-inner .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-ml-article-container .epkb-article-inner .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .eckb-article-title .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .eckb-article-title .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .eckb-article-title .elay-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .epkb-article-inner .eckb-article-title__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .epkb-article-inner .epkb-article__text,
+#eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-sidebar-article .epkb-article-inner .elay-article-title__text {
+  line-height: 1.3em;
+  float: left;
+  display: block;
+  margin-left: 1.5em;
+  font-family: inherit;
+  font-weight: inherit;
 }
 #eckb-archive-page-container #eckb-archive-content .eckb-sub-category-list-container .eckb-sub-category-container .eckb-sub-category-body .eckb-article-container .epkb-article-inner {
   position: relative;

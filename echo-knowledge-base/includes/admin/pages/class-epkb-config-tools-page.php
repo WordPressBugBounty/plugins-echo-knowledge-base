@@ -968,11 +968,11 @@ class EPKB_Config_Tools_Page {
 			),
 
 			// Box: Advanced Search Information required for support
-			EPKB_Utilities::is_advanced_search_enabled() ? array(
+			/* EPKB_Utilities::is_advanced_search_enabled() ? array(
 				'title'       => esc_html__( 'Advanced Search', 'echo-knowledge-base' ),
 				'description' => esc_html__( 'Enable debug when instructed by the support team.', 'echo-knowledge-base' ),
 				'html'        => self::display_asea_debug_info( $kb_config ),
-			) : '',
+			) : '', */
 
 			EPKB_Reset::get_reset_sequence_box_config(),
 		);
@@ -1100,14 +1100,7 @@ class EPKB_Config_Tools_Page {
 
 				echo wp_kses_post( self::display_debug_data() ); ?>
 
-				<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . '1&page=epkb-add-ons' ) ); ?>" method="post" dir="ltr"> <?php
-					EPKB_HTML_Elements::checkbox( [
-						'name'  => 'epkb_show_full_debug',
-						'label' => esc_html__( 'Output full debug information (after instructed by support staff)', 'echo-knowledge-base' ),
-						'input_class' => 'epkb-checkbox-input',
-						'input_group_class' => 'epkb-input-group',
-					] ); ?>
-
+				<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . '1&page=epkb-add-ons' ) ); ?>" method="post" dir="ltr">
 					<section style="padding-top: 20px;" class="save-settings checkbox-input"><?php
 						EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Download System Information', 'echo-knowledge-base' ), 'epkb_download_debug_info', 'epkb_download_debug_info', '', true, '' , 'epkb-primary-btn' ); ?>
 					</section>
@@ -1275,12 +1268,6 @@ class EPKB_Config_Tools_Page {
 			$specs = EPKB_KB_Config_Specs::get_fields_specification( $kb_id );
 			$output .= '- KB URL  = ' . EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) . "\n";
 			foreach( $kb_config as $name => $value ) {
-
-				//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				if ( ! isset( $_POST['epkb_show_full_debug'] ) && ! in_array( $name, array('id','kb_main_pages','kb_name','kb_articles_common_path','categories_in_url_enabled',
-						'templates_for_kb', 'wpml_is_enabled', 'kb_main_page_layout' ) ) ) {
-					continue;
-				}
 
 				if ( is_array( $value ) ) {
 					$value = EPKB_Utilities::get_variable_string( $value );

@@ -26,8 +26,7 @@ class EPKB_Need_Help_Page {
 			}
 
 			if ( is_plugin_active_for_network( plugin_basename( Echo_Knowledge_Base::$plugin_file ) ) ) {
-				$message = esc_html__( 'The Knowledge Base plugin cannot be activated network-wide. Please activate it on individual sites.', 'echo-knowledge-base' );
-				EPKB_Core_Utilities::display_config_error_page( $message );
+				EPKB_Core_Utilities::display_network_issue_error_message();
 				return;
 			}
 		}

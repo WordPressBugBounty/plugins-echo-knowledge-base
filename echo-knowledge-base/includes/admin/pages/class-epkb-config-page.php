@@ -29,8 +29,7 @@ class EPKB_Config_Page {
 			}
 
 			if ( is_plugin_active_for_network( plugin_basename( Echo_Knowledge_Base::$plugin_file ) ) ) {
-				$message = esc_html__( 'The Knowledge Base plugin cannot be activated network-wide. Please activate it on individual sites.', 'echo-knowledge-base' );
-				EPKB_Core_Utilities::display_config_error_page( $message );
+				EPKB_Core_Utilities::display_network_issue_error_message();
 				return;
 			}
 		}
@@ -877,7 +876,7 @@ class EPKB_Config_Page {
 		if ( ( ! empty( $add_on_messages ) && is_array( $add_on_messages ) ) || did_action( 'kb_overview_add_on_errors' ) ) {
 
 			$licenses_tab_url = admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( EPKB_KB_Handler::get_current_kb_id() ) . '&page=epkb-add-ons#licenses' );
-			$licenses_tab_button = '<a href="' . esc_url( $licenses_tab_url ) . '" class="epkb-primary-btn"> ' . esc_html__( 'Fix the Issue', 'echo-knowledge-base' ) . '</a>';
+			$licenses_tab_button = '<a href="' . esc_url( $licenses_tab_url ) . '" class="epkb-fix-btn epkb-primary-btn"> ' . esc_html__( 'Fix the Issue', 'echo-knowledge-base' ) . '</a>';
 
 			foreach ( $add_on_messages as $add_on_name => $add_on_message ) {
 

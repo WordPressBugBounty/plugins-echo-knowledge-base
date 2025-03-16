@@ -1515,6 +1515,38 @@ class EPKB_Core_Utilities {
 
 	}
 
+	/**
+	 * Displays a network activation error message.
+	 */
+	public static function display_network_issue_error_message() {
+
+		$html =
+			'<p>' . esc_html__( 'The Knowledge Base plugin cannot be activated network-wide. Please follow these steps:', 'echo-knowledge-base' ) . '</p>
+			    <ol>
+			        <li>' . esc_html__( 'Deactivate the plugin’s network-wide activation.', 'echo-knowledge-base' ) . '</li>
+			        <li>' . esc_html__( 'Activate the plugin on each individual site.', 'echo-knowledge-base' ) . '</li>
+			        <li>' . esc_html__( 'Verify that this error message no longer appears.', 'echo-knowledge-base' ) . '</li>
+			    </ol>
+		    <p>' .
+			sprintf(
+				esc_html__( 'For more details with images, please visit %s.', 'echo-knowledge-base' ),
+				'<a href="' . esc_url( 'https://www.echoknowledgebase.com/documentation/network-wide-installation/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'this article', 'echo-knowledge-base' ) . '</a>'
+			) . '</p>';		?>
+
+		<div class="epkb-network-error">
+			<div class="epkb-network-error-icon">
+				<span class="epkbfa epkbfa-sitemap"></span>
+			</div>
+			<div class="epkb-network-error-content">
+				<h2><?php echo esc_html__( 'The Knowledge Base plugin cannot be activated network-wide.', 'echo-knowledge-base' ); ?><br>				<?php
+					echo esc_html__( 'Please activate it on individual sites.', 'echo-knowledge-base' ); ?></h2>
+				<div class="epkb-network-error-description">					<?php
+					echo wp_kses_post( $html ); ?>
+				</div>
+			</div>
+		</div>		<?php
+	}
+
 
 	/********************************************************************************
 	 *

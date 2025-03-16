@@ -823,17 +823,17 @@ class EPKB_Category_Archive_Setup {
 		    #eckb-archive-page-container .eckb-category-archive-articles-list-title,
 		    #eckb-archive-page-container .eckb-category-archive-sub-category-list-title {
 		        color: ' . $kb_config['section_category_font_color'] . ';
-		        font-size: ' . ( intval( $kb_config['article_typography']['font-size'] ) + 6 ) . 'px;
+		        font-size: ' . ( intval( $kb_config['article_typography']['font-size'] ) + 6 ) . 'px !important;
 		    }';
 
 		// Main Category Articles
 		$output .= '
 		    #eckb-archive-page-container .eckb-article-list-container .eckb-article-container .epkb-article-inner { 
-				font-size: ' . ( intval( $kb_config['article_typography']['font-size'] ) + 2 ) . 'px;
+				font-size: ' . ( intval( $kb_config['article_typography']['font-size'] ) + 2 ) . 'px !important;
 		    }';
 		$output .= '
 		    #eckb-archive-page-container .eckb-article-list-container .eckb-article-container .epkb-article__icon { 
-		        font-size: ' . ( intval( $kb_config['article_typography']['font-size'] ) + 6 ) . 'px;
+		        font-size: ' . ( intval( $kb_config['article_typography']['font-size'] ) + 6 ) . 'px !important;
 		    }';
 
 		// Sub Categories
@@ -867,11 +867,11 @@ class EPKB_Category_Archive_Setup {
 		// Sub Category Articles
 		$output .= '
 		    #eckb-archive-page-container .eckb-sub-category-list-container .eckb-article-container .epkb-article-inner { 
-				font-size: ' .  $kb_config['article_typography']['font-size'] . 'px;
+				font-size: ' .  $kb_config['article_typography']['font-size'] . 'px !important;
 		    }';
 		$output .= '
 		    #eckb-archive-page-container .eckb-sub-category-list-container .eckb-article-container .epkb-article__icon { 
-		        font-size: ' . ( intval( $kb_config['article_typography']['font-size'] ) + 4 ) . 'px;
+		        font-size: ' . ( intval( $kb_config['article_typography']['font-size'] ) + 4 ) . 'px !important;
 		    }';
 
 		// Arrows

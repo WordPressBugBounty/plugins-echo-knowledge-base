@@ -20251,6 +20251,9 @@
 #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__errors .epkb-admin__boxes-list__box__addons-license .epkb-kbc__overview-box-container .epkb-kbc__overview-box-footer {
   float: none;
 }
+#ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__errors .epkb-admin__boxes-list__box__addons-license .epkb-fix-btn {
+  margin-left: 20px;
+}
 #ekb-admin-page-wrap .epkb-kb-config-page-container .epkb-admin__content #epkb-admin__boxes-list__errors .epkb-admin__boxes-list__box__content ul {
   padding-left: 20px;
   list-style: initial;
@@ -24710,6 +24713,56 @@
 }
 .epkb-dialog-pro-feature-ad--active + .epkb-dialog-pro-feature-ad-black-background {
   display: block;
+}
+
+.epkb-network-error {
+  display: flex;
+  align-items: center;
+  background-color: #F9F9F9;
+  border: 1px solid #E0E0E0;
+  border-left: 4px solid #D9534F;
+  padding: 20px;
+  margin: 20px 0;
+  width: 80%;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.epkb-network-error .epkb-network-error-icon {
+  flex-shrink: 0;
+  margin-right: 15px;
+  font-size: 60px;
+  color: #D9534F;
+  line-height: 1;
+  background-color: #FFE4E4;
+  padding: 20px;
+  border-radius: 60px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.epkb-network-error .epkb-network-error-content h2 {
+  margin: 0 0 10px;
+  font-size: 30px;
+  line-height: 1.5;
+  color: #333333;
+  font-weight: 600;
+}
+.epkb-network-error .epkb-network-error-description {
+  font-size: 20px;
+  line-height: 1.6;
+  color: #555555;
+}
+.epkb-network-error .epkb-network-error-description p {
+  font-size: 20px;
+}
+.epkb-network-error a {
+  color: #D9534F;
+  text-decoration: none;
+  border-bottom: 1px dashed #D9534F;
+  transition: color 0.3s, border-color 0.3s;
+}
+.epkb-network-error a:hover, .epkb-network-error a:focus {
+  color: #A94442;
+  border-color: #A94442;
 }
 
 @media only screen and (max-width: 1300px) {
