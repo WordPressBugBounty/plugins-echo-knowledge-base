@@ -4255,15 +4255,15 @@
 .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #openai_api_key_group .input_container input {
   width: 100%;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai {
   margin: 10px 0;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__title {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__title {
   flex-shrink: 0;
   font-size: 13px;
   line-height: 1;
@@ -4272,29 +4272,29 @@
   flex-direction: row;
   align-items: center;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__title .epkb-admin__input-field-desc {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__title .epkb-admin__input-field-desc {
   margin-top: 5px;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input {
   margin-left: auto;
   max-width: 400px;
   width: auto;
   text-align: left;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control__input__toggle:checked ~ .epkb-settings-control__input__label {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control__input__toggle:checked ~ .epkb-settings-control__input__label {
   background: #86D700;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control__input__toggle:checked ~ .epkb-settings-control__input__label:before {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control__input__toggle:checked ~ .epkb-settings-control__input__label:before {
   color: #86D700;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control__input__toggle:checked ~ .epkb-settings-control__input__label:after {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control__input__toggle:checked ~ .epkb-settings-control__input__label:after {
   color: #FFFFFF;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control__input__toggle:checked ~ .epkb-settings-control__input__handle {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control__input__toggle:checked ~ .epkb-settings-control__input__handle {
   left: auto;
   right: 2px;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle {
   position: relative;
   display: inline-block;
   vertical-align: top;
@@ -4304,10 +4304,10 @@
   cursor: pointer;
   width: 54px;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__toggle {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__toggle {
   display: none;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__label {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__label {
   position: relative;
   display: block;
   height: inherit;
@@ -4318,7 +4318,7 @@
   transition: 0.15s ease-out;
   transition-property: opacity, background;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__label:before {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__label:before {
   content: attr(data-off);
   right: 3px;
   color: #A4AFB7;
@@ -4331,7 +4331,7 @@
   -o-transition: inherit;
   transition: inherit;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__label:after {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__label:after {
   opacity: 1;
   content: attr(data-on);
   left: 3px;
@@ -4343,7 +4343,7 @@
   line-height: 22px;
   transition: inherit;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__handle {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__handle {
   -webkit-box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
   box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
   position: absolute;
@@ -4358,13 +4358,13 @@
   -o-transition: left 0.15s ease-out;
   transition: left 0.15s ease-out;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__field {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__field {
   justify-content: flex-start;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__title {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__title {
   width: 220px;
 }
-.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #disable_openai .epkb-settings-control__input {
+.epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-group #enable_legacy_open_ai .epkb-settings-control__input {
   margin-left: 0 !important;
 }
 .epkb-ai-help-sidebar .epkb-ai-help-sidebar__body .epkb-ai-help-sidebar__settings .epkb-ai-help-sidebar__settings-save {

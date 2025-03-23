@@ -180,7 +180,7 @@ function epkb_load_admin_article_page_styles() {
 // load resources for Admin AI Help Sidebar
 function epkb_load_admin_ai_help_sidebar_resources() {
 
-	if ( EPKB_Core_Utilities::is_kb_flag_set( 'disable_openai' ) ) {
+	if ( ! EPKB_Core_Utilities::is_kb_flag_set( 'enable_legacy_open_ai' ) ) {
 		return;
 	}
 

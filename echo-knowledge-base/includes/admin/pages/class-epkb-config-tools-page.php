@@ -1051,20 +1051,6 @@ class EPKB_Config_Tools_Page {
 			] ),
 		);
 
-		// AI Help Settings
-		$boxes_config[] = array(
-			'title' => esc_html__( 'AI Help Settings', 'echo-knowledge-base' ),
-			'html'  => EPKB_HTML_Elements::checkbox_toggle( [
-				'id'            => 'disable_openai',
-				'name'          => 'disable_openai',
-				'text'          => esc_html__( 'Disable AI Help', 'echo-knowledge-base' ),
-				'textLoc'       => 'left',
-				'checked'       => EPKB_Core_Utilities::is_kb_flag_set( 'disable_openai' ),
-				'topDesc'       => esc_html__( 'Enable or disable the AI Help feature.', 'echo-knowledge-base' ),
-				'return_html'   => true,
-			] ),
-		);
-
 		// Box: Delete All KBs Data
 		$boxes_config[] = array(
 			'title' => esc_html__( 'Delete All Plugin Data', 'echo-knowledge-base' ),

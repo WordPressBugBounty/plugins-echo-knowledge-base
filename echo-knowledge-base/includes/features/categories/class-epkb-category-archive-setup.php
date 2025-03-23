@@ -209,7 +209,14 @@ class EPKB_Category_Archive_Setup {
 
 					if ( $total_articles > $nof_articles_displayed ) { ?>
 						<div class="eckb-article-list-show-more-container">
-							<div class="eckb-article-list-article-count">+ <?php echo esc_html( $total_articles - $nof_articles_displayed ) . ' ' . esc_html__( 'Articles', 'echo-knowledge-base' ); ?> </div>
+							<div class="eckb-article-list-article-count">+ <?php 
+								$remaining_articles = $total_articles - $nof_articles_displayed;
+								echo esc_html( $remaining_articles ) . ' ' . 
+									esc_html( $remaining_articles == 1 ? 
+										$kb_config['article_count_text'] : 
+										$kb_config['article_count_plural_text'] 
+									); 
+							?> </div>
 							<div class="eckb-article-list-show-all-link"><?php echo esc_html( $kb_config['show_all_articles_msg'] ); ?></div>
 						</div>  <?php
 					} ?>

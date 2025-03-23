@@ -209,6 +209,18 @@ class EPKB_Upgrades {
 		if ( version_compare( $last_version, '13.11.0', '<' ) ) {
 			self::upgrade_to_v13_11_0( $kb_config );
 		}
+
+		if ( version_compare( $last_version, '13.51.0', '<' ) ) {
+			self::upgrade_to_v13_51_0( $kb_config );
+		}
+	}
+
+	private static function upgrade_to_v13_51_0( &$kb_config ) {
+		// Check if disable_openai flag exists and is false or missing
+		$disable_openai = EPKB_Core_Utilities::is_kb_flag_set( 'disable_openai' );
+		if ( ! $disable_openai ) {
+			EPKB_Core_Utilities::add_kb_flag( 'enable_legacy_open_ai' );
+		}
 	}
 
 	private static function upgrade_to_v13_11_0( &$kb_config ) {

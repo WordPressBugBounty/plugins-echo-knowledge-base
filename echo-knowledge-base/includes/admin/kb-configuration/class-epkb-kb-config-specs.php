@@ -1345,6 +1345,18 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'on'
 			),
+			'article_count_text' => array(
+				'label'       => __( 'Article Count Text (Singular)', 'echo-knowledge-base' ),
+				'name'        => 'article_count_text',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => __( 'Article', 'echo-knowledge-base' )
+			),
+			'article_count_plural_text' => array(
+				'label'       => __( 'Article Count Text (Plural)', 'echo-knowledge-base' ),
+				'name'        => 'article_count_plural_text', 
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => __( 'Articles', 'echo-knowledge-base' )
+			),
 
 			// ARCHIVE PAGE - CONTENT - LIST OF SUB-CATEGORIES
 			'archive_content_sub_categories_toggle' => array(

@@ -4054,6 +4054,19 @@
 #ekb-admin-page-wrap * {
   box-sizing: border-box;
 }
+#ekb-admin-page-wrap .epkb-admin__new-tag {
+  display: inline-block;
+  background-color: #FF6B6B;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 8px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  line-height: 1.2;
+}
 #ekb-admin-page-wrap h1, #ekb-admin-page-wrap h2, #ekb-admin-page-wrap h3, #ekb-admin-page-wrap h4, #ekb-admin-page-wrap h5, #ekb-admin-page-wrap h6 {
   margin: 0;
   padding: 0;

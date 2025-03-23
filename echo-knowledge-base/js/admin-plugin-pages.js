@@ -2355,15 +2355,15 @@ jQuery(document).ready(function($) {
 	} );
 
 	// Enable or Disable OpenAI setting
-	$( document ).on( 'change', 'input[name="disable_openai"]', function() {
+	$( document ).on( 'change', 'input[name="enable_legacy_open_ai"]', function() {
 
 		// Remove old messages
 		$('.eckb-top-notice-message').remove();
 
 		let postData = {
-			action: 'epkb_disable_openai',
+			action: 'epkb_enable_legacy_open_ai',
 			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
-			disable_openai: $(this).prop('checked') ? 'on' : 'off'
+			enable_legacy_open_ai: $(this).prop('checked') ? 'on' : 'off'
 		};
 
 		epkb_send_ajax( postData, function( response ) {
@@ -2378,7 +2378,7 @@ jQuery(document).ready(function($) {
 				$('.epkb-show-sequence-wrap').html( response.html );
 			}
 		} );
-	} );
+	});
 
 	// Open editor tab when user want to change theme compatibility mode
 	$('[data-open-editor-link]').on('click', function(){

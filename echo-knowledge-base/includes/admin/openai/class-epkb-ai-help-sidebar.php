@@ -40,7 +40,7 @@ class EPKB_AI_Help_Sidebar {
 			return;
 		}
 
-		if ( EPKB_Core_Utilities::is_kb_flag_set( 'disable_openai' ) ) {
+		if ( ! EPKB_Core_Utilities::is_kb_flag_set( 'enable_legacy_open_ai' ) ) {
 			return;
 		}
 
@@ -58,7 +58,7 @@ class EPKB_AI_Help_Sidebar {
 			return;
 		}
 
-		if ( EPKB_Core_Utilities::is_kb_flag_set( 'disable_openai' ) ) {
+		if ( ! EPKB_Core_Utilities::is_kb_flag_set( 'enable_legacy_open_ai' ) ) {
 			return;
 		}
 
@@ -293,11 +293,11 @@ class EPKB_AI_Help_Sidebar {
                 <!-- Access to AI Help -->
                 <div class="epkb-ai-help-sidebar__settings-group"> <?php
 					EPKB_HTML_Elements::checkbox_toggle( [
-						'id'            => 'disable_openai',
-						'name'          => 'disable_openai',
-						'text'          => esc_html__( 'Disable AI Help', 'echo-knowledge-base' ),
+						'id'            => 'enable_legacy_open_ai',
+						'name'          => 'enable_legacy_open_ai',
+						'text'          => esc_html__( 'Enable AI Help', 'echo-knowledge-base' ),
 						'textLoc'       => 'left',
-						'checked'       => EPKB_Core_Utilities::is_kb_flag_set( 'disable_openai' ),
+						'checked'       => EPKB_Core_Utilities::is_kb_flag_set( 'enable_legacy_open_ai' ),
 					] ) ?>
                 </div>
 
@@ -441,7 +441,7 @@ class EPKB_AI_Help_Sidebar {
 			return;
 		}
 
-		if ( EPKB_Core_Utilities::is_kb_flag_set( 'disable_openai' ) ) {
+		if ( ! EPKB_Core_Utilities::is_kb_flag_set( 'enable_legacy_open_ai' ) ) {
 			return;
 		}
 

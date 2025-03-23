@@ -188,6 +188,18 @@ class EPKB_Need_Help_Features {
 		return [
 			[
 				'plugin'    => 'core',
+				'category'  => 'design',
+				'icon'      => 'epkbfa epkbfa-list-alt',
+				'name'      => esc_html__( 'AI Chat for Instant, Accurate Support', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'Transform your knowledge base into an intelligent assistant that provides instant, accurate answers to user questions. ' .
+										'Our AI integration is powered by the leading WordPress AI plugin, AI Engine.', 'echo-knowledge-base' ),
+				'config'    => self::get_settings_link( $kb_id, 'ai-chat' ),
+				'docs'      => 'https://www.echoknowledgebase.com/documentation/ai-chat/',
+				'video'     => '',
+				'min_capability'   => EPKB_Admin_UI_Access::get_context_required_capability( 'admin_eckb_access_frontend_editor_write' ),
+			],
+			[
+				'plugin'    => 'core',
 				'category'  => 'article-features',
 				'icon'      => '',
 				'name'      => esc_html__( 'Ordering of Articles and Categories', 'echo-knowledge-base' ),
@@ -1085,7 +1097,7 @@ class EPKB_Need_Help_Features {
 			], */
 			[
 				'name'  => 'design',
-				'title' => esc_html__( 'KB Design', 'echo-knowledge-base' ),
+				'title' => esc_html__( 'KB General', 'echo-knowledge-base' ),
 				'icon'  => 'epkbfa epkbfa-paint-brush',
 			],
 			[

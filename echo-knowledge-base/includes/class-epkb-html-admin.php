@@ -837,4 +837,41 @@ class EPKB_HTML_Admin {
 			echo $notification_escaped;
 		}
 	}
+
+	public static function display_block_main_page( $kb_config, $kb_layout ) {
+		return
+			'<div>' .
+				// Main Content
+				'<div style="padding: 20px; text-align: center;">' .
+					'<p>' . esc_html__( 'Your Knowledge Base Main Page is now using WordPress KB blocks.', 'echo-knowledge-base' ) . '</p>' .
+					'<a href="' . esc_url( get_edit_post_link( EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config ) ) ) . '" target="_blank" class="epkb-primary-btn" style="display: inline-block; text-decoration: none; margin-top: 10px;">' .
+						esc_html__( 'Edit Main Page Layout', 'echo-knowledge-base' ) .
+					'</a>' .
+				'</div>' .
+				// Resources & Support Section with Two Columns
+				'<div style="background: #f0f6fc; padding: 25px; border-radius: 8px; border: 1px solid #c5d9ed; margin: 20px;">' .
+					'<h3 style="margin: 0 0 15px -7px; color: #2c3338;">' . esc_html__( 'Resources & Support', 'echo-knowledge-base' ) . '</h3>' .
+					'<div style="display: grid !important; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;">' .
+						'<div style="min-width: 0;">' .
+							'<h4 style="margin: 0 0 10px 0; color: #2c3338;">' . esc_html__( 'Documentation', 'echo-knowledge-base' ) . '</h4>' .
+							'<p style="margin: 0 0 15px 0; color: #50575e;">' .
+								esc_html__( 'Access comprehensive guides and tutorials for KB blocks and features.', 'echo-knowledge-base' ) .
+							'</p>' .
+							'<a href="https://www.echoknowledgebase.com/documentation/kb-blocks/" target="_blank" class="epkb-primary-btn" style="display: inline-block; text-decoration: none;">' .
+								esc_html__( 'View Documentation', 'echo-knowledge-base' ) .
+							'</a>' .
+						'</div>' .
+						'<div style="min-width: 0;">' .
+							'<h4 style="margin: 0 0 10px 0; color: #2c3338;">' . esc_html__( 'Technical Support', 'echo-knowledge-base' ) . '</h4>' .
+							'<p style="margin: 0 0 15px 0; color: #50575e;">' .
+								esc_html__( 'Get help from our support team for any KB related issues.', 'echo-knowledge-base' ) .
+							'</p>' .
+							'<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank" class="epkb-primary-btn" style="display: inline-block; text-decoration: none;">' .
+								esc_html__( 'Contact Support', 'echo-knowledge-base' ) .
+							'</a>' .
+						'</div>' .
+					'</div>' .
+				'</div>' .
+			'</div>';
+	}
 }

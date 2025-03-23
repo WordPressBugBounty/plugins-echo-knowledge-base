@@ -21,7 +21,7 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 		add_action( 'enqueue_block_assets', array( $this, 'register_block_assets' ) ); // Frontend / Backend
 
 		// must be assigned only in layout block
-		add_action( 'save_post', array( $this, 'update_templates_for_kb_setting_on_save_post' ), 10, 3 );
+		add_action( 'save_post', array( $this, 'update_kb_setting_on_save_post'), 10, 3 );
 	}
 
 	/**

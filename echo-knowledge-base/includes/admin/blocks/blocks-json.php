@@ -1637,6 +1637,9 @@ function epkb_get_block_attributes( $block_name ) {
 			'kb_id' => [
 				'type' => 'number'
 			],
+			'advanced_search_text_highlight_enabled' => [
+				'type' => 'string'
+			],
 			'advanced_search_mp_auto_complete_wait' => [
 				'type' => 'number'
 			],

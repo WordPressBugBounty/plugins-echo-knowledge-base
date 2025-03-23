@@ -144,22 +144,7 @@ class EPKB_Config_Settings_Page {
 							array(
 								'title_before_icon' => false,
 								'title' => esc_html__( 'KB Main Page Configuration', 'echo-knowledge-base' ),
-							'body_html' => '<p>' . sprintf( esc_html__( 'The KB Main Page now uses WordPress %sblocks%s to display articles and categories.', 'echo-knowledge-base' ) . '</p><p>', '<strong>', '</strong>', '<strong>', '</strong>' ) .
-									sprintf(
-									/* translators: %s is the link to the KB Main Page configuration */
-									esc_html__( 'To configure your KB Main Page, edit the page %s and adjust the %sKB Search%s and %s' . $this->kb_config['kb_main_page_layout'] . ' Layout%s blocks.', 'echo-knowledge-base' ),
-									'<a href="' . esc_url( get_edit_post_link( EPKB_KB_Handler::get_first_kb_main_page_id( $this->kb_config ) ) ) . '" target="_blank">' . esc_html__( 'here', 'echo-knowledge-base' ) . '</a>', '<strong>', '</strong>', '<strong>', '</strong>'
-									) . '</p><p>' .
-									sprintf(
-									/* translators: %s is the link to the documentation */
-										esc_html__( 'For more information about KB blocks, see %s', 'echo-knowledge-base' ),
-									'<a href="' . esc_url( 'https://www.echoknowledgebase.com/documentation/kb-blocks/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>'
-									) . '</p><p>' .
-									sprintf(
-									/* translators: %s is the contact link */
-										esc_html__( 'If you have any questions, please %s.', 'echo-knowledge-base' ),
-									'<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'contact us', 'echo-knowledge-base' ) . '</a>'
-									) . '</p>',
+							'body_html' => EPKB_HTML_Admin::display_block_main_page( $this->kb_config, $this->kb_config['kb_main_page_layout'] ),
 							)
 						),
 						( $this->kb_config['wpml_is_enabled'] === 'on'	?
@@ -1815,7 +1800,7 @@ class EPKB_Config_Settings_Page {
 			array(
 				'title'     => esc_html__( 'Categories List', 'echo-knowledge-base' ),
 				'fields'    => [
-					'category_focused_menu_heading_text' => 'only_categories',
+					'category_focused_menu_heading_text' => '',
 				],
 			),
 			array(
@@ -1887,6 +1872,8 @@ class EPKB_Config_Settings_Page {
 					'archive_content_sub_categories_title' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 					'template_category_archive_page_heading_description' => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
 					'template_category_archive_read_more' => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
+					'article_count_text' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
+					'article_count_plural_text' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 				],
 			),
 			array(
@@ -2358,6 +2345,7 @@ class EPKB_Config_Settings_Page {
 					'advanced_search_mp_show_top_category' => 'asea',
 					// not for Main Page 'advanced_search_mp_visibility'         => 'asea',
 					'advanced_search_mp_results_list_size' => 'asea',
+					'advanced_search_text_highlight_enabled' => 'asea',
 					'advanced_search_mp_link_font_color' => 'asea',
 					'advanced_search_mp_background_color' => 'asea',
 					'advanced_search_mp_background_image_url' => 'asea',
@@ -3091,6 +3079,7 @@ class EPKB_Config_Settings_Page {
 					'advanced_search_mp_show_top_category' => 'asea',
 					// not for Main Page 'advanced_search_mp_visibility'         => 'asea',
 					'advanced_search_mp_results_list_size' => 'asea',
+					'advanced_search_text_highlight_enabled' => 'asea',
 
 					// PRO feature ad
 					'asea_pro_description' => 'not_asea',

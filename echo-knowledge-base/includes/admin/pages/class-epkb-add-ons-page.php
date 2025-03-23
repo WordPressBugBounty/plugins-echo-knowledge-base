@@ -161,7 +161,9 @@ class EPKB_Add_Ons_Page {
 				'title'             => esc_html__( 'Access Manager', 'echo-knowledge-base' ),
 				'special_note'      => esc_html__( 'Protect your KB content', 'echo-knowledge-base' ),
 				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-AM'.'GR-1.jpg',
-				'desc'              => esc_html__( 'Restrict your Articles to certain Groups using KB Categories. Assign users to specific KB Roles within Groups.', 'echo-knowledge-base' ),
+				'desc'              => esc_html__( 'Restrict your Articles to certain Groups using KB Categories. Assign users to specific KB Roles within Groups.', 'echo-knowledge-base' ) .
+											'<br><br><a class="epkb-kbnh__feature-link" href="https://www.echoknowledgebase.com/documentation/access-manager-and-add-ons/" target="_blank"><strong>' .
+										esc_html__( 'Try Access Manager Demo', 'echo-knowledge-base' ) . '</strong></a>',
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/access-manager/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=access-manager'
 			) );
 

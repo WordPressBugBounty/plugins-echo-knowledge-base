@@ -342,7 +342,7 @@ class EPKB_Core_Utilities {
 		}
 
 		// sync 'elay_article_icon' with 'elay_sidebar_article_icon' because for Sidebar layout we show only 'elay_sidebar_article_icon' in UI
-		if ( $new_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ) {
+		if ( isset( $new_config['kb_main_page_layout'] ) && $new_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ) {
 			$new_config['elay_article_icon'] = $new_config['elay_sidebar_article_icon'];
 		}
 

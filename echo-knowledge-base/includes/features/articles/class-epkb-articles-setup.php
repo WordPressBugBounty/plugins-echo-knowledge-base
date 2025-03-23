@@ -103,7 +103,9 @@ class EPKB_Articles_Setup {
 
 		        self::article_section( 'eckb-article-left-sidebar', array( 'id' => $kb_config['id'], 'config' => $kb_config, 'article' => $article ) ); ?>
 
-		        <article id="eckb-article-content" data-article-id="<?php echo esc_attr( $article->ID ); ?>" <?php echo esc_attr( $article_seq_no ); ?>>                        <?php
+		        <article id="eckb-article-content" data-article-id="<?php echo esc_attr( $article->ID ); ?>" <?php echo esc_attr( $article_seq_no );
+				    $search_keywords = isset( $_GET['keywords'] ) ? sanitize_text_field( urldecode( $_GET['keywords'] ) ) : '';
+				    echo $search_keywords ? 'data-search-text="' . esc_attr( $search_keywords ) . '"' : '';		?>>                        <?php
 
 					self::article_section( 'eckb-article-content-header' . $v2_suffix, array( 'id' => $kb_config['id'], 'config' => $kb_config, 'article' => $article ) );
 					self::article_section( 'eckb-article-content-body', array( 'id' => $kb_config['id'], 'config' => $kb_config, 'article' => $article, 'content' => $content ) );

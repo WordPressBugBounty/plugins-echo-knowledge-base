@@ -20,6 +20,9 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 
 		// must be assigned to hook inside child class to enqueue unique assets for each block type
 		add_action( 'enqueue_block_assets', array( $this, 'register_block_assets' ) ); // Frontend / Backend
+
+		// used for search highlight
+		add_action( 'save_post', array( $this, 'update_kb_setting_on_save_post'), 10, 3 );
 	}
 
 	/**
@@ -161,6 +164,10 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 
 							// Mention KB block template for Main Page
 							'mention_kb_block_template' => EPKB_Blocks_Settings::get_kb_block_template_mention(),
+							
+							'advanced_search_text_highlight_enabled' => array(
+								'setting_type' => 'toggle'
+							),
 						),
 					),
 

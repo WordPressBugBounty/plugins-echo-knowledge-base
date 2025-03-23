@@ -419,7 +419,7 @@ abstract class EPKB_Abstract_Block {
 	 * @param $update
 	 * @return void
 	 */
-	public function update_templates_for_kb_setting_on_save_post( $post_id, $post, $update ) {
+	public function update_kb_setting_on_save_post( $post_id, $post, $update ) {
 
 		// Verify nonce, permissions, and autosave to ensure security
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -430,25 +430,35 @@ abstract class EPKB_Abstract_Block {
 			return;
 		}
 
-		// for layout block need to update 'templates_for_kb' in the current KB configuration
+		// if block is not present in the post, then do nothing
 		$block_attributes = EPKB_Block_Utilities::parse_block_attributes_from_post( $post, $this->block_name );
-		if ( is_array( $block_attributes ) ) {
+		if ( ! is_array( $block_attributes ) ) {
+			return;
+		}
 
-			if ( EPKB_Utilities::is_block_theme() ) {
-				$templates_for_kb = isset( $block_attributes['kb_block_template_toggle'] ) && $block_attributes['kb_block_template_toggle'] == 'on' ? 'kb_templates' : 'current_theme_templates';
-			} else {
-				$templates_for_kb = isset( $block_attributes['templates_for_kb'] ) ? $block_attributes['templates_for_kb'] : 'kb_templates';
-			}
+		$kb_id = isset( $block_attributes['kb_id'] ) ? $block_attributes['kb_id'] : EPKB_KB_Config_DB::DEFAULT_KB_ID;
 
-			$kb_id = isset( $block_attributes['kb_id'] ) ? $block_attributes['kb_id'] : EPKB_KB_Config_DB::DEFAULT_KB_ID;
-			$updated_kb_config = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'templates_for_kb', $templates_for_kb );
+		// update search highlight for Advanced Search
+		if ( $this->block_name == 'advanced-search' && EPKB_Utilities::is_advanced_search_enabled() ) {
+			$text_highlight_enabled = isset( $block_attributes['advanced_search_text_highlight_enabled'] ) ? $block_attributes['advanced_search_text_highlight_enabled'] : 'on';
+			do_action( 'eckb_kb_config_save_value', $kb_id, 'advanced_search_text_highlight_enabled', $text_highlight_enabled );
+			return;
+		}
 
-			// update icons if user chose another theme design
-			if ( isset( $block_attributes['theme_name'] ) && $block_attributes['theme_name'] != 'current' && is_array( $updated_kb_config ) ) {
-				$block_attributes = array_merge( $updated_kb_config, $block_attributes );
-				// if user selects Image theme then change font icons to image icons
-				EPKB_Core_Utilities::get_or_update_new_category_icons( $block_attributes, $block_attributes['theme_name'], true );
-			}
+		// for layout block need to update 'templates_for_kb' in the current KB configuration
+		if ( EPKB_Utilities::is_block_theme() ) {
+			$templates_for_kb = isset( $block_attributes['kb_block_template_toggle'] ) && $block_attributes['kb_block_template_toggle'] == 'on' ? 'kb_templates' : 'current_theme_templates';
+		} else {
+			$templates_for_kb = isset( $block_attributes['templates_for_kb'] ) ? $block_attributes['templates_for_kb'] : 'kb_templates';
+		}
+
+		$updated_kb_config = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'templates_for_kb', $templates_for_kb );
+
+		// update icons if user chose another theme design
+		if ( isset( $block_attributes['theme_name'] ) && $block_attributes['theme_name'] != 'current' && is_array( $updated_kb_config ) ) {
+			$block_attributes = array_merge( $updated_kb_config, $block_attributes );
+			// if user selects Image theme then change font icons to image icons
+			EPKB_Core_Utilities::get_or_update_new_category_icons( $block_attributes, $block_attributes['theme_name'], true );
 		}
 	}
 
