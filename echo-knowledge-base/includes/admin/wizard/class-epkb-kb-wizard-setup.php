@@ -12,7 +12,6 @@ class EPKB_KB_Wizard_Setup {
 	private $kb_config;
 	private $is_setup_run_first_time;
 	private $elay_enabled;
-	private $is_old_elay;   // TODO: remove in December 2024
 	private $is_main_page_missing;
 	private $is_block_main_page;
 	private $current_theme_has_block_support;
@@ -34,7 +33,6 @@ class EPKB_KB_Wizard_Setup {
 		$this->is_setup_run_first_time = EPKB_Core_Utilities::run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
 
 		$this->elay_enabled = EPKB_Utilities::is_elegant_layouts_enabled();
-		$this->is_old_elay = $this->elay_enabled && class_exists( 'Echo_Elegant_Layouts' ) && version_compare( Echo_Elegant_Layouts::$version, '2.14.1', '<=' );
 
 		$existing_main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $this->kb_config );
 		$this->is_main_page_missing = empty( $existing_main_page_id );
@@ -112,13 +110,6 @@ class EPKB_KB_Wizard_Setup {
 						'title_html'        => esc_html__( 'Choose Layout Matching Your Needs', 'echo-knowledge-base' ),
 						'info_title'        => esc_html__( 'Each layout offers a different way to show categories and articles. Layout features are explained below.', 'echo-knowledge-base' ),
 						'info_description'  => esc_html__( 'Don\'t hesitate to try out various layouts. You can change your KB Layout at any time.', 'echo-knowledge-base' ),
-						'info_html'         => $this->is_old_elay
-							? EPKB_HTML_Forms::notification_box_middle( array(
-								'type' => 'error',
-								'desc' => '<p>' . esc_html__( 'Modular Main Page feature is supported for Sidebar and Grid layouts in the "KB - Elegant Layouts" add-on version higher than 2.14.1.', 'echo-knowledge-base' ) .
-									'<br>' . sprintf( esc_html__( 'Please %supgrade%s the add-on to use Modular Main Page feature for the Sidebar and Grid layouts.', 'echo-knowledge-base' ), '<a href="https://www.echoknowledgebase.com/wordpress-plugin/elegant-layouts/" target="_blank">', '</a>' ) . '</p>',
-							), true )
-							: '',
 					) ),
 				'content_escaped'   => $this->wizard_step_modular_layout_content( $step_number ),
 				'step_number_label'	=> 3,
@@ -916,7 +907,7 @@ class EPKB_KB_Wizard_Setup {
 							$selected_modules_flag = false;
 						}
 
-						$elay_modules_disabled = in_array( $module_name, ['resource_links'] ) && ( ! $this->elay_enabled || $this->is_old_elay );         ?>
+						$elay_modules_disabled = in_array( $module_name, ['resource_links'] ) && ! $this->elay_enabled;         ?>
 
 						<!-- Module Row -->
 						<div class="epkb-setup-wizard-module-row<?php echo $module_row_config['toggle_value'] == 'none' ? '' : ' ' . 'epkb-setup-wizard-module-row--active';
@@ -926,7 +917,7 @@ class EPKB_KB_Wizard_Setup {
 							<div class="epkb-setup-wizard-module-row-left-settings">
 								<div class="epkb-setup-wizard-module-settings-title"> <?php
 									echo esc_html( $module_row_config['label'] );
-									EPKB_HTML_Elements::display_tooltip( '', '', array(), $module_row_config['tooltip_external_links'] ); ?>
+									EPKB_HTML_Elements::display_tooltip( '', '', array(), $module_row_config['setting_help_text'] ); ?>
 								</div> <?php
 								if ( $module_name == 'categories_articles' ) {  ?>
 									<!-- Settings Row -->
@@ -1641,16 +1632,15 @@ class EPKB_KB_Wizard_Setup {
 					'search'  => '<i class="epkbfa epkbfa-plus epkb-setup-wizard-module-row-toggle--on"></i>',
 					'none'  => '<i class="epkbfa epkbfa-minus epkb-setup-wizard-module-row-toggle--off"></i>',
 				],
-				'tooltip_external_links' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/search/' ] ]
+				'setting_help_text' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/search/' ] ]
 			],
 			'categories_articles'   => [
 				'label' => esc_html__( 'Categories & Articles', 'echo-knowledge-base' ),
 				'toggle_value' => $this->is_setup_run_first_time ? 'categories_articles' : 'none',
 				'toggle_options' => [
 					'categories_articles'  => '<i class="epkbfa epkbfa-plus epkb-setup-wizard-module-row-toggle--on"></i>',
-					'none'  => '<i class="epkbfa epkbfa-minus epkb-setup-wizard-module-row-toggle--off"></i>',
 				],
-				'tooltip_external_links' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/categories-and-articles/' ] ]
+				'setting_help_text' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/categories-and-articles/' ] ]
 			],
 			'articles_list'         => [
 				'label' => esc_html__( 'Featured Articles', 'echo-knowledge-base' ),
@@ -1659,7 +1649,7 @@ class EPKB_KB_Wizard_Setup {
 					'articles_list'  => '<i class="epkbfa epkbfa-plus epkb-setup-wizard-module-row-toggle--on"></i>',
 					'none'  => '<i class="epkbfa epkbfa-minus epkb-setup-wizard-module-row-toggle--off"></i>',
 				],
-				'tooltip_external_links' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/articles-list/' ] ]
+				'setting_help_text' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/articles-list/' ] ]
 			],
 			'faqs'                  => [
 				'label' => esc_html__( 'FAQs', 'echo-knowledge-base' ),
@@ -1668,7 +1658,7 @@ class EPKB_KB_Wizard_Setup {
 					'faqs'  => '<i class="epkbfa epkbfa-plus epkb-setup-wizard-module-row-toggle--on"></i>',
 					'none'  => '<i class="epkbfa epkbfa-minus epkb-setup-wizard-module-row-toggle--off"></i>',
 				],
-				'tooltip_external_links' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/faqs/' ] ]
+				'setting_help_text' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/faqs/' ] ]
 			],
 			'resource_links'        => [
 				'label' => esc_html__( 'Resource Links', 'echo-knowledge-base' ),
@@ -1677,7 +1667,7 @@ class EPKB_KB_Wizard_Setup {
 					'resource_links'  => '<i class="epkbfa epkbfa-plus epkb-setup-wizard-module-row-toggle--on"></i>',
 					'none'  => '<i class="epkbfa epkbfa-minus epkb-setup-wizard-module-row-toggle--off"></i>',
 				],
-				'tooltip_external_links' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/resource-links/' ] ]
+				'setting_help_text' => [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/resource-links/' ] ]
 			],
 		];
 

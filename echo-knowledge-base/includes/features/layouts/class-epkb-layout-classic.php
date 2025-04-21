@@ -28,6 +28,8 @@ class EPKB_Layout_Classic extends EPKB_Layout {
 		$categories_per_row = $this->get_nof_columns_int();
 
 		$classes = 'epkb-ml-classic-layout--height-' . ( $this->kb_config['section_box_height_mode'] == 'section_no_height' ? 'variable' : 'fixed' ) . ' ' . 'epkb-ml-classic-layout--' . $categories_per_row . '-col';
+		$design_class = isset( $this->kb_config['sub_categories_design'] ) ? ' epkb-ml-classic-layout--' . $this->kb_config['sub_categories_design'] : '';
+		$classes .= $design_class;
 		$categories_icons = $this->get_category_icons();	?>
 
 		<div id="epkb-ml-classic-layout" class="epkb-layout-container <?php echo esc_attr( $classes ); ?>">    <?php
@@ -392,7 +394,7 @@ class EPKB_Layout_Classic extends EPKB_Layout {
 		if ( !empty( $kb_config['background_color'] ) ) {
 			$output .= '
 			#epkb-ml__module-categories-articles #epkb-ml-classic-layout {
-				padding: 20px!important;
+				padding: 20px;
 				background-color: ' . $kb_config['background_color'] . '!important;
 			}';
 		}

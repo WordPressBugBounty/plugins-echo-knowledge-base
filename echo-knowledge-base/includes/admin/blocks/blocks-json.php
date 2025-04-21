@@ -859,7 +859,10 @@ function epkb_get_block_attributes( $block_name ) {
 			],
 			'custom_css_class' => [
 				'type' => 'string'
-			]
+			],
+			'sub_categories_design' => array(
+				'type' => 'string'
+			),
 		],
 		'drill-down-layout' => [
 			'kb_id' => [
@@ -1156,6 +1159,9 @@ function epkb_get_block_attributes( $block_name ) {
 			],
 			'faq_group_ids' => [
 				'type' => 'array'
+			],
+			'faq_groups_link' => [
+				'type' => 'string'
 			],
 			'custom_css_class' => [
 				'type' => 'string'
@@ -1636,6 +1642,12 @@ function epkb_get_block_attributes( $block_name ) {
 		'advanced-search' => [
 			'kb_id' => [
 				'type' => 'number'
+			],
+			'search_multiple_kbs_toggle' => [
+				'type' => 'string'
+			],
+			'search_multiple_kbs_list' => [
+				'type' => 'array'
 			],
 			'advanced_search_text_highlight_enabled' => [
 				'type' => 'string'

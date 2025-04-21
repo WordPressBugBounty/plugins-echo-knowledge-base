@@ -621,6 +621,17 @@
   position: relative;
 }
 
+.eckb-kb-template-active .ast-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+.eckb-kb-template-active.has-shfb-builder .content-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 /* Public
 --------------------------------------------------------------*/
 @keyframes spin {
@@ -2318,7 +2329,12 @@ Note: We will NOT be using any v3 suffix. But using no suffix for V3
   box-shadow: 0 2px 0 0 #E1E1E1;
 }
 #epkb-sidebar-container-v2.epkb-sidebar--slim-scrollbar {
-  position: relative;
+  height: fit-content;
+  z-index: 9;
+  position: sticky;
+  width: 100%;
+  top: 100px;
+  margin-bottom: 20px;
 }
 #epkb-sidebar-container-v2.epkb-sidebar--slim-scrollbar::-webkit-scrollbar {
   height: 4px;

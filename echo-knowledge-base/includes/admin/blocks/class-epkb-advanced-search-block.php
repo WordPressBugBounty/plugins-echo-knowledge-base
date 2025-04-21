@@ -31,6 +31,7 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 	 */
 	public function render_block_inner( $block_attributes ) {
 		$block_attributes = $this->sanitize_block_attributes( $block_attributes );
+		$block_attributes['search_multiple_kbs'] = $block_attributes['search_multiple_kbs_toggle'] == 'on' ? implode( ',', $block_attributes['search_multiple_kbs_list'] ) : '';
 		do_action( 'eckb_advanced_search_box', $block_attributes );
 	}
 
@@ -148,6 +149,16 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 			}
 		}
 
+		$kb_id_setting = EPKB_Blocks_Settings::get_kb_id_setting();
+
+		// for optimization reason on the frontend the $kb_id_setting can be empty - ensure it has options before use it
+		$search_multiple_kbs_list_options = array();
+		if ( ! empty( $kb_id_setting['options'] ) ) {
+			foreach ( $kb_id_setting['options'] as $one_kb_id_setting ) {
+				$search_multiple_kbs_list_options[ $one_kb_id_setting['key'] ] = $one_kb_id_setting['name'];
+			}
+		}
+
 		return array(
 
 			// TAB: Settings
@@ -160,7 +171,23 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 					'general' => array(
 						'title' => esc_html__( 'General', 'echo-knowledge-base' ),
 						'fields' => array(
-							'kb_id' => EPKB_Blocks_Settings::get_kb_id_setting(),
+							'kb_id' => $kb_id_setting,
+
+							// Search multiple KBs
+							'search_multiple_kbs_toggle' => array(
+								'label' => esc_html__( 'Search Multiple KBs', 'echo-knowledge-base' ),
+								'setting_type' => 'toggle',
+								'default' => 'off',
+							),
+							'search_multiple_kbs_list' => array(
+								'setting_type' => 'checkbox_multi_select',
+								'label' => '',
+								'options' => $search_multiple_kbs_list_options,
+								'default' => array( EPKB_KB_Config_DB::DEFAULT_KB_ID ),
+								'hide_on_dependencies' => array(
+									'search_multiple_kbs_toggle' => 'off',
+								),
+							),
 
 							// Mention KB block template for Main Page
 							'mention_kb_block_template' => EPKB_Blocks_Settings::get_kb_block_template_mention(),

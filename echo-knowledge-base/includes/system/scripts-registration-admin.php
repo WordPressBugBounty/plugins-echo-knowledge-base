@@ -22,7 +22,6 @@ add_action( 'admin_enqueue_scripts','epkb_enqueue_admin_icon_resources' );*/
  */
 function epkb_load_admin_plugin_pages_resources() {
 	global $pagenow;
-
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_enqueue_style( 'epkb-admin-plugin-pages-styles', Echo_Knowledge_Base::$plugin_url . 'css/admin-plugin-pages' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
@@ -41,14 +40,18 @@ function epkb_load_admin_plugin_pages_resources() {
 	wp_enqueue_script( 'epkb-admin-plugin-pages-ui', Echo_Knowledge_Base::$plugin_url . 'js/admin-ui' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_enqueue_script( 'epkb-admin-plugin-pages-convert', Echo_Knowledge_Base::$plugin_url . 'js/admin-convert' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 
-	wp_register_script( 'epkb-admin-plugin-pages-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-plugin-pages' . $suffix . '.js',
+	wp_register_script( 'epkb-admin-form-controls-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-form-controls' . $suffix . '.js',
 		array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable'), Echo_Knowledge_Base::$version );
+	wp_register_script( 'epkb-admin-plugin-pages-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-plugin-pages' . $suffix . '.js',
+		array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable', 'wp-color-picker'), Echo_Knowledge_Base::$version );
+
 	if ( EPKB_Utilities::is_advanced_search_enabled() ) {
 		$kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
 		$kb_config = apply_filters( 'eckb_kb_config', $kb_config );
 		$epkb_editor_addon_data = apply_filters( 'epkb_editor_addon_data', array(), $kb_config );   // Advanced Search presets
 		wp_add_inline_script( 'epkb-admin-plugin-pages-scripts', 'var epkb_editor_addon_data = ' . wp_json_encode( $epkb_editor_addon_data, ENT_QUOTES ) . ';' );
 	}
+	wp_enqueue_script( 'epkb-admin-form-controls-scripts' );
 	wp_enqueue_script( 'epkb-admin-plugin-pages-scripts' );
 
 	wp_localize_script( 'epkb-admin-plugin-pages-scripts', 'epkb_vars', array(
@@ -90,6 +93,16 @@ function epkb_load_admin_plugin_pages_resources() {
 			' ' . esc_html__( 'Then, the page will reload.', 'echo-knowledge-base' ),
 		'on_archive_page_v3_toggle'     => esc_html__( 'First, the current settings will be saved.', 'echo-knowledge-base' ) .
 			' ' . esc_html__( 'Then, the page will reload.', 'echo-knowledge-base' ),
+		'preview_not_available'			=> esc_html__( 'Preview functionality will be implemented soon.', 'echo-knowledge-base' ),
+		'msg_empty_input'               => esc_html__( 'Missing input', 'echo-knowledge-base' ),
+		'msg_no_key_admin'              => esc_html__( 'You have no API key. Please add it here', 'echo-knowledge-base' ),
+		'msg_no_key'                    => esc_html__( 'You have no API key.', 'echo-knowledge-base' ),
+		'ai_help_button_title'          => esc_html__( 'AI Help', 'echo-knowledge-base' ),
+		'msg_ai_help_loading'           => esc_html__( 'Processing...', 'echo-knowledge-base' ),
+		'msg_ai_copied_to_clipboard'    => esc_html__( 'Copied to clipboard', 'echo-knowledge-base' ),
+		'copied_text'					=> esc_html__( 'Copied!', 'echo-knowledge-base' ),
+		'group_selected_singular'		=> esc_html__( 'group selected', 'echo-knowledge-base' ),
+		'group_selected_plural'			=> esc_html__( 'groups selected', 'echo-knowledge-base' ),
 	));
 
 	// used by WordPress color picker  ( wpColorPicker() )
@@ -116,6 +129,15 @@ function epkb_load_admin_plugin_pages_resources() {
 		wp_enqueue_style( 'epkb-mp-frontend-basic-layout', Echo_Knowledge_Base::$plugin_url . 'css/mp-frontend-basic-layout' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
 	}
 
+	$page = EPKB_Utilities::get( 'page' );
+	if ( $page == 'epkb-faqs' ) {
+		wp_register_style( 'epkb-icon-fonts', Echo_Knowledge_Base::$plugin_url . 'css/epkb-icon-fonts' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
+		wp_register_style( 'epkb-shortcodes', Echo_Knowledge_Base::$plugin_url . 'css/shortcodes' . $suffix . '.css', array( 'epkb-icon-fonts' ), Echo_Knowledge_Base::$version );
+		wp_register_script( 'epkb-faq-shortcode-scripts', Echo_Knowledge_Base::$plugin_url . 'js/faq-shortcode-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
+		wp_enqueue_script( 'epkb-faq-shortcode-scripts' );
+		wp_enqueue_script( 'epkb-icon-fonts' );
+		wp_enqueue_style( 'epkb-shortcodes' );
+	}
 }
 
 // Old Wizards

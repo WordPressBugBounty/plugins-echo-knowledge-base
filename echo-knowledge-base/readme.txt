@@ -1,13 +1,13 @@
-=== Advanced Knowledge Base Documentation, Articles and FAQ Tool with AI Assistance, Security, Support, Import/Export and Chat ===
+=== Advanced Knowledge Base Documentation, Articles and FAQ Tool with AI Chat Integration, Security, Support, and Import/Export ===
 Author URI: https://www.echoknowledgebase.com/about-us/
 Plugin URI: https://www.echoknowledgebase.com/
 Contributors: echoplugins
 Donate link: https://www.echoknowledgebase.com
 Tags: knowledge base, knowledgebase, documentation, docs, faq
 Requires at least: 5.2
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 13.51.0
+Stable tag: 13.52.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -60,19 +60,14 @@ Please note that some features require a Pro license (Content Protection, Unlimi
 
 Transform your knowledge base into an intelligent assistant that provides instant, accurate answers to user questions. Our AI integration is powered by the leading WordPress AI plugin, AI Engine.
 
+AI Chat can answer questions based on content from your Knowledge Base, FAQs, internal documentation, notes, pages, or any other information source.
+
 ### Key Benefits:
 * **Instant Answers**: Users get immediate responses to their questions based on your documentation
 * **24/7 Support**: Reduce support tickets by providing automated assistance around the clock
-* **Smart Learning**: AI learns from your knowledge base, FAQs, and internal documents
+* **Smart Learning**: AI learns from your knowledge base, FAQs, pages and internal documents
 * **Easy Setup**: Get started in minutes with our step-by-step setup guide
 * **Seamless Integration**: Works perfectly with your existing knowledge base and website
-
-### Features:
-* AI-powered chat interface for instant responses
-* Intelligent content writing assistance
-* Grammar and spelling checks
-* Article outline generation
-* Smart content organization suggestions
 
 For detailed setup instructions, visit our [AI Chat Integration Guide](https://www.echoknowledgebase.com/documentation/ai-chat/)
 
@@ -408,6 +403,12 @@ For more information about Pro features, visit our [Pricing Page](https://www.ec
 
 
 == Changelog ==
+
+= 13.52.0 =
+Release Date: Apr 21, 2025
+* New: Sub category designs for Classic Layout
+* Update: FAQ Shortcode generation
+* Fix: Cleanup and minor fixes
 
 = 13.51.0 =
 Release Date: Mar 23, 2025

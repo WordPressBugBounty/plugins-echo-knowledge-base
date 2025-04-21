@@ -18,7 +18,7 @@ class EPKB_FAQs_Utilities {
 	 */
 	public static function display_faqs( $kb_config, $faq_groups, $faq_title, $is_shortcode=false, $use_content_filter=false, $render_inline_css=true ) {
 
-		$is_faq_schema = isset( $kb_config['faq_schema_toggle'] ) && $kb_config['faq_schema_toggle'] == 'on';
+		$is_faq_schema = true;	// isset( $kb_config['faq_schema_toggle'] ) && $kb_config['faq_schema_toggle'] == 'on';
 
 		// Set Icon Type from User settings
 		switch ( $kb_config['faq_icon_type'] ) {
@@ -53,16 +53,16 @@ class EPKB_FAQs_Utilities {
 
 		ob_start();
 
-		if ( $render_inline_css ) {	?>
+		if ( $render_inline_css ) { ?>
 			<style>	    <?php
 				self::get_faq_styles( $kb_config ); ?>
 			</style>	<?php
-		}	?>
+		} ?>
 
-		<div id="epkb-ml-faqs-<?php echo esc_attr( strtolower( $kb_config['kb_main_page_layout'] ) ); ?>-layout" class="epkb-faqs-container <?php echo esc_html( implode(' ', $container_classes ) ) ?>"> <?php
+		<div id="epkb-ml-faqs-<?php echo esc_attr( strtolower( $kb_config['kb_main_page_layout'] ) ); ?>-layout" class="epkb-faqs-container <?php echo esc_html( implode( ' ', $container_classes ) ) ?>"> <?php
 
 			// Display the FAQs Title set in the FAQ Module or shortcode Parameter (could be empty)
-			if ( $kb_config['ml_faqs_title_location'] != 'none' && ! empty( $faq_title ) ) {    ?>
+			if ( $kb_config['ml_faqs_title_location'] != 'none' && ! empty( $faq_title ) ) { ?>
 				<h2 class="epkb-faqs-title">
 					<span><?php echo esc_html( $faq_title ); ?></span>
 				</h2>		<?php
@@ -76,7 +76,7 @@ class EPKB_FAQs_Utilities {
 			]; ?>
 
 			<div class="epkb-faqs-cat-content-container">				<?php 
-				foreach ( $faq_groups as $faq_group_id => $faq_value ) {      ?>
+				foreach ( $faq_groups as $faq_group_id => $faq_value ) { ?>
 
 					<div class="epkb-faqs-cat-container" id="epkb-faqs-cat-<?php echo esc_attr( $faq_group_id ); ?>"> <?php
 
@@ -96,7 +96,7 @@ class EPKB_FAQs_Utilities {
 
 						<div class="epkb-faqs__items-list-container"><?php
 						// Display this groups questions.
-						foreach ( $columns as $column ) {   ?>
+						foreach ( $columns as $column ) { ?>
 
 							<div class="epkb-faqs__items-list epkb-list-column-<?php echo esc_attr( $column_number ); ?>"> <?php
 
@@ -107,7 +107,7 @@ class EPKB_FAQs_Utilities {
 
 									$text = wp_strip_all_tags( $one_faq->post_content );
 									$text = html_entity_decode( $text, ENT_QUOTES, 'UTF-8' );
-									$text = preg_replace('/\s+/', ' ', $text );
+									$text = preg_replace( '/\s+/', ' ', $text );
 
 									$faq_schema_json['mainEntity'][] = array(
 										'@type' => 'Question',
@@ -141,26 +141,26 @@ class EPKB_FAQs_Utilities {
 								</div>  <?php
 							}
 
-							$column_number ++;							?>
+							$column_number++;							?>
 
 							</div>  <?php
 						} ?>
 
 						</div>  <?php
 
-						if ( empty( $faq_value['faqs'] ) ) {    ?>
+						if ( empty( $faq_value['faqs'] ) ) { ?>
 							<div class="epkb-faqs-article-coming-soon"><?php echo esc_html( $kb_config['faq_empty_msg'] ); ?></div>	<?php
-						}   ?>
+						} ?>
 
 
 					</div>  <?php
 				} ?>
 			</div>			<?php
 
-			if ( $is_faq_schema ) {			?>
+			if ( $is_faq_schema ) { ?>
 				<!--suppress JSUnresolvedVariable -->
 				<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema_json ); ?></script>   <?php
-			}  ?>
+			} ?>
 
 		</div>	<?php
 
@@ -186,10 +186,10 @@ class EPKB_FAQs_Utilities {
 		foreach ( $faqs_list as $faq ) {
 
 			$columns[ $column_count ][] = $faq;
-			$column_articles_count ++;
+			$column_articles_count++;
 
 			if ( $column_articles_count >= $articles_per_column ) {
-				$column_count ++;
+				$column_count++;
 				$column_articles_count = 0;
 			}
 		}
@@ -342,6 +342,29 @@ class EPKB_FAQs_Utilities {
 		echo esc_attr( $style );
 	}
 
+	public static function get_design_names() {
+		return [
+			'10'  => esc_html__( 'Compact Simple', 'echo-knowledge-base' ),
+			'11'  => esc_html__( 'Blue Borderless', 'echo-knowledge-base' ),
+			'12'  => esc_html__( 'Green Separator', 'echo-knowledge-base' ),
+			'13'  => esc_html__( 'Sharp Blue Answers', 'echo-knowledge-base' ),
+			'14'  => esc_html__( 'Purple Questions', 'echo-knowledge-base' ),
+			'15'  => esc_html__( 'Right Icon', 'echo-knowledge-base' ),
+			'16'  => esc_html__( 'Modern', 'echo-knowledge-base' ),
+			'17' => esc_html__( 'Dark Mode', 'echo-knowledge-base' ),
+			'18' => esc_html__( 'Orange Highlight', 'echo-knowledge-base' ),
+			'19' => esc_html__( 'Blue Accent', 'echo-knowledge-base' ),
+			'20' => esc_html__( 'Green 2-Column', 'echo-knowledge-base' ),
+			'21' => esc_html__( 'Purple Elegance', 'echo-knowledge-base' ),
+			'22' => esc_html__( 'Red Highlight', 'echo-knowledge-base' ),
+			'23' => esc_html__( 'Minimal Gray', 'echo-knowledge-base' ),
+			'24' => esc_html__( 'Yellow Highlight', 'echo-knowledge-base' ),
+			'25' => esc_html__( 'Indigo Compact', 'echo-knowledge-base' ),
+			'26' => esc_html__( 'Light Blue Headers', 'echo-knowledge-base' ),
+			'27' => esc_html__( 'Clean Minimal', 'echo-knowledge-base' ),
+		];
+	}
+
 	public static function get_design_settings( $design_name ) {
 
 		$defaults = array(
@@ -358,12 +381,11 @@ class EPKB_FAQs_Utilities {
 			'faq_question_background_color' => '#FFFFFF',
 			'faq_answer_background_color'   => '#FFFFFF',
 			'faq_question_text_color'       => '#000000',
-			'faq_answer_text_color'       => '#000000',
+			'faq_answer_text_color'			=> '#000000',
 		);
 
 		switch ( $design_name ) {
 			case '1':
-			default:
 				$design_settings = array(
 					'faq_compact_mode'              => 'compact_small',
 					'faq_question_space_between'    => 'space_small',
@@ -425,6 +447,237 @@ class EPKB_FAQs_Utilities {
 				$design_settings = array(
 					'faq_nof_columns'               => '2',
 					'faq_icon_location'             => 'right',
+				);
+				break;
+
+			// NEW DESIGNS
+			case '10':
+			default:
+				$design_settings = array(
+					'faq_compact_mode'              => 'compact_small',
+					'faq_question_space_between'    => 'space_small',
+				);
+				break;
+			case '11':
+				$design_settings = array(
+					'faq_border_mode'               => 'none',
+					'faq_icon_type'                 => 'icon_arrow_caret',
+					'faq_question_background_color' => '#9fc8db',
+					'faq_answer_background_color'   => '#f3faff',
+				);
+				break;
+			case '12':
+				$design_settings = array(
+					'faq_border_style'              => 'sharp',
+					'faq_border_mode'               => 'separator',
+					'faq_border_color'              => '#D0E57C',
+					'faq_icon_type'                 => 'icon_plus_box',
+					'faq_icon_color'                => '#d0E57c',
+					'faq_question_background_color'	=> '#f8f8f8',
+					'faq_question_space_between'    => 'space_small',
+				);
+				break;
+			case '13':
+				$design_settings = array(
+					'faq_icon_type'                 => 'icon_arrow_angle',
+					'faq_border_style'              => 'sharp',
+					'faq_question_space_between'    => 'space_none',
+					'faq_answer_background_color'   => '#d8e4f8',
+				);
+				break;
+			case '14':
+				$design_settings = array(
+					'faq_border_style'              => 'sharp',
+					'faq_icon_type'                 => 'icon_plus_circle',
+					'faq_question_background_color' => '#c09fe6',
+					'faq_question_space_between'    => 'space_none',
+				);
+				break;
+			case '15':
+				$design_settings = array(
+					'faq_nof_columns'               => '1',
+					'faq_icon_location'             => 'right',
+				);
+				break;
+			case '16':
+				$design_settings = array(
+					'faq_border_style'              => 'rounded',
+					'faq_border_mode'               => 'all_around',
+					'faq_border_color'              => '#eaeaea',
+					'faq_icon_type'                 => 'icon_plus_circle',
+					'faq_icon_color'                => '#4285f4',
+					'faq_icon_location'             => 'right',
+					'faq_question_space_between'    => 'space_medium',
+					'faq_question_background_color' => '#f8f9fa',
+					'faq_answer_background_color'   => '#ffffff',
+					'faq_question_text_color'       => '#202124',
+					'faq_answer_text_color'         => '#5f6368',
+				);
+				break;
+			case '17':
+				$design_settings = array(
+					'faq_border_style'              => 'rounded',
+					'faq_border_mode'               => 'all_around',
+					'faq_border_color'              => '#2c3e50',
+					'faq_icon_type'                 => 'icon_arrow_caret',
+					'faq_icon_color'                => '#ffffff',
+					'faq_icon_location'             => 'left',
+					'faq_question_space_between'    => 'space_small',
+					'faq_question_background_color' => '#34495e',
+					'faq_answer_background_color'   => '#ecf0f1',
+					'faq_question_text_color'       => '#ffffff',
+					'faq_answer_text_color'         => '#2c3e50',
+				);
+				break;
+			case '18':
+				$design_settings = array(
+					'faq_border_style'              => 'sharp',
+					'faq_border_mode'               => 'separator',
+					'faq_border_color'              => '#e67e22',
+					'faq_icon_type'                 => 'icon_plus',
+					'faq_icon_color'                => '#e67e22',
+					'faq_icon_location'             => 'right',
+					'faq_question_space_between'    => 'space_medium',
+					'faq_question_background_color' => '#ffffff',
+					'faq_answer_background_color'   => '#fef9e7',
+					'faq_question_text_color'       => '#d35400',
+					'faq_answer_text_color'         => '#34495e',
+				);
+				break;
+			case '19':
+				$design_settings = array(
+					'faq_border_style'              => 'rounded',
+					'faq_border_mode'               => 'none',
+					'faq_icon_type'                 => 'icon_plus_box',
+					'faq_icon_color'                => '#ffffff',
+					'faq_icon_location'             => 'left',
+					'faq_question_space_between'    => 'space_medium',
+					'faq_question_background_color' => '#3498db',
+					'faq_answer_background_color'   => '#eef7fb',
+					'faq_question_text_color'       => '#ffffff',
+					'faq_answer_text_color'         => '#2980b9',
+				);
+				break;
+			case '20':
+				$design_settings = array(
+					'faq_border_style'              => 'sharp',
+					'faq_border_mode'               => 'all_around',
+					'faq_border_color'              => '#27ae60',
+					'faq_icon_type'                 => 'icon_arrow_angle',
+					'faq_icon_color'                => '#27ae60',
+					'faq_nof_columns'               => '2',
+					'faq_question_space_between'    => 'space_small',
+					'faq_question_background_color' => '#f2f9f4',
+					'faq_answer_background_color'   => '#ffffff',
+					'faq_question_text_color'       => '#2ecc71',
+					'faq_answer_text_color'         => '#34495e',
+				);
+				break;
+			case '21':
+				$design_settings = array(
+					'faq_border_style'              => 'rounded',
+					'faq_border_mode'               => 'all_around',
+					'faq_border_color'              => '#9b59b6',
+					'faq_icon_type'                 => 'icon_plus_circle',
+					'faq_icon_color'                => '#9b59b6',
+					'faq_icon_location'             => 'right',
+					'faq_question_space_between'    => 'space_medium',
+					'faq_question_background_color' => '#f5eef8',
+					'faq_answer_background_color'   => '#ffffff',
+					'faq_question_text_color'       => '#8e44ad',
+					'faq_answer_text_color'         => '#34495e',
+				);
+				break;
+			case '22':
+				$design_settings = array(
+					'faq_border_style'              => 'sharp',
+					'faq_border_mode'               => 'separator',
+					'faq_border_color'              => '#e74c3c',
+					'faq_icon_type'                 => 'icon_arrow_caret',
+					'faq_icon_color'                => '#e74c3c',
+					'faq_icon_location'             => 'left',
+					'faq_question_space_between'    => 'space_small',
+					'faq_question_background_color' => '#ffffff',
+					'faq_answer_background_color'   => '#fdecea',
+					'faq_question_text_color'       => '#c0392b',
+					'faq_answer_text_color'         => '#34495e',
+				);
+				break;
+			case '23':
+				$design_settings = array(
+					'faq_border_style'              => 'rounded',
+					'faq_border_mode'               => 'all_around',
+					'faq_border_color'              => '#bdc3c7',
+					'faq_icon_type'                 => 'icon_plus',
+					'faq_icon_color'                => '#7f8c8d',
+					'faq_nof_columns'               => '2',
+					'faq_question_space_between'    => 'space_medium',
+					'faq_question_background_color' => '#ecf0f1',
+					'faq_answer_background_color'   => '#ffffff',
+					'faq_question_text_color'       => '#2c3e50',
+					'faq_answer_text_color'         => '#7f8c8d',
+				);
+				break;
+			case '24':
+				$design_settings = array(
+					'faq_border_style'              => 'rounded',
+					'faq_border_mode'               => 'all_around',
+					'faq_border_color'              => '#f1c40f',
+					'faq_icon_type'                 => 'icon_arrow_angle',
+					'faq_icon_color'                => '#f39c12',
+					'faq_icon_location'             => 'left',
+					'faq_question_space_between'    => 'space_medium',
+					'faq_question_background_color' => '#fcf3cf',
+					'faq_answer_background_color'   => '#ffffff',
+					'faq_question_text_color'       => '#f39c12',
+					'faq_answer_text_color'         => '#34495e',
+				);
+				break;
+			case '25':
+				$design_settings = array(
+					'faq_border_style'              => 'rounded',
+					'faq_border_mode'               => 'all_around',
+					'faq_border_color'              => '#3f51b5',
+					'faq_icon_type'                 => 'icon_plus_circle',
+					'faq_icon_color'                => '#3f51b5',
+					'faq_icon_location'             => 'right',
+					'faq_question_space_between'    => 'space_medium',
+					'faq_compact_mode'              => 'compact_small',
+					'faq_question_background_color' => '#e8eaf6',
+					'faq_answer_background_color'   => '#ffffff',
+					'faq_question_text_color'       => '#303f9f',
+					'faq_answer_text_color'         => '#616161',
+				);
+				break;
+			case '26':
+				$design_settings = array(
+					'faq_border_style'              => 'sharp',
+					'faq_border_mode'               => 'separator',
+					'faq_border_color'              => '#e1e1e1',
+					'faq_icon_type'                 => 'none',
+					'faq_icon_location'             => 'left',
+					'faq_question_space_between'    => 'space_none',
+					'faq_compact_mode'              => 'compact_medium',
+					'faq_question_background_color' => '#c4dce6',
+					'faq_answer_background_color'   => '#ffffff',
+					'faq_question_text_color'       => '#505050',
+					'faq_answer_text_color'         => '#666666',
+				);
+				break;
+			case '27':
+				$design_settings = array(
+					'faq_border_style'              => 'sharp',
+					'faq_border_mode'               => 'separator',
+					'faq_border_color'              => '#e1e1e1',
+					'faq_icon_type'                 => 'icon_plus_circle',
+					'faq_icon_color'                => '#00a0be',
+					'faq_icon_location'             => 'right',
+					'faq_question_space_between'    => 'space_small',
+					'faq_compact_mode'              => 'compact_medium',
+					'faq_question_background_color' => '#ffffff',
+					'faq_answer_background_color'   => '#ffffff',
+					'faq_question_text_color'       => '#00a0be',
+					'faq_answer_text_color'         => '#666666',
 				);
 				break;
 		}
@@ -559,8 +812,8 @@ class EPKB_FAQs_Utilities {
 									if ( empty( $all_faq_groups ) ) {
 										echo esc_html__( 'You do not have any FAQ Groups defined.', 'echo-knowledge-base' ) . ' ' . '<a href="' .
 											esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_config['id'] . '&page=epkb-faqs#faqs-groups' ) ) . '" target="_blank">' .
-											esc_html__( 'Create FAQ Group', 'echo-knowledge-base' ) . '
-                                            <span class="epkbfa epkbfa-external-link"></span>
+											esc_html__( 'Create FAQ Group', 'echo-knowledge-base' ) .
+                                            '<span class="epkbfa epkbfa-external-link"></span>
                                             </a>';
 									} else {
 										echo ( $is_faqs_module ?
@@ -585,18 +838,5 @@ class EPKB_FAQs_Utilities {
 				</div>
 			</div>
 		</div>  <?php
-	}
-
-	public static function get_design_names() {
-		return [
-			'1'  => esc_html__( 'Design', 'echo-knowledge-base' ) . ' #1',
-			'2'  => esc_html__( 'Design', 'echo-knowledge-base' ) . ' #2',
-			'3'  => esc_html__( 'Design', 'echo-knowledge-base' ) . ' #3',
-			'4'  => esc_html__( 'Design', 'echo-knowledge-base' ) . ' #4',
-			'5'  => esc_html__( 'Design', 'echo-knowledge-base' ) . ' #5',
-			'6'  => esc_html__( 'Design', 'echo-knowledge-base' ) . ' #6',
-			'7'  => esc_html__( 'Design', 'echo-knowledge-base' ) . ' #7',
-			'8'  => esc_html__( 'Design', 'echo-knowledge-base' ) . ' #8',
-		];
 	}
 }

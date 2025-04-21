@@ -414,6 +414,14 @@ final class EPKB_Classic_Layout_Block extends EPKB_Abstract_Block {
 					'category-box' => array(
 						'title' => esc_html__( 'Category Box', 'echo-knowledge-base' ),
 						'fields' => array(
+							'sub_categories_design' => array(
+								'setting_type' => 'select_buttons_string',
+								'options'     => array(
+									'design-1' => __( 'Design 1', 'echo-knowledge-base' ),
+									'design-2' => __( 'Design 2', 'echo-knowledge-base' ),
+									'design-3' => __( 'Design 3', 'echo-knowledge-base' )								
+								),
+							),
 							'section_border_width' => array(
 								'setting_type' => 'range',
 							),

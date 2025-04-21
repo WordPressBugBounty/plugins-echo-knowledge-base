@@ -21,7 +21,8 @@ function epkb_load_public_resources() {
 	wp_register_style( 'epkb-frontend-visual-helper', Echo_Knowledge_Base::$plugin_url . 'css/frontend-visual-helper' . $suffix . '.css', array( 'epkb-icon-fonts' ), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-public-scripts', Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-faq-shortcode-scripts', Echo_Knowledge_Base::$plugin_url . 'js/faq-shortcode-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
-	wp_register_script( 'epkb-frontend-visual-helper', Echo_Knowledge_Base::$plugin_url . 'js/frontend-visual-helper' . $suffix . '.js', array('jquery', 'epkb-public-scripts'), Echo_Knowledge_Base::$version );
+	wp_register_script( 'epkb-frontend-visual-helper', Echo_Knowledge_Base::$plugin_url . 'js/frontend-visual-helper' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
+	wp_register_script( 'epkb-admin-form-controls-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-form-controls' . $suffix . '.js', array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable'), Echo_Knowledge_Base::$version );
 
 	$epkb_vars = array(
 		'ajaxurl'                       => admin_url( 'admin-ajax.php', 'relative' ),
@@ -498,10 +499,6 @@ add_action( 'epkb_enqueue_font_scripts', 'epkb_enqueue_font' ); // use this acti
  */
 function epkb_front_end_body_classes( $classes ) {
 
-	if ( EPKB_Utilities::is_kb_main_page() ) {
-		return $classes;
-	}
-
 	$kb_id = EPKB_Utilities::get_eckb_kb_id( '' );
 
 	// load only on article pages
@@ -510,6 +507,15 @@ function epkb_front_end_body_classes( $classes ) {
 	}
 
 	$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
+
+	// add CSS class to body tag for Theme adjustments - some Themes may wrap KB template in parent containers with extra margin, padding, or limited width
+	if ( $kb_config['templates_for_kb'] == 'kb_templates' ) {
+		$classes[] = 'eckb-kb-template-active';
+	}
+
+	if ( EPKB_Utilities::is_kb_main_page() ) {
+		return $classes;
+	}
 
 	// load only if TOC is active
 	if ( 'on' != $kb_config['article_toc_enable'] ) {

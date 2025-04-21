@@ -32,8 +32,8 @@ class EPKB_Faqs_Shortcode {
 			return '';
 		}
 
-		wp_enqueue_style('epkb-shortcodes');
-		wp_enqueue_script('epkb-faq-shortcode-scripts');
+		wp_enqueue_style( 'epkb-shortcodes' );
+		wp_enqueue_script( 'epkb-faq-shortcode-scripts' );
 
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( EPKB_KB_Config_DB::DEFAULT_KB_ID );
 
@@ -59,7 +59,6 @@ class EPKB_Faqs_Shortcode {
 		if ( is_wp_error( $faq_groups ) ) {
 			return EPKB_FAQs_Utilities::display_error( $faq_groups->get_error_message() );
 		}
-
 		$faq_groups_questions = EPKB_FAQs_Utilities::get_faq_groups_questions( $faq_groups );
 
 		$design_settings = EPKB_FAQs_Utilities::get_design_settings( $design_name );
@@ -87,7 +86,7 @@ class EPKB_Faqs_Shortcode {
 		$faq_value = empty( $attributes['open_mode'] ) ? $kb_config['faq_open_mode'] : esc_html( wp_strip_all_tags( trim( $attributes['open_mode'] ) ) );
 		$kb_config['faq_open_mode'] = in_array( $faq_value, array( 'accordion_mode', 'toggle_mode', 'show_all_mode' ) ) ? $faq_value : 'all_around';
 
-		$faq_value = empty( $attributes['schema'] ) ? $kb_config['faq_schema_toggle'] : esc_html( wp_strip_all_tags( trim( $attributes['schema'] ) ) );
+		$faq_value = 'on';	// empty( $attributes['schema'] ) ? $kb_config['faq_schema_toggle'] : esc_html( wp_strip_all_tags( trim( $attributes['schema'] ) ) );
 		$kb_config['faq_schema_toggle'] = in_array( $faq_value, array( 'on', 'off' ) ) ? $faq_value : 'off';
 
 		// colors
@@ -97,7 +96,12 @@ class EPKB_Faqs_Shortcode {
 		$kb_config['faq_answer_background_color'] = empty( $faq_answer_background_color ) ?: $faq_answer_background_color;
 		$faq_icon_color = self::retrieve_shortcode_color( $kb_config['faq_icon_color'], $attributes, 'icon_color' );
 		$kb_config['faq_icon_color'] = empty( $faq_icon_color ) ?: $faq_icon_color;
-
+		$faq_border_color = self::retrieve_shortcode_color( $kb_config['faq_border_color'], $attributes, 'border_color' );
+		$kb_config['faq_border_color'] = empty( $faq_border_color ) ?: $faq_border_color;
+		$faq_question_text_color = self::retrieve_shortcode_color( $kb_config['faq_question_text_color'], $attributes, 'question_text_color' );
+		$kb_config['faq_question_text_color'] = empty( $faq_question_text_color ) ?: $faq_question_text_color;
+		$faq_answer_text_color = self::retrieve_shortcode_color( $kb_config['faq_answer_text_color'], $attributes, 'answer_text_color' );
+		$kb_config['faq_answer_text_color'] = empty( $faq_answer_text_color ) ?: $faq_answer_text_color;
 		return EPKB_FAQs_Utilities::display_faqs( $kb_config, $faq_groups_questions, $faq_title, true );
 	}
 

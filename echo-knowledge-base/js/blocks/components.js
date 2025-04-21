@@ -175,7 +175,8 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'text':
 												return <TextControl
 													key={field_name}
-													__nextHasNoMarginBottom
+													__nextHasNoMarginBottom={true}
+													__next40pxDefaultSize={true}
 													disabled={isDisabled}
 													label={field_specs.label}
 													value={attributes[field_name]}
@@ -187,6 +188,7 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'number':
 												return <NumberControl
 													key={field_name}
+													__next40pxDefaultSize={true}
 													disabled={isDisabled}
 													isShiftStepEnabled={true}
 													shiftStep={1}
@@ -214,7 +216,8 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'select_buttons_string':
 												return <ToggleGroupControl
 													key={field_name}
-													__nextHasNoMarginBottom
+													__nextHasNoMarginBottom={true}
+													__next40pxDefaultSize={true}
 													isBlock
 													label={field_specs.label}
 													onChange={(value) => setAttributes({[field_name]: value})}
@@ -233,7 +236,8 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'select_buttons_icon':
 												return <ToggleGroupControl
 													key={field_name}
-													__nextHasNoMarginBottom
+													__nextHasNoMarginBottom={true}
+													__next40pxDefaultSize={true}
 													isBlock
 													label={field_specs.label}
 													onChange={(value) => setAttributes({[field_name]: value})}
@@ -253,7 +257,8 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'select_buttons':
 												return <ToggleGroupControl
 													key={field_name}
-													__nextHasNoMarginBottom
+													__nextHasNoMarginBottom={true}
+													__next40pxDefaultSize={true}
 													isBlock
 													label={field_specs.label}
 													onChange={(value) => setAttributes({[field_name]: ensure_number(value)})}
@@ -273,7 +278,7 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <ToggleControl
 													key={field_name}
 													disabled={isDisabled}
-													__nextHasNoMarginBottom
+													__nextHasNoMarginBottom={true}
 													label={field_specs.label}
 													checked={attributes[field_name] === 'on'}
 													onChange={(value) => setAttributes({[field_name]: (value ? 'on' : 'off')})}
@@ -284,7 +289,7 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <ToggleControl
 													key={field_name}
 													disabled={isDisabled}
-													__nextHasNoMarginBottom
+													__nextHasNoMarginBottom={true}
 													label={field_specs.label}
 													checked={attributes[field_name] === field_specs.options['on']}
 													onChange={(value) => setAttributes({[field_name]: (value ? field_specs.options['on'] : field_specs.options['off'])})}
@@ -295,7 +300,7 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <ToggleControl
 													key={field_name}
 													disabled={isDisabled}
-													__nextHasNoMarginBottom
+													__nextHasNoMarginBottom={true}
 													label={field_specs.label}
 													checked={isTemplateToggleChecked}
 													onChange={(value) => {
@@ -318,7 +323,8 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'range':
 												return <RangeControl
 													key={field_name}
-													__nextHasNoMarginBottom
+													__nextHasNoMarginBottom={true}
+													__next40pxDefaultSize={true}
 													disabled={isDisabled}
 													isShiftStepEnabled={true}
 													shiftStep={1}
@@ -337,7 +343,8 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'range_float':
 												return <RangeControl
 													key={field_name}
-													__nextHasNoMarginBottom
+													__nextHasNoMarginBottom={true}
+													__next40pxDefaultSize={true}
 													disabled={isDisabled}
 													isShiftStepEnabled={true}
 													shiftStep={0.05}
@@ -466,21 +473,26 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												/>
 
 											case 'checkbox_multi_select':
-												return <BaseControl key={field_name} label={field_specs.label} className="epkb-block-ui-checkbox-multi-select-control">{
+												return <BaseControl
+													key={field_name}
+													label={field_specs.label}
+													__nextHasNoMarginBottom={true}
+													className="epkb-block-ui-checkbox-multi-select-control">{
 													Object.entries(field_specs.options).map(([option_key, option_value]) => {
-													return <CheckboxControl
-														key={field_name + '_' + option_key}
-														disabled={isDisabled}
-														__nextHasNoMarginBottom
-														checked={attributes[field_name].indexOf(parseInt(option_key)) !== -1}
-														label={option_value}
-														onChange={(isChecked) => {
-															const intValue = parseInt(option_key);
-															const newValues = isChecked ? [...attributes[field_name], intValue] : attributes[field_name].filter(item => item !== intValue);
-															setAttributes({[field_name]: newValues});
-														}}
-													/>
-												})}</BaseControl>
+														return <CheckboxControl
+															key={field_name + '_' + option_key}
+															disabled={isDisabled}
+															__nextHasNoMarginBottom={true}
+															checked={attributes[field_name].indexOf(parseInt(option_key)) !== -1}
+															label={option_value}
+															onChange={(isChecked) => {
+																const intValue = parseInt(option_key);
+																const newValues = isChecked ? [...attributes[field_name], intValue] : attributes[field_name].filter(item => item !== intValue);
+																setAttributes({[field_name]: newValues});
+															}}
+														/>
+													})
+												}</BaseControl>
 
 											case 'box_control':
 												const sideValues = {[field_specs.side]: attributes[field_name] === "" || Number.isNaN(parseInt(attributes[field_name])) ? field_specs.default : parseInt(attributes[field_name])};
@@ -488,13 +500,20 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 													key={field_name}
 													__next40pxDefaultSize={true}
 													label={field_specs.label}
-													sides={field_specs.side}
+													sides={[field_specs.side]}
 													inputProps={{
 														min: ensure_number(field_specs.min),
 														max: ensure_number(field_specs.max),
 													}}
 													values={sideValues}
-													onChange={(values) => setAttributes({[field_name]: values[field_specs.side] === "" || Number.isNaN(parseInt(values[field_specs.side])) ? field_specs.default : parseInt(values[field_specs.side])})}
+													onChange={(values) => {
+														const newValue = values[field_specs.side] || values;
+														setAttributes({
+															[field_name]: newValue === "" || Number.isNaN(parseInt(newValue)) 
+																? field_specs.default 
+																: parseInt(newValue)
+														});
+													}}
 													className="epkb-block-ui-box-control"
 												/>
 
@@ -528,7 +547,12 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 														Object.entries(values).forEach(([side, value]) => {
 															Object.entries(field_specs.combined_settings).forEach(([setting_name, setting_specs]) => {
 																if (setting_specs.side === side) {
-																	setAttributes({[setting_name]: value === "" || Number.isNaN(parseInt(value)) ? field_specs.combined_settings[setting_name].default : parseInt(value)});
+																	const newValue = typeof value === 'object' ? value.value : value;
+																	setAttributes({
+																		[setting_name]: newValue === "" || Number.isNaN(parseInt(newValue)) 
+																			? field_specs.combined_settings[setting_name].default 
+																			: parseInt(newValue)
+																	});
 																}
 															});
 														});
@@ -566,6 +590,7 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 													>
 														<FontFamilyControl
 															key={field_name + '_font_family'}
+															__nextHasNoMarginBottom={true}
 															__next40pxDefaultSize={true}
 															fontFamilies={Object.entries(epkb_block_editor_vars.font_families).map(([option_index, options_value]) => {
 																return {
@@ -599,6 +624,7 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 													>
 														<FontSizePicker
 															key={field_name + '_font_size'}
+															__next40pxDefaultSize={true}
 															fontSizes={Object.entries(field_specs.controls.font_size.options).map(([option_slug, options_list]) => {
 																return {
 																	name: options_list.name,

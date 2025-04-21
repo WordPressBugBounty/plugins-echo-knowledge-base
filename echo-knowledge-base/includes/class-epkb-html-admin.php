@@ -468,8 +468,8 @@ class EPKB_HTML_Admin {
 											<span class="<?php echo esc_html( $content['icon'] ); ?> epkb-admin__form-tab-content-icon"><?php echo esc_html( $content['icon_text'] ); ?></span>   <?php
 										}
 										echo esc_html( $content['title'] );
-										if ( ! empty( $content['tooltip_external_links'] ) ) {
-											EPKB_HTML_Elements::display_tooltip( '', '', array(), $content['tooltip_external_links'] );
+										if ( ! empty( $content['setting_help_text'] ) ) {
+											EPKB_HTML_Elements::display_tooltip( '', '', array(), $content['setting_help_text'] );
 										}
 										if ( ! empty( $content['help_links_html'] ) ) {
 											echo wp_kses( $content['help_links_html'], EPKB_Utilities::get_admin_ui_extended_html_tags() );
@@ -850,8 +850,7 @@ class EPKB_HTML_Admin {
 				'</div>' .
 				// Resources & Support Section with Two Columns
 				'<div style="background: #f0f6fc; padding: 25px; border-radius: 8px; border: 1px solid #c5d9ed; margin: 20px;">' .
-					'<h3 style="margin: 0 0 15px -7px; color: #2c3338;">' . esc_html__( 'Resources & Support', 'echo-knowledge-base' ) . '</h3>' .
-					'<div style="display: grid !important; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;">' .
+					'<div class="epkb-admin__resources-support">' .
 						'<div style="min-width: 0;">' .
 							'<h4 style="margin: 0 0 10px 0; color: #2c3338;">' . esc_html__( 'Documentation', 'echo-knowledge-base' ) . '</h4>' .
 							'<p style="margin: 0 0 15px 0; color: #50575e;">' .

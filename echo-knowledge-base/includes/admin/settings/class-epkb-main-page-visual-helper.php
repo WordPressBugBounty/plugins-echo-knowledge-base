@@ -8,17 +8,21 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 
 	/**
 	 * Constructor - add actions for Visual Helper functionality
+	 * Initializes the visual helper and sets up necessary hooks
 	 */
 	public function __construct() {
 		parent::__construct();
+
 		add_action( 'wp_footer', array( $this, 'epkb_main_page_generate_page_content' ) );
 	}
 
 	/**
 	 * Display Visual Helper on KB Main Page
+	 * Generates and displays the visual helper interface
 	 */
 	public function epkb_main_page_generate_page_content() {
 
+		// Check if we're on KB main page and user has access
 		if ( ! EPKB_Utilities::is_kb_main_page() || EPKB_Utilities::get( 'kbsearch' ) ) {
 			return;
 		}
@@ -29,18 +33,21 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 
 		$kb_id = EPKB_Utilities::get_eckb_kb_id();
 
-		// TODO for now Visual Helper is disabled for blocks
+		// TODO: Visual Helper is currently disabled for blocks
 		if ( EPKB_Block_Utilities::current_post_has_kb_layout_blocks() ) {
 			return;
 		}
 
+		// Get visual helper state from config
 		$visual_helper_state = epkb_get_instance()->kb_config_obj->get_value( $kb_id, 'visual_helper_switch_visibility_toggle' );
 		if ( $visual_helper_state === 'off' ) {
 			return;
 		}
 
+		// Get KB configuration
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
 
+		// Define settings menu items
 		$settings_side_menu = array(
 			array(
 				'box_title'         => esc_html__( 'Issues with the page layout, header, or menu?', 'echo-knowledge-base' ),
@@ -194,7 +201,8 @@ class EPKB_Main_Page_Visual_Helper extends EPKB_Visual_Helper {
 			)
 		);
 
-		$this->epkb_generate_page_content( $settings_info_icons , $kb_config, $settings_side_menu );
+		// Generate the page content
+		$this->epkb_generate_page_content( $settings_info_icons, $kb_config, $settings_side_menu );
 	}
 
 	/**

@@ -269,7 +269,7 @@ class EPKB_HTML_Forms {
 				}
 
 				if ( ! empty( $args['html'] ) ) {
-                    echo wp_kses_post( $args['html'] );
+                    echo wp_kses( $args['html'], EPKB_Utilities::get_admin_ui_extended_html_tags() );
 				}   ?>
 			</div>
 

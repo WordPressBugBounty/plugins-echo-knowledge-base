@@ -671,6 +671,7 @@ class EPKB_Utilities {
 			return self::post_sanitize( $key, $default, $value_type, $max_length );
 		}
 
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_GET[$key] ) ) {
 			return self::get_sanitize( $key, $default, $value_type, $max_length );
 		}
@@ -1803,6 +1804,10 @@ class EPKB_Utilities {
 		return ! empty($post->post_mime_type) && ( $post->post_mime_type == 'kb_link' or $post->post_mime_type == 'kblink' );
 	}
 
+	public static function is_ai_engine_enabled() {
+		return defined( 'MWAI_VERSION' );
+	}
+
 	/**
 	 * Check if certain KB's plugin is enabled
 	 *
@@ -1877,14 +1882,14 @@ class EPKB_Utilities {
 	 * Send email using WordPress email facility.
 	 *
 	 * @param $message
-	 * @param string $to_support_email - usually admin or support
+	 * @param string $to_email - usually admin or support
 	 * @param string $reply_to_email - usually customer email
 	 * @param string $reply_to_name - usually customer name
 	 * @param string $subject - which functionality is this email coming from
 	 *
 	 * @return string - return '' if email sent otherwise return error message
 	 */
-	public static function send_email( $message, $is_message_html, $to_support_email='', $reply_to_email='', $reply_to_name='', $subject='' ) {
+	public static function send_email( $message, $is_message_html, $to_email='', $reply_to_email='', $reply_to_name='', $subject='' ) {
 
 		// validate MESSAGE
 		if ( empty( $message ) || strlen( $message ) > 5000 ) {
@@ -1895,16 +1900,16 @@ class EPKB_Utilities {
 		$message = wp_kses_post( $message );
 
 		// validate TO email
-		if ( empty( $to_support_email ) ) { // send to admin if empty
-			$to_support_email = get_option( 'admin_email' );
+		if ( empty( $to_email ) ) { // send to admin if empty
+			$to_email = get_option( 'admin_email' );
 		}
 
-		$to_support_email = sanitize_email( $to_support_email );
-		if ( empty( $to_support_email ) || strlen( $to_support_email) > 100 ) {
+		$to_email = sanitize_email( $to_email );
+		if ( empty( $to_email ) || strlen( $to_email) > 100 ) {
 			return esc_html__( 'Invalid email', 'echo-knowledge-base' ) . ' (1)';
 		}
 
-		if ( ! is_email( $to_support_email ) ) {
+		if ( ! is_email( $to_email ) ) {
 			return esc_html__( 'Invalid email', 'echo-knowledge-base' ) . ' (2)';
 		}
 
@@ -1976,7 +1981,7 @@ class EPKB_Utilities {
 		add_filter( 'wp_mail_content_type', array( 'EPKB_Utilities', 'set_html_content_type' ), 999 );
 
 		// send email
-		$result = wp_mail( $to_support_email, $subject, $message, $headers );
+		$result = wp_mail( $to_email, $subject, $message, $headers );
 
 		// remove filter that allows HTML in the email content
 		remove_filter( 'wp_mail_content_type', array( 'EPKB_Utilities', 'set_html_content_type' ), 999 );

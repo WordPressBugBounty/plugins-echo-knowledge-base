@@ -1017,8 +1017,10 @@ class EPKB_Config_Page {
 					<h3 style="margin: 0 0 15px 0; color: #2c3338;"><?php esc_html_e( 'Quick Links', 'echo-knowledge-base' ); ?></h3>
 					<ul style="margin: 0; padding-left: 20px; color: #50575e;">
 						<li><a href="https://www.echoknowledgebase.com/documentation/ai-chat-configuration/" target="_blank"><?php esc_html_e( 'Configure AI Chat Settings', 'echo-knowledge-base' ); ?></a></li>
+						<li><a href="https://www.echoknowledgebase.com/documentation/ai-chat-teach-it-your-business/" target="_blank"><?php esc_html_e( 'AI Chat – Teach It Your Business', 'echo-knowledge-base' ); ?></a></li>
+						<li><a href="https://www.echoknowledgebase.com/documentation/ai-chat-features/" target="_blank"><?php esc_html_e( 'AI Chat Features', 'echo-knowledge-base' ); ?></a></li>
+						<li><a href="https://www.echoknowledgebase.com/documentation/ai-chat-tuning/" target="_blank"><?php esc_html_e( 'AI Chat Tuning', 'echo-knowledge-base' ); ?></a></li>
 					</ul>
-					<p style="margin: 15px 0 0 20px; color: #666; font-style: italic;"><?php esc_html_e( 'Coming soon', 'echo-knowledge-base' ); ?></p>
 				</div>
 				<div class="epkb-admin__feature-card" style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e2e4e7;">
 					<h3 style="margin: 0 0 15px 0; color: #2c3338;"><?php esc_html_e( 'Tips', 'echo-knowledge-base' ); ?></h3>
@@ -1026,20 +1028,27 @@ class EPKB_Config_Page {
 						<li><?php esc_html_e( 'Set appropriate temperature and max tokens for balanced responses', 'echo-knowledge-base' ); ?></li>
 						<li><?php esc_html_e( 'Contact us with ideas and suggestions!', 'echo-knowledge-base' ); ?></li>
 					</ul>
-					<p style="margin: 15px 0 0 20px; color: #666; font-style: italic;"><?php esc_html_e( 'More Coming soon', 'echo-knowledge-base' ); ?></p>
 				</div>
 			</div>
 
 			<div style="text-align: center; margin: 30px 0; padding: 20px; background: #fff5e6; border-radius: 8px; border: 1px solid #c5d9ed;">
-				<h3 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'More Features Coming Soon!', 'echo-knowledge-base' ); ?></h3>
+				<h3 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Help Dialog - Free WordPress Plugin', 'echo-knowledge-base' ); ?></h3>
 				<p style="margin: 0; color: #50575e; font-size: 16px;">
-					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'We are working on new features to enhance your AI Chat experience.', 'echo-knowledge-base' ); ?>
+					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'Help Dialog with AI Chat, FAQs, Search, Contact Form', 'echo-knowledge-base' ); ?> 
+					<a href="https://wordpress.org/plugins/help-dialog/" target="_blank"><?php esc_html_e( 'Get it from the WordPress Repo', 'echo-knowledge-base' ); ?></a>
 				</p>
+				<img src="<?php echo esc_url(Echo_Knowledge_Base::$plugin_url . 'img/ad/ad-help-dialog.jpg'); ?>" alt="Help Dialog" class="epkb-help-dialog-img" style="max-width: 100%; height: auto; margin-top: 15px; border-radius: 4px; cursor: zoom-in;">
+				
+				<!-- Image Popup -->
+				<div class="epkb-image-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+					<div class="epkb-image-popup-content" style="position: relative; max-width: 90%; max-height: 90%;">
+						<img src="<?php echo esc_url(Echo_Knowledge_Base::$plugin_url . 'img/ad/ad-help-dialog.jpg'); ?>" alt="Help Dialog Full Size" style="max-width: 100%; max-height: 90vh; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+					</div>
+				</div>
 			</div>
 
 			<div class="epkb-admin__ai-chat-resources" style="background: #f0f6fc; padding: 25px; border-radius: 8px; border: 1px solid #c5d9ed;">
-				<h3 style="margin: 0 0 15px -7px; color: #2c3338;"><?php esc_html_e( 'Resources & Support', 'echo-knowledge-base' ); ?></h3>
-				<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+				<div class="epkb-admin__resources-support">
 					<div>
 						<h4 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Documentation', 'echo-knowledge-base' ); ?></h4>
 						<p style="margin: 0 0 15px 0; color: #50575e;">
@@ -1104,27 +1113,33 @@ class EPKB_Config_Page {
 
 			<div class="epkb-admin__ai-chat-intro" style="display: flex; gap: 30px; margin-bottom: 30px; background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #e2e4e7;">
 				<div class="epkb-admin__ai-chat-text" style="flex: 1;">
-					<h3 style="margin: 0 0 20px -7px; color: #2c3338;"><?php esc_html_e( 'Quick Setup Guide', 'echo-knowledge-base' ); ?></h3>
+					<h3 style="margin: 0 0 25px -7px; color: #2c3338;"><?php esc_html_e( 'Quick Setup Guide', 'echo-knowledge-base' ); ?></h3>
 					<div style="margin-bottom: 25px; margin-left: 5px;">
-						<h4 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Step 1: Install Required Plugin', 'echo-knowledge-base' ); ?></h4>
+						<h5 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Step 1: Install Plugin', 'echo-knowledge-base' ); ?></h5>
 						<p style="margin: 0 0 15px 0; color: #50575e;">
 							<?php esc_html_e( 'Install and activate the AI Engine Pro plugin, which provides the necessary AI infrastructure for the chat feature.', 'echo-knowledge-base' ); ?>
 						</p>
 					</div>
 					<div style="margin-bottom: 25px; margin-left: 5px;">
-						<h4 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Step 2: Set Up OpenAI Integration', 'echo-knowledge-base' ); ?></h4>
+						<h5 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Step 2: Set Up OpenAI Integration', 'echo-knowledge-base' ); ?></h5>
 						<p style="margin: 0 0 15px 0; color: #50575e;">
 							<?php esc_html_e( 'Configure your OpenAI API key and set up the necessary embeddings for your knowledge base content.', 'echo-knowledge-base' ); ?>
 						</p>
 					</div>
 					<div style="margin-bottom: 25px; margin-left: 5px;">
-						<h4 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Step 3: Configure Chat Settings', 'echo-knowledge-base' ); ?></h4>
+						<h5 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Step 3: Configure Chat Settings', 'echo-knowledge-base' ); ?></h5>
 						<p style="margin: 0 0 15px 0; color: #50575e;">
 							<?php esc_html_e( 'Customize your chat interface, response behavior, and other AI Chat settings to match your needs.', 'echo-knowledge-base' ); ?>
 						</p>
 					</div>
 					<div style="margin-bottom: 25px; margin-left: 5px;">
-						<h4 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Step 4: Launch and Fine-tune', 'echo-knowledge-base' ); ?></h4>
+						<h5 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Step 4: Index Articles', 'echo-knowledge-base' ); ?></h5>
+						<p style="margin: 0 0 15px 0; color: #50575e;">
+							<?php esc_html_e( 'Index your articles to create AI embeddings that AI Chat will use to answer questions. Larger KBs may take longer to index.', 'echo-knowledge-base' ); ?>
+							</p>
+					</div>
+					<div style="margin-bottom: 25px; margin-left: 5px;">
+						<h5 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Step 5: Launch and Fine-tune', 'echo-knowledge-base' ); ?></h5>
 						<p style="margin: 0 0 15px 0; color: #50575e;">
 							<?php esc_html_e( 'Your AI Chat is ready to go! Test it out and watch as it helps your users find answers instantly. As you gather user feedback, you can fine-tune the responses to make them even more accurate and helpful.', 'echo-knowledge-base' ); ?>
 						</p>
@@ -1150,9 +1165,24 @@ class EPKB_Config_Page {
 				</a>
 			</div>
 
+			<div style="text-align: center; margin: 30px 0; padding: 20px; background: #fff5e6; border-radius: 8px; border: 1px solid #c5d9ed;">
+				<h3 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Help Dialog - Free WordPress Plugin', 'echo-knowledge-base' ); ?></h3>
+				<p style="margin: 0; color: #50575e; font-size: 16px;">
+					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'Help Dialog with AI Chat, FAQs, Search, Contact Form', 'echo-knowledge-base' ); ?> 
+					<a href="https://wordpress.org/plugins/help-dialog/" target="_blank"><?php esc_html_e( 'Get it from the WordPress Repo', 'echo-knowledge-base' ); ?></a>
+				</p>
+				<img src="<?php echo esc_url(Echo_Knowledge_Base::$plugin_url . 'img/ad/ad-help-dialog.jpg'); ?>" alt="Help Dialog" class="epkb-help-dialog-img-inactive" style="max-width: 100%; height: auto; margin-top: 15px; border-radius: 4px; cursor: zoom-in;">
+				
+				<!-- Image Popup -->
+				<div class="epkb-image-popup-inactive" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+					<div class="epkb-image-popup-content" style="position: relative; max-width: 90%; max-height: 90%;">
+						<img src="<?php echo esc_url(Echo_Knowledge_Base::$plugin_url . 'img/ad/ad-help-dialog.jpg'); ?>" alt="Help Dialog Full Size" style="max-width: 100%; max-height: 90vh; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+					</div>
+				</div>
+			</div>
+
 			<div class="epkb-admin__ai-chat-resources" style="background: #f0f6fc; padding: 25px; border-radius: 8px; border: 1px solid #c5d9ed;">
-				<h3 style="margin: 0 0 15px -7px; color: #2c3338;"><?php esc_html_e( 'Resources & Support', 'echo-knowledge-base' ); ?></h3>
-				<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+				<div class="epkb-admin__resources-support">
 					<div>
 						<h4 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Documentation', 'echo-knowledge-base' ); ?></h4>
 						<p style="margin: 0 0 15px 0; color: #50575e;">

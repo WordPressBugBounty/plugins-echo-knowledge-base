@@ -3350,6 +3350,17 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::COLOR_HEX,
 				'default'     => '#000000'
 			),
+			'sub_categories_design' => array(
+				'label'       => __( 'Sub Categories Design', 'echo-knowledge-base' ),
+				'name'        => 'sub_categories_design',
+				'type'        => 'select',
+				'options'     => array(
+					'design-1' => __( 'Design 1', 'echo-knowledge-base' ),
+					'design-2' => __( 'Design 2', 'echo-knowledge-base' ),
+					'design-3' => __( 'Design 3', 'echo-knowledge-base' )
+				),
+				'default'     => 'design-1'
+			),
 		);
 
 		// add CORE LAYOUTS SHARED configuration

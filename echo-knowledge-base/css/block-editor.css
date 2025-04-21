@@ -61,7 +61,9 @@
 }
 .epkb-block-editor-controls .epkb-block-ui-section > .components-panel__body-title {
   background-color: #E6E6FA;
-  margin-bottom: 24px;
+}
+.epkb-block-editor-controls .epkb-block-ui-section > div:first-of-type {
+  margin-top: 24px;
 }
 .epkb-block-editor-controls .epkb-block-ui-section .epkb-block-ui-text-control {
   margin-bottom: 29px;

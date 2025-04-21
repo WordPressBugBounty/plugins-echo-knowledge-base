@@ -63,6 +63,18 @@ class EPKB_Block_Utilities {
 		return preg_match( '/wp:echo-knowledge-base\/' . preg_quote( $block_name, '/' ) . '/i', $content );
 	}
 
+	public static function get_kb_block_layout( $post, $default_layout = false ) {
+		$blocks = self::parse_blocks( $post );
+		if ( is_array( $blocks ) && count( $blocks ) ) {
+			foreach ( $blocks as $block ) {
+				if ( isset( $block['blockName'] ) && strpos( $block['blockName'], '-layout' ) !== false ) {
+					return ucfirst( str_replace( '-layout', '', preg_replace( '/echo-knowledge-base\//', '', $block['blockName'] ) ) );
+				}
+			}
+		}
+		return $default_layout;
+	}
+
 	/**
 	 * Retrieve block attributes from post content; return false if the block was not found in the post content
 	 * @param $post

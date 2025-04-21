@@ -208,6 +208,12 @@ final class EPKB_FAQs_Block extends EPKB_Abstract_Block {
 								'options' => $faq_groups_list,
 								'default' => $default_faq_group,
 							),
+							'faq_groups_link' => array(
+								'setting_type' => 'section_description',
+								'description' => esc_html__( 'Manage your FAQs and FAQ Groups', 'echo-knowledge-base' ),
+								'link_text' => esc_html__( 'Open FAQs Admin', 'echo-knowledge-base' ),
+								'link_url' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-faqs' ),
+							),
 							'ml_faqs_title_location' => array(
 								'setting_type' => 'select_buttons_string',
 							),

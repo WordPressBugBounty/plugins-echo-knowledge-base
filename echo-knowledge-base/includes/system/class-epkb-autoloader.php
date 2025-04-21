@@ -84,6 +84,7 @@ class EPKB_Autoloader {
 				'epkb_faqs_ctrl'                    =>  'includes/admin/faqs/class-epkb-faqs-ctrl.php',
 				'epkb_faqs_page'                    =>  'includes/admin/faqs/class-epkb-faqs-page.php',
 				'epkb_faqs_utilities'               =>  'includes/admin/faqs/class-epkb-faqs-utilities.php',
+				'epkb_faqs_ajax'               		=>  'includes/admin/faqs/class-epkb-faqs-ajax.php',
 
 				// WIZARDS
 				'epkb_kb_wizard_setup'              =>  'includes/admin/wizard/class-epkb-kb-wizard-setup.php',

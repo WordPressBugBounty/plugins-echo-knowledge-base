@@ -56,7 +56,18 @@ class EPKB_KB_Config_Category {
 	 */
 	public function display_category_fields( $category ) {
 
-		$main_page_layout = epkb_get_instance()->kb_config_obj->get_value( $this->kb_id, 'kb_main_page_layout' );
+		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $this->kb_id );
+		
+		$main_page_layout = $kb_config['kb_main_page_layout'];
+
+		$current_main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config );
+		$current_main_page = get_post( $current_main_page_id );
+		$is_block_main_page = ! empty( $current_main_page ) && EPKB_Block_Utilities::content_has_kb_block( $current_main_page->post_content );
+
+		// Check if current page has KB blocks and get layout from block attributes
+		if ( $is_block_main_page ) {
+			$main_page_layout = EPKB_Block_Utilities::get_kb_block_layout( $current_main_page, $main_page_layout );
+		}
 
 		if ( $main_page_layout == 'Sidebar' ) { ?>
 			<div class="epkb-term-options-message">
@@ -80,24 +91,24 @@ class EPKB_KB_Config_Category {
 		$is_new_category = ! is_object( $category );
 
 		// if icons disabled just show turn on/off link
-		if ( $location == 'no_icons' ) {
+		/* if ( $location == 'no_icons' ) {
 
 			$message = esc_html__( 'Category Icons are disabled', 'echo-knowledge-base' );
 
 		    if ( $is_new_category ) {
-			    self::category_icon_message( 'epkb-icons-are-disabled', $message , $this->get_on_off_icons_link(),
-				                                'Turn Category Icons ON. See Categories & Articles Module settings.' );
+			    self::category_icon_message( 'epkb-icons-are-disabled', $message , '',
+				                                'Turn Category Icons ON. See Categories & Articles settings.' );
 			} else {    ?>
 				<tr class="form-field epkb-term-options-wrap">
 				<th scope="row">
 					<label><?php esc_html_e( 'Category Icon', 'echo-knowledge-base' ); ?></label>
 				</th>
-				<td><?php self::category_icon_message( 'epkb-icons-are-disabled', $message , $this->get_on_off_icons_link(),
-												'Turn Category Icons ON. See Categories & Articles Module settings.' ); ?></td>
+				<td><?php self::category_icon_message( 'epkb-icons-are-disabled', $message , '',
+												'Turn Category Icons ON. See Categories & Articles settings.' ); ?></td>
 			    </tr><?php
 			}
 			return;
-		}
+		} */
 
 		// not all categories have icons
 		switch( $main_page_layout ) {
