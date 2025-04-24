@@ -2680,12 +2680,7 @@
   box-shadow: 0 2px 0 0 #E1E1E1;
 }
 #epkb-sidebar-container-v2.epkb-sidebar--slim-scrollbar {
-  height: fit-content;
-  z-index: 9;
-  position: sticky;
-  width: 100%;
-  top: 100px;
-  margin-bottom: 20px;
+  position: relative;
 }
 #epkb-sidebar-container-v2.epkb-sidebar--slim-scrollbar::-webkit-scrollbar {
   height: 4px;
