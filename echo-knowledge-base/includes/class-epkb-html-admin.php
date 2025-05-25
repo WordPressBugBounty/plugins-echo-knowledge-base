@@ -412,6 +412,11 @@ class EPKB_HTML_Admin {
 
 				<div class="epkb-admin__form-tab-wrap epkb-admin__form-tab-wrap--<?php echo esc_attr( $tab['key'] ); echo $tab['active'] ? ' epkb-admin__form-tab-wrap--active' : ''; ?>">  <?php
 
+					// HTML above all other content inside the current tab
+					if ( ! empty( $tab['top_html'] ) ) {
+						echo wp_kses( $tab['top_html'], EPKB_Utilities::get_admin_ui_extended_html_tags() );
+					}
+
 					foreach ( $tab['contents'] as $content ) {
 
 						$data_escaped = '';
@@ -845,7 +850,7 @@ class EPKB_HTML_Admin {
 				'<div style="padding: 20px; text-align: center;">' .
 					'<p>' . esc_html__( 'Your Knowledge Base Main Page is now using WordPress KB blocks.', 'echo-knowledge-base' ) . '</p>' .
 					'<a href="' . esc_url( get_edit_post_link( EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config ) ) ) . '" target="_blank" class="epkb-primary-btn" style="display: inline-block; text-decoration: none; margin-top: 10px;">' .
-						esc_html__( 'Edit Main Page Layout', 'echo-knowledge-base' ) .
+						esc_html__( 'Edit Main Page', 'echo-knowledge-base' ) .
 					'</a>' .
 				'</div>' .
 				// Resources & Support Section with Two Columns
@@ -872,5 +877,63 @@ class EPKB_HTML_Admin {
 					'</div>' .
 				'</div>' .
 			'</div>';
+	}
+
+	/**
+	 * Show FE offer with link to FE editor and link to disable the offer
+	 * @param $kb_config
+	 * @param bool $is_first_time
+	 * @return false|string
+	 */
+	public static function display_fe_offer_box( $kb_config, $is_first_time = false ) {
+		return; // TODO
+		ob_start();	?>
+		<div class="epkb-admin__fe-offer-box<?php echo $is_first_time ? '' : ' ' . 'epkb-admin__fe-offer-box--top'; ?>">
+			<p><?php esc_html_e( 'Use our Frontend Editor to change KB Main Page settings.', 'echo-knowledge-base' ); ?></p>
+			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '?epkb_fe_reopen_feature=none'; ?>" target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.	<?php
+			if ( $is_first_time ) {	?>
+				<p><a class="epkb-fe__fe-offer-disable" href="#" target="_blank" class="" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Edit Settings Without Frontend Editor', 'echo-knowledge-base' ); ?></a></p>	<?php
+			}	?>
+		</div>	<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Display HTML for Resource Links ad
+	 * @return void
+	 */
+	public static function show_resource_links_ad() {
+		EPKB_HTML_Forms::pro_feature_ad_box( array(
+			'title'             => sprintf( esc_html__( "Get %sResource Links%s Feature", 'echo-knowledge-base' ), '<strong>', '</strong>' ),
+			'list'              => array(
+				esc_html__( 'Add call-to-action boxes with links to the Main Page', 'echo-knowledge-base' ),
+				esc_html__( 'Customize the call-to-action appearance', 'echo-knowledge-base' ),
+			),
+			'btn_text'          => esc_html__( 'Upgrade Now', 'echo-knowledge-base' ),
+			'btn_url'           => 'https://www.echoknowledgebase.com/wordpress-plugin/elegant-layouts/',
+		) );
+	}
+
+	/**
+	 * Display message for users with legacy KB Main Page to switch to modular KB Main Page TODO FUTURE: remove
+	 * @param $kb_config
+	 * @param $kb_config_specs
+	 * @return false|string
+	 */
+	public static function display_modular_main_page_toggle( $kb_config, $kb_config_specs ) {
+		ob_start();	?>
+		<p>	<?php
+			esc_html_e( 'You are using the legacy main page. Please upgrade to the Modular Main Page before accessing Settings.', 'echo-knowledge-base' );	?>
+			<a href="https://www.echoknowledgebase.com/documentation/modular-layout/" target="_blank"><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></a>
+		</p>
+		<div class="epkb-admin__kb__form">	<?php
+			EPKB_HTML_Elements::checkbox_toggle( array(
+				'id'        => 'modular_main_page_toggle',
+				'text'      => $kb_config_specs['modular_main_page_toggle']['label'],
+				'checked'   => $kb_config['modular_main_page_toggle'] == 'on',
+				'name'      => 'modular_main_page_toggle',
+			) );	?>
+		</div>	<?php
+		return ob_get_clean();
 	}
 }

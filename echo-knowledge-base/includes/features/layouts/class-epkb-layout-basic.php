@@ -203,7 +203,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 					<!-- Section Body -->
 					<div class="epkb-section-body" <?php echo $this->get_inline_style( $style5 ); ?> >						<?php 
 						/** DISPLAY TOP-CATEGORY ARTICLES LIST */
-						if (  $this->kb_config['show_articles_before_categories'] != 'off' ) {
+						if ( $this->kb_config['show_articles_before_categories'] != 'off' ) {
 							$this->display_articles_list( 1, $box_category_id, ! empty( $box_sub_categories ) );
 						}
 						
@@ -212,7 +212,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 						}
 						
 						/** DISPLAY TOP-CATEGORY ARTICLES LIST */
-						if (  $this->kb_config['show_articles_before_categories'] == 'off' ) {
+						if ( $this->kb_config['show_articles_before_categories'] == 'off' ) {
 							$this->display_articles_list( 1, $box_category_id, ! empty( $box_sub_categories ) );
 						}                      ?>
 
@@ -259,7 +259,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 					</div>    <?php
 					
 					/** DISPLAY TOP-CATEGORY ARTICLES LIST */
-					if (  $this->kb_config['show_articles_before_categories'] != 'off' ) {
+					if ( $this->kb_config['show_articles_before_categories'] != 'off' ) {
 						$this->display_articles_list( 2, $box_sub_category_id, ! empty( $box_sub_sub_category_list ) );
 					}
 						
@@ -269,7 +269,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 					}
 					
 					/** DISPLAY TOP-CATEGORY ARTICLES LIST */
-					if (  $this->kb_config['show_articles_before_categories'] == 'off' ) {
+					if ( $this->kb_config['show_articles_before_categories'] == 'off' ) {
 						$this->display_articles_list( 2, $box_sub_category_id, ! empty( $box_sub_sub_category_list ) );
 					}					?>
 				</li>  <?php
@@ -307,7 +307,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 					</div>    <?php
 
 					/** DISPLAY TOP-CATEGORY ARTICLES LIST */
-					if (  $this->kb_config['show_articles_before_categories'] != 'off' ) {
+					if ( $this->kb_config['show_articles_before_categories'] != 'off' ) {
 						$this->display_articles_list( $level_num, $box_sub_sub_category_id, ! empty($box_sub_sub_sub_category_list), $level_name );
 					}
 
@@ -318,7 +318,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 					}
 					
 					/** DISPLAY TOP-CATEGORY ARTICLES LIST */
-					if (  $this->kb_config['show_articles_before_categories'] == 'off' ) {
+					if ( $this->kb_config['show_articles_before_categories'] == 'off' ) {
 						$this->display_articles_list( $level_num, $box_sub_sub_category_id, ! empty($box_sub_sub_sub_category_list), $level_name );
 					}    ?>
 				</li>  <?php

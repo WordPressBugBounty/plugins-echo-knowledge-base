@@ -76,6 +76,7 @@ class EPKB_Core_Utilities {
 	}
 
 	public static function get_current_post() {
+
 		// Retrieve the global post if $the_post is not provided
 		$global_post = empty( $GLOBALS['post'] ) ? null : $GLOBALS['post'];
 		$found_post = empty( $the_post ) ? $global_post : $the_post;
@@ -88,7 +89,7 @@ class EPKB_Core_Utilities {
 		return $found_post;
 	}
 
-	// true if demo KB not yet created after installation
+	// true if Setup Wizard was run for the first time or KB Main Pages are missing
 	public static function run_setup_wizard_first_time() {
 
 		$run_setup = self::is_kb_flag_set( 'epkb_run_setup' );
@@ -128,6 +129,16 @@ class EPKB_Core_Utilities {
 		}
 
 		return $feature_specs;
+	}
+
+	/** Get configuration from all add-ons */
+	public static function get_add_ons_config( $kb_id, $kb_config=[] ) {
+		$add_ons_kb_config = apply_filters( 'eckb_all_editors_get_current_config', $kb_config, $kb_id );
+		if ( is_wp_error( $add_ons_kb_config ) || empty( $add_ons_kb_config ) || ! is_array( $add_ons_kb_config ) || count( $add_ons_kb_config ) < 100 ) {
+			return false;
+		}
+
+		return $add_ons_kb_config;
 	}
 
 	/**
@@ -235,8 +246,8 @@ class EPKB_Core_Utilities {
 		}
 
 		// get current KB configuration from add-ons
-		$orig_config = apply_filters( 'eckb_all_editors_get_current_config', $orig_config, $kb_id );
-		if ( empty( $orig_config ) || count( $orig_config ) < 3 ) {
+		$orig_config = self::get_add_ons_config( $kb_id, $orig_config );
+		if ( $orig_config === false ) {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 149 ) );
 		}
 
@@ -263,36 +274,8 @@ class EPKB_Core_Utilities {
 		}
 
 		// apply Advanced Search presets (ensure all settings of selected preset are applied, including those settings which are not listed in the Settings UI)
-		if ( isset( $new_config['advanced_search_mp_presets'] ) && $new_config['advanced_search_mp_presets'] != 'current' ) {
-			$asea_preset_name = $new_config['advanced_search_mp_presets'];
-			$addons_data = apply_filters( 'epkb_editor_addon_data', array(), $new_config );
-			if ( isset( $addons_data['asea_presets'][ $asea_preset_name ] ) ) {
-				foreach ( $addons_data['asea_presets'][$asea_preset_name] as $key => $value ) {
-
-					// apply only valid and relevant settings
-					if ( ! isset( $orig_config[$key] ) || strpos( $key, 'advanced_search_mp_' ) === false ) {
-						continue;
-					}
-
-					$new_config[$key] = $value;
-				}
-			}
-		}
-		if ( isset( $new_config['advanced_search_ap_presets'] ) && $new_config['advanced_search_ap_presets'] != 'current' ) {
-			$asea_preset_name = $new_config['advanced_search_ap_presets'];
-			$addons_data = apply_filters( 'epkb_editor_addon_data', array(), $new_config );
-			if ( isset( $addons_data['asea_presets'][ $asea_preset_name ] ) ) {
-				foreach ( $addons_data['asea_presets'][$asea_preset_name] as $key => $value ) {
-
-					// apply only valid and relevant settings
-					if ( ! isset( $orig_config[$key] ) || strpos( $key, 'advanced_search_ap_' ) === false ) {
-						continue;
-					}
-
-					$new_config[$key] = $value;
-				}
-			}
-		}
+		$new_config = self::advanced_search_presets( $new_config, $orig_config, 'mp' );
+		$new_config = self::advanced_search_presets( $new_config, $orig_config, 'ap' );
 
 		// Category Archive Page design
 		if ( isset( $new_config['archive_content_sub_categories_display_mode'] ) && $new_config['archive_content_sub_categories_display_mode'] != 'current' ) {
@@ -300,9 +283,14 @@ class EPKB_Core_Utilities {
 		}
 
 		// switch off Article Page search sync if the Main Page search is off (modular_main_page_toggle is present only in full config)
-		$is_kb_main_page_search_off = $orig_config['modular_main_page_toggle'] == 'on' ? ! self::is_module_present( $new_config, 'search' ) : $orig_config['search_layout'] == 'epkb-search-form-0';
+		$is_kb_main_page_search_off = $orig_config['modular_main_page_toggle'] == 'on' ? ! ( self::is_module_present( $new_config, 'search' ) ) : $orig_config['search_layout'] == 'epkb-search-form-0';
 		if ( $is_kb_main_page_search_off ) {
-			$new_config['article_search_sync_toggle'] = 'off';
+
+			// do not switch the toggle 'off' for missing KB Main Page (in this case the $new_config does not contain 'ml_row_*_module' settings to detect if the KB Main Page has Search module enabled)
+			$all_kb_main_pages = EPKB_KB_Handler::get_kb_main_pages( $orig_config );
+			if ( ! empty( $all_kb_main_pages ) ) {
+				$new_config['article_search_sync_toggle'] = 'off';
+			}
 		}
 
 		// sync Article Search with Main Search settings - Sidebar layout does not use Article Search settings, still keep the settings synced if required
@@ -394,7 +382,8 @@ class EPKB_Core_Utilities {
 		}
 
 		// do not adjust settings if user selected theme - wizard preset should handle all settings itself
-		$new_config = self::adjust_settings_on_layout_change( $orig_config, $new_config, $is_theme_selected );
+		$new_config_result = self::adjust_settings_on_layout_change( $orig_config, $new_config, $is_theme_selected );
+		$new_config = $new_config_result['new_config'];
 
 		// user switches from Category Archive page V2 to V3 TODO REMOVE 2025
 		if ( $orig_config['archive_page_v3_toggle'] == 'off' && isset( $new_config['archive_page_v3_toggle'] ) && $new_config['archive_page_v3_toggle'] == 'on' ) {
@@ -473,6 +462,26 @@ class EPKB_Core_Utilities {
 			$new_config['article_sidebar_component_priority']['nav_sidebar_left'] = 1;
 		} else if ( $is_right_article_sidebar_on && $right_article_sidebar_priority == 0 ) {
 			$new_config['article_sidebar_component_priority']['nav_sidebar_right'] = 1;
+		}
+
+		return $new_config;
+	}
+
+	public static function advanced_search_presets( $new_config, $orig_config, $ix ) {
+		if ( isset( $new_config['advanced_search_' . $ix . '_presets'] ) && $new_config['advanced_search_' . $ix . '_presets'] != 'current' ) {
+			$asea_preset_name = $new_config['advanced_search_' . $ix . '_presets'];
+			$addons_data = apply_filters( 'epkb_editor_addon_data', array(), $new_config );
+			if ( isset( $addons_data['asea_presets'][ $asea_preset_name ] ) ) {
+				foreach ( $addons_data['asea_presets'][$asea_preset_name] as $key => $value ) {
+
+					// apply only valid and relevant settings
+					if ( ! isset( $orig_config[$key] ) || strpos( $key, 'advanced_search_' . $ix . '_' ) === false ) {
+						continue;
+					}
+
+					$new_config[$key] = $value;
+				}
+			}
 		}
 
 		return $new_config;
@@ -626,10 +635,18 @@ class EPKB_Core_Utilities {
 
 		// do nothing if layout was not changed
 		if ( empty( $new_config['kb_main_page_layout'] ) || empty( $orig_config['kb_main_page_layout'] ) || $orig_config['kb_main_page_layout'] == $new_config['kb_main_page_layout'] ) {
-			return $new_config;
+			return [ 'new_config' => $new_config, 'seq_meta' => [] ];
 		}
 
-		EPKB_KB_Demo_Data::reassign_categories_to_articles_based_on_layout( $orig_config['id'], $new_config['kb_main_page_layout'] );
+		// reassign categories to articles based on the new layout
+		$seq_meta = EPKB_KB_Demo_Data::reassign_categories_to_articles_based_on_layout( $orig_config['id'], $new_config['kb_main_page_layout'] );
+
+		// FE settings are not saved in the database so we need to reassign categories to articles based on the new layout
+		if ( ! empty( $seq_meta ) && EPKB_Utilities::post( 'action' ) != 'eckb_apply_fe_settings' ) {	
+	    	// Save the categories and articles sequences
+	    	EPKB_Utilities::save_kb_option( $orig_config['id'], EPKB_Articles_Admin::KB_ARTICLES_SEQ_META, $seq_meta['articles_seq_meta'] );
+	    	EPKB_Utilities::save_kb_option( $orig_config['id'], EPKB_Categories_Admin::KB_CATEGORIES_SEQ_META, $seq_meta['categories_seq_meta'] );
+		}
 
 		$to_layout = $new_config['kb_main_page_layout'];
 
@@ -696,7 +713,7 @@ class EPKB_Core_Utilities {
 				break;
 		}
 
-		if ( ! EPKB_Layouts_Setup::is_elay_layout( $to_layout ) && ! $is_theme_selected ) {
+		if ( ! empty( $default_theme ) && ! EPKB_Layouts_Setup::is_elay_layout( $to_layout ) && ! $is_theme_selected ) {
 			$new_config['section_head_category_icon_size'] = $default_theme['section_head_category_icon_size'];
 			$new_config['section_head_category_icon_location'] = $default_theme['section_head_category_icon_location'];
 			$new_config['section_head_alignment'] = $default_theme['section_head_alignment'];
@@ -708,7 +725,7 @@ class EPKB_Core_Utilities {
 			$new_config['section_body_padding_right'] = $default_theme['section_body_padding_right'];
 		}
 
-		return $new_config;
+		return [ 'new_config' => $new_config, 'seq_meta' => $seq_meta ];
 	}
 
 	/**
@@ -1421,22 +1438,6 @@ class EPKB_Core_Utilities {
 	}
 
 	/**
-	 * Detect if we are on the editor backend mode
-	 * @return bool
-	 */
-	public static function is_backend_editor_iframe() {
-
-		$is_editor_backend_mode = self::is_kb_flag_set( 'editor_backend_mode' );
-		if ( empty( $is_editor_backend_mode ) ) {
-			return false;
-		}
-
-		// backend iframe with editor
-		//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		return ( ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] == 'epkb_load_editor' );
-	}
-
-	/**
 	 * Retrieve user IP address if possible.
 	 *
 	 * @return string
@@ -1522,12 +1523,12 @@ class EPKB_Core_Utilities {
 
 		$html =
 			'<p>' . esc_html__( 'The Knowledge Base plugin cannot be activated network-wide. Please follow these steps:', 'echo-knowledge-base' ) . '</p>
-			    <ol>
-			        <li>' . esc_html__( 'Deactivate the plugin’s network-wide activation.', 'echo-knowledge-base' ) . '</li>
-			        <li>' . esc_html__( 'Activate the plugin on each individual site.', 'echo-knowledge-base' ) . '</li>
-			        <li>' . esc_html__( 'Verify that this error message no longer appears.', 'echo-knowledge-base' ) . '</li>
-			    </ol>
-		    <p>' .
+				<ol>
+					<li>' . esc_html__( "Deactivate the plugin's network-wide activation.", 'echo-knowledge-base' ) . '</li>
+					<li>' . esc_html__( 'Activate the plugin on each individual site.', 'echo-knowledge-base' ) . '</li>
+					<li>' . esc_html__( 'Verify that this error message no longer appears.', 'echo-knowledge-base' ) . '</li>
+				</ol>
+			<p>' .
 			sprintf(
 				esc_html__( 'For more details with images, please visit %s.', 'echo-knowledge-base' ),
 				'<a href="' . esc_url( 'https://www.echoknowledgebase.com/documentation/network-wide-installation/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'this article', 'echo-knowledge-base' ) . '</a>'
@@ -1555,55 +1556,68 @@ class EPKB_Core_Utilities {
 	 ********************************************************************************/
 
 	public static function run_asea_upgrade( $last_version ) {
+		/**@disregard P1009, P1014 */
 		if ( class_exists( 'Echo_Advanced_Search' ) && $last_version != Echo_Advanced_Search::$version && class_exists('ASEA_Upgrades') && is_callable( array( 'ASEA_Upgrades', 'run_upgrade' ) ) ) {
+			/**@disregard P1009, P1008 */
 			ASEA_Upgrades::run_upgrade( $plugin_config, $last_version );
 		}
 	}
 
 	public static function run_elay_upgarde( $last_version ) {
+		/**@disregard P1009, P1014 */
 		if ( class_exists( 'Echo_Elegant_Layouts' ) && $last_version != Echo_Elegant_Layouts::$version && class_exists('ELAY_Upgrades') && is_callable( array( 'ELAY_Upgrades', 'run_upgrade' ) ) ) {
+			/**@disregard P1009, P1008 */
 			ELAY_Upgrades::run_upgrade( $plugin_config, $last_version );
 		}
 	}
 
 	public static function run_eprf_upgrade( $last_version ) {
+		/**@disregard P1009, P1014 */
 		if ( class_exists( 'Echo_Article_Rating_And_Feedback' ) && $last_version != Echo_Article_Rating_And_Feedback::$version && class_exists( 'EPRF_Upgrades' ) && is_callable( array( 'EPRF_Upgrades', 'run_upgrade' ) ) ) {
+			/**@disregard P1009, P1008 */
 			EPRF_Upgrades::run_upgrade( $plugin_config, $last_version );
 		}
 	}
 
 	public static function get_asea_plugin_url() {
+		/**@disregard P1009, P1014 */
 		return class_exists( 'Echo_Advanced_Search' ) && ! empty( Echo_Advanced_Search::$plugin_url ) ? Echo_Advanced_Search::$plugin_url . 'img/' : '';
 	}
 
 	public static function get_elay_plugin_url() {
+		/**@disregard P1009, P1014 */
 		return class_exists( 'Echo_Elegant_Layouts' ) && ! empty( Echo_Elegant_Layouts::$plugin_url ) ? Echo_Elegant_Layouts::$plugin_url . 'img/' : '';
 	}
 
 	public static function get_eprf_plugin_url() {
+		/**@disregard P1009, P1014 */
 		return class_exists( 'Echo_Article_Rating_And_Feedback' ) && ! empty( Echo_Article_Rating_And_Feedback::$plugin_url ) ? Echo_Article_Rating_And_Feedback::$plugin_url . 'img/' : '';
 	}
 
 	public static function register_asea_block_public_styles( $block_name, $suffix, $block_styles_dependencies ) {
 		if ( class_exists( 'ASEA_Blocks' ) && is_callable( array( 'ASEA_Blocks', 'register_block_public_styles' ) ) ) {
+			/**@disregard P1009 */
 			ASEA_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );
 		}
 	}
 
 	public static function register_asea_block_public_scripts( $suffix ) {
 		if ( class_exists( 'ASEA_Blocks' ) && is_callable( array( 'ASEA_Blocks', 'register_block_public_scripts' ) ) ) {
+			/**@disregard P1009 */
 			ASEA_Blocks::register_block_public_scripts( $suffix );
 		}
 	}
 
 	public static function register_elay_block_public_styles( $block_name, $suffix, $block_styles_dependencies ) {
 		if ( class_exists( 'ELAY_Blocks' ) && is_callable( array( 'ELAY_Blocks', 'register_block_public_styles' ) ) ) {
+			/**@disregard P1009 */
 			ELAY_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );
 		}
 	}
 
 	public static function register_elay_block_public_scripts( $suffix ) {
 		if ( class_exists( 'ELAY_Blocks' ) && is_callable( array( 'ELAY_Blocks', 'register_block_public_scripts' ) ) ) {
+			/**@disregard P1009 */
 			ELAY_Blocks::register_block_public_scripts( $suffix );
 		}
 	}
@@ -1611,9 +1625,35 @@ class EPKB_Core_Utilities {
 	public static function get_elay_styles( $output, $kb_config ) {
 		// Elegant Layout outputs its own Sidebar and CSS - Elegant Layout version 2.15.3 and earlier does not have method get_inline_styles() and outputs the inline CSS directly itself
 		if ( EPKB_Utilities::is_elegant_layouts_enabled() && class_exists( 'ELAY_Layout_Sidebar_v2' ) && method_exists( 'ELAY_Layout_Sidebar_v2', 'get_inline_styles' ) ) {
+			/**@disregard P1009 */
 			return ELAY_Layout_Sidebar_v2::get_inline_styles( $output, $kb_config );
 		}
 
 		return $output;
+	}
+
+	public static function initialize_advanced_search_box() {
+		if ( EPKB_Utilities::is_advanced_search_enabled() && class_exists( 'ASEA_Search_Box_View' ) ) {
+			global $asea_use_main_page_settings;
+			$asea_use_main_page_settings = 'main-page';	// for AJAX request we need to hard-code the value here
+			/**@disregard P1009 */
+			new ASEA_Search_Box_View();		// TODO: move to KB Utilities Constants
+		}
+	}
+
+	public static function initialize_elegant_layouts( $new_config, $suffix ) {
+		$elay_link_css = '';
+		$elay_link_css_rtl = '';
+		if ( EPKB_Layouts_Setup::is_elay_layout( $new_config['kb_main_page_layout'] ) && class_exists( 'Echo_Elegant_Layouts' ) ) {
+			$current_elay_css_file_slug = $new_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ? 'mp-frontend-modular-sidebar-layout' : 'mp-frontend-modular-grid-layout';
+			/**@disregard P1009, P1014 */
+			$elay_link_css = '<link rel="stylesheet" id="elay-' . $current_elay_css_file_slug . '-css" href="' . Echo_Elegant_Layouts::$plugin_url . 'css/' . $current_elay_css_file_slug . $suffix . '.css?ver=' . Echo_Elegant_Layouts::$version . '" media="all">';		// TODO move to KB Utilities Constants
+			if ( is_rtl() ) {
+				/**@disregard P1009, P1014 */
+				$elay_link_css_rtl = '<link rel="stylesheet" id="elay-' . $current_elay_css_file_slug . '-layout-css" href="' . Echo_Elegant_Layouts::$plugin_url . 'css/' . $current_elay_css_file_slug . '-rtl' . $suffix . '.css?ver=' . Echo_Elegant_Layouts::$version . '" media="all">';		// TODO move to KB Utilities Constants
+			}
+		}
+
+		return [ 'elay_link_css' => $elay_link_css, 'elay_link_css_rtl' => $elay_link_css_rtl ];
 	}
 }

@@ -9,15 +9,14 @@
 class EPKB_Block_Utilities {
 
 	/**
-	 * Determine if the current page has KB layout blocks
-	 * @param bool $clear_cache - TODO - implement cache clearing if needed
+	 * Determine if the current page has any KB blocks
+	 * @param bool $clear_cache
 	 * @return bool
 	 */
-	public static function current_post_has_kb_layout_blocks( $clear_cache = true ) {
+	public static function current_post_has_kb_blocks( $clear_cache = true ) {
 		static $cache = [];
 
 		// NOTE: any updates/fixes to be applied to Elegant Layouts and Advanced Search
-
 		if ( $clear_cache ) {
 			$cache = [];
 		}
@@ -34,7 +33,7 @@ class EPKB_Block_Utilities {
 			return $cache[ $post_id ];
 		}
 
-		// Perform the computation to determine if the post has KB layout blocks
+		// Perform the computation to determine if the post has KB blocks
 		//$has_layout_blocks = self::parse_block_attributes_from_post( $found_post, '-layout' ) !== false;
 		$has_kb_blocks = self::content_has_kb_block( $found_post->post_content );
 
@@ -42,6 +41,20 @@ class EPKB_Block_Utilities {
 		$cache[ $post_id ] = $has_kb_blocks;
 
 		return $has_kb_blocks;
+	}
+
+	public static function kb_main_page_has_kb_blocks( $kb_config ) {
+
+		$main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config );
+		$current_main_page = empty( $main_page_id ) ? null : get_post( $main_page_id );
+
+		if ( empty( $current_main_page ) || empty( $current_main_page->post_content ) ) {
+			return false;
+		}
+
+		// Perform the computation to determine if the post has KB blocks
+		//$has_layout_blocks = self::parse_block_attributes_from_post( $found_post, '-layout' ) !== false;
+		return self::content_has_kb_block( $current_main_page->post_content );
 	}
 
 	/**
@@ -239,37 +252,12 @@ class EPKB_Block_Utilities {
 	}
 
 	/**
-	 * Check whether given template is the KB block page template
-	 * @param $template
-	 * @return bool
-	 */
-	public static function is_kb_block_page_template( $template ) {
-		return ! empty( $template->slug ) && $template->slug == EPKB_Abstract_Block::EPKB_KB_BLOCK_PAGE_TEMPLATE;
-	}
-
-	/**
-	 * We allow KB block template only if WP version is 6.7 or higher and the current theme is a block theme;
-	 * classic theme with block template can have issues.
-	 * @return bool
-	 */
-	public static function is_kb_block_page_template_available() {
-		static $epkb_is_kb_block_page_template_available = null;
-		global $wp_version;
-
-		if ( $epkb_is_kb_block_page_template_available === null ) {
-			$epkb_is_kb_block_page_template_available = version_compare( $wp_version, '6.7', '>=' ) && EPKB_Utilities::is_block_theme();
-		}
-
-		return $epkb_is_kb_block_page_template_available;
-	}
-
-	/**
 	 * Return array of block configurations depending on the given KB configuration (e.g. enabled modules and their settings)
 	 * @param $kb_id
 	 * @param $kb_config
 	 * @return array
 	 */
-	public static function get_blocks_config_from_kb_config( $kb_id, $kb_config ) {
+	public static function convert_blocks_config_from_kb_config( $kb_id, $kb_config ) {
 
 		$kb_blocks = array();
 		for ( $i = 1; $i <= 5; $i++ ) {
@@ -317,17 +305,76 @@ class EPKB_Block_Utilities {
 		return $kb_blocks;
 	}
 
+
+	/************************************************************************
+	 * 
+	 * 	BLOCK UTILITIES (AI validated)
+	 * 
+	 ************************************************************************/
+
+	/**
+	 * Check whether given template is the KB block page template
+	 * @param $template
+	 * @return bool
+	 */
+	public static function is_kb_block_page_template( $template ) {
+		return ! empty( $template->slug ) && $template->slug == EPKB_Abstract_Block::EPKB_KB_BLOCK_PAGE_TEMPLATE;
+	}
+
+	/**
+	 * We allow KB block template only if WP version is 6.7 or higher and the current theme is a block theme;
+	 * classic theme with block template can have issues.
+	 * @return bool
+	 */
+	public static function is_kb_block_page_template_available() {
+		global $wp_version;
+		static $epkb_is_kb_block_page_template_available = null;
+
+		if ( $epkb_is_kb_block_page_template_available === null ) {
+			$epkb_is_kb_block_page_template_available = version_compare( $wp_version, '6.7', '>=' ) && self::is_block_theme();
+		}
+
+		return $epkb_is_kb_block_page_template_available;
+	}
+
+	/**
+	 * Check if the current theme is a block theme.
+	 * @return bool
+	 */
+	public static function is_block_theme() {
+		static $is_block_theme = null;
+
+		if ( $is_block_theme !== null ) {
+			return $is_block_theme;
+		}
+
+		if ( function_exists( 'wp_is_block_theme' ) ) {
+			$is_block_theme = (bool) wp_is_block_theme();
+		}
+		if ( function_exists( 'gutenberg_is_fse_theme' ) ) {
+			$is_block_theme = (bool) gutenberg_is_fse_theme();
+		}
+
+		if ( $is_block_theme === null ) {
+			$is_block_theme = false;
+		}
+
+		return $is_block_theme;
+	}
+
+	/**
+	 * Whether blocks are available in Guttenberg editor
+	 * @return bool
+	 */
+	public static function is_blocks_available() {
+		return EPKB_Block_Utilities::is_block_theme() || EPKB_Block_Utilities::current_theme_has_block_support();
+	}
+
 	/**
 	 * Check if the current theme supports blocks whether it is classic theme or block theme
 	 * @return bool
 	 */
 	public static function current_theme_has_block_support() {
 		return use_block_editor_for_post_type( 'page' );
-	}
-
-	public static function is_frontend() {
-		global $pagenow;
-		
-		return EPKB_Utilities::post( 'action' ) != 'edit' && $pagenow != 'post-new.php';
 	}
 }

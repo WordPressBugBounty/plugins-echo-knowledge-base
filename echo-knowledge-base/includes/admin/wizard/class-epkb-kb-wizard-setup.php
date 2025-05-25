@@ -13,9 +13,8 @@ class EPKB_KB_Wizard_Setup {
 	private $is_setup_run_first_time;
 	private $elay_enabled;
 	private $is_main_page_missing;
-	private $is_block_main_page;
-	private $current_theme_has_block_support;
-	private $is_block_theme;
+	private $main_page_has_blocks;
+	private $main_page_has_shortcode;
 
 	private static $sidebar_images = array(
 		0 => 'setup-wizard/step-5/Article-Setup-No-sidebar.jpg',
@@ -29,28 +28,23 @@ class EPKB_KB_Wizard_Setup {
 	);
 
 	function __construct( $kb_config=array() ) {
+
 		$this->kb_config = $kb_config;
 		$this->is_setup_run_first_time = EPKB_Core_Utilities::run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
 
 		$this->elay_enabled = EPKB_Utilities::is_elegant_layouts_enabled();
 
-		$existing_main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $this->kb_config );
+		$existing_main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config );
 		$this->is_main_page_missing = empty( $existing_main_page_id );
 
-		// block themes or non-block themes which support blocks
-		$this->is_block_theme = EPKB_Utilities::is_block_theme();
-		$this->current_theme_has_block_support = EPKB_Block_Utilities::current_theme_has_block_support();
-
-		$current_main_page = empty( $existing_main_page_id ) ? null : get_post( $existing_main_page_id );
-		$this->is_block_main_page = ! empty( $current_main_page->post_content ) && EPKB_Block_Utilities::content_has_kb_block( $current_main_page->post_content );
+		$this->main_page_has_blocks = EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config );
+		$this->main_page_has_shortcode = ! $this->main_page_has_blocks;
 	}
 
 	/**
 	 * Show KB Setup page
 	 */
 	public function display_kb_setup_wizard() {
-
-		$show_blocks_or_shortcode_step = ! $this->is_block_theme && $this->current_theme_has_block_support && $this->is_main_page_missing;
 
 		// Step: URL
 		$step_number = 1;
@@ -64,26 +58,31 @@ class EPKB_KB_Wizard_Setup {
 			'step_number_label'	=> 1,
 		];
 
+		$is_first_kb_id = $this->kb_config['id'] == EPKB_KB_Config_DB::DEFAULT_KB_ID;
+
 		// Step: Modules - Part 1 of 2
-		if ( $show_blocks_or_shortcode_step ) {
+
+		// only show choice between creating KB Main Page with shortcode or block if the page is missing and blocks can be used (choice between using KB blocks and KB shortcode)
+		if ( $this->is_main_page_missing && EPKB_Block_Utilities::is_blocks_available() ) {
+
 			$step_number++;
 			$setup_steps_config[] = [
-				'label'     => esc_html__( 'Features Part 1 of 2', 'echo-knowledge-base' ),
-				'sub_label'	=> esc_html__( 'Main Page', 'echo-knowledge-base' ),
-				'header_escaped'    => $this->wizard_step_header( array(
-					'title_html'        => '',
-					'info_title'        => '',
-					'info_description'  => '',
+				'label' => esc_html__( 'Main Page', 'echo-knowledge-base' ),
+				'header_escaped' => $this->wizard_step_header( array(
+					'title_html' => '',
+					'info_title' => '',
+					'info_description' => '',
 				) ),
-				'content_escaped'   => $this->wizard_step_blocks_or_shortcode( $step_number ),
-				'step_number_label'	=> 2,
+				'content_escaped' => $this->wizard_step_blocks_or_shortcode( $step_number ),
+				'step_number_label' => 2,
 				'steps_bar_css_class' => 'epkb-setup-wizard-step-part-1-of-2',
-				'header_css_class'	=> 'epkb-wc-step-header--mp-type',
+				'header_css_class' => 'epkb-wc-step-header--mp-type',
 			];
 		}
 
-		// Step: Modules Part 2 of 2
-		if ( ! $this->is_block_main_page || $this->is_main_page_missing ) {
+		// Step: Modules Part 2 of 2 - disabled for now because Frontend Editor will handle this
+		/* if ( $this->is_main_page_missing || this->main_page_has_shortcode ) {
+			$show_blocks_or_shortcode_step = ! EPKB_Block_Utilities::is_block_theme() && EPKB_Block_Utilities::current_theme_has_block_support() && $this->is_main_page_missing;  review again
 			$step_number++;
 			$setup_steps_config[] = [
 				'label'     => $show_blocks_or_shortcode_step ? esc_html__( 'Features Part 2 of 2', 'echo-knowledge-base' ) : esc_html__( 'Features', 'echo-knowledge-base' ),
@@ -96,12 +95,12 @@ class EPKB_KB_Wizard_Setup {
 				) ),
 				'content_escaped'   => $this->wizard_step_modules_content( $step_number ),
 				'step_number_label'	=> 2,
-				'steps_bar_css_class' => $show_blocks_or_shortcode_step ? 'epkb-setup-wizard-step-part-2-of-2' : '',
+				'steps_bar_css_class' => $show_blocks_or_shortcode_step ? 'epkb-setup-wizard-step-part-2-of-2' : '',  // if user chose to use blocks, then do not show this step
 			];
-		}
+		} */
 
-		// Step: Layout
-		if ( ! $this->is_block_main_page || $this->is_main_page_missing ) {
+		// Step: Choose Layout for shortcode Main Page (blocks have layout already set)
+		if ( $is_first_kb_id && ( $this->is_main_page_missing || $this->main_page_has_shortcode ) ) {
 			$step_number++;
 			$setup_steps_config[] = [
 				'label'     => esc_html__( 'Layout', 'echo-knowledge-base' ),
@@ -116,8 +115,8 @@ class EPKB_KB_Wizard_Setup {
 			];
 		}
 
-		// Step: Designs
-		if ( ! $this->is_block_main_page || $this->is_main_page_missing ) {
+		// Step: Choose Design for shortcode Main Page
+		if ( $is_first_kb_id && ( $this->is_main_page_missing || $this->main_page_has_shortcode ) ) {
 			$step_number++;
 			$setup_steps_config[] = [
 				'label'     => esc_html__( 'Designs', 'echo-knowledge-base' ),
@@ -138,8 +137,8 @@ class EPKB_KB_Wizard_Setup {
 			];
 		}
 
-		// Step: Main Page (for existing block Main Page)
-		if ( $this->is_block_main_page ) {
+		// Step: Main Page (for existing Main Page with KB blocks)
+		/* if ( $this->main_page_has_blocks ) {
 			$step_number++;
 			$setup_steps_config[] = [
 				'label'     => esc_html__( 'Main Page', 'echo-knowledge-base' ),
@@ -152,7 +151,7 @@ class EPKB_KB_Wizard_Setup {
 				'step_number_label'	=> 2,
 				'steps_bar_css_class' => '',
 			];
-		}
+		} */
 
 		// Step: Article Page
 		$step_number++;
@@ -163,7 +162,7 @@ class EPKB_KB_Wizard_Setup {
 				'info_title'        => esc_html__( 'Article pages can have navigation links in the left sidebar or in the right sidebar.', 'echo-knowledge-base' ),
 			) ),
 			'content_escaped'   => $this->wizard_step_modular_navigation_content( $step_number ),
-			'step_number_label'	=> ! $this->is_block_main_page || $this->is_main_page_missing ? 5 : 3,
+			'step_number_label'	=> $this->is_main_page_missing || $this->main_page_has_shortcode ? 5 : 3,
 			'header_css_class'	=> 'epkb-wc-step-header--article-page',
 		];  ?>
 
@@ -295,7 +294,19 @@ class EPKB_KB_Wizard_Setup {
 	 */
 	private function wizard_step_title_url_content( $step_number ) {
 
-		ob_start();     ?>
+		ob_start();
+
+		$kb_id = $this->kb_config['id'];
+
+		$kb_path = $this->kb_config['kb_articles_common_path'];
+		if ( $kb_id !== EPKB_KB_Config_DB::DEFAULT_KB_ID && substr( $kb_path, -strlen( '-' . $kb_id ) ) !== '-' . $kb_id ) {
+			$kb_path .= '-' . $kb_id;
+		}
+
+		$kb_name = $this->kb_config['kb_name'];
+		if ( $kb_id !== EPKB_KB_Config_DB::DEFAULT_KB_ID && substr( $kb_name, -strlen( ' ' . $kb_id ) ) !== ' ' . $kb_id ) {
+			$kb_name .= ' ' . $kb_id;
+		}		?>
 
 		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-wc-step-panel eckb-wizard-step-url eckb-wizard-step-<?php echo esc_attr( $step_number ); ?> epkb-wc-step-panel--active epkb-wizard-theme-step-<?php echo esc_attr( $step_number ); ?>">  <?php
 
@@ -306,7 +317,7 @@ class EPKB_KB_Wizard_Setup {
 					'placeholder'       => esc_html__('Knowledge Base', 'echo-knowledge-base'),
 					'main_tag'          => 'div',
 					'input_group_class' => 'epkb-wizard-row-form-input epkb-wizard-name',
-					'value'             => $this->kb_config['kb_name']
+					'value'             => $kb_name
 				)
 			);      ?>
 			<div class="epkb-wizard-row-form-input">
@@ -328,7 +339,7 @@ class EPKB_KB_Wizard_Setup {
 						'main_tag'          => 'div',
 						'readonly'          => ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ),
 						'input_group_class' => 'epkb-wizard-row-form-input epkb-wizard-slug',
-						'value'             => $this->kb_config['kb_articles_common_path'],
+						'value'             => $kb_path,
 					)
 				);      ?>
 				<div class="epkb-wizard-row-form-input">
@@ -823,48 +834,73 @@ class EPKB_KB_Wizard_Setup {
 	 */
 	private function wizard_step_blocks_or_shortcode( $step_number ) {
 
+		// Offer Use Blocks option as first preselected option if not KB #1 and KB #1 is using blocks otherwise offer Use Shortcode option as first preselected option
+		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+		$kb_id = $this->kb_config['id'];
+		$main_page_has_blocks = EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config );
+
 		ob_start();	?>
 		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-wc-step-panel eckb-wizard-step-<?php echo esc_attr( $step_number ); ?>">
 			<div class="epkb-setup-wizard-features-choices-list">
 
 				<!-- Need Help -->
 				<div class="epkb-setup-wizard-features-choice-info">
-					<p><?php esc_html_e( 'KB Main Page displays categories and articles. Please decide how to display it, using either blocks or a shortcode.', 'echo-knowledge-base' ); ?></p>
-					<p><?php esc_html_e( 'Need help deciding between Blocks and Shortcodes?', 'echo-knowledge-base' ); ?></p>
+					<p><?php if ( $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
+								esc_html_e( 'KB Main Page displays categories and articles. Please decide how to display it, using either blocks or a shortcode.', 'echo-knowledge-base' );
+								} ?></p>
+					<p><?php if ( $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
+								esc_html_e( 'Need help deciding between Blocks and Shortcodes?', 'echo-knowledge-base' );
+					 		 } else if ( $main_page_has_blocks ) {
+								esc_html_e( 'First Knowledge Base uses Blocks.', 'echo-knowledge-base' );
+					 		 } else {
+								esc_html_e( 'First Knowledge Base uses Shortcode.', 'echo-knowledge-base' );
+							 } ?></p>
 					<p><a class="epkb-setup-wizard-features-choice-info-link" href="https://www.echoknowledgebase.com/documentation/kb-blocks/" target="_blank"><?php esc_html_e( 'Learn More', 'echo-knowledge-base' );  ?></a></p>
-				</div>
+				</div>  <?php
 
-
-				<!-- Use Blocks -->
-				<div class="epkb-setup-wizard-features-choice epkb-setup-wizard-features-choice--active">
-					<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use Blocks', 'echo-knowledge-base' ); ?></span><span class="epkb-setup-wizard-features-choice__header-label"><?php esc_html_e( 'Recommended', 'echo-knowledge-base' ); ?></span></div>
-					<div class="epkb-setup-wizard-features-choice__body">
-						<img alt="Blocks" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-2/blocks-choice.jpg' ); ?>">
-					</div>
-					<p class="epkb-setup-wizard-features-choice__footer"><?php echo esc_html__( 'Use KB blocks to display your Knowledge Base and use Gutenberg block editor to customize it.', 'echo-knowledge-base' ) . ' ' .
-																						esc_html__( 'Choose this option if you use WordPress blocks for your pages.', 'echo-knowledge-base' ); ?></p>
-					<label class="epkb-setup-wizard-features-choice__option__label">
-						<input type="radio" name="epkb-main-page-type" value="kb-blocks"<?php checked( true ); ?>>
-					</label>
-				</div>
-
-				<!-- Use Shortcode -->
-				<div class="epkb-setup-wizard-features-choice">
-					<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use Shortcode', 'echo-knowledge-base' ); ?></span></div>
-					<div class="epkb-setup-wizard-features-choice__body">
-						<img alt="Shortcode" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-2/shortcode-choice.jpg' ); ?>">
-					</div>
-					<p class="epkb-setup-wizard-features-choice__footer"><?php echo esc_html__( 'Use the KB Shortcode to display your Knowledge Base, and customize it using the KB Configuration admin page.', 'echo-knowledge-base' ) .
-																						esc_html__( 'Choose this option if you use page builders such as Elementor and Divi.', 'echo-knowledge-base' );; ?></p>
-					<label class="epkb-setup-wizard-features-choice__option__label">
-						<input type="radio" name="epkb-main-page-type" value="kb-shortcode"<?php checked( false ); ?>>
-					</label>
-				</div>
+				if (  $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID || $main_page_has_blocks  ) {
+					$this->get_blocks_option( true );
+					$this->get_shortcode_option( false );
+				} else {
+					$this->get_shortcode_option( true );
+					$this->get_blocks_option( false );
+				} ?>
 
 			</div>
 		</div>	<?php
 
 		return ob_get_clean();
+	}
+
+	private function get_blocks_option( $is_preselected ) {	?>
+		<!-- Use Blocks -->
+		<div class="epkb-setup-wizard-features-choice <?php echo $is_preselected ? 'epkb-setup-wizard-features-choice--active' : ''; ?>">
+				<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use Blocks', 'echo-knowledge-base' ); ?></span><span class="epkb-setup-wizard-features-choice__header-label"><?php esc_html_e( 'Recommended', 'echo-knowledge-base' ); ?></span></div>
+				<div class="epkb-setup-wizard-features-choice__body">
+					<img alt="Blocks" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-2/blocks-choice.jpg' ); ?>">
+				</div>
+				<p class="epkb-setup-wizard-features-choice__footer"><?php echo esc_html__( 'Use KB blocks to display your Knowledge Base and use Gutenberg block editor to customize it.', 'echo-knowledge-base' ) . ' ' .
+																					esc_html__( 'Choose this option if you use WordPress blocks for your pages.', 'echo-knowledge-base' ); ?></p>
+				<label class="epkb-setup-wizard-features-choice__option__label">
+				<input type="radio" name="epkb-main-page-type" value="kb-blocks"<?php checked( $is_preselected ); ?>>
+			</label>
+		</div>	<?php
+
+	}
+	
+	private function get_shortcode_option( $is_preselected ) {	?>
+		<!-- Use Shortcode -->
+		<div class="epkb-setup-wizard-features-choice <?php echo $is_preselected ? 'epkb-setup-wizard-features-choice--active' : ''; ?>">
+			<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use Shortcode', 'echo-knowledge-base' ); ?></span></div>
+			<div class="epkb-setup-wizard-features-choice__body">
+				<img alt="Shortcode" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-2/shortcode-choice.jpg' ); ?>">
+			</div>
+			<p class="epkb-setup-wizard-features-choice__footer"><?php echo esc_html__( 'Use the KB Shortcode to display your Knowledge Base, and customize it using the KB Configuration admin page.', 'echo-knowledge-base' ) .
+																				esc_html__( 'Choose this option if you use page builders such as Elementor and Divi.', 'echo-knowledge-base' );; ?></p>
+			<label class="epkb-setup-wizard-features-choice__option__label">
+			<input type="radio" name="epkb-main-page-type" value="kb-shortcode"<?php checked( $is_preselected ); ?>>
+			</label>
+		</div>	<?php
 	}
 
 	/**
@@ -891,7 +927,7 @@ class EPKB_KB_Wizard_Setup {
 		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-wc-step-panel eckb-wizard-step-features eckb-wizard-step-<?php echo esc_attr( $step_number ); ?>">
 
 			<div class="epkb-setup-wizard-step-container epkb-setup-wizard-step-container--modules"><?php
-				if ( $this->is_block_theme && $this->is_main_page_missing ) {	?>
+				if ( EPKB_Block_Utilities::is_block_theme() && $this->is_main_page_missing ) {	?>
 					<input style="display: none !important;" type="radio" name="epkb-main-page-type" value="kb-blocks"<?php checked( true ); ?>>	<?php
 				}	?>
 				<input type="hidden" id="_wpnonce_epkb_ajax_action" name="_wpnonce_epkb_ajax_action" value="<?php echo wp_create_nonce( "_wpnonce_epkb_ajax_action" );//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?>"/>
@@ -1578,7 +1614,7 @@ class EPKB_KB_Wizard_Setup {
 			];
 		}
 
-		// Articles List Module Presets
+		// Featured Articles Module Presets
 		$modules_presets_config['articles_list']['layout_1'] = [
 			'preselected' => true,
 			'presets' => [

@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 13.52.1
+ * Version: 13.60.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '13.52.1';
+	public static $version = '13.60.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -152,9 +152,7 @@ final class Echo_Knowledge_Base {
 		new EPKB_Articles_Setup();
 		new EPKB_Templates();
 		new EPKB_Shortcodes();
-        new EPKB_Main_Page_Visual_Helper();
-        new EPKB_Article_Page_Visual_Helper();
-        new EPKB_Category_Page_Visual_Helper();
+		//new EPKB_Frontend_Editor();
 	}
 
 	/**
@@ -163,22 +161,8 @@ final class Echo_Knowledge_Base {
 	 */
 	private function handle_action_request( $action ) {
 
-		if ( $action == 'eckb_apply_editor_changes' ) {
-			new EPKB_Editor_Controller();
-			return;
-		}
-		
-		if ( $action == 'epkb_load_editor' ) {
-			new EPKB_Editor_View();
-			return;
-		}
-
 		if ( $action == 'epkb_download_debug_info' ) {
 			new EPKB_Debug_Controller();
-			return;
-		}
-
-		if ( empty( $action ) || ! EPKB_KB_Handler::is_kb_request() ) {
 			return;
 		}
 	}
@@ -221,6 +205,9 @@ final class Echo_Knowledge_Base {
 		} else if ( in_array( $action, array( 'epkb_faq_get_shortcode' ) ) ) {
 			new EPKB_FAQs_AJAX();
 			return;
+		} else if ( in_array( $action, array( 'epkb_editor_error' ) ) ) {
+			new EPKB_Frontend_Editor();
+			return;
 		}
 		
 		if ( $action == 'add-tag' ) {
@@ -230,11 +217,6 @@ final class Echo_Knowledge_Base {
 
 		if ( $action == 'epkb_dismiss_ongoing_notice' ) {
 			new EPKB_Admin_Notices( true );
-			return;
-		}
-
-		if ( $action == 'epkb_editor_error' ) {
-			new EPKB_Editor_Controller();
 			return;
 		}
 
@@ -268,10 +250,10 @@ final class Echo_Knowledge_Base {
 			return;
 		}
 
-        if ( in_array( $action, array( 'epkb_visual_helper_update_switch_settings', 'epkb_visual_helper_switch_template') ) ) {
-            new EPKB_Visual_Helper();
-            return;
-        }
+		if ( in_array( $action, array( 'eckb_apply_fe_settings', 'eckb_save_fe_settings' ) ) ) {
+			new EPKB_Frontend_Editor();
+			return;
+		}
 	}
 
 	/**

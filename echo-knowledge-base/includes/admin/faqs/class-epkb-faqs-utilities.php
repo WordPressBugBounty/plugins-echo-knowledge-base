@@ -18,7 +18,8 @@ class EPKB_FAQs_Utilities {
 	 */
 	public static function display_faqs( $kb_config, $faq_groups, $faq_title, $is_shortcode=false, $use_content_filter=false, $render_inline_css=true ) {
 
-		$is_faq_schema = true;	// isset( $kb_config['faq_schema_toggle'] ) && $kb_config['faq_schema_toggle'] == 'on';
+		// allow to render FAQs schema only once per page even if multiple FAQs blocks or shortcodes present (to avoid schema checker fail)
+		static $is_faqs_schema_already_rendered = false;
 
 		// Set Icon Type from User settings
 		switch ( $kb_config['faq_icon_type'] ) {
@@ -103,7 +104,7 @@ class EPKB_FAQs_Utilities {
 							foreach ( $column as $one_faq ) {
 
 								// add article title and content to the FAQ schema
-								if ( $is_faq_schema ) {
+								if ( ! $is_faqs_schema_already_rendered ) {
 
 									$text = wp_strip_all_tags( $one_faq->post_content );
 									$text = html_entity_decode( $text, ENT_QUOTES, 'UTF-8' );
@@ -157,7 +158,8 @@ class EPKB_FAQs_Utilities {
 				} ?>
 			</div>			<?php
 
-			if ( $is_faq_schema ) { ?>
+			if ( ! $is_faqs_schema_already_rendered ) {
+				$is_faqs_schema_already_rendered = true;	?>
 				<!--suppress JSUnresolvedVariable -->
 				<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema_json ); ?></script>   <?php
 			} ?>
@@ -817,9 +819,7 @@ class EPKB_FAQs_Utilities {
                                             </a>';
 									} else {
 										echo ( $is_faqs_module ?
-											esc_html__( 'Select an FAQ group in the module settings to display FAQs.', 'echo-knowledge-base' ) . ' ' . '<a href="' .
-													esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_config['id'] . '&page=epkb-kb-configuration#settings__main-page__module--faqs__module-settings' ) ) .
-													'" target="_blank">' . esc_html__( 'Module settings', 'echo-knowledge-base' ) . '</a>'
+											esc_html__( 'Select an FAQ group in the module settings to display FAQs.', 'echo-knowledge-base' )
 											: esc_html__( 'Select an FAQ group in the block settings to display FAQs.', 'echo-knowledge-base' ) );
 									} ?>
 								</p>

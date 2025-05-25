@@ -60,10 +60,366 @@ class EPKB_FAQs_Page {
 	}
 
 	/**
+	 * Display shortcode generator above secondary tabs
+	 */
+	private static function display_shortcode_generator() {	?>
+
+		<div class="epkb-faq-shortcode-preview-wrap" style="display:none;">
+			<div class="epkb-faq-shortcode-preview">
+				<div id="epkb-faq-shortcode-above-tabs" class="epkb-faq-shortcode-above-tabs-container">
+
+					<!-- Preview Section - Matches width of sub-tabs -->
+					<div id="epkb-faq-shortcode-preview-container">
+						<div class="epkb-faq-shortcode-preview-head">
+							<div class="epkb-faq-shortcode-preview-head__title"><?php esc_html_e( 'Live Preview', 'echo-knowledge-base' ); ?></div>
+							<div class="epkb-faq-shortcode-preview-head__sub-title"><?php esc_html_e( 'This preview shows how your FAQs shortcode will appear.', 'echo-knowledge-base' ); ?></div>
+						</div>
+						<div class="epkb-faq-shortcode-preview-body">
+							<div class="epkb-faq-preview-content">
+							</div>
+						</div>
+						<div class="epkb-shortcode-actions">
+							<button id="epkb-copy-shortcode" class="epkb-btn epkb-success-btn">
+								<span class="epkbfa epkbfa-clipboard"></span>
+								<span><?php esc_html_e( 'Copy generated FAQ shortcode', 'echo-knowledge-base' ); ?></span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>		<?php
+	}
+
+	/**
+	 * Get configuration array for regular views
+	 * @return array
+	 */
+	private static function get_regular_views_config() {
+
+		$views_config = [];
+
+		/**
+		 * View: Overview
+		 */
+		$views_config[] = [
+
+			// Shared
+			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
+			'list_key' => 'faqs-overview',
+
+			// Top Panel Item
+			'label_text' => esc_html__( 'Overview', 'echo-knowledge-base' ),
+			'icon_class' => 'epkbfa epkbfa-home',
+
+			// Boxes List
+			'boxes_list' => array(
+				array(
+					'html' => self::overview_tab(),
+				)
+			),
+		];
+
+		/**
+		 * View: Questions
+		 */
+		$views_config[] = [
+
+			// Shared
+			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
+			'list_key' => 'faqs-questions',
+
+			// Top Panel Item
+			'label_text' => esc_html__( 'FAQs', 'echo-knowledge-base' ),
+			'icon_class' => 'epkbfa epkbfa-question-circle-o',
+
+			// Boxes List
+			'boxes_list' => array(
+				array(
+					'html' => self::faqs_questions_tab(),
+				)
+			),
+		];
+
+		/**
+		 * View: FAQ Groups
+		 */
+		$views_config[] = [
+
+			// Shared
+			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
+			'list_key' => 'faqs-groups',
+
+			// Top Panel Item
+			'label_text' => esc_html__( 'FAQ Groups', 'echo-knowledge-base' ),
+			'icon_class' => 'epkbfa epkbfa-comments',
+
+			// Boxes List
+			'boxes_list' => array(
+				array(
+					'html' => self::faqs_groups_tab(),
+				)
+			),
+		];
+
+		/**
+		 * View: FAQ Shortcodes
+		 */
+		$views_config[] = [
+
+			// Shared
+			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
+			'list_key'   => 'faq-shortcodes',
+
+			// Top Panel Item
+			'label_text' => esc_html__( 'FAQ Shortcodes', 'echo-knowledge-base' ),
+			'icon_class' => 'epkbfa epkbfa-list-alt',
+
+			// Secondary Panel Items
+			'secondary_tabs' => array(
+				array(
+					'list_key'   => 'faq_groups',
+					'label_text' => esc_html__('STEP 1: Choose FAQ Group', 'echo-knowledge-base'),
+					'active'     => true,
+					'boxes_list' => array(
+						array(
+							'html' => self::show_faq_shortcode_content('faq_groups'),
+						)
+					),
+				),
+				array(
+					'list_key'   => 'design',
+					'label_text' => esc_html__('STEP 2: Apply Design', 'echo-knowledge-base'),
+					'boxes_list' => array(
+						array(
+							'html' => self::show_faq_shortcode_content('design'),
+						)
+					),
+				),
+				array(
+					'list_key'   => 'settings',
+					'label_text' => esc_html__('STEP 3: Adjust Settings', 'echo-knowledge-base'),
+					'boxes_list' => array(
+						array(
+							'html' => self::show_faq_shortcode_content('settings'),
+						)
+					),
+				),
+			),
+		];
+
+		/**
+		 * View: Settings
+		 */
+		/*$views_config[] = [
+
+			// Shared
+			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
+			'list_key'   => 'faq-setting',
+
+			// Top Panel Item
+			'label_text' => esc_html__( 'Settings', 'echo-knowledge-base' ),
+			'icon_class' => 'epkbfa epkbfa-gears',
+
+			// Boxes List
+			'boxes_list' => array(),
+		];*/
+
+		return $views_config;
+	}
+
+	/**
+	 * Show HTML content for Questions tab
+	 * @return false|string
+	 */
+	private static function faqs_questions_tab() {
+
+		$faqs_list = get_posts( [
+			'post_type'         => EPKB_FAQs_CPT_Setup::FAQS_POST_TYPE,
+			'posts_per_page'    => -1,
+			'orderby'           => 'post_title',
+			'order'             => 'ASC',
+			'fields'            => 'id=>name',
+		] );
+
+		$col_length = ceil( count( $faqs_list ) / 2 );
+
+		ob_start(); ?>
+
+		<!-- Questions Info Box -->
+		<div class="epkb-admin-info-box">
+			<div class="epkb-admin-info-box__header">
+				<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-info-circle"></div>
+				<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'Manage Your Questions', 'echo-knowledge-base' ); ?></div>
+			</div>
+			<div class="epkb-admin-info-box__body">
+				<p><?php esc_html_e( 'Create your own questions and answers, and organize them into one or more FAQ groups. ' .
+						'Each FAQ group will have its own heading if multiple groups exist. Deleting a question will remove it from all groups.', 'echo-knowledge-base' ); ?></p>
+			</div>
+		</div>
+
+		<!-- Buttons -->
+		<div id='epkb-faq-top-buttons-container'>
+			<button id="epkb-faq-create-question" class="epkb-btn epkb-success-btn">
+				<span class="epkb-btn-icon epkbfa epkbfa-question-circle-o"></span>
+				<span class="epkb-btn-text"><?php esc_html_e( 'Create Question', 'echo-knowledge-base' ); ?></span>
+			</button>
+		</div>
+
+		<!-- All Questions -->
+		<div id="epkb-all-faqs-container" class="epkb-faqs-modern-container">
+			<div class="epkb-all-questions-body">
+
+				<!-- Left Col -->
+				<div class="epkb-body-col epkb-body-col--left">
+					<div class="epkb-faq-questions-list-empty<?php echo empty( $faqs_list ) ? ' ' . 'epkb-faq-questions-list-empty--active' : ''; ?>"><?php esc_html_e( 'No available Questions.', 'echo-knowledge-base' ); ?></div>   <?php
+					for ( $i = 0; $i < $col_length; $i++ ) {
+						if ( isset( $faqs_list[$i] ) ) {
+							self::display_question( array(
+								'faq_id'        => $faqs_list[$i]->ID,
+								'title'         => $faqs_list[$i]->post_title,
+								'edit_icon'     => true,
+							) );
+						}
+					}   ?>
+				</div>
+
+				<!-- Right Col -->
+				<div class="epkb-body-col epkb-body-col--right">						<?php
+					for ( $i = $col_length; $i < count( $faqs_list ); $i++ ) {
+						if ( isset( $faqs_list[$i] ) ) {
+							self::display_question( array(
+								'faq_id'        => $faqs_list[$i]->ID,
+								'title'         => $faqs_list[$i]->post_title,
+								'edit_icon'     => true,
+							) );
+						}
+					}   ?>
+				</div>
+			</div>
+		</div>		<?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Show HTML content for Overview tab
+	 * @return false|string
+	 */
+	private static function overview_tab() {
+		ob_start();
+
+		$kb_id = EPKB_KB_Handler::get_current_kb_id();
+		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );		?>
+
+		<!-- Overview Info Box -->
+		<div class="epkb-admin-info-box">
+			<div class="epkb-admin-info-box__header">
+				<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-info-circle"></div>
+				<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'FAQs Overview', 'echo-knowledge-base' ); ?></div>
+			</div>
+			<div class="epkb-admin-info-box__body">
+				<p><?php esc_html_e( 'Select an option below to add FAQs to a page. Then, create individual FAQs and assign them to one or more FAQ groups.', 'echo-knowledge-base' ); ?></p>
+			</div>
+		</div>
+
+		<!-- Options Container -->
+		<div class="epkb-overview-options-container">
+
+			<!-- Option 1: FAQs Shortcode -->
+			<div class="epkb-overview-option">
+				<div class="epkb-overview-option__header">
+					<div class="epkb-overview-option__icon epkbfa epkbfa-code"></div>
+					<div class="epkb-overview-option__title"><?php esc_html_e( 'Option 1: Use FAQs Shortcode', 'echo-knowledge-base' ); ?></div>
+				</div>
+				<div class="epkb-overview-option__body">
+					<p><?php esc_html_e( 'Use a shortcode to display FAQs anywhere on your site, including pages, posts, or widgets.', 'echo-knowledge-base' ); ?></p>
+					<div class="epkb-overview-option__actions">
+						<a href="https://www.echoknowledgebase.com/documentation/faqs-shortcode/" target="_blank" class="epkb-overview-option__link">
+							<span class="epkbfa epkbfa-book"></span>
+							<span><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></span>
+						</a>
+						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . EPKB_KB_Handler::get_current_kb_id() . '&page=epkb-faqs#faq-shortcodes' ) ); ?>"
+							id="epkb-faqs-shortcode-link" class="epkb-overview-option__button epkb-primary-btn">
+							<span class="epkbfa epkbfa-arrow-circle-right"></span>
+							<span><?php esc_html_e( 'Go to FAQ Shortcodes', 'echo-knowledge-base' ); ?></span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Option 2: FAQs Block -->
+			<div class="epkb-overview-option">
+				<div class="epkb-overview-option__header">
+					<div class="epkb-overview-option__icon epkbfa epkbfa-th-large"></div>
+					<div class="epkb-overview-option__title"><?php esc_html_e( 'Option 2: Use FAQs Block in Gutenberg Editor', 'echo-knowledge-base' ); ?></div>
+				</div>
+				<div class="epkb-overview-option__body">
+					<p><?php esc_html_e( 'Use the Gutenberg block editor to insert FAQs into your content. Each FAQ block allows you to select one or more FAQ groups.', 'echo-knowledge-base' ); ?></p>
+					<div class="epkb-overview-option__actions">
+						<a href="https://www.echoknowledgebase.com/documentation/faqs/#How-to-use-the-shortcode/" target="_blank" class="epkb-overview-option__link">
+							<span class="epkbfa epkbfa-book"></span>
+							<span><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></span>
+						</a>						<?php
+
+						$main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config );
+						$edit_link = empty( $main_page_id ) ? '' : get_edit_post_link( $main_page_id );
+
+						if ( ! empty( $edit_link ) ) { ?>
+							<div class="epkb-overview-option__buttons-container">
+							<a href="<?php echo esc_url( $edit_link ); ?>" target="_blank" class="epkb-overview-option__button epkb-primary-btn">
+								<span class="epkbfa epkbfa-edit"></span>
+								<span><?php esc_html_e( 'Edit KB Main Page', 'echo-knowledge-base' ); ?></span>
+							</a>
+							<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=page' ) ); ?>" target='_blank' class="epkb-overview-option__button epkb-primary-btn">
+								<span class="epkbfa epkbfa-plus-circle"></span>
+								<span><?php esc_html_e( 'Create New Page with Block', 'echo-knowledge-base' ); ?></span>
+							</a>
+							</div><?php } else { ?>
+							<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=page' ) ); ?>" target='_blank' class="epkb-overview-option__button epkb-primary-btn">
+								<span class="epkbfa epkbfa-plus-circle"></span>
+								<span><?php esc_html_e( 'Create New Page with Block', 'echo-knowledge-base' ); ?></span>
+							</a>						<?php
+						} ?>
+					</div>
+				</div>
+			</div>
+
+			<!-- Option 3: KB Main Page with FAQs Module -->			<?php
+
+			// Check if using block main page
+			$is_block_main_page = EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config );
+
+			if ( ! $is_block_main_page ) { ?>
+				<div class="epkb-overview-option">
+					<div class="epkb-overview-option__header">
+						<div class="epkb-overview-option__icon epkbfa epkbfa-puzzle-piece"></div>
+						<div class="epkb-overview-option__title"><?php esc_html_e( 'Option 3: Use KB Main Page with FAQs Module', 'echo-knowledge-base' ); ?></div>
+					</div>
+					<div class="epkb-overview-option__body">
+						<p><?php esc_html_e( 'Add a FAQs module to your Knowledge Base Main Page.', 'echo-knowledge-base' ); ?></p>
+						<div class="epkb-overview-option__actions">
+							<a href="https://www.echoknowledgebase.com/documentation/faqs/#How-to-use-the-shortcode/" target="_blank" class="epkb-overview-option__link">
+								<span class="epkbfa epkbfa-book"></span>
+								<span><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></span>
+							</a>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . EPKB_KB_Handler::get_current_kb_id() . '&page=epkb-kb-configuration#settings__main-page__module--faqs' ) ); ?>" class="epkb-overview-option__button epkb-primary-btn">
+								<span class="epkbfa epkbfa-cog"></span>
+								<span><?php esc_html_e( 'Go to Main Page Settings', 'echo-knowledge-base' ); ?></span>
+							</a>
+						</div>
+					</div>
+				</div>			<?php
+			} ?>
+		</div>		<?php
+
+		return ob_get_clean();
+	}
+
+	/**
 	 * Show FAQs box
 	 * @return false|string
 	 */
-	private static function show_faqs_content() {
+	private static function faqs_groups_tab() {
 
 		$faq_groups = EPKB_FAQs_Utilities::get_faq_groups();
 		if ( is_wp_error( $faq_groups ) ) {
@@ -95,7 +451,8 @@ class EPKB_FAQs_Page {
 				<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'FAQ Groups', 'echo-knowledge-base' ); ?></div>
 			</div>
 			<div class="epkb-admin-info-box__body">
-				<p><?php esc_html_e( 'Here you can create and edit FAQ groups and add individual FAQs to each group. FAQ Groups are separate sections within FAQs on your website.', 'echo-knowledge-base' ); ?></p>
+				<p><?php esc_html_e( 'You can create FAQ groups and add individual FAQs to each group. ' .
+						'These groups can be displayed on different pages or within the same FAQ shortcode or block.', 'echo-knowledge-base' ); ?></p>
 			</div>
 		</div>
 
@@ -177,247 +534,6 @@ class EPKB_FAQs_Page {
 		</div> <?php
 
 		return ob_get_clean();
-	}
-
-	/**
-	 * Show HTML content for Questions tab
-	 * @return false|string
-	 */
-	private static function show_questions_content() {
-
-		$faqs_list = get_posts( [
-			'post_type'         => EPKB_FAQs_CPT_Setup::FAQS_POST_TYPE,
-			'posts_per_page'    => -1,
-			'orderby'           => 'post_title',
-			'order'             => 'ASC',
-			'fields'            => 'id=>name',
-		] );
-
-		$col_length = ceil( count( $faqs_list ) / 2 );
-
-		ob_start(); ?>
-
-		<!-- Questions Info Box -->
-		<div class="epkb-admin-info-box">
-			<div class="epkb-admin-info-box__header">
-				<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-info-circle"></div>
-				<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'Manage Your Questions', 'echo-knowledge-base' ); ?></div>
-			</div>
-			<div class="epkb-admin-info-box__body">
-				<p><?php esc_html_e( 'Edit your questions. Deleting a question will remove it from all groups.', 'echo-knowledge-base' ); ?></p>
-			</div>
-		</div>
-
-		<!-- Buttons -->
-		<div id='epkb-faq-top-buttons-container'>
-			<button id="epkb-faq-create-question" class="epkb-btn epkb-success-btn">
-				<span class="epkb-btn-icon epkbfa epkbfa-question-circle-o"></span>
-				<span class="epkb-btn-text"><?php esc_html_e( 'Create Question', 'echo-knowledge-base' ); ?></span>
-			</button>
-		</div>
-
-		<!-- All Questions -->
-		<div id="epkb-all-faqs-container" class="epkb-faqs-modern-container">
-			<div class="epkb-all-questions-body">
-
-				<!-- Left Col -->
-				<div class="epkb-body-col epkb-body-col--left">
-					<div class="epkb-faq-questions-list-empty<?php echo empty( $faqs_list ) ? ' ' . 'epkb-faq-questions-list-empty--active' : ''; ?>"><?php esc_html_e( 'No available Questions.', 'echo-knowledge-base' ); ?></div>   <?php
-					for ( $i = 0; $i < $col_length; $i++ ) {
-						if ( isset( $faqs_list[$i] ) ) {
-							self::display_question( array(
-								'faq_id'        => $faqs_list[$i]->ID,
-								'title'         => $faqs_list[$i]->post_title,
-								'edit_icon'     => true,
-							) );
-						}
-					}   ?>
-				</div>
-
-				<!-- Right Col -->
-				<div class="epkb-body-col epkb-body-col--right">						<?php
-					for ( $i = $col_length; $i < count( $faqs_list ); $i++ ) {
-						if ( isset( $faqs_list[$i] ) ) {
-							self::display_question( array(
-								'faq_id'        => $faqs_list[$i]->ID,
-								'title'         => $faqs_list[$i]->post_title,
-								'edit_icon'     => true,
-							) );
-						}
-					}   ?>
-				</div>
-			</div>
-		</div>		<?php
-
-		return ob_get_clean();
-	}
-
-	/**
-	 * Display shortcode generator above secondary tabs
-	 */
-	private static function display_shortcode_generator() {	?>
-
-		<div class="epkb-faq-shortcode-preview-wrap" style="display:none;">
-			<div class="epkb-faq-shortcode-preview">
-				<div id="epkb-faq-shortcode-above-tabs" class="epkb-faq-shortcode-above-tabs-container">
-
-					<!-- Preview Section - Matches width of sub-tabs -->
-					<div id="epkb-faq-shortcode-preview-container">
-						<div class="epkb-faq-shortcode-preview-head">
-							<div class="epkb-faq-shortcode-preview-head__title"><?php esc_html_e( 'Live Preview', 'echo-knowledge-base' ); ?></div>
-							<div class="epkb-faq-shortcode-preview-head__sub-title"><?php esc_html_e( 'This preview shows how your FAQs shortcode will appear.', 'echo-knowledge-base' ); ?></div>
-						</div>
-						<div class="epkb-faq-shortcode-preview-body">
-							<div class="epkb-faq-preview-content">
-							</div>
-						</div>
-						<div class="epkb-shortcode-actions">
-							<button id="epkb-copy-shortcode" class="epkb-btn epkb-success-btn">
-								<span class="epkbfa epkbfa-clipboard"></span>
-								<span><?php esc_html_e( 'Copy generated FAQ shortcode', 'echo-knowledge-base' ); ?></span>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>		<?php
-	}
-
-	/**
-	 * Get configuration array for regular views
-	 * @return array
-	 */
-	private static function get_regular_views_config() {
-
-		$views_config = [];
-
-		/**
-		 * View: Overview
-		 */
-		$views_config[] = [
-
-			// Shared
-			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
-			'list_key' => 'faqs-overview',
-
-			// Top Panel Item
-			'label_text' => esc_html__( 'Overview', 'echo-knowledge-base' ),
-			'icon_class' => 'epkbfa epkbfa-home',
-
-			// Boxes List
-			'boxes_list' => array(
-				array(
-					'html' => self::show_overview_content(),
-				)
-			),
-		];
-
-		/**
-		 * View: FAQ Groups
-		 */
-		$views_config[] = [
-
-			// Shared
-			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
-			'list_key' => 'faqs-groups',
-
-			// Top Panel Item
-			'label_text' => esc_html__( 'FAQ Groups', 'echo-knowledge-base' ),
-			'icon_class' => 'epkbfa epkbfa-comments',
-
-			// Boxes List
-			'boxes_list' => array(
-				array(
-					'html' => self::show_faqs_content(),
-				)
-			),
-		];
-
-		/**
-		 * View: Questions
-		 */
-		$views_config[] = [
-
-			// Shared
-			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
-			'list_key' => 'faqs-questions',
-
-			// Top Panel Item
-			'label_text' => esc_html__( 'FAQs', 'echo-knowledge-base' ),
-			'icon_class' => 'epkbfa epkbfa-question-circle-o',
-
-			// Boxes List
-			'boxes_list' => array(
-				array(
-					'html' => self::show_questions_content(),
-				)
-			),
-		];
-
-		/**
-		 * View: FAQ Shortcodes
-		 */
-		$views_config[] = [
-
-			// Shared
-			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
-			'list_key'   => 'faq-shortcodes',
-
-			// Top Panel Item
-			'label_text' => esc_html__( 'FAQ Shortcodes', 'echo-knowledge-base' ),
-			'icon_class' => 'epkbfa epkbfa-list-alt',
-
-			// Secondary Panel Items
-			'secondary_tabs' => array(
-				array(
-					'list_key'   => 'faq_groups',
-					'label_text' => esc_html__('FAQ Groups', 'echo-knowledge-base'),
-					'active'     => true,
-					'boxes_list' => array(
-						array(
-							'html' => self::show_faq_shortcode_content('faq_groups'),
-						)
-					),
-				),
-				array(
-					'list_key'   => 'design',
-					'label_text' => esc_html__('Design', 'echo-knowledge-base'),
-					'boxes_list' => array(
-						array(
-							'html' => self::show_faq_shortcode_content('design'),
-						)
-					),
-				),
-				array(
-					'list_key'   => 'settings',
-					'label_text' => esc_html__('Settings', 'echo-knowledge-base'),
-					'boxes_list' => array(
-						array(
-							'html' => self::show_faq_shortcode_content('settings'),
-						)
-					),
-				),
-			),
-		];
-
-		/**
-		 * View: Settings
-		 */
-		/*$views_config[] = [
-
-			// Shared
-			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ),
-			'list_key'   => 'faq-setting',
-
-			// Top Panel Item
-			'label_text' => esc_html__( 'Settings', 'echo-knowledge-base' ),
-			'icon_class' => 'epkbfa epkbfa-gears',
-
-			// Boxes List
-			'boxes_list' => array(),
-		];*/
-
-		return $views_config;
 	}
 
 	/**
@@ -596,8 +712,11 @@ class EPKB_FAQs_Page {
 	}
 
 	private static function show_faq_design_content() {
+
 		$default_design = '1';
+
 		ob_start(); ?>
+
 		<!-- Choose a Design -->
 		<div id="epkb-faq-shortcode-preset-container">
 			<div class="epkb-faq-shortcode-preset-head">
@@ -605,8 +724,8 @@ class EPKB_FAQs_Page {
 				<div class="epkb-faq-shortcode-preset-head__sub-title"><?php esc_html_e( 'Select a pre-made design for your FAQ display.', 'echo-knowledge-base' ); ?></div>
 			</div>
 			<div class="epkb-faq-shortcode-preset-body">
-				<div class="epkb-radio-buttons-container">
-					<?php
+				<div class="epkb-radio-buttons-container">					<?php
+
 					// Get all design options
 					$design_names = EPKB_FAQs_Utilities::get_design_names();
 
@@ -629,8 +748,7 @@ class EPKB_FAQs_Page {
 						'group_data'        => [ 
 							'default-value' => $default_design
 						],
-					) );
-					?>
+					) );					?>
 				</div>
 			</div>
 		</div>		<?php
@@ -656,7 +774,7 @@ class EPKB_FAQs_Page {
 						<div id="epkb-faq-shortcode-settings-container">
 							<div class="epkb-faq-shortcode-settings-head">
 								<div class="epkb-faq-shortcode-settings-head__title"><?php esc_html_e( 'Settings', 'echo-knowledge-base' ); ?></div>
-								<div class="epkb-faq-shortcode-settings-head__sub-title"><?php esc_html_e( 'Configure the appearance and behavior of your FAQs.', 'echo-knowledge-base' ); ?></div>
+								<div class="epkb-faq-shortcode-settings-head__sub-title"><?php esc_html_e( 'Customize the appearance and behavior of your FAQs.', 'echo-knowledge-base' ); ?></div>
 							</div>
 							<div class="epkb-faq-shortcode-settings-body"> <?php
 								// Add the wrappers seen in the sample HTML
@@ -685,8 +803,7 @@ class EPKB_FAQs_Page {
 									'faq_question_text_color',
 									'faq_answer_text_color',
 									'faq_icon_color',
-									'faq_border_color',
-									'ml_faqs_custom_css_class',
+									'faq_border_color'
 								];
 
 								// --- Loop through settings and render ---
@@ -859,129 +976,6 @@ class EPKB_FAQs_Page {
 				<?php esc_html_e( 'No FAQ groups found. Please create some groups first.', 'echo-knowledge-base' ); ?>
 			</div>
 			<?php endif; ?>
-		</div>		<?php
-
-		return ob_get_clean();
-	}
-
-	/**
-	 * Show HTML content for Overview tab
-	 * @return false|string
-	 */
-	private static function show_overview_content() {
-		ob_start(); ?>
-
-		<!-- Overview Info Box -->
-		<div class="epkb-admin-info-box">
-			<div class="epkb-admin-info-box__header">
-				<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-info-circle"></div>
-				<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'FAQs Overview', 'echo-knowledge-base' ); ?></div>
-			</div>
-			<div class="epkb-admin-info-box__body">
-				<p><?php esc_html_e( 'There are three different ways to display FAQs on your website. Choose the option that best fits your needs.', 'echo-knowledge-base' ); ?></p>
-			</div>
-		</div>
-
-		<!-- Options Container -->
-		<div class="epkb-overview-options-container">
-			
-			<!-- Option 1: FAQs Shortcode -->
-			<div class="epkb-overview-option">
-				<div class="epkb-overview-option__header">
-					<div class="epkb-overview-option__icon epkbfa epkbfa-code"></div>
-					<div class="epkb-overview-option__title"><?php esc_html_e( 'Option 1: Use FAQs Shortcode', 'echo-knowledge-base' ); ?></div>
-				</div>
-				<div class="epkb-overview-option__body">
-					<p><?php esc_html_e( 'Use a shortcode to display FAQs anywhere on your site, including pages, posts, or widgets.', 'echo-knowledge-base' ); ?></p>
-					<div class="epkb-overview-option__actions">
-						<a href="https://www.echoknowledgebase.com/documentation/faqs-shortcode/" target="_blank" class="epkb-overview-option__link">
-							<span class="epkbfa epkbfa-book"></span>
-							<span><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></span>
-						</a>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . EPKB_KB_Handler::get_current_kb_id() . '&page=epkb-faqs#faq-shortcodes' ) ); ?>" class="epkb-overview-option__button epkb-primary-btn">
-							<span class="epkbfa epkbfa-arrow-circle-right"></span>
-							<span><?php esc_html_e( 'Go to FAQ Shortcodes', 'echo-knowledge-base' ); ?></span>
-						</a>
-					</div>
-				</div>
-			</div>
-			
-			<!-- Option 2: FAQs Block -->
-			<div class="epkb-overview-option">
-				<div class="epkb-overview-option__header">
-					<div class="epkb-overview-option__icon epkbfa epkbfa-th-large"></div>
-					<div class="epkb-overview-option__title"><?php esc_html_e( 'Option 2: Use FAQs Block in Gutenberg Editor', 'echo-knowledge-base' ); ?></div>
-				</div>
-				<div class="epkb-overview-option__body">
-					<p><?php esc_html_e( 'Use the Gutenberg block editor to insert FAQs into your content.', 'echo-knowledge-base' ); ?></p>
-					<div class="epkb-overview-option__actions">
-						<a href="https://www.echoknowledgebase.com/documentation/faqs/#How-to-use-the-shortcode/" target="_blank" class="epkb-overview-option__link">
-							<span class="epkbfa epkbfa-book"></span>
-							<span><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></span>
-						</a>						<?php 
-							$kb_id = EPKB_KB_Handler::get_current_kb_id();
-							$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
-							$main_page_id = '';
-							if ( ! empty( $kb_config ) && is_array( $kb_config ) ) {
-								$main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config );
-							}
-							$edit_link = empty( $main_page_id ) ? '' : get_edit_post_link( $main_page_id );
-							
-							if ( ! empty( $edit_link ) ) { ?>
-						<div class="epkb-overview-option__buttons-container">
-						<a href="<?php echo esc_url( $edit_link ); ?>" target="_blank" class="epkb-overview-option__button epkb-primary-btn">
-							<span class="epkbfa epkbfa-edit"></span>
-							<span><?php esc_html_e( 'Edit KB Main Page', 'echo-knowledge-base' ); ?></span>
-						</a>
-						<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=page' ) ); ?>" class="epkb-overview-option__button epkb-primary-btn">
-							<span class="epkbfa epkbfa-plus-circle"></span>
-							<span><?php esc_html_e( 'Create New Page with Block', 'echo-knowledge-base' ); ?></span>
-						</a>
-						</div><?php } else { ?>
-						<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=page' ) ); ?>" class="epkb-overview-option__button epkb-primary-btn">
-							<span class="epkbfa epkbfa-plus-circle"></span>
-							<span><?php esc_html_e( 'Create New Page with Block', 'echo-knowledge-base' ); ?></span>
-						</a>
-						<?php } ?>
-					</div>
-				</div>
-			</div>
-			
-			<!-- Option 3: KB Main Page with FAQs Module -->			<?php
-			// Get current main page
-			$kb_id = EPKB_KB_Handler::get_current_kb_id();
-			$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
-			$main_page_id = '';
-			if ( ! empty( $kb_config ) && is_array( $kb_config ) ) {
-				$main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config );
-			}
-			$current_main_page = empty( $main_page_id ) ? null : get_post( $main_page_id );
-			
-			// Check if using block main page
-			$is_block_main_page = ! empty( $current_main_page ) && function_exists( 'EPKB_Block_Utilities::content_has_kb_block' ) && 
-				EPKB_Block_Utilities::content_has_kb_block( $current_main_page->post_content );
-			
-			if ( $is_block_main_page ) { ?>
-				<div class="epkb-overview-option">
-					<div class="epkb-overview-option__header">
-						<div class="epkb-overview-option__icon epkbfa epkbfa-puzzle-piece"></div>
-						<div class="epkb-overview-option__title"><?php esc_html_e( 'Option 3: Use KB Main Page with FAQs Module', 'echo-knowledge-base' ); ?></div>
-					</div>
-					<div class="epkb-overview-option__body">
-						<p><?php esc_html_e( 'Add a FAQs module to your Knowledge Base Main Page.', 'echo-knowledge-base' ); ?></p>
-						<div class="epkb-overview-option__actions">
-							<a href="https://www.echoknowledgebase.com/documentation/faqs/#How-to-use-the-shortcode/" target="_blank" class="epkb-overview-option__link">
-								<span class="epkbfa epkbfa-book"></span>
-								<span><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></span>
-							</a>
-							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . EPKB_KB_Handler::get_current_kb_id() . '&page=epkb-kb-configuration#settings__main-page__module--faqs' ) ); ?>" class="epkb-overview-option__button epkb-primary-btn">
-								<span class="epkbfa epkbfa-cog"></span>
-								<span><?php esc_html_e( 'Go to Main Page Settings', 'echo-knowledge-base' ); ?></span>
-							</a>
-						</div>
-					</div>
-				</div>			<?php 
-			} ?>
 		</div>		<?php
 
 		return ob_get_clean();

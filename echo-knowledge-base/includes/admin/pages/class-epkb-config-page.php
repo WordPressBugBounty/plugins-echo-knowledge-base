@@ -57,15 +57,20 @@ class EPKB_Config_Page {
 		// regenerate KB sequence for Categories and Articles if missing
 		EPKB_KB_Handler::get_refreshed_kb_categories( $kb_id );
 
+
 		//-------------------------------- SETUP WIZARD --------------------------------
 
 		// should we display Setup Wizard or KB Configuration?
 		if ( isset( $_GET['setup-wizard-on'] ) && $this->kb_config['modular_main_page_toggle'] == 'on' && EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
-			$add_ons_kb_config = $this->get_add_ons_config( $kb_id );
-			if ( ! empty( $add_ons_kb_config) ) {
-				$handler = new EPKB_KB_Wizard_Setup( $add_ons_kb_config );
-				$handler->display_kb_setup_wizard();
+
+			$add_ons_kb_config = EPKB_Core_Utilities::get_add_ons_config( $kb_id, $this->kb_config );
+			if ( empty( $add_ons_kb_config ) ) {
+				$add_ons_kb_config = $this->kb_config;
 			}
+
+			$handler = new EPKB_KB_Wizard_Setup( $add_ons_kb_config );
+			$handler->display_kb_setup_wizard();
+
 			return;
 		}
 
@@ -85,8 +90,9 @@ class EPKB_Config_Page {
 			$admin_page_views = self::get_run_setup_first_views_config();
 
 		} else {
-			$add_ons_kb_config = $this->get_add_ons_config( $kb_id );
-			if ( empty( $add_ons_kb_config) ) {
+			$add_ons_kb_config = EPKB_Core_Utilities::get_add_ons_config( $kb_id, $this->kb_config );		
+			if ( $add_ons_kb_config === false ) {
+				EPKB_Core_Utilities::display_config_error_page();
 				return;
 			}
 			$admin_page_views = $this->get_regular_views_config( $add_ons_kb_config );
@@ -138,18 +144,6 @@ class EPKB_Config_Page {
 			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo EPKB_HTML_Forms::notification_box_bottom( $message, '', $class );
 		}
-	}
-
-	private function get_add_ons_config( $kb_id ) {
-		// get current add-ons configuration
-		$add_ons_kb_config = $this->kb_config;
-		$add_ons_kb_config = apply_filters( 'epkb_all_wizards_get_current_config', $add_ons_kb_config, $kb_id );
-		if ( is_wp_error( $add_ons_kb_config ) || empty( $add_ons_kb_config ) || ! is_array( $add_ons_kb_config ) || count( $add_ons_kb_config ) < 100 ) {
-			EPKB_Core_Utilities::display_config_error_page();
-			return [];
-		}
-
-		return $add_ons_kb_config;
 	}
 
 	/**
@@ -1034,7 +1028,7 @@ class EPKB_Config_Page {
 			<div style="text-align: center; margin: 30px 0; padding: 20px; background: #fff5e6; border-radius: 8px; border: 1px solid #c5d9ed;">
 				<h3 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Help Dialog - Free WordPress Plugin', 'echo-knowledge-base' ); ?></h3>
 				<p style="margin: 0; color: #50575e; font-size: 16px;">
-					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'Help Dialog with AI Chat, FAQs, Search, Contact Form', 'echo-knowledge-base' ); ?> 
+					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'Help Dialog with AI Chat, FAQs, Knowledge Base Search, and Contact Form.', 'echo-knowledge-base' ); ?>
 					<a href="https://wordpress.org/plugins/help-dialog/" target="_blank"><?php esc_html_e( 'Get it from the WordPress Repo', 'echo-knowledge-base' ); ?></a>
 				</p>
 				<img src="<?php echo esc_url(Echo_Knowledge_Base::$plugin_url . 'img/ad/ad-help-dialog.jpg'); ?>" alt="Help Dialog" class="epkb-help-dialog-img" style="max-width: 100%; height: auto; margin-top: 15px; border-radius: 4px; cursor: zoom-in;">
@@ -1168,7 +1162,7 @@ class EPKB_Config_Page {
 			<div style="text-align: center; margin: 30px 0; padding: 20px; background: #fff5e6; border-radius: 8px; border: 1px solid #c5d9ed;">
 				<h3 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Help Dialog - Free WordPress Plugin', 'echo-knowledge-base' ); ?></h3>
 				<p style="margin: 0; color: #50575e; font-size: 16px;">
-					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'Help Dialog with AI Chat, FAQs, Search, Contact Form', 'echo-knowledge-base' ); ?> 
+					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'Help Dialog with AI Chat, FAQs, Knowledge Base Search, and Contact Form.', 'echo-knowledge-base' ); ?>
 					<a href="https://wordpress.org/plugins/help-dialog/" target="_blank"><?php esc_html_e( 'Get it from the WordPress Repo', 'echo-knowledge-base' ); ?></a>
 				</p>
 				<img src="<?php echo esc_url(Echo_Knowledge_Base::$plugin_url . 'img/ad/ad-help-dialog.jpg'); ?>" alt="Help Dialog" class="epkb-help-dialog-img-inactive" style="max-width: 100%; height: auto; margin-top: 15px; border-radius: 4px; cursor: zoom-in;">

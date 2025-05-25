@@ -8,7 +8,7 @@ class EPKB_Blocks_Settings {
 	 */
 	public static function get_kb_id_setting() {
 
-		if ( EPKB_Block_Utilities::is_frontend() ) {
+		if ( EPKB_Utilities::is_frontend() ) {
 			return array(
 				'setting_type' => '',
 				'default' => EPKB_KB_Config_DB::DEFAULT_KB_ID,
@@ -50,12 +50,12 @@ class EPKB_Blocks_Settings {
 	}
 
 	/**
-	 * Return configuration array for KB block page template toggle
+	 * Return configuration array for KB Custom Block Template for this page toggle
 	 * @return array
 	 */
 	public static function get_kb_block_template_toggle() {
 
-		if ( EPKB_Block_Utilities::is_frontend() ) {
+		if ( EPKB_Utilities::is_frontend() ) {
 			return array(
 				'setting_type' => '',
 			);
@@ -72,17 +72,18 @@ class EPKB_Blocks_Settings {
 
 	/**
 	 * Return configuration array for KB legacy page template toggle
+	 * Legacy KB Template if theme is a block theme + we are using blocks on the page
 	 * @return array
 	 */
 	public static function get_kb_legacy_template_toggle() {
 
-		if ( EPKB_Block_Utilities::is_frontend() ) {
+		if ( EPKB_Utilities::is_frontend() ) {
 			return array(
 				'setting_type' => '',
 			);
 		}
 
-		$show_toggle = ! EPKB_Utilities::is_block_theme();
+		$show_toggle = ! EPKB_Block_Utilities::is_block_theme();
 
 		return array(
 			'setting_type' =>  $show_toggle ? 'custom_toggle' : '',
@@ -101,22 +102,22 @@ class EPKB_Blocks_Settings {
 	 */
 	public static function get_kb_block_template_mention() {
 
-		if ( EPKB_Block_Utilities::is_frontend() ) {
+		if ( EPKB_Utilities::is_frontend() ) {
 			return array(
 				'setting_type' => '',
 			);
 		}
 
-		$show_toggle = EPKB_Block_Utilities::is_kb_block_page_template_available() || ! EPKB_Utilities::is_block_theme();
+		$show_toggle = EPKB_Block_Utilities::is_kb_block_page_template_available() || ! EPKB_Block_Utilities::is_block_theme();
 
 		$setting_config = array(
 			'setting_type' => $show_toggle ? 'section_description' : '',
-			'description' => EPKB_Utilities::is_block_theme()
+			'description' => EPKB_Block_Utilities::is_block_theme()
 				? esc_html__( 'Consider to use KB Block Page Template for this KB Main Page.', 'echo-knowledge-base' ) . ' ' .
 				( EPKB_Block_Utilities::is_kb_block_page_template_available() ? '' : esc_html__( 'You need to upgrade the WordPress core to version 6.7 or higher in order to use the KB template.', 'echo-knowledge-base' ) )
 				: esc_html__( 'Consider to use KB Template for this KB Main Page.', 'echo-knowledge-base' ) . ' ' . esc_html__( 'Note that the KB Template effect is not visible in this editor. Please check the page frontend.', 'echo-knowledge-base' ),
 			'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ),
-			'link_url' => EPKB_Utilities::is_block_theme() ? 'https://www.echoknowledgebase.com/documentation/kb-block-template/' : 'https://www.echoknowledgebase.com/documentation/current-theme-template-vs-kb-template/',
+			'link_url' => EPKB_Block_Utilities::is_block_theme() ? 'https://www.echoknowledgebase.com/documentation/kb-block-template/' : 'https://www.echoknowledgebase.com/documentation/current-theme-template-vs-kb-template/',
 			'hide_on_dependencies' => array(
 				'templates_for_kb' => 'kb_templates',
 				'kb_block_template_toggle' => 'on',
@@ -177,7 +178,7 @@ class EPKB_Blocks_Settings {
 	public static function get_all_preset_settings( $block_name, $layout_name) {
 
 		// don't load presets if not in editor or not in edit mode
-		if ( EPKB_Block_Utilities::is_frontend() ) {
+		if ( EPKB_Utilities::is_frontend() ) {
 			return [];
 		}
 

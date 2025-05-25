@@ -20,7 +20,6 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 		// must be assigned to hook inside child class to enqueue unique assets for each block type
 		add_action( 'enqueue_block_assets', array( $this, 'register_block_assets' ) ); // Frontend / Backend
 
-		// must be assigned only in layout block
 		add_action( 'save_post', array( $this, 'update_kb_setting_on_save_post'), 10, 3 );
 	}
 
@@ -75,7 +74,7 @@ final class EPKB_Grid_Layout_Block extends EPKB_Abstract_Block {
 		$block_attributes['article_icon_toggle'] = $block_attributes['sidebar_article_icon_toggle'];
 
 		$handler = new EPKB_Modular_Main_Page();
-		$handler->setup_layout_data_for_blocks( $block_attributes );
+		$handler->setup_layout_data( $block_attributes );
 
 		// show message that articles are coming soon if the current KB does not have any Category
 		if ( $handler->has_kb_categories() ) {

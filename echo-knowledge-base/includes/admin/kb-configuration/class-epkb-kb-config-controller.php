@@ -205,22 +205,12 @@ class EPKB_KB_Config_Controller {
 	public static function handle_form_actions() {
 
 		$action = EPKB_Utilities::post( 'action' );
-		if ( empty( $action ) || ! in_array( $action, ['enable_editor_backend_mode', 'epkb_export_knowledge_base', 'epkb_import_knowledge_base', 'emkb_archive_knowledge_base_v2',
+		if ( empty( $action ) || ! in_array( $action, ['epkb_export_knowledge_base', 'epkb_import_knowledge_base', 'emkb_archive_knowledge_base_v2',
 														'emkb_activate_knowledge_base_v2', 'emkb_delete_knowledge_base_v2'] ) ) {
 			return [];
 		}
 
 		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die( EPKB_Utilities::ADMIN_CAPABILITY );
-
-		if ( $action == 'enable_editor_backend_mode' ) {
-
-			$result = EPKB_Core_Utilities::add_kb_flag( 'editor_backend_mode' );
-			if ( is_wp_error( $result ) ) {
-				return [ 'error' => EPKB_Utilities::report_generic_error( 1 ) ];
-			}
-
-			return [ 'success' => esc_html__( 'Backend visual Editor enabled', 'echo-knowledge-base' ) ];
-		}
 
 		// retrieve KB ID we are saving
 		$kb_id = EPKB_Utilities::post( 'emkb_kb_id' );
@@ -290,13 +280,6 @@ class EPKB_KB_Config_Controller {
 		$new_config['article_sidebar_component_priority'] = self::convert_ui_data_to_article_sidebar_component_priority( $new_config );
 
 		EPKB_Core_Utilities::start_update_kb_configuration( $kb_id, $new_config );
-
-		// save Visual Editor backend mode
-		$editor_backend_mode = $new_config['editor_backend_mode'] == '1';
-		$result = EPKB_Core_Utilities::update_kb_flag( 'editor_backend_mode', $editor_backend_mode );
-		if ( is_wp_error( $result ) ) {
-			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 417, $result ) );
-		}
 
 		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );	
 	}

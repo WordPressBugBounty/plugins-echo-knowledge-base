@@ -42,7 +42,7 @@ class EPKB_Articles_Setup {
 		// if necessary get KB configuration
 		if ( empty( $kb_config ) ) {
 		   $kb_id = EPKB_KB_Handler::get_kb_id_from_post_type( $article->post_type );
-		   if ( is_wp_error($kb_id) ) {
+		   if ( is_wp_error( $kb_id ) ) {
 		       $kb_id = EPKB_KB_Config_DB::DEFAULT_KB_ID;
 		   }
 
@@ -95,7 +95,7 @@ class EPKB_Articles_Setup {
 			$article_container_structure_version = 'epkb-ml-sidebar-layout-inner';
 		} ?>
 
-		<div id="<?php echo esc_attr( $article_container_structure_version ); ?>" class="<?php echo esc_attr( implode(" ", $article_page_container_classes) . ' ' . $activeWPTheme ); ?> " data-mobile_breakpoint="<?php echo esc_attr( $mobile_breakpoint ); ?>">    <?php
+		<div id="<?php echo esc_attr( $article_container_structure_version ); ?>" class="<?php echo esc_attr( implode( " ", $article_page_container_classes ) . ' ' . $activeWPTheme ); ?> " data-mobile_breakpoint="<?php echo esc_attr( $mobile_breakpoint ); ?>">    <?php
 
 		   self::article_section( 'eckb-article-header', array( 'id' => $kb_config['id'], 'config' => $kb_config, 'article' => $article ) ); ?>
 
@@ -696,6 +696,11 @@ class EPKB_Articles_Setup {
 		}
 		$current_post_seq_no = (int)EPKB_Utilities::get( 'seq_no', 0 );
 		$current_post_seq_index = $current_post_seq_no > 0 ? $current_post_seq_no - 1 : $current_post_seq_no;
+
+		if ( ! isset( $repeat_current_post_keys[ $current_post_seq_index ] ) ) {
+			return;
+		}
+
 		$current_post_key = $repeat_current_post_keys[ $current_post_seq_index ];
 
 		// search previous post id depends on user access
@@ -1351,18 +1356,6 @@ class EPKB_Articles_Setup {
 		// auto-determine whether we need sidebar or let user override it to be displayed
 		$is_left_sidebar_on = self::is_left_sidebar_on( $kb_config );
 		$is_right_sidebar_on = self::is_right_sidebar_on( $kb_config );
-
-		// Backend Editor special values
-		if ( EPKB_Core_Utilities::is_backend_editor_iframe() ) {
-			$article_container_desktop_width = '100';
-			$article_container_desktop_width_units = '%';
-			$article_body_desktop_width = '100';
-			$article_body_desktop_width_units = '%';
-			$article_container_tablet_width_units = '%';
-			$article_container_tablet_width = '100';
-			$article_body_tablet_width = '100';
-			$article_body_tablet_width_units = '%';
-		}
 
 		/**
 		 *  Grid Columns start at lines.

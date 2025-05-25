@@ -32,7 +32,7 @@ class EPKB_ML_FAQs {
 		}
 	}
 
-	public function display_faqs_module( $is_faq_module=true ) {
+	public function display_faqs_module( $is_faq_module=true, $is_frontend_editor=false ) {
 
 		// do we display old FAQ Categories?
 		if ( $is_faq_module ) {
@@ -44,9 +44,9 @@ class EPKB_ML_FAQs {
 		}
 
 		// retrieve FAQs for this KB; the FAQs are shared for all KBs, but each KB stores selected groups ids
-		$selected_faq_group_ids = $is_faq_module ?
-			EPKB_Utilities::get_kb_option( $this->kb_config['id'], EPKB_ML_FAQs::FAQ_GROUP_IDS, [] ) :		// shortcode module stores group ids in wp options
-			( is_array( $this->kb_config['faq_group_ids'] ) ? $this->kb_config['faq_group_ids'] : [] );		// faqs block stores group ids in attributes
+		$selected_faq_group_ids = $is_faq_module && ! $is_frontend_editor ?
+			EPKB_Utilities::get_kb_option( $this->kb_config['id'], EPKB_ML_FAQs::FAQ_GROUP_IDS, [] ) :        // KB shortcode module stores group ids in wp options
+			( is_array( $this->kb_config['faq_group_ids'] ) ? $this->kb_config['faq_group_ids'] : [] );        // faqs block and FE stores group ids in attributes
 
 		// get selected FAQ groups
 		$faq_groups = [];

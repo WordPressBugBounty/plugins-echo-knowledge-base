@@ -232,7 +232,7 @@ final class EPKB_Featured_Articles_Block extends EPKB_Abstract_Block {
 
 					// GROUP: Header
 					'featured-articles-title' => array(
-						'title' => esc_html__( 'Articles List Title', 'echo-knowledge-base' ),
+						'title' => esc_html__( 'Featured Articles Title', 'echo-knowledge-base' ),
 						'fields' => array(
 							'section_head_font_color' => array(
 								'setting_type' => 'color',

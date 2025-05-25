@@ -318,28 +318,6 @@ class EPKB_Add_Ons_Features {
 			'type'              => 'new-feature'
 		);
 
-	   $features['2021.01.02'] = array(
-		   'plugin'            => esc_html__( 'KB Core', 'echo-knowledge-base'),
-		   'title'             => esc_html__( 'Design Article Header', 'echo-knowledge-base'),
-		   'description'       => '<p>' . esc_html__( 'Change the order of elements in the article header. Move them up, down, left, or right. This applies to the article title, author, dates, print button, and breadcrumbs.', 'echo-knowledge-base') . '</p>',
-		   'image'             => 'https://www.echoknowledgebase.com/wp-content/uploads/2021/01/header-design.jpg',
-		   'learn_more_url'    => EPKB_Editor_Utilities::get_one_editor_url( 'article_page', 'article_content' ),
-		   'button_name'       => esc_html__( 'Try Now!', 'echo-knowledge-base'),
-		   'plugin-type'       => 'core',
-		   'type'              => 'new-feature'
-	   );
-
-		$features['2020.11.01'] = array(
-			'plugin'            => esc_html__( 'Knowledge Base Visual Editor', 'echo-knowledge-base'),
-			'title'             => esc_html__( 'Edit KB Pages', 'echo-knowledge-base'),
-			'description'       => '<p>' . esc_html__( 'Change the style, colors, and features using the front-end Editor.', 'echo-knowledge-base') . '</p>',
-			'image'             => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/11/front-end-editor.jpg',
-			'learn_more_url'    => EPKB_Editor_Utilities::get_one_editor_url( 'main_page' ),
-			'plugin-type'       => 'core',
-			'type'              => 'new-feature',
-			'button_name'       => esc_html__( 'Try Now', 'echo-knowledge-base'),
-		);
-
 		$features['2020.08.09'] = array(
 			'plugin'            => esc_html__( 'Advanced Search', 'echo-knowledge-base'),
 			'title'             => esc_html__( 'Advanced Search Shortcode for One or More KBs', 'echo-knowledge-base'),

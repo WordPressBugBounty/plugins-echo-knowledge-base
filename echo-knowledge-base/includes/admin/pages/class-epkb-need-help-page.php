@@ -137,15 +137,48 @@ class EPKB_Need_Help_Page {
 		$kb_id = $this->kb_config['id'];
 
 		// Setup Wizard
-		if ( $this->kb_config['modular_main_page_toggle'] != 'off' && EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
-			$steps_list[] = array(
-				'content_icon_class' => $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID && EPKB_Core_Utilities::is_kb_flag_set( 'completed_setup_wizard_' . $kb_id ) ? 'epkbfa epkbfa-check-circle' : '',
-				'icon_class' => '',
-				'icon_img_url' => 'img/need-help/rocket-2.jpg',
-				'title' => $step_number++ . '. ' . esc_html__( 'Setup Wizard (Run Anytime)', 'echo-knowledge-base' ),
-				'desc' => esc_html__( 'Set up your Knowledge Base name, url, and design in just two steps. You can run the wizard again at any time to make changes.', 'echo-knowledge-base' ),
-				'html' => EPKB_Core_Utilities::get_kb_admin_page_link( 'page=epkb-kb-configuration&setup-wizard-on', esc_html__( 'Launch Setup Wizard', 'echo-knowledge-base' ) ,'','epkb-kb__wizard-link'),
-			);
+		if ( EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
+
+			$kb_main_pages = EPKB_KB_Handler::get_kb_main_pages( $this->kb_config );
+
+			if ( EPKB_Core_Utilities::run_setup_wizard_first_time() || empty( $kb_main_pages ) ) {
+				$steps_list[] = array(
+					'content_icon_class' => $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID && EPKB_Core_Utilities::is_kb_flag_set( 'completed_setup_wizard_' . $kb_id ) ? 'epkbfa epkbfa-check-circle' : '',
+					'icon_class' => '',
+					'icon_img_url' => 'img/need-help/rocket-2.jpg',
+					'title' => $step_number++ . '. ' . esc_html__( 'Setup Wizard (Run Anytime)', 'echo-knowledge-base' ),
+					'desc' => esc_html__( 'Set up your Knowledge Base name, url, and design in just two steps. You can run the wizard again at any time to make changes.', 'echo-knowledge-base' ),
+					'html' => EPKB_Core_Utilities::get_kb_admin_page_link( 'page=epkb-kb-configuration&setup-wizard-on', esc_html__( 'Launch Setup Wizard', 'echo-knowledge-base' ) ,'','epkb-kb__wizard-link'),
+				);
+			} else if ( EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $this->kb_config ) ) {
+					$steps_list[] = array(
+						'content_icon_class' => 'epkbfa epkbfa-check-circle',
+						'icon_class' => '',
+						'icon_img_url' => 'img/need-help/rocket-2.jpg',
+						'title' => $step_number++ . '. ' . esc_html__( 'Edit Main Page', 'echo-knowledge-base' ),
+						'desc' => esc_html__( 'Use WordPress Block Editor to change KB Main Page settings.', 'echo-knowledge-base' ),
+						'html' => '<a href="' . esc_url( get_edit_post_link( EPKB_KB_Handler::get_first_kb_main_page_id( $this->kb_config ) ) ) . 
+									'" target="_blank" class="epkb-primary-btn" style="display: inline-block; text-decoration: none; margin-top: 10px;">' .	esc_html__( 'Edit Main Page', 'echo-knowledge-base' ) . '</a>',
+					);	
+			} else {
+				$steps_list[] = array(
+					'content_icon_class' => $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID && EPKB_Core_Utilities::is_kb_flag_set( 'completed_setup_wizard_' . $kb_id ) ? 'epkbfa epkbfa-check-circle' : '',
+					'icon_class' => '',
+					'icon_img_url' => 'img/need-help/rocket-2.jpg',
+					'title' => $step_number++ . '. ' . esc_html__( 'Setup Wizard (Run Anytime)', 'echo-knowledge-base' ),
+					'desc' => esc_html__( 'Set up your Knowledge Base name, url, and design in just two steps. You can run the wizard again at any time to make changes.', 'echo-knowledge-base' ),
+					'html' => EPKB_Core_Utilities::get_kb_admin_page_link( 'page=epkb-kb-configuration&setup-wizard-on', esc_html__( 'Launch Setup Wizard', 'echo-knowledge-base' ) ,'','epkb-kb__wizard-link'),
+				);
+				/* TODO $steps_list[] = array(
+					'content_icon_class' => 'epkbfa epkbfa-check-circle',
+					'icon_class' => '',
+					'icon_img_url' => 'img/need-help/rocket-2.jpg',
+					'title' => $step_number++ . '. ' . esc_html__( 'Edit Main Page', 'echo-knowledge-base' ),
+					'desc' => esc_html__( 'Use our Frontend Editor to change KB Main Page settings.', 'echo-knowledge-base' ),
+					'html' => '<a href="' . esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config ) ) .
+							 '?epkb_fe_reopen_feature=none" target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px">' . esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' ) . '</a>',
+				); */
+			}
 		}
 
 		if ( ! EPKB_Core_Utilities::run_setup_wizard_first_time() ) {

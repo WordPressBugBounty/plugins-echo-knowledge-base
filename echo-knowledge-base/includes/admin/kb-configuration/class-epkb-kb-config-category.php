@@ -57,14 +57,14 @@ class EPKB_KB_Config_Category {
 	public function display_category_fields( $category ) {
 
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $this->kb_id );
-		
-		$main_page_layout = $kb_config['kb_main_page_layout'];
 
 		$current_main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config );
-		$current_main_page = get_post( $current_main_page_id );
-		$is_block_main_page = ! empty( $current_main_page ) && EPKB_Block_Utilities::content_has_kb_block( $current_main_page->post_content );
+		$current_main_page = empty( $current_main_page_id) ? '' : get_post( $current_main_page_id );
+
+		$is_block_main_page = EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config );
 
 		// Check if current page has KB blocks and get layout from block attributes
+		$main_page_layout = $kb_config['kb_main_page_layout'];
 		if ( $is_block_main_page ) {
 			$main_page_layout = EPKB_Block_Utilities::get_kb_block_layout( $current_main_page, $main_page_layout );
 		}

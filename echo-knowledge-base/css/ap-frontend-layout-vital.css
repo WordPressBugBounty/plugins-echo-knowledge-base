@@ -814,6 +814,9 @@
 #eckb-article-page-container-v2 #eckb-article-body #eckb-article-content #eckb-article-content-header-v2 #eckb-article-content-breadcrumb-container .eckb-breadcrumb-link {
   font-weight: inherit;
 }
+#eckb-article-page-container-v2 #eckb-article-body #eckb-article-content #eckb-article-content-header-v2 #eckb-article-content-breadcrumb-container .epkbfa-ban {
+  display: none;
+}
 #eckb-article-page-container-v2 #eckb-article-body #eckb-article-content #eckb-article-content-header-v2 #eckb-article-content-header-bar-toolbar {
   display: flex;
   justify-content: flex-end;

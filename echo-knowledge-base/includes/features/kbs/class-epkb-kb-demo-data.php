@@ -262,12 +262,12 @@ class EPKB_KB_Demo_Data {
 
 		$articles_seq_meta = EPKB_Utilities::get_kb_option( $kb_id, EPKB_Articles_Admin::KB_ARTICLES_SEQ_META, null, true );
 		if ( empty( $articles_seq_meta ) ) {
-			return;
+			return [];
 		}
 
 		$categories_seq_meta = EPKB_Utilities::get_kb_option( $kb_id, EPKB_Categories_Admin::KB_CATEGORIES_SEQ_META, null, true );
 		if ( empty( $categories_seq_meta ) ) {
-			return;
+			return [];
 		}
 
 		// get top categories
@@ -278,12 +278,12 @@ class EPKB_KB_Demo_Data {
 			}
 		}
 
-		// check that sub-categories match demo data; are they tab or non-tab top categories?
+		// top categories do not match DEMO data;check that sub-categories match demo data; are they tab or non-tab top categories?
 		if ( array_diff( array_values( $top_categories ), self::get_tab_top_categories() ) ) {
 
-			// we have non-Tab categories; are they non-tab categories or user data?
+			// we have non-Tab categories; are they non-tab DEMO categories or user data?
 			if ( array_diff( array_values( $top_categories ), self::get_non_tab_top_categories() ) ) {
-				return; // unknown top categories
+				return []; // unknown user top categories
 
 			// we have non-tab top categories so add tab top categories
 			} else if ( $kb_main_page_layout == EPKB_Layout::TABS_LAYOUT ) {
@@ -295,15 +295,15 @@ class EPKB_KB_Demo_Data {
 
 				$tab_category_id = self::create_sample_category( $kb_id, $tab_category_name_1, null, true );
 				if ( empty( $tab_category_id ) ) {
-					return;
+					return [];
 				}
 				$tab_category_id_2 = self::create_sample_category( $kb_id, $tab_category_name_2, null, true );
 				if ( empty( $tab_category_id_2 ) ) {
-					return;
+					return [];
 				}
 				$tab_category_id_3 = self::create_sample_category( $kb_id, $tab_category_name_3, null, true );
 				if ( empty( $tab_category_id_3 ) ) {
-					return;
+					return [];
 				}
 
 				// assign sub-categories to the top categories
@@ -322,27 +322,27 @@ class EPKB_KB_Demo_Data {
 				$articles_seq_meta[$tab_category_id_3] = [ '0' => $tab_category_name_3, '1' => self::get_category_description( $tab_category_name_3 ) ];
 
 			} else {
-				return; // non-tab layout already has non-tab top categories
+				return []; // non-tab layout already has non-tab top categories
 			}
 
-		// we found top Tab categories and Tab layout
+		// we found matching DEMO top Tab categories and Tab layout
 		} else if ( $kb_main_page_layout == EPKB_Layout::TABS_LAYOUT ) {
-			return; // Tab layout already has tab top categories
+			return []; // Tab layout already has tab top categories
 
-		// we found top Tab categories but non-Tab layout
+		// we found matching DEMO top Tab categories but non-Tab layout
 		} else {
 
-			// remove top tabs from categories
+			// remove DEMO top tabs from categories
 			$top_categories_ids = array_keys( $top_categories );
 			if ( empty( $categories_seq_meta[$top_categories_ids[0]] ) ) {
-				return;
+				return [];
 			}
 
 			foreach( $top_categories as $top_category_id => $top_category_name ) {
 				wp_delete_term( $top_category_id, EPKB_KB_Handler::get_category_taxonomy_name( $kb_id ), array( 'parent' => 0 ) );
 			}
 
-			// remove top tabs categories in categories and articles sequences
+			// remove DEMO top tabs categories in categories and articles sequences
 			foreach( $articles_seq_meta as $category_id => $value ) {
 				if ( $category_id == $top_categories_ids[0] || $category_id == $top_categories_ids[1] || $category_id == $top_categories_ids[2] ) {
 					unset( $articles_seq_meta[$category_id] );
@@ -355,9 +355,7 @@ class EPKB_KB_Demo_Data {
 			$categories_seq_meta = $categories_seq_meta_temp;
 		}
 
-	    // Save the categories and articles sequences
-	    EPKB_Utilities::save_kb_option( $kb_id, EPKB_Articles_Admin::KB_ARTICLES_SEQ_META, $articles_seq_meta );
-	    EPKB_Utilities::save_kb_option( $kb_id, EPKB_Categories_Admin::KB_CATEGORIES_SEQ_META, $categories_seq_meta );
+		return [ 'articles_seq_meta' => $articles_seq_meta, 'categories_seq_meta' => $categories_seq_meta ];
 	}
 
 	private static function create_category_and_articles( $new_kb_id, $category_name, $parent_category_id, $article_titles, &$articles_seq_meta, &$categories_seq_meta ) {
@@ -532,6 +530,12 @@ class EPKB_KB_Demo_Data {
 				        <li>" . esc_html__( "Fill out the form, including your desired dates and any relevant notes.", 'echo-knowledge-base' ) . "</li>
 				        <li>" . esc_html__( 'Submit the form to your manager for approval.', 'echo-knowledge-base' ) . "</li>
                     </ol>");
+
+		if ( empty( $faq_id1 ) || is_wp_error( $faq_id1 ) ||
+				empty( $faq_id2 ) || is_wp_error( $faq_id2 ) ||
+				empty( $faq_id3 ) || is_wp_error( $faq_id3 ) ) {
+			return;
+		}
 
 		// include new FAQs
 		foreach ( [$faq_id1, $faq_id2, $faq_id3] as $faq_id ) {

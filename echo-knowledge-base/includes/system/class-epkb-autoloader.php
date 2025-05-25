@@ -33,7 +33,6 @@ class EPKB_Autoloader {
 				'epkb_pll'                          =>  'includes/system/class-epkb-pll.php',
 				'epkb_delete_kb'                	=>  'includes/system/class-epkb-delete-kb.php',
 				'epkb_deactivate_feedback'          =>  'includes/system/class-epkb-deactivate-feedback.php',
-				'epkb_error_handler'                =>  'includes/system/class-epkb-error-handler.php',
 				'epkb_typography'                   =>  'includes/system/class-epkb-typography.php',
 				'epkb_admin_ui_access'              =>  'includes/system/class-epkb-admin-ui-access.php',
 				'epkb_reset'                        =>  'includes/system/class-epkb-reset.php',
@@ -46,10 +45,6 @@ class EPKB_Autoloader {
 				'epkb_admin_notices'                =>  'includes/admin/class-epkb-admin-notices.php',
 				'epkb_site_builders'                =>  'includes/admin/class-epkb-site-builders.php',
 				'epkb_debug_controller'             =>  'includes/admin/settings/class-epkb-debug-controller.php',
-				'epkb_visual_helper'                =>  'includes/admin/settings/class-epkb-visual-helper.php',
-				'epkb_main_page_visual_helper'      =>  'includes/admin/settings/class-epkb-main-page-visual-helper.php',
-				'epkb_article_page_visual_helper'   =>  'includes/admin/settings/class-epkb-article-page-visual-helper.php',
-				'epkb_category_page_visual_helper'  =>  'includes/admin/settings/class-epkb-category-page-visual-helper.php',
 
 				// ADMIN PAGES
 				'epkb_config_page'                  =>  'includes/admin/pages/class-epkb-config-page.php',
@@ -94,16 +89,8 @@ class EPKB_Autoloader {
 				'epkb_kb_wizard_global'             =>  'includes/admin/wizard/class-epkb-kb-wizard-global.php',
 
 				// FRONT END EDITOR
-				'epkb_editor_controller'            =>  'includes/admin/editor/class-epkb-editor-controller.php',
-				'epkb_editor_view'                  =>  'includes/admin/editor/class-epkb-editor-view.php',
-				'epkb_editor_article_page_config'   =>  'includes/admin/editor/class-epkb-editor-article-page-config.php',
-				'epkb_editor_archive_page_config'   =>  'includes/admin/editor/class-epkb-editor-archive-page-config.php',
-				'epkb_editor_main_page_config'      =>  'includes/admin/editor/class-epkb-editor-main-page-config.php',
-				'epkb_editor_search_page_config'    =>  'includes/admin/editor/class-epkb-editor-search-page-config.php',
-				'epkb_editor_config_base'           =>  'includes/admin/editor/class-epkb-editor-config-base.php',
-				'epkb_editor_kb_base_config'        =>  'includes/admin/editor/class-epkb-editor-kb-base-config.php',
+				'epkb_frontend_editor' 				=>  'includes/admin/editor/class-epkb-frontend-editor.php',
 				'epkb_editor_utilities'             =>  'includes/admin/editor/class-epkb-editor-utilities.php',
-				'epkb_editor_sidebar_config'        =>  'includes/admin/editor/class-epkb-editor-sidebar-config.php',
 
 				// FEATURES - LAYOUT
 				'epkb_layout'                       =>  'includes/features/layouts/class-epkb-layout.php',

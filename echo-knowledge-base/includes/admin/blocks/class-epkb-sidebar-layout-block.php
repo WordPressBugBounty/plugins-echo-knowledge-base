@@ -20,7 +20,6 @@ final class EPKB_Sidebar_Layout_Block extends EPKB_Abstract_Block {
 		// must be assigned to hook inside child class to enqueue unique assets for each block type
 		add_action( 'enqueue_block_assets', array( $this, 'register_block_assets' ) ); // Frontend / Backend
 
-		// must be assigned only in layout block
 		add_action( 'save_post', array( $this, 'update_kb_setting_on_save_post'), 10, 3 );
 	}
 
@@ -78,7 +77,7 @@ final class EPKB_Sidebar_Layout_Block extends EPKB_Abstract_Block {
 		$block_attributes = self::apply_article_sidebar_settings( $block_attributes );
 
 		$handler = new EPKB_Modular_Main_Page();
-		$handler->setup_layout_data_for_blocks( $block_attributes );
+		$handler->setup_layout_data( $block_attributes );
 
 		$intro_text = apply_filters( 'eckb_main_page_sidebar_intro_text', $block_attributes['sidebar_main_page_intro_text'], $block_attributes['id'] );
 		$temp_article = new stdClass();
@@ -167,7 +166,11 @@ final class EPKB_Sidebar_Layout_Block extends EPKB_Abstract_Block {
 	private static function apply_article_sidebar_settings( $block_attributes ) {
 
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $block_attributes['kb_id'] );
-		$kb_config = apply_filters( 'elay_block_config', $kb_config, $block_attributes['kb_id'] );
+		$add_ons_kb_config = apply_filters( 'elay_block_config', $kb_config, $block_attributes['kb_id'] );
+		if ( is_wp_error( $add_ons_kb_config ) || empty( $add_ons_kb_config ) || ! is_array( $add_ons_kb_config ) || count( $add_ons_kb_config ) < 100 ) {
+			return false;
+		}
+		$kb_config = $add_ons_kb_config;
 
 		// sync KB article icon toggle with EL.AY article icon toggle (unless we want to have both in block settings UI)
 		$block_attributes['article_icon_toggle'] = $kb_config['sidebar_article_icon_toggle'];

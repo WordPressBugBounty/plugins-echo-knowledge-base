@@ -38,7 +38,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 				continue;
 			}   ?>
 
-			<div id="epkb-ml__row-<?php echo esc_attr( $row_number ); ?>" class="epkb-ml__row">                <?php
+			<div id="epkb-ml__row-<?php echo esc_attr( $row_number ); ?>" data-feature="<?php echo $row_module; ?>" class="epkb-ml__row">                <?php
 				switch ( $row_module ) {
 
 					// core modules
@@ -80,7 +80,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 			return;
 		}
 
-		// Archive page styling is controlled by Main Page
+		// Archive page styling is controlled by the Main Page
 		// For Sidebar Layout the Article Page search is controlled by the search settings on the Main Page.
 		$is_sidebar_layout = $kb_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT;
 		$layout = ( EPKB_Utilities::is_kb_main_page() || is_archive() || $is_sidebar_layout ) ? $kb_config['ml_search_layout'] : $kb_config['ml_article_search_layout'];
@@ -241,7 +241,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	}
 
 	/**
-	 * Popular Articles list for Categories & Articles Sidebar
+	 * Popular Featured Articles for Categories & Articles Sidebar
 	 */
 	private function display_sidebar_popular_articles() {
 
@@ -265,7 +265,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	}
 
 	/**
-	 * Newest Articles list for Categories & Articles Sidebar
+	 * Newest Featured Articles for Categories & Articles Sidebar
 	 */
 	private function display_sidebar_newest_articles() {
 
@@ -289,7 +289,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	}
 
 	/**
-	 * Recent Articles list for Categories & Articles Sidebar
+	 * Recent Featured Articles for Categories & Articles Sidebar
 	 */
 	private function display_sidebar_recent_articles() {
 
@@ -313,7 +313,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	}
 
 	/**
-	 * MODULE:  Articles List
+	 * MODULE:  Featured Articles
 	 */
 	private function articles_list_module() { ?>
 		<div id="epkb-ml__module-articles-list" class="epkb-ml__module">   <?php
@@ -414,7 +414,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 					}
 					break;
 
-				// CSS for Module: Articles List
+				// CSS for Module: Featured Articles
 				case 'articles_list':
 					$output .= EPKB_ML_Articles_List::get_inline_styles( $kb_config );
 					break;
@@ -582,12 +582,13 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	}
 
 	/**
-	 * Set up data for layout without rendering entire Main Page
+	 * Set up data for layout without rendering entire Main Page; used by blocks and FE
 	 *
 	 * @param $kb_config
+	 * @param array $seq_meta
 	 * @return void
 	 */
-	public function setup_layout_data_for_blocks( $kb_config ) {
+	public function setup_layout_data( $kb_config, $seq_meta=[] ) {
 
 		// set up data only once
 		if ( ! empty( $this->kb_config ) ) {
@@ -599,8 +600,13 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 		$this->kb_id = $kb_config['id'];
 
 		// set category and article sequence
-		$this->category_seq_data = EPKB_Utilities::get_kb_option( $this->kb_id, EPKB_Categories_Admin::KB_CATEGORIES_SEQ_META, array(), true );
-		$this->articles_seq_data = EPKB_Utilities::get_kb_option( $this->kb_id, EPKB_Articles_Admin::KB_ARTICLES_SEQ_META, array(), true );
+		if ( empty( $seq_meta ) ) {
+			$this->category_seq_data = EPKB_Utilities::get_kb_option( $this->kb_id, EPKB_Categories_Admin::KB_CATEGORIES_SEQ_META, array(), true );
+			$this->articles_seq_data = EPKB_Utilities::get_kb_option( $this->kb_id, EPKB_Articles_Admin::KB_ARTICLES_SEQ_META, array(), true );
+		} else {
+			$this->category_seq_data = $seq_meta['categories_seq_meta'];
+			$this->articles_seq_data = $seq_meta['articles_seq_meta'];
+		}
 
 		// for WPML filter categories and articles given active language
 		if ( EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {

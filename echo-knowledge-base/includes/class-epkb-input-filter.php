@@ -527,12 +527,12 @@ class EPKB_Input_Filter {
 	public function retrieve_and_sanitize_form_fields( $submitted_fields, $all_fields_specs, $orig_settings ) {
 
 		$name_values = array();
-		foreach ($all_fields_specs as $key => $spec ) {
+		foreach ( $all_fields_specs as $key => $spec ) {
 
 			// copy over fields that are internal
-			if ( ! empty($spec['internal']) || $spec['type'] == self::ID ) {
-				$default_value = isset($spec['default']) ? $spec['default'] : '';
-				$orig_value = isset($orig_settings[$key]) ? $orig_settings[$key] :$default_value;
+			if ( ! empty( $spec['internal'] ) || $spec['type'] == self::ID ) {
+				$default_value = isset( $spec['default'] ) ? $spec['default'] : '';
+				$orig_value = isset( $orig_settings[$key] ) ? $orig_settings[$key] :$default_value;
 				$name_values += array( $key => $orig_value);
 				continue;
 			}
@@ -550,13 +550,13 @@ class EPKB_Input_Filter {
 					if ( ! empty( $submitted_key ) && strpos( $submitted_key, $key ) === 0) {
 
 						$chunks = $is_multiselect ?  explode('[[-,-]]', $submitted_value) : explode('[[-HIDDEN-]]', $submitted_value);
-						if ( empty($chunks[0]) || empty($chunks[1]) || ! empty($chunks[2]) ) {
+						if ( empty( $chunks[0] ) || empty( $chunks[1] ) || ! empty( $chunks[2] ) ) {
 							continue;
 						}
 
 						if ( $is_multiselect ) {
 							$multi_selects[$chunks[0]] = $chunks[1];
-						} else if ( ! empty($submitted_value) && strpos($submitted_value, '[[-HIDDEN-]]') !== false ) {
+						} else if ( ! empty( $submitted_value ) && strpos( $submitted_value, '[[-HIDDEN-]]' ) !== false ) {
 							$multi_selects[$chunks[0]] = $chunks[1];
 						}
 					}
@@ -573,26 +573,27 @@ class EPKB_Input_Filter {
 
 			// for regular input if it exists then retrieve it
 			if ( $spec['type'] == self::TYPOGRAPHY ) {
-				$input_value = is_array($submitted_fields[$key]) ? $submitted_fields[$key] : array();
+				$input_value = is_array( $submitted_fields[$key] ) ? $submitted_fields[$key] : array();
 
-			} elseif ( isset($submitted_fields[$key]) ) {
+			} elseif ( isset( $submitted_fields[$key] ) ) {
 				$input_value = trim( $submitted_fields[ $key ] );
 
 			// if the input is missing then use the original config value
 			} else {
-				$default_value = isset($spec['default']) ? $spec['default'] : '';
-				$input_value = isset($orig_settings[$key]) ? $orig_settings[$key] :$default_value;
+				$default_value = isset( $spec['default'] ) ? $spec['default'] : '';
+				$input_value = isset( $orig_settings[$key] ) ? $orig_settings[$key] :$default_value;
 			}
 
-			if ( gettype($input_value) !== 'array' ) $input_value = stripslashes( $input_value );
+			if ( gettype( $input_value ) !== 'array' ) {
+				$input_value = stripslashes( $input_value );
+			}
 
 			if ( $spec['type'] == self::WP_EDITOR ) {
 				$name_values += array( $key => wp_kses( $input_value, EPKB_Utilities::get_extended_html_tags() ) );
 			} elseif ( $spec['type'] == self::TYPOGRAPHY ) {
 				$name_values += array( $key => self::sanitize_typography( $input_value ) );
-
 			} elseif ( ( $spec['type'] == self::TEXT ) && ! ( empty( $spec['allowed_tags'] ) ) ) {
-				$name_values += array($key => wp_kses($input_value, $spec['allowed_tags']));
+				$name_values += array( $key => wp_kses( $input_value, $spec['allowed_tags'] ) );
 			} else if ( ( $spec['type'] == self::EMAIL ) ) {
 				$name_values += array( $key => sanitize_email( $input_value ) );
 			} else {

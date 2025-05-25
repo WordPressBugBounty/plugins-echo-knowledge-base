@@ -20,7 +20,6 @@ final class EPKB_Classic_Layout_Block extends EPKB_Abstract_Block {
 		// must be assigned to hook inside child class to enqueue unique assets for each block type
 		add_action( 'enqueue_block_assets', array( $this, 'register_block_assets' ) ); // Frontend / Backend
 
-		// must be assigned only in layout block
 		add_action( 'save_post', array( $this, 'update_kb_setting_on_save_post'), 10, 3 );
 	}
 
@@ -31,7 +30,7 @@ final class EPKB_Classic_Layout_Block extends EPKB_Abstract_Block {
 	public function render_block_inner( $block_attributes ) {
 
 		$handler = new EPKB_Modular_Main_Page();
-		$handler->setup_layout_data_for_blocks( $block_attributes );
+		$handler->setup_layout_data( $block_attributes );
 
 		// show message that articles are coming soon if the current KB does not have any Category
 		if ( $handler->has_kb_categories() ) {
@@ -204,6 +203,108 @@ final class EPKB_Classic_Layout_Block extends EPKB_Abstract_Block {
 					background-color: ' . EPKB_Utilities::sanitize_hex_color( $block_attributes['section_box_expand_hover_color'] ) . ';
 				}';
 		}
+
+		// Sub Categories Design 1 -----------------------------------------/ 
+		$output .= '
+		' . $block_selector . '.epkb-ml-classic-layout--design-1 .epkb-main-articles,
+		' . $block_selector . '.epkb-ml-classic-layout--design-1 .epkb-ml-2-lvl-categories {
+			padding-left: ' . $block_attributes['article_list_margin'] . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-1 .epkb-ml-2-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-1 .epkb-ml-3-lvl-categories {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-1 .epkb-ml-3-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-1 .epkb-ml-4-lvl-categories {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-1 .epkb-ml-4-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-1 .epkb-ml-5-lvl-categories {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-1 .epkb-ml-5-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}	';
+
+
+		// Sub Categories Design 2 -----------------------------------------/ 
+		$output .= '
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-main-articles,
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-2-lvl-categories {
+			padding-left: ' . $block_attributes['article_list_margin'] . 'px !important;
+		}
+
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-2-lvl-category__name,
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-3-lvl-category__name,
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-4-lvl-category__name,
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-5-lvl-category__name {
+			margin-left: -' . ( $block_attributes['article_list_margin'] + 20 ) . 'px !important;
+			padding-left: ' . ( $block_attributes['article_list_margin'] + 20 ) . 'px !important;
+		}
+
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-2-lvl-category__icon {
+			padding-left: ' . ( $block_attributes['article_list_margin'] + 20 ) . 'px !important;
+			margin-left: -' . ( $block_attributes['article_list_margin'] +20 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-2-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin']  ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-3-lvl-category__icon {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + $block_attributes['article_list_margin'] + 40 ) . 'px !important;
+			margin-left: -' . ( $block_attributes['article_list_margin'] + 40 ) . 'px !important;
+		}t
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-3-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] * 2  ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-4-lvl-category__icon {
+			padding-left: ' . ( ( $block_attributes['sub_article_list_margin'] * 2  )  + $block_attributes['article_list_margin'] + 40 ) . 'px !important;
+			margin-left: -' . ( $block_attributes['article_list_margin'] + 40 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-4-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] * 3  ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-5-lvl-category__icon {
+			padding-left: ' . ( ( $block_attributes['sub_article_list_margin'] * 3  )  + $block_attributes['article_list_margin'] + 40 ) . 'px !important;
+			margin-left: -' . ( $block_attributes['article_list_margin'] + 40 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-2 .epkb-ml-5-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] * 4  ) . 'px !important;
+		}
+		';
+		// Sub Categories Design 3 -----------------------------------------/ 
+		$output .= '
+		' . $block_selector . '.epkb-ml-classic-layout--design-3 .epkb-main-articles,
+		' . $block_selector . '.epkb-ml-classic-layout--design-3 .epkb-ml-2-lvl-categories {
+			padding-left: ' . $block_attributes['article_list_margin'] . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-3 .epkb-ml-2-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-3 .epkb-ml-3-lvl-categories {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-3 .epkb-ml-3-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-3 .epkb-ml-4-lvl-categories {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-3 .epkb-ml-4-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-3 .epkb-ml-5-lvl-categories {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}
+		' . $block_selector . '.epkb-ml-classic-layout--design-3 .epkb-ml-5-lvl-article-list {
+			padding-left: ' . ( $block_attributes['sub_article_list_margin'] + 10 ) . 'px !important;
+		}	';
+
 
 		$output .=
 			$block_selector . ' ' . '.epkb-article-inner .epkb-article__icon {
@@ -575,6 +676,14 @@ final class EPKB_Classic_Layout_Block extends EPKB_Abstract_Block {
 							),
 							'article_font_color' => array(
 								'setting_type' => 'color',
+							),
+							'article_list_margin' => array(
+								'setting_type' => 'box_control',
+								'side' => 'left',
+							),
+							'sub_article_list_margin' => array(
+								'setting_type' => 'box_control',
+								'side' => 'left',
 							),
 							'article_list_spacing' => array(
 								'setting_type' => 'range',

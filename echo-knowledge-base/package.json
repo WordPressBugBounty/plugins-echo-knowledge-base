@@ -35,7 +35,7 @@
 		"minify-admin-ui-js": "terser js/admin-ui.js -o js/admin-ui.min.js --compress --mangle",
 		"minify-error-handlers-js": "terser js/error-handlers.js -o js/error-handlers.min.js --compress --mangle",
 		"minify-faq-shortcode-scripts-js": "terser js/faq-shortcode-scripts.js -o js/faq-shortcode-scripts.min.js --compress --mangle",
-		"minify-frontend-visual-helper-js": "terser js/frontend-visual-helper.js -o js/frontend-visual-helper.min.js --compress --mangle",
+		"minify-frontend-editor-js": "terser js/frontend-editor.js -o js/frontend-editor.min.js --compress --mangle",
 
 		"build-all-mp-modular-layouts-css": "npm run build-mp-frontend-modular-basic-layout-css && npm run build-mp-frontend-modular-tab-layout-css && npm run build-mp-frontend-modular-category-layout-css && npm run build-mp-frontend-modular-classic-layout-css && npm run build-mp-frontend-modular-drill-down-layout-css && npm run build-mp-frontend-modular-sidebar-layout-css && npm run build-mp-frontend-modular-grid-layout-css",
 
@@ -137,11 +137,11 @@
 		"__minify-cp-frontend-layout-css": "sass --no-source-map --style=compressed css/cp-frontend-layout.css css/cp-frontend-layout.min.css",
 		"__minified-postcss-cp-frontend-layout-css": "cross-env POSTCSS_MODE=minified postcss css/cp-frontend-layout.min.css --config postcss.config.js --no-map -o css/cp-frontend-layout.min.css",
 
-		"build-frontend-visual-helper-css": "npm run __build-frontend-visual-helper-scss-to-css && npm run __postcss-frontend-visual-helper-css && npm run __minify-frontend-visual-helper-css && npm run __minified-postcss-frontend-visual-helper-css",
-		"__build-frontend-visual-helper-scss-to-css": "sass --no-source-map css/scss/frontend-visual-helper.scss css/frontend-visual-helper.css",
-		"__postcss-frontend-visual-helper-css": "postcss css/frontend-visual-helper.css --config postcss.config.js --no-map -o css/frontend-visual-helper.css",
-		"__minify-frontend-visual-helper-css": "sass --no-source-map --style=compressed css/frontend-visual-helper.css css/frontend-visual-helper.min.css",
-		"__minified-postcss-frontend-visual-helper-css": "cross-env POSTCSS_MODE=minified postcss css/frontend-visual-helper.min.css --config postcss.config.js --no-map -o css/frontend-visual-helper.min.css",
+		"build-frontend-editor-css": "npm run __build-frontend-editor-scss-to-css && npm run __postcss-frontend-editor-css && npm run __minify-frontend-editor-css && npm run __minified-postcss-frontend-editor-css",
+		"__build-frontend-editor-scss-to-css": "sass --no-source-map css/scss/frontend-editor.scss css/frontend-editor.css",
+		"__postcss-frontend-editor-css": "postcss css/frontend-editor.css --config postcss.config.js --no-map -o css/frontend-editor.css",
+		"__minify-frontend-editor-css": "sass --no-source-map --style=compressed css/frontend-editor.css css/frontend-editor.min.css",
+		"__minified-postcss-frontend-editor-css": "cross-env POSTCSS_MODE=minified postcss css/frontend-editor.min.css --config postcss.config.js --no-map -o css/frontend-editor.min.css",
 
 		"build-sp-frontend-layout-css": "npm run __build-sp-frontend-layout-scss-to-css && npm run __postcss-sp-frontend-layout-css && npm run __minify-sp-frontend-layout-css && npm run __minified-postcss-sp-frontend-layout-css",
 		"__build-sp-frontend-layout-scss-to-css": "sass --no-source-map css/scss/sp-frontend-layout.scss css/sp-frontend-layout.css",

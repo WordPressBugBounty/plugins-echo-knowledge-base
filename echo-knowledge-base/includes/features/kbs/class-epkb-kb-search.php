@@ -102,7 +102,8 @@ class EPKB_KB_Search {
 				'posts_per_page' => 20,         // limit search results
 				'no_found_rows' => true,        // query only posts_per_page rather than finding total nof posts for pagination etc.
 				'cache_results' => false,       // don't need that for mostly unique searches
-				'orderby' => 'relevance'
+				'orderby' => 'relevance',
+				'perm'  => 'readable'           // only show posts that are readable by the current user
 		);
 
 		// OLD installation or Access Manager

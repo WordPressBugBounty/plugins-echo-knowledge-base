@@ -794,6 +794,12 @@ function epkb_get_block_attributes( $block_name ) {
 			'elay_article_icon' => [
 				'type' => 'string'
 			],
+			'article_list_margin' => [
+				'type' => 'number'
+			],
+			'sub_article_list_margin' => [
+				'type' => 'number'
+			],
 			'article_list_spacing' => [
 				'type' => 'number'
 			],
@@ -1649,6 +1655,15 @@ function epkb_get_block_attributes( $block_name ) {
 			'search_multiple_kbs_list' => [
 				'type' => 'array'
 			],
+			'advanced_search_context_toggle' => [
+				'type' => 'string'
+			],
+			'advanced_search_context_characters' => [
+				'type' => 'number'
+			],
+			'advanced_search_context_highlight_font_color' => [
+				'type' => 'string'
+			],
 			'advanced_search_text_highlight_enabled' => [
 				'type' => 'string'
 			],
@@ -1844,6 +1859,17 @@ function epkb_get_block_attributes( $block_name ) {
 			'advanced_search_mp_show_top_category' => [
 				'type' => 'string'
 			],
+			'advanced_search_context_enabled' => [
+				'type' => 'string'
+			],
+			'advanced_search_context_characters' => [
+				'type' => 'number'
+			],
+			'advanced_search_context_highlight_font_color' => [
+				'type' => 'string'
+			],
+			
+
 			'advanced_search_mp_results_typography_controls' => [
 				'type' => 'object'
 			],

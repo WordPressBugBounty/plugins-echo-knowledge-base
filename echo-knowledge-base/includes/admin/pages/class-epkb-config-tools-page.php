@@ -888,7 +888,6 @@ class EPKB_Config_Tools_Page {
 		] );
 	}
 
-
 	/**
 	 * HTML for convert footer
 	 * @param $kb_config
@@ -1240,6 +1239,8 @@ class EPKB_Config_Tools_Page {
 				$kb_config = get_option( EPKB_KB_Config_DB::KB_CONFIG_PREFIX . $kb_id );
 			}
 
+			$output .= "KB Main Page Has KB Blocks: " . EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config ) ? 'Yes' . "\n" : 'No' . "\n";
+
 			// if KB configuration is missing then return error
 			if ( empty( $kb_config ) || ! is_array( $kb_config ) ) {
 				$output .= "Did not find KB configuration (DB231) for KB ID " . $kb_id . "\n";
@@ -1365,6 +1366,25 @@ class EPKB_Config_Tools_Page {
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( EPKB_KB_Config_DB::DEFAULT_KB_ID );
 		$first_KB_URL = EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config );
 
+		$pages = self::epkb_get_kb_main_pages_templates();
+
+		$kb_main_pages_templates_info = '';
+		$counter = 0;
+		foreach ( $pages as $info ) {
+			$counter++;
+			if ( $counter > 5 ) {
+				break;
+			}
+			$kb_main_pages_templates_info .= sprintf(
+				"\t\t\tKB # %d – “%s” – %s\n",
+				//$info['kb_name'],
+				$info['kb_id'],
+				$info['page_title'],
+				//$info['page_id'],
+				$info['template_name']
+			);
+		}
+
 		ob_start();     ?>
 
 		PHP and WordPress Information:
@@ -1377,10 +1397,12 @@ class EPKB_Config_Tools_Page {
 		KB URL:                   <?php echo esc_url( $first_KB_URL ) . "\n"; ?>
 
 		Active Theme:             <?php echo esc_html( $theme ) . "\n"; ?>
-		Block Theme:              <?php echo EPKB_Utilities::is_block_theme() ? 'Yes' . "\n" : 'No' . "\n"; ?>
+		Block Theme:              <?php echo EPKB_Block_Utilities::is_block_theme() ? 'Yes' . "\n" : 'No' . "\n"; ?>
 		KB Block Template Available: <?php echo EPKB_Block_Utilities::is_kb_block_page_template_available() ? 'Yes' . "\n" : 'No' . "\n"; ?>
-		Theme Supports Blocks:    <?php echo EPKB_Block_Utilities::current_theme_has_block_support() ? 'Yes' . "\n" : 'No' . "\n";
-
+		Theme Supports Blocks:    <?php echo EPKB_Block_Utilities::current_theme_has_block_support() ? 'Yes' . "\n" : 'No' . "\n"; ?>
+		Blocks Available:         <?php echo EPKB_Block_Utilities::is_blocks_available() ? 'Yes' . "\n" : 'No' . "\n"; ?>
+		WordPress Version:        <?php echo esc_html( get_bloginfo( 'version' ) ) . "\n\n"; ?>
+		KB Main Page Names and Templates:  <?php echo "\n" . $kb_main_pages_templates_info;
 
 		$plugins = get_plugins();
 		$active_plugins = get_option( 'active_plugins', array() );
@@ -1454,6 +1476,80 @@ class EPKB_Config_Tools_Page {
 		echo "\n";
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Return a list of every KB Main Page together with the human-readable
+	 * template name currently applied to that page.
+	 *
+	 * @return array[] {
+	 *     @type int    $page_id         WordPress post-ID of the KB Main Page.
+	 *     @type string $page_title      Page title.
+	 *     @type int    $kb_id           ID of the Knowledge Base this page belongs to.
+	 *     @type string $kb_name         Name of that Knowledge Base.
+	 *     @type string $template_slug   Raw value stored in _wp_page_template ('' = default).
+	 *     @type string $template_name   Friendly name resolved for display.
+	 * }
+	 */
+	static private function epkb_get_kb_main_pages_templates() {
+
+		$list        = [];
+		$theme       = wp_get_theme();
+		$is_block    = EPKB_Block_Utilities::is_block_theme();
+		$classic_map = $is_block ? [] : $theme->get_page_templates( null, 'page' ); // [ 'Nice Name' => 'file.php' ]
+
+		/* ----------------------------------------------------------
+		 * 1. Loop through every KB configuration
+		 * -------------------------------------------------------- */
+		$kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs( true );
+		foreach ( $kb_configs as $kb_config ) {
+
+			$kb_id         = (int) $kb_config['id'];
+			$kb_name       = $kb_config['kb_name'];
+			$kb_main_pages = $kb_config['kb_main_pages'] ?? [];
+
+			foreach ( $kb_main_pages as $page_id => $page_title ) {
+
+				$template_slug = get_post_meta( $page_id, '_wp_page_template', true ); // '' means default
+				$template_name = __( 'Default template', 'echo-knowledge-base' );
+
+				/* --------------------------------------------------
+				 * 2. Resolve a *name* for the slug found above
+				 * -------------------------------------------------- */
+
+				// 2a. Block-theme template?  (slug = "my-template" or "my-template.html")
+				if ( $is_block && $template_slug ) {
+
+					$slug_no_ext = preg_replace( '/\.html$/', '', $template_slug );
+					$tpls        = get_block_templates(
+						[ 'post_type' => 'page', 'slug__in' => [ $slug_no_ext ] ]
+					);
+
+					if ( ! empty( $tpls ) ) {
+						$template_name = $tpls[0]->title; // first (and only) match
+					} else {
+						$template_name = $template_slug;  // fallback  –  unknown slug
+					}
+
+					// 2b. Classic-theme PHP template?
+				} elseif ( ! $is_block && $template_slug ) {
+
+					$pretty = array_search( $template_slug, $classic_map, true );
+					$template_name = $pretty !== false ? $pretty : $template_slug;
+				}
+
+				$list[] = [
+					'page_id'       => (int) $page_id,
+					'page_title'    => $page_title,
+					'kb_id'         => $kb_id,
+					'kb_name'       => $kb_name,
+					'template_slug' => $template_slug ?: 'default',
+					'template_name' => $template_name,
+				];
+			}
+		}
+
+		return $list;
 	}
 
 	/**

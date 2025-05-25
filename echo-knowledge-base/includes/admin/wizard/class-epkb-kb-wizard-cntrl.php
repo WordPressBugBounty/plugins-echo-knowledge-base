@@ -84,8 +84,8 @@ class EPKB_KB_Wizard_Cntrl {
 		}
 
 		// get current Add-ons configuration
-		$orig_config = apply_filters( 'epkb_all_wizards_get_current_config', $orig_config, $wizard_kb_id );
-		if ( empty( $orig_config ) || count( $orig_config ) < 3 ) {
+		$orig_config = EPKB_Core_Utilities::get_add_ons_config( $wizard_kb_id, $orig_config );
+		if ( $orig_config === false ) {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 169, $orig_config ) );
 		}
 
@@ -299,13 +299,13 @@ class EPKB_KB_Wizard_Cntrl {
 
 		// create shortcode KB Main Page: create demo KB only for the first time and save it; ignore errors
 		if ( $is_setup_run_first_time && ! $use_kb_blocks ) {
-			EPKB_KB_Handler::add_new_knowledge_base( EPKB_KB_Config_DB::DEFAULT_KB_ID, '', '', $layout_name, $use_kb_blocks );
+			EPKB_KB_Handler::add_new_knowledge_base( EPKB_KB_Config_DB::DEFAULT_KB_ID, '', '', $layout_name );
 			EPKB_Core_Utilities::remove_kb_flag( 'epkb_run_setup' );
 		}
 
 		// for new KB the Wizard is running first time:
 		//		- KB block Main Page - retrieve default configuration for origin configuration (populate the new config with Wizard data before create the new KB, because KB blocks store data via attributes and require actual values on creation)
-		//		- KB shortcode Main Page - retrieve existing origin configuration (KB is already created at this point, because shortcode Main Page is using storing KB configuration and can be created before applying Wizard data)
+		//		- KB shortcode Main Page - retrieve existing origin configuration (KB is already created at this point, because shortcode Main Page is using stored KB configuration and can be created before applying Wizard data)
 		$orig_config = $is_setup_run_first_time && $use_kb_blocks
 			? epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID )
 			: epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id, true );
@@ -316,8 +316,8 @@ class EPKB_KB_Wizard_Cntrl {
 		}
 
 		// get current Add-ons configuration
-		$orig_config = apply_filters( 'epkb_all_wizards_get_current_config', $orig_config, $kb_id );
-		if ( empty( $orig_config ) || ! is_array( $orig_config ) || count( $orig_config ) < 3 ) {
+		$orig_config = EPKB_Core_Utilities::get_add_ons_config( $kb_id, $orig_config );
+		if ( $orig_config === false ) {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 500, EPKB_Utilities::get_variable_string( $orig_config ), false ) );
 		}
 

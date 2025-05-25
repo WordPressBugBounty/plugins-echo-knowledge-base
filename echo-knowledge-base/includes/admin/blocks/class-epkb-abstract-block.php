@@ -51,12 +51,17 @@ abstract class EPKB_Abstract_Block {
 			$block_public_style_handles[] = $this->get_block_public_styles_handle() . '-rtl';
 		}
 
+		$block_title = $this->block_title;
+		if ( EPKB_Utilities::is_advanced_search_enabled() && $this->block_name == 'search' ) {
+			$block_title = esc_html__( 'KB Basic Search', 'echo-knowledge-base' );
+		}
+
 		register_block_type(
 			'echo-knowledge-base/' . $name,
 			[
 				'api_version' => 3,
 				'name' => 'echo-knowledge-base/' . $name,
-				'title' => esc_html__( $this->block_title, 'echo-knowledge-base' ),
+				'title' => esc_html__( $block_title, 'echo-knowledge-base' ),
 				'category' => 'echo-knowledge-base',
 				'icon' => $this->icon,
 				'description' => '',
@@ -413,7 +418,7 @@ abstract class EPKB_Abstract_Block {
 	}
 
 	/**
-	 * Sync KB Template toggle value (block setting) with 'templates_for_kb' setting in selected KB configuration
+	 * Update special settings
 	 * @param $post_id
 	 * @param $post
 	 * @param $update
@@ -446,7 +451,7 @@ abstract class EPKB_Abstract_Block {
 		}
 
 		// for layout block need to update 'templates_for_kb' in the current KB configuration
-		if ( EPKB_Utilities::is_block_theme() ) {
+		if ( EPKB_Block_Utilities::is_block_theme() ) {
 			$templates_for_kb = isset( $block_attributes['kb_block_template_toggle'] ) && $block_attributes['kb_block_template_toggle'] == 'on' ? 'kb_templates' : 'current_theme_templates';
 		} else {
 			$templates_for_kb = isset( $block_attributes['templates_for_kb'] ) ? $block_attributes['templates_for_kb'] : 'kb_templates';
@@ -649,7 +654,6 @@ abstract class EPKB_Abstract_Block {
 	/**
 	 * Provides a possibility for add-on's block to register its own public scripts by overriding the method
 	 * @param $suffix
-	 * @param $block_styles_dependencies
 	 * @return void
 	 */
 	protected function register_block_public_scripts( $suffix ) {

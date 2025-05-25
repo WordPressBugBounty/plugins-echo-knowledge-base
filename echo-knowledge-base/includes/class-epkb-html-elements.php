@@ -91,7 +91,7 @@ class EPKB_HTML_Elements {
 		$required = empty( $args['required'] ) ? '' : ' required';
 
 		$group_data_escaped = self::get_data_escaped( $args['group_data'] );
-		$data_escaped = self::get_data_escaped( $args['data'] ); ?>
+		$data_escaped = self::get_data_escaped( $args['data'] );	?>
 
 		<div class="epkb-input-group epkb-admin__text-field <?php echo esc_html( $args['input_group_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>_group" <?php echo $group_data_escaped;  /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>>
 
@@ -444,34 +444,44 @@ class EPKB_HTML_Elements {
 	 * Renders custom HTML for drop-down box
 	 *
 	 * @param array $args
+	 * @return false|string
 	 */
 	public static function custom_dropdown( $args = array() ) {
 
 		$args = self::add_defaults( $args );
 		$args = self::get_specs_info( $args );
 
-		$group_data_escaped = self::get_data_escaped( $args['group_data'] ); ?>
+		$group_data_escaped = self::get_data_escaped( $args['group_data'] ); 
 
-		<div class="epkb-input-group epkb-input-custom-dropdown <?php echo esc_attr( $args['input_group_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>_group" <?php echo $group_data_escaped; ?>>  <?php
+		if ( $args['return_html'] ) {
+			ob_start();
+		}
 
-			if ( ! empty( $args['top_html'] ) ) {
-				echo wp_kses( $args['top_html'], EPKB_Utilities::get_admin_ui_extended_html_tags() );
-			}   ?>
+		if ( ! empty( $args['top_html'] ) ) {
+			echo wp_kses( $args['top_html'], EPKB_Utilities::get_admin_ui_extended_html_tags() );
+		}	?>
 
-			<label class="<?php echo esc_attr( $args['label_class'] ); ?>" for="<?php echo esc_attr( $args['name'] ); ?>">  <?php
-				echo wp_kses_post( $args['label'] );
-				self::display_tooltip( $args['tooltip_title'], $args['tooltip_body'], $args['tooltip_args'], $args['setting_help_text'] );
-				if ( $args['is_pro'] ) {
-					self::display_pro_setting_tag( $args['pro_tooltip_args'] );
-				}
-				if ( $args['is_pro_feature_ad'] ) {
-					self::display_pro_setting_tag_pro_feature_ad( $args['pro_tooltip_args'] );
-				}                ?>
-			</label>
+		<div class="epkb-input-group epkb-input-custom-dropdown <?php echo esc_attr( $args['input_group_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>_group" <?php echo $group_data_escaped; ?>>	<?php
 
-			<div class="input_container <?php echo esc_attr( $args['input_class'] ); ?>">
+			if ( ! empty( $args['label'] ) || ! empty( $args['tooltip_body'] ) || $args['is_pro'] || $args['is_pro_feature_ad'] ) { ?>
+				<label class="<?php echo esc_attr( $args['label_class'] ); ?>" for="<?php echo esc_attr( $args['name'] ); ?>">  <?php
+					echo wp_kses_post( $args['label'] );
+					self::display_tooltip( $args['tooltip_title'], $args['tooltip_body'], $args['tooltip_args'], $args['setting_help_text'] );
+					if ( $args['is_pro'] ) {
+						self::display_pro_setting_tag( $args['pro_tooltip_args'] );
+					}
+					if ( $args['is_pro_feature_ad'] ) {
+						self::display_pro_setting_tag_pro_feature_ad( $args['pro_tooltip_args'] );
+					}                ?>
+				</label> <?php
+			} ?>
 
-				<div class="epkb-input-custom-dropdown__input"><span><?php echo isset( $args['value'] ) && isset( $args['options'][$args['value']] ) ? esc_html( $args['options'][$args['value']] ) : ''; ?></span><i class="epkbfa epkbfa-chevron-down"></i></div>
+			<div class="input_container <?php echo esc_attr( $args['input_class'] ); ?>">	<?php
+
+				if ( isset( $args['value'] ) && isset( $args['options'][$args['value']] ) ) {
+					echo '<div class="epkb-input-custom-dropdown__input"><span>' . esc_html( $args['options'][$args['value']] ) . '</span><i class="epkbfa epkbfa-chevron-down"></i></div>';
+				} ?>
+
 				<div class="epkb-input-custom-dropdown__options-list">   <?php
 					foreach( $args['options'] as $key => $value ) {
 						$label = is_array( $value ) ? $value['label'] : $value;
@@ -507,6 +517,10 @@ class EPKB_HTML_Elements {
 			</div>
 
 		</div>		<?php
+
+		if ( $args['return_html'] ) {
+			return ob_get_clean();
+		}
 	}
 
 	/**
@@ -1262,7 +1276,10 @@ class EPKB_HTML_Elements {
 				<div class="epkb-input-desc_text">
 					<?php echo isset( $one_link['help_desc'] ) ? wp_kses_post( $one_link['help_desc'] ) : ''; ?>
 					<?php if ( ! empty( $one_link['link_url'] ) ) : ?>
-						<a class="epkb-input-desc__link" target="_blank" href="<?php echo esc_url( $one_link['link_url'] ); ?>"><?php echo esc_html( isset( $one_link['link_text'] ) ? $one_link['link_text'] : '' ); ?></a><span class="epkbfa epkbfa-external-link"></span>
+						<a class="epkb-input-desc__link" target="_blank" href="<?php echo esc_url( $one_link['link_url'] ); ?>">
+							<?php echo esc_html( isset( $one_link['link_text'] ) ? $one_link['link_text'] : '' ); ?>
+							<span class="epkbfa epkbfa-external-link"></span>
+						</a>
 					<?php endif; ?>
 				</div>
 			</div>  <?php

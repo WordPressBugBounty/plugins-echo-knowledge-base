@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
 	var epkb = $( '#ekb-admin-page-wrap' );
 
 	// New ToolTip
-	epkb.on( 'click', '.epkb__option-tooltip__button', function(){
+	$( document ).on( 'click', '#ekb-admin-page-wrap .epkb__option-tooltip__button', function(){
 		const tooltip_contents = $( this ).parent().find( '.epkb__option-tooltip__contents' );
 		let tooltip_on = tooltip_contents.css('display') === 'block';
 
@@ -18,13 +18,13 @@ jQuery(document).ready(function($) {
 		}
 	});
 	let timeoutOptionTooltip;
-	epkb.on( 'mouseenter', '.epkb__option-tooltip__button, .epkb__option-tooltip__contents', function(){
+	$( document ).on( 'mouseenter', '#ekb-admin-page-wrap .epkb__option-tooltip__button, #ekb-admin-page-wrap .epkb__option-tooltip__contents', function(){
 		const tooltip_contents = $( this ).parent().find( '.epkb__option-tooltip__contents' );
 		clearTimeout(timeoutOptionTooltip);
 		tooltip_contents.fadeIn();
 	});
 
-	epkb.on( 'mouseleave', '.epkb__option-tooltip__button, .epkb__option-tooltip__contents', function(){
+	$( document ).on( 'mouseleave', '#ekb-admin-page-wrap .epkb__option-tooltip__button, #ekb-admin-page-wrap .epkb__option-tooltip__contents', function(){
 		const tooltip_contents = $( this ).parent().find( '.epkb__option-tooltip__contents' );
 		timeoutOptionTooltip = setTimeout( function() {
 			tooltip_contents.fadeOut();
@@ -32,12 +32,12 @@ jQuery(document).ready(function($) {
 	});
 
 	// ToolTip
-	epkb.on( 'click', '.eckb-tooltip-button', function(){
+	$( document ).on( 'click', '#ekb-admin-page-wrap .eckb-tooltip-button', function(){
 		$( this ).parent().find( '.eckb-tooltip-contents' ).fadeToggle();
 	});
 
 	// Toggle the PRO Setting Tooltip
-	$( document ).on( 'click', '.epkb-admin__input-disabled, .epkb__option-pro-tag', function (){
+	$( document ).on( 'click', '#ekb-admin-page-wrap .epkb-admin__input-disabled, #ekb-admin-page-wrap .epkb__option-pro-tag', function (){
 		let $tooltip = $( this ).closest( '.epkb-input-group' ).find( '.epkb__option-pro-tooltip' );
 		let is_visible = $tooltip.is(':visible');
 
@@ -211,7 +211,7 @@ jQuery(document).ready(function($) {
 	$( '.epkb-input-custom-dropdown select' ).trigger( 'change' );
 
 	// Learn More links
-	$('.epkb-admin__form-tab-content-lm__toggler').on('click', function(e){
+	$( document ).on( 'click', '.epkb-admin__form-tab-content-lm__toggler', function(e){
 
 		e.stopPropagation();
 
@@ -229,7 +229,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// Copy to clipboard button
-	$( '.epkb-copy-to-clipboard-box-container .epkb-ctc__copy-button' ).on( 'click', function( e ){
+	$( document ).on( 'click', '.epkb-copy-to-clipboard-box-container .epkb-ctc__copy-button', function( e ){
 		e.preventDefault();
 		let textarea = document.createElement( 'textarea' );
 		let $container = $( this ).closest( '.epkb-copy-to-clipboard-box-container' );
@@ -249,4 +249,185 @@ jQuery(document).ready(function($) {
 			$container.find( '.epkb-ctc__embed-notification' ).hide();
 		}, 1500 );
 	});
+
+	let isColorInputSync = false;
+	$('.epkb-admin__color-field input').wpColorPicker({
+		change: function( colorEvent, ui) {
+
+			// Do nothing for programmatically changed value (for sync purpose)
+			if ( isColorInputSync ) {
+				return;
+			}
+
+			isColorInputSync = true;
+
+			// Get current color value
+			let color_value = $( colorEvent.target ).wpColorPicker( 'color' );
+			let setting_name = $( colorEvent.target ).attr( 'name' );
+
+			// Sync other color pickers that have the same name
+			$( '.epkb-admin__color-field input[name="' + setting_name + '"]' ).not( colorEvent.target ).each( function () {
+				$( this ).wpColorPicker( 'color', color_value );
+			} );
+
+			isColorInputSync = false;
+		},
+	});
+
+	// Conditional setting input
+	$( document ).on( 'click', '.eckb-conditional-setting-input', function() {
+
+		// Find current input
+		let current_input = $( this ).find( 'input' );
+		if ( $( current_input[0] ).attr( 'type' ) === 'radio' ) {
+			current_input = $( this ).find( 'input:checked' );
+		}
+		if ( ! current_input.length ) {
+			current_input = $( this ).find( 'select' );
+		}
+
+		// OR LOGIC: Find content that is dependent to the current input
+		let or_dependent_targets = $( '.eckb-condition-depend__' + current_input.attr( 'name' ) );
+
+		// AND LOGIC: Find content that is dependent to the current input
+		let and_dependent_targets = $( '.eckb-condition-depend-and__' + current_input.attr( 'name' ) );
+
+		// Hide all dependent fields if the current input is not visible - only for AND logic, because OR logic can be satisfied with any of dependency
+		if ( $( this ).css( 'display' ) === 'none' ) {
+			$( and_dependent_targets ).hide();
+			return;
+		}
+
+		// OR LOGIC: Show fields if condition matched
+		or_dependent_targets.each( function() {
+
+			// Find all dependencies
+			let all_dependency_fields = $( this ).data( 'dependency-ids' );
+			if ( typeof all_dependency_fields === 'undefined' ) {
+				return;
+			}
+			all_dependency_fields = all_dependency_fields.split( ' ' );
+
+			// Find all values for which show the dependent content
+			let all_dependency_values = $( this ).data( 'enable-on-values' );
+			if ( typeof all_dependency_values === 'undefined' ) {
+				return;
+			}
+			all_dependency_values = all_dependency_values.split( ' ' );
+
+			// First hide the dependent content, and then show it if any of its currently visible dependencies has corresponding value
+			$( this ).hide();
+			$( this ).closest( '.epkb-input-group-combined-units').find( '.epkb-input-desc' ).hide();
+
+			for ( let i = 0; i < all_dependency_fields.length; i++ ) {
+
+				// Find dependency field
+				let dependency_field = $( '#' + all_dependency_fields[i] );
+				if ( typeof dependency_field === 'undefined' || ! dependency_field.length ) {
+					continue;
+				}
+
+				// Ignore currently hidden fields
+				if ( $( dependency_field ).closest( '.epkb-admin__input-field' ).css( 'display' ) === 'none' ) {
+					continue;
+				}
+
+				// Find dependency input
+				let dependency_input = $( dependency_field ).is( 'select' ) ? ( dependency_field ) : dependency_field.find( 'input' );
+				if ( dependency_input.attr( 'type' ) === 'radio' || dependency_input.attr( 'type' ) === 'checkbox' ) {
+					dependency_input = $( dependency_field ).find( 'input:checked' );
+				}
+				if ( typeof dependency_input === 'undefined' || ! dependency_input.length ) {
+					continue;
+				}
+
+				let current_field_id = $( this ).attr( 'id' );
+
+				// Show dependent content if value of the dependency input in dependency values list
+				if ( all_dependency_values.indexOf( dependency_input.val() ) >= 0 ) {
+					$( this ).show();
+					$( this ).closest( '.epkb-input-group-combined-units').find( '.epkb-input-desc' ).show();
+					trigger_conditional_field_click( current_field_id );
+					return;
+				}
+
+				trigger_conditional_field_click( current_field_id );
+			}
+		} );
+
+		// AND LOGIC: Show fields if condition matched
+		and_dependent_targets.each( function() {
+
+			let current_dependent_target = this;
+
+			// Find all dependencies
+			let all_dependency_fields = $( current_dependent_target ).data( 'dependency-and' );
+			if ( typeof all_dependency_fields === 'undefined' ) {
+				return;
+			}
+			all_dependency_fields = all_dependency_fields.trim().split( ' ' );
+
+			// First show the dependent content, and then hide it if any of its dependencies does not have corresponding value or is currently hidden
+			$( current_dependent_target ).show();
+			for ( let i = 0; i < all_dependency_fields.length; i++ ) {
+
+				let current_field_id = $( this ).attr( 'id' );
+				let dependency_id = all_dependency_fields[i].split( '--' )[0];
+				let dependency_value = all_dependency_fields[i].split( '--' )[1];
+
+				// Find dependency field - hide if is not found
+				let dependency_field = $( '#' + dependency_id );
+				if ( typeof dependency_field === 'undefined' || ! dependency_field.length ) {
+					$( current_dependent_target ).hide();
+					trigger_conditional_field_click( current_field_id );
+					return;
+				}
+
+				// Hide for currently hidden fields
+				if ( $( dependency_field ).closest( '.epkb-admin__input-field' ).css( 'display' ) === 'none' ) {
+					$( current_dependent_target ).hide();
+					trigger_conditional_field_click( current_field_id );
+					return;
+				}
+
+				// Find dependency input
+				let dependency_input = $( dependency_field ).is( 'select' ) ? ( dependency_field ) : dependency_field.find( 'input' );
+				if ( dependency_input.attr( 'type' ) === 'radio' || dependency_input.attr( 'type' ) === 'checkbox' ) {
+					dependency_input = $( dependency_field ).find( 'input:checked' );
+				}
+				if ( typeof dependency_input === 'undefined' || ! dependency_input.length ) {
+					$( current_dependent_target ).hide();
+					trigger_conditional_field_click( current_field_id );
+					return;
+				}
+
+				// Hide dependent content if value of the dependency input does not match dependency value
+				if ( dependency_input.val() !== dependency_value ) {
+					$( current_dependent_target ).hide();
+					trigger_conditional_field_click( current_field_id );
+					return;
+				}
+
+				trigger_conditional_field_click( current_field_id );
+			}
+		} );
+	} );
+
+	// Initialize conditional fields
+	$( '.eckb-conditional-setting-input' ).trigger( 'click' );
+
+	// Trigger click event of the current dependent field to check its own dependent fields
+	function trigger_conditional_field_click( field_id ) {
+
+		let current_field = $( '#' + field_id );
+		if ( ! current_field.length ) {
+			return;
+		}
+
+		if ( current_field.hasClass( 'eckb-conditional-setting-input' ) ) {
+			setTimeout( function() {
+				current_field.trigger( 'click' );
+			}, 1 );
+		}
+	}
 });

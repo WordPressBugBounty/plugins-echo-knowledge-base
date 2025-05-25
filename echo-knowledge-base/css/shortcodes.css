@@ -144,7 +144,7 @@
   padding-bottom: 1px;
 }
 .epkb-faqs-container .epkb-faqs__cat-header .epkb-faqs__cat-header__title {
-  margin: 0 0 10px 0;
+  margin: 0 0 10px 0 !important;
   color: #000000;
 }
 
@@ -350,7 +350,6 @@
   background-image: -ms-linear-gradient(bottom, #2EA3F2, #3EB8E5);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #2EA3F2), color-stop(1, #3EB8E5));
   border-radius: 5px;
-  box-shadow: inset 0px 1px 0px #7FD2F1, 0px 1px 0px #FFFFFF;
   font-size: 20px;
 }
 #eckb-kb-faqs-not-assigned .eckb-kb-faqs-not-assigned-btn a {

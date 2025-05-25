@@ -10,7 +10,9 @@
  */
 function epkb_add_main_page_if_required( $post_id, $post ) {
 
-	// ignore autosave/revision which is not article submission; same with ajax and bulk edit
+	// -------------------------------------------------------------------------
+	// 0. Ignore autosave / AJAX / bulk-edit / unsupported post types / statuses
+	// -------------------------------------------------------------------------
 	if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || wp_is_post_autosave( $post_id ) || ( defined( 'DOING_AJAX') && DOING_AJAX ) || isset( $_REQUEST['bulk_edit'] ) || empty( $post->post_status ) ) {
 		return;
 	}
@@ -20,19 +22,28 @@ function epkb_add_main_page_if_required( $post_id, $post ) {
 		return;
 	}
 
-	// return if this page does not have KB shortcode, KB layout block, or error occurred; we remove old pages elsewhere
+	// -------------------------------------------------------------------------
+	// 1. Page must actually be / become a KB Main Page
+	// -------------------------------------------------------------------------
 	$kb_id = EPKB_KB_Handler::get_kb_id_from_kb_main_page( $post );
 	if ( empty( $kb_id ) ) {
 		return;
 	}
 
+	$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
+	if ( empty( $kb_config ) || is_wp_error( $kb_config ) ) {
+		return;
+	}
+
 	// get KB main pages
-	$kb_main_pages = epkb_get_instance()->kb_config_obj->get_value( $kb_id, 'kb_main_pages' );
+	$kb_main_pages = $kb_config['kb_main_pages'];
 	if ( ! is_array( $kb_main_pages ) ) {
 		return;
 	}
 
-	// if the page is not relevant then remove it
+	// -------------------------------------------------------------------------
+	// 2. Handle deletes / restores
+	// -------------------------------------------------------------------------
 	if ( in_array( $post->post_status, array( 'inherit', 'trash' ) ) ) {
 		if ( ! isset( $kb_main_pages[$post_id] ) ) {
 			return;
@@ -42,9 +53,12 @@ function epkb_add_main_page_if_required( $post_id, $post ) {
 		return;
 	}
 
-	// don't update if the page is stored with the same title
-	if ( in_array( $post_id, array_keys( $kb_main_pages ) ) && $kb_main_pages[$post_id] == $post->post_title ) {
-		return;
+	// -------------------------------------------------------------------------
+	// 3. New or renamed KB Main Page?
+	// -------------------------------------------------------------------------
+	$is_new_main_page = ! isset( $kb_main_pages[ $post_id ] );
+	if ( ! $is_new_main_page && $kb_main_pages[ $post_id ] == $post->post_title ) {
+		return; // nothing changed
 	}
 
 	$kb_main_pages[$post_id] = $post->post_title;

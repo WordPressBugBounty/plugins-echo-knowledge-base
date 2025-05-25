@@ -36,17 +36,17 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_1_module',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'none'                  => '-----',
+			        'none'                  => esc_html__( 'Disabled', 'echo-knowledge-base' ),
 			        'search'                => esc_html__( 'Search Box',   'echo-knowledge-base' ),
 			        'categories_articles'   => esc_html__( 'Categories & Articles',   'echo-knowledge-base' ),
-			        'articles_list'         => esc_html__( 'Articles List',   'echo-knowledge-base' ),
+			        'articles_list'         => esc_html__( 'Featured Articles',   'echo-knowledge-base' ),
 			        'faqs'                  => esc_html__( 'FAQs',   'echo-knowledge-base' ),
 			        'resource_links'        => esc_html__( 'Resource Links',   'echo-knowledge-base' ),
 		        ),
 		        'default'     => 'search'
 	        ),
 	        'ml_row_1_desktop_width'                                => array(
-		        'label'       => esc_html__( 'Row Width', 'echo-knowledge-base' ),
+		        'label'       => esc_html__( 'Width', 'echo-knowledge-base' ),
 		        'name'        => 'ml_row_1_desktop_width',
 		        'max'         => 3000,
 		        'min'         => 10,
@@ -70,17 +70,17 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_2_module',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'none'                  => '-----',
+			        'none'                  => esc_html__( 'Disabled', 'echo-knowledge-base' ),
 			        'search'                => esc_html__( 'Search Box',   'echo-knowledge-base' ),
 			        'categories_articles'   => esc_html__( 'Categories & Articles',   'echo-knowledge-base' ),
-			        'articles_list'         => esc_html__( 'Articles List',   'echo-knowledge-base' ),
+			        'articles_list'         => esc_html__( 'Featured Articles',   'echo-knowledge-base' ),
 			        'faqs'                  => esc_html__( 'FAQs',   'echo-knowledge-base' ),
 			        'resource_links'        => esc_html__( 'Resource Links',   'echo-knowledge-base' ),
 		        ),
 		        'default'     => 'categories_articles'
 	        ),
 	        'ml_row_2_desktop_width'                                => array(
-		        'label'       => esc_html__( 'Row Width', 'echo-knowledge-base' ),
+		        'label'       => esc_html__( 'Width', 'echo-knowledge-base' ),
 		        'name'        => 'ml_row_2_desktop_width',
 		        'max'         => 3000,
 		        'min'         => 10,
@@ -104,7 +104,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_3_module',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'none'                  => '-----',
+			        'none'                  => esc_html__( 'Disabled', 'echo-knowledge-base' ),
 			        'search'                => esc_html__( 'Search Box',   'echo-knowledge-base' ),
 			        'categories_articles'   => esc_html__( 'Categories & Articles',   'echo-knowledge-base' ),
 			        'articles_list'         => esc_html__( 'Featured Articles',   'echo-knowledge-base' ),
@@ -114,7 +114,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'default'     => 'articles_list'
 	        ),
 	        'ml_row_3_desktop_width'                                => array(
-		        'label'       => esc_html__( 'Row Width', 'echo-knowledge-base' ),
+		        'label'       => esc_html__( 'Width', 'echo-knowledge-base' ),
 		        'name'        => 'ml_row_3_desktop_width',
 		        'max'         => 3000,
 		        'min'         => 10,
@@ -138,7 +138,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_4_module',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'none'                  => '-----',
+			        'none'                  => esc_html__( 'Disabled', 'echo-knowledge-base' ),
 			        'search'                => esc_html__( 'Search Box',   'echo-knowledge-base' ),
 			        'categories_articles'   => esc_html__( 'Categories & Articles',   'echo-knowledge-base' ),
 			        'articles_list'         => esc_html__( 'Featured Articles',   'echo-knowledge-base' ),
@@ -148,7 +148,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'default'     => 'faqs'
 	        ),
 	        'ml_row_4_desktop_width'                                => array(
-		        'label'       => esc_html__( 'Row Width', 'echo-knowledge-base' ),
+		        'label'       => esc_html__( 'Width', 'echo-knowledge-base' ),
 		        'name'        => 'ml_row_4_desktop_width',
 		        'max'         => 3000,
 		        'min'         => 10,
@@ -172,7 +172,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_row_5_module',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'none'                  => '-----',
+			        'none'                  => esc_html__( 'Disabled', 'echo-knowledge-base' ),
 			        'search'                => esc_html__( 'Search Box', 'echo-knowledge-base' ),
 			        'categories_articles'   => esc_html__( 'Categories & Articles', 'echo-knowledge-base' ),
 			        'articles_list'         => esc_html__( 'Featured Articles', 'echo-knowledge-base' ),
@@ -182,7 +182,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'default'     => 'none'
 	        ),
 	        'ml_row_5_desktop_width'                                => array(
-		        'label'       => esc_html__( 'Row Width', 'echo-knowledge-base' ),
+		        'label'       => esc_html__( 'Width', 'echo-knowledge-base' ),
 		        'name'        => 'ml_row_5_desktop_width',
 		        'max'         => 3000,
 		        'min'         => 10,
@@ -271,7 +271,12 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_categories_articles_sidebar_desktop_width',
 		        'max'         => 3000,
 		        'min'         => 5,
-		        'type'        => EPKB_Input_Filter::NUMBER,
+		        'type'        => EPKB_Input_Filter::SELECTION,
+				'options' => array(
+									25 => esc_html__( 'Small', 'echo-knowledge-base' ),
+									28 => esc_html__( 'Medium', 'echo-knowledge-base' ),
+									30 => esc_html__( 'Large', 'echo-knowledge-base' ),
+								),
 		        'default'     => 28,
 	        ),
 	        'ml_categories_articles_sidebar_location'               => array(
@@ -300,8 +305,8 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'        => 'ml_categories_articles_sidebar_position_2',
 		        'type'        => EPKB_Input_Filter::SELECTION,
 		        'options'     => array(
-			        'none'              => '-----',
-			        'popular_articles' => esc_html__( 'Popular Articles', 'echo-knowledge-base' ),
+			        'none'              => esc_html__( 'Disabled', 'echo-knowledge-base' ),
+			        'popular_articles'  => esc_html__( 'Popular Articles', 'echo-knowledge-base' ),
 			        'newest_articles'   => esc_html__( 'Newest Articles',   'echo-knowledge-base' ),
 			        'recent_articles'   => esc_html__( 'Recent Articles',   'echo-knowledge-base' ),
 		        ),
@@ -344,7 +349,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'    => 'ml_articles_list_column_1',
 		        'type'    => EPKB_Input_Filter::SELECTION,
 		        'options' => array(
-			        'none'             => '-----',
+			        'none'             => esc_html__( 'Disabled', 'echo-knowledge-base' ),
 			        'popular_articles' => esc_html__( 'Popular Articles', 'echo-knowledge-base' ),
 			        'newest_articles'  => esc_html__( 'New Articles', 'echo-knowledge-base' ),
 			        'recent_articles'  => esc_html__( 'Recently Updated Articles', 'echo-knowledge-base' )
@@ -356,7 +361,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'    => 'ml_articles_list_column_2',
 		        'type'    => EPKB_Input_Filter::SELECTION,
 		        'options' => array(
-			        'none'             => '-----',
+			        'none'             => esc_html__( 'Disabled', 'echo-knowledge-base' ),
 			        'popular_articles' => esc_html__( 'Popular Articles', 'echo-knowledge-base' ),
 			        'newest_articles'  => esc_html__( 'New Articles', 'echo-knowledge-base' ),
 			        'recent_articles'  => esc_html__( 'Recently Updated Articles', 'echo-knowledge-base' )
@@ -368,7 +373,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'name'    => 'ml_articles_list_column_3',
 		        'type'    => EPKB_Input_Filter::SELECTION,
 		        'options' => array(
-			        'none'             => '-----',
+			        'none'             => esc_html__( 'Disabled', 'echo-knowledge-base' ),
 			        'popular_articles' => esc_html__( 'Popular Articles', 'echo-knowledge-base' ),
 			        'newest_articles'  => esc_html__( 'New Articles', 'echo-knowledge-base' ),
 			        'recent_articles'  => esc_html__( 'Recently Updated Articles', 'echo-knowledge-base' )
@@ -434,7 +439,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        ),
 		        'default'     => 'content'
 	        ),
-	        'ml_faqs_custom_css_class'                              => array(
+	        'ml_faqs_custom_css_class'                              => array(       // legacy
 		        'label'       => esc_html__( 'Custom CSS class', 'echo-knowledge-base' ),
 		        'name'        => 'ml_faqs_custom_css_class',
 		        'max'         => '200',

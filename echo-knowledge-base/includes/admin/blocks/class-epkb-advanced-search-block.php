@@ -191,7 +191,22 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 
 							// Mention KB block template for Main Page
 							'mention_kb_block_template' => EPKB_Blocks_Settings::get_kb_block_template_mention(),
-							
+
+							'advanced_search_context_toggle' => array(
+								'setting_type' => 'toggle'
+							),
+							'advanced_search_context_characters' => array(
+								'setting_type' => 'range',
+								'hide_on_dependencies' => array(
+									'advanced_search_context_toggle' => 'off',
+								),
+							),
+							'advanced_search_context_highlight_font_color' => array(
+								'setting_type' => 'color',
+								'hide_on_dependencies' => array(
+									'advanced_search_context_toggle' => 'off',
+								),
+							),
 							'advanced_search_text_highlight_enabled' => array(
 								'setting_type' => 'toggle'
 							),
@@ -309,6 +324,12 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 							'advanced_search_mp_show_top_category'                          => array(
 								'setting_type' => 'toggle'
 							),
+							'advanced_search_context_enabled'                          => array(
+								'setting_type' => 'toggle'
+							),
+							'advanced_search_context_characters'                          => array(
+								'setting_type' => 'range',
+							),
 							'advanced_search_mp_results_list_size'                          => array(
 								'setting_type' => 'range',
 							),
@@ -383,6 +404,7 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 							'advanced_search_mp_background_color'                           => array(
 								'setting_type' => 'color',
 							),
+							
 							'advanced_search_mp_box_font_width'                             => array(
 								'setting_type' => 'range',
 							),
@@ -446,6 +468,9 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 								'hide_on_dependencies' => array(
 									'advanced_search_mp_background_gradient_toggle' => 'off',
 								),
+							),
+							'advanced_search_context_highlight_font_color'                           => array(
+								'setting_type' => 'color',
 							),
 						),
 					),
