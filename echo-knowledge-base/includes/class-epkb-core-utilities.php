@@ -744,10 +744,10 @@ class EPKB_Core_Utilities {
 	 * @param $kb_id
 	 * @param $orig_config
 	 * @param $new_config
-	 *
+	 * @param bool $only_labels_other
 	 * @return string - updated category icons or empty if no update required
 	 */
-	public static function prepare_update_to_kb_configuration( $kb_id, $orig_config, $new_config ) {
+	public static function prepare_update_to_kb_configuration( $kb_id, $orig_config, $new_config, $only_labels_other=false ) {
 
 		// core handles only default KB
 		if ( $kb_id != EPKB_KB_Config_DB::DEFAULT_KB_ID && ! EPKB_Utilities::is_multiple_kbs_enabled() ) {
@@ -760,7 +760,7 @@ class EPKB_Core_Utilities {
 			return esc_html__( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (961)';
 		}
 
-		$article_sidebar_priority = $new_config['article_sidebar_component_priority'];
+		$article_sidebar_priority = isset( $new_config['article_sidebar_component_priority'] ) ? $new_config['article_sidebar_component_priority'] : $orig_config['article_sidebar_component_priority'];
 
 		$new_kb_main_pages = $new_config['kb_main_pages'];
 
@@ -799,6 +799,23 @@ class EPKB_Core_Utilities {
 			}
 		}
 
+		// save add-ons configuration
+		$result = apply_filters( 'eckb_kb_config_save_input_v3', '', $kb_id, $new_config );
+		if ( is_wp_error( $result ) ) {
+			/* @var $result WP_Error */
+			$message = $result->get_error_message();
+			if ( empty( $message ) ) {
+				return esc_html__( 'Could not save the new configuration', 'echo-knowledge-base' ) . ' (31)';
+			} else {
+				return esc_html__( 'Configuration NOT saved due to following problem', 'echo-knowledge-base' ) . ':' . $message;
+			}
+		}
+
+		// if saving only labels and other settings then return
+		if ( $only_labels_other ) {
+			return '';
+		}
+
 		// if sidebar configuration changed then save it - the EPKB_Input_Filter()->retrieve_and_sanitize_form_fields() keeps old values, so save this separately
 		$update_sidebar_priority = false;
 		foreach( EPKB_KB_Config_Specs::get_sidebar_component_priority_names() as $component ) {
@@ -811,18 +828,6 @@ class EPKB_Core_Utilities {
 			$result = epkb_get_instance()->kb_config_obj->set_value( $orig_config['id'], 'article_sidebar_component_priority', $article_sidebar_priority );
 			if ( is_wp_error( $result ) ) {
 				EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 37, $result ) );
-			}
-		}
-
-		// save add-ons configuration
-		$result = apply_filters( 'eckb_kb_config_save_input_v3', '', $kb_id, $new_config );
-		if ( is_wp_error( $result ) ) {
-			/* @var $result WP_Error */
-			$message = $result->get_error_message();
-			if ( empty( $message ) ) {
-				return esc_html__( 'Could not save the new configuration', 'echo-knowledge-base' ) . ' (31)';
-			} else {
-				return esc_html__( 'Configuration NOT saved due to following problem', 'echo-knowledge-base' ) . ':' . $message;
 			}
 		}
 

@@ -276,10 +276,32 @@ class EPKB_KB_Config_Controller {
 			EPKB_Utilities::ajax_show_error_die( esc_html__( 'Invalid parameters. Please refresh your page.', 'echo-knowledge-base' ) );
 		}
 
-		// prepare article sidebar component priority
-		$new_config['article_sidebar_component_priority'] = self::convert_ui_data_to_article_sidebar_component_priority( $new_config );
+		// if we are not showing all settings in UI because user is using FE Editor, we need to add some default values
+		if ( count( $new_config ) < 100 ) {
 
-		EPKB_Core_Utilities::start_update_kb_configuration( $kb_id, $new_config );
+			// get current KB configuration
+			$orig_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id, true );
+			if ( is_wp_error( $orig_config ) ) {
+				EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 8, $orig_config ) );
+			}
+			// get current KB configuration from add-ons
+			$orig_config = EPKB_Core_Utilities::get_add_ons_config( $kb_id, $orig_config );
+			if ( $orig_config === false ) {
+				EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 149 ) );
+			}
+			$new_config = array_merge( $orig_config, $new_config );
+
+			// update KB and add-ons configuration
+			EPKB_Core_Utilities::prepare_update_to_kb_configuration( $kb_id, $orig_config, $new_config, true );
+
+		// save all settings from backend
+		} else {
+
+			// prepare article sidebar component priority
+			$new_config['article_sidebar_component_priority'] = self::convert_ui_data_to_article_sidebar_component_priority( $new_config );
+
+			EPKB_Core_Utilities::start_update_kb_configuration( $kb_id, $new_config );
+		}
 
 		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );	
 	}
@@ -301,11 +323,11 @@ class EPKB_KB_Config_Controller {
 				if ( $component == 'nav_sidebar' . $sidebar_suffix && isset( $new_config[ 'nav_sidebar' . $sidebar_suffix ] ) && $new_config[ 'nav_sidebar' . $sidebar_suffix ] > 0 ) {
 					$article_sidebar_component_priority[ $component ] = sanitize_text_field( $new_config[ 'nav_sidebar' . $sidebar_suffix ] );
 
-					// Widgets from KB Sidebar
+				// Widgets from KB Sidebar
 				} else if ( $component == 'kb_sidebar' . $sidebar_suffix && isset( $new_config[ 'kb_sidebar' . $sidebar_suffix ] ) && $new_config[ 'kb_sidebar' . $sidebar_suffix ] > 0 ) {
 					$article_sidebar_component_priority[ $component ] = sanitize_text_field( $new_config[ 'kb_sidebar' . $sidebar_suffix ] );
 
-					// Table of Contents ( TOC )
+				// Table of Contents ( TOC )
 				} else if ( $component == 'toc' . $sidebar_suffix && isset( $new_config[ 'toc' . $sidebar_suffix ] ) && $new_config[ 'toc' . $sidebar_suffix ] > 0 ) {
 					$article_sidebar_component_priority[ $component ] = sanitize_text_field( $new_config[ 'toc' . $sidebar_suffix ] );
 				}

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Knowledge Base for Documents and FAQs\n"
-"POT-Creation-Date: 2025-06-08 10:21-0700\n"
+"POT-Creation-Date: 2025-06-08 12:52-0700\n"
 "PO-Revision-Date: 2025-06-08 08:46-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -2409,7 +2409,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:120
 #: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:137
 #: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:154
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:284
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:306
 #: includes/system/class-epkb-admin-ui-access.php:376
 msgid "Configuration saved"
 msgstr ""
@@ -9086,7 +9086,7 @@ msgid "Error occurred. Please refresh your browser and try again."
 msgstr ""
 
 #: includes/class-epkb-core-utilities.php:796
-#: includes/class-epkb-core-utilities.php:823
+#: includes/class-epkb-core-utilities.php:808
 msgid "Could not save the new configuration"
 msgstr ""
 
@@ -9094,19 +9094,19 @@ msgstr ""
 msgid "Configuration NOT saved due to following problem:"
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:825
+#: includes/class-epkb-core-utilities.php:810
 msgid "Configuration NOT saved due to following problem"
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1409
+#: includes/class-epkb-core-utilities.php:1414
 msgid "View Archived KBs"
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1413
+#: includes/class-epkb-core-utilities.php:1418
 msgid "Get Additional Knowledge Bases"
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1511
+#: includes/class-epkb-core-utilities.php:1516
 msgid ""
 "The Knowledge Base files containing CSS are missing, causing page elements "
 "below to misalign. This issue may be due to a 3rd-party plugin or caching "
@@ -9114,46 +9114,46 @@ msgid ""
 "correctly included."
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1513
+#: includes/class-epkb-core-utilities.php:1518
 msgid "Our Contact Form"
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1522
+#: includes/class-epkb-core-utilities.php:1527
 msgid "Cannot load configuration."
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1535
+#: includes/class-epkb-core-utilities.php:1540
 msgid ""
 "The Knowledge Base plugin cannot be activated network-wide. Please follow "
 "these steps:"
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1537
+#: includes/class-epkb-core-utilities.php:1542
 msgid "Deactivate the plugin's network-wide activation."
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1538
+#: includes/class-epkb-core-utilities.php:1543
 msgid "Activate the plugin on each individual site."
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1539
+#: includes/class-epkb-core-utilities.php:1544
 msgid "Verify that this error message no longer appears."
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1543
+#: includes/class-epkb-core-utilities.php:1548
 #, php-format
 msgid "For more details with images, please visit %s."
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1544
+#: includes/class-epkb-core-utilities.php:1549
 msgid "this article"
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1552
+#: includes/class-epkb-core-utilities.php:1557
 msgid "The Knowledge Base plugin cannot be activated network-wide."
 msgstr ""
 
-#: includes/class-epkb-core-utilities.php:1553
+#: includes/class-epkb-core-utilities.php:1558
 msgid "Please activate it on individual sites."
 msgstr ""
 
