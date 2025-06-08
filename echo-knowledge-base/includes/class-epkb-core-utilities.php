@@ -422,7 +422,7 @@ class EPKB_Core_Utilities {
 		}
 	}
 
-	private static function update_article_sidebar_priority( $orig_config, $new_config ) {
+	public static function update_article_sidebar_priority( $orig_config, $new_config ) {
 
 		// sanitize sidebar priority
 		$article_sidebar_component_priority = array();
@@ -495,6 +495,16 @@ class EPKB_Core_Utilities {
 			}
 		}
 		return false;
+	}
+
+	public static function get_module_row_number( $kb_config, $module_name ) {
+		for ( $row_number = 1; $row_number <= 5; $row_number ++ ) {
+			$row_key = 'ml_row_' . $row_number . '_module';
+			if ( isset( $kb_config[ $row_key ] ) && $kb_config[ $row_key ] == $module_name ) {
+				return $row_number;
+			}
+		}
+		return 0;
 	}
 
 	// sync General typography for all parts of KB Main Page only if the General typography setting was changed

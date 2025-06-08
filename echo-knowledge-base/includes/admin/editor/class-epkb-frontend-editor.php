@@ -18,8 +18,17 @@ class EPKB_Frontend_Editor {
 		add_action( 'wp_ajax_eckb_apply_fe_settings', array( $this, 'update_preview_and_settings') );
 		add_action( 'wp_ajax_nopriv_eckb_apply_fe_settings', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
-        add_action( 'wp_ajax_eckb_save_fe_settings', array( $this, 'save_settings' ) );
+        add_action( 'wp_ajax_eckb_save_fe_settings', array( $this, 'save_main_page_settings' ) );
         add_action( 'wp_ajax_nopriv_eckb_save_fe_settings', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+
+		add_action( 'wp_ajax_eckb_save_fe_article_settings', array( $this, 'save_article_page_settings' ) );
+		add_action( 'wp_ajax_nopriv_eckb_save_fe_article_settings', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+
+		add_action( 'wp_ajax_eckb_save_fe_archive_settings', array( $this, 'save_archive_page_settings' ) );
+		add_action( 'wp_ajax_nopriv_eckb_save_fe_archive_settings', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+
+		add_action( 'wp_ajax_eckb_closed_fe_editor', array( $this, 'closed_fe_editor' ) );
+		add_action( 'wp_ajax_nopriv_eckb_closed_fe_editor', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
 		// report uncaught AJAX error
 	    add_action( 'wp_ajax_epkb_editor_error', array( 'EPKB_Controller', 'handle_report_admin_error' ) );
@@ -40,7 +49,7 @@ class EPKB_Frontend_Editor {
 
 		// continue only if we are on one of the following page: KB main page, KB article page, KB archive page
 		$kb_page_type = EPKB_Editor_Utilities::epkb_front_end_editor_type();
-		if ( empty( $kb_page_type ) || $kb_page_type != 'main-page' ) {
+		if ( empty( $kb_page_type ) ) {
 			return;
 		}
 
@@ -53,8 +62,8 @@ class EPKB_Frontend_Editor {
 			return;
 		}
 
-	    // get KB configuration	- do nothing on fail
-	    $kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
+		// get KB configuration	- do nothing on fail
+		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
 		if ( is_wp_error( $kb_config ) ) {
 			return;
 		}
@@ -75,22 +84,6 @@ class EPKB_Frontend_Editor {
 		// render settings
 		self::render_editor( $kb_config );
 
-		// TODO FUTURE: this way of including of WordPress core color-picker is not 100% reliable as 'iris' file may be moved in some future release
-		//		alternative is to use our color-picker file as we do for front-end editor, but it may require more custom CSS
-		// on public frontend the WordPress color-picker is not registered by default
-		if ( ! wp_script_is( 'wp-i18n', 'registered' ) ) {
-			wp_register_script( 'wp-i18n', includes_url( 'js/dist/i18n.min.js' ), array(), false, true );
-		}
-		if ( ! wp_script_is( 'iris', 'registered' ) ) {
-			wp_register_script( 'iris', admin_url( 'js/iris.min.js' ), array( 'jquery' ), false, true );
-		}
-		if ( ! wp_style_is( 'wp-color-picker', 'registered' ) ) {
-			wp_register_style( 'wp-color-picker', admin_url( 'css/color-picker.css' ) );
-		}
-		if ( ! wp_script_is( 'wp-color-picker', 'registered' ) ) {
-			wp_register_script( 'wp-color-picker', admin_url( 'js/color-picker.min.js' ), array( 'jquery', 'iris', 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-ui-widget', 'wp-i18n' ), false, true );
-		}
-
         wp_enqueue_style( 'epkb-frontend-editor' );
 		wp_enqueue_script( 'epkb-admin-form-controls-scripts' );
 		wp_enqueue_script( 'epkb-frontend-editor' );
@@ -100,7 +93,10 @@ class EPKB_Frontend_Editor {
      * Renders the HTML content for the settings sidebar.
      * Retrieves configuration settings and generates the form fields.
      */
-    private static function render_editor( $kb_config ) {	?>
+    private static function render_editor( $kb_config ) {
+		global $post;
+		
+		$display_frontend_editor_closed = EPKB_Core_Utilities::is_kb_flag_set( 'epkb_fe_editor_closed' ); ?>
 
 		<!-- Frontend Editor Toggle -->
 		<div id="epkb-fe__toggle" class="epkb-fe__toggle" style="display: none;">
@@ -115,7 +111,9 @@ class EPKB_Frontend_Editor {
 		</div>
 
 		<!-- Frontend Editor Sidebar -->
-		<div id="epkb-fe__editor" class="epkb-admin__form epkb-fe__editor--home" data-kbid="<?php echo esc_attr( $kb_config['id'] ); ?>" style="display: none;">
+		<div id="epkb-fe__editor" class="epkb-admin__form epkb-fe__editor--home" data-kbid="<?php echo esc_attr( $kb_config['id'] ); ?>"
+		                    data-post-id="<?php echo empty( $post ) ? 0 : esc_attr( $post->ID ); ?>" style="display: none;"
+		 					data-display-frontend-editor-closed="<?php echo $display_frontend_editor_closed ? 'true' : 'false'; ?>">
 
 			<!-- Frontend Editor Header -->
 			<div id="epkb-fe__header-container">
@@ -135,6 +133,9 @@ class EPKB_Frontend_Editor {
 				<h1 data-title="article-page-sidebar" class="epkb-fe__header-title"><?php esc_html_e( 'Sidebar', 'echo-knowledge-base' ); ?></h1>
 				<h1 data-title="article-page-toc" class="epkb-fe__header-title"><?php esc_html_e( 'Table of Contents', 'echo-knowledge-base' ); ?></h1>
 				<h1 data-title="article-page-ratings" class="epkb-fe__header-title"><?php esc_html_e( 'Rating and Feedback', 'echo-knowledge-base' ); ?></h1>
+
+				<!-- Archive Page Titles -->
+				<h1 data-title="archive-page-settings" class="epkb-fe__header-title"><?php esc_html_e( 'Settings', 'echo-knowledge-base' ); ?></h1>
 
 				<div class="epkb-fe__header-close-button">
 					<span class="epkbfa epkbfa-times"></span>
@@ -245,7 +246,6 @@ class EPKB_Frontend_Editor {
 		// Is this page or search box too narrow? ------------------------/
 		$search_row_width_key = '';
 		$category_row_width_key = '';
-		$kb_id = $kb_config['id'];
 
 		for ( $row_index = 1; $row_index <= EPKB_Modular_Main_Page::MAX_ROWS; $row_index++ ) {
 			if ( $kb_config['ml_row_' . $row_index . '_module'] === 'categories_articles' ) {
@@ -472,7 +472,7 @@ class EPKB_Frontend_Editor {
 	 * AJAX preview changes without saving
 	 */
 	public function update_preview_and_settings() {
-		global $epkb_frontend_editor_preview;
+		global $epkb_frontend_editor_preview, $eckb_kb_id, $post;
 
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
 
@@ -523,7 +523,8 @@ class EPKB_Frontend_Editor {
 				$new_config = $new_config_result['new_config'];
 				$seq_meta = $new_config_result['seq_meta'];
 
-				if ( ! empty( $new_config['categories_articles_preset'] ) && $new_config['categories_articles_preset'] != 'current' ) {
+				// only get preset settings if user is modifying it
+				if ( $setting_name == 'categories_articles_preset' && ! empty( $new_config['categories_articles_preset'] ) && $new_config['categories_articles_preset'] != 'current' ) {
 					$categories_articles_design_settings = EPKB_KB_Wizard_Themes::get_theme( $new_config['categories_articles_preset'], $new_config );
 					$new_config = array_merge( $new_config, $categories_articles_design_settings );
 				}
@@ -586,6 +587,57 @@ class EPKB_Frontend_Editor {
 			case 'article-page-sidebar':
 			case 'article-page-toc':
 			case 'article-page-ratings':
+
+				// TODO: for article_search_sync_toggle need to update settings (when changed to 'on' - hide most of article search settings; when changed to 'off' - show the full settings like in Settings UI)
+
+				$article_id = (int)EPKB_Utilities::post( 'kb_post_id' );
+
+				// Initialize Advanced Search if needed
+				EPKB_Core_Utilities::initialize_advanced_search_box();
+				$new_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'ap' );
+
+				global $eckb_is_kb_main_page;
+				$eckb_is_kb_main_page = false;
+
+				// Sidebar
+				// recalculate width
+				$new_config = EPKB_Core_Utilities::reset_article_sidebar_widths( $new_config );
+
+				// TOC
+				// Process sidebar priority for TOC location
+				$new_config['article_sidebar_component_priority'] = EPKB_KB_Config_Controller::convert_ui_data_to_article_sidebar_component_priority( $new_config );
+				$new_config = EPKB_Core_Utilities::update_article_sidebar_priority( $orig_config, $new_config );
+
+				// For general settings, we need to update the article content header which contains metadata like author, dates, etc.
+
+				// Set up global $post for WordPress date functions to work properly
+				$original_post = $GLOBALS['post'] ?? null;
+				$demo_article = null;
+				if ( empty( $original_post ) ) {
+					if ( $article_id > 0 ) {
+						$demo_article = get_post( $article_id );
+					}
+					if ( empty( $demo_article ) ) {
+						$demo_article = new Stdclass();
+						$demo_article->ID = 0;
+						$demo_article->post_title = __( 'Demo Article Title', 'echo-knowledge-base' );
+						$demo_article->post_author = get_current_user_id();
+						$demo_article->post_date = current_time( 'mysql' );
+						$demo_article->post_modified = current_time( 'mysql' );
+						$demo_article->filter = 'raw';
+						$demo_article = new WP_Post( $demo_article );
+					}
+				}
+				$GLOBALS['post'] = $demo_article;
+				$post = $demo_article;
+				$eckb_kb_id = $new_config['id'];
+
+				echo EPKB_Articles_Setup::get_article_content_and_features( $demo_article, $demo_article->post_content, $new_config );
+
+				// Restore original global $post
+				$GLOBALS['post'] = $original_post;
+
+				// Also include any template wrapper updates
 				$template_style_escaped = EPKB_Utilities::get_inline_style(
 					' padding-top::       template_article_padding_top,
 					padding-bottom::    template_article_padding_bottom,
@@ -603,17 +655,47 @@ class EPKB_Frontend_Editor {
 				}
 				if ( $new_config[ 'templates_for_kb_article_defaults'] === 'on' ) {
 					$article_class_escaped .= 'eckb-article-defaults ';
-				}	?>
+				}
 
-				<div class="eckb-kb-template <?php echo $article_class_escaped; ?>" <?php echo $template_style_escaped; ?>>	      <?php
-
-					// LATER TODO retrieve article from Article Setup class      	?>
-
-				</div>	<?php
+				// Include template data for JavaScript to update as well
+				?><script type="application/json" id="eckb-template-update-data"><?php
+				echo wp_json_encode( array(
+					'classes' => $article_class_escaped,
+					'style' => $template_style_escaped
+				) );
+				?></script><?php
 				break;
 
 			// Archive Page features update entire Archive HTML
 			case 'archive-page-settings':
+				// Initialize Advanced Search if needed
+				EPKB_Core_Utilities::initialize_advanced_search_box();
+				$new_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'cp' );
+				
+				// Get taxonomy and term ID from the AJAX request
+				$taxonomy = EPKB_Utilities::post( 'taxonomy' );
+				$term_id = EPKB_Utilities::post( 'term_id', 0 );
+				
+				// Set up the query context for archive page
+				if ( ! empty( $taxonomy ) && ! empty( $term_id ) ) {
+					$GLOBALS['taxonomy'] = $taxonomy;
+					
+					// Get the term object
+					$term = get_term( $term_id, $taxonomy );
+					if ( ! is_wp_error( $term ) && ! empty( $term ) ) {
+						// Set up query vars that archive pages expect
+						global $wp_query;
+						if ( empty( $wp_query ) ) {
+							$wp_query = new WP_Query();
+						}
+						$wp_query->is_archive = true;
+						$wp_query->is_tax = true;
+						$wp_query->queried_object = $term;
+						$wp_query->queried_object_id = $term_id;
+					}
+				}
+				
+				// Get the category archive page HTML
 				if ( EPKB_KB_Handler::is_kb_category_taxonomy( $GLOBALS['taxonomy'] ) ) {
 					EPKB_Category_Archive_Setup::get_category_archive_page_v3( $new_config );
 				} else if (  EPKB_KB_Handler::is_kb_tag_taxonomy( $GLOBALS['taxonomy'] ) ) {
@@ -628,15 +710,17 @@ class EPKB_Frontend_Editor {
 		$preview_html = ob_get_clean();
 
 		$updated_settings_html = self::get_updated_settings_html( $new_config, $kb_page_type, $setting_name, $feature_name, $settings_row_number );
-		$inline_styles = self::get_inline_styles( $new_config, $orig_config, $kb_page_type );
+		$inline_styles = self::get_inline_styles( $new_config, $kb_page_type );
 
-		wp_send_json_success( $inline_styles + array(
-				'preview_html' => $preview_html,
-				'layout_settings_html' => $updated_settings_html['layout_settings_html'],
-				'layout_settings_html_temp' => $updated_settings_html['layout_settings_html_temp'],
-				'faqs_design_settings' => $faqs_design_settings,
-				'categories_articles_design_settings' => $categories_articles_design_settings,
-			) );
+		$response_data = $inline_styles + array(
+			'preview_html' => $preview_html,
+			'layout_settings_html' => $updated_settings_html['layout_settings_html'],
+			'layout_settings_html_temp' => $updated_settings_html['layout_settings_html_temp'],
+			'faqs_design_settings' => $faqs_design_settings,
+			'categories_articles_design_settings' => $categories_articles_design_settings,
+		);
+
+		wp_send_json_success( $response_data );
 	}
 
 	/**
@@ -666,10 +750,10 @@ class EPKB_Frontend_Editor {
 	}
 
     /**
-     * AJAX save all settings
+     * AJAX save all Main Pagesettings
      * Handles nonce verification, user permissions check, data retrieval, and configuration update.
      */
-    public function save_settings() {
+    public function save_main_page_settings() {
 
         EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
 
@@ -684,13 +768,101 @@ class EPKB_Frontend_Editor {
 		}
 
 		// Update the main page configuration
-		self::update_module_position( $orig_config, $new_config );
+		self::update_module_position( $new_config );
 
 		self::update_main_page( $kb_id, $orig_config, $new_config );
 
         // Send success response if update was successful
         wp_send_json_success( array( 'message' => esc_html__( 'Settings saved successfully', 'echo-knowledge-base' ) ) );
     }
+
+	/**
+	 * AJAX save all Article Page settings
+	 * Handles nonce verification, user permissions check, data retrieval, and configuration update.
+	 */
+	public function save_article_page_settings() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
+
+		$config = self::merge_new_and_old_kb_config( false );
+		$orig_config = $config['orig_config'];
+		$new_config = $config['new_config'];
+		$kb_id = $config['kb_id'];
+
+		// Check if the user has permission to save settings
+		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid Knowledge Base ID', 'echo-knowledge-base' ) ) );
+		}
+
+		// Update the article page configuration
+		self::update_article_page( $kb_id, $orig_config, $new_config );
+
+		// Send success response if update was successful
+		wp_send_json_success( array( 'message' => esc_html__( 'Settings saved successfully', 'echo-knowledge-base' ) ) );
+	}
+
+	/**
+	 * Save KB Article Page configuration
+	 *
+	 * @param $editor_kb_id
+	 * @param $orig_config
+	 * @param $new_config
+	 */
+	private static function update_article_page( $editor_kb_id, $orig_config, $new_config ) {
+
+		// if user selected a theme preset for search then apply it
+		if ( ! empty( $new_config['advanced_search_ap_presets'] ) && $new_config['advanced_search_ap_presets'] != 'current' ) {
+			$new_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'ap' );
+		}
+
+		// detect user changed kb template
+		if ( $orig_config['templates_for_kb'] != $new_config['templates_for_kb'] ) {
+			$new_config['article_content_enable_article_title'] = $new_config['templates_for_kb'] == 'current_theme_templates' ? 'off' : 'on';
+		}
+
+		// process sidebar priority settings
+		$new_config['article_sidebar_component_priority'] = EPKB_KB_Config_Controller::convert_ui_data_to_article_sidebar_component_priority( $new_config );
+		$new_config = EPKB_Core_Utilities::update_article_sidebar_priority( $orig_config, $new_config );
+
+		EPKB_Core_Utilities::start_update_kb_configuration( $editor_kb_id, $new_config );
+	}
+
+	/**
+	 * AJAX save all Archive Page settings
+	 * Handles nonce verification, user permissions check, data retrieval, and configuration update.
+	 */
+	public function save_archive_page_settings() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
+
+		$config = self::merge_new_and_old_kb_config( false );
+		$orig_config = $config['orig_config'];
+		$new_config = $config['new_config'];
+		$kb_id = $config['kb_id'];
+
+		// Check if the user has permission to save settings
+		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid Knowledge Base ID', 'echo-knowledge-base' ) ) );
+		}
+
+		// if user selected a theme preset for search then apply it
+		if ( ! empty( $new_config['advanced_search_cp_presets'] ) && $new_config['advanced_search_cp_presets'] != 'current' ) {
+			$new_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'cp' );
+		}
+
+		// no need to detect kb template change for archive pages as they don't use templates
+
+		EPKB_Core_Utilities::start_update_kb_configuration( $kb_id, $new_config );
+
+		// Send success response if update was successful
+		wp_send_json_success( array( 'message' => esc_html__( 'Settings saved successfully', 'echo-knowledge-base' ) ) );
+	}
+
+	public function closed_fe_editor() {
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
+		EPKB_Core_Utilities::add_kb_flag( 'epkb_fe_editor_closed' );
+		wp_send_json_success();
+	}
 
 	private static function merge_new_and_old_kb_config( $merge_module_position=true, $page_reload=false ) {
 
@@ -718,7 +890,7 @@ class EPKB_Frontend_Editor {
 		}
 
 		if ( $merge_module_position ) {
-			$new_config = self::update_module_position( $orig_config, $new_config );
+			$new_config = self::update_module_position( $new_config );
 		}
 
 		$new_config = array_merge( $orig_config, $new_config );
@@ -754,7 +926,7 @@ class EPKB_Frontend_Editor {
 		EPKB_Core_Utilities::start_update_kb_configuration( $editor_kb_id, $new_config );
 	}
 
-	private static function update_module_position( $orig_config, $new_config ) {
+	private static function update_module_position( $new_config ) {
 
 		// ensure at least one module is set
 		$module_counter = 0;
@@ -774,13 +946,9 @@ class EPKB_Frontend_Editor {
 			return $new_config;
 		}
 
-		$initial_new_config = $new_config;
-
 		// reset original module positions
 		for ( $row_index = 1; $row_index <= EPKB_Modular_Main_Page::MAX_ROWS; $row_index++ ) {
 			$new_config[ 'ml_row_' . $row_index . '_module' ] = 'none';
-			$new_config[ 'ml_row_' . $row_index . '_desktop_width' ] = 1400;
-			$new_config[ 'ml_row_' . $row_index . '_desktop_width_units' ] = 'px';
 		}
 
 		// update new module positions
@@ -797,14 +965,6 @@ class EPKB_Frontend_Editor {
 			}
 
 			$new_config[ 'ml_row_' . $new_module_row_number . '_module' ] = $module;
-
-			// original config: contains module initial row number
-			// new config: contains the actual current values (row number, width) for that row because we do not move the width controls, so they still have the same as HTML row number.
-			$prev_module_row = self::get_module_row_number( $module, $orig_config );
-			if ( $prev_module_row != 'none' ) {
-				$new_config[ 'ml_row_' . $new_module_row_number . '_desktop_width' ] = $initial_new_config[ 'ml_row_' . $prev_module_row . '_desktop_width' ];
-				$new_config[ 'ml_row_' . $new_module_row_number . '_desktop_width_units' ] = $initial_new_config[ 'ml_row_' . $prev_module_row . '_desktop_width_units' ];
-			}
 		}
 
 		return $new_config;
@@ -852,7 +1012,7 @@ class EPKB_Frontend_Editor {
 		);
 	}
 
-	private static function get_inline_styles( $new_config, $orig_config, $kb_page_type ) {
+	private static function get_inline_styles( $new_config, $kb_page_type ) {
 
 		$prev_link_css_id = EPKB_Utilities::post( 'prev_link_css_id' );
 
@@ -871,7 +1031,7 @@ class EPKB_Frontend_Editor {
 				if ( 'epkb-' . $current_css_file_slug . '-css' != $prev_link_css_id ) {
 
 					// apply the modules position here to have the inline CSS updated properly (since the inline CSS rendering relying on ml_row_{n}_module settings)
-					$new_config = self::update_module_position( $orig_config, $new_config );
+					$new_config = self::update_module_position( $new_config );
 
 					$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
@@ -899,6 +1059,11 @@ class EPKB_Frontend_Editor {
 		// get updated inline styles
 		$inline_styles = epkb_frontend_kb_theme_styles_now( $new_config, $current_css_file_slug );
 
+		// For archive pages, also get the archive-specific inline styles
+		if ( $kb_page_type === 'archive-page' ) {
+			$inline_styles .= EPKB_Category_Archive_Setup::get_all_inline_styles( $new_config );
+		}
+
 		return array(
 			'inline_styles'	=> EPKB_Utilities::minify_css( $inline_styles ),
 			'link_css'		=> $link_css,
@@ -913,39 +1078,31 @@ class EPKB_Frontend_Editor {
 	 * @param $feature_name
 	 * @return string
 	 */
-	private static function get_features_icon_escaped( $feature_name ) {    // LATER TODO: update icons
+	private static function get_features_icon_escaped( $feature_name ) {  
 		switch ( $feature_name ) {
-
-			// main page features
+			case 'article-page-search-box':
 			case 'search':
 				return 'epkbfa epkbfa-search';
 			case 'categories_articles':
-				return 'epkbfa epkbfa-list-alt';
+				return 'epkbfa epkbfa-folder-open';
 			case 'articles_list':
-				return 'epkbfa epkbfa-list-alt';
+				return 'epkbfa epkbfa-list';
 			case 'faqs':
-				return 'epkbfa epkbfa-list-alt';
+				return 'epkbfa epkbfa-question-circle';
 			case 'resource_links':
-				return 'epkbfa epkbfa-list-alt';
-
-			// article page features
+				return 'epkbfa epkbfa-link';
 			case 'article-page-settings':
-				return 'epkbfa epkbfa-list-alt';
-			case 'article-page-search-box':
-				return 'epkbfa epkbfa-list-alt';
+				return 'epkbfa epkbfa-cogs';
 			case 'article-page-sidebar':
-				return 'epkbfa epkbfa-list-alt';
+				return 'epkbfa epkbfa-th-list';
 			case 'article-page-toc':
-				return 'epkbfa epkbfa-list-alt';
+				return 'epkbfa epkbfa-list-ol';
 			case 'article-page-ratings':
-				return 'epkbfa epkbfa-list-alt';
-
-			// archive-page features
+				return 'epkbfa epkbfa-star';
 			case 'archive-page-settings':
-				return 'epkbfa epkbfa-list-alt';
-
+				return 'epkbfa epkbfa-archive';
 			default:
-				return '';
+				return 'epkbfa epkbfa-circle-o';
 		}
 	}
 
@@ -973,7 +1130,7 @@ class EPKB_Frontend_Editor {
 			) ). EPKB_HTML_Elements::radio_buttons_horizontal( array(
 				'name' => $module_name . '_module_position',
 				'value' => '',
-				'options' => [ 'move-up' => __( 'Move Up', 'echo-knowledge-base' ), 'move-down' => __( 'Move Down', 'echo-knowledge-base' ) ],
+				'options' => [ 'move-up' => __( 'Move Up', 'echo-knowledge-base' ) . ' <span class="epkbfa epkbfa-arrow-up"></span>', 'move-down' => __( 'Move Down', 'echo-knowledge-base' ) . ' <span class="epkbfa epkbfa-arrow-down"></span>' ],
 				'input_group_class' => 'epkb-row-module-position epkb-row-module-position--' . $module_name,
 				'return_html' => true,
 				'group_data' => array(

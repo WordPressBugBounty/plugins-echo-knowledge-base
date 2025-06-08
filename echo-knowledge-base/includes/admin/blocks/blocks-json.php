@@ -1050,6 +1050,9 @@ function epkb_get_block_attributes( $block_name ) {
 			'section_body_background_color' => [
 				'type' => 'string'
 			],
+			'section_box_shadow' => [
+				'type' => 'string'
+			],
 			'section_head_font_color' => [
 				'type' => 'string'
 			],

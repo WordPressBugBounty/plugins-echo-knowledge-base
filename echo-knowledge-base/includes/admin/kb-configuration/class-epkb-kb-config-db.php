@@ -93,7 +93,7 @@ class EPKB_KB_Config_DB {
 
 		// retrieve all KB option names for existing knowledge bases from WP Options table
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$kb_option_names = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '" . self::KB_CONFIG_PREFIX . "%'" );
+		$kb_option_names = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s", self::KB_CONFIG_PREFIX . '%' ) );
 		if ( empty( $kb_option_names ) ) {
 			if ( ! $ignore_error ) {
 				EPKB_Logging::add_log( "Did not retrieve any kb config. Try to deactivate and active KB plugin to see if the issue will be fixed (11). Last error: " . $wpdb->last_error, $kb_option_names );
@@ -187,7 +187,7 @@ class EPKB_KB_Config_DB {
 
 		// fall back - retrieve KB settings directly from the database
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$config = $wpdb->get_var( "SELECT option_value FROM $wpdb->options WHERE option_name = '" . $option_name . "'" );
+		$config = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s", $option_name ) );
 		if ( empty( $config ) ) {
 			return [];
 		}

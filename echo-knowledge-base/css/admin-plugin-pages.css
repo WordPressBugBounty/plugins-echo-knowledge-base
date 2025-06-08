@@ -4291,12 +4291,12 @@ input[type=radio]:checked:before {
   text-decoration: none;
   color: #FFFFFF;
   border: solid 1px #4D4D4D;
-  background-image: linear-gradient(bottom, #666666, gray);
-  background-image: -o-linear-gradient(bottom, #666666, gray);
-  background-image: -moz-linear-gradient(bottom, #666666, gray);
-  background-image: -webkit-linear-gradient(bottom, #666666, gray);
-  background-image: -ms-linear-gradient(bottom, #666666, gray);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #666666), color-stop(1, gray));
+  background-image: linear-gradient(bottom, #666666, #808080);
+  background-image: -o-linear-gradient(bottom, #666666, #808080);
+  background-image: -moz-linear-gradient(bottom, #666666, #808080);
+  background-image: -webkit-linear-gradient(bottom, #666666, #808080);
+  background-image: -ms-linear-gradient(bottom, #666666, #808080);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #666666), color-stop(1, #808080));
   border-radius: 5px;
 }
 #ekb-admin-page-wrap .epkb-default-btn a {
@@ -4304,12 +4304,12 @@ input[type=radio]:checked:before {
 }
 #ekb-admin-page-wrap .epkb-default-btn:hover {
   cursor: pointer;
-  background-image: linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -o-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -moz-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -webkit-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -ms-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4D4D4D), color-stop(1, gray));
+  background-image: linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -o-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -moz-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -webkit-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -ms-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4D4D4D), color-stop(1, #808080));
   border-radius: 5px;
 }
 #ekb-admin-page-wrap .epkb-default-btn:focus {
@@ -15833,7 +15833,7 @@ input[type=radio]:checked:before {
   color: #FFFFFF;
   font-weight: 400;
   display: inline-block;
-  padding: 0 15px;
+  padding: 10px 15px;
   background-color: #3BB3E0;
   border-radius: 7px;
   margin-left: 15px;
@@ -17241,12 +17241,12 @@ input[type=radio]:checked:before {
   text-decoration: none;
   color: #FFFFFF;
   border: solid 1px #4D4D4D;
-  background-image: linear-gradient(bottom, #666666, gray);
-  background-image: -o-linear-gradient(bottom, #666666, gray);
-  background-image: -moz-linear-gradient(bottom, #666666, gray);
-  background-image: -webkit-linear-gradient(bottom, #666666, gray);
-  background-image: -ms-linear-gradient(bottom, #666666, gray);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #666666), color-stop(1, gray));
+  background-image: linear-gradient(bottom, #666666, #808080);
+  background-image: -o-linear-gradient(bottom, #666666, #808080);
+  background-image: -moz-linear-gradient(bottom, #666666, #808080);
+  background-image: -webkit-linear-gradient(bottom, #666666, #808080);
+  background-image: -ms-linear-gradient(bottom, #666666, #808080);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #666666), color-stop(1, #808080));
   border-radius: 5px;
 }
 .epkb-default-btn a {
@@ -17254,12 +17254,12 @@ input[type=radio]:checked:before {
 }
 .epkb-default-btn:hover {
   cursor: pointer;
-  background-image: linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -o-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -moz-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -webkit-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -ms-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4D4D4D), color-stop(1, gray));
+  background-image: linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -o-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -moz-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -webkit-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -ms-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4D4D4D), color-stop(1, #808080));
   border-radius: 5px;
 }
 .epkb-default-btn:focus {
@@ -18797,12 +18797,12 @@ input[type=radio]:checked:before {
   text-decoration: none;
   color: #FFFFFF;
   border: solid 1px #4D4D4D;
-  background-image: linear-gradient(bottom, #666666, gray);
-  background-image: -o-linear-gradient(bottom, #666666, gray);
-  background-image: -moz-linear-gradient(bottom, #666666, gray);
-  background-image: -webkit-linear-gradient(bottom, #666666, gray);
-  background-image: -ms-linear-gradient(bottom, #666666, gray);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #666666), color-stop(1, gray));
+  background-image: linear-gradient(bottom, #666666, #808080);
+  background-image: -o-linear-gradient(bottom, #666666, #808080);
+  background-image: -moz-linear-gradient(bottom, #666666, #808080);
+  background-image: -webkit-linear-gradient(bottom, #666666, #808080);
+  background-image: -ms-linear-gradient(bottom, #666666, #808080);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #666666), color-stop(1, #808080));
   border-radius: 5px;
 }
 .epkb-admin__form .epkb-admin__wp_editor-field .wp-switch-editor a {
@@ -18810,12 +18810,12 @@ input[type=radio]:checked:before {
 }
 .epkb-admin__form .epkb-admin__wp_editor-field .wp-switch-editor:hover {
   cursor: pointer;
-  background-image: linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -o-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -moz-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -webkit-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -ms-linear-gradient(bottom, #4D4D4D, gray);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4D4D4D), color-stop(1, gray));
+  background-image: linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -o-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -moz-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -webkit-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -ms-linear-gradient(bottom, #4D4D4D, #808080);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4D4D4D), color-stop(1, #808080));
   border-radius: 5px;
 }
 .epkb-admin__form .epkb-admin__wp_editor-field .wp-switch-editor:focus {

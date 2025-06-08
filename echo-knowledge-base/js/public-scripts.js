@@ -484,8 +484,6 @@ jQuery(document).ready(function($) {
 				return false;
 			});
 			
-			$(window).on( 'scroll', this.scrollSpy );
-			
 			this.scrollSpy();
 			
 			// scroll to element if it is in the hash 
@@ -520,7 +518,8 @@ jQuery(document).ready(function($) {
 			if ( typeof $articleTocLocal.data('exclude_class') !== 'undefined' ) {
 				this.excludeClass = $articleTocLocal.data('exclude_class');
 			}
-			
+
+			this.searchStr = '';
 			while ( this.firstLevel <= this.lastLevel ) {
 				this.searchStr += 'h' + this.firstLevel + ( this.firstLevel < this.lastLevel ? ',' : '' );
 				this.firstLevel++;
@@ -670,6 +669,12 @@ jQuery(document).ready(function($) {
 		// highlight needed element
 		scrollSpy: function () {
 
+			// No selection if page does not have scroll
+			if ( $( document ).height() <= $( window ).height() ) {
+				$( '.eckb-article-toc__level a' ).removeClass( 'active' );
+				return;
+			}
+
 			let $articleTocLocal = $( '.eckb-article-toc' );
 			let currentTop = $(window).scrollTop();
 			let currentBottom = $(window).scrollTop() + $(window).height();
@@ -751,7 +756,6 @@ jQuery(document).ready(function($) {
 				$highlightedEl.closest('.eckb-article-toc__inner').scrollTop( highlightPosition - $highlightedEl.closest('.eckb-article-toc__inner').find( '.eckb-article-toc__title' ).position().top );
 			}
 		},
-		
 	};
 
 	function initialize_toc() {
@@ -780,7 +784,12 @@ jQuery(document).ready(function($) {
 			mobile_TOC();
 		}
 	}
-	setTimeout ( initialize_toc, 500 );
+
+	setTimeout( function () {
+		initialize_toc();
+		$( window ).on( 'scroll', TOC.scrollSpy );
+		$( window ).on( 'resize', TOC.scrollSpy );
+	}, 500 );
 
 	function mobile_TOC() {
 		let window_width = $(window).width();
@@ -1060,7 +1069,9 @@ jQuery(document).ready(function($) {
 			});
 
 			// SHOW ALL articles functionality
-			sidebarV2.on('click', '.epkb-show-all-articles', function () {
+			sidebarV2
+			.off('click.epkbShowAll')   // remove any previous bindings
+			.on('click.epkbShowAll', '.epkb-show-all-articles', function () {
 
 				$( this ).toggleClass( 'active' );
 				let parent = $( this ).parent( 'ul' );

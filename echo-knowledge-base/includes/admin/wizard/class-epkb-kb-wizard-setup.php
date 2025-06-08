@@ -846,7 +846,7 @@ class EPKB_KB_Wizard_Setup {
 				<!-- Need Help -->
 				<div class="epkb-setup-wizard-features-choice-info">
 					<p><?php if ( $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
-								esc_html_e( 'KB Main Page displays categories and articles. Please decide how to display it, using either blocks or a shortcode.', 'echo-knowledge-base' );
+								esc_html_e( 'Knowledge Base - lists all categories and articles. Display it with blocks or the shortcode — both include visual editors.', 'echo-knowledge-base' );
 								} ?></p>
 					<p><?php if ( $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
 								esc_html_e( 'Need help deciding between Blocks and Shortcodes?', 'echo-knowledge-base' );
@@ -875,7 +875,7 @@ class EPKB_KB_Wizard_Setup {
 	private function get_blocks_option( $is_preselected ) {	?>
 		<!-- Use Blocks -->
 		<div class="epkb-setup-wizard-features-choice <?php echo $is_preselected ? 'epkb-setup-wizard-features-choice--active' : ''; ?>">
-				<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use Blocks', 'echo-knowledge-base' ); ?></span><span class="epkb-setup-wizard-features-choice__header-label"><?php esc_html_e( 'Recommended', 'echo-knowledge-base' ); ?></span></div>
+				<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use WordPress Blocks', 'echo-knowledge-base' ); ?></span><span class="epkb-setup-wizard-features-choice__header-label"><?php esc_html_e( 'Recommended', 'echo-knowledge-base' ); ?></span></div>
 				<div class="epkb-setup-wizard-features-choice__body">
 					<img alt="Blocks" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-2/blocks-choice.jpg' ); ?>">
 				</div>

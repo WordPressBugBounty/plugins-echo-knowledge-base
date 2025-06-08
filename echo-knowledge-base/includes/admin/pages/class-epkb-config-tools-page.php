@@ -235,7 +235,7 @@ class EPKB_Config_Tools_Page {
 			[
 				'plugin'       => 'epie',
 				'icon'         => 'epkbfa epkbfa-upload',
-				'title'        => esc_html__( 'Export as CSV', 'echo-knowledge-base' ),
+				'title'        => esc_html__( 'Export Articles as CSV', 'echo-knowledge-base' ),
 				'title_class'  => 'epkb-kbnh__feature-name',
 				'desc'         => esc_html__( 'Export basic article information: title, content, categories, and tags.', 'echo-knowledge-base' ),
 				'button_id'    => EPKB_Utilities::is_export_import_enabled() ? 'epie_export_data_csv' : '',
@@ -246,7 +246,7 @@ class EPKB_Config_Tools_Page {
 			[
 				'plugin'       => 'epie',
 				'icon'         => 'epkbfa epkbfa-upload',
-				'title'        => esc_html__( 'Export as XML', 'echo-knowledge-base' ),
+				'title'        => esc_html__( 'Export Articles as XML', 'echo-knowledge-base' ),
 				'title_class'  => 'epkb-kbnh__feature-name',
 				'desc'         => esc_html__( 'Export articles, including content, comments, authors, categories, meta data, and references to attachments.', 'echo-knowledge-base' ),
 				'button_id'    => EPKB_Utilities::is_export_import_enabled() ? 'epie_export_data_xml' : '',
@@ -348,7 +348,7 @@ class EPKB_Config_Tools_Page {
 			[
 				'plugin'       => 'epie',
 				'icon'         => 'epkbfa epkbfa-download',
-				'title'        => esc_html__( 'Import as CSV', 'echo-knowledge-base' ),
+				'title'        => esc_html__( 'Import Articles as CSV', 'echo-knowledge-base' ),
 				'title_class'  => 'epkb-kbnh__feature-name',
 				'desc'         => esc_html__( 'Import basic article information: title, content, categories and tags.', 'echo-knowledge-base' ),
 				'button_id'    => EPKB_Utilities::is_export_import_enabled() ? 'epie_import_data_csv' : '',
@@ -359,7 +359,7 @@ class EPKB_Config_Tools_Page {
 			[
 				'plugin'       => 'epie',
 				'icon'         => 'epkbfa epkbfa-download',
-				'title'        => esc_html__( 'Import as XML', 'echo-knowledge-base' ),
+				'title'        => esc_html__( 'Import Articles as XML', 'echo-knowledge-base' ),
 				'title_class'  => 'epkb-kbnh__feature-name',
 				'desc'         => esc_html__( 'Import articles including content, comments, authors, categories, meta data, attachments.', 'echo-knowledge-base' ),
 				'button_id'    => EPKB_Utilities::is_export_import_enabled() ? 'epie_import_data_xml' : '',
@@ -1396,6 +1396,7 @@ class EPKB_Config_Tools_Page {
 		HOME_URL:                 <?php echo esc_url( home_url() ) . "\n"; ?>
 		KB URL:                   <?php echo esc_url( $first_KB_URL ) . "\n"; ?>
 
+		Is New User:              <?php echo EPKB_Utilities::is_new_user( $kb_config, Echo_Knowledge_Base::$version ) . "\n"; ?>
 		Active Theme:             <?php echo esc_html( $theme ) . "\n"; ?>
 		Block Theme:              <?php echo EPKB_Block_Utilities::is_block_theme() ? 'Yes' . "\n" : 'No' . "\n"; ?>
 		KB Block Template Available: <?php echo EPKB_Block_Utilities::is_kb_block_page_template_available() ? 'Yes' . "\n" : 'No' . "\n"; ?>

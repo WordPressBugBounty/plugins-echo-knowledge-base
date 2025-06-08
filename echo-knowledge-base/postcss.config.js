@@ -59,6 +59,58 @@ module.exports = {
 						}
 					});
 
+					// Convert named colors to HEX in all linear-gradient variants
+					const namedColorGradientRegexes = [
+						/linear-gradient\(\s*(\w+)\s*,\s*([^,]+)\s*,\s*(\w+)\s*\)/gi,
+						/-o-linear-gradient\(\s*(\w+)\s*,\s*([^,]+)\s*,\s*(\w+)\s*\)/gi,
+						/-moz-linear-gradient\(\s*(\w+)\s*,\s*([^,]+)\s*,\s*(\w+)\s*\)/gi,
+						/-webkit-linear-gradient\(\s*(\w+)\s*,\s*([^,]+)\s*,\s*(\w+)\s*\)/gi,
+						/-ms-linear-gradient\(\s*(\w+)\s*,\s*([^,]+)\s*,\s*(\w+)\s*\)/gi,
+						/-webkit-gradient\(\s*linear\s*,\s*left\s+(\w+)\s*,\s*left\s+top\s*,\s*color-stop\(\s*0\s*,\s*([^,)]+)\s*\)\s*,\s*color-stop\(\s*1\s*,\s*(\w+)\s*\)\s*\)/gi
+					];
+
+					// Object mapping named colors to hex values
+					const namedColors = {
+						'gray': '#808080',
+						'silver': '#C0C0C0',
+						'black': '#000000',
+						'white': '#FFFFFF',
+						'red': '#FF0000',
+						'blue': '#0000FF',
+						'green': '#008000',
+						'yellow': '#FFFF00',
+						'purple': '#800080',
+						'orange': '#FFA500',
+						'brown': '#A52A2A',
+						'pink': '#FFC0CB',
+						'lime': '#00FF00',
+						'teal': '#008080',
+						'navy': '#000080',
+						'aqua': '#00FFFF',
+						'maroon': '#800000',
+						'olive': '#808000',
+						'fuchsia': '#FF00FF'
+					};
+
+					// Process each gradient type
+					namedColorGradientRegexes.forEach(regex => {
+						value = value.replace(regex, (match, position, color1, color2) => {
+							// Only convert if color2 is a named color (without spaces, #, or rgb)
+							if (color2.trim() in namedColors) {
+								const prefix = match.substring(0, match.indexOf('('));
+								const hexColor2 = namedColors[color2.trim()];
+
+								// Handle special case for -webkit-gradient
+								if (prefix === '-webkit-gradient') {
+									return `-webkit-gradient(linear, left ${position}, left top, color-stop(0, ${color1}), color-stop(1, ${hexColor2}))`;
+								}
+
+								return `${prefix}(${position}, ${color1}, ${hexColor2})`;
+							}
+							return match;
+						});
+					});
+
 					// Convert *simple* rgb(...) into uppercase 6-digit HEX
 					const rgbRegex = /rgb\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\)/gi;
 					value = value.replace(rgbRegex, (match, r, g, b) => {

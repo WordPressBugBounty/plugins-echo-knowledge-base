@@ -246,7 +246,6 @@
   background-image: -ms-linear-gradient(bottom, #2EA3F2, #3EB8E5);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #2EA3F2), color-stop(1, #3EB8E5));
   border-radius: 5px;
-  box-shadow: inset 0px 1px 0px #7FD2F1, 0px 1px 0px #FFFFFF;
   font-size: 20px;
 }
 #epkb-modular-main-page-container .eckb-kb-no-content .eckb-kb-no-content-body a.eckb-kb-no-content-btn a,
@@ -376,15 +375,22 @@
 }
 #epkb-modular-main-page-container .eckb-kb-no-content .epkb-dialog-box-form input[type=text],
 .epkb-block-main-page-container .eckb-kb-no-content .epkb-dialog-box-form input[type=text] {
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
   width: 100%;
-  padding: 6px 12px;
+  padding: 8px 12px;
   margin: 5px 0;
   border: solid 1px #D5DADF;
+  line-height: 1em;
+  min-height: 35px;
   -webkit-box-shadow: none;
   box-shadow: none;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
   color: #2C2C2C;
   background-color: #FFFFFF;
 }

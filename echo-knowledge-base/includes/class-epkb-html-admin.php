@@ -886,11 +886,60 @@ class EPKB_HTML_Admin {
 	 * @return false|string
 	 */
 	public static function display_fe_offer_box( $kb_config, $is_first_time = false ) {
-		return; // TODO
 		ob_start();	?>
 		<div class="epkb-admin__fe-offer-box<?php echo $is_first_time ? '' : ' ' . 'epkb-admin__fe-offer-box--top'; ?>">
 			<p><?php esc_html_e( 'Use our Frontend Editor to change KB Main Page settings.', 'echo-knowledge-base' ); ?></p>
-			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '?epkb_fe_reopen_feature=none'; ?>" target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.	<?php
+			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '?epkb_fe_reopen_feature=none'; ?>" 
+								target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.	<?php
+			if ( $is_first_time ) {	?>
+				<p><a class="epkb-fe__fe-offer-disable" href="#" target="_blank" class="" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Edit Settings Without Frontend Editor', 'echo-knowledge-base' ); ?></a></p>	<?php
+			}	?>
+		</div>	<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Show FE offer with link to FE editor for Article Page
+	 * @param $kb_config
+	 * @param bool $is_first_time
+	 * @return false|string
+	 */
+	public static function display_fe_offer_box_article_page( $kb_config, $is_first_time = false ) {
+		$first_kb_article_url = EPKB_KB_Handler::get_first_kb_article_url( $kb_config );
+		if ( empty( $first_kb_article_url ) ) {
+			return '';
+		}
+		
+		ob_start();	?>
+		<div class="epkb-admin__fe-offer-box<?php echo $is_first_time ? '' : ' ' . 'epkb-admin__fe-offer-box--top'; ?>">
+			<p><?php esc_html_e( 'Use our Frontend Editor to change KB Article Page settings.', 'echo-knowledge-base' ); ?></p>
+			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_article_url( $kb_config ) ) . '?epkb_fe_reopen_feature=article-page-settings'; ?>" 
+								target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.	<?php
+			if ( $is_first_time ) {	?>
+				<p><a class="epkb-fe__fe-offer-disable" href="#" target="_blank" class="" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Edit Settings Without Frontend Editor', 'echo-knowledge-base' ); ?></a></p>	<?php
+			}	?>
+		</div>	<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Show FE offer with link to FE editor for Archive Page
+	 * @param $kb_config
+	 * @param bool $is_first_time
+	 * @return false|string
+	 */
+	public static function display_fe_offer_box_archive_page( $kb_config, $is_first_time = false ) {
+		$first_kb_archive_url = EPKB_KB_Handler::get_kb_category_with_most_articles_url( $kb_config );
+		if ( empty( $first_kb_archive_url ) ) {
+			return '';
+		}
+		
+		ob_start();	?>
+		<div class="epkb-admin__fe-offer-box<?php echo $is_first_time ? '' : ' ' . 'epkb-admin__fe-offer-box--top'; ?>">
+			<p><?php esc_html_e( 'Use our Frontend Editor to change Category Archive Page settings.', 'echo-knowledge-base' ); ?></p>
+			<a href="<?php echo esc_url( $first_kb_archive_url ) . '?epkb_fe_reopen_feature=archive-page-settings'; ?>"
+					 target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.	<?php
+				
 			if ( $is_first_time ) {	?>
 				<p><a class="epkb-fe__fe-offer-disable" href="#" target="_blank" class="" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Edit Settings Without Frontend Editor', 'echo-knowledge-base' ); ?></a></p>	<?php
 			}	?>

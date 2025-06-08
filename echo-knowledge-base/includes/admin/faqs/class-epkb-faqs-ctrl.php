@@ -142,7 +142,8 @@ class EPKB_FAQs_Ctrl {
 		$faq_group_id = (int)EPKB_Utilities::post( 'faq_group_id', 0 );
 		$faq_group_name = stripslashes( EPKB_Utilities::post( 'faq_group_name' ) );
 		//$faq_group_status = EPKB_Utilities::post( 'faq_group_status' ) == 'publish' ? 'publish' : 'draft';
-		$faqs_order_sequence = EPKB_Utilities::post( 'faqs_order_sequence', [] );
+		$faqs_order_sequence_raw = EPKB_Utilities::post( 'faqs_order_sequence', [] );
+		$faqs_order_sequence = is_array( $faqs_order_sequence_raw ) ? array_map( 'absint', $faqs_order_sequence_raw ) : [];
 
 		// create the FAQ Group if it does not exist yet
 		if ( empty( $faq_group_id ) ) {

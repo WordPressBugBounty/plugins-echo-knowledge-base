@@ -7,7 +7,7 @@ Tags: knowledge base, knowledgebase, documentation, docs, faq
 Requires at least: 5.2
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 13.60.0
+Stable tag: 14.0.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -62,12 +62,23 @@ Transform your knowledge base into an intelligent assistant that provides instan
 
 AI Chat can answer questions based on content from your Knowledge Base, FAQs, internal documentation, notes, pages, or any other information source.
 
-### Key Benefits:
-* **Instant Answers**: Users get immediate responses to their questions based on your documentation
-* **24/7 Support**: Reduce support tickets by providing automated assistance around the clock
-* **Smart Learning**: AI learns from your knowledge base, FAQs, pages and internal documents
-* **Easy Setup**: Get started in minutes with our step-by-step setup guide
-* **Seamless Integration**: Works perfectly with your existing knowledge base and website
+**We cut repetitive tickets by 73 %** on our own support desk after deploying AI Chat—slashing response times and freeing the team for high-value work, all without adding head-count.
+
+**Core Benefits**
+
+- **Instant answers, 24 / 7** – The bot pulls from your knowledge base, FAQs, pages, and internal docs to resolve common questions before they ever become tickets.
+- **Live in under 30 minutes** – A step-by-step wizard gets you from install to production fast; no coding or API wrangling required.
+- **Fast ROI** – Most sites see measurable ticket reduction within the first week, freeing staff for revenue-generating tasks.
+
+**Extra Wins**
+
+- ***Doc-gap alerts** – Automatic notifications flag missing or outdated articles so you can fix a hole once and help every future visitor.
+- **Pain-point analytics** – Real-time dashboards surface the topics that frustrate users the most, turning support data into a product roadmap.
+- **Smart learning** – As you update or add content, the model re-indexes automatically, keeping answers accurate without manual re-training.
+- **Seamless human hand-off (beta)** – Edge-case questions route to a live agent in the same chat window, with full context preserved.
+- **Powered by AI Engine**, the leading WordPress AI plugin that also drives site-wide content and image generation.
+
+Our AI integration is powered by AI Engine, the leading WordPress AI plugin, which supports not only your chat but also site editing and image generation needs.
 
 For detailed setup instructions, visit our [AI Chat Integration Guide](https://www.echoknowledgebase.com/documentation/ai-chat/)
 
@@ -404,9 +415,14 @@ For more information about Pro features, visit our [Pricing Page](https://www.ec
 
 == Changelog ==
 
+= 14.0.0 =
+Release Date: June 8, 2025
+* New: Frontend Editor for KB Main Page, Article Page and Category Archive Page
+* New: Sticky sidebar
+* Fix: Cleanup and minor fixes
+
 = 13.60.0 =
-Release Date: May 25, 2025
-* New: Frontend Editor for KB Main Page
+Release Date: May 12, 2025
 * Update: FAQ admin pages improvements
 * Fix: Cleanup and minor fixes
 

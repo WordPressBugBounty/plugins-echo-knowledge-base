@@ -67,6 +67,10 @@ class EPKB_Articles_Setup {
 			$article_page_container_classes[] = 'eckb-article-page--R-sidebar-to-content';
 		}
 
+		if ( $kb_config['navigation_sidebar_sticky_toggle'] == 'on' ) {
+			$article_page_container_classes[] = 'eckb-article-page--sticky-nav';
+		}
+
 		$v2_suffix = $kb_config['article_content_enable_rows'] == 'on' ? '-v2' : '';
 
 		ob_start();
@@ -327,9 +331,9 @@ class EPKB_Articles_Setup {
 			echo '<div id="eckb-article-content-header-row-' . esc_attr( $row ) . '">';
 
 			// LEFT alignment
-			$sequences = isset($rows_setup[$row]['left']) ? $rows_setup[$row]['left'] : [];
+			$sequences = isset( $rows_setup[$row]['left'] ) ? $rows_setup[$row]['left'] : [];
 			ksort( $sequences );
-			if ( ! empty($sequences) ) {
+			if ( ! empty( $sequences ) ) {
 				echo '<div class="eckb-article-content-header-row-left-group">';
 				foreach ( $sequences as $sequence => $value ) {
 					self::article_content_header_feature( $args, $rows_setup[$row]['left'][$sequence] );
@@ -344,9 +348,9 @@ class EPKB_Articles_Setup {
 			}
 
 			// RIGHT alignment
-			$sequences = isset($rows_setup[$row]['right']) ? $rows_setup[$row]['right'] : [];
-			ksort ($sequences);
-			if ( ! empty($sequences) ) {
+			$sequences = isset( $rows_setup[$row]['right'] ) ? $rows_setup[$row]['right'] : [];
+			ksort( $sequences );
+			if ( ! empty( $sequences ) ) {
 				echo '<div class="eckb-article-content-header-row-right-group">';
 				foreach ( $sequences as $sequence => $value ) {
 					self::article_content_header_feature( $args, $rows_setup[$row]['right'][$sequence] );
@@ -472,11 +476,11 @@ class EPKB_Articles_Setup {
 		global $eckb_is_kb_main_page;
 
 		// Sidebar layout on the Main Page should not have breadcrumb
-		if ( $args['config']['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT && $eckb_is_kb_main_page) {
+		if ( $args['config']['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT && $eckb_is_kb_main_page ) {
 			return;
 		}
 
-	   $args['config']['use_old_margin_bottom'] = false;
+		$args['config']['use_old_margin_bottom'] = false;
 
 		echo '<div id="' . esc_attr( $location ) . '">';
 		EPKB_Templates::get_template_part( 'feature', 'breadcrumb', $args['config'], $args['article'] );
@@ -494,7 +498,7 @@ class EPKB_Articles_Setup {
 
 		$args['config']['use_old_margin_bottom'] = true;
 
-		if ( $args['config'][ 'breadcrumb_enable'] == 'on' ) {
+		if ( $args['config']['breadcrumb_enable'] == 'on' ) {
 			EPKB_Templates::get_template_part( 'feature', 'breadcrumb', $args['config'], $args['article'] );
 		}
 	}

@@ -368,7 +368,7 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 			$output .= '
 			#epkb-sidebar-container-v2 {
 				overflow: auto;
-				max-height: ' . $sidebar_side_bar_height . 'px;
+				max-height: ' . $sidebar_side_bar_height . 'px !important;
 			}';
 		}
 		$output .= '

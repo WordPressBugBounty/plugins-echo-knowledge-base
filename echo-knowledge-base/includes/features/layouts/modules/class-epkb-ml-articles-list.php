@@ -93,10 +93,16 @@ class EPKB_ML_Articles_List {
 	 */
 	private function display_popular_articles_list() {
 
-		$popular_articles = $this->execute_search( 'meta_value_num', 'epkb-article-views' );	?>
+		$popular_articles = $this->execute_search( 'meta_value_num', 'epkb-article-views' );
+		
+		// Get shadow class from configuration
+		$shadow_class = '';
+		if ( isset( $this->kb_config['section_box_shadow'] ) && $this->kb_config['section_box_shadow'] !== 'no_shadow' ) {
+			$shadow_class = ' ' . esc_attr( $this->kb_config['section_box_shadow'] );
+		}	?>
 
 		<!-- Popular Articles -->
-		<section id="epkb-ml-popular-articles" class="epkb-ml-article-section">
+		<section id="epkb-ml-popular-articles" class="epkb-ml-article-section<?php echo $shadow_class; ?>">
 			<div class="epkb-ml-article-section__head"><?php echo esc_html( $this->kb_config['ml_articles_list_popular_articles_msg'] ); ?></div>
 			<div class="epkb-ml-article-section__body">
 				<ul class="epkb-ml-articles-list">    <?php
@@ -119,10 +125,16 @@ class EPKB_ML_Articles_List {
 	 */
 	private function display_newest_articles_list() {
 
-		$newest_articles = $this->execute_search( 'date' ); ?>
+		$newest_articles = $this->execute_search( 'date' );
+		
+		// Get shadow class from configuration
+		$shadow_class = '';
+		if ( isset( $this->kb_config['section_box_shadow'] ) && $this->kb_config['section_box_shadow'] !== 'no_shadow' ) {
+			$shadow_class = ' ' . esc_attr( $this->kb_config['section_box_shadow'] );
+		}	?>
 
 		<!-- Newest Articles -->
-		<section id="epkb-ml-newest-articles" class="epkb-ml-article-section">
+		<section id="epkb-ml-newest-articles" class="epkb-ml-article-section<?php echo $shadow_class; ?>">
 			<div class="epkb-ml-article-section__head"><?php echo esc_html( $this->kb_config['ml_articles_list_newest_articles_msg'] ); ?></div>
 			<div class="epkb-ml-article-section__body">
 				<ul class="epkb-ml-articles-list">    <?php
@@ -142,10 +154,16 @@ class EPKB_ML_Articles_List {
 	 */
 	private function display_recent_articles_list() {
 
-		$recent_articles = $this->execute_search( 'modified' ); ?>
+		$recent_articles = $this->execute_search( 'modified' );
+		
+		// Get shadow class from configuration
+		$shadow_class = '';
+		if ( isset( $this->kb_config['section_box_shadow'] ) && $this->kb_config['section_box_shadow'] !== 'no_shadow' ) {
+			$shadow_class = ' ' . esc_attr( $this->kb_config['section_box_shadow'] );
+		}	?>
 
 		<!-- Recent Articles -->
-		<section id="epkb-ml-recent-articles" class="epkb-ml-article-section">
+		<section id="epkb-ml-recent-articles" class="epkb-ml-article-section<?php echo $shadow_class; ?>">
 			<div class="epkb-ml-article-section__head"><?php echo esc_html( $this->kb_config['ml_articles_list_recent_articles_msg'] ); ?></div>
 			<div class="epkb-ml-article-section__body">
 				<ul class="epkb-ml-articles-list">    <?php

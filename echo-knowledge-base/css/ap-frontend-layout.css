@@ -680,6 +680,17 @@
   padding: 5px 0 5px 0;
 }
 
+@media only screen and (min-width: 768px) {
+  .eckb-article-page--sticky-nav #epkb-sidebar-container-v2,
+  .eckb-article-page--sticky-nav #elay-sidebar-container-v2,
+  .eckb-article-page--sticky-nav .eckb-article-cat-layout-list {
+    position: sticky !important;
+    top: 100px !important;
+    z-index: 9 !important;
+    max-height: 80vh;
+    overflow-y: auto !important;
+  }
+}
 .eckb-article-defaults #eckb-article-page-container-v2 #eckb-article-content {
   color: #666666;
   font-size: 16px;

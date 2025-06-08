@@ -343,22 +343,25 @@ class EPKB_Block_Utilities {
 	 */
 	public static function is_block_theme() {
 		static $is_block_theme = null;
-
+	
 		if ( $is_block_theme !== null ) {
 			return $is_block_theme;
 		}
-
+	
+		// Core helper – safest and most up to date.
 		if ( function_exists( 'wp_is_block_theme' ) ) {
 			$is_block_theme = (bool) wp_is_block_theme();
 		}
-		if ( function_exists( 'gutenberg_is_fse_theme' ) ) {
+		// Fallback ONLY if the core helper is unavailable.
+		elseif ( function_exists( 'gutenberg_is_fse_theme' ) ) { // Gutenberg < 11.6  (WP pre-5.9)
+			/**@disregard P1010 */
 			$is_block_theme = (bool) gutenberg_is_fse_theme();
 		}
-
-		if ( $is_block_theme === null ) {
+		// Ultimate fallback.
+		else {
 			$is_block_theme = false;
 		}
-
+	
 		return $is_block_theme;
 	}
 

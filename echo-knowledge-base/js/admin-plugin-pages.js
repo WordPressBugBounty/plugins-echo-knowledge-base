@@ -2220,6 +2220,13 @@ jQuery(document).ready(function($) {
 		window.location.hash = '#settings__' + current_tab_key + ( current_sub_tab_key.length ? '__' + current_sub_tab_key : '' );
 	}
 
+
+	/*************************************************************************************************
+	 *
+	 *          ADMIN SETTINGS UI
+	 *
+	 ************************************************************************************************/
+
 	// Link to open Full Editor Tab
 	$( document ).on( 'click', '.epkb-admin__form .epkb-admin__form-tab-content--about-kb .epkb-admin__form-tab-content-desc__link' +
 		', .epkb-admin__form .epkb-admin__form-tab-content--main-page-about-kb .epkb-admin__form-tab-content-desc__link', function( e ) {
@@ -3027,11 +3034,15 @@ jQuery(document).ready(function($) {
 		$confirmation_dialog.removeClass( 'epkb-faqs-module-presets-selection--active' );
 	} );
 
+
+
+
 	/*************************************************************************************************
 	 *
 	 *          Miscellaneous
 	 *
 	 ************************************************************************************************/
+
 	// Allow duplicate text fields
 	$('#epkb-admin__boxes-list__settings input[type=text], #epkb-admin__boxes-list__settings textarea').on('keyup', function(){
 		let name = $(this).prop('name');

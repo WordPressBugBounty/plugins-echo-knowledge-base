@@ -411,6 +411,28 @@ jQuery(document).ready(function($) {
 				trigger_conditional_field_click( current_field_id );
 			}
 		} );
+
+		// Hide settings box if there are no visible settings left or show it if there is any visible setting
+		$( '.epkb-admin__form-sub-tab-wrap--active .epkb-admin__form-tab-content, .epkb-fe__feature-settings--active .epkb-fe__settings-section' ).show().each( function () {
+
+			// Skip settings boxes which does not contain any setting
+			if ( ! $( this ).find( '.epkb-admin__kb__form > div' ).length ) {
+				return;
+			}
+
+			let has_visible_settings = false;
+
+			$( this ).find( '.epkb-admin__kb__form > div' ).each( function () {
+				if ( ! $( this ).is( ':hidden' ) ) {
+					has_visible_settings = true;
+					return false;
+				}
+			} );
+
+			if ( ! has_visible_settings ) {
+				$( this ).hide();
+			}
+		} );
 	} );
 
 	// Initialize conditional fields

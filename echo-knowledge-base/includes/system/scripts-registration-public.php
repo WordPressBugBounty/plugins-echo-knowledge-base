@@ -16,13 +16,33 @@ function epkb_load_public_resources() {
     // always register KB resources for possible add-ons usage or KB shortcodes outside KB pages - enqueue only if needed
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
+	// on public frontend the WordPress color-picker is not registered by default
+	if ( ! wp_script_is( 'wp-polyfill', 'registered' ) ) {
+		wp_register_script( 'wp-polyfill', includes_url( 'js/dist/vendor/wp-polyfill.min.js' ), array(), false, true );
+	}
+	if ( ! wp_script_is( 'wp-hooks', 'registered' ) ) {
+		wp_register_script( 'wp-hooks', includes_url( 'js/dist/hooks.min.js' ), array( 'wp-polyfill' ), false, true );
+	}
+	if ( ! wp_script_is( 'wp-i18n', 'registered' ) ) {
+		wp_register_script( 'wp-i18n', includes_url( 'js/dist/i18n.min.js' ), array( 'wp-hooks' ), false, true );
+	}
+	if ( ! wp_script_is( 'iris', 'registered' ) ) {
+		wp_register_script( 'iris', admin_url( 'js/iris.min.js' ), array( 'jquery', 'jquery-ui-widget', 'jquery-ui-draggable', 'jquery-ui-slider' ), false, true );
+	}
+	if ( ! wp_style_is( 'wp-color-picker', 'registered' ) ) {
+		wp_register_style( 'wp-color-picker', admin_url( 'css/color-picker.css' ), array( 'jquery', 'iris', 'wp-i18n', 'jquery-ui-widget', 'jquery-ui-draggable', 'jquery-ui-slider' ), false, true );
+	}
+	if ( ! wp_script_is( 'wp-color-picker', 'registered' ) ) {
+		wp_register_script( 'wp-color-picker', admin_url( 'js/color-picker.min.js' ), array( 'jquery', 'iris', 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-ui-widget', 'wp-i18n' ), false, true );
+	}
+
 	wp_register_style( 'epkb-icon-fonts', Echo_Knowledge_Base::$plugin_url . 'css/epkb-icon-fonts' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
 	wp_register_style( 'epkb-shortcodes', Echo_Knowledge_Base::$plugin_url . 'css/shortcodes' . $suffix . '.css', array( 'epkb-icon-fonts' ), Echo_Knowledge_Base::$version );
 	wp_register_style( 'epkb-frontend-editor', Echo_Knowledge_Base::$plugin_url . 'css/frontend-editor' . $suffix . '.css', array('wp-color-picker'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-public-scripts', Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-faq-shortcode-scripts', Echo_Knowledge_Base::$plugin_url . 'js/faq-shortcode-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-admin-form-controls-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-form-controls' . $suffix . '.js', array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable'), Echo_Knowledge_Base::$version );
-	wp_register_script( 'epkb-frontend-editor', Echo_Knowledge_Base::$plugin_url . 'js/frontend-editor' . $suffix . '.js', array('jquery', 'wp-color-picker'), Echo_Knowledge_Base::$version );
+	wp_register_script( 'epkb-frontend-editor', Echo_Knowledge_Base::$plugin_url . 'js/frontend-editor' . $suffix . '.js', array('jquery', 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-ui-widget', 'wp-i18n', 'iris', 'wp-color-picker'), Echo_Knowledge_Base::$version, true );
 
 	$epkb_vars = array(
 		'ajaxurl'                       => admin_url( 'admin-ajax.php', 'relative' ),
@@ -69,15 +89,17 @@ function epkb_load_public_resources() {
 	// CASE: KB Category Archive page
 	$current_css_file_slug = '';
 	if ( is_archive() ) {
+		$page_type = 'archive';
 		$current_css_file_slug = 'cp-frontend-layout';
 
 		if ( EPKB_KB_Handler::is_kb_tag_taxonomy( $GLOBALS['taxonomy'] ) ) {
 			$current_css_file_slug = 'tp-frontend-layout';
         }
 
+		add_action( 'admin_bar_menu', 'epkb_add_admin_bar_fe_archive_page_button', 1000 );
+
 	// CASE: KB Main Page
 	} else if ( EPKB_Utilities::is_kb_main_page() ) {
-
 		$search_query_param = '';
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $eckb_kb_id );
 
@@ -114,10 +136,13 @@ function epkb_load_public_resources() {
 			}
 		}
 
+		add_action( 'admin_bar_menu', 'epkb_add_admin_bar_fe_main_page_button', 1000 );
+
 	// CASE: KB Article
 	} else if ( ! empty( $post ) && EPKB_KB_Handler::is_kb_post_type( $post->post_type ) ) {
 		$current_css_file_slug = 'ap-frontend-layout';
 		$has_vital_css_flag = true;
+		add_action( 'admin_bar_menu', 'epkb_add_admin_bar_fe_article_page_button', 1000 );
 	}
 
 	if ( ! empty( $current_css_file_slug ) ) {
@@ -131,9 +156,6 @@ function epkb_load_public_resources() {
 			wp_register_style( 'epkb-' . $current_css_file_slug . '-rtl', Echo_Knowledge_Base::$plugin_url . 'css/' . $current_css_file_slug . '-rtl' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
 		}
 	}
-
-	// if user has enough capability, then add Frontend Editor button to the admin panel but only for KB Main Page, KB Article Pages and Category Archive page that has at least one article
-	//add_action( 'admin_bar_menu', 'epkb_add_admin_bar_button', 1000 );
 
 	epkb_enqueue_public_resources();
 }
@@ -617,11 +639,11 @@ add_action( 'wp_head', 'epkb_preload_fonts', 1 );
 /**************  Frontend Editor  *****************/
 
 /**
- * Add Frontend Editor option in the WordPress admin bar.
+ * Add Frontend Editor option in the WordPress admin bar for KB Main Page.
  * Fired by `admin_bar_menu` filter.
  * @param WP_Admin_Bar $wp_admin_bar
  */
-function epkb_add_admin_bar_button( WP_Admin_Bar $wp_admin_bar ) {
+function epkb_add_admin_bar_fe_main_page_button( WP_Admin_Bar $wp_admin_bar ) {
 
 	if ( !EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
 		return;
@@ -637,6 +659,28 @@ function epkb_add_admin_bar_button( WP_Admin_Bar $wp_admin_bar ) {
 		return;
 	}
 
+	// show the Frontend Editor link on KB Main Page, KB Article Pages, Category Archive Pages
+	$url = add_query_arg( ['action' => 'epkb_load_editor'] );
+	$wp_admin_bar->add_menu( array('id' => 'epkb-edit-mode-button', 'title' => esc_html__( 'Open KB Frontend Editor', 'echo-knowledge-base' ), 'href' => $url) );
+}
+
+function epkb_add_admin_bar_fe_article_page_button( WP_Admin_Bar $wp_admin_bar ) {
+
+	if ( !EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
+		return;
+	}
+	
+	// show the Frontend Editor link on KB Main Page, KB Article Pages, Category Archive Pages
+	$url = add_query_arg( ['action' => 'epkb_load_editor'] );
+	$wp_admin_bar->add_menu( array('id' => 'epkb-edit-mode-button', 'title' => esc_html__( 'Open KB Frontend Editor', 'echo-knowledge-base' ), 'href' => $url) );
+}
+
+function epkb_add_admin_bar_fe_archive_page_button( WP_Admin_Bar $wp_admin_bar ) {
+
+	if ( !EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
+		return;
+	}
+	
 	// show the Frontend Editor link on KB Main Page, KB Article Pages, Category Archive Pages
 	$url = add_query_arg( ['action' => 'epkb_load_editor'] );
 	$wp_admin_bar->add_menu( array('id' => 'epkb-edit-mode-button', 'title' => esc_html__( 'Open KB Frontend Editor', 'echo-knowledge-base' ), 'href' => $url) );

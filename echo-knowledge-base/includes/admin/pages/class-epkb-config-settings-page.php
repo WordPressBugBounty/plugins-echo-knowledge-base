@@ -37,7 +37,9 @@ class EPKB_Config_Settings_Page {
 		
 		$this->is_frontend_editor = $is_frontend_editor;
 
+		// retrieve add-ons configuration
 		$this->kb_config = apply_filters( 'eckb_kb_config', $kb_config );
+
 		$this->kb_config_specs = EPKB_Core_Utilities::retrieve_all_kb_specs( $this->kb_config['id'] );
 
 		// TODO FUTURE remove
@@ -75,11 +77,16 @@ class EPKB_Config_Settings_Page {
 		$this->is_archive_page_v3 = $this->kb_config['archive_page_v3_toggle'] == 'on';
 		$this->is_archive_kb_templates = $this->kb_config['template_for_archive_page'] == 'kb_templates';
 
-		// EPKB_Core_Utilities::remove_kb_flag( 'is_fe_offer_declined' );	// TODO: use for test purpose to reset the flag REMOVE AFTER TESTS
-		$this->is_show_fe_offer_first_time = false; // TODO ! EPKB_Core_Utilities::is_kb_flag_set( 'is_fe_offer_declined' ) && ! $this->kb_main_page_has_kb_blocks && ! $this->is_frontend_editor;
+		//EPKB_Core_Utilities::remove_kb_flag( 'is_fe_offer_declined' );	// TODO: use for test purpose to reset the flag REMOVE AFTER TESTS
+		$this->is_show_fe_offer_first_time = ! EPKB_Core_Utilities::is_kb_flag_set( 'is_fe_offer_declined' ) && ! $this->kb_main_page_has_kb_blocks && ! $this->is_frontend_editor;
 		if ( $this->is_show_fe_offer_first_time && EPKB_Utilities::post( 'is_fe_offer_declined' ) == 'on' ) {
 			EPKB_Core_Utilities::add_kb_flag( 'is_fe_offer_declined' );
 			$this->is_show_fe_offer_first_time = false;
+		}
+
+		// Handle Frontend Editor offer decline for all pages (Main Page, Article Page, Archive Page)
+		if ( EPKB_Utilities::post( 'is_fe_offer_declined' ) == 'on'  ) {
+			EPKB_Core_Utilities::add_kb_flag( 'is_fe_offer_declined' );
 		}
 	}
 
@@ -176,7 +183,7 @@ class EPKB_Config_Settings_Page {
 			$main_page_contents = array(
 				array(
 					'title_before_icon' => false,
-					'title' => esc_html__( 'KB Main Page Configuration', 'echo-knowledge-base' ),
+					//'title' => esc_html__( 'KB Main Page Configuration', 'echo-knowledge-base' ),
 					'body_html' => EPKB_HTML_Admin::display_fe_offer_box( $this->kb_config, true )
 				)
 			);
@@ -188,10 +195,8 @@ class EPKB_Config_Settings_Page {
 			'key'       => 'main-page',
 			'active'    => ! $access_to_get_started,
 			'contents'  => $main_page_contents,
-			'top_html'	=> $this->is_show_fe_offer_first_time || $this->is_frontend_editor || $this->kb_main_page_has_kb_blocks || $this->is_modular_main_page_off || empty( $this->kb_main_pages )
-								? '' : EPKB_HTML_Admin::display_fe_offer_box( $this->kb_config ),
-
-			'sub_tabs'  => empty( $this->kb_main_pages ) || $this->kb_main_page_has_kb_blocks || ( $this->is_show_fe_offer_first_time ) || $this->is_modular_main_page_off
+			'top_html'	=> $this->is_show_fe_offer_first_time || $this->is_frontend_editor || $this->kb_main_page_has_kb_blocks || $this->is_modular_main_page_off || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_offer_box( $this->kb_config ),
+			'sub_tabs'  => ! $this->is_frontend_editor && ( empty( $this->kb_main_pages ) || $this->kb_main_page_has_kb_blocks || $this->is_show_fe_offer_first_time || $this->is_modular_main_page_off )
 				// CASE: Missing Main Page, or Block Main Page, or FE editor offer is viewing first time, or Legacy KB Main Page
 				? array()
 				// CASE: Shortcode Main Page
@@ -246,47 +251,99 @@ class EPKB_Config_Settings_Page {
 
 		// Articles Page
 		if ( ! $this->is_modular_main_page_off ) {
+			
+			// Check if we should show the FE offer for Article Page for the first time
+			$is_show_fe_offer_first_time_article_page = ! EPKB_Core_Utilities::is_kb_flag_set( 'is_fe_offer_declined' );
+			
+			$article_page_contents = array();
+			
+			// Frontend Editor mode for Article Page
+			if ( $this->is_frontend_editor ) {
+				$article_page_contents = array();
+				
+			// Show FE offer for the first time
+			} else if ( $is_show_fe_offer_first_time_article_page ) {
+				$article_page_contents = array(
+					array(
+						'title_before_icon' => false,
+						'title' => '',
+						'body_html' => EPKB_HTML_Admin::display_fe_offer_box_article_page( $this->kb_config, true )
+					),
+				);
+			}
+			
 			$tabs_config['article-page'] = array(
 				'title'     => esc_html__( 'KB Article Page', 'echo-knowledge-base' ),
 				'icon'      => 'epkb-article-page-icon',
 				'key'       => 'article-page',
 				'active'    => false,
-				'sub_tabs'  => array(
-					array(
-						'title'     => esc_html__( 'Settings', 'echo-knowledge-base' ),
-						'key'       => 'article-page-settings',
-						'bottom_labels_link' => true,
+				'contents'  => $article_page_contents,
+				'top_html'	=> $is_show_fe_offer_first_time_article_page || $this->is_frontend_editor || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_offer_box_article_page( $this->kb_config ),
+				'sub_tabs'  => $is_show_fe_offer_first_time_article_page && ! $this->is_frontend_editor
+					// CASE: FE editor offer is viewing first time, or in Frontend Editor mode, or Missing Main Page
+					? array()
+					// CASE: Show sub-tabs normally
+					: array(
+						array(
+							'title'     => esc_html__( 'Settings', 'echo-knowledge-base' ),
+							'key'       => 'article-page-settings',
+							'bottom_labels_link' => true,
+						),
+						array(
+							'title'     => esc_html__( 'Search Box', 'echo-knowledge-base' ),
+							'key'       => 'article-page-search-box',
+							'bottom_labels_link' => true,
+						),
+						array(
+							'title'     => esc_html__( 'Sidebar', 'echo-knowledge-base' ),
+							'key'       => 'article-page-sidebar',
+							'bottom_labels_link' => true,
+						),
+						array(
+							'title'     => esc_html__( 'Table of Contents (TOC)', 'echo-knowledge-base' ),
+							'key'       => 'article-page-toc',
+							'bottom_labels_link' => true,
+						),
+						array(
+							'title'     => esc_html__( 'Rating and Feedback', 'echo-knowledge-base' ),
+							'key'       => 'article-page-ratings',
+							'bottom_labels_link' => $this->eprf_enabled,
+						),
 					),
-				),
 			);
-			$tabs_config['article-page']['sub_tabs'][] = array(
-				'title'     => esc_html__( 'Search Box', 'echo-knowledge-base' ),
-				'key'       => 'article-page-search-box',
-				'bottom_labels_link' => true,
-			);
-			$tabs_config['article-page']['sub_tabs'][] = array(
-				'title'     => esc_html__( 'Sidebar', 'echo-knowledge-base' ),
-				'key'       => 'article-page-sidebar',
-				'bottom_labels_link' => true,
-			);
-			$tabs_config['article-page']['sub_tabs'][] = array(
-				'title'     => esc_html__( 'Table of Contents (TOC)', 'echo-knowledge-base' ),
-				'key'       => 'article-page-toc',
-				'bottom_labels_link' => true,
-			);
-			$tabs_config['article-page']['sub_tabs'][] = array(
-				'title'     => esc_html__( 'Rating and Feedback', 'echo-knowledge-base' ),
-				'key'       => 'article-page-ratings',
-				'bottom_labels_link' => $this->eprf_enabled,
-			);
+		}
 
-			// Archive Page
+		// Archive Page
+		if ( ! $this->is_modular_main_page_off ) {
+			
+			// Check if we should show the FE offer for Archive Page for the first time
+			$is_show_fe_offer_first_time_archive_page = ! EPKB_Core_Utilities::is_kb_flag_set( 'is_fe_offer_declined' );
+			
+			$archive_page_contents = array();
+			
+			// Frontend Editor mode for Archive Page
+			if ( $this->is_frontend_editor ) {
+				$archive_page_contents = array();
+				
+			// Show FE offer for the first time
+			} else if ( $is_show_fe_offer_first_time_archive_page ) {
+				$archive_page_contents = array(
+					array(
+						'title_before_icon' => false,
+						'title' => '',
+						'body_html' => EPKB_HTML_Admin::display_fe_offer_box_archive_page( $this->kb_config, true )
+					),
+				);
+			}
+			
 			$tabs_config['archive-page'] = array(
 				'title'  => esc_html__( 'Category Archive Page', 'echo-knowledge-base' ),
 				'icon'   => 'epkb-archive-page-icon',
 				'key'    => 'archive-page',
 				'active' => false,
-				'bottom_labels_link' => $this->is_archive_kb_templates,
+				'contents' => $archive_page_contents,
+				'top_html' => $is_show_fe_offer_first_time_archive_page || $this->is_frontend_editor || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_offer_box_archive_page( $this->kb_config ),
+				'bottom_labels_link' => $is_show_fe_offer_first_time_archive_page || $this->is_frontend_editor ? false : $this->is_archive_kb_templates,
 			);
 
 			// Labels
@@ -310,6 +367,15 @@ class EPKB_Config_Settings_Page {
 		foreach ( $tabs_config as $key => $config ) {
 
 			$contents_configs[$config['key']] = isset( $contents_configs[$config['key']] ) ? $contents_configs[$config['key']] : [];
+
+			// For Archive Page, only add contents if not showing FE offer for the first time
+			if ( $config['key'] == 'archive-page' && ! $this->is_modular_main_page_off ) {
+				$is_show_fe_offer_first_time_archive_page = ! EPKB_Core_Utilities::is_kb_flag_set( 'is_fe_offer_declined' );
+				if ( $is_show_fe_offer_first_time_archive_page && ! $this->is_frontend_editor ) {
+					// Keep only the FE offer content, don't merge additional settings
+					continue;
+				}
+			}
 
 			$tabs_config[$key]['contents'] = empty( $config['contents'] )
 				? $this->apply_fields_in_contents_config( $contents_configs[$config['key']] )
@@ -683,8 +749,7 @@ class EPKB_Config_Settings_Page {
 				'options'           => array(
 					'0' => esc_html__( 'Disabled', 'echo-knowledge-base' ),
 					'1' => esc_html__( 'Displayed', 'echo-knowledge-base' ),
-				),
-				'options_icons'     => true,
+				)
 			) );
 		}
 
@@ -761,8 +826,7 @@ class EPKB_Config_Settings_Page {
 					'1' => esc_html__( 'Position', 'echo-knowledge-base' ) . ' 1',
 					'2' => esc_html__( 'Position', 'echo-knowledge-base' ) . ' 2',
 					'3' => esc_html__( 'Position', 'echo-knowledge-base' ) . ' 3',
-				),
-				'options_icons'     => true,
+				)
 			) );
 		}
 
@@ -1361,7 +1425,7 @@ class EPKB_Config_Settings_Page {
 			}
 		}
 
-		if (  $setting_name == 'categories_articles_preset' ) {
+		if ( $setting_name == 'categories_articles_preset' ) {
 			$all_module_presets = EPKB_KB_Wizard_Setup::get_modules_presets_config( $this->kb_config['kb_main_page_layout'] );
 			$current_layout_themes['current'] = '-----';
 			foreach ( $all_module_presets['categories_articles'][ $this->kb_config['kb_main_page_layout'] ]['presets'] as $preset_key => $preset_config ) {
@@ -1939,7 +2003,7 @@ class EPKB_Config_Settings_Page {
 					'data'      => [ 'target' => 'prev_next_navigation' ]
 				),
 				array(
-					'title'     => esc_html__( 'Article Content Toolbar: Button', 'echo-knowledge-base' ),
+					'title'     => esc_html__( 'Print Button', 'echo-knowledge-base' ),
 					'fields'    => [
 						'article_content_toolbar_button_background' => '',
 						'article_content_toolbar_button_background_hover' => '',
@@ -2005,9 +2069,9 @@ class EPKB_Config_Settings_Page {
 						'navigation_sidebar_sticky_toggle' => '',
 
 						// Sidebar Navigation: Top Categories
-						'category_box_title_text_color' => 'only_categories',
+						'category_box_title_text_color' => '',
 						'category_box_container_background_color' => '',
-						'category_box_category_text_color' => 'only_categories',
+						'category_box_category_text_color' => '',
 						'category_box_count_background_color' => '',
 						'category_box_count_text_color' => '',
 						'category_box_count_border_color' => '',
@@ -2018,8 +2082,6 @@ class EPKB_Config_Settings_Page {
 						// PRO feature ad
 						'elay_pro_description' => 'not_elay',
 					],
-					'dependency'    => [ 'nav_sidebar_left', 'nav_sidebar_right' ],
-					'enable_on'     => [ '1', '2', '3' ],
 					'data'			=> [ 'target' => 'article_sidebar_categories_and_articles_navigation' ],
 				),
                 array(
@@ -2038,8 +2100,6 @@ class EPKB_Config_Settings_Page {
                         'sidebar_background_color' => '',
                         'sidebar_section_border_color' => '',
                     ],
-                    'dependency'    => [ 'nav_sidebar_left', 'nav_sidebar_right' ],
-                    'enable_on'     => [ '1', '2', '3' ],
                 ),
 			],
 			'article-page-toc' => [
@@ -2888,8 +2948,9 @@ class EPKB_Config_Settings_Page {
 				'data' => [ 'target' => 'module-settings' ],
 			),
 		);
-		if ( $this->is_frontend_editor ) {
-			$sub_contents_configs['main-page-ml-row-2']['module-settings']['fields']['categories_articles_preset'] = '';
+		if ( $this->is_frontend_editor && EPKB_Core_Utilities::is_module_present( $this->kb_config, 'categories_articles' ) ) {
+			$temp_row_id = EPKB_Core_Utilities::get_module_row_number( $this->kb_config, 'categories_articles' );
+			$sub_contents_configs['main-page-ml-row-' . $temp_row_id]['module-settings']['fields']['categories_articles_preset'] = '';
 		}
 
 		// 3rd Row
@@ -3874,10 +3935,25 @@ class EPKB_Config_Settings_Page {
 				$field_specs['enable_on'] = ['1', '2', '3'];
 				break;
 
-			case 'sidebar_top_categories_collapsed':
 			case 'sidebar_show_articles_before_categories':
-			case 'sidebar_nof_articles_displayed':
+			case 'sidebar_top_categories_collapsed':
 			case 'sidebar_expand_articles_icon':
+				$field_specs['dependency'] = ['article_nav_sidebar_type_left', 'article_nav_sidebar_type_right'];
+				$field_specs['enable_on'] = ['eckb-nav-sidebar-v1'];
+				break;
+
+			case 'sidebar_section_divider_color':
+			case 'sidebar_section_head_background_color':
+			case 'sidebar_section_head_description_font_color':
+			case 'sidebar_article_icon_color':
+			case 'sidebar_article_active_font_color':
+			case 'sidebar_article_active_background_color':
+			case 'sidebar_section_border_color':
+				$field_specs['dependency'] = ['article_nav_sidebar_type_left', 'article_nav_sidebar_type_right'];
+				$field_specs['enable_on'] = ['eckb-nav-sidebar-current-category', 'eckb-nav-sidebar-v1'];
+				break;
+
+			case 'sidebar_nof_articles_displayed':
 			case 'sidebar_article_icon_toggle':
 			case 'elay_sidebar_article_icon':
 			case 'elay_pro_description':
@@ -3902,6 +3978,40 @@ class EPKB_Config_Settings_Page {
 			case 'category_box_count_border_color':
 				$field_specs['dependency'] = ['article_nav_sidebar_type_left', 'article_nav_sidebar_type_right'];
 				$field_specs['enable_on'] = ['eckb-nav-sidebar-categories'];
+				break;
+
+			case 'article_content_enable_back_navigation':
+				$field_specs['input_group_class'] = 'eckb-conditional-setting-input' . ' ';
+				break;
+
+			case 'back_navigation_mode':
+			case 'back_navigation_text_color':
+			case 'back_navigation_bg_color':
+			case 'back_navigation_border_color':
+				$field_specs['dependency'] = ['article_content_enable_back_navigation'];
+				$field_specs['enable_on'] = ['on'];
+				break;
+
+			case 'breadcrumb_enable':
+				$field_specs['input_group_class'] = 'eckb-conditional-setting-input' . ' ';
+				break;
+
+			case 'breadcrumb_icon_separator':
+			case 'breadcrumb_text_color':
+				$field_specs['dependency'] = ['breadcrumb_enable'];
+				$field_specs['enable_on'] = ['on'];
+				break;
+
+			case 'prev_next_navigation_enable':
+				$field_specs['input_group_class'] = 'eckb-conditional-setting-input' . ' ';
+				break;
+
+			case 'prev_next_navigation_text_color':
+			case 'prev_next_navigation_bg_color':
+			case 'prev_next_navigation_hover_text_color':
+			case 'prev_next_navigation_hover_bg_color':
+				$field_specs['dependency'] = ['prev_next_navigation_enable'];
+				$field_specs['enable_on'] = ['on'];
 				break;
 
 			default:

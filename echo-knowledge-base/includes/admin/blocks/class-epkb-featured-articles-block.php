@@ -214,6 +214,16 @@ final class EPKB_Featured_Articles_Block extends EPKB_Abstract_Block {
 							'section_body_background_color' => array(
 								'setting_type' => 'color',
 							),
+							'section_box_shadow' => array(
+								'setting_type' => 'select_buttons_string',
+								'options'     => array(
+									'no_shadow' => esc_html__( 'No Shadow', 'echo-knowledge-base' ),
+									'section_light_shadow' => esc_html__( 'Light', 'echo-knowledge-base' ),
+									'section_medium_shadow' => esc_html__( 'Medium', 'echo-knowledge-base' ),
+									'section_bottom_shadow' => esc_html__( 'Bottom', 'echo-knowledge-base' )
+								),
+								'default' => 'no_shadow',
+							),
 							'articles_list_title_typography_controls' => array(
 								'setting_type' => 'typography_controls',
 								'label' => esc_html__( 'Title Typography', 'echo-knowledge-base' ),

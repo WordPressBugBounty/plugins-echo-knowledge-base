@@ -3233,9 +3233,9 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'faq_open_mode',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'accordion_mode'   => esc_html__( 'Accordion - Collapsed Articles', 'echo-knowledge-base' ),
-					'toggle_mode'      => esc_html__( 'Toggle - Show one Article at a time', 'echo-knowledge-base' ),
-					'show_all_mode'    => esc_html__( 'Show All - Show all Articles', 'echo-knowledge-base' ),
+					'accordion_mode'   => esc_html__( 'Accordion - Collapsed Questions', 'echo-knowledge-base' ),
+					'toggle_mode'      => esc_html__( 'Toggle - Show one Questions at a time', 'echo-knowledge-base' ),
+					'show_all_mode'    => esc_html__( 'Show All - Show all Questions', 'echo-knowledge-base' ),
 				),
 				'default'     => 'accordion_mode'
 			),

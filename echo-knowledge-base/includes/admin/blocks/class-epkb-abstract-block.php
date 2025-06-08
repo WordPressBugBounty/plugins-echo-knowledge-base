@@ -450,7 +450,13 @@ abstract class EPKB_Abstract_Block {
 			return;
 		}
 
-		// for layout block need to update 'templates_for_kb' in the current KB configuration
+		// for layout block need to update 'templates_for_kb' in the current KB configuration:
+		// - the KB Template toggle for the block Main Page in Settings UI tab of the admin page is hidden (since they are controlled by the layout block settings in Gutenberg Editor).
+		// - When user chooses KB Template or KB Custom Block Page template then we need to update the value in the KB config (e.g. not only the block attribute)
+		// - So this is to make all the rest functionality, which depends on the 'templates_for_kb' setting, to work correctly without a need to retrieve the layout block attributes form post content.
+		// Reference:
+		//    'kb_block_template_toggle' - internal temporary indicator of user intention to use KB Custom Block Template
+		//    'template_toggle' - used by JS when user toggles 'on' the kb_block_template_toggle' settings
 		if ( EPKB_Block_Utilities::is_block_theme() ) {
 			$templates_for_kb = isset( $block_attributes['kb_block_template_toggle'] ) && $block_attributes['kb_block_template_toggle'] == 'on' ? 'kb_templates' : 'current_theme_templates';
 		} else {

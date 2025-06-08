@@ -1084,24 +1084,27 @@ class EPKB_Config_Page {
 				</p>
 			</div>
 			
-			<div class="epkb-admin__ai-chat-features" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 30px;">
-				<div class="epkb-admin__feature-card" style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e2e4e7;">
-					<h3 style="margin: 0 0 15px 0; color: #2c3338;"><?php esc_html_e( 'Key Benefits', 'echo-knowledge-base' ); ?></h3>
-					<ul style="margin: 0; padding-left: 20px; color: #50575e;">
-						<li><?php esc_html_e( 'Instant answers to user questions', 'echo-knowledge-base' ); ?></li>
-						<li><?php esc_html_e( '24/7 automated support', 'echo-knowledge-base' ); ?></li>
-						<li><?php esc_html_e( 'Reduced support tickets', 'echo-knowledge-base' ); ?></li>
-						<li><?php esc_html_e( 'Improved user experience', 'echo-knowledge-base' ); ?></li>
-					</ul>
-				</div>
-				<div class="epkb-admin__feature-card" style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e2e4e7;">
-					<h3 style="margin: 0 0 15px 0; color: #2c3338;"><?php esc_html_e( 'Features', 'echo-knowledge-base' ); ?></h3>
-					<ul style="margin: 0; padding-left: 20px; color: #50575e;">
-						<li><?php esc_html_e( 'Natural language processing', 'echo-knowledge-base' ); ?></li>
-						<li><?php esc_html_e( 'Context-aware responses', 'echo-knowledge-base' ); ?></li>
-						<li><?php esc_html_e( 'Customizable chat interface', 'echo-knowledge-base' ); ?></li>
-						<li><?php esc_html_e( 'Analytics and insights', 'echo-knowledge-base' ); ?></li>
-					</ul>
+			<div class="epkb-admin__ai-chat-features" style="margin-bottom: 30px;">
+				<div class="epkb-admin__text-image-container" style="display: flex; gap: 30px; align-items: center;">
+					<div class="epkb-admin__text-image-body" style="flex: 1; position: relative; right: -32px; top: -25px;">
+						<div class="epkb-admin__text-editor">
+							<p style="margin: 0 0 15px 0; color: #50575e;"><?php esc_html_e( 'We cut repetitive tickets by 85 % on our own support desk after deploying AI Chat—slashing response times and freeing the team for high-value work, all without adding head-count.', 'echo-knowledge-base' ); ?></p>
+							<div>
+								<p style="font-weight: bold; margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Extra Wins', 'echo-knowledge-base' ); ?></p>
+								<ul style="margin: 0; padding-left: 20px; color: #50575e;">
+									<li><strong><?php esc_html_e( 'Real-time insight', 'echo-knowledge-base' ); ?></strong> <?php esc_html_e( 'into top pain points & feature requests', 'echo-knowledge-base' ); ?></li>
+									<li><strong><?php esc_html_e( 'Auto alerts', 'echo-knowledge-base' ); ?></strong> <?php esc_html_e( 'that flag gaps in your docs so you can fix once, help everyone', 'echo-knowledge-base' ); ?></li>
+									<li><strong><?php esc_html_e( 'Seamless live-agent hand-over (beta)', 'echo-knowledge-base' ); ?></strong> <?php esc_html_e( 'for the few questions a bot shouldn\'t handle', 'echo-knowledge-base' ); ?></li>
+									<li><strong><?php esc_html_e( 'Fast ROI:', 'echo-knowledge-base' ); ?></strong> <?php esc_html_e( 'setup in minutes, benefits show up almost immediately.', 'echo-knowledge-base' ); ?></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="epkb-admin__text-image-img" style="flex: 1;">
+						<div class="epkb-admin__img-wrap" style="max-width: 100%;">
+							<img src="<?php echo esc_url(Echo_Knowledge_Base::$plugin_url . 'img/ad/ai-chat-efficiency.jpg'); ?>" alt="<?php esc_attr_e( 'AI Chat Efficiency', 'echo-knowledge-base' ); ?>" style="max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+						</div>
+					</div>
 				</div>
 			</div>
 
