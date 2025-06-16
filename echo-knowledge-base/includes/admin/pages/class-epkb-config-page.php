@@ -1026,9 +1026,9 @@ class EPKB_Config_Page {
 			</div>
 
 			<div style="text-align: center; margin: 30px 0; padding: 20px; background: #fff5e6; border-radius: 8px; border: 1px solid #c5d9ed;">
-				<h3 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Help Dialog - Free WordPress Plugin', 'echo-knowledge-base' ); ?></h3>
+				<h3 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'AI CHAT Dialog - Free WordPress Plugin', 'echo-knowledge-base' ); ?></h3>
 				<p style="margin: 0; color: #50575e; font-size: 16px;">
-					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'Help Dialog with AI Chat, FAQs, Knowledge Base Search, and Contact Form.', 'echo-knowledge-base' ); ?>
+					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'AI Chat with agent handover, FAQs, Knowledge Base Search, and Contact Form.', 'echo-knowledge-base' ); ?>
 					<a href="https://wordpress.org/plugins/help-dialog/" target="_blank"><?php esc_html_e( 'Get it from the WordPress Repo', 'echo-knowledge-base' ); ?></a>
 				</p>
 				<img src="<?php echo esc_url(Echo_Knowledge_Base::$plugin_url . 'img/ad/ad-help-dialog.jpg'); ?>" alt="Help Dialog" class="epkb-help-dialog-img" style="max-width: 100%; height: auto; margin-top: 15px; border-radius: 4px; cursor: zoom-in;">
@@ -1163,9 +1163,9 @@ class EPKB_Config_Page {
 			</div>
 
 			<div style="text-align: center; margin: 30px 0; padding: 20px; background: #fff5e6; border-radius: 8px; border: 1px solid #c5d9ed;">
-				<h3 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'Help Dialog - Free WordPress Plugin', 'echo-knowledge-base' ); ?></h3>
+				<h3 style="margin: 0 0 10px 0; color: #2c3338;"><?php esc_html_e( 'AI Chat Dialog - Free WordPress Plugin', 'echo-knowledge-base' ); ?></h3>
 				<p style="margin: 0; color: #50575e; font-size: 16px;">
-					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'Help Dialog with AI Chat, FAQs, Knowledge Base Search, and Contact Form.', 'echo-knowledge-base' ); ?>
+					<i class="epkbfa epkbfa-lightbulb-o" style="margin-right: 8px; color: #ffd700;"></i><?php esc_html_e( 'AI Chat with agent handover, FAQs, Knowledge Base Search, and Contact Form.', 'echo-knowledge-base' ); ?>
 					<a href="https://wordpress.org/plugins/help-dialog/" target="_blank"><?php esc_html_e( 'Get it from the WordPress Repo', 'echo-knowledge-base' ); ?></a>
 				</p>
 				<img src="<?php echo esc_url(Echo_Knowledge_Base::$plugin_url . 'img/ad/ad-help-dialog.jpg'); ?>" alt="Help Dialog" class="epkb-help-dialog-img-inactive" style="max-width: 100%; height: auto; margin-top: 15px; border-radius: 4px; cursor: zoom-in;">

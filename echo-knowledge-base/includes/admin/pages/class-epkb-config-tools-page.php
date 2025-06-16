@@ -820,17 +820,17 @@ class EPKB_Config_Tools_Page {
 		self::progress_bar_html( esc_html__( 'Convert Progress', 'echo-knowledge-base' ) ); ?>
 
 		<div class="epkb-import-error-messages epkb-hidden"><?php
-		$title = esc_html__( 'Errors during convert', 'echo-knowledge-base' );
-		$description = '';
-		$table_header = [
-			esc_html__( 'Post Title', 'echo-knowledge-base' ),
-			esc_html__( 'File Link', 'echo-knowledge-base' ),
-			' ',
-			' '
-		];
+			$title = esc_html__( 'Errors during convert', 'echo-knowledge-base' );
+			$description = '';
+			$table_header = [
+				esc_html__( 'Post Title', 'echo-knowledge-base' ),
+				esc_html__( 'File Link', 'echo-knowledge-base' ),
+				' ',
+				' '
+			];
 
-		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo EPKB_Convert::display_import_table( $title, $description, $table_header, [], 'error', '' ); ?>
+			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo EPKB_Convert::display_import_table( $title, $description, $table_header, [], 'error', '' ); ?>
 		</div><?php
 	}
 

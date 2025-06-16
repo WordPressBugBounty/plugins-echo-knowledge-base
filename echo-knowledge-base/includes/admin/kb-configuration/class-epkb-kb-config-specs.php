@@ -325,6 +325,12 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'on'
 			),
+			'frontend_editor_switch_visibility_toggle' => array(
+				'label'       => esc_html__( 'Frontend Editor Toggle Visibility ', 'echo-knowledge-base' ),
+				'name'        => 'frontend_editor_switch_visibility_toggle',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'on'
+			),
 
 
 			/******************************************************************************
@@ -608,7 +614,7 @@ class EPKB_KB_Config_Specs {
 
 			// Article Version 2 - Advanced
 			'article-mobile-break-point-v2' => array(
-				'label'       => esc_html__( 'Mobile (px)', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Mobile', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'article-mobile-break-point-v2',
 				'max'         => 2000,
 				'min'         => 100,
@@ -616,7 +622,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => 768
 			),
 			'article-tablet-break-point-v2' => array(
-				'label'       => esc_html__( 'Tablet (px)', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Tablet', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'article-tablet-break-point-v2',
 				'max'         => 2000,
 				'min'         => 100,
@@ -639,11 +645,11 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
 					'side_bar_no_height' => esc_html__( 'Variable', 'echo-knowledge-base' ),
-					'side_bar_fixed_height' => esc_html__( 'Fixed (Scrollbar)', 'echo-knowledge-base' ) ),
+					'side_bar_fixed_height' => esc_html__( 'Fixed Height (Scrollbar)', 'echo-knowledge-base' ) ),
 				'default'     => 'side_bar_no_height'
 			),
 			'sidebar_side_bar_height' => array(
-				'label'       => esc_html__( 'Height ( px )', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Fixed Height ( px )', 'echo-knowledge-base' ),
 				'name'        => 'sidebar_side_bar_height',
 				'max'         => 1000,
 				'min'         => 0,
@@ -1875,7 +1881,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => '#000000'
 			),
 			'article_toc_scroll_offset' => array(
-				'label'       => esc_html__( 'Heading position is relative to the screen after scroll (px)', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Heading position is relative to the screen after scroll', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'article_toc_scroll_offset',
 				'max'         => 200,
 				'min'         => 0,
@@ -2745,7 +2751,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => 'text_icon'
 			),
 			'article_content_toolbar_icon_size'             => array(
-				'label'       => esc_html__( 'Icon Size (px)', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Icon Size', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'article_content_toolbar_icon_size',
 				'max'         => 50,
 				'min'         => 12,
@@ -2787,7 +2793,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => 0
 			),
 			'article_content_toolbar_text_size'             => array(
-				'label'       => esc_html__( 'Text Size (px)', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Text Size', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'article_content_toolbar_text_size',
 				'max'         => 30,
 				'min'         => 12,
@@ -3499,7 +3505,7 @@ class EPKB_KB_Config_Specs {
 				)
 			),
 			'search_input_border_width' => array(
-				'label'       => esc_html__( 'Border (px)', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Border', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'search_input_border_width',
 				'max'         => 10,
 				'min'         => 0,
@@ -3518,7 +3524,7 @@ class EPKB_KB_Config_Specs {
 				)
 			),
 			'search_box_padding_top' => array(
-				'label'       => esc_html__( 'Padding Top', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Padding Top', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'search_box_padding_top',
 				'max'         => 500,
 				'min'         => 0,
@@ -3526,7 +3532,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => 20
 			),
 			'search_box_padding_bottom' => array(
-				'label'       => esc_html__( 'Padding Bottom', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Padding Bottom', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'search_box_padding_bottom',
 				'max'         => 500,
 				'min'         => 0,
@@ -3656,7 +3662,7 @@ class EPKB_KB_Config_Specs {
 				)
 			),
 			'article_search_input_border_width' => array(
-				'label'       => esc_html__( 'Border (px)', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Border', 'echo-knowledge-base' )  . ' (px)',
 				'name'        => 'article_search_input_border_width',
 				'max'         => 10,
 				'min'         => 0,
@@ -3675,7 +3681,7 @@ class EPKB_KB_Config_Specs {
 				)
 			),
 			'article_search_box_padding_top' => array(
-				'label'       => esc_html__( 'Padding Top', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Padding Top', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'article_search_box_padding_top',
 				'max'         => 500,
 				'min'         => 0,
@@ -3683,7 +3689,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => 20
 			),
 			'article_search_box_padding_bottom' => array(
-				'label'       => esc_html__( 'Padding Bottom', 'echo-knowledge-base' ),
+				'label'       => esc_html__( 'Padding Bottom', 'echo-knowledge-base' ) . ' (px)',
 				'name'        => 'article_search_box_padding_bottom',
 				'max'         => 500,
 				'min'         => 0,

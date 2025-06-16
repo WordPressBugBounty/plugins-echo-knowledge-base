@@ -10,7 +10,7 @@ class EPKB_Convert {
 	 *
 	 * @param $posts
 	 * @param $taxonomies
-	 * @param $is_from_post_conversion
+	 * @param $from_post_type
 	 * @return string
 	 */
 	public static function get_posts_table( $posts, $taxonomies, $from_post_type ) {

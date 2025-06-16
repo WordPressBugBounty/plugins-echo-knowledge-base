@@ -22,7 +22,7 @@ class EPKB_KB_Wizard_Themes {
 							13 => esc_html__('Clean', 'echo-knowledge-base' ), 14 => esc_html__('Corporate', 'echo-knowledge-base' ), 15 => esc_html__('Icon Focused', 'echo-knowledge-base' ), 16 => esc_html__('Business', 'echo-knowledge-base' ),
 							17 => esc_html__('Minimalistic', 'echo-knowledge-base' ), 18 => esc_html__('Sharp', 'echo-knowledge-base' ), 19 => esc_html__('Standard', 'echo-knowledge-base' ), 20 => esc_html__('Standard', 'echo-knowledge-base' ) ],
 
-			'kb_main_page_layout' => [1 => 'Basic', 2 => 'Basic', 3 => 'Basic', 4 => 'Basic', 5 => 'Basic', 6 => 'Basic', 7 => 'Basic', 8 => 'Basic', 9 => 'Tabs', 10 => 'Tabs', 11 => 'Tabs', 12 => 'Tabs',
+			'kb_main_page_layout' => [1 => 'Basic', 2 => 'Basic', 3 => 'Basic', 4 => 'Basic', 5 => 'Basic', 6 => 'Basic', 7 => 'Basic', 8 => 'Basic', 9 => 'Basic', 10 => 'Basic', 11 => 'Tabs', 12 => 'Basic',
 										13 => 'Tabs', 14 => 'Categories', 15 => 'Basic', 16 => 'Categories', 17 => 'Categories',  18 => 'Basic', 19 => 'Classic', 20 => 'Drill-Down', 21 => 'Basic'],
 
 			// General
@@ -308,11 +308,6 @@ class EPKB_KB_Wizard_Themes {
 
 	// reuse some themes in multiple layouts
 	private static function copy_themes( $all_themes ) {
-
-		$all_themes['organized_basic'] = $all_themes['organized'];
-		$all_themes['organized_basic']['kb_main_page_layout'] = 'Basic';
-		$all_themes['gray_basic'] = $all_themes['gray'];
-		$all_themes['gray_basic']['kb_main_page_layout'] = 'Basic';
 
 		// Tabs Layout
 		$all_themes['office_tabs'] = $all_themes['office'];

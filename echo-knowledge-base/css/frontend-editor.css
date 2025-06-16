@@ -88,7 +88,7 @@
 
 .epkb-notification-box-middle--warning {
   border-left-color: #F0BC71 !important;
-  background-color: white !important;
+  background-color: #FFFFFF !important;
 }
 .epkb-notification-box-middle--warning .epkb-notification-box-middle__icon {
   color: #F0BC71;
@@ -1502,6 +1502,13 @@
   position: absolute;
   display: flex !important;
 }
+#epkb-fe__editor.epkb-fe__editor--home .epkb-fe__sub-content {
+  display: flex !important;
+  justify-content: center;
+}
+#epkb-fe__editor.epkb-fe__editor--block-main-page #epkb-fe__help-tab {
+  display: none !important;
+}
 #epkb-fe__editor.epkb-fe__editor--settings #epkb-fe__header-container {
   min-height: 5.4em;
   border-bottom: none !important;
@@ -1534,6 +1541,10 @@
 }
 #epkb-fe__editor.epkb-fe__editor--help .epkb-fe__feature-select-button {
   display: none;
+}
+#epkb-fe__editor.epkb-fe__editor--help .epkb-fe__sub-content {
+  display: none !important;
+  justify-content: center;
 }
 #epkb-fe__editor #epkb-fe__header-container {
   display: flex;
@@ -1719,6 +1730,39 @@
 }
 #epkb-fe__editor .epkb-fe__feature-settings.epkb-fe__feature-settings--active {
   display: flex;
+}
+#epkb-fe__editor .epkb-fe__sub-content .epkb-fe__settings-section-header {
+  display: none !important;
+}
+#epkb-fe__editor .epkb-fe__sub-content .epkb-fe__settings-section-body {
+  padding: 0;
+}
+#epkb-fe__editor .epkb-fe__sub-content p {
+  font-size: 1.3em;
+}
+#epkb-fe__editor .epkb-fe__sub-content .epkb-admin__settings-sub .epkb-admin__settings-sub-header {
+  padding: 20px;
+  text-align: center;
+  line-height: 1.5;
+}
+#epkb-fe__editor .epkb-fe__sub-content .epkb-admin__settings-sub .epkb-admin__settings-sub-content {
+  background: #F0F6FC;
+  padding: 25px;
+  border-radius: 8px;
+  border: 1px solid #C5D9ED;
+  margin: 20px;
+}
+#epkb-fe__editor .epkb-fe__sub-content .epkb-admin__settings-sub .epkb-admin__settings-sub-content h4 {
+  margin: 20px 0 10px 0 !important;
+  color: #2C3338;
+  font-size: 1.4em;
+}
+#epkb-fe__editor .epkb-fe__sub-content .epkb-admin__settings-sub .epkb-admin__settings-sub-content p {
+  margin: 0 0 15px 0;
+  color: #50575E;
+}
+#epkb-fe__editor .epkb-fe__sub-content .epkb-admin__settings-sub .epkb-admin__resources-support-col {
+  min-width: 0;
 }
 #epkb-fe__editor .hidden {
   display: none;

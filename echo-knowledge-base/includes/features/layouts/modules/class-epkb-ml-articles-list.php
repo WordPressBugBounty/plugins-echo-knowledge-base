@@ -250,6 +250,7 @@ class EPKB_ML_Articles_List {
 		$article_typography_setting_name = $setting_names['article_typography'];
 		$border_setting_prefix = $setting_names['border_prefix'];
 		$head_font_color_setting_name = $setting_names['head_font_color'];
+		$title_font_color_setting_name = $setting_names['ml_articles_list_title_color'];
 		$article_font_color_setting_name = $setting_names['article_font_color'];
 		$article_icon_color_setting_name = $setting_names['article_icon_color'];
 
@@ -300,6 +301,11 @@ class EPKB_ML_Articles_List {
 			$container_shadow .
 			$container_background .
 		'}';
+
+		$output .= '
+		#epkb-ml__module-articles-list .epkb-ml-articles-list__title span {
+			color: ' . $kb_config[$title_font_color_setting_name] . ' !important;
+		}';
 
 		// Headings Typography -----------------------------------------/
 		if ( in_array( $kb_config['kb_main_page_layout'], $legacy_layouts ) ) {

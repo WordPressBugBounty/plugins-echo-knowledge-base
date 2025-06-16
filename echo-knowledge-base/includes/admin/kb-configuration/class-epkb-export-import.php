@@ -310,17 +310,17 @@ class EPKB_Export_Import {
 
 			case 'asea':
 				$last_version = empty( $import_plugin_version ) ? '2.13.9' : $import_plugin_version;
-				EPKB_Core_Utilities::run_asea_upgrade( $last_version );
+				EPKB_Core_Utilities::run_asea_upgrade( $plugin_config, $last_version );
 				break;
 
 			case 'elay':
 				$last_version = empty( $import_plugin_version ) ? '2.5.4' : $import_plugin_version;
-				EPKB_Core_Utilities::run_elay_upgarde( $last_version );
+				EPKB_Core_Utilities::run_elay_upgrade( $plugin_config, $last_version );
 				break;
 
 			case 'eprf':
 				$last_version = empty( $import_plugin_version ) ? '1.4.0' : $import_plugin_version;
-				EPKB_Core_Utilities::run_eprf_upgrade( $last_version );
+				EPKB_Core_Utilities::run_eprf_upgrade( $plugin_config, $last_version );
 				break;
 
 		}

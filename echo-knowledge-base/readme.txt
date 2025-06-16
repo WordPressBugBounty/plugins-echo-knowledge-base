@@ -7,7 +7,7 @@ Tags: knowledge base, knowledgebase, documentation, docs, faq
 Requires at least: 5.2
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 14.0.1
+Stable tag: 14.0.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -22,6 +22,8 @@ Designed with a modern and professional appearance by default, the plugin offers
 ## KEY FEATURES
 
 * **AI Chatbots Integration**: Easily create interactive chatbots and teach them about your Knowledge Base, FAQs, internal documentation, notes, and any other source of information.
+
+* **Frontend Visual Editor**: Customize your Knowledge Base pages live on the front-end with our intuitive visual editor or drag-and-drop Gutenberg blocks.
 
 * **Pre-made Layout Designs**: Choose from many beautiful designs and layouts to make your knowledge base both stunning and functional. With dozens of combinations available, you'll find the perfect look for your site.
 
@@ -56,29 +58,35 @@ Designed with a modern and professional appearance by default, the plugin offers
 Please note that some features require a Pro license (Content Protection, Unlimited Knowledge Bases, Vote and Feedback form, Links and Advanced Search, Content Import and Export). For more information, check the [official website](https://www.echoknowledgebase.com/bundle-pricing/).
 
 
-## 🚀 AI CHAT INTEGRATION
+## 🚀 AI Chat Integration - Turn Your Knowledge Base into a 24/7 Support Pro
 
 Transform your knowledge base into an intelligent assistant that provides instant, accurate answers to user questions. Our AI integration is powered by the leading WordPress AI plugin, AI Engine.
 
 AI Chat can answer questions based on content from your Knowledge Base, FAQs, internal documentation, notes, pages, or any other information source.
 
-**We cut repetitive tickets by 73 %** on our own support desk after deploying AI Chat—slashing response times and freeing the team for high-value work, all without adding head-count.
+**73 % fewer repeat tickets (our own numbers)**
+After enabling AI Chat, we saw a 73 percent drop in repetitive questions response times shrank, customers got answers faster, and the team could finally tackle higher-value projects without hiring extra staff.
 
-**Core Benefits**
+**Why Customers Love It**
 
-- **Instant answers, 24 / 7** – The bot pulls from your knowledge base, FAQs, pages, and internal docs to resolve common questions before they ever become tickets.
-- **Live in under 30 minutes** – A step-by-step wizard gets you from install to production fast; no coding or API wrangling required.
-- **Fast ROI** – Most sites see measurable ticket reduction within the first week, freeing staff for revenue-generating tasks.
+- **Answers in Seconds, Day or Night**
+The bot reads your KB articles, FAQs, pages, and internal notes, then delivers clear replies before a ticket ever lands in your inbox.
+- **Set-Up in a Coffee Break**
+A guided wizard walks you from install to “live” in under 30 minutes. No coding, no APIs, no fuss.
+- **Visible ROI, Fast**
+Most teams cut repeat questions by the first week freeing staff for revenue-generating work instead of copy-and-paste responses.
 
-**Extra Wins**
+**Built-In Extras**
 
-- ***Doc-gap alerts** – Automatic notifications flag missing or outdated articles so you can fix a hole once and help every future visitor.
+- **Content Gap Alerts** – Flags missing or outdated KB articles so you fix an issue once and never hear about it again.
 - **Pain-point analytics** – Real-time dashboards surface the topics that frustrate users the most, turning support data into a product roadmap.
 - **Smart learning** – As you update or add content, the model re-indexes automatically, keeping answers accurate without manual re-training.
-- **Seamless human hand-off (beta)** – Edge-case questions route to a live agent in the same chat window, with full context preserved.
+- **Seamless human hand-off** – Edge-case questions route to a live agent in the same chat window, with full context preserved.
 - **Powered by AI Engine**, the leading WordPress AI plugin that also drives site-wide content and image generation.
 
 Our AI integration is powered by AI Engine, the leading WordPress AI plugin, which supports not only your chat but also site editing and image generation needs.
+
+**Result: fewer tickets, happier users, and support staff who finally have time for the work that moves your business forward.** 
 
 For detailed setup instructions, visit our [AI Chat Integration Guide](https://www.echoknowledgebase.com/documentation/ai-chat/)
 
@@ -414,6 +422,12 @@ For more information about Pro features, visit our [Pricing Page](https://www.ec
 
 
 == Changelog ==
+
+= 14.0.3 =
+Release Date: June 16, 2025
+* Update: Frontend Editor can be now turns on and off
+* Update: various minor improvements
+* Fix: Cleanup and minor fixes
 
 = 14.0.1 =
 Release Date: June 8, 2025

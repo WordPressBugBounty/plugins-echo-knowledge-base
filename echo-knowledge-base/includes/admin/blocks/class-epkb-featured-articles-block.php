@@ -62,6 +62,7 @@ final class EPKB_Featured_Articles_Block extends EPKB_Abstract_Block {
 				font-weight: ' . intval( EPKB_Blocks_Settings::get_font_appearance_weight( $block_attributes['articles_list_title_typography_controls'], $block_ui_specs['articles_list_title_typography_controls'] ) ) . ' !important;
 				font-style: ' . esc_attr( EPKB_Blocks_Settings::get_font_appearance_style( $block_attributes['articles_list_title_typography_controls'], $block_ui_specs['articles_list_title_typography_controls'] ) ) . ' !important;
 				font-family: ' . ( empty( $block_attributes['articles_list_title_typography_controls']['font_family'] ) ? 'inherit' : esc_attr( $block_attributes['articles_list_title_typography_controls']['font_family'] ) ) . ' !important;
+				color: ' . EPKB_Utilities::sanitize_hex_color( $block_attributes['ml_articles_list_title_color'] ) . ' !important;
 			}' .
 			/* Section Title Font */
 			$block_selector . ' ' . '.epkb-ml-article-section__head {
@@ -244,6 +245,10 @@ final class EPKB_Featured_Articles_Block extends EPKB_Abstract_Block {
 					'featured-articles-title' => array(
 						'title' => esc_html__( 'Featured Articles Title', 'echo-knowledge-base' ),
 						'fields' => array(
+							'ml_articles_list_title_color' => array(
+								'setting_type' => 'color',
+								'label' => esc_html__( 'Title Color', 'echo-knowledge-base' ),
+							),
 							'section_head_font_color' => array(
 								'setting_type' => 'color',
 								'label' => esc_html__( 'List Title', 'echo-knowledge-base' ),

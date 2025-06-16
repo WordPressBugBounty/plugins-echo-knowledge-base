@@ -1053,6 +1053,9 @@ function epkb_get_block_attributes( $block_name ) {
 			'section_box_shadow' => [
 				'type' => 'string'
 			],
+			'ml_articles_list_title_color' => [
+				'type' => 'string'
+			],
 			'section_head_font_color' => [
 				'type' => 'string'
 			],

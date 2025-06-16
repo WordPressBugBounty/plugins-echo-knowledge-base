@@ -168,7 +168,7 @@ class EPKB_Need_Help_Page {
 					'title' => $step_number++ . '. ' . esc_html__( 'Edit Main Page', 'echo-knowledge-base' ),
 					'desc' => esc_html__( 'Use our Frontend Editor to change KB Main Page settings.', 'echo-knowledge-base' ),
 					'html' => '<a href="' . esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config ) ) .
-							 '?epkb_fe_reopen_feature=none" target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px">' . esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' ) . '</a>',
+							 '?action=epkb_load_editor" target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px">' . esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' ) . '</a>',
 				);
 			}
 		}
@@ -187,14 +187,18 @@ class EPKB_Need_Help_Page {
 			);
 
 			// Main Page and Article settings
+			$customize_main_page_url = EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $this->kb_config )
+				? get_edit_post_link( EPKB_KB_Handler::get_first_kb_main_page_id( $this->kb_config ) )
+				: EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config ) . '?action=epkb_load_editor';
+			$customize_article_page_url = EPKB_KB_Handler::get_first_kb_article_url( $this->kb_config ) . '?epkb_fe_reopen_feature=none';
 			$steps_list[] = array(
 				'icon_class' => '',
 				'content_icon_class' => EPKB_Core_Utilities::is_kb_flag_set( 'settings_tab_visited' ) ? 'epkbfa epkbfa-check-circle' : '',
 				'icon_img_url' => 'img/need-help/palette.jpg',
 				'title' => $step_number++ . '. ' . esc_html__( 'Customize Colors, Labels, and Fonts', 'echo-knowledge-base' ),
 				'desc' => esc_html__( 'Easily change the style and look of KB pages.', 'echo-knowledge-base' ),
-				'html' => '<a class="epkb-kb__wizard-link" href="' . admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_id ) . '&page=epkb-kb-configuration#settings__main-page' ) . '" target="_blank">' . esc_html__( 'Customize KB Main Page', 'echo-knowledge-base' ) . '</a>' . ' ' .
-				          '<a class="epkb-kb__wizard-link" href="' . admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_id ) . '&page=epkb-kb-configuration#settings__article-page' ) . '" target="_blank">' . esc_html__( 'Customize KB Article Page', 'echo-knowledge-base' ) . '</a>'
+				'html' => '<a class="epkb-kb__wizard-link" href="' . esc_url( $customize_main_page_url ) . '" target="_blank">' . esc_html__( 'Customize KB Main Page', 'echo-knowledge-base' ) . '</a>' . ' ' .
+				          '<a class="epkb-kb__wizard-link" href="' . esc_url( $customize_article_page_url ) . '" target="_blank">' . esc_html__( 'Customize KB Article Page', 'echo-knowledge-base' ) . '</a>'
 			);
 
 			// Features link
@@ -207,7 +211,7 @@ class EPKB_Need_Help_Page {
 				'desc' => esc_html__( 'Get familiar with features and how they function.', 'echo-knowledge-base' ),
 				'html' => '<a class="epkb-kb__wizard-link epkb-admin__step-cta-box__link epkb-admin__link-scroll-top" data-target="features" href="#features">' . esc_html__( 'Explore Features', 'echo-knowledge-base' ) . '</a>' . '<br>' .
 							'<a class="epkb-kb__wizard-link epkb-admin__step-cta-box__link" data-target="add-ons" href="' .
-								admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . '1&page=epkb-add-ons' ) . '" target="_blank">' . esc_html__( 'Explore Add-ons', 'echo-knowledge-base' ) . '<span class="epkb-kb__wizard-link-icon epkbfa epkbfa-external-link"></span></a>' );
+								esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . '1&page=epkb-add-ons' ) ) . '" target="_blank">' . esc_html__( 'Explore Add-ons', 'echo-knowledge-base' ) . '<span class="epkb-kb__wizard-link-icon epkbfa epkbfa-external-link"></span></a>' );
 		}
 
 		ob_start();     ?>

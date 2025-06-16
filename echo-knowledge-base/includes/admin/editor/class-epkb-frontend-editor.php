@@ -57,15 +57,20 @@ class EPKB_Frontend_Editor {
 			return;
 		}
 
-		// Editor is disabled for blocks on KB Main Page
-		if ( $kb_page_type == 'main-page' && EPKB_Block_Utilities::current_post_has_kb_blocks() ) {
-			return;
-		}
-
 		// get KB configuration	- do nothing on fail
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
 		if ( is_wp_error( $kb_config ) ) {
 			return;
+		}
+
+		$frontend_editor_state = $kb_config['frontend_editor_switch_visibility_toggle'];
+		if ( $frontend_editor_state == 'off' ) {
+
+			// when FE is disabled in settings, then it still can be opened by direct admin links, and admin bar link, and when it refreshes page on settings change via reloading the entire page
+			$is_load_editor_action = EPKB_Utilities::post( 'action' ) == 'epkb_load_editor' || EPKB_Utilities::post( 'epkb_fe_reopen_feature', null ) !== null;
+			if ( ! $is_load_editor_action ) {
+				return;
+			}
 		}
 
 		// if modular is off do not enable editor on KB Main Page
@@ -77,6 +82,11 @@ class EPKB_Frontend_Editor {
 		if ( $kb_page_type == 'archive-page' && $kb_config['archive_page_v3_toggle'] != 'on' ) {
 			return;
 		}
+
+		// do not show if a page builder is opened
+		/* done in JS if ( EPKB_Editor_Utilities::is_page_builder_enabled() ) {
+		    return;
+		} */
 
 	    // when FE preview is updated via the entire page reload without saving settings (for some of the settings controls need to reload the entire page)
 	    $kb_config = self::fe_preview_config( $kb_config );
@@ -95,7 +105,8 @@ class EPKB_Frontend_Editor {
      */
     private static function render_editor( $kb_config ) {
 		global $post;
-		
+
+		$frontend_editor_type = EPKB_Editor_Utilities::epkb_front_end_editor_type();
 		$display_frontend_editor_closed = EPKB_Core_Utilities::is_kb_flag_set( 'epkb_fe_editor_closed' ); ?>
 
 		<!-- Frontend Editor Toggle -->
@@ -108,34 +119,54 @@ class EPKB_Frontend_Editor {
 					<span class="epkb-fe__toggle-title__text"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></span>
 				</div>
 			</div>
-		</div>
+		</div>		<?php 
 
-		<!-- Frontend Editor Sidebar -->
-		<div id="epkb-fe__editor" class="epkb-admin__form epkb-fe__editor--home" data-kbid="<?php echo esc_attr( $kb_config['id'] ); ?>"
+		$editor_class = $frontend_editor_type === 'block-main-page' ? 'epkb-fe__editor--block-main-page' : '';	?>
+	    <!-- Frontend Editor Sidebar -->
+		<div id="epkb-fe__editor" class="epkb-admin__form epkb-fe__editor--home <?php echo esc_attr( $editor_class ); ?>" data-kbid="<?php echo esc_attr( $kb_config['id'] ); ?>"
 		                    data-post-id="<?php echo empty( $post ) ? 0 : esc_attr( $post->ID ); ?>" style="display: none;"
 		 					data-display-frontend-editor-closed="<?php echo $display_frontend_editor_closed ? 'true' : 'false'; ?>">
 
 			<!-- Frontend Editor Header -->
 			<div id="epkb-fe__header-container">
-				
-				<!-- Main Page Titles -->
-				<h1 data-title="home" class="epkb-fe__header-title"><?php esc_html_e( 'Frontend Editor', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="help" class="epkb-fe__header-title"><?php esc_html_e( 'Help', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="search" class="epkb-fe__header-title"><?php esc_html_e( 'Search Box', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="categories_articles" class="epkb-fe__header-title"><?php esc_html_e( 'Categories and Articles', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="articles_list" class="epkb-fe__header-title"><?php esc_html_e( 'Featured Articles', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="faqs" class="epkb-fe__header-title"><?php esc_html_e( 'FAQs', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="resource_links" class="epkb-fe__header-title"><?php esc_html_e( 'Resource Links', 'echo-knowledge-base' ); ?></h1>
-			
-				<!-- Article Page Titles -->
-				<h1 data-title="article-page-settings" class="epkb-fe__header-title"><?php esc_html_e( 'Settings', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="article-page-search-box" class="epkb-fe__header-title"><?php esc_html_e( 'Search Box', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="article-page-sidebar" class="epkb-fe__header-title"><?php esc_html_e( 'Sidebar', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="article-page-toc" class="epkb-fe__header-title"><?php esc_html_e( 'Table of Contents', 'echo-knowledge-base' ); ?></h1>
-				<h1 data-title="article-page-ratings" class="epkb-fe__header-title"><?php esc_html_e( 'Rating and Feedback', 'echo-knowledge-base' ); ?></h1>
 
-				<!-- Archive Page Titles -->
-				<h1 data-title="archive-page-settings" class="epkb-fe__header-title"><?php esc_html_e( 'Settings', 'echo-knowledge-base' ); ?></h1>
+				<!-- Shared Titles -->
+				<h1 data-title="home" class="epkb-fe__header-title"><?php esc_html_e( 'Frontend Editor', 'echo-knowledge-base' ); ?></h1>
+				<h1 data-title="help" class="epkb-fe__header-title"><?php esc_html_e( 'Help', 'echo-knowledge-base' ); ?></h1>	<?php
+
+				switch ( $frontend_editor_type ) {
+
+					case 'main-page':	?>
+						<!-- Main Page Titles -->
+						<h1 data-title="search" class="epkb-fe__header-title"><?php esc_html_e( 'Search Box', 'echo-knowledge-base' ); ?></h1>
+						<h1 data-title="categories_articles" class="epkb-fe__header-title"><?php esc_html_e( 'Categories and Articles', 'echo-knowledge-base' ); ?></h1>
+						<h1 data-title="articles_list" class="epkb-fe__header-title"><?php esc_html_e( 'Featured Articles', 'echo-knowledge-base' ); ?></h1>
+						<h1 data-title="faqs" class="epkb-fe__header-title"><?php esc_html_e( 'FAQs', 'echo-knowledge-base' ); ?></h1>
+						<h1 data-title="resource_links" class="epkb-fe__header-title"><?php esc_html_e( 'Resource Links', 'echo-knowledge-base' ); ?></h1>	<?php
+						break;
+
+					case 'article-page':	?>
+						<!-- Article Page Titles -->
+						<h1 data-title="article-page-settings" class="epkb-fe__header-title"><?php esc_html_e( 'Settings', 'echo-knowledge-base' ); ?></h1>
+						<h1 data-title="article-page-search-box" class="epkb-fe__header-title"><?php esc_html_e( 'Search Box', 'echo-knowledge-base' ); ?></h1>
+						<h1 data-title="article-page-sidebar" class="epkb-fe__header-title"><?php esc_html_e( 'Sidebar', 'echo-knowledge-base' ); ?></h1>
+						<h1 data-title="article-page-toc" class="epkb-fe__header-title"><?php esc_html_e( 'Table of Contents', 'echo-knowledge-base' ); ?></h1>
+						<h1 data-title="article-page-ratings" class="epkb-fe__header-title"><?php esc_html_e( 'Rating and Feedback', 'echo-knowledge-base' ); ?></h1>	<?php
+						break;
+
+					case 'archive-page':	?>
+						<!-- Archive Page Titles -->
+						<h1 data-title="archive-page-settings" class="epkb-fe__header-title"><?php esc_html_e( 'Settings', 'echo-knowledge-base' ); ?></h1>	<?php
+						break;
+
+					case 'block-main-page':	?>
+						<!-- Block Main Page Titles -->
+						<h1 data-title="block-main-page-settings" class="epkb-fe__header-title"><?php esc_html_e( 'Settings', 'echo-knowledge-base' ); ?></h1>	<?php
+						break;
+
+					default:
+						break;
+				}	?>
 
 				<div class="epkb-fe__header-close-button">
 					<span class="epkbfa epkbfa-times"></span>
@@ -154,7 +185,7 @@ class EPKB_Frontend_Editor {
 				</div>	<?php
 
 				// display settings for each feature
-				switch ( EPKB_Editor_Utilities::epkb_front_end_editor_type() ) {
+				switch ( $frontend_editor_type ) {
 
 					case 'main-page':
 						// we need to retrieve settings for all modules - hardcode all modules assigned to rows in $settings_kb_config to have their settings rendered by EPKB_Config_Settings_Page(),
@@ -203,6 +234,10 @@ class EPKB_Frontend_Editor {
 						self::display_archive_page_settings( $features_config );
 						break;
 
+					case 'block-main-page':
+						self::display_block_main_page_settings( $kb_config );
+						break;
+
 					default:
 						break;
 				}	?>
@@ -210,7 +245,7 @@ class EPKB_Frontend_Editor {
 
 			<!-- Help tab -->
 			<div class='epkb-fe__help-container'>	<?php
-				self::display_help_tab( $kb_config );	?>
+				self::display_help_tab( $kb_config, $frontend_editor_type );	?>
 			</div> 
 
 			<!-- Frontend Editor Footer -->
@@ -241,7 +276,12 @@ class EPKB_Frontend_Editor {
 		</div>	<?php
     }
 
-	private static function display_help_tab( $kb_config ) {
+	private static function display_help_tab( $kb_config, $frontend_editor_type ) {
+
+		// TODO: it looks like for each FE type need to show dedicated Help content
+		if ( $frontend_editor_type == 'block-main-page' ) {
+			return;
+		}
 
 		// Is this page or search box too narrow? ------------------------/
 		$search_row_width_key = '';
@@ -426,6 +466,14 @@ class EPKB_Frontend_Editor {
 		</div>	<?php
 	}
 
+	private static function display_block_main_page_settings( $kb_config ) {	?>
+		<div class="epkb-fe__settings-list">
+			<div class="epkb-fe__sub-content">	<?php
+				echo wp_kses( EPKB_HTML_Admin::display_block_main_page( $kb_config, false ), EPKB_Utilities::get_admin_ui_extended_html_tags() );	?>
+			</div>
+		</div>	<?php
+	}
+
 	/**
 	 * Display settings HTML for each feature
 	 * @param $feature_config_contents
@@ -492,6 +540,8 @@ class EPKB_Frontend_Editor {
 		ob_start();
 		$faqs_design_settings = array();
 		$categories_articles_design_settings = array();
+		$search_design_settings = array();
+		$archive_design_settings = array();
 		switch ( $feature_name ) {
 
 			// Main Page 'Search' feature
@@ -499,7 +549,7 @@ class EPKB_Frontend_Editor {
 				global $eckb_is_kb_main_page;
 				$eckb_is_kb_main_page = true;
 
-				EPKB_Core_Utilities::initialize_advanced_search_box();
+				EPKB_Editor_Utilities::initialize_advanced_search_box();
 
 				$new_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'mp' );
 
@@ -514,8 +564,8 @@ class EPKB_Frontend_Editor {
 				// adjust settings on layout change
 
 				// temporarily set the layout name to the one selected in the editor if user went from e.g. Basic -> Tabs -> Basic
-				// original layout is Basic but for the purpose of layout change we want to capture Tabs -> Basic change
-				if ( ! empty( $layout_name) ) {
+				// original layout is the layout storing in DataBase, but for the purpose of layout change we want to capture Tabs -> Basic change
+				if ( ! empty( $layout_name ) ) {
 					$orig_config['kb_main_page_layout'] = $layout_name;
 				}
 
@@ -588,12 +638,15 @@ class EPKB_Frontend_Editor {
 			case 'article-page-toc':
 			case 'article-page-ratings':
 
-				// TODO: for article_search_sync_toggle need to update settings (when changed to 'on' - hide most of article search settings; when changed to 'off' - show the full settings like in Settings UI)
-
 				$article_id = (int)EPKB_Utilities::post( 'kb_post_id' );
 
 				// Initialize Advanced Search if needed
-				EPKB_Core_Utilities::initialize_advanced_search_box();
+				EPKB_Editor_Utilities::initialize_advanced_search_box( false );
+
+				$synced_new_config = EPKB_Core_Utilities::sync_article_page_search_with_main_page_search( $new_config, $orig_config );
+				$search_design_settings = EPKB_Utilities::diff_two_dimentional_arrays( $synced_new_config, $new_config );
+				$new_config = empty( $search_design_settings ) ? $new_config : $synced_new_config;
+
 				$new_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'ap' );
 
 				global $eckb_is_kb_main_page;
@@ -669,8 +722,13 @@ class EPKB_Frontend_Editor {
 			// Archive Page features update entire Archive HTML
 			case 'archive-page-settings':
 				// Initialize Advanced Search if needed
-				EPKB_Core_Utilities::initialize_advanced_search_box();
+				EPKB_Editor_Utilities::initialize_advanced_search_box();
 				$new_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'cp' );
+
+				if ( ! empty( $new_config['archive_content_sub_categories_display_mode'] ) ) {
+					$archive_design_settings = EPKB_Core_Utilities::get_category_archive_page_design_settings( $new_config['archive_content_sub_categories_display_mode'] );
+					$new_config = array_merge( $new_config, $archive_design_settings );
+				}
 				
 				// Get taxonomy and term ID from the AJAX request
 				$taxonomy = EPKB_Utilities::post( 'taxonomy' );
@@ -718,6 +776,8 @@ class EPKB_Frontend_Editor {
 			'layout_settings_html_temp' => $updated_settings_html['layout_settings_html_temp'],
 			'faqs_design_settings' => $faqs_design_settings,
 			'categories_articles_design_settings' => $categories_articles_design_settings,
+			'search_design_settings' => $search_design_settings,
+			'archive_design_settings' => $archive_design_settings,
 		);
 
 		wp_send_json_success( $response_data );
@@ -761,6 +821,9 @@ class EPKB_Frontend_Editor {
 	    $orig_config = $config['orig_config'];
 	    $new_config = $config['new_config'];
 		$kb_id = $config['kb_id'];
+
+		// at this point FE already applied all layout change adjustments - by syncing configs layout we ensure the adjustments will not be triggered again (and thus will not rewrite user changes) during the update
+		$orig_config['kb_main_page_layout'] = $new_config['kb_main_page_layout'];
 
 		// Check if the user has permission to save settings
 		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
@@ -923,7 +986,7 @@ class EPKB_Frontend_Editor {
 			$new_config['article_content_enable_article_title'] = $new_config['templates_for_kb'] == 'current_theme_templates' ? 'off' : 'on';
 		}
 
-		EPKB_Core_Utilities::start_update_kb_configuration( $editor_kb_id, $new_config );
+		EPKB_Core_Utilities::start_update_kb_configuration( $editor_kb_id, $new_config, false, $orig_config );
 	}
 
 	private static function update_module_position( $new_config ) {

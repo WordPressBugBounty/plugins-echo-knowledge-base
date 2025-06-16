@@ -706,6 +706,21 @@
   text-align: center;
   color: #7C7C7C;
 }
+#epkb-ml__module-articles-list .epkb-ml-article-list-container .section_light_shadow {
+  -webkit-box-shadow: 0px 3px 20px -10px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 3px 20px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 3px 20px -10px rgba(0, 0, 0, 0.75);
+}
+#epkb-ml__module-articles-list .epkb-ml-article-list-container .section_medium_shadow {
+  -webkit-box-shadow: 0px 3px 20px -4px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 3px 20px -4px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 3px 20px -4px rgba(0, 0, 0, 0.75);
+}
+#epkb-ml__module-articles-list .epkb-ml-article-list-container .section_bottom_shadow {
+  -webkit-box-shadow: 0 2px 0 0 #E1E1E1;
+  -moz-box-shadow: 0 2px 0 0 #E1E1E1;
+  box-shadow: 0 2px 0 0 #E1E1E1;
+}
 #epkb-ml__module-articles-list #epkb-ml-article-list-basic-layout .epkb-mp-article,
 #epkb-ml__module-articles-list #epkb-ml-article-list-basic-layout .epkb-ml-article-container,
 #epkb-ml__module-articles-list #epkb-ml-article-list-basic-layout .epkb-sidebar-article {

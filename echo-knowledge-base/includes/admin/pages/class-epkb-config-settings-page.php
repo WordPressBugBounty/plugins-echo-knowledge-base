@@ -82,6 +82,7 @@ class EPKB_Config_Settings_Page {
 		if ( $this->is_show_fe_offer_first_time && EPKB_Utilities::post( 'is_fe_offer_declined' ) == 'on' ) {
 			EPKB_Core_Utilities::add_kb_flag( 'is_fe_offer_declined' );
 			$this->is_show_fe_offer_first_time = false;
+			epkb_get_instance()->kb_config_obj->set_value( $this->kb_config['id'], 'frontend_editor_switch_visibility_toggle', 'off' );
 		}
 
 		// Handle Frontend Editor offer decline for all pages (Main Page, Article Page, Archive Page)
@@ -164,7 +165,7 @@ class EPKB_Config_Settings_Page {
 					array(
 						'title_before_icon' => false,
 						'title' => esc_html__( 'KB Main Page Configuration', 'echo-knowledge-base' ),
-					'body_html' => EPKB_HTML_Admin::display_block_main_page( $this->kb_config, $this->kb_config['kb_main_page_layout'] ),
+						'body_html' => EPKB_HTML_Admin::display_block_main_page( $this->kb_config ),
 					)
 				),
 				( $this->kb_config['wpml_is_enabled'] === 'on'	?
@@ -648,12 +649,11 @@ class EPKB_Config_Settings_Page {
 
 			case EPKB_Input_Filter::TEXT:
 				if ( in_array( $setting_name, [ 'advanced_search_mp_description_below_input', 'advanced_search_mp_description_below_title', 'advanced_search_ap_description_below_input', 'advanced_search_ap_description_below_title' ] ) ) {
-					EPKB_HTML_Elements::textarea( [
-						'specs'             => $setting_name,
+					EPKB_HTML_Elements::textarea( array_merge_recursive( $input_args, [
 						'value'             => $this->kb_config[$setting_name],
 						'main_tag'          => 'div',
 						'input_group_class' => 'epkb-input-group epkb-admin__input-field epkb-admin__textarea-field ' . $input_group_class,
-					] );
+					] ) );
 				} else {
 					EPKB_HTML_Elements::text( array_merge_recursive( $input_args, [
 						'value'             => $this->kb_config[$setting_name],
@@ -1828,7 +1828,8 @@ class EPKB_Config_Settings_Page {
 			array(
 				'title'     => esc_html__( 'Featured Articles', 'echo-knowledge-base' ),
 				'fields'    => [
-					'ml_articles_list_title_text' => [ 'not_block_main_page' ],
+					'ml_articles_list_title_text' => 'not_block_main_page',
+					'ml_articles_list_title_color' => '',
 					'ml_articles_list_newest_articles_msg' => 'not_block_main_page',
 					'ml_articles_list_popular_articles_msg' => 'not_block_main_page',
 					'ml_articles_list_recent_articles_msg' => 'not_block_main_page',
@@ -1899,6 +1900,13 @@ class EPKB_Config_Settings_Page {
 				'desc'      => esc_html__( 'Give your Knowledge Base a name. The name will show when we refer to it or when you see a list of post types.', 'echo-knowledge-base' ),
 				'fields'    => [
 					'kb_name' => '',
+				],
+			),
+			array(
+				'title'     => esc_html__( 'Frontend Editor Toggle Visibility', 'echo-knowledge-base' ),
+				'desc'      => '',
+				'fields'    => [
+					'frontend_editor_switch_visibility_toggle' => '',
 				],
 			),
 			array(
@@ -2741,6 +2749,7 @@ class EPKB_Config_Settings_Page {
 			'articles_list' => [
 				'module-settings' => [
 					//'ml_articles_list_layout'                             => '',
+					'ml_articles_list_title_color'                          => '',
 					'ml_articles_list_title_location'                       => '',
 					'ml_articles_list_column_1'                             => '',
 					'ml_articles_list_column_2'                             => '',
@@ -3299,8 +3308,10 @@ class EPKB_Config_Settings_Page {
 					),
 				];
 			}
-			// if Article Page search is enabled and NOT synced with Main Page then show all Article Page settings - always show for block Main Page (ignore sync toggle value)
-			if ( $this->kb_config['article_search_toggle'] == 'on' && ( $this->kb_config['article_search_sync_toggle'] != 'on' || $this->kb_main_page_has_kb_blocks ) ) {
+			// if Article Page search is enabled and NOT synced with Main Page then show all Article Page settings
+			//		- always show for block Main Page (ignore sync toggle value)
+			//		- always show for Article Page FE (related settings visibility is handled in FE without settings reload)
+			if ( $this->is_frontend_editor || ( $this->kb_config['article_search_toggle'] == 'on' && ( $this->kb_config['article_search_sync_toggle'] != 'on' || $this->kb_main_page_has_kb_blocks ) ) ) {
 				$sub_contents_configs['article-page-search-box'] = [
 					array(
 						'title'     => esc_html__( 'Settings', 'echo-knowledge-base' ),
@@ -3464,6 +3475,7 @@ class EPKB_Config_Settings_Page {
 
 			// Module: Featured Articles
 			//case 'ml_articles_list_layout':
+			case 'ml_articles_list_title_color':
 			case 'ml_articles_list_column_1':
 			case 'ml_articles_list_column_2':
 			case 'ml_articles_list_column_3':
@@ -3889,18 +3901,12 @@ class EPKB_Config_Settings_Page {
 				$field_specs['input_group_class'] = 'eckb-conditional-setting-input' . ' ';
 				break;
 
-			case 'search_box_padding_top':
-			case 'article_search_box_padding_top':
 			case 'advanced_search_mp_box_padding_top':
-			case 'advanced_search_ap_box_padding_top':
-				$field_specs['label'] = esc_html__( 'Padding Top ( px )', 'echo-knowledge-base' );  // change labels here instead of specs to leave FE Editor UI unchanged
+				$field_specs['label'] = esc_html__( 'Padding Top', 'echo-knowledge-base' ) . ' ( px )';  // change labels here instead of specs to leave FE Editor UI unchanged	// TODO FUTURE: remove as this was related to old FE and now can be updated in specs (currently keep only for old add-on version compatibility)
 				break;
 
-			case 'search_box_padding_bottom':
-			case 'article_search_box_padding_bottom':
 			case 'advanced_search_mp_box_padding_bottom':
-			case 'advanced_search_ap_box_padding_bottom':
-				$field_specs['label'] = esc_html__( 'Padding Bottom ( px )', 'echo-knowledge-base' );   // change labels here instead of specs to leave FE Editor UI unchanged
+				$field_specs['label'] = esc_html__( 'Padding Bottom', 'echo-knowledge-base' ) . ' ( px )';   // change labels here instead of specs to leave FE Editor UI unchanged	// TODO FUTURE: remove as this was related to old FE and now can be updated in specs (currently keep only for old add-on version compatibility)
 				break;
 
 			case 'archive_header_desktop_width':
@@ -4012,6 +4018,50 @@ class EPKB_Config_Settings_Page {
 			case 'prev_next_navigation_hover_bg_color':
 				$field_specs['dependency'] = ['prev_next_navigation_enable'];
 				$field_specs['enable_on'] = ['on'];
+				break;
+
+			case 'article_search_sync_toggle':
+				$field_specs['input_group_class'] = 'eckb-conditional-setting-input' . ' ';
+				break;
+
+			case 'ml_article_search_layout':
+			case 'advanced_search_ap_presets':
+			case 'article_search_title_font_color':
+			case 'article_search_background_color':
+			case 'advanced_search_ap_box_padding_top':
+			case 'advanced_search_ap_box_padding_bottom':
+			case 'advanced_search_ap_box_input_width':
+			case 'advanced_search_ap_input_box_search_icon_placement':
+			case 'advanced_search_ap_filter_toggle':
+			case 'article_search_box_padding_top':
+			case 'article_search_box_padding_bottom':
+			case 'article_search_box_input_width':
+			case 'article_search_text_input_background_color':
+			case 'article_search_text_input_border_color':
+			case 'article_search_btn_background_color':
+			case 'article_search_title_html_tag':
+			case 'article_search_result_mode':
+			case 'advanced_search_ap_filter_category_level':
+			case 'advanced_search_ap_show_top_category':
+			case 'advanced_search_ap_results_list_size':
+			case 'asea_pro_description':
+			case 'advanced_search_ap_title_toggle':
+			case 'advanced_search_ap_title':
+			case 'advanced_search_ap_title_font_color':
+			case 'advanced_search_ap_description_below_title_toggle':
+			case 'advanced_search_ap_description_below_title':
+			case 'advanced_search_ap_description_below_input_toggle':
+			case 'advanced_search_ap_description_below_input':
+			case 'advanced_search_ap_link_font_color':
+			case 'advanced_search_ap_background_color':
+			case 'advanced_search_ap_background_image_url':
+			case 'advanced_search_ap_background_gradient_toggle':
+			case 'advanced_search_ap_background_gradient_from_color':
+			case 'advanced_search_ap_background_gradient_to_color':
+			case 'advanced_search_ap_background_gradient_degree':
+			case 'advanced_search_ap_background_gradient_opacity':
+				$field_specs['dependency'] = ['article_search_sync_toggle'];
+				$field_specs['enable_on'] = ['off'];
 				break;
 
 			default:

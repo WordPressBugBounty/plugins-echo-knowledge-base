@@ -843,31 +843,35 @@ class EPKB_HTML_Admin {
 		}
 	}
 
-	public static function display_block_main_page( $kb_config, $kb_layout ) {
-		return
-			'<div>' .
+	public static function display_block_main_page( $kb_config, $include_help_links = true ) {
+
+		$output_html =
+			'<div class="epkb-admin__settings-sub">' .
 				// Main Content
-				'<div style="padding: 20px; text-align: center;">' .
+				'<div class="epkb-admin__settings-sub-header">' .
 					'<p>' . esc_html__( 'Your Knowledge Base Main Page is now using WordPress KB blocks.', 'echo-knowledge-base' ) . '</p>' .
-					'<a href="' . esc_url( get_edit_post_link( EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config ) ) ) . '" target="_blank" class="epkb-primary-btn" style="display: inline-block; text-decoration: none; margin-top: 10px;">' .
+					'<a href="' . esc_url( get_edit_post_link( EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config ) ) ) . '" class="epkb-primary-btn" style="display: inline-block; text-decoration: none; margin-top: 10px;">' .
 						esc_html__( 'Edit Main Page', 'echo-knowledge-base' ) .
 					'</a>' .
-				'</div>' .
-				// Resources & Support Section with Two Columns
-				'<div style="background: #f0f6fc; padding: 25px; border-radius: 8px; border: 1px solid #c5d9ed; margin: 20px;">' .
+				'</div>';
+
+		if ( $include_help_links ) {
+			// Resources & Support Section with Two Columns
+			$output_html .=
+				'<div class="epkb-admin__settings-sub-content">' .
 					'<div class="epkb-admin__resources-support">' .
-						'<div style="min-width: 0;">' .
-							'<h4 style="margin: 0 0 10px 0; color: #2c3338;">' . esc_html__( 'Documentation', 'echo-knowledge-base' ) . '</h4>' .
-							'<p style="margin: 0 0 15px 0; color: #50575e;">' .
+						'<div class="epkb-admin__resources-support-col">' .
+							'<h4>' . esc_html__( 'Documentation', 'echo-knowledge-base' ) . '</h4>' .
+							'<p>' .
 								esc_html__( 'Access comprehensive guides and tutorials for KB blocks and features.', 'echo-knowledge-base' ) .
 							'</p>' .
 							'<a href="https://www.echoknowledgebase.com/documentation/kb-blocks/" target="_blank" class="epkb-primary-btn" style="display: inline-block; text-decoration: none;">' .
 								esc_html__( 'View Documentation', 'echo-knowledge-base' ) .
 							'</a>' .
 						'</div>' .
-						'<div style="min-width: 0;">' .
-							'<h4 style="margin: 0 0 10px 0; color: #2c3338;">' . esc_html__( 'Technical Support', 'echo-knowledge-base' ) . '</h4>' .
-							'<p style="margin: 0 0 15px 0; color: #50575e;">' .
+						'<div class="epkb-admin__resources-support-col">' .
+							'<h4>' . esc_html__( 'Technical Support', 'echo-knowledge-base' ) . '</h4>' .
+							'<p>' .
 								esc_html__( 'Get help from our support team for any KB related issues.', 'echo-knowledge-base' ) .
 							'</p>' .
 							'<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank" class="epkb-primary-btn" style="display: inline-block; text-decoration: none;">' .
@@ -875,8 +879,12 @@ class EPKB_HTML_Admin {
 							'</a>' .
 						'</div>' .
 					'</div>' .
-				'</div>' .
-			'</div>';
+				'</div>';
+		}
+
+		$output_html .= '</div>';
+
+		return $output_html;
 	}
 
 	/**
@@ -889,7 +897,7 @@ class EPKB_HTML_Admin {
 		ob_start();	?>
 		<div class="epkb-admin__fe-offer-box<?php echo $is_first_time ? '' : ' ' . 'epkb-admin__fe-offer-box--top'; ?>">
 			<p><?php esc_html_e( 'Use our Frontend Editor to change KB Main Page settings.', 'echo-knowledge-base' ); ?></p>
-			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '?epkb_fe_reopen_feature=none'; ?>" 
+			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '?action=epkb_load_editor'; ?>"
 								target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.	<?php
 			if ( $is_first_time ) {	?>
 				<p><a class="epkb-fe__fe-offer-disable" href="#" target="_blank" class="" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Edit Settings Without Frontend Editor', 'echo-knowledge-base' ); ?></a></p>	<?php

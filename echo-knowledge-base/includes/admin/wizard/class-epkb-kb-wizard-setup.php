@@ -1322,7 +1322,7 @@ class EPKB_KB_Wizard_Setup {
 					'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-basic-office.jpg',
 					'title'         => esc_html__( 'Office', 'echo-knowledge-base' ),
 				],
-				'organized_basic' => [
+				'organized' => [
 					'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-basic-organized.jpg',
 					'title'         => esc_html__( 'Organized', 'echo-knowledge-base' ),
 				],

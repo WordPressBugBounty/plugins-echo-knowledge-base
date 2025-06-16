@@ -334,17 +334,29 @@ jQuery(document).ready(function($) {
 
 				// Find dependency input
 				let dependency_input = $( dependency_field ).is( 'select' ) ? ( dependency_field ) : dependency_field.find( 'input' );
-				if ( dependency_input.attr( 'type' ) === 'radio' || dependency_input.attr( 'type' ) === 'checkbox' ) {
-					dependency_input = $( dependency_field ).find( 'input:checked' );
-				}
 				if ( typeof dependency_input === 'undefined' || ! dependency_input.length ) {
 					continue;
+				}
+
+				// Find dependency input value
+				let dependency_input_value = false;
+				if ( dependency_input.attr( 'type' ) === 'radio' ) {
+					dependency_input = $( dependency_field ).find( 'input:checked' );
+					if ( ! dependency_input.length ) {
+						continue;
+					}
+				} else if ( dependency_input.attr( 'type' ) === 'checkbox' ) {
+					dependency_input = $( dependency_field ).find( 'input:checked' );
+					dependency_input_value = dependency_input.length ? 'on' : 'off';
+				}
+				if ( dependency_input_value === false ) {
+					dependency_input_value = dependency_input.val();
 				}
 
 				let current_field_id = $( this ).attr( 'id' );
 
 				// Show dependent content if value of the dependency input in dependency values list
-				if ( all_dependency_values.indexOf( dependency_input.val() ) >= 0 ) {
+				if ( all_dependency_values.indexOf( dependency_input_value ) >= 0 ) {
 					$( this ).show();
 					$( this ).closest( '.epkb-input-group-combined-units').find( '.epkb-input-desc' ).show();
 					trigger_conditional_field_click( current_field_id );
@@ -392,17 +404,31 @@ jQuery(document).ready(function($) {
 
 				// Find dependency input
 				let dependency_input = $( dependency_field ).is( 'select' ) ? ( dependency_field ) : dependency_field.find( 'input' );
-				if ( dependency_input.attr( 'type' ) === 'radio' || dependency_input.attr( 'type' ) === 'checkbox' ) {
-					dependency_input = $( dependency_field ).find( 'input:checked' );
-				}
 				if ( typeof dependency_input === 'undefined' || ! dependency_input.length ) {
 					$( current_dependent_target ).hide();
 					trigger_conditional_field_click( current_field_id );
 					return;
 				}
 
+				// Find dependency input value
+				let dependency_input_value = false;
+				if ( dependency_input.attr( 'type' ) === 'radio' ) {
+					dependency_input = $( dependency_field ).find( 'input:checked' );
+					if ( ! dependency_input.length ) {
+						$( current_dependent_target ).hide();
+						trigger_conditional_field_click( current_field_id );
+						return;
+					}
+				} else if ( dependency_input.attr( 'type' ) === 'checkbox' ) {
+					dependency_input = $( dependency_field ).find( 'input:checked' );
+					dependency_input_value = dependency_input.length ? 'on' : 'off';
+				}
+				if ( dependency_input_value === false ) {
+					dependency_input_value = dependency_input.val();
+				}
+
 				// Hide dependent content if value of the dependency input does not match dependency value
-				if ( dependency_input.val() !== dependency_value ) {
+				if ( dependency_input_value !== dependency_value ) {
 					$( current_dependent_target ).hide();
 					trigger_conditional_field_click( current_field_id );
 					return;

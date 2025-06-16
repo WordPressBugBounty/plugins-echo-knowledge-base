@@ -5408,7 +5408,7 @@ input[type=radio]:checked:before {
   border-color: #EBA643;
 }
 #ekb-admin-page-wrap .eckb-tooltip-container.eckb-tip-warning .eckb-tooltip-contents {
-  background-color: white;
+  background-color: #FFFFFF;
   border-color: #F0BC71;
   color: #A76A12;
 }
@@ -7123,7 +7123,7 @@ input[type=radio]:checked:before {
   box-shadow: 0 2px 0 #DEDEDE;
 }
 #ekb-admin-page-wrap .default-btn:hover {
-  background-color: white;
+  background-color: #FFFFFF;
   cursor: pointer;
 }
 #ekb-admin-page-wrap .error-btn {
@@ -7359,7 +7359,7 @@ input[type=radio]:checked:before {
 }
 #ekb-admin-page-wrap .epkb-notification-box-middle--warning {
   border-left-color: #F0BC71 !important;
-  background-color: white !important;
+  background-color: #FFFFFF !important;
 }
 #ekb-admin-page-wrap .epkb-notification-box-middle--warning .epkb-notification-box-middle__icon {
   color: #F0BC71;
@@ -7934,7 +7934,7 @@ input[type=radio]:checked:before {
 
 .epkb-notification-box-popup--warning {
   border-left-color: #F0BC71;
-  background-color: white;
+  background-color: #FFFFFF;
 }
 .epkb-notification-box-popup--warning .epkb-notification-box-popup__icon {
   color: #F0BC71;
@@ -8050,7 +8050,7 @@ input[type=radio]:checked:before {
 
 .epkb-notification-box-top--warning {
   border-left-color: #F0BC71;
-  background-color: white;
+  background-color: #FFFFFF;
 }
 .epkb-notification-box-top--warning .epkb-notification-box-top__icon {
   color: #F0BC71;
@@ -19429,6 +19429,28 @@ input[type=radio]:checked:before {
   border-bottom: 1px solid #D6E2ED;
   padding: 20px 0 10px 0;
   margin-bottom: 30px;
+}
+.epkb-admin__form .epkb-admin__settings-sub .epkb-admin__settings-sub-header {
+  padding: 20px;
+  text-align: center;
+}
+.epkb-admin__form .epkb-admin__settings-sub .epkb-admin__settings-sub-content {
+  background: #F0F6FC;
+  padding: 25px;
+  border-radius: 8px;
+  border: 1px solid #C5D9ED;
+  margin: 20px;
+}
+.epkb-admin__form .epkb-admin__settings-sub .epkb-admin__settings-sub-content h4 {
+  margin: 0 0 10px 0 !important;
+  color: #2C3338;
+}
+.epkb-admin__form .epkb-admin__settings-sub .epkb-admin__settings-sub-content p {
+  margin: 0 0 15px 0;
+  color: #50575E;
+}
+.epkb-admin__form .epkb-admin__settings-sub .epkb-admin__resources-support-col {
+  min-width: 0;
 }
 
 /**

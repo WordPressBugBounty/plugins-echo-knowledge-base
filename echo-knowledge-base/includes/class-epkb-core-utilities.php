@@ -232,7 +232,7 @@ class EPKB_Core_Utilities {
 	 *
 	 *************************************************************************************************************************/
 
-	public static function start_update_kb_configuration( $kb_id, $new_config, $is_theme_selected=false ) {
+	public static function start_update_kb_configuration( $kb_id, $new_config, $is_theme_selected=false, $orig_config=null ) {
 
 		// validate TOC Hy, Hx levels: Hy cannot be less than Hx
 		if ( $new_config['article_toc_hy_level'] < $new_config['article_toc_hx_level'] ) {
@@ -240,9 +240,11 @@ class EPKB_Core_Utilities {
 		}
 
 		// get current KB configuration
-		$orig_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id, true );
-		if ( is_wp_error( $orig_config ) ) {
-			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 8, $orig_config ) );
+		if ( empty( $orig_config ) ) {
+			$orig_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id, true );
+			if ( is_wp_error( $orig_config ) ) {
+				EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 8, $orig_config ) );
+			}
 		}
 
 		// get current KB configuration from add-ons
@@ -293,41 +295,7 @@ class EPKB_Core_Utilities {
 			}
 		}
 
-		// sync Article Search with Main Search settings - Sidebar layout does not use Article Search settings, still keep the settings synced if required
-		if ( ( isset( $new_config['article_search_sync_toggle'] ) && $new_config['article_search_sync_toggle'] == 'on' ) ||
-			( empty( $new_config['article_search_sync_toggle'] ) && $orig_config['article_search_sync_toggle'] == 'on' ) ) {
-
-			foreach ( $orig_config as $setting_name => $orig_setting_value ) {
-
-				if ( in_array( $setting_name, ['admin_eckb_access_search_analytics_read','archive_search_toggle'] ) ) {
-					continue;
-				}
-
-				// ignore Article Page Search settings - can be present when turning the toggle 'on' ( page reloads with saving settings )
-				if ( strpos( $setting_name, 'article_search_' ) !== false || strpos( $setting_name, 'advanced_search_ap_' ) !== false ) {
-					continue;
-				}
-
-				$ap_search_setting_name = '';
-
-				// sync Advanced Search settings
-				if ( strpos( $setting_name, 'advanced_search_mp_' ) !== false ) {
-					$ap_search_setting_name = str_replace( 'advanced_search_mp_', 'advanced_search_ap_', $setting_name );
-				}
-				// sync KB core search settings
-				else if ( strpos( $setting_name, 'search_' ) !== false ) {
-					$ap_search_setting_name = str_replace( 'search_', 'article_search_', $setting_name );
-				}
-
-				// sync Article Page Search setting from new config if the value is set in the new config
-				if ( ! empty( $ap_search_setting_name ) && isset( $new_config[$setting_name] ) ) {
-					$new_config[$ap_search_setting_name] = $new_config[$setting_name];
-				// still sync Article Page Search setting from origin config if the value is not set in the new config
-				} else if ( ! empty( $ap_search_setting_name ) && isset( $orig_setting_value ) ) {
-					$new_config[$ap_search_setting_name] = $orig_setting_value;
-				}
-			}
-		}
+		$new_config = self::sync_article_page_search_with_main_page_search( $new_config, $orig_config );
 
 		// sync 'elay_article_icon' with 'elay_sidebar_article_icon' because for Sidebar layout we show only 'elay_sidebar_article_icon' in UI
 		if ( isset( $new_config['kb_main_page_layout'] ) && $new_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ) {
@@ -963,6 +931,11 @@ class EPKB_Core_Utilities {
 	}
 
 	private static function get_category_archive_page_design( $new_config ) {
+		$design_settings = self::get_category_archive_page_design_settings( $new_config['archive_content_sub_categories_display_mode'] );
+		return array_merge( $new_config, $design_settings );
+	}
+
+	public static function get_category_archive_page_design_settings( $design_name ) {
 
 		$defaults = array(
 			'archive_content_sub_categories_nof_columns' => 2,
@@ -973,7 +946,7 @@ class EPKB_Core_Utilities {
 			'archive_content_sub_categories_background_color' => '#FFFFFF'
 		);
 
-		switch ( $new_config['archive_content_sub_categories_display_mode'] ) {
+		switch ( $design_name ) {
 			case 'design-1':
 			default:
 				$design_settings = array(
@@ -997,9 +970,7 @@ class EPKB_Core_Utilities {
 				break;
 		}
 
-		$design_settings = array_merge( $defaults, $design_settings );
-
-		return array_merge( $new_config, $design_settings );
+		return array_merge( $defaults, $design_settings );
 	}
 
 
@@ -1183,6 +1154,7 @@ class EPKB_Core_Utilities {
 		$background_color_setting_name = 'section_body_background_color';
 		$border_setting_prefix = 'section_border';
 		$head_font_color_setting_name = 'section_head_font_color';
+		$title_font_color_setting_name = 'ml_articles_list_title_color';
 		$head_typography_setting_name = 'section_head_typography';
 		$article_typography_setting_name = 'article_typography';
 		$article_font_color_setting_name = 'article_font_color';
@@ -1213,6 +1185,7 @@ class EPKB_Core_Utilities {
 			'background_color' => $background_color_setting_name,
 			'border_prefix' => $border_setting_prefix,
 			'head_font_color' => $head_font_color_setting_name,
+			'ml_articles_list_title_color' => $title_font_color_setting_name,
 			'head_typography' => $head_typography_setting_name,
 			'article_typography' => $article_typography_setting_name,
 			'article_font_color' => $article_font_color_setting_name,
@@ -1570,7 +1543,7 @@ class EPKB_Core_Utilities {
 	 *
 	 ********************************************************************************/
 
-	public static function run_asea_upgrade( $last_version ) {
+	public static function run_asea_upgrade( $plugin_config, $last_version ) {
 		/**@disregard P1009, P1014 */
 		if ( class_exists( 'Echo_Advanced_Search' ) && $last_version != Echo_Advanced_Search::$version && class_exists('ASEA_Upgrades') && is_callable( array( 'ASEA_Upgrades', 'run_upgrade' ) ) ) {
 			/**@disregard P1009, P1008 */
@@ -1578,7 +1551,7 @@ class EPKB_Core_Utilities {
 		}
 	}
 
-	public static function run_elay_upgarde( $last_version ) {
+	public static function run_elay_upgrade( $plugin_config, $last_version ) {
 		/**@disregard P1009, P1014 */
 		if ( class_exists( 'Echo_Elegant_Layouts' ) && $last_version != Echo_Elegant_Layouts::$version && class_exists('ELAY_Upgrades') && is_callable( array( 'ELAY_Upgrades', 'run_upgrade' ) ) ) {
 			/**@disregard P1009, P1008 */
@@ -1586,7 +1559,7 @@ class EPKB_Core_Utilities {
 		}
 	}
 
-	public static function run_eprf_upgrade( $last_version ) {
+	public static function run_eprf_upgrade( $plugin_config, $last_version ) {
 		/**@disregard P1009, P1014 */
 		if ( class_exists( 'Echo_Article_Rating_And_Feedback' ) && $last_version != Echo_Article_Rating_And_Feedback::$version && class_exists( 'EPRF_Upgrades' ) && is_callable( array( 'EPRF_Upgrades', 'run_upgrade' ) ) ) {
 			/**@disregard P1009, P1008 */
@@ -1647,15 +1620,6 @@ class EPKB_Core_Utilities {
 		return $output;
 	}
 
-	public static function initialize_advanced_search_box() {
-		if ( EPKB_Utilities::is_advanced_search_enabled() && class_exists( 'ASEA_Search_Box_View' ) ) {
-			global $asea_use_main_page_settings;
-			$asea_use_main_page_settings = 'main-page';	// for AJAX request we need to hard-code the value here
-			/**@disregard P1009 */
-			new ASEA_Search_Box_View();		// TODO: move to KB Utilities Constants
-		}
-	}
-
 	public static function initialize_elegant_layouts( $new_config, $suffix ) {
 		$elay_link_css = '';
 		$elay_link_css_rtl = '';
@@ -1670,5 +1634,46 @@ class EPKB_Core_Utilities {
 		}
 
 		return [ 'elay_link_css' => $elay_link_css, 'elay_link_css_rtl' => $elay_link_css_rtl ];
+	}
+
+	public static function sync_article_page_search_with_main_page_search( $new_config, $orig_config ) {
+
+		// sync Article Search with Main Search settings - Sidebar layout does not use Article Search settings, still keep the settings synced if required
+		if ( ( isset( $new_config['article_search_sync_toggle'] ) && $new_config['article_search_sync_toggle'] == 'on' ) ||
+			( empty( $new_config['article_search_sync_toggle'] ) && $orig_config['article_search_sync_toggle'] == 'on' ) ) {
+
+			foreach ( $orig_config as $setting_name => $orig_setting_value ) {
+
+				if ( in_array( $setting_name, ['admin_eckb_access_search_analytics_read','archive_search_toggle'] ) ) {
+					continue;
+				}
+
+				// ignore Article Page Search settings - can be present when turning the toggle 'on' ( page reloads with saving settings )
+				if ( strpos( $setting_name, 'article_search_' ) !== false || strpos( $setting_name, 'advanced_search_ap_' ) !== false ) {
+					continue;
+				}
+
+				$ap_search_setting_name = '';
+
+				// sync Advanced Search settings
+				if ( strpos( $setting_name, 'advanced_search_mp_' ) !== false ) {
+					$ap_search_setting_name = str_replace( 'advanced_search_mp_', 'advanced_search_ap_', $setting_name );
+				}
+				// sync KB core search settings
+				else if ( strpos( $setting_name, 'search_' ) !== false ) {
+					$ap_search_setting_name = str_replace( 'search_', 'article_search_', $setting_name );
+				}
+
+				// sync Article Page Search setting from new config if the value is set in the new config
+				if ( ! empty( $ap_search_setting_name ) && isset( $new_config[$setting_name] ) ) {
+					$new_config[$ap_search_setting_name] = $new_config[$setting_name];
+					// still sync Article Page Search setting from origin config if the value is not set in the new config
+				} else if ( ! empty( $ap_search_setting_name ) && isset( $orig_setting_value ) ) {
+					$new_config[$ap_search_setting_name] = $orig_setting_value;
+				}
+			}
+		}
+
+		return $new_config;
 	}
 }

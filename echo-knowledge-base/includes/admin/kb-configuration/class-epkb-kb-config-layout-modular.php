@@ -335,7 +335,7 @@ class EPKB_KB_Config_Layout_Modular {
 		        'default'     => 'classic'
 	        ),
 
-	        // MODULE: ARTICLE LIST
+	        // MODULE: FEATURED ARTICLES SIDEBAR
 	        'ml_articles_list_nof_articles_displayed'               => array(
 		        'label'       => esc_html__( 'Number of Articles Listed', 'echo-knowledge-base' ),
 		        'name'        => 'ml_articles_list_nof_articles_displayed',
@@ -402,6 +402,14 @@ class EPKB_KB_Config_Layout_Modular {
 			        'right'     => esc_html__( 'Right', 'echo-knowledge-base' ),
 		        ),
 		        'default'     => 'center',
+	        ),
+	        'ml_articles_list_title_color'                          => array(
+		        'label'       => esc_html__( 'Title Color', 'echo-knowledge-base' ),
+		        'name'        => 'ml_articles_list_title_color',
+		        'max'         => '7',
+		        'min'         => '7',
+		        'type'        => EPKB_Input_Filter::COLOR_HEX,
+		        'default'     => '#000000'
 	        ),
 	        'ml_articles_list_popular_articles_msg'                 => array(
 		        'label'       => esc_html__( 'Popular Articles Title', 'echo-knowledge-base' ),

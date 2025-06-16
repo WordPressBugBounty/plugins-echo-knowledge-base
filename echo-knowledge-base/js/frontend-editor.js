@@ -3,7 +3,7 @@ jQuery( document ).ready( function( $ ) {
 	let frontendEditor = $( '#epkb-fe__editor' );
 
 	// show the frontend editor if one of KB pages is found in the page
-	if ($('#epkb-modular-main-page-container').length > 0 || $('#eckb-article-page-container-v2').length > 0 || $('#eckb-archive-page-container').length > 0) {
+	if ( frontendEditor.length > 0 ) {
 		if ( frontendEditor.data( 'display-frontend-editor-closed' ) ) {
 			$('#epkb-fe__toggle').show();
 		} else {
@@ -195,6 +195,7 @@ jQuery( document ).ready( function( $ ) {
 	 ************************************************************************************************/
 
 	let ignore_setting_update_flag = false;
+	let current_layout_name = frontendEditor.find( '[name="kb_main_page_layout"]:checked' ).val();
 
 	// Update page with a new preview - call backend
 	function updatePreview( event, ui ) {
@@ -268,7 +269,8 @@ jQuery( document ).ready( function( $ ) {
 				settings_row_number: actualPosition ? actualPosition : 'none',
 				taxonomy: taxonomy,
 				term_id: term_id,
-				kb_post_id: post_id
+				kb_post_id: post_id,
+				layout_name: current_layout_name
 			},
 			success: function( response ) {
 
@@ -295,10 +297,12 @@ jQuery( document ).ready( function( $ ) {
 					// Update layout module settings if required (on layout change)
 					if ( response.data.layout_settings_html && response.data.layout_settings_html.length > 0 ) {
 
+						// Update current layout value fter layout switch (is needed to properly adjust settings on server side for layout change)
+						current_layout_name = frontendEditor.find( '[name="kb_main_page_layout"]:checked' ).val();
+
 						// Update module settings HTML
 						let $settings_list = $( '.epkb-fe__feature-settings[data-feature="' + feature_name + '"] .epkb-fe__settings-list' );
 						$settings_list.html( response.data.layout_settings_html );
-
 
 						// If the feature is located in the first row, then it already contains all settings boxes (the first row is used as a storage for all optional settings boxes - Settings UI inherited functionality)
 						if ( parseInt( actualPosition ) === 1 ) {
@@ -405,6 +409,23 @@ jQuery( document ).ready( function( $ ) {
 				// Article Page
 				if ( kb_page_type === 'article-page' ) {
 
+					// Update search settings (after applying design preset or sync with Main Page search)
+					if ( response.data.search_design_settings ) {
+
+						// TODO: currently is working for sync with Main Page search toggle - re-use for presets later
+						// Unselect preset name to prevent continuing preset applying on further settings changes
+						// $feature_settings_container.find( '[name="categories_articles_preset"]' ).val( 'current' ).trigger( 'change' );
+
+						// Apply preset settings for UI controls
+						for ( const [ key, value ] of Object.entries( response.data.search_design_settings ) ) {
+							const $target_field = frontendEditor.find( '[name="' + key + '"]' );
+							apply_preset_setting( frontendEditor, $target_field, key, value );
+						}
+
+						// Re-apply current settings for the buttons, radio buttons, and other controls of the module
+						$( '#epkb-fe__editor .epkb-fe__settings-list .eckb-conditional-setting-input' ).trigger( 'click' );
+					}
+
 					// Update HTML of the entire Article content or specific sections
 					if ( response.data.preview_html ) {
 
@@ -457,6 +478,22 @@ jQuery( document ).ready( function( $ ) {
 
 				// Archive Page
 				if ( kb_page_type === 'archive-page' ) {
+
+					// Update design settings (after applying design preset)
+					if ( response.data.archive_design_settings ) {
+
+						// Unselect preset name to prevent continuing preset applying on further settings changes
+						$feature_settings_container.find( '[name="archive_content_sub_categories_display_mode"]' ).prop( 'checked', false );
+
+						// Apply preset settings for UI controls
+						for ( const [ key, value ] of Object.entries( response.data.archive_design_settings ) ) {
+							const $target_field = $feature_settings_container.find( '[name="' + key + '"]' );
+							apply_preset_setting( $feature_settings_container, $target_field, key, value );
+						}
+
+						// Re-apply current settings for the buttons, radio buttons, and other controls of the module
+						$( '#epkb-fe__editor .epkb-fe__feature-settings[data-feature="' + feature_name + '"] .epkb-fe__settings-list .eckb-conditional-setting-input' ).trigger( 'click' );
+					}
 
 					// Update HTML of the entire Archive content
 					if ( response.data.preview_html ) {
@@ -523,6 +560,10 @@ jQuery( document ).ready( function( $ ) {
 		// Radio buttons
 		if ( $target_setting_field.attr( 'type' ) === 'radio' ) {
 			$feature_settings_container.find( '[name="' + key + '"][value="' + value + '"]' ).prop( 'checked', true );
+
+		// Checkbox
+		} else if ( $target_setting_field.attr( 'type' ) === 'checkbox' ) {
+			$feature_settings_container.find( '[name="' + key + '"]' ).prop( 'checked', value === 'on' );
 
 		// Color-picker
 		} else if ( $target_setting_field.hasClass( 'wp-color-picker' ) ) {
@@ -1318,7 +1359,8 @@ jQuery( document ).ready( function( $ ) {
 		rows().each( ( idx, el ) => {
 			const $row = $( el );
 			const position = parseInt( $row.attr( 'data-position' ) );
-			const prev_position = parseInt( $row.attr( 'id' ).replaceAll( 'epkb-ml__row-', '' ) );
+			let prev_position = $row.attr( 'id' );
+			prev_position = prev_position ? parseInt( prev_position.replaceAll( 'epkb-ml__row-', '' ) ) : position;
 			const $other_row = $( '#epkb-ml__row-' + position );
 
 			if ( position === prev_position ) {
@@ -1509,7 +1551,7 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	// 2. move-up / move-down ----------------------------------------------
-	$(document).on('change', '.epkb-input[value="move-up"], .epkb-input[value="move-down"]', function () {
+	$( document ).on('change', '.epkb-input[value="move-up"], .epkb-input[value="move-down"]', function () {
 		const $btn      = $(this);
 		const dir       = $btn.val() === 'move-up' ? -1 : +1;
 		const slug      = $btn.closest('.epkb-row-module-position').data('module');
@@ -1598,9 +1640,9 @@ jQuery( document ).ready( function( $ ) {
 	epkb_get_page_params();
 
 	//Resize Visual Helper Collect Page Parameters
-	$(window).on('resize', function() {
+	$( window ).on('resize', function() {
 		epkb_get_page_params();
-	})
+	} );
 
 	function epkb_loading_Dialog( displayType, message, parent_container ){
 
@@ -1654,7 +1696,7 @@ jQuery( document ).ready( function( $ ) {
 		$('body').append( epkb_admin_notification( $title, $message, 'success' ) );
 	}
 
-	// Re-open edit if the page was reloaded programmatically on setting change
+	// Re-open editor if the page was reloaded programmatically on setting change
 	( function() {
 		const current_url = new URL( window.location.href );
 		const feature_name = current_url.searchParams.get( 'epkb_fe_reopen_feature' )
@@ -1667,7 +1709,23 @@ jQuery( document ).ready( function( $ ) {
 			// Remove temporary parameter to avoid re-opening editor on manual page reloading
 			current_url.searchParams.delete( 'epkb_fe_reopen_feature' );
 
-			// Clear history to avoid resending the form on manual page relaoding
+			// Clear history to avoid resending the form on manual page reloading
+			history.replaceState( null, '', current_url.pathname + current_url.search + current_url.hash );
+		}
+	} )();
+
+	// Open editor if it is opened by 'epkb_load_editor' action (when FE is hidden by settings it is still possible to open the FE by admin link or direct link in Settings UI)
+	( function() {
+		const current_url = new URL( window.location.href );
+		const action = current_url.searchParams.get( 'action' )
+		if ( action && action.length > 0 && action === 'epkb_load_editor' ) {
+
+			open_frontend_editor( null );
+
+			// Prevent re-opening FE on page reload
+			current_url.searchParams.delete( 'action' );
+
+			// Clear history to avoid resending reopening the FE on manual page reloading
 			history.replaceState( null, '', current_url.pathname + current_url.search + current_url.hash );
 		}
 	} )();

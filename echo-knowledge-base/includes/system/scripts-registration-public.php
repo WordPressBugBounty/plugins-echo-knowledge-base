@@ -96,7 +96,7 @@ function epkb_load_public_resources() {
 			$current_css_file_slug = 'tp-frontend-layout';
         }
 
-		add_action( 'admin_bar_menu', 'epkb_add_admin_bar_fe_archive_page_button', 1000 );
+		add_action( 'admin_bar_menu', 'epkb_add_admin_bar_fe_page_button', 1000 );
 
 	// CASE: KB Main Page
 	} else if ( EPKB_Utilities::is_kb_main_page() ) {
@@ -142,7 +142,7 @@ function epkb_load_public_resources() {
 	} else if ( ! empty( $post ) && EPKB_KB_Handler::is_kb_post_type( $post->post_type ) ) {
 		$current_css_file_slug = 'ap-frontend-layout';
 		$has_vital_css_flag = true;
-		add_action( 'admin_bar_menu', 'epkb_add_admin_bar_fe_article_page_button', 1000 );
+		add_action( 'admin_bar_menu', 'epkb_add_admin_bar_fe_page_button', 1000 );
 	}
 
 	if ( ! empty( $current_css_file_slug ) ) {
@@ -654,17 +654,16 @@ function epkb_add_admin_bar_fe_main_page_button( WP_Admin_Bar $wp_admin_bar ) {
 		return;
 	}
 
-	// do not load FE Editor link if page doesn't have KB shortcode
-	if ( ! EPKB_KB_Handler::get_shortcode_custom( $found_post->post_content ) ) {
+	// do not load FE Editor link if page doesn't have KB shortcode and doesn't have KB blocks
+	if ( ! EPKB_KB_Handler::get_shortcode_custom( $found_post->post_content ) && ! EPKB_Block_Utilities::current_post_has_kb_blocks() ) {
 		return;
 	}
 
 	// show the Frontend Editor link on KB Main Page, KB Article Pages, Category Archive Pages
-	$url = add_query_arg( ['action' => 'epkb_load_editor'] );
-	$wp_admin_bar->add_menu( array('id' => 'epkb-edit-mode-button', 'title' => esc_html__( 'Open KB Frontend Editor', 'echo-knowledge-base' ), 'href' => $url) );
+	epkb_add_admin_bar_fe_page_button( $wp_admin_bar );
 }
 
-function epkb_add_admin_bar_fe_article_page_button( WP_Admin_Bar $wp_admin_bar ) {
+function epkb_add_admin_bar_fe_page_button( WP_Admin_Bar $wp_admin_bar ) {
 
 	if ( !EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
 		return;
@@ -672,16 +671,10 @@ function epkb_add_admin_bar_fe_article_page_button( WP_Admin_Bar $wp_admin_bar )
 	
 	// show the Frontend Editor link on KB Main Page, KB Article Pages, Category Archive Pages
 	$url = add_query_arg( ['action' => 'epkb_load_editor'] );
-	$wp_admin_bar->add_menu( array('id' => 'epkb-edit-mode-button', 'title' => esc_html__( 'Open KB Frontend Editor', 'echo-knowledge-base' ), 'href' => $url) );
-}
-
-function epkb_add_admin_bar_fe_archive_page_button( WP_Admin_Bar $wp_admin_bar ) {
-
-	if ( !EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
-		return;
-	}
-	
-	// show the Frontend Editor link on KB Main Page, KB Article Pages, Category Archive Pages
-	$url = add_query_arg( ['action' => 'epkb_load_editor'] );
-	$wp_admin_bar->add_menu( array('id' => 'epkb-edit-mode-button', 'title' => esc_html__( 'Open KB Frontend Editor', 'echo-knowledge-base' ), 'href' => $url) );
+	$label = '<span class="ab-label">' . esc_html__( 'Open KB Frontend Editor', 'echo-knowledge-base' ) . '</span>';
+	$wp_admin_bar->add_menu( array(
+	    'id'    => 'epkb-edit-mode-button',
+	    'title' => $label,
+	    'href'  => $url
+	) );
 }
