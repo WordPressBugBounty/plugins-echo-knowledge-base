@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 14.0.3
+ * Version: 14.1.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '14.0.3';
+	public static $version = '14.1.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -190,7 +190,7 @@ final class Echo_Knowledge_Base {
 			new EPKB_Need_Help_Features();
 			return;
 		} else if ( in_array( $action, array( 'epkb_wpml_enable', 'eckb_update_category_slug_parameter', 'eckb_update_tag_slug_parameter', 'epkb_preload_fonts','epkb_enable_legacy_open_ai',
-												'epkb_load_resource_links_icons', 'epkb_load_general_typography', 'epkb_save_access_control', 'epkb_apply_settings_changes' ) ) ) {
+												'epkb_load_resource_links_icons', 'epkb_load_general_typography', 'epkb_save_access_control', 'epkb_apply_settings_changes', 'epkb_save_tools_settings' ) ) ) {
 			new EPKB_KB_Config_Controller();
 			return;
 		} else if ( in_array( $action, array( 'epkb_reset_sequence', 'epkb_show_sequence' ) ) ) {

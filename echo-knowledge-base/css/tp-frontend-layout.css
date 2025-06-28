@@ -758,6 +758,7 @@
 }
 #eckb-archive-page-container #epkb-ml__module-search .epkb-ml-search-box__btn .epkb-ml-search-box__text {
   word-break: keep-all;
+  white-space: nowrap;
   font-family: inherit !important;
   text-align: center;
 }

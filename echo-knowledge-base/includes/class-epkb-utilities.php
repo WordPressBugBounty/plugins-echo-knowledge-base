@@ -2320,6 +2320,21 @@ class EPKB_Utilities {
 		return $post_type_object->label;
 	}
 
+	public static function is_article_search_synced( $kb_config ) {
+
+		if ( ! isset( $kb_config['article_search_sync_toggle'] ) ) {
+			return false;
+		}
+
+		// if KB Main Page uses blocks then do not sync articles
+		if ( EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config ) ) {
+			return false;
+		}
+
+		// if KB Main Page uses shortcode then sync articles
+		return $kb_config['article_search_sync_toggle'] == 'on';
+	}
+
 	/**
 	 * Removes comments, spaces, and line breaks form CSS. Limits single line length. Removes empty rule blocks.
 	 *

@@ -83,7 +83,8 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 		// Archive page styling is controlled by the Main Page
 		// For Sidebar Layout the Article Page search is controlled by the search settings on the Main Page.
 		$is_sidebar_layout = $kb_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT;
-		$layout = ( EPKB_Utilities::is_kb_main_page() || is_archive() || $is_sidebar_layout ) ? $kb_config['ml_search_layout'] : $kb_config['ml_article_search_layout'];
+		$is_archive_using_main_page_search = is_archive() && $kb_config['archive_search_source'] == 'main_page';
+		$layout = ( EPKB_Utilities::is_kb_main_page() || $is_archive_using_main_page_search || $is_sidebar_layout ) ? $kb_config['ml_search_layout'] : $kb_config['ml_article_search_layout'];
 
 		$search_handler = new EPKB_ML_Search( $kb_config );
 

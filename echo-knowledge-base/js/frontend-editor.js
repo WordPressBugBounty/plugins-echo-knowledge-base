@@ -88,6 +88,9 @@ jQuery( document ).ready( function( $ ) {
 		$( '.epkb-fe__feature-settings' ).removeClass( 'epkb-fe__feature-settings--active' );
 		$tab.addClass( 'epkb-fe__feature-settings--active' );
 
+		// Refresh conditional settings
+		$tab.find( '.eckb-conditional-setting-input' ).trigger( 'click' );
+
 		// Ensure custom dropdowns in the newly shown tab reflect the current select values
 		$tab.find('.epkb-input-custom-dropdown select').each(function() {
 			update_custom_dropdown_display($(this));
@@ -197,6 +200,9 @@ jQuery( document ).ready( function( $ ) {
 	let ignore_setting_update_flag = false;
 	let current_layout_name = frontendEditor.find( '[name="kb_main_page_layout"]:checked' ).val();
 
+	// Design preset may change settings which are not present in the FE UI - apply full design settings + FE UI settings until user saved settings
+	let selected_search_preset = 'current';
+
 	// Update page with a new preview - call backend
 	function updatePreview( event, ui ) {
 
@@ -246,9 +252,15 @@ jQuery( document ).ready( function( $ ) {
 		// Show loading dialog based on page type
 		if ( kb_page_type === 'main-page' ) {
 			epkb_loading_Dialog( 'show', '', $( '#epkb-modular-main-page-container, #eckb-kb-template' ) );
+			if ( $feature_settings_container.find( '[name="advanced_search_mp_presets"]:checked' ).val() !== 'current' ) {
+				selected_search_preset = $feature_settings_container.find( '[name="advanced_search_mp_presets"]:checked' ).val();
+			}
 		} else if ( kb_page_type === 'article-page' ) {
 			// For article page, always show loading on the main article container
 			epkb_loading_Dialog( 'show', '', $( '#eckb-article-page-container-v2' ) );
+			if ( $feature_settings_container.find( '[name="advanced_search_ap_presets"]:checked' ).val() !== 'current' ) {
+				selected_search_preset = $feature_settings_container.find( '[name="advanced_search_ap_presets"]:checked' ).val();
+			}
 		} else if ( kb_page_type === 'archive-page' ) {
 			epkb_loading_Dialog( 'show', '', $( '#eckb-archive-page-container' ) );
 		}
@@ -270,7 +282,8 @@ jQuery( document ).ready( function( $ ) {
 				taxonomy: taxonomy,
 				term_id: term_id,
 				kb_post_id: post_id,
-				layout_name: current_layout_name
+				layout_name: current_layout_name,
+				selected_search_preset: selected_search_preset
 			},
 			success: function( response ) {
 
@@ -382,6 +395,22 @@ jQuery( document ).ready( function( $ ) {
 						$( '#epkb-fe__editor .epkb-fe__settings-list .eckb-conditional-setting-input' ).trigger( 'click' );
 					}
 
+					// Update search settings (after applying design preset)
+					if ( response.data.search_design_settings ) {
+
+						// Apply preset settings for UI controls
+						for ( const [ key, value ] of Object.entries( response.data.search_design_settings ) ) {
+							const $target_field = frontendEditor.find( '[name="' + key + '"]' );
+							apply_preset_setting( frontendEditor, $target_field, key, value );
+						}
+
+						// Unselect preset name to prevent continuing preset applying on further settings changes
+						$feature_settings_container.find( '[name="advanced_search_mp_presets"][value="current"]' ).prop( 'checked', true );
+
+						// Re-apply current settings for the buttons, radio buttons, and other controls of the module
+						$( '#epkb-fe__editor .epkb-fe__settings-list .eckb-conditional-setting-input' ).trigger( 'click' );
+					}
+
 					// Inline styles - changed every time a module setting was changed
 					if ( response.data.inline_styles ) {
 						$( '[id^="epkb-mp-frontend-modular-"][id$="-layout-inline-css"]' ).html( response.data.inline_styles );
@@ -412,15 +441,14 @@ jQuery( document ).ready( function( $ ) {
 					// Update search settings (after applying design preset or sync with Main Page search)
 					if ( response.data.search_design_settings ) {
 
-						// TODO: currently is working for sync with Main Page search toggle - re-use for presets later
-						// Unselect preset name to prevent continuing preset applying on further settings changes
-						// $feature_settings_container.find( '[name="categories_articles_preset"]' ).val( 'current' ).trigger( 'change' );
-
 						// Apply preset settings for UI controls
 						for ( const [ key, value ] of Object.entries( response.data.search_design_settings ) ) {
 							const $target_field = frontendEditor.find( '[name="' + key + '"]' );
 							apply_preset_setting( frontendEditor, $target_field, key, value );
 						}
+
+						// Unselect preset name to prevent continuing preset applying on further settings changes
+						$feature_settings_container.find( '[name="advanced_search_ap_presets"][value="current"]' ).prop( 'checked', true );
 
 						// Re-apply current settings for the buttons, radio buttons, and other controls of the module
 						$( '#epkb-fe__editor .epkb-fe__settings-list .eckb-conditional-setting-input' ).trigger( 'click' );
@@ -693,7 +721,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	// Preview Update: on single setting change except colors
-	$( document ).on( 'change', '#epkb-fe__editor input, #epkb-fe__editor select', function( event, is_triggered_programmatically ) {
+	$( document ).on( 'change', '#epkb-fe__editor input, #epkb-fe__editor select, #epkb-fe__editor textarea', function( event, is_triggered_programmatically ) {
 
 		// Programmatically triggered 'change' event from Settings UI inherited functionality passes the additional argument to let other handlers know it was triggered by script
 		if ( is_triggered_programmatically ) {
@@ -1082,7 +1110,8 @@ jQuery( document ).ready( function( $ ) {
 				action: save_action,
 				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
 				kb_id: frontendEditor.data( 'kbid' ),
-				new_kb_config: kb_config
+				new_kb_config: kb_config,
+				selected_search_preset: selected_search_preset
 			},
 			success: function( response ) {
 
@@ -1104,6 +1133,9 @@ jQuery( document ).ready( function( $ ) {
 
 				// Remove loading dialog
 				epkb_loading_Dialog( 'remove', '', loadingContainer );
+
+				// Reset stored search design preset
+				selected_search_preset = 'current';
 			},
 			error: function( jqXHR, textStatus, errorThrown ) {
 				// Handle AJAX request errors with detailed information
@@ -1119,7 +1151,7 @@ jQuery( document ).ready( function( $ ) {
 		// collect settings
 		let kb_config = {};
 
-		frontendEditor.find( 'input, select' ).each( function(){
+		frontendEditor.find( 'input, select, textarea' ).each( function(){
 
 			// ignore inputs with empty name and pro feature fields (an ad field)
 			if ( ! $( this ).attr( 'name' ) || ! $( this ).attr( 'name' ).length

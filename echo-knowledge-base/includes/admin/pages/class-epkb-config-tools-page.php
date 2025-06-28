@@ -18,6 +18,20 @@ class EPKB_Config_Tools_Page {
 
 		$secondary_tabs = [];
 
+		// SECONDARY VIEW: SETTINGS
+		$secondary_tabs[] = array(
+
+			// Shared
+			'list_key'              => 'settings',
+
+			// Secondary Panel Item
+			'label_text'            => esc_html__( 'Settings', 'echo-knowledge-base' ),
+
+			// Secondary Boxes List
+			'list_top_actions_html' => '',
+			'boxes_list'            =>  self::get_settings_boxes( $kb_config )
+		);
+
 		// SECONDARY VIEW: MENU ACCESS CONTROL
 		$secondary_tabs[] = array(
 
@@ -28,7 +42,8 @@ class EPKB_Config_Tools_Page {
 			'label_text'            => esc_html__( 'Menu Access Control', 'echo-knowledge-base' ),
 
 			// Secondary Boxes List
-			'list_top_actions_html' => '<div class="epkb-admin__list-actions-row">' . EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save Access Control Settings', 'echo-knowledge-base' ), 'epkb_save_access_control', 'epkb-admin__save-access-control-btn', '', true, true, 'epkb-success-btn' ) . '</div>',
+			'list_top_actions_html' => '<div class="epkb-admin__list-actions-row">' . EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save Access Control Settings', 'echo-knowledge-base' ),
+											 'epkb_save_access_control', 'epkb-admin__save-access-control-btn', '', true, true, 'epkb-success-btn' ) . '</div>',
 			'boxes_list'            => EPKB_Admin_UI_Access::get_access_boxes( $kb_config ),
 		);
 
@@ -131,7 +146,7 @@ class EPKB_Config_Tools_Page {
 		<!-- Import Config -->
 		<div class="epkb-admin-info-box">
 			<div class="epkb-admin-info-box__body">
-				<p><?php esc_html_e( 'This import will overwrite the following KB settings:', 'echo-knowledge-base' ); ?></p>				<?php 
+				<p><?php esc_html_e( 'This import will overwrite the following KB settings:', 'echo-knowledge-base' ); ?></p>				<?php
 				self::display_import_export_info(); ?>
 				<form class="epkb-import-kbs"
 					  action="<?php echo esc_url( add_query_arg( array( 'active_kb_tab' => $kb_config['id'], 'active_action_tab' => 'import' ) ) . '#tools__import' ); ?>"
@@ -943,6 +958,86 @@ class EPKB_Config_Tools_Page {
 	}
 
 	/**
+	 * Get boxes for Tools panel, Settings subpanel
+	 *
+	 * @param $kb_config
+	 * @return array
+	 */
+	private static function get_settings_boxes( $kb_config ) {
+
+		$boxes_config = [];
+		$specs = EPKB_KB_Config_Specs::get_fields_specification( $kb_config['id'] );
+
+		ob_start(); ?>
+
+		<form id="epkb-tools-settings-form" class="epkb-tools-settings-form epkb-admin__kb__form epkb-admin__form" method="POST">			<?php
+			// Box: KB Main Page - Page Title
+			EPKB_HTML_Elements::checkbox_toggle( [
+				'id' => 'template_main_page_display_title',
+				'name' => 'template_main_page_display_title',
+				'text' => $specs['template_main_page_display_title']['label'],
+				'textLoc' => 'left',
+				'checked' => ( !empty( $kb_config['template_main_page_display_title'] ) && $kb_config['template_main_page_display_title'] == 'on' ),
+			] );
+
+			// Box: Typography
+			$font_family = empty( $kb_config['general_typography']['font-family'] ) ? 'Inherit' : $kb_config['general_typography']['font-family']; ?>
+			<div class="epkb-input-group epkb-general_typography-loader-wrap">
+				<label class="" for="general_typography_font_family"><?php esc_html_e( 'Font Family', 'echo-knowledge-base' ); ?></label>
+				<div class="input_container">
+					<div class="epkb-general_typography-current"><?php echo esc_html( $font_family ); ?></div>
+					<button type="button" class="epkb-primary-btn epkb-general_typography-loader" data-selected="<?php echo esc_attr( $kb_config['general_typography']['font-family'] ); ?>"><?php esc_html_e( 'Choose Font Family', 'echo-knowledge-base' ); ?></button>
+				</div>
+			</div>
+			<input type="hidden" id="general_typography_font_family" name="general_typography[font-family]" value="<?php echo esc_attr( $kb_config['general_typography']['font-family'] ); ?>">			<?php
+
+			// Box: KB Nickname
+			EPKB_HTML_Elements::text( [
+				'name' => 'kb_name',
+				'specs' => 'kb_name',
+				'value' => $kb_config['kb_name'],
+				'input_size' => 'large',
+				'label' => esc_html__( 'KB Nickname', 'echo-knowledge-base' ),
+				'desc' => esc_html__( 'Give your Knowledge Base a name. The name will show when we refer to it or when you see a list of post types.', 'echo-knowledge-base' ),
+			] );
+
+			// Box: Frontend Editor Toggle Visibility
+			EPKB_HTML_Elements::checkbox_toggle( [
+				'id' => 'frontend_editor_switch_visibility_toggle',
+				'name' => 'frontend_editor_switch_visibility_toggle',
+				'text' => $specs['frontend_editor_switch_visibility_toggle']['label'],
+				'textLoc' => 'left',
+				'checked' => ( !empty( $kb_config['frontend_editor_switch_visibility_toggle'] ) && $kb_config['frontend_editor_switch_visibility_toggle'] == 'on' ),
+			] );
+
+			// Box: Custom CSS
+			EPKB_HTML_Elements::textarea( [
+				'name' => 'epkb_ml_custom_css',
+				'label' => esc_html__( 'Custom CSS for Main Page', 'echo-knowledge-base' ),
+				'value' => $kb_config['modular_main_page_custom_css_toggle'] == 'off' ? '' : EPKB_Utilities::get_kb_option( $kb_config['id'], 'epkb_ml_custom_css', '' ),
+				'main_tag' => 'div',
+				'input_group_class' => 'epkb-input-group epkb-admin__textarea-field',
+				'setting_help_text' => [[
+					'help_desc' => esc_html__( 'Please use this custom box for minor css modifications. if your css requirements are more advanced or involve a significant amount of code, please utilize your child theme instead.', 'echo-knowledge-base' ),
+					'is_bottom_text' => true,
+				]],
+			] );
+
+			EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save Settings', 'echo-knowledge-base' ), 'epkb_save_tools_settings', '', '', false, '', 'epkb-success-btn' ); ?>
+		</form><?php
+		
+		$form_html = ob_get_clean();
+		
+		// Return a single box containing the entire form
+		$boxes_config[] = array(
+			'title' => esc_html__( 'General Settings', 'echo-knowledge-base' ),
+			'html' => $form_html,
+		);
+
+		return $boxes_config;
+	}
+
+	/*
 	 * Get boxes for Tools panel, Debug subpanel
 	 *
 	 * @param $kb_config

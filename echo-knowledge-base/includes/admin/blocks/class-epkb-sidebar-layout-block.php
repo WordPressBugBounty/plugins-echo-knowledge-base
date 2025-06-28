@@ -73,7 +73,7 @@ final class EPKB_Sidebar_Layout_Block extends EPKB_Abstract_Block {
 		global $eckb_is_kb_main_page;
 		$eckb_is_kb_main_page = true;
 
-		// EL.AY Sidebar settings are controlled by Configuration -> Article Page
+		// Sidebar settings are controlled by Configuration -> Article Page
 		$block_attributes = self::apply_article_sidebar_settings( $block_attributes );
 
 		$handler = new EPKB_Modular_Main_Page();
@@ -94,7 +94,7 @@ final class EPKB_Sidebar_Layout_Block extends EPKB_Abstract_Block {
 		// for sidebar component priority the block attributes represent separate UI settings, while legacy KB code is using combined setting
 		// $block_attributes['article_sidebar_component_priority'] = EPKB_KB_Config_Controller::convert_ui_data_to_article_sidebar_component_priority( $block_attributes );
 
-		// hardcoded settings (se do not show them in non-block Settings UI, let's do the same for block UI)
+		// hardcoded settings (we do not show them in non-block Settings UI, let's do the same for block UI)
 		$block_attributes['article-left-sidebar-match'] = 'off';
 		$block_attributes['article-right-sidebar-match'] = 'off';
 		$block_attributes['article-mobile-break-point-v2'] = '768';
@@ -159,7 +159,7 @@ final class EPKB_Sidebar_Layout_Block extends EPKB_Abstract_Block {
 	}
 
 	/**
-	 * EL.AY Sidebar settings are controlled by Configuration -> Article Page
+	 * Sidebar settings are controlled by Frontend Editor/UI Configuration for Article Page
 	 * @param $block_attributes
 	 * @return mixed
 	 */
@@ -218,6 +218,7 @@ final class EPKB_Sidebar_Layout_Block extends EPKB_Abstract_Block {
 		$block_attributes['sidebar_main_page_intro_text'] = isset( $kb_config['sidebar_main_page_intro_text'] ) ? $kb_config['sidebar_main_page_intro_text'] : '';
 		$block_attributes['article_list_spacing'] = $kb_config['article_list_spacing'];
 		$block_attributes['elay_article_icon'] = isset( $kb_config['elay_sidebar_article_icon'] ) ? $kb_config['elay_sidebar_article_icon'] : '';
+		$block_attributes['navigation_sidebar_sticky_toggle'] = $kb_config['navigation_sidebar_sticky_toggle'];
 
 		// not controlled by UI
 		$block_attributes['sidebar_article_underline'] = $kb_config['sidebar_category_empty_msg'];

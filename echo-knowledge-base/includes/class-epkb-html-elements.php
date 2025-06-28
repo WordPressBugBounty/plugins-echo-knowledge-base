@@ -105,10 +105,7 @@ class EPKB_HTML_Elements {
 				}
 				if ( $args['is_pro_feature_ad'] ) {
 					self::display_pro_setting_tag_pro_feature_ad( $args['pro_tooltip_args'] );
-				}
-				if ( ! empty( $args['desc'] ) ) {
-					echo wp_kses_post( $args['desc'] );
-				}   ?>
+				}				   ?>
 			</label>
 
 			<div class="input_container <?php echo esc_attr( $args['input_class'] ); ?>">
@@ -121,8 +118,12 @@ class EPKB_HTML_Elements {
 			           placeholder="<?php echo esc_attr( $args['placeholder'] ); ?>"						<?php
 			           echo $data_escaped . esc_attr( $readonly . $required );						?>
 			           maxlength="<?php echo esc_attr( $args['max'] ); ?>"
-			    >
+			    >				<?php
+				if ( ! empty( $args['desc'] ) ) {
+					echo '<div class="epkb-input-desc">'. wp_kses_post( $args['desc'] ) .'</div>';
+				} ?>
 			</div>
+
 
 		</div>		<?php
 
@@ -451,7 +452,7 @@ class EPKB_HTML_Elements {
 		$args = self::add_defaults( $args );
 		$args = self::get_specs_info( $args );
 
-		$group_data_escaped = self::get_data_escaped( $args['group_data'] ); 
+		$group_data_escaped = self::get_data_escaped( $args['group_data'] );
 
 		if ( $args['return_html'] ) {
 			ob_start();
@@ -653,8 +654,8 @@ class EPKB_HTML_Elements {
 				} ?>
             </span>
 
-			<div class="epkb-radio-buttons-container <?php echo esc_attr( $args['input_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>">              <?php 
-			
+			<div class="epkb-radio-buttons-container <?php echo esc_attr( $args['input_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>">              <?php
+
 				foreach( $args['options'] as $key => $label ) {	?>
 
 					<div class="epkb-input-container">

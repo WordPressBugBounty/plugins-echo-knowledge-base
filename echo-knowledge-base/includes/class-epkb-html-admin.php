@@ -321,6 +321,23 @@ class EPKB_HTML_Admin {
 			return;
 		}
 
+		// CASE: Horizontal boxes
+		if ( ! empty( $page_view['horizontal_boxes'] ) && is_array( $page_view['horizontal_boxes'] ) ) {	?>
+			<!-- Admin Form -->
+			<div class="epkb-setting-box-container epkb-setting-box-container--horizontal"><?php
+				foreach ( $page_view['horizontal_boxes']['boxes'] as $box_config ) {
+					self::display_settings_horizontal_box( $box_config );
+				}	?>
+			</div>	<?php
+			if ( ! empty( $page_view['horizontal_boxes']['bottom_html'] ) ) {	?>
+				<div class="epkb-setting-box-container epkb-setting-box-container--bottom">
+					<div class="epkb-admin__boxes-list__box epkb-admin__boxes-list__box--bottom">	<?php
+						echo wp_kses_post( $page_view['horizontal_boxes']['bottom_html'] );	?>
+					</div>
+				</div>	<?php
+			}
+		}
+
 		// CASE: Boxes List for view without secondary tabs - make sure we can handle empty boxes list correctly
 		if ( ! empty( $page_view['boxes_list'] ) && is_array( $page_view['boxes_list'] ) ) {    ?>
 
@@ -494,18 +511,8 @@ class EPKB_HTML_Admin {
 										echo wp_kses( $content['body_html'], EPKB_Utilities::get_admin_ui_extended_html_tags() );   ?>
 									</div>
 								</div>  <?php
-							}
-
-							// Optional link to Labels tab
-							if ( $sub_tab['bottom_labels_link'] ) {
-								self::display_bottom_labels_link();
-							}   ?>
+							}    ?>
 						</div>  <?php
-					}
-
-					// Optional link to Labels tab
-					if ( $tab['bottom_labels_link'] ) {
-						self::display_bottom_labels_link();
 					}	?>
 				</div>  <?php
 			}   ?>
@@ -601,7 +608,6 @@ class EPKB_HTML_Admin {
 			'active'    		=> false,
 			'contents'  		=> [],
 			'sub_tabs'  		=> [],
-			'bottom_labels_link' => false,
 		);
 
 		// Default content for admin form tab
@@ -624,7 +630,6 @@ class EPKB_HTML_Admin {
 			'active'        => false,
 			'contents'      => [],
 			'class'         => '',
-			'bottom_labels_link' => false,
 		);
 
 		// Set default view
@@ -771,24 +776,6 @@ class EPKB_HTML_Admin {
 	}
 
 	/**
-	 * Display content box with link to Labels tab
-	 * @return void
-	 */
-	private static function display_bottom_labels_link() {	?>
-		<div class="epkb-admin__form-tab-content epkb-admin__form-tab-content--bottom-labels-link">
-			<div class="epkb-admin__form-tab-content-title">    <?php
-				esc_html_e( 'Labels', 'echo-knowledge-base' );	?>
-			</div>
-			<div class="epkb-admin__form-tab-content-desc">
-				<span><?php esc_html_e( 'Labels are the text elements displayed on your website\'s front end, such as button names and custom headings. ' .
-											'Customize these labels to match your website\'s language and tone.', 'echo-knowledge-base' ); ?></span>
-				<a class="epkb-admin__form-tab-content-desc__link" href="#" target="_blank"><?php esc_html_e( 'click here to customize the labels', 'echo-knowledge-base' ); ?></a>
-			</div>
-			<div class="epkb-admin__form-tab-content-body"></div>
-		</div>	<?php
-	}
-
-	/**
 	 * Display warning about missing main page
 	 *
 	 * @param $kb_config
@@ -890,18 +877,14 @@ class EPKB_HTML_Admin {
 	/**
 	 * Show FE offer with link to FE editor and link to disable the offer
 	 * @param $kb_config
-	 * @param bool $is_first_time
 	 * @return false|string
 	 */
-	public static function display_fe_offer_box( $kb_config, $is_first_time = false ) {
+	public static function display_fe_button_above_main_page_settings( $kb_config ) {
 		ob_start();	?>
-		<div class="epkb-admin__fe-offer-box<?php echo $is_first_time ? '' : ' ' . 'epkb-admin__fe-offer-box--top'; ?>">
+		<div class="epkb-admin__fe-offer-box epkb-admin__fe-offer-box--top">
 			<p><?php esc_html_e( 'Use our Frontend Editor to change KB Main Page settings.', 'echo-knowledge-base' ); ?></p>
 			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '?action=epkb_load_editor'; ?>"
-								target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.	<?php
-			if ( $is_first_time ) {	?>
-				<p><a class="epkb-fe__fe-offer-disable" href="#" target="_blank" class="" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Edit Settings Without Frontend Editor', 'echo-knowledge-base' ); ?></a></p>	<?php
-			}	?>
+				target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.
 		</div>	<?php
 		return ob_get_clean();
 	}
@@ -909,23 +892,19 @@ class EPKB_HTML_Admin {
 	/**
 	 * Show FE offer with link to FE editor for Article Page
 	 * @param $kb_config
-	 * @param bool $is_first_time
 	 * @return false|string
 	 */
-	public static function display_fe_offer_box_article_page( $kb_config, $is_first_time = false ) {
+	public static function display_fe_button_above_article_page_settings( $kb_config ) {
 		$first_kb_article_url = EPKB_KB_Handler::get_first_kb_article_url( $kb_config );
 		if ( empty( $first_kb_article_url ) ) {
 			return '';
 		}
 		
 		ob_start();	?>
-		<div class="epkb-admin__fe-offer-box<?php echo $is_first_time ? '' : ' ' . 'epkb-admin__fe-offer-box--top'; ?>">
+		<div class="epkb-admin__fe-offer-box epkb-admin__fe-offer-box--top">
 			<p><?php esc_html_e( 'Use our Frontend Editor to change KB Article Page settings.', 'echo-knowledge-base' ); ?></p>
-			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_article_url( $kb_config ) ) . '?epkb_fe_reopen_feature=article-page-settings'; ?>" 
-								target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.	<?php
-			if ( $is_first_time ) {	?>
-				<p><a class="epkb-fe__fe-offer-disable" href="#" target="_blank" class="" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Edit Settings Without Frontend Editor', 'echo-knowledge-base' ); ?></a></p>	<?php
-			}	?>
+			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_article_url( $kb_config ) ) . '?epkb_fe_reopen_feature=none'; ?>"
+				target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.
 		</div>	<?php
 		return ob_get_clean();
 	}
@@ -933,24 +912,25 @@ class EPKB_HTML_Admin {
 	/**
 	 * Show FE offer with link to FE editor for Archive Page
 	 * @param $kb_config
-	 * @param bool $is_first_time
 	 * @return false|string
 	 */
-	public static function display_fe_offer_box_archive_page( $kb_config, $is_first_time = false ) {
+	public static function display_fe_button_above_archive_page_settings( $kb_config ) {
+
+		$is_theme_archive_page_template = $kb_config['template_for_archive_page'] == 'current_theme_templates';
+		if ( $is_theme_archive_page_template ) {
+			return '';
+		}	
+
 		$first_kb_archive_url = EPKB_KB_Handler::get_kb_category_with_most_articles_url( $kb_config );
 		if ( empty( $first_kb_archive_url ) ) {
-			return '';
+			return '';	
 		}
 		
 		ob_start();	?>
-		<div class="epkb-admin__fe-offer-box<?php echo $is_first_time ? '' : ' ' . 'epkb-admin__fe-offer-box--top'; ?>">
+		<div class="epkb-admin__fe-offer-box epkb-admin__fe-offer-box--top">
 			<p><?php esc_html_e( 'Use our Frontend Editor to change Category Archive Page settings.', 'echo-knowledge-base' ); ?></p>
 			<a href="<?php echo esc_url( $first_kb_archive_url ) . '?epkb_fe_reopen_feature=archive-page-settings'; ?>"
-					 target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.	<?php
-				
-			if ( $is_first_time ) {	?>
-				<p><a class="epkb-fe__fe-offer-disable" href="#" target="_blank" class="" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Edit Settings Without Frontend Editor', 'echo-knowledge-base' ); ?></a></p>	<?php
-			}	?>
+					 target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.
 		</div>	<?php
 		return ob_get_clean();
 	}
@@ -992,5 +972,37 @@ class EPKB_HTML_Admin {
 			) );	?>
 		</div>	<?php
 		return ob_get_clean();
+	}
+
+	/**
+	 * Display boxes in single row
+	 * @param $box_config
+	 * @return void
+	 */
+	private static function display_settings_horizontal_box( $box_config ) {	?>
+		<div class="epkb-admin__boxes-list__box epkb-admin__boxes-list__box--link-box">			<?php
+			if ( isset( $box_config['icon'] ) ) { ?>
+				<div class="epkb-admin__boxes-list__box__icon-container">
+					<img src="<?php echo esc_url( $box_config['icon'] ); ?>" class="epkb-admin__boxes-list__box__icon">
+				</div>			<?php
+			} ?>
+			<h4 class="epkb-admin__boxes-list__box__header"><?php echo esc_html( $box_config['title'] ); ?></h4>
+			<div class="epkb-admin__boxes-list__box__body">
+				<div class="epkb-admin__boxes-list__box__content">	<?php
+					if ( !empty( $box_config['button_text'] ) && isset( $box_config['button_url'] ) ) {	?>
+						<a class="epkb-primary-btn" href="<?php echo esc_url( $box_config['button_url'] ); ?>" target="_blank"><?php echo esc_html( $box_config['button_text'] ); ?></a>	<?php
+					}
+					if ( !empty( $box_config['is_open_settings_link'] ) ) {	?>
+						<a class="epkb-primary-btn epkb-admin__form-tab-settings-link" href="#tools__settings"><?php esc_html_e( 'View Settings', 'echo-knowledge-base' ); ?></a>	<?php
+					}
+					if ( !empty( $box_config['message'] ) ) {	?>
+						<p class="epkb-admin__boxes-list__box__message"><?php echo esc_html( $box_config['message'] ); ?></p> 	<?php
+						if ( !empty( $box_config['message_link_text'] ) && !empty( $box_config['message_link'] ) ) {	?>
+							<a href="<?php echo esc_url( $box_config['message_link'] ); ?>" target="_blank"><?php echo esc_html( $box_config['message_link_text'] ); ?></a>	<?php
+						}
+					}	?>
+				</div>
+			</div>
+		</div>	<?php
 	}
 }

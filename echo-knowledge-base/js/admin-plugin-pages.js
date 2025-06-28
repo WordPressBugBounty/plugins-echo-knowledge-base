@@ -647,6 +647,39 @@ jQuery(document).ready(function($) {
 
 			return false;
 		});
+
+		// Tools Settings Form handler
+		$( '#epkb-tools-settings-form' ).on( 'submit', function( e ) {
+			e.preventDefault();
+			
+			let form = $( this );
+			let postData = {
+				action: 'epkb_save_tools_settings',
+				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+				epkb_kb_id: $( '#epkb-list-of-kbs' ).val(),
+				template_main_page_display_title: form.find( 'input[name="template_main_page_display_title"]' ).is(':checked') ? 'on' : 'off',
+				
+				'general_typography[font-family]': form.find( '.epkb-input-custom-dropdown__option--selected' ).attr( 'data-value' ),
+				kb_name: form.find( 'input[name="kb_name"]' ).val(),
+				frontend_editor_switch_visibility_toggle: form.find( 'input[name="frontend_editor_switch_visibility_toggle"]' ).is(':checked') ? 'on' : 'off',
+				epkb_ml_custom_css: form.find( 'textarea[name="epkb_ml_custom_css"]' ).val()
+			};
+
+			epkb_send_ajax( postData, function( response ) {
+				$( '.eckb-top-notice-message' ).remove();
+				if ( typeof response.message !== 'undefined' ) {
+					$( 'body' ).append( response.message );
+				}
+			} );
+
+			return false;
+		});
+		
+		// Update typography font family hidden input when font is selected
+		$( document ).on( 'epkb-font-selected', function( e, fontFamily ) {
+			$( '#general_typography_font_family' ).val( fontFamily );
+			$( '.epkb-general_typography-current' ).text( fontFamily );
+		});
 	})();
 
 	/*************************************************************************************************
@@ -2311,14 +2344,28 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
-	// Link to Settings tab inside admin notices when the same page is currently open
-	$( document ).on( 'click', '.epkb-notification-box-top__body__desc a', function( e ) {
+	// Link to Settings tab (either inside admin notices when the same page is currently open or link inside settings to open target settings tab and sub-tab)
+	$( document ).on( 'click', '.epkb-notification-box-top__body__desc a, .epkb-admin__boxes-list__box--link-box a.epkb-admin__form-tab-settings-link', function( e ) {
 		let location_parts = $( this ).attr( 'href' ).split( '#' );
 		if ( location_parts.length > 1 ) {
-			let target_top_tab = $( '.epkb-admin__top-panel__item--' + location_parts[1] );
+			const tabs_path = location_parts[1].split( '__' );
+
+			// Top tab
+			let target_top_tab = $( '.epkb-admin__top-panel__item--' + tabs_path[0] );
 			if ( target_top_tab.length ) {
 				e.preventDefault();
+
+				// Prepare secondary tab first if defined in the link path (to prevent conflict with usual sub-tabs switch)
+				if ( tabs_path.length > 1 ) {
+					$( '#epkb-admin__secondary-panel__' + tabs_path[0] + ' .epkb-admin__secondary-panel__item' ).removeClass( 'epkb-admin__secondary-panel__item--active' );
+					$( '#epkb-admin__secondary-panel__' + tabs_path[0] + ' .epkb-admin__secondary-panel__item[data-target="' + tabs_path[0] + '__' + tabs_path[1] + '"]' ).addClass( 'epkb-admin__secondary-panel__item--active' );
+					$( '#epkb-admin__boxes-list__' + tabs_path[0] + ' .epkb-setting-box__list' ).removeClass( 'epkb-setting-box__list--active' );
+					$( '#epkb-setting-box__list-tools__' + tabs_path[0] + '__' + tabs_path[1] ).addClass( 'epkb-setting-box__list--active' );
+					$( '#epkb-setting-box__list-tools__settings' ).addClass( 'epkb-setting-box__list--active' );
+				}
+
 				target_top_tab.trigger( 'click' );
+
 				return false;
 			}
 		}
@@ -3337,36 +3384,4 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		$( '[data-target="faq-shortcodes"]' ).trigger( 'click' );
 	} );
-
-	// FE offer box: return to Settings UI link
-	$( document ).on( 'click', '.epkb-fe__fe-offer-disable', function ( event ) {
-
-		// Disable default <a> tag behavior
-		event.preventDefault();
-
-		const action_url = new URL( window.location.href );
-		action_url.searchParams.set( 'is_fe_offer_declined', 'on' );
-
-		let $disable_fe_offer_form = $( '<form method="post" action="' + action_url + '" style="display: none !important;">' +
-			'<input type="hidden" name="is_fe_offer_declined" value="on">' +
-			'</form>' );
-		$( 'body' ).append( $disable_fe_offer_form );
-
-		// Wait until the form is rendered before trigger its jQuery 'submit' event
-		setTimeout( function() {
-			$disable_fe_offer_form.trigger( 'submit' );
-		}, 100 );
-
-		// Disable default <a> tag behavior
-		return false;
-	} );
-
-	// Clear page history to prevent re-sending form which disabled the FE offer
-	( function() {
-		const current_url = new URL( window.location.href );
-		if ( current_url.searchParams.get( 'is_fe_offer_declined' ) ) {
-			current_url.searchParams.delete( 'is_fe_offer_declined' );
-			history.replaceState( null, '', current_url.pathname + current_url.search + current_url.hash );
-		}
-	} )();
 });

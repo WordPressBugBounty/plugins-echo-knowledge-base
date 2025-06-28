@@ -257,6 +257,12 @@ class EPKB_KB_Config_Specs {
 				'default'     => '',
 				'mandatory'   => false,
 			),
+			'faqs_publicly_queryable' => array(
+				'label'       => esc_html__( 'FAQs Public Search', 'echo-knowledge-base' ),
+				'name'        => 'faqs_publicly_queryable',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'on',
+			),
 			'kb_main_page_category_link' => array(      // NOT USED; done in Grid Layout
 				'label'       => esc_html__( 'Main Page Category Link', 'echo-knowledge-base' ),
 				'name'        => 'kb_main_page_category_link',
@@ -1147,6 +1153,16 @@ class EPKB_KB_Config_Specs {
 				'name'        => 'archive_search_toggle',
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'on'
+			),
+			'archive_search_source' => array(
+				'label'       => esc_html__( 'Use Search Settings From', 'echo-knowledge-base' ),
+				'name'        => 'archive_search_source',
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'main_page'    => esc_html__( 'KB Main Page', 'echo-knowledge-base' ),
+					'article_page' => esc_html__( 'KB Article Page', 'echo-knowledge-base' )
+				),
+				'default'     => 'main_page'
 			),
 			'archive_header_desktop_width' => array(
 				'label'       => esc_html__( 'Search Width', 'echo-knowledge-base' ),
@@ -2808,7 +2824,7 @@ class EPKB_KB_Config_Specs {
 			),
 			'article_content_toolbar_text_hover_color'      => array(
 				'label'       => esc_html__( 'Text Hover', 'echo-knowledge-base' ),
-				'name'        => 'article_content_toolbar_hover_color',
+				'name'        => 'article_content_toolbar_text_hover_color',
 				'type'        => EPKB_Input_Filter::COLOR_HEX,
 				'default'     => '#000000'
 			),

@@ -284,7 +284,12 @@ jQuery(document).ready(function($) {
 	 ********************************************************************/
 
 	//Detect if a div is inside a list item then it's a sub category
-	$( document ).on( 'click', '.epkb-section-body .epkb-category-level-2-3', function(){
+	$( document ).on( 'click keydown', '.epkb-section-body .epkb-category-level-2-3', function( e ){
+		
+		// Only proceed if it's a click or Enter key
+		if ( e.type !== 'click' && e.keyCode !== 13 ) {
+			return;
+		}
 
 		$( this ).parent().children( 'ul' ).toggleClass( 'active' );
 		let categoryId = $( this ).parent().children( 'ul' ).data( 'list-id' );
@@ -315,7 +320,12 @@ jQuery(document).ready(function($) {
 	 * Toggle between open icon and close icon
 	 * Accessibility: Set aria-expand values
 	 */
-	$( document ).on('click', '#epkb-content-container .epkb-section-body .epkb-category-level-2-3:not(.epkb-category-focused)', function (){
+	$( document ).on('click keydown', '#epkb-content-container .epkb-section-body .epkb-category-level-2-3:not(.epkb-category-focused)', function ( e ){
+		
+		// Only proceed if it's a click or Enter key
+		if ( e.type !== 'click' && e.keyCode !== 13 ) {
+			return;
+		}
 
 		let $icon = $(this).find('.epkb-category-level-2-3__cat-icon');
 
@@ -1510,4 +1520,44 @@ jQuery(document).ready(function($) {
 	});
 
 	$( window ).trigger( 'resize' );
+
+	
+	function enableFocusDebug() {
+
+		// Track last key was shift+tab
+		window._lastKeyWasShiftTab = false;
+	
+		window.handleKeydown = function (e) {
+			if ( e.key === 'Tab' ) {
+				window._lastKeyWasShiftTab = e.shiftKey;
+			}
+		};
+	
+		window.handleFocusin = function (e) {
+			console.log( 'Focused element:', e.target );
+	
+			// Clear previous outlines
+			document.querySelectorAll('[style*="outline"]').forEach(function (el) {
+				el.style.outline = '';
+			});
+	
+			// Apply red for Tab, blue for Shift+Tab
+			e.target.style.outline = window._lastKeyWasShiftTab ? '3px solid blue' : '3px solid red';
+		};
+	
+		// Now it's safe to remove
+		document.removeEventListener( 'keydown', window.handleKeydown );
+		document.removeEventListener( 'focusin', window.handleFocusin );
+	
+		document.querySelectorAll('[style*="outline"]').forEach(function (el) {
+			el.style.outline = '';
+		});
+	
+		document.addEventListener( 'keydown', window.handleKeydown );
+		document.addEventListener( 'focusin', window.handleFocusin );
+	}
+
+	//enableFocusDebug();
+
 });
+

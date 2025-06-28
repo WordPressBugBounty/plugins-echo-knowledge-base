@@ -861,15 +861,15 @@ class EPKB_KB_Handler {
 	public static function get_kb_category_with_most_articles_url( $kb_config ) {
 
 		$articles_seq_data = EPKB_Utilities::get_kb_option( $kb_config['id'], EPKB_Articles_Admin::KB_ARTICLES_SEQ_META, array(), true );
-		if ( empty($articles_seq_data) ) {
+		if ( empty( $articles_seq_data ) ) {
 			return '';
 		}
 
 		$articles_seq_data_length = array_map('sizeof', $articles_seq_data);
-		arsort($articles_seq_data_length);
+		arsort( $articles_seq_data_length );
 		$category_id = key($articles_seq_data_length); // the top is the category with most articles
 
-		if ( empty($category_id) ) {
+		if ( empty( $category_id ) ) {
 			return '';
 		}
 

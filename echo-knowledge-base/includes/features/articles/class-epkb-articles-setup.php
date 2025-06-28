@@ -111,8 +111,8 @@ class EPKB_Articles_Setup {
 				    $search_keywords = isset( $_GET['keywords'] ) ? sanitize_text_field( urldecode( $_GET['keywords'] ) ) : '';
 				    echo $search_keywords ? 'data-search-text="' . esc_attr( $search_keywords ) . '"' : '';		?>>                        <?php
 
-					self::article_section( 'eckb-article-content-header' . $v2_suffix, array( 'id' => $kb_config['id'], 'config' => $kb_config, 'article' => $article ) );
-					self::article_section( 'eckb-article-content-body', array( 'id' => $kb_config['id'], 'config' => $kb_config, 'article' => $article, 'content' => $content ) );
+					self::article_section( 'eckb-article-content-header' . $v2_suffix, array( 'id' => $kb_config['id'], 'config' => $kb_config, 'article' => $article, 'tabindex' => 0 ) );
+					self::article_section( 'eckb-article-content-body', array( 'id' => $kb_config['id'], 'config' => $kb_config, 'article' => $article, 'content' => $content, 'tabindex' => 0 ) );
 					self::article_section( 'eckb-article-content-footer', array( 'id' => $kb_config['id'], 'config' => $kb_config, 'article' => $article ) );                        ?>
 
 		        </article><!-- /#eckb-article-content -->     <?php
@@ -1259,7 +1259,8 @@ class EPKB_Articles_Setup {
 	 */
 	public static function article_section( $hook, $args ) {
 
-	   echo '<div id="' . esc_attr( $hook ) . '">';
+	
+	   echo '<div id="' . esc_attr( $hook ) . '"'.' ' . ( isset( $args['tabindex'] ) ? 'tabindex="' . esc_attr( $args['tabindex'] ) . '"' : '' ) . '>';
 
 		if ( self::is_hook_enabled( $args['config'], $hook ) ) {
 			do_action( $hook, $args );

@@ -2147,7 +2147,7 @@
 @media only screen and (max-width: 768px) {
   #epkb-ml__module-categories-articles #epkb-ml-drill-down-layout {
     width: 90% !important;
-    margin: 20px 0 0 0;
+    margin: 20px auto 0 auto;
   }
   #epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-top-categories-button--2-col .epkb-ml-top__cat-container {
     width: 100%;

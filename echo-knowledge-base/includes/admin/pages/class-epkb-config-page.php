@@ -154,6 +154,16 @@ class EPKB_Config_Page {
 	 */
 	private function get_regular_views_config( $wizard_kb_config ) {
 
+		// allow user to edit settings on backend instead of FE on demand
+		$is_legacy_settings = EPKB_Core_Utilities::is_kb_flag_set( 'is_legacy_settings' );
+		if ( ! $is_legacy_settings && EPKB_Utilities::post( 'epkb_legacy_settings' ) == 'on' ) {
+			EPKB_Core_Utilities::add_kb_flag( 'is_legacy_settings' );
+			$is_legacy_settings = true;
+		}
+
+		// TODO: use for test only to reset the flag - do not forget to remove the 'epkb_legacy_settings=on' from current URL in browser to see he change
+		// EPKB_Core_Utilities::remove_kb_flag( 'is_legacy_settings' );
+
 		/**
 		 * PRIMARY TAB: Settings
 		 */
@@ -167,7 +177,8 @@ class EPKB_Config_Page {
 			// Top Panel Item
 			'label_text' => esc_html__( 'Settings', 'echo-knowledge-base' ),
 			'icon_class' => 'epkbfa epkbfa-cogs',
-			'vertical_tabs' => $settings_tab_handler->get_vertical_tabs_config()
+			'vertical_tabs' => $is_legacy_settings ? $settings_tab_handler->get_vertical_tabs_config() : [],
+			'horizontal_boxes' => $is_legacy_settings ? [] : $this->get_new_settings_boxes_config(),
 		);
 
 		/**
@@ -1203,5 +1214,59 @@ class EPKB_Config_Page {
 		</div>		<?php
 
 		return ob_get_clean();
+	}
+
+	private function get_new_settings_boxes_config() {
+
+		$kb_main_page_button_text = esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' );
+		$kb_main_page_button_url = esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config ) ) . '?action=epkb_load_editor';
+		$kb_main_page_has_kb_blocks = EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $this->kb_config );
+		if ( $kb_main_page_has_kb_blocks ) {
+			$kb_main_page_button_text = esc_html__( 'Edit Main Page', 'echo-knowledge-base' );
+			$kb_main_page_button_url =  esc_url( get_edit_post_link( EPKB_KB_Handler::get_first_kb_main_page_id( $this->kb_config ) ) ) ;
+		}
+
+		$first_kb_main_page_url = EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config );
+		$first_kb_article_url = EPKB_KB_Handler::get_first_kb_article_url( $this->kb_config );
+
+		$new_settings_links_config = array(
+			'boxes' => array(
+				array(
+					'title' => esc_html__( 'Main Page', 'echo-knowledge-base' ),
+					'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-main-page.png',
+					'button_url' => empty( $first_kb_main_page_url ) ? '' : esc_url( $first_kb_main_page_url ) . '?epkb_fe_reopen_feature=none',
+					'button_text' => empty( $first_kb_main_page_url ) ? '' : esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' ),
+					'message' => empty( $first_kb_main_page_url ) ? esc_html__( 'Main Page is not set', 'echo-knowledge-base' ) : '',
+				),
+				array(
+					'title' => esc_html__( 'Article Page', 'echo-knowledge-base' ),
+					'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-article-page.png',
+					'button_url' => empty( $first_kb_article_url ) ? '' : esc_url( $first_kb_article_url ) . '?epkb_fe_reopen_feature=none',
+					'button_text' => empty( $first_kb_article_url ) ? '' : esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' ),
+					'message' => empty( $first_kb_article_url ) ? esc_html__( 'Add an Article to configure the Article Page', 'echo-knowledge-base' ) : '',
+				),
+			),
+			'bottom_html' => '<a href="' . esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $this->kb_config['id'] . '&page=epkb-kb-configuration&epkb_legacy_settings=on#settings' ) ) . '" class="epkb-enable-backend-settings">' . esc_html__( 'Manually Edit Settings on Backend', 'echo-knowledge-base' ) . '</a>'
+		);
+
+		$is_theme_archive_page_template = $this->kb_config['template_for_archive_page'] == 'current_theme_templates';
+		$first_kb_archive_url = EPKB_KB_Handler::get_kb_category_with_most_articles_url( $this->kb_config );
+		$new_settings_links_config['boxes'][] = array(
+			'title' => __( 'Category Page', 'echo-knowledge-base' ),
+			'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-category-page.png',
+			'button_url' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : esc_url( $first_kb_archive_url ) . '?epkb_fe_reopen_feature=archive-page-settings',
+			'button_text' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : __( 'Open Frontend Editor	', 'echo-knowledge-base' ),
+			'message' => empty( $first_kb_archive_url ) ? esc_html__( 'Add an article with a category to configure the Archive Page', 'echo-knowledge-base' ) : ( $is_theme_archive_page_template ? __( 'Open Your Theme Editor or Switch to KB Template', 'echo-knowledge-base' ) : '' ),
+			'message_link_text' => empty( $first_kb_archive_url ) ? '' : esc_html__( 'Learn More', 'echo-knowledge-base' ),
+			'message_link' => 'https://www.echoknowledgebase.com/documentation/category-archive-page/',
+		);
+
+		$new_settings_links_config['boxes'][] = array(
+			'title' => esc_html__( 'Other Settings', 'echo-knowledge-base' ),
+			'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-other-settings.png',
+			'is_open_settings_link' => true,
+		);
+
+		return $new_settings_links_config;
 	}
 }

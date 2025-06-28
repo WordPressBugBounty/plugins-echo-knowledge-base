@@ -21,7 +21,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 
 		<div id="epkb-ml-basic-layout" role="main" aria-labelledby="epkb-ml-basic-layout" class="epkb-layout-container epkb-css-full-reset epkb-basic-template">
 			<div id="epkb-content-container">
-				<div class="epkb-section-container">	<?php
+				<div class="epkb-section-container">	<?php // TODO: add setting for effect ( example:epkb-categories-articles--effect-2 )
 					$this->display_main_page_content(); ?>
 				</div>
 			</div>
@@ -75,7 +75,8 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 
 		$class_section_head_escaped = $this->get_css_class( 'section-head' . ( $this->kb_config[ 'section_divider' ] == 'on' ? ', section_divider' : '' ) );
 		$style_section_head_escaped = $this->get_inline_style(
-					'border-bottom-width:: section_divider_thickness,
+			  		'--section-head-bg:: section_head_background_color,
+					border-bottom-width:: section_divider_thickness,
 					background-color:: section_head_background_color, ' .
 					'border-top-left-radius:: section_border_radius,
 					border-top-right-radius:: section_border_radius,

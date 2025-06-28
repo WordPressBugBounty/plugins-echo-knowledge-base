@@ -73,13 +73,13 @@ class EPKB_Frontend_Editor {
 			}
 		}
 
-		// if modular is off do not enable editor on KB Main Page
+		// do not enable FE for KB Main Page if modular is off
 		if ( $kb_page_type == 'main-page' && $kb_config['modular_main_page_toggle'] != 'on' ) {
 			return;
 		}
 
-		// do not enable for old category archive page v2
-		if ( $kb_page_type == 'archive-page' && $kb_config['archive_page_v3_toggle'] != 'on' ) {
+		// do not enable FE on Archive Pages for old category archive page v2 or if KB template is current
+		if ( $kb_page_type == 'archive-page' && ( $kb_config['archive_page_v3_toggle'] != 'on' || $kb_config['template_for_archive_page'] == 'current_theme_templates' ) ) {
 			return;
 		}
 
@@ -87,6 +87,12 @@ class EPKB_Frontend_Editor {
 		/* done in JS if ( EPKB_Editor_Utilities::is_page_builder_enabled() ) {
 		    return;
 		} */
+
+		// if FE is opened then in Settings UI do not show legacy settings UI
+		$is_legacy_settings = EPKB_Core_Utilities::is_kb_flag_set( 'is_legacy_settings' );
+		if ( $is_legacy_settings ) {
+			EPKB_Core_Utilities::remove_kb_flag( 'is_legacy_settings' );
+		}	
 
 	    // when FE preview is updated via the entire page reload without saving settings (for some of the settings controls need to reload the entire page)
 	    $kb_config = self::fe_preview_config( $kb_config );
@@ -302,9 +308,11 @@ class EPKB_Frontend_Editor {
 		<h4><?php echo esc_html__( 'Page width', 'echo-knowledge-base' ) . ': '; ?><span class='js-epkb-mp-width'>-</span></h4> <?php
 
 		if ( ! empty( $search_row_width_key ) ) {	?>
-			<ul>
-				<h5><?php echo esc_html__( 'Search Box', 'echo-knowledge-base' ); ?></h5>
 
+			<h5><?php echo esc_html__( 'Search Box', 'echo-knowledge-base' ); ?></h5>
+
+			<ul>
+				
 				<li><?php echo esc_html__( 'Actual width', 'echo-knowledge-base' ) . ': '; ?><span class="js-epkb-mp-search-width">-</span></li>
 
 				<li><?php echo esc_html__( 'KB setting for Search Width', 'echo-knowledge-base' ) . ': ' . esc_attr( $kb_config[ $search_row_width_key ] . $kb_config[ $search_row_width_key . '_units' ] ) .
@@ -526,6 +534,12 @@ class EPKB_Frontend_Editor {
 
 		$epkb_frontend_editor_preview = true;
 
+		// if FE is opened then in Settings UI do not show legacy settings UI
+		$is_legacy_settings = EPKB_Core_Utilities::is_kb_flag_set( 'is_legacy_settings' );
+		if ( $is_legacy_settings ) {
+			EPKB_Core_Utilities::remove_kb_flag( 'is_legacy_settings' );
+		}
+
 		$feature_name = EPKB_Utilities::post( 'feature_name' );
 		$kb_page_type = EPKB_Utilities::post( 'kb_page_type' );
 		$setting_name = EPKB_Utilities::post( 'setting_name' );
@@ -536,6 +550,7 @@ class EPKB_Frontend_Editor {
 		$config = self::merge_new_and_old_kb_config( false );
 		$orig_config = $config['orig_config'];
 		$new_config = $config['new_config'];
+		$unmerged_new_config = $config['unmerged_new_config'];
 
 		ob_start();
 		$faqs_design_settings = array();
@@ -551,7 +566,30 @@ class EPKB_Frontend_Editor {
 
 				EPKB_Editor_Utilities::initialize_advanced_search_box();
 
-				$new_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'mp' );
+				// after the design preset applied, it is reset to 'current' to avoid continuing applying and enable further settings change - use this to distinct request for design change and request for settings change after applying design preset
+				$is_design_preset_change = $new_config['advanced_search_mp_presets'] != 'current';
+
+				// design preset may change settings which are not present in the FE UI - apply full design settings + FE UI settings until user save settings
+				$selected_search_preset = EPKB_Utilities::post( 'selected_search_preset', 'current' );
+
+				// to apply preset add-on needs preset name in config
+				$new_config['advanced_search_mp_presets'] = $selected_search_preset;
+
+				// search preset settings
+				$search_design_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'mp' );
+				$search_design_settings = EPKB_Utilities::diff_two_dimentional_arrays( $search_design_config, $new_config );
+				if ( ! empty( $search_design_settings ) ) {
+					if ( $is_design_preset_change ) {
+						$new_config = $search_design_config;
+
+					} else {
+						// user changes have higher priority if the changes applying after design preset is already applied in one of previous requests
+						$new_config = array_merge( $search_design_config, $unmerged_new_config );
+
+						// do not change UI settings programmatically here as the preset is already applied and currently the user is changing settings on unsaved preset
+						$search_design_settings = [];
+					}
+				}
 
 				EPKB_Modular_Main_Page::search_module( $new_config );
 				break;
@@ -643,11 +681,37 @@ class EPKB_Frontend_Editor {
 				// Initialize Advanced Search if needed
 				EPKB_Editor_Utilities::initialize_advanced_search_box( false );
 
+				// sync Article Page Search setting with Main Page Search settings
 				$synced_new_config = EPKB_Core_Utilities::sync_article_page_search_with_main_page_search( $new_config, $orig_config );
 				$search_design_settings = EPKB_Utilities::diff_two_dimentional_arrays( $synced_new_config, $new_config );
-				$new_config = empty( $search_design_settings ) ? $new_config : $synced_new_config;
+				$new_config = $synced_new_config;
 
-				$new_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'ap' );
+				// apply design settings only if sync toggle is 'off'
+				if ( empty( $new_config['article_search_sync_toggle'] ) || $new_config['article_search_sync_toggle'] == 'off' ) {
+
+					// after the design preset applied, it is reset to 'current' to avoid continuing applying and enable further settings change - use this to distinct request for design change and request for settings change after applying design preset
+					$is_design_preset_change = $new_config['advanced_search_ap_presets'] != 'current';
+
+					// design preset may change settings which are not present in the FE UI - apply full design settings + FE UI settings until user save settings
+					$selected_search_preset = EPKB_Utilities::post( 'selected_search_preset', 'current' );
+
+					// to apply preset add-on needs preset name in config
+					$new_config['advanced_search_ap_presets'] = $selected_search_preset;
+
+					$search_design_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'ap' );
+					$search_preset_diff = EPKB_Utilities::diff_two_dimentional_arrays( $search_design_config, $new_config );
+					if ( ! empty( $search_preset_diff ) ) {
+						if ( $is_design_preset_change ) {
+							$new_config = $search_design_config;
+							$search_design_settings = array_merge( $search_design_settings, $search_preset_diff );
+
+						} else {
+							// user changes have higher priority if the changes applying after design preset is already applied in one of previous requests
+							$new_config = array_merge( $search_design_config, $unmerged_new_config );
+						}
+					}
+
+				}
 
 				global $eckb_is_kb_main_page;
 				$eckb_is_kb_main_page = false;
@@ -817,9 +881,16 @@ class EPKB_Frontend_Editor {
 
         EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
 
+	    // if FE is opened then in Settings UI do not show legacy settings UI
+	    $is_legacy_settings = EPKB_Core_Utilities::is_kb_flag_set( 'is_legacy_settings' );
+	    if ( $is_legacy_settings ) {
+		    EPKB_Core_Utilities::remove_kb_flag( 'is_legacy_settings' );
+	    }
+
 	    $config = self::merge_new_and_old_kb_config();
 	    $orig_config = $config['orig_config'];
 	    $new_config = $config['new_config'];
+		$unmerged_new_config = $config['unmerged_new_config'];
 		$kb_id = $config['kb_id'];
 
 		// at this point FE already applied all layout change adjustments - by syncing configs layout we ensure the adjustments will not be triggered again (and thus will not rewrite user changes) during the update
@@ -828,6 +899,24 @@ class EPKB_Frontend_Editor {
 		// Check if the user has permission to save settings
 		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid Knowledge Base ID', 'echo-knowledge-base' ) ) );
+		}
+
+		// after the design preset applied, it is reset to 'current' to avoid continuing applying and enable further settings change - use this to distinct request for design change and request for settings change after applying design preset
+		$is_design_preset_change = $new_config['advanced_search_mp_presets'] != 'current';
+
+		// design preset may change settings which are not present in the FE UI - apply full design settings + FE UI settings until user save settings
+		$selected_search_preset = EPKB_Utilities::post( 'selected_search_preset', 'current' );
+
+		// to apply preset add-on needs preset name in config
+		$new_config['advanced_search_mp_presets'] = $selected_search_preset;
+
+		// search preset settings
+		$search_design_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'mp' );
+		$search_design_settings = EPKB_Utilities::diff_two_dimentional_arrays( $search_design_config, $new_config );
+
+		// user changes have higher priority if the changes applying after design preset is already applied in one of previous requests
+		if ( ! empty( $search_design_settings ) ) {
+			$new_config = $is_design_preset_change ? $search_design_config : array_merge( $search_design_config, $unmerged_new_config );
 		}
 
 		// Update the main page configuration
@@ -847,14 +936,46 @@ class EPKB_Frontend_Editor {
 
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
 
+		// if FE is opened then in Settings UI do not show legacy settings UI
+		$is_legacy_settings = EPKB_Core_Utilities::is_kb_flag_set( 'is_legacy_settings' );
+		if ( $is_legacy_settings ) {
+			EPKB_Core_Utilities::remove_kb_flag( 'is_legacy_settings' );
+		}
+
 		$config = self::merge_new_and_old_kb_config( false );
 		$orig_config = $config['orig_config'];
 		$new_config = $config['new_config'];
+		$unmerged_new_config = $config['unmerged_new_config'];
 		$kb_id = $config['kb_id'];
 
 		// Check if the user has permission to save settings
 		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid Knowledge Base ID', 'echo-knowledge-base' ) ) );
+		}
+
+		// after the design preset applied, it is reset to 'current' to avoid continuing applying and enable further settings change - use this to distinct request for design change and request for settings change after applying design preset
+		$is_design_preset_change = $new_config['advanced_search_ap_presets'] != 'current';
+
+		// design preset may change settings which are not present in the FE UI - apply full design settings + FE UI settings until user save settings
+		$selected_search_preset = EPKB_Utilities::post( 'selected_search_preset', 'current' );
+
+		// to apply preset add-on needs preset name in config
+		$new_config['advanced_search_ap_presets'] = $selected_search_preset;
+
+		// sync Article Page Search setting with Main Page Search settings
+		$new_config = EPKB_Core_Utilities::sync_article_page_search_with_main_page_search( $new_config, $orig_config );
+
+		// apply design settings only if sync toggle is 'off'
+		if ( empty( $new_config['article_search_sync_toggle'] ) || $new_config['article_search_sync_toggle'] == 'off' ) {
+
+			// search preset settings
+			$search_design_config = EPKB_Core_Utilities::advanced_search_presets( $new_config, $orig_config, 'ap' );
+			$search_design_diff = EPKB_Utilities::diff_two_dimentional_arrays( $search_design_config, $new_config );
+
+			// user changes have higher priority if the changes applying after design preset is already applied in one of previous requests
+			if ( ! empty( $search_design_diff ) ) {
+				$new_config = $is_design_preset_change ? $search_design_config : array_merge( $search_design_config, $unmerged_new_config );
+			}
 		}
 
 		// Update the article page configuration
@@ -897,6 +1018,12 @@ class EPKB_Frontend_Editor {
 	public function save_archive_page_settings() {
 
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
+
+		// if FE is opened then in Settings UI do not show legacy settings UI
+		$is_legacy_settings = EPKB_Core_Utilities::is_kb_flag_set( 'is_legacy_settings' );
+		if ( $is_legacy_settings ) {
+			EPKB_Core_Utilities::remove_kb_flag( 'is_legacy_settings' );
+		}
 
 		$config = self::merge_new_and_old_kb_config( false );
 		$orig_config = $config['orig_config'];
@@ -956,9 +1083,11 @@ class EPKB_Frontend_Editor {
 			$new_config = self::update_module_position( $new_config );
 		}
 
+		$unmerged_new_config = $new_config;
+
 		$new_config = array_merge( $orig_config, $new_config );
 
-		$cached_kb_config = [ 'kb_id' => $kb_id, 'orig_config' => $orig_config, 'new_config' => $new_config ];
+		$cached_kb_config = [ 'kb_id' => $kb_id, 'orig_config' => $orig_config, 'new_config' => $new_config, 'unmerged_new_config' => $unmerged_new_config ];
 
 		return $cached_kb_config;
 	}
@@ -1049,24 +1178,17 @@ class EPKB_Frontend_Editor {
 		$config_page = new EPKB_Config_Settings_Page( $new_config, true );
 		$features_config = $config_page->get_vertical_tabs_config();
 
-		switch ( $kb_page_type ) {
-			case 'main-page':
-				$current_css_file_slug = self::get_current_css_slug( $new_config );
+		if ( $kb_page_type == 'main-page' ) {
+			$current_css_file_slug = self::get_current_css_slug( $new_config );
 
-				// FUTURE TODO 'advanced_search_mp_presets', 'faq_preset_name', layout presets
+			// only on layout switch
+			if ( $setting_name == 'kb_main_page_layout' && 'epkb-' . $current_css_file_slug . '-css' != $prev_link_css_id ) {
+				// shared settings for all layouts are assigned to the first feature container (required by inherited logic from Settings UI)
+				$layout_settings_html_temp = self::display_feature_settings( $features_config['main-page']['sub_tabs'][0]['contents'], true );
 
-				// only on layout switch
-				if ( $setting_name == 'kb_main_page_layout' && 'epkb-' . $current_css_file_slug . '-css' != $prev_link_css_id ) {
-					// shared settings for all layouts are assigned to the first feature container (required by inherited logic from Settings UI)
-					$layout_settings_html_temp = self::display_feature_settings( $features_config['main-page']['sub_tabs'][0]['contents'], true );
-
-					$layout_settings_html = self::get_module_position_field( $feature_name, $new_config['categories_articles_module_position'] );
-					$layout_settings_html .= self::display_feature_settings( $features_config['main-page']['sub_tabs'][ $module_row_number - 1 ]['contents'], true );
-				}
-				break;
-			case 'article-page':
-				// LATER TODO 'advanced_search_ap_presets'
-				break;
+				$layout_settings_html = self::get_module_position_field( $feature_name, $new_config['categories_articles_module_position'] );
+				$layout_settings_html .= self::display_feature_settings( $features_config['main-page']['sub_tabs'][ $module_row_number - 1 ]['contents'], true );
+			}
 		}
 
 		return array(

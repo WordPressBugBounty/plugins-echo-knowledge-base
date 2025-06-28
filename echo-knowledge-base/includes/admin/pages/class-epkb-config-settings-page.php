@@ -30,7 +30,6 @@ class EPKB_Config_Settings_Page {
 	private $is_archive_kb_templates;
 	private $kb_main_pages;
 	private $kb_main_page_has_kb_blocks;
-	private $is_show_fe_offer_first_time;
 	private $is_modular_main_page_off;
 
 	public function __construct( $kb_config, $is_frontend_editor = false ) {
@@ -76,19 +75,6 @@ class EPKB_Config_Settings_Page {
 
 		$this->is_archive_page_v3 = $this->kb_config['archive_page_v3_toggle'] == 'on';
 		$this->is_archive_kb_templates = $this->kb_config['template_for_archive_page'] == 'kb_templates';
-
-		//EPKB_Core_Utilities::remove_kb_flag( 'is_fe_offer_declined' );	// TODO: use for test purpose to reset the flag REMOVE AFTER TESTS
-		$this->is_show_fe_offer_first_time = ! EPKB_Core_Utilities::is_kb_flag_set( 'is_fe_offer_declined' ) && ! $this->kb_main_page_has_kb_blocks && ! $this->is_frontend_editor;
-		if ( $this->is_show_fe_offer_first_time && EPKB_Utilities::post( 'is_fe_offer_declined' ) == 'on' ) {
-			EPKB_Core_Utilities::add_kb_flag( 'is_fe_offer_declined' );
-			$this->is_show_fe_offer_first_time = false;
-			epkb_get_instance()->kb_config_obj->set_value( $this->kb_config['id'], 'frontend_editor_switch_visibility_toggle', 'off' );
-		}
-
-		// Handle Frontend Editor offer decline for all pages (Main Page, Article Page, Archive Page)
-		if ( EPKB_Utilities::post( 'is_fe_offer_declined' ) == 'on'  ) {
-			EPKB_Core_Utilities::add_kb_flag( 'is_fe_offer_declined' );
-		}
 	}
 
 	/**
@@ -96,7 +82,7 @@ class EPKB_Config_Settings_Page {
 	 *
 	 * @return array
 	 */
-	public function get_vertical_tabs_config( $fe_page='' ) {
+	public function get_vertical_tabs_config() {
 
 		$contents_configs = $this->get_contents_configs();
 		$sub_contents_configs = $this->get_sub_contents_configs();
@@ -133,8 +119,6 @@ class EPKB_Config_Settings_Page {
 		$row_3_module = $this->kb_config['ml_row_3_module'];
 		$row_4_module = $this->kb_config['ml_row_4_module'];
 		$row_5_module = $this->kb_config['ml_row_5_module'];
-
-		$main_page_contents = array();
 
 		// Non-Modular KB Main Page TODO FUTURE: remove
 		if ( $this->is_modular_main_page_off ) {
@@ -180,14 +164,8 @@ class EPKB_Config_Settings_Page {
 					: array()
 				)
 			);
-		} else if ( $this->is_show_fe_offer_first_time ) {
-			$main_page_contents = array(
-				array(
-					'title_before_icon' => false,
-					//'title' => esc_html__( 'KB Main Page Configuration', 'echo-knowledge-base' ),
-					'body_html' => EPKB_HTML_Admin::display_fe_offer_box( $this->kb_config, true )
-				)
-			);
+		} else {
+			$main_page_contents = array();
 		}
 
 		$tabs_config['main-page'] = array(
@@ -196,9 +174,9 @@ class EPKB_Config_Settings_Page {
 			'key'       => 'main-page',
 			'active'    => ! $access_to_get_started,
 			'contents'  => $main_page_contents,
-			'top_html'	=> $this->is_show_fe_offer_first_time || $this->is_frontend_editor || $this->kb_main_page_has_kb_blocks || $this->is_modular_main_page_off || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_offer_box( $this->kb_config ),
-			'sub_tabs'  => ! $this->is_frontend_editor && ( empty( $this->kb_main_pages ) || $this->kb_main_page_has_kb_blocks || $this->is_show_fe_offer_first_time || $this->is_modular_main_page_off )
-				// CASE: Missing Main Page, or Block Main Page, or FE editor offer is viewing first time, or Legacy KB Main Page
+			'top_html'	=> $this->is_frontend_editor || $this->kb_main_page_has_kb_blocks || $this->is_modular_main_page_off || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_button_above_main_page_settings( $this->kb_config ),
+			'sub_tabs'  => ! $this->is_frontend_editor && ( empty( $this->kb_main_pages ) || $this->kb_main_page_has_kb_blocks || $this->is_modular_main_page_off )
+				// CASE: not already inside FE and Missing Main Page, or Block Main Page or Legacy KB Main Page
 				? array()
 				// CASE: Shortcode Main Page
 				: array(
@@ -209,7 +187,6 @@ class EPKB_Config_Settings_Page {
 						'key'       => 'main-page-ml-row-1',
 						'data'      => [ 'module-selector' => 'ml_row_1_module', 'no-module-label' => $no_module_label, 'selected-module' => $row_1_module ],
 						'class'     => $row_1_module == 'none' ? 'epkb-admin__form-sub-tab--unused' : '',
-						'bottom_labels_link' => $row_1_module != 'resource_links' || $this->elay_enabled,
 					),
 					array(
 						'icon'      => 'epkb-admin__form-sub-tab-icon-text',
@@ -218,7 +195,6 @@ class EPKB_Config_Settings_Page {
 						'key'       => 'main-page-ml-row-2',
 						'data'      => [ 'module-selector' => 'ml_row_2_module', 'no-module-label' => $no_module_label, 'selected-module' => $row_2_module ],
 						'class'     => $row_2_module == 'none' ? 'epkb-admin__form-sub-tab--unused' : '',
-						'bottom_labels_link' => $row_2_module != 'resource_links' || $this->elay_enabled,
 					),
 					array(
 						'icon'      => 'epkb-admin__form-sub-tab-icon-text',
@@ -227,7 +203,6 @@ class EPKB_Config_Settings_Page {
 						'key'       => 'main-page-ml-row-3',
 						'data'      => [ 'module-selector' => 'ml_row_3_module', 'no-module-label' => $no_module_label, 'selected-module' => $row_3_module ],
 						'class'     => $row_3_module == 'none' ? 'epkb-admin__form-sub-tab--unused' : '',
-						'bottom_labels_link' => $row_3_module != 'resource_links' || $this->elay_enabled,
 					),
 					array(
 						'icon'      => 'epkb-admin__form-sub-tab-icon-text',
@@ -236,7 +211,6 @@ class EPKB_Config_Settings_Page {
 						'key'       => 'main-page-ml-row-4',
 						'data'      => [ 'module-selector' => 'ml_row_4_module', 'no-module-label' => $no_module_label, 'selected-module' => $row_4_module ],
 						'class'     => $row_4_module == 'none' ? 'epkb-admin__form-sub-tab--unused' : '',
-						'bottom_labels_link' => $row_4_module != 'resource_links' || $this->elay_enabled,
 					),
 					array(
 						'icon'      => 'epkb-admin__form-sub-tab-icon-text',
@@ -245,138 +219,70 @@ class EPKB_Config_Settings_Page {
 						'key'       => 'main-page-ml-row-5',
 						'data'      => [ 'module-selector' => 'ml_row_5_module', 'no-module-label' => $no_module_label, 'selected-module' => $row_5_module ],
 						'class'     => $row_5_module == 'none' ? 'epkb-admin__form-sub-tab--unused' : '',
-						'bottom_labels_link' => $row_5_module != 'resource_links' || $this->elay_enabled,
 					),
 				),
 		);
 
-		// Articles Page
-		if ( ! $this->is_modular_main_page_off ) {
-			
-			// Check if we should show the FE offer for Article Page for the first time
-			$is_show_fe_offer_first_time_article_page = ! EPKB_Core_Utilities::is_kb_flag_set( 'is_fe_offer_declined' );
-			
-			$article_page_contents = array();
-			
-			// Frontend Editor mode for Article Page
-			if ( $this->is_frontend_editor ) {
-				$article_page_contents = array();
-				
-			// Show FE offer for the first time
-			} else if ( $is_show_fe_offer_first_time_article_page ) {
-				$article_page_contents = array(
-					array(
-						'title_before_icon' => false,
-						'title' => '',
-						'body_html' => EPKB_HTML_Admin::display_fe_offer_box_article_page( $this->kb_config, true )
-					),
-				);
-			}
-			
-			$tabs_config['article-page'] = array(
-				'title'     => esc_html__( 'KB Article Page', 'echo-knowledge-base' ),
-				'icon'      => 'epkb-article-page-icon',
-				'key'       => 'article-page',
-				'active'    => false,
-				'contents'  => $article_page_contents,
-				'top_html'	=> $is_show_fe_offer_first_time_article_page || $this->is_frontend_editor || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_offer_box_article_page( $this->kb_config ),
-				'sub_tabs'  => $is_show_fe_offer_first_time_article_page && ! $this->is_frontend_editor
-					// CASE: FE editor offer is viewing first time, or in Frontend Editor mode, or Missing Main Page
-					? array()
-					// CASE: Show sub-tabs normally
-					: array(
-						array(
-							'title'     => esc_html__( 'Settings', 'echo-knowledge-base' ),
-							'key'       => 'article-page-settings',
-							'bottom_labels_link' => true,
-						),
-						array(
-							'title'     => esc_html__( 'Search Box', 'echo-knowledge-base' ),
-							'key'       => 'article-page-search-box',
-							'bottom_labels_link' => true,
-						),
-						array(
-							'title'     => esc_html__( 'Sidebar', 'echo-knowledge-base' ),
-							'key'       => 'article-page-sidebar',
-							'bottom_labels_link' => true,
-						),
-						array(
-							'title'     => esc_html__( 'Table of Contents (TOC)', 'echo-knowledge-base' ),
-							'key'       => 'article-page-toc',
-							'bottom_labels_link' => true,
-						),
-						array(
-							'title'     => esc_html__( 'Rating and Feedback', 'echo-knowledge-base' ),
-							'key'       => 'article-page-ratings',
-							'bottom_labels_link' => $this->eprf_enabled,
-						),
-					),
-			);
+		if ( $this->is_modular_main_page_off ) {
+			return $tabs_config;
 		}
+
+		// Articles Page
+		$article_page_contents = array();
+		$tabs_config['article-page'] = array(
+			'title'     => esc_html__( 'KB Article Page', 'echo-knowledge-base' ),
+			'icon'      => 'epkb-article-page-icon',
+			'key'       => 'article-page',
+			'active'    => false,
+			'contents'  => $article_page_contents,
+			'top_html'	=> $this->is_frontend_editor || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_button_above_article_page_settings( $this->kb_config ),
+			'sub_tabs'  => array(
+					array(
+						'title'     => esc_html__( 'Settings', 'echo-knowledge-base' ),
+						'key'       => 'article-page-settings',
+					),
+					array(
+						'title'     => esc_html__( 'Search Box', 'echo-knowledge-base' ),
+						'key'       => 'article-page-search-box',
+					),
+					array(
+						'title'     => esc_html__( 'Sidebar', 'echo-knowledge-base' ),
+						'key'       => 'article-page-sidebar',
+					),
+					array(
+						'title'     => esc_html__( 'Table of Contents (TOC)', 'echo-knowledge-base' ),
+						'key'       => 'article-page-toc',
+					),
+					array(
+						'title'     => esc_html__( 'Rating and Feedback', 'echo-knowledge-base' ),
+						'key'       => 'article-page-ratings',
+					),
+				),
+		);
 
 		// Archive Page
-		if ( ! $this->is_modular_main_page_off ) {
-			
-			// Check if we should show the FE offer for Archive Page for the first time
-			$is_show_fe_offer_first_time_archive_page = ! EPKB_Core_Utilities::is_kb_flag_set( 'is_fe_offer_declined' );
-			
-			$archive_page_contents = array();
-			
-			// Frontend Editor mode for Archive Page
-			if ( $this->is_frontend_editor ) {
-				$archive_page_contents = array();
-				
-			// Show FE offer for the first time
-			} else if ( $is_show_fe_offer_first_time_archive_page ) {
-				$archive_page_contents = array(
-					array(
-						'title_before_icon' => false,
-						'title' => '',
-						'body_html' => EPKB_HTML_Admin::display_fe_offer_box_archive_page( $this->kb_config, true )
-					),
-				);
-			}
-			
-			$tabs_config['archive-page'] = array(
-				'title'  => esc_html__( 'Category Archive Page', 'echo-knowledge-base' ),
-				'icon'   => 'epkb-archive-page-icon',
-				'key'    => 'archive-page',
-				'active' => false,
-				'contents' => $archive_page_contents,
-				'top_html' => $is_show_fe_offer_first_time_archive_page || $this->is_frontend_editor || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_offer_box_archive_page( $this->kb_config ),
-				'bottom_labels_link' => $is_show_fe_offer_first_time_archive_page || $this->is_frontend_editor ? false : $this->is_archive_kb_templates,
-			);
+		$archive_page_contents = array();
+		$tabs_config['archive-page'] = array(
+			'title'  => esc_html__( 'Category Archive Page', 'echo-knowledge-base' ),
+			'icon'   => 'epkb-archive-page-icon',
+			'key'    => 'archive-page',
+			'active' => false,
+			'contents' => $archive_page_contents,
+			'top_html' => $this->is_frontend_editor || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_button_above_archive_page_settings( $this->kb_config ),
+		);
 
-			// Labels
-			$tabs_config['labels'] = array(
-				'title'     => esc_html__( 'Labels', 'echo-knowledge-base' ),
-				'icon'      => 'ep_font_icon_tag',
-				'key'       => 'labels',
-				'active'    => false,
-			);
-
-			// General
-			$tabs_config['other'] = array(
-				'title'     => esc_html__( 'Other', 'echo-knowledge-base' ),
-				'icon'      => 'epkb-toggle-icon',
-				'key'       => 'other',
-				'active'    => false,
-			);
-		}
+		// General
+		$tabs_config['other'] = array(
+			'title'     => esc_html__( 'Other', 'echo-knowledge-base' ),
+			'icon'      => 'epkb-toggle-icon',
+			'key'       => 'other',
+			'active'    => false,
+		);
 
 		// Show first special content, then generated for settings 
 		foreach ( $tabs_config as $key => $config ) {
 
 			$contents_configs[$config['key']] = isset( $contents_configs[$config['key']] ) ? $contents_configs[$config['key']] : [];
-
-			// For Archive Page, only add contents if not showing FE offer for the first time
-			if ( $config['key'] == 'archive-page' && ! $this->is_modular_main_page_off ) {
-				$is_show_fe_offer_first_time_archive_page = ! EPKB_Core_Utilities::is_kb_flag_set( 'is_fe_offer_declined' );
-				if ( $is_show_fe_offer_first_time_archive_page && ! $this->is_frontend_editor ) {
-					// Keep only the FE offer content, don't merge additional settings
-					continue;
-				}
-			}
 
 			$tabs_config[$key]['contents'] = empty( $config['contents'] )
 				? $this->apply_fields_in_contents_config( $contents_configs[$config['key']] )
@@ -753,8 +659,7 @@ class EPKB_Config_Settings_Page {
 			) );
 		}
 
-		// TODO remove ! $this->is_frontend_editor
-		if ( ! $this->is_frontend_editor && in_array( $setting_name, [ 'advanced_search_mp_presets', 'advanced_search_ap_presets' ] ) ) {
+		if ( in_array( $setting_name, [ 'advanced_search_mp_presets', 'advanced_search_ap_presets' ] ) ) {
 			EPKB_HTML_Elements::radio_buttons_horizontal( [
 				'name'              => $setting_name,
 				'group_data'        => $group_data,
@@ -1349,10 +1254,11 @@ class EPKB_Config_Settings_Page {
 			</div>  <?php
 		}
 
-		if ( $setting_name == 'article_search_sidebar_layout_msg' ) {   ?>
-			<div class="epkb-admin__input-field ">
-				<p>
-					<?php echo sprintf( esc_html__( 'You have chosen the Sidebar layout. The Sidebar layout search box is controlled by the %ssearch settings on the Main Page%s.', 'echo-knowledge-base' ), '<a class="epkb-admin__form-tab-content-desc__link" href="#">', '</a>' ); ?>
+		if ( $setting_name == 'article_search_sidebar_layout_msg' ) {   
+			$main_page_url = EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config ); ?>
+			<div class="epkb-admin__input-field">
+				<p><?php 
+					echo sprintf( esc_html__( 'You have chosen the Sidebar layout. The Sidebar layout search box is controlled by the %ssearch settings on the Main Page%s.', 'echo-knowledge-base' ), '<a class="epkb-admin__form-tab-content-desc__link" href="' . esc_url( $main_page_url ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ); ?>
 				</p>
 			</div>  <?php
 		}
@@ -1538,7 +1444,7 @@ class EPKB_Config_Settings_Page {
 				'desc'      => esc_html__( 'We have released a new Category Archive Page design featuring optional sidebars, search functionality, various designs, and more. Please switch to the new archive pages.', 'echo-knowledge-base' ),
 				'css_class' => 'epkb-admin__form-tab-content--archive_page_v3_toggle-settings',
 				'fields'    => [
-					'archive_page_v3_toggle'
+					'archive_page_v3_toggle' => ''
 				],
 			);
 		}
@@ -1552,6 +1458,7 @@ class EPKB_Config_Settings_Page {
 			'title'     => esc_html__( 'Search', 'echo-knowledge-base' ),
 			'fields'    => [
 				'archive_search_toggle'             => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
+				'archive_search_source'             => [ 'only_archive_kb_templates', 'only_archive_page_v3', 'not_block_main_page' ],
 				'archive_header_desktop_width'      => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 				'search_box_margin_bottom'          => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 			],
@@ -1564,6 +1471,7 @@ class EPKB_Config_Settings_Page {
 				'archive_category_desc_toggle'                  => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 				'archive_content_background_color'              => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 				'archive_content_articles_arrow_toggle'          => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
+				'archive_category_name_prefix' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 			],
 			'data'    	=> [ 'target' => 'content-archive' ],
 			/* FUTURE TODO as info icon 'learn_more_links' => [ // title => url
@@ -1578,6 +1486,9 @@ class EPKB_Config_Settings_Page {
 				'archive_content_articles_nof_columns'              => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 				'archive_content_articles_separator_toggle'         => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 				'archive_content_articles_nof_articles_displayed'   => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
+				'archive_content_articles_list_title' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
+				'article_count_text' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
+				'article_count_plural_text' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 			],
 			'data'    	=> [ 'target' => 'list-of-articles-archive' ],
 		);
@@ -1592,6 +1503,7 @@ class EPKB_Config_Settings_Page {
 				'archive_content_sub_categories_icon_toggle'            => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 				'archive_content_sub_categories_border_toggle'          => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 				'archive_content_sub_categories_background_color'       => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
+				'archive_content_sub_categories_title' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 			],
 			'data'    	=> [ 'target' => 'list-of-sub-categories-archive' ],
 		);
@@ -1627,259 +1539,22 @@ class EPKB_Config_Settings_Page {
 				'archive-content-width-v2'              => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
 				'archive-show-sub-categories'           => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
 				'archive-container-width-v2'            => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
-			],
-			'learn_more_links' => [ // title => url
-				__( 'Category Archive Page', 'echo-knowledge-base' ) => 'https://www.echoknowledgebase.com/documentation/category-archive-page/',
-				__( 'Additional Styling of Category Page', 'echo-knowledge-base' ) => 'https://www.echoknowledgebase.com/documentation/additional-styling-for-category-page/',
-			],
-		);
 
-		// Labels
-		$contents_configs['labels'] = array(
-			array(
-				'title'         => esc_html__( 'Search Title - Main Page', 'echo-knowledge-base' ),
-				'fields'        => [
-					'search_title' => [ 'not_asea', 'not_block_main_page' ],
-					'search_button_name' => [ 'not_asea', 'not_block_main_page' ],
-				],
-				'data' => [ 'target' => 'search-labels-mp' ],
-			),
-			array(
-				'title'     => esc_html__( 'Search Input Box - Main Page', 'echo-knowledge-base' ),
-				'fields'    => [
-					'advanced_search_mp_title' => [ 'asea', 'not_block_main_page' ],
-					'search_box_hint' => 'not_block_main_page',
-					'search_results_msg' => [ 'not_block_main_page' ],
-					'advanced_search_mp_description_below_title' => [ 'asea', 'not_block_main_page' ],
-					'advanced_search_mp_description_below_input' => [ 'asea', 'not_block_main_page' ],
-                    'advanced_search_mp_title_by_filter' => [ 'asea', 'not_block_main_page' ],
-                    'advanced_search_mp_title_clear_results' => [ 'asea', 'not_block_main_page' ],
-					'advanced_search_mp_filter_indicator_text' => [ 'asea', 'not_block_main_page' ],
-					'advanced_search_mp_results_msg' => [ 'asea', 'not_block_main_page' ],
-					'advanced_search_mp_no_results_found' => [ 'asea', 'not_block_main_page' ],
-					'advanced_search_mp_more_results_found' => [ 'asea', 'not_block_main_page' ],
-					'advanced_search_mp_box_hint' => [ 'asea', 'not_block_main_page' ],
-					'no_results_found' => [ 'not_asea', 'not_block_main_page' ],
-					'min_search_word_size_msg' => [ '', 'not_block_main_page' ],
-				],
-				'data' => [ 'target' => 'search-labels-mp' ],
-			),
-			array(
-				'title'         => esc_html__( 'Search Title - Article Page', 'echo-knowledge-base' ),
-				'fields'        => [
-					'article_search_title' => ['not_asea', 'not_sidebar'],
-					'article_search_button_name' => ['not_asea', 'not_sidebar'],
-				],
-				'data' => ['target' => 'search-labels-ap'],
-			),
-			array(
-				'title'     => esc_html__( 'Search Input Box - Article Page', 'echo-knowledge-base' ),
-				'fields'    => [
-					'advanced_search_ap_title' => ['asea', 'not_sidebar'],
-					'advanced_search_ap_button_name' => ['asea', 'not_sidebar'],
-					'article_search_box_hint' => ['not_sidebar'],
-					'article_search_results_msg' => ['not_sidebar'],
-					'advanced_search_ap_description_below_title' => ['asea', 'not_sidebar'],
-					'advanced_search_ap_description_below_input' => ['asea', 'not_sidebar'],
-					'advanced_search_ap_title_by_filter' => ['asea', 'not_sidebar'],
-					'advanced_search_ap_title_clear_results' => ['asea', 'not_sidebar'],
-					'advanced_search_ap_filter_indicator_text' => ['asea', 'not_sidebar'],
-					'advanced_search_ap_results_msg' => ['asea', 'not_sidebar'],
-					'advanced_search_ap_no_results_found' => ['asea', 'not_sidebar'],
-					'advanced_search_ap_more_results_found' => ['asea', 'not_sidebar'],
-                    'advanced_search_ap_box_hint' => ['asea', 'not_sidebar'],
-				],
-				'data'      => ['target' => 'search-labels-ap'],
-			),
-			array(
-				'title'         => esc_html__( 'Tabs Layout Drop Down', 'echo-knowledge-base' ),
-				'fields'    => [
-					'choose_main_topic' => [ 'only_tabs', 'not_block_main_page' ],
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Category Body', 'echo-knowledge-base' ),
-				'fields'    => [
-					'category_empty_msg' => 'not_block_main_page',
-					'grid_category_link_text' => [ 'elay', 'only_grid', 'not_block_main_page' ],
-					'grid_article_count_text' => [ 'elay', 'only_grid', 'not_block_main_page' ],
-					'grid_article_count_plural_text' => [ 'elay', 'only_grid', 'not_block_main_page' ],
-				],
-				'data' => [ 'target' => 'labels-category-body' ],
-			),
-			array(
-				'title'     => esc_html__( 'Articles', 'echo-knowledge-base' ),
-				'fields'    => [
-					'collapse_articles_msg' => 'not_block_main_page',
-                    'sidebar_show_sub_category_articles_msg' => '',
-					'show_all_articles_msg' => '',
-					'ml_categories_articles_back_button_text'   => [ 'not_block_main_page', [ 'only_classic', 'only_drill_down' ] ],
-					'ml_categories_articles_article_text'       => [ 'not_block_main_page', [ 'only_classic', 'only_drill_down' ] ],
-					'ml_categories_articles_articles_text'      => [ 'not_block_main_page', [ 'only_classic', 'only_drill_down' ] ],
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Sidebar Articles', 'echo-knowledge-base' ),
-				'fields'    => [
-					'sidebar_collapse_articles_msg' => '',
-					'sidebar_show_all_articles_msg' => '',
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Navigation', 'echo-knowledge-base' ),
-				'fields'    => [
-					'sidebar_category_empty_msg' => '',
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Categories List', 'echo-knowledge-base' ),
-				'fields'    => [
-					'category_focused_menu_heading_text' => '',
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Article Views Counter', 'echo-knowledge-base' ),
-				'fields'    => [
-					'article_views_counter_text' => '',
-				],
-				'data'      => [ 'target' => 'views_counter' ]
-			),
-			array(
-				'title'     => esc_html__( 'TOC', 'echo-knowledge-base' ),
-				'fields'    => [
-					'article_toc_title' => '',
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Breadcrumb', 'echo-knowledge-base' ),
-				'fields'    => [
-					'breadcrumb_description_text' => '',
-					'breadcrumb_home_text' => '',
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Back Navigation', 'echo-knowledge-base' ),
-				'fields'    => [
-					'back_navigation_text' => '',
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Print Button', 'echo-knowledge-base' ),
-				'fields'    => [
-					'print_button_text' => '',
-				],
-				'data'      => [ 'target' => 'print_button' ]
-			),
-			array(
-				'title'     => esc_html__( 'Created Date', 'echo-knowledge-base' ),
-				'fields'    => [
-					'created_on_text' => '',
-				],
-				'data'      => [ 'target' => 'created_date' ]
-			),
-			array(
-				'title'     => esc_html__( 'Last Updated Date', 'echo-knowledge-base' ),
-				'fields'    => [
-					'last_updated_on_text' => '',
-				],
-				'data'      => [ 'target' => 'updated_date' ]
-			),
-			array(
-				'title'     => esc_html__( 'Author', 'echo-knowledge-base' ),
-				'fields'    => [
-					'author_text' => '',
-				],
-				'data'      => [ 'target' => 'author' ]
-			),
-			array(
-				'title'     => esc_html__( 'Prev/Next Navigation', 'echo-knowledge-base' ),
-				'fields'    => [
-					'prev_navigation_text' => '',
-					'next_navigation_text' => '',
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Category Archive Page', 'echo-knowledge-base' ),
-				'fields'    => [
-					'archive_category_name_prefix' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
-					'archive_content_articles_list_title' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
-					'archive_content_sub_categories_title' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
 					'template_category_archive_page_heading_description' => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
 					'template_category_archive_read_more' => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
-					'article_count_text' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
-					'article_count_plural_text' => [ 'only_archive_kb_templates', 'only_archive_page_v3' ],
-				],
-			),
-			array(
-				'title'     => esc_html__( 'Archive Meta Data', 'echo-knowledge-base' ),
-				'fields'    => [
 					'template_category_archive_date' => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
 					'template_category_archive_author' => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
 					'template_category_archive_categories' => [ 'only_archive_kb_templates', 'not_archive_page_v3' ],
 				],
-			),
-			array(
-				'title'     => esc_html__( 'Resource Links Feature', 'echo-knowledge-base' ),
-				'fields'    => [
-					'ml_resource_links_container_title_text' => [ 'not_block_main_page', 'elay' ],
-					'ml_resource_links_container_description_text' => [ 'not_block_main_page', 'elay' ],
+			'learn_more_links' => [ // title => url
+				__( 'Category Archive Page', 'echo-knowledge-base' ) => 'https://www.echoknowledgebase.com/documentation/category-archive-page/',
+				__( 'Additional Styling of Category Page', 'echo-knowledge-base' ) => 'https://www.echoknowledgebase.com/documentation/additional-styling-for-category-page/',
 				],
-			),
-			array(
-				'title'     => esc_html__( 'Featured Articles', 'echo-knowledge-base' ),
-				'fields'    => [
-					'ml_articles_list_title_text' => 'not_block_main_page',
-					'ml_articles_list_title_color' => '',
-					'ml_articles_list_newest_articles_msg' => 'not_block_main_page',
-					'ml_articles_list_popular_articles_msg' => 'not_block_main_page',
-					'ml_articles_list_recent_articles_msg' => 'not_block_main_page',
-				],
-				'data'      => [ 'target' => 'labels_articles_list_feature' ],
-			),
-			array(
-				'title'     => esc_html__( 'FAQs Feature', 'echo-knowledge-base' ),
-				'fields'    => [
-					'ml_faqs_title_text'    => [ 'not_block_main_page' ],
-					'faq_empty_msg'         => 'not_block_main_page',
-				],
-				'data'      => [ 'target' => 'labels_faqs_feature' ],
-			),
-			array(
-				'title'         => esc_html__( 'Rating and Feedback', 'echo-knowledge-base' ),
-				'fields'        => [
-					'rating_text_value' => 'eprf',
-					'rating_stars_text' => 'eprf',
-					'rating_stars_text_1' => 'eprf',
-					'rating_stars_text_2' => 'eprf',
-					'rating_stars_text_3' => 'eprf',
-					'rating_stars_text_4' => 'eprf',
-					'rating_stars_text_5' => 'eprf',
-					'rating_out_of_stars_text' => 'eprf',
-					'rating_confirmation_positive' => 'eprf',
-					'rating_confirmation_negative' => 'eprf',
-					'rating_feedback_title' => 'eprf',
-					'rating_feedback_required_title' => 'eprf',
-					'rating_feedback_name' => 'eprf',
-					'rating_feedback_email' => 'eprf',
-					'rating_feedback_description' => 'eprf',
-					'rating_feedback_support_link_text' => 'eprf',
-					'rating_feedback_support_link_url' => 'eprf',
-					'rating_feedback_button_text' => 'eprf',
-					'rating_open_form_button_text' => 'eprf',
-					'rating_like_style_yes_button' => 'eprf',
-					'rating_like_style_no_button'  => 'eprf',
-				],
-			),
-			array(
-				'title'         => esc_html__( 'Sidebar Layout Introduction Page', 'echo-knowledge-base' ),
-				'fields'        => [
-					'sidebar_main_page_intro_text' => [ 'elay', [ 'only_sidebar', 'only_block_main_page' ] ],
-				],
-				'data'          => [ 'target' => 'sidebar_main_page_intro_text' ],
-			),
 		);
+		// Labels - All label settings have been moved to their respective sections
+		$contents_configs['labels'] = array();
 
-		// General
+		// General TODO: move to Tools -> Settings (keep the fields rendering logic)
 		$contents_configs['other'] = [
 			array(
 				'title'     => esc_html__( 'KB Main Page Page Title', 'echo-knowledge-base' ),
@@ -1951,6 +1626,7 @@ class EPKB_Config_Settings_Page {
 						'article_views_counter_enable' => '',
 						'article_views_counter_method' => '',
 						'article_content_enable_views_counter' => '',
+						'article_views_counter_text' => '',
 					],
 					'data'      => [ 'target' => 'article_views_counter' ],
 					'desc' => esc_html__( 'The counter provides an approximate measure of user views, but bot-generated views cannot be fully filtered out. ' .
@@ -1965,6 +1641,9 @@ class EPKB_Config_Settings_Page {
 						'article_content_enable_created_date' => '',
 						'print_button_enable' => '',
 						'article-meta-color' => '',
+						'created_on_text' => '',
+						'last_updated_on_text' => '',
+						'author_text' => '',
 					],
                     'data'      => [ 'target' => 'article_features_top' ],
 				),
@@ -1985,6 +1664,8 @@ class EPKB_Config_Settings_Page {
 						'breadcrumb_enable' => '',
 						'breadcrumb_icon_separator' => '',
 						'breadcrumb_text_color' => '',
+						'breadcrumb_description_text' => '',
+						'breadcrumb_home_text' => '',
 					],
 					'data'      => [ 'target' => 'breadcrumb' ],
 				),
@@ -1996,6 +1677,7 @@ class EPKB_Config_Settings_Page {
 						'back_navigation_text_color' => '',
 						'back_navigation_bg_color' => '',
 						'back_navigation_border_color' => '',
+						'back_navigation_text' => '',
 					],
 					'data'      => [ 'target' => 'back_navigation' ]
 				),
@@ -2007,6 +1689,8 @@ class EPKB_Config_Settings_Page {
 						'prev_next_navigation_bg_color' => '',
 						'prev_next_navigation_hover_text_color' => '',
 						'prev_next_navigation_hover_bg_color' => '',
+						'prev_navigation_text' => '',
+						'next_navigation_text' => '',
 					],
 					'data'      => [ 'target' => 'prev_next_navigation' ]
 				),
@@ -2019,8 +1703,9 @@ class EPKB_Config_Settings_Page {
 						'article_content_toolbar_text_hover_color' => '',
 						'article_content_toolbar_icon_color' => '',
 						'article_content_toolbar_icon_hover_color' => '',
+						'print_button_text' => '',
 					],
-					'data'      => [ 'target' => 'prev_next_navigation' ]
+					'data'      => [ 'target' => 'print_button' ]
 				),
 				array(
 					'title'         => esc_html__( 'Widgets/Shortcodes', 'echo-knowledge-base' ),
@@ -2086,6 +1771,12 @@ class EPKB_Config_Settings_Page {
 
 						// Sidebar Navigation: Categories List
 						'categories_layout_list_mode' => 'only_categories',
+						'category_focused_menu_heading_text' => '',
+						// Sidebar Articles labels
+						'sidebar_collapse_articles_msg' => '',
+						'sidebar_show_all_articles_msg' => '',
+						// Navigation labels
+						'sidebar_category_empty_msg' => '',
 
 						// PRO feature ad
 						'elay_pro_description' => 'not_elay',
@@ -2118,6 +1809,7 @@ class EPKB_Config_Settings_Page {
 						'toc_toggler'   => '',  // is internally using by Settings UI
 						'toc_locations' => '',  // is internally using by Settings UI
 						'toc_content'   => '',  // is internally using by Settings UI
+						'article_toc_title' => '',
 					],
 					'data' => ['target' => 'toc-options'],
 
@@ -2162,6 +1854,27 @@ class EPKB_Config_Settings_Page {
 						'rating_feedback_email_prompt' => 'eprf',
 						'rating_text_color' => 'eprf',
 						'rating_feedback_button_color' => 'eprf',
+						'rating_text_value' => 'eprf',
+						'rating_stars_text' => 'eprf',
+						'rating_stars_text_1' => 'eprf',
+						'rating_stars_text_2' => 'eprf',
+						'rating_stars_text_3' => 'eprf',
+						'rating_stars_text_4' => 'eprf',
+						'rating_stars_text_5' => 'eprf',
+						'rating_out_of_stars_text' => 'eprf',
+						'rating_confirmation_positive' => 'eprf',
+						'rating_confirmation_negative' => 'eprf',
+						'rating_feedback_title' => 'eprf',
+						'rating_feedback_required_title' => 'eprf',
+						'rating_feedback_name' => 'eprf',
+						'rating_feedback_email' => 'eprf',
+						'rating_feedback_description' => 'eprf',
+						'rating_feedback_support_link_text' => 'eprf',
+						'rating_feedback_support_link_url' => 'eprf',
+						'rating_feedback_button_text' => 'eprf',
+						'rating_open_form_button_text' => 'eprf',
+						'rating_like_style_yes_button' => 'eprf',
+						'rating_like_style_no_button'  => 'eprf',
 					]
 				),
 				array(
@@ -2659,6 +2372,8 @@ class EPKB_Config_Settings_Page {
 					'search_background_color' => 'not_asea',
 					'advanced_search_mp_box_padding_top' => 'asea',
 					'advanced_search_mp_box_padding_bottom' => 'asea',
+					'advanced_search_mp_box_margin_top' => 'asea',
+					'advanced_search_mp_box_margin_bottom' => 'asea',
 					'advanced_search_mp_box_input_width' => 'asea',
 					'advanced_search_mp_input_box_search_icon_placement' => 'asea',
 					'advanced_search_mp_filter_toggle' => 'asea',
@@ -2690,13 +2405,28 @@ class EPKB_Config_Settings_Page {
 					'advanced_search_context_characters' => 'asea',
 				],
 				'main-page-search-labels-box' => [
+					// Search Title - Main Page
+					'search_title' => [ 'not_asea', 'not_block_main_page' ],
+					'search_button_name' => [ 'not_asea', 'not_block_main_page' ],
+					// Search Input Box - Main Page
 					'advanced_search_mp_title_toggle' => 'asea',
 					'advanced_search_mp_title' => 'asea',
 					'advanced_search_mp_title_font_color' => 'asea',
+					'search_box_hint' => 'not_block_main_page',
+					'search_results_msg' => [ 'not_block_main_page' ],
 					'advanced_search_mp_description_below_title_toggle' => 'asea',
 					'advanced_search_mp_description_below_title' => 'asea',
 					'advanced_search_mp_description_below_input_toggle' => 'asea',
 					'advanced_search_mp_description_below_input' => 'asea',
+					'advanced_search_mp_title_by_filter' => [ 'asea', 'not_block_main_page' ],
+					'advanced_search_mp_title_clear_results' => [ 'asea', 'not_block_main_page' ],
+					'advanced_search_mp_filter_indicator_text' => [ 'asea', 'not_block_main_page' ],
+					'advanced_search_mp_results_msg' => [ 'asea', 'not_block_main_page' ],
+					'advanced_search_mp_no_results_found' => [ 'asea', 'not_block_main_page' ],
+					'advanced_search_mp_more_results_found' => [ 'asea', 'not_block_main_page' ],
+					'advanced_search_mp_box_hint' => [ 'asea', 'not_block_main_page' ],
+					'no_results_found' => [ 'not_asea', 'not_block_main_page' ],
+					'min_search_word_size_msg' => [ '', 'not_block_main_page' ],
 				],
 				'main-page-search-style-box' => [
 					'advanced_search_mp_link_font_color' => 'asea',
@@ -2743,18 +2473,23 @@ class EPKB_Config_Settings_Page {
 				],
 				'sidebar-layout-introduction' => [
 					'sidebar_main_page_intro_text_link' => [ 'elay', [ 'only_sidebar', 'only_block_main_page' ] ],
+					'sidebar_main_page_intro_text' => [ 'elay', [ 'only_sidebar', 'only_block_main_page' ] ],
 				],
 			],
 
 			'articles_list' => [
 				'module-settings' => [
 					//'ml_articles_list_layout'                             => '',
+					'ml_articles_list_title_text' => 'not_block_main_page',
 					'ml_articles_list_title_color'                          => '',
 					'ml_articles_list_title_location'                       => '',
 					'ml_articles_list_column_1'                             => '',
 					'ml_articles_list_column_2'                             => '',
 					'ml_articles_list_column_3'                             => '',
 					'ml_articles_list_nof_articles_displayed'               => '',
+					'ml_articles_list_newest_articles_msg' => 'not_block_main_page',
+					'ml_articles_list_popular_articles_msg' => 'not_block_main_page',
+					'ml_articles_list_recent_articles_msg' => 'not_block_main_page',
 					'ml_articles_list_kblk_pro'                             => 'not_kblk',
 				],
 			],
@@ -2762,11 +2497,13 @@ class EPKB_Config_Settings_Page {
 			'faqs' => [
 				'module-settings' => [
 					//'ml_faqs_layout'                                      => '',
+					'ml_faqs_title_text'    => [ 'not_block_main_page' ],
 					'ml_faqs_content_mode'                                  => 'not_use_faq_groups',
 					'faq_preset_name'                                       => '',
 					'ml_faqs_kb_id'                                         => 'not_use_faq_groups',
 					'ml_faqs_category_ids'                                  => 'not_use_faq_groups',
 					'faq_group_ids'                                         => 'only_use_faq_groups',
+					'faqs_publicly_queryable'                               => '',
 					'ml_faqs_title_location'                                => '',
 					'faq_nof_columns'   								    => '',
 					'faq_icon_type'                                         => '',
@@ -2780,6 +2517,7 @@ class EPKB_Config_Settings_Page {
 					'faq_answer_text_color'                                 => '',
 					'faq_icon_color'   								        => '',
 					'faq_border_color'                                      => '',
+					'faq_empty_msg'         => 'not_block_main_page',
 					// 'faq_schema_toggle'                                     => '',
 				],
 			],
@@ -2799,6 +2537,8 @@ class EPKB_Config_Settings_Page {
 
 					// Container Title
 					'ml_resource_links_container_title_html_tag'            => 'elay',
+					'ml_resource_links_container_title_text' => [ 'not_block_main_page', 'elay' ],
+					'ml_resource_links_container_description_text' => [ 'not_block_main_page', 'elay' ],
 				],
 				'all-resources-boxes-styling' => [
 					'ml_resource_links_border_color'                        => 'elay',
@@ -3037,6 +2777,7 @@ class EPKB_Config_Settings_Page {
 					'tab_nav_background_color' => 'only_tabs',
 					'tab_nav_overflow_mode' => 'only_tabs',
 					'tab_nav_max_tabs_per_row' => 'only_tabs',
+					'choose_main_topic' => [ 'only_tabs', 'not_block_main_page' ],
 				],
 				'learn_more_links' => [ // title => url
 					__( 'Using Tabs Layout', 'echo-knowledge-base' ) => 'https://www.echoknowledgebase.com/documentation/using-tabs-layout/',
@@ -3090,6 +2831,10 @@ class EPKB_Config_Settings_Page {
 				'fields'        => [
 					'grid_section_article_count' => [ 'elay', 'only_grid' ],
 					'section_body_background_color' => [ [ 'only_basic', 'only_tabs', 'only_categories', 'only_grid' ] ],
+					'category_empty_msg' => 'not_block_main_page',
+					'grid_category_link_text' => [ 'elay', 'only_grid', 'not_block_main_page' ],
+					'grid_article_count_text' => [ 'elay', 'only_grid', 'not_block_main_page' ],
+					'grid_article_count_plural_text' => [ 'elay', 'only_grid', 'not_block_main_page' ],
 				],
 				'data'          => [ 'insert-box-after' => '.epkb-admin__form-tab-content--module-settings' ],
 			),
@@ -3127,6 +2872,12 @@ class EPKB_Config_Settings_Page {
 					'ml_categories_articles_article_bg_color' => [ 'only_drill_down' ],
 					'article_list_spacing' => 'not_sidebar', // article spacing
 					'article_sidebar_settings_link' => 'only_sidebar',
+					'collapse_articles_msg' => 'not_block_main_page',
+					'sidebar_show_sub_category_articles_msg' => '',
+					'show_all_articles_msg' => '',
+					'ml_categories_articles_back_button_text'   => [ 'not_block_main_page', [ 'only_classic', 'only_drill_down' ] ],
+					'ml_categories_articles_article_text'       => [ 'not_block_main_page', [ 'only_classic', 'only_drill_down' ] ],
+					'ml_categories_articles_articles_text'      => [ 'not_block_main_page', [ 'only_classic', 'only_drill_down' ] ],
 
 					// PRO feature ad
 					'elay_pro_description' => 'not_elay',
@@ -3163,8 +2914,8 @@ class EPKB_Config_Settings_Page {
 			];
 		}
 
-		// Search Box Designs  TODO
-		if ( ! $this->is_frontend_editor && $this->asea_enabled ) {
+		// Search Box Designs
+		if ( $this->asea_enabled ) {
 			$dedicated_module_boxes_config['main-page-search-box-presets'] = [
 				'module'    => 'search',
 				'title'     => esc_html__( 'Search Box Designs', 'echo-knowledge-base' ),
@@ -3190,7 +2941,7 @@ class EPKB_Config_Settings_Page {
 		$dedicated_module_boxes_config['main-page-search-labels-box'] = [
 			'module'    => 'search',
 			'title'     => esc_html__( 'Search Labels', 'echo-knowledge-base' ),
-			'data'      => [ 'target' => 'search-style-mp' ],
+			'data'      => [ 'target' => 'search-labels-mp' ],
 		];
 
 		// Main Page Search Style Box
@@ -3336,6 +3087,8 @@ class EPKB_Config_Settings_Page {
 							'article_search_background_color' => 'not_asea',
 							'advanced_search_ap_box_padding_top' => 'asea',
 							'advanced_search_ap_box_padding_bottom' => 'asea',
+							'advanced_search_ap_box_margin_top' => 'asea',
+							'advanced_search_ap_box_margin_bottom' => 'asea',
 							'advanced_search_ap_box_input_width' => 'asea',
 							'advanced_search_ap_input_box_search_icon_placement' => 'asea',
 							'advanced_search_ap_filter_toggle' => 'asea',
@@ -3362,15 +3115,29 @@ class EPKB_Config_Settings_Page {
 					array(
 						'title'     => esc_html__( 'Search Labels', 'echo-knowledge-base' ),
 						'fields'    => [
+							// Search Title - Article Page
+							'article_search_title' => ['not_asea', 'not_sidebar'],
+							'article_search_button_name' => ['not_asea', 'not_sidebar'],
+							// Search Input Box - Article Page
 							'advanced_search_ap_title_toggle' => 'asea',
 							'advanced_search_ap_title' => 'asea',
 							'advanced_search_ap_title_font_color' => 'asea',
+							'advanced_search_ap_button_name' => ['asea', 'not_sidebar'],
+							'article_search_box_hint' => ['not_sidebar'],
+							'article_search_results_msg' => ['not_sidebar'],
 							'advanced_search_ap_description_below_title_toggle' => 'asea',
 							'advanced_search_ap_description_below_title' => 'asea',
 							'advanced_search_ap_description_below_input_toggle' => 'asea',
 							'advanced_search_ap_description_below_input' => 'asea',
+							'advanced_search_ap_title_by_filter' => ['asea', 'not_sidebar'],
+							'advanced_search_ap_title_clear_results' => ['asea', 'not_sidebar'],
+							'advanced_search_ap_filter_indicator_text' => ['asea', 'not_sidebar'],
+							'advanced_search_ap_results_msg' => ['asea', 'not_sidebar'],
+							'advanced_search_ap_no_results_found' => ['asea', 'not_sidebar'],
+							'advanced_search_ap_more_results_found' => ['asea', 'not_sidebar'],
+							'advanced_search_ap_box_hint' => ['asea', 'not_sidebar'],
 						],
-						'data'      => ['target' => 'search-style-ap'],
+						'data'      => ['target' => 'search-labels-ap'],
 					),
 					array(
 						'title'     => esc_html__( 'Search Style', 'echo-knowledge-base' ),
@@ -3501,6 +3268,7 @@ class EPKB_Config_Settings_Page {
 			// case 'faq_schema_toggle':
 			case 'faq_group_ids':
 			case 'faq_preset_name':
+			case 'faqs_publicly_queryable':
 			case 'ml_faqs_title_location':
 			case 'faq_nof_columns':
 			case 'faq_icon_type':
@@ -3908,7 +3676,13 @@ class EPKB_Config_Settings_Page {
 			case 'advanced_search_mp_box_padding_bottom':
 				$field_specs['label'] = esc_html__( 'Padding Bottom', 'echo-knowledge-base' ) . ' ( px )';   // change labels here instead of specs to leave FE Editor UI unchanged	// TODO FUTURE: remove as this was related to old FE and now can be updated in specs (currently keep only for old add-on version compatibility)
 				break;
-
+				case 'advanced_search_mp_box_margin_top':
+					$field_specs['label'] = esc_html__( 'Margin Top', 'echo-knowledge-base' ) . ' ( px )';  // change labels here instead of specs to leave FE Editor UI unchanged	// TODO FUTURE: remove as this was related to old FE and now can be updated in specs (currently keep only for old add-on version compatibility)
+					break;
+	
+				case 'advanced_search_mp_box_margin_bottom':
+					$field_specs['label'] = esc_html__( 'Margin Bottom', 'echo-knowledge-base' ) . ' ( px )';   // change labels here instead of specs to leave FE Editor UI unchanged	// TODO FUTURE: remove as this was related to old FE and now can be updated in specs (currently keep only for old add-on version compatibility)
+					break;
 			case 'archive_header_desktop_width':
 				$field_specs['units_setting_name'] = 'archive_header_desktop_width_units';
 				break;
@@ -4030,6 +3804,8 @@ class EPKB_Config_Settings_Page {
 			case 'article_search_background_color':
 			case 'advanced_search_ap_box_padding_top':
 			case 'advanced_search_ap_box_padding_bottom':
+			case 'advanced_search_ap_box_margin_top':
+			case 'advanced_search_ap_box_margin_bottom':
 			case 'advanced_search_ap_box_input_width':
 			case 'advanced_search_ap_input_box_search_icon_placement':
 			case 'advanced_search_ap_filter_toggle':
@@ -4060,6 +3836,18 @@ class EPKB_Config_Settings_Page {
 			case 'advanced_search_ap_background_gradient_to_color':
 			case 'advanced_search_ap_background_gradient_degree':
 			case 'advanced_search_ap_background_gradient_opacity':
+			case 'article_search_title':
+			case 'article_search_button_name':
+			case 'advanced_search_ap_button_name':
+			case 'article_search_box_hint':
+			case 'article_search_results_msg':
+			case 'advanced_search_ap_title_by_filter':
+			case 'advanced_search_ap_title_clear_results':
+			case 'advanced_search_ap_filter_indicator_text':
+			case 'advanced_search_ap_results_msg':
+			case 'advanced_search_ap_no_results_found':
+			case 'advanced_search_ap_more_results_found':
+			case 'advanced_search_ap_box_hint':
 				$field_specs['dependency'] = ['article_search_sync_toggle'];
 				$field_specs['enable_on'] = ['off'];
 				break;
