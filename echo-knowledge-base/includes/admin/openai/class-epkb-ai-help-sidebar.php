@@ -6,13 +6,9 @@
  * @copyright   Copyright (C) 2018, Echo Plugins
  * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-class EPKB_AI_Help_Sidebar {
+class EPKB_AI_Help_Sidebar {    // TODO remove
 
 	public function __construct() {
-		add_action( 'admin_enqueue_scripts', 'epkb_load_admin_ai_help_sidebar_resources' );
-		add_action( 'admin_bar_menu', array( $this, 'add_admin_bar_button' ), 1000  );
-		add_action( 'admin_footer', array( $this, 'display_ai_help_sidebar' ) );
-		add_action( 'add_meta_boxes', array( $this, 'show_kb_ai_help_meta_box' ) );
 	}
 
 	/**
@@ -62,7 +58,7 @@ class EPKB_AI_Help_Sidebar {
 			return;
 		}
 
-		$openai_api_key = EPKB_OpenAI::get_openai_api_key();
+		$openai_api_key = EPKB_OpenAI_Orig::get_openai_api_key();
 		$openai_settings_capability = EPKB_Admin_UI_Access::get_admin_capability(); ?>
 
 		<!-- AI Help Sidebar -->
@@ -277,7 +273,7 @@ class EPKB_AI_Help_Sidebar {
 
                 <!-- OpenAI API Key -->
                 <div class="epkb-ai-help-sidebar__settings-group">  <?php
-	                $api_key = EPKB_OpenAI::get_openai_api_key();
+	                $api_key = EPKB_OpenAI_Orig::get_openai_api_key();
 					EPKB_HTML_Elements::text( [
 						'label'         => esc_html__( 'OpenAI API Key', 'echo-knowledge-base' ),
 						'name'          => 'openai_api_key',

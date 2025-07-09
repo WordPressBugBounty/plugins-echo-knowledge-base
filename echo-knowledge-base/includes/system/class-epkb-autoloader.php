@@ -37,6 +37,9 @@ class EPKB_Autoloader {
 				'epkb_admin_ui_access'              =>  'includes/system/class-epkb-admin-ui-access.php',
 				'epkb_reset'                        =>  'includes/system/class-epkb-reset.php',
 				'epkb_controller'                   =>  'includes/system/class-epkb-controller.php',
+				'epkb_db'                           =>  'includes/system/class-epkb-db.php',
+				'epkb_language_utilities'           =>  'includes/system/class-epkb-language-utilities.php',
+				'epkb_ui_table'                     =>  'includes/system/class-epkb-ui-table.php',
 
 				// ACCESS MANAGER
 				'epkb_access_manager'               =>  'includes/access-manager/class-epkb-access-manager.php',
@@ -142,13 +145,34 @@ class EPKB_Autoloader {
 				'epkb_article_count_cntrl'          =>  'includes/features/article-counter/class-epkb-article-count-cntrl.php',
 				'epkb_article_count_handler'        =>  'includes/features/article-counter/class-epkb-article-count-handler.php',
 
+				// FEATURES - CHAT
+				'epkb_ai_chat_frontend'             =>  'includes/features/chat/class-epkb-ai-chat-frontend.php',
+
 				// TEMPLATES
 				'epkb_templates_various'            =>  'templates/helpers/class-epkb-templates-various.php',
 
 				// OpenAI
-				'epkb_openai'                       =>  'includes/admin/openai/class-epkb-openai.php',
+				'epkb_openai_orig'                  =>  'includes/admin/openai/class-epkb-openai-orig.php',
 				'epkb_ai_help_sidebar'              =>  'includes/admin/openai/class-epkb-ai-help-sidebar.php',
 				'epkb_ai_help_sidebar_ctrl'         =>  'includes/admin/openai/class-epkb-ai-help-sidebar-ctrl.php',
+
+				// AI
+				'epkb_ai_admin_page'                =>  'includes/ai/class-epkb-ai-admin-page.php',
+				'epkb_ai_manager'                   =>  'includes/ai/class-epkb-ai-manager.php',
+				'epkb_ai_rest_base_controller'      =>  'includes/ai/rest/class-epkb-ai-rest-base-controller.php',
+				'epkb_ai_rest_chat_controller'      =>  'includes/ai/rest/class-epkb-ai-rest-chat-controller.php',
+				'epkb_ai_rest_search_controller'    =>  'includes/ai/rest/class-epkb-ai-rest-search-controller.php',
+				'epkb_ai_conversation_model'        =>  'includes/ai/db/class-epkb-ai-conversation-model.php',
+				'epkb_ai_messages_db'               =>  'includes/ai/db/class-epkb-ai-messages-db.php',
+				'epkb_openai_client'                =>  'includes/ai/openai/class-epkb-openai-client.php',
+				'epkb_ai_content_processor'         =>  'includes/ai/services/class-epkb-ai-content-processor.php',
+				'epkb_ai_conversation_service'      =>  'includes/ai/services/class-epkb-ai-conversation-service.php',
+				'epkb_ai_vector_store_service'      =>  'includes/ai/services/class-epkb-ai-vector-store-service.php',
+				'epkb_ai_config'                    =>  'includes/ai/support/class-epkb-ai-config.php',
+				'epkb_ai_cron'                      =>  'includes/ai/support/class-epkb-ai-cron.php',
+				'epkb_ai_table_operations'          =>  'includes/ai/support/class-epkb-ai-table-operations.php',
+				'epkb_ai_utilities' 				=>  'includes/ai/support/class-epkb-ai-utilities.php',
+				'epkb_ai_chat_security'             =>  'includes/ai/support/class-epkb-ai-chat-security.php',
 
 				// BLOCKS
 				'epkb_block_utilities'              =>  'includes/class-epkb-block-utilities.php',

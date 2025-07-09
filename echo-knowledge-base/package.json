@@ -5,6 +5,9 @@
 	"author": "Echo Plugins",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
+		
+		"build-all-js": "npm run minify-public-scripts-js && npm run minify-public-the-content-js && npm run minify-admin-plugin-pages-js && npm run minify-admin-form-controls-js && npm run minify-admin-ai-help-sidebar-js && npm run minify-admin-analytics-js && npm run minify-admin-convert-js && npm run minify-admin-feedback-js && npm run minify-admin-kb-article-edit-script-js && npm run minify-admin-kb-setup-wizard-script-js && npm run minify-admin-kb-wizard-script-js && npm run minify-admin-ui-js && npm run minify-admin-ai-js && npm run minify-error-handlers-js && npm run minify-faq-shortcode-scripts-js && npm run minify-frontend-editor-js",
+		
 		"watch-admin-plugin-pages-css": "cross-env CHOKIDAR_USEPOLLING=true WATCHPACK_POLLING=true sass --watch --no-source-map css/scss/admin_plugin_pages.scss:css/admin-plugin-pages.css",
 		"build-admin-plugin-pages-css": "npm run __build-admin-plugin-pages-scss-to-css && npm run __postcss-admin-plugin-pages-css && npm run __minify-admin-plugin-pages-css && npm run __minified-postcss-admin-plugin-pages-css",
 		"__build-admin-plugin-pages-scss-to-css": "sass --no-source-map css/scss/admin_plugin_pages.scss css/admin-plugin-pages.css",
@@ -12,6 +15,7 @@
 		"__minify-admin-plugin-pages-css": "sass --no-source-map --style=compressed css/admin-plugin-pages.css css/admin-plugin-pages.min.css",
 		"__minified-postcss-admin-plugin-pages-css": "cross-env POSTCSS_MODE=minified postcss css/admin-plugin-pages.min.css --config postcss.config.js --no-map -o css/admin-plugin-pages.min.css",
 		"build-blocks-js": "npm run __build-search-block-js && npm run __build-basic-layout-block-js && npm run __build-tabs-layout-block-js && npm run __build-categories-layout-block-js && npm run __build-classic-layout-block-js && npm run __build-drill-down-layout-block-js && npm run __build-faqs-block-js && npm run __build-featured-articles-block-js && npm run __build-advanced-search-block-js && npm run __build-grid-layout-block-js && npm run __build-sidebar-layout-block-js && npm run __clean-build-directory-js",
+		
 		"build-search-block-css": "npm run __build-search-block-scss-to-css && npm run __postcss-search-block-css && npm run __minify-search-block-css && npm run __minified-postcss-search-block-css",
 		"build-basic-layout-block-css": "npm run __build-basic-layout-block-scss-to-css && npm run __postcss-basic-layout-css && npm run __minify-basic-layout-block-css && npm run __minified-postcss-basic-layout-block-css",
 		"build-tabs-layout-block-css": "npm run __build-tabs-layout-block-scss-to-css && npm run __postcss-tabs-layout-block-css && npm run __minify-tabs-layout-block-css && npm run __minified-postcss-tabs-layout-block-css",
@@ -33,9 +37,11 @@
 		"minify-admin-kb-setup-wizard-script-js": "npm exec -- terser js/admin-kb-setup-wizard-script.js -o --compress --mangle --output js/admin-kb-setup-wizard-script.min.js",
 		"minify-admin-kb-wizard-script-js": "npm exec -- terser js/admin-kb-wizard-script.js -o --compress --mangle --output js/admin-kb-wizard-script.min.js",
 		"minify-admin-ui-js": "npm exec -- terser js/admin-ui.js -o --compress --mangle --output js/admin-ui.min.js",
+		"minify-admin-ai-js": "npm exec -- terser js/admin-ai.js -o --compress --mangle --output js/admin-ai.min.js",
 		"minify-error-handlers-js": "npm exec -- terser js/error-handlers.js -o --compress --mangle --output js/error-handlers.min.js",
 		"minify-faq-shortcode-scripts-js": "npm exec -- terser js/faq-shortcode-scripts.js -o --compress --mangle --output js/faq-shortcode-scripts.min.js",
 		"minify-frontend-editor-js": "npm exec -- terser js/frontend-editor.js -o --compress --mangle --output js/frontend-editor.min.js",
+		"minify-ai-chat-js": "npm exec -- terser js/ai-chat.js -o --compress --mangle --output js/ai-chat.min.js",
 
 		"build-all-mp-modular-layouts-css": "npm run build-mp-frontend-modular-basic-layout-css && npm run build-mp-frontend-modular-tab-layout-css && npm run build-mp-frontend-modular-category-layout-css && npm run build-mp-frontend-modular-classic-layout-css && npm run build-mp-frontend-modular-drill-down-layout-css && npm run build-mp-frontend-modular-sidebar-layout-css && npm run build-mp-frontend-modular-grid-layout-css",
 
@@ -118,6 +124,12 @@
 		"__postcss-shortcodes-css": "postcss css/shortcodes.css --config postcss.config.js --no-map -o css/shortcodes.css",
 		"__minify-shortcodes-css": "sass --no-source-map --style=compressed css/shortcodes.css css/shortcodes.min.css",
 		"__minified-postcss-shortcodes-css": "cross-env POSTCSS_MODE=minified postcss css/shortcodes.min.css --config postcss.config.js --no-map -o css/shortcodes.min.css",
+
+		"build-ai-chat-widget-css": "npm run __build-ai-chat-widget-scss-to-css && npm run __postcss-ai-chat-widget-css && npm run __minify-ai-chat-widget-css && npm run __minified-postcss-ai-chat-widget-css",
+		"__build-ai-chat-widget-scss-to-css": "sass --no-source-map css/scss/public/ai-chat-widget.scss css/ai-chat-widget.css",
+		"__postcss-ai-chat-widget-css": "postcss css/ai-chat-widget.css --config postcss.config.js --no-map -o css/ai-chat-widget.css",
+		"__minify-ai-chat-widget-css": "sass --no-source-map --style=compressed css/ai-chat-widget.css css/ai-chat-widget.min.css",
+		"__minified-postcss-ai-chat-widget-css": "cross-env POSTCSS_MODE=minified postcss css/ai-chat-widget.min.css --config postcss.config.js --no-map -o css/ai-chat-widget.min.css",
 
 		"build-ap-frontend-layout-css": "npm run __build-ap-frontend-layout-scss-to-css && npm run __postcss-ap-frontend-layout-css && npm run __minify-ap-frontend-layout-css && npm run __minified-postcss-ap-frontend-layout-css",
 		"__build-ap-frontend-layout-scss-to-css": "sass --no-source-map css/scss/ap-frontend-layout.scss css/ap-frontend-layout.css",

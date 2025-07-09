@@ -234,6 +234,9 @@ class EPKB_Core_Utilities {
 
 	public static function start_update_kb_configuration( $kb_id, $new_config, $is_theme_selected=false, $orig_config=null ) {
 
+		// ensure KB Main Pages are cleaned up
+		EPKB_KB_Handler::reset_kb_main_pages();
+
 		// validate TOC Hy, Hx levels: Hy cannot be less than Hx
 		if ( $new_config['article_toc_hy_level'] < $new_config['article_toc_hx_level'] ) {
 			EPKB_Utilities::ajax_show_error_die( esc_html__( 'HTML Header range is invalid', 'echo-knowledge-base' ) );
@@ -1303,7 +1306,7 @@ class EPKB_Core_Utilities {
 	 */
 	public static function is_main_page_search( $kb_config ) {
 		// $kb_config['article_search_sync_toggle'] == 'on' -> handled by copying Main Page search settings to Article Page on settings save operation
-		$is_archive_using_main_page_search = is_archive() && $kb_config['archive_search_source'] == 'main_page';
+		$is_archive_using_main_page_search = is_archive() && $kb_config['archive_search_source'] == 'main_page' && ! EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config );
 		return $kb_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT || EPKB_Utilities::is_kb_main_page() || EPKB_Utilities::get( 'is_kb_main_page' ) == 1 || $is_archive_using_main_page_search;
 	}
 

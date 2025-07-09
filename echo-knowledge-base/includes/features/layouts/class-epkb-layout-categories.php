@@ -83,7 +83,10 @@ class EPKB_Layout_Categories extends EPKB_Layout {
 					padding-top:: section_head_padding_top,
 					padding-bottom:: section_head_padding_bottom,
 					padding-left:: section_head_padding_left,
-					padding-right:: section_head_padding_right'
+					padding-right:: section_head_padding_right' .
+					( $this->kb_config['section_head_alignment'] == 'left' ? ', padding-left:: article_list_margin' : '' ) .
+					( $this->kb_config['section_head_alignment'] == 'right' ? ', padding-right:: article_list_margin' : '' ) . ',
+					'
 		);
 		$style3_escaped = $this->get_inline_style(
 					'color:: section_head_font_color'
@@ -96,7 +99,10 @@ class EPKB_Layout_Categories extends EPKB_Layout {
 		$style4_escaped = $this->get_inline_style(
 					'color:: section_head_description_font_color,
 					 text-align::section_head_alignment,
-					 typography:: section_head_description_typography'
+					 typography:: section_head_description_typography' .
+					 ( $this->kb_config['section_head_alignment'] == 'left' ? ', padding-left:: article_list_margin' : '' ) .
+					 ( $this->kb_config['section_head_alignment'] == 'right' ? ', padding-right:: article_list_margin' : '' ) . ',
+					 '
 		);
 		$style5 = 'border-bottom-width:: section_border_width,
 					padding-top::    section_body_padding_top,

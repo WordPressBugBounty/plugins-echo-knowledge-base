@@ -139,6 +139,20 @@ function epkb_load_admin_plugin_pages_resources() {
 		wp_enqueue_script( 'epkb-icon-fonts' );
 		wp_enqueue_style( 'epkb-shortcodes' );
 	}
+
+	// add script for AI admin page
+	if ( $page == 'epkb-kb-ai-chat' ) {
+		wp_enqueue_script( 'epkb-admin-ai', Echo_Knowledge_Base::$plugin_url . 'js/admin-ai' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
+		wp_localize_script( 'epkb-admin-ai', 'epkb_vars', array(
+			'nonce'                            => wp_create_nonce( '_wpnonce_epkb_ajax_action' ),
+			'ai_create_vector_store_nonce'     => wp_create_nonce( 'epkb_ai_create_vector_store' ),
+			'ai_recreate_vector_store_nonce'   => wp_create_nonce( 'epkb_ai_recreate_vector_store' ),
+			'ai_upload_files_nonce'            => wp_create_nonce( 'epkb_ai_upload_files' ),
+			'ai_reupload_files_nonce'          => wp_create_nonce( 'epkb_ai_reupload_files' ),
+			'save_ai_settings_nonce'           => wp_create_nonce( 'epkb_save_ai_settings' ),
+			'ai_reset_logs_nonce'              => wp_create_nonce( 'epkb_ai_reset_logs' ),
+		) );
+	}
 }
 
 // Old Wizards
@@ -198,30 +212,4 @@ function epkb_load_admin_kb_setup_wizard_script() {
 function epkb_load_admin_article_page_styles() {
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 	wp_enqueue_style( 'epkb-admin-plugin-pages-styles', Echo_Knowledge_Base::$plugin_url . 'css/admin-article-page' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
-}
-
-// load resources for Admin AI Help Sidebar
-function epkb_load_admin_ai_help_sidebar_resources() {
-
-	if ( ! EPKB_Core_Utilities::is_kb_flag_set( 'enable_legacy_open_ai' ) ) {
-		return;
-	}
-
-	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-	wp_enqueue_script( 'epkb-admin-kb-ai-help-sidebar-script', Echo_Knowledge_Base::$plugin_url . 'js/admin-ai-help-sidebar' . $suffix . '.js', array( 'jquery' ), Echo_Knowledge_Base::$version );
-	wp_enqueue_style( 'epkb-admin-kb-ai-help-sidebar-styles', Echo_Knowledge_Base::$plugin_url . 'css/admin-ai-help-sidebar' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
-	wp_localize_script( 'epkb-admin-kb-ai-help-sidebar-script', 'epkb_ai_vars', array(
-		'nonce'                         => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
-		'msg_empty_input'               => esc_html__( 'Missing input', 'echo-knowledge-base' ),
-		'reload_try_again'              => esc_html__( 'Please reload the page and try again.', 'echo-knowledge-base' ),
-		'msg_try_again'                 => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
-		'error_occurred'                => esc_html__( 'Error occurred', 'echo-knowledge-base' ) . ' (1641)',
-		'unknown_error'                 => esc_html__( 'Unknown error', 'echo-knowledge-base' ) . ' (1643)',
-		'msg_no_key_admin'              => esc_html__( 'You have no API key. Please add it here', 'echo-knowledge-base' ),
-		'msg_no_key'                    => esc_html__( 'You have no API key.', 'echo-knowledge-base' ),
-		'ai_help_button_title'          => esc_html__( 'AI Help', 'echo-knowledge-base' ),
-		'msg_ai_help_loading'           => esc_html__( 'Processing...', 'echo-knowledge-base' ),
-		'msg_ai_copied_to_clipboard'    => esc_html__( 'Copied to clipboard', 'echo-knowledge-base' ),
-	) );
 }

@@ -1779,8 +1779,20 @@
 #epkb-fe__editor .epkb-admin__form-tab-content-lm__body {
   width: 265px;
 }
+#epkb-fe__editor #templates_for_kb_group {
+  margin-bottom: 4em;
+}
 #epkb-fe__editor #templates_for_kb_group .epkb-label {
   min-width: 180px;
+}
+#epkb-fe__editor #templates_for_kb_group .epkb-input-desc .epkb-input-desc_text {
+  margin-top: 0;
+}
+#epkb-fe__editor #templates_for_kb_group .epkb-main_label {
+  display: none !important;
+}
+#epkb-fe__editor #templates_for_kb_group #templates_for_kb {
+  margin-left: 0;
 }
 #epkb-fe__editor .epkb__option-tooltip {
   display: none;
@@ -2018,6 +2030,37 @@
 }
 #epkb-fe__editor #advanced_search_mp_presets .epkb-input-container:first-child,
 #epkb-fe__editor #advanced_search_ap_presets .epkb-input-container:first-child {
+  display: none !important;
+}
+#epkb-fe__editor .epkb-general_typography-loader-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-bottom: 2em;
+}
+#epkb-fe__editor .epkb-general_typography-loader-wrap .input_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+}
+#epkb-fe__editor .epkb-general_typography-loader-wrap .epkb-general_typography-current {
+  font-size: 1.5em;
+}
+#epkb-fe__editor .epkb-general_typography-loader-wrap label {
+  display: none !important;
+}
+#epkb-fe__editor .epkb-general-typography-description {
+  margin-bottom: 4em;
+  margin-left: 15px;
+}
+#epkb-fe__editor #template_main_page_display_title {
+  margin-bottom: 4em;
+}
+#epkb-fe__editor #epkb_ml_custom_css_group label {
+  display: none !important;
+}
+#epkb-fe__editor #general_typography_font_family_group label {
   display: none !important;
 }
 

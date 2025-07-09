@@ -16,8 +16,66 @@ jQuery( document ).ready( function( $ ) {
 	let admin_report_error_form = $( '#epkb-fe__error-form-wrap .epkb-admin__error-form__container' );
 
 	// Handle FE Open Button and Admin bar FE edit link
-	$( '.epkb-fe__toggle, #wp-admin-bar-epkb-edit-mode-button' ).on( 'click', function( e ) {
+	$( '.epkb-fe__toggle, #wp-admin-bar-epkb-edit-mode-button' ).on( 'click', function ( e ) {
+
+		const params      = new URLSearchParams( window.location.search );
+		const bodyClasses = document.body.classList;
+
+		const builders = {
+			visualComposer : (
+				params.get( 'vcv-editable' ) === '1' ||
+				bodyClasses.contains( 'vcwb-editor-body' )
+			),
+			divi       : bodyClasses.contains( 'et-fb-root-ancestor' ),
+			siteOrigin : bodyClasses.contains( 'siteorigin-panels-live-editor' ),
+			pageLayer  : bodyClasses.contains( 'pagelayer-body' ),
+			beaver     : bodyClasses.contains( 'fl-builder-edit' ),
+			elementor  : bodyClasses.contains( 'elementor-editor-active' ),
+			brizy      : bodyClasses.contains( 'brz' ),
+			kubio      : bodyClasses.contains( 'kubio-iframe-holder--show' ),
+			colibri    : (
+				bodyClasses.contains( 'colibri-in-customizer' ) ||
+				bodyClasses.contains( 'customize-partial-edit-shortcuts-shown' ) ||
+				bodyClasses.contains( 'colibri-in-customizer--loaded' )
+			)
+		};
+
+		const activeKey = Object.keys( builders ).find( key => builders[ key ] );
+
+		if ( activeKey ) {
+			e.preventDefault();
+
+			const builderNames = {
+				visualComposer : 'Visual Composer',
+				divi           : 'Divi Builder',
+				siteOrigin     : 'SiteOrigin Builder',
+				pageLayer      : 'Pagelayer Builder',
+				beaver         : 'Beaver Builder',
+				elementor      : 'Elementor Builder',
+				brizy          : 'Brizy Builder',
+				kubio          : 'Kubio Builder',
+				colibri        : 'Colibri Page Builder'
+			};
+
+			const builderName = builderNames[ activeKey ] || 'Page Builder';
+
+			const message = wp.i18n.__( `The Knowledge Base Editor is disabled while the ${ builderName } is active.\n\nDo you want to go to the Knowledge Base settings instead?`, 'echo-knowledge-base' );
+
+			// Show confirmation dialog
+			const goToSettings = window.confirm( message );
+
+			if ( goToSettings ) {
+				const adminBase = document.getElementById( 'epkb-fe__admin-url' )?.dataset.adminUrl || '/wp-admin/';
+				const adminUrl = adminBase + 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-configuration#settings';
+				window.open( adminUrl, '_blank' );
+			}
+
+			return;
+		}
+
+		// If no builders active, continue to open frontend editor
 		open_frontend_editor( e );
+
 	} );
 
 	function open_frontend_editor( e ) {
@@ -30,7 +88,8 @@ jQuery( document ).ready( function( $ ) {
 		$( '#epkb-fe__editor .epkb-fe__feature-settings' ).each(function () {
 			const $featureSettings = $( this );
 			const rowNumber = $featureSettings.attr( 'data-row-number' );
-			if ( rowNumber === 'none' ) {
+			const isNonRowFeature = $featureSettings.data( 'non-row-feature' );
+			if ( rowNumber === 'none' && ! isNonRowFeature ) {
 				$featureSettings.find( '.epkb-fe__settings-section:not(.epkb-fe__settings-section--module-position)' ).addClass( 'epkb-fe__settings-section--hide' );
 			} else {
 				$featureSettings.find( '.epkb-fe__settings-section:not(.epkb-fe__settings-section--module-position)' ).removeClass( 'epkb-fe__settings-section--hide' );
@@ -252,14 +311,16 @@ jQuery( document ).ready( function( $ ) {
 		// Show loading dialog based on page type
 		if ( kb_page_type === 'main-page' ) {
 			epkb_loading_Dialog( 'show', '', $( '#epkb-modular-main-page-container, #eckb-kb-template' ) );
-			if ( $feature_settings_container.find( '[name="advanced_search_mp_presets"]:checked' ).val() !== 'current' ) {
-				selected_search_preset = $feature_settings_container.find( '[name="advanced_search_mp_presets"]:checked' ).val();
+			let $search_preset_input = $feature_settings_container.find( '[name="advanced_search_mp_presets"]:checked' );
+			if ( $search_preset_input.length > 0 && $search_preset_input.val() !== 'current' ) {
+				selected_search_preset = $search_preset_input.val();
 			}
 		} else if ( kb_page_type === 'article-page' ) {
 			// For article page, always show loading on the main article container
 			epkb_loading_Dialog( 'show', '', $( '#eckb-article-page-container-v2' ) );
-			if ( $feature_settings_container.find( '[name="advanced_search_ap_presets"]:checked' ).val() !== 'current' ) {
-				selected_search_preset = $feature_settings_container.find( '[name="advanced_search_ap_presets"]:checked' ).val();
+			let $search_preset_input = $feature_settings_container.find( '[name="advanced_search_ap_presets"]:checked' );
+			if ( $search_preset_input.length > 0 && $search_preset_input.val() !== 'current' ) {
+				selected_search_preset = $search_preset_input.val();
 			}
 		} else if ( kb_page_type === 'archive-page' ) {
 			epkb_loading_Dialog( 'show', '', $( '#eckb-archive-page-container' ) );
@@ -364,7 +425,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 
 					// Update FAQs module settings (after applying design preset)
-					if ( response.data.faqs_design_settings ) {
+					if ( response.data.faqs_design_settings && response.data.faqs_design_settings.length > 0 ) {
 
 						// Unselect preset name to prevent continuing preset applying on further settings changes
 						$feature_settings_container.find( '[name="faq_preset_name"]' ).prop( 'checked', false );
@@ -380,7 +441,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 
 					// Update Categories & Articles module settings (after applying design preset)
-					if ( response.data.categories_articles_design_settings ) {
+					if ( response.data.categories_articles_design_settings && response.data.categories_articles_design_settings.length > 0 ) {
 
 						// Unselect preset name to prevent continuing preset applying on further settings changes
 						$feature_settings_container.find( '[name="categories_articles_preset"]' ).val( 'current' ).trigger( 'change' );
@@ -396,7 +457,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 
 					// Update search settings (after applying design preset)
-					if ( response.data.search_design_settings ) {
+					if ( response.data.search_design_settings && $feature_settings_container.find( '[name="advanced_search_mp_presets"]' ).length > 0 ) {
 
 						// Apply preset settings for UI controls
 						for ( const [ key, value ] of Object.entries( response.data.search_design_settings ) ) {
@@ -412,12 +473,12 @@ jQuery( document ).ready( function( $ ) {
 					}
 
 					// Inline styles - changed every time a module setting was changed
-					if ( response.data.inline_styles ) {
+					if ( response.data.inline_styles && response.data.inline_styles.length > 0 ) {
 						$( '[id^="epkb-mp-frontend-modular-"][id$="-layout-inline-css"]' ).html( response.data.inline_styles );
 					}
 
 					// Update HTML of the target module - changed every time a module setting was changed
-					if ( response.data.preview_html ) {
+					if ( response.data.preview_html && response.data.preview_html.length > 0 ) {
 						// Find the row by feature name, not by row number
 						let $destination_row = $( '.epkb-ml__row[data-feature="' + feature_name + '"]' );
 						
@@ -427,6 +488,18 @@ jQuery( document ).ready( function( $ ) {
 						}
 						// Note: If the row doesn't exist, we don't create it here because 
 						// the module is disabled and shouldn't have content displayed
+					}
+
+					// Custom inline styles - always rendered separately to avoid possible impact of internal KB inline styles on user's mistake
+					if ( response.data.custom_inline_styles && response.data.custom_inline_styles.length > 0 ) {
+						// epkb-mp-frontend-modular-category-layout-custom-inline-css
+						let $custom_inline_styles_tag = $( '[id^="epkb-"][id$="-custom-inline-css"]' );
+						const $new_custom_inline_styles_tag = $( '<style id="epkb--custom-inline-css">' + response.data.custom_inline_styles + '</style>');
+						if ( $custom_inline_styles_tag.length > 0 ) {
+							$custom_inline_styles_tag.replaceWith( $new_custom_inline_styles_tag );
+						} else {
+							$new_custom_inline_styles_tag.insertAfter( '[id^="epkb-"][id$="-inline-css"]' );
+						}
 					}
 
 					// Ensure public JS which is dependent on HTML initialization is re-initialized
@@ -439,7 +512,7 @@ jQuery( document ).ready( function( $ ) {
 				if ( kb_page_type === 'article-page' ) {
 
 					// Update search settings (after applying design preset or sync with Main Page search)
-					if ( response.data.search_design_settings ) {
+					if ( response.data.search_design_settings && $feature_settings_container.find( '[name="advanced_search_ap_presets"]' ).length > 0 ) {
 
 						// Apply preset settings for UI controls
 						for ( const [ key, value ] of Object.entries( response.data.search_design_settings ) ) {
@@ -455,7 +528,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 
 					// Update HTML of the entire Article content or specific sections
-					if ( response.data.preview_html ) {
+					if ( response.data.preview_html && response.data.preview_html.length > 0 ) {
 
 						const $newContent = $( response.data.preview_html );
 						const $templateData = $newContent.filter('#eckb-template-update-data');
@@ -480,7 +553,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 
 					// Inline styles - changed every time a module setting was changed
-					if ( response.data.inline_styles ) {
+					if ( response.data.inline_styles && response.data.inline_styles.length > 0 ) {
 						let $inlineStyles = $( '#epkb-ap-frontend-layout-inline-css' );
 						if ( $inlineStyles.length ) {
 							$inlineStyles.html( response.data.inline_styles );
@@ -508,7 +581,7 @@ jQuery( document ).ready( function( $ ) {
 				if ( kb_page_type === 'archive-page' ) {
 
 					// Update design settings (after applying design preset)
-					if ( response.data.archive_design_settings ) {
+					if ( response.data.archive_design_settings && response.data.archive_design_settings.length > 0 ) {
 
 						// Unselect preset name to prevent continuing preset applying on further settings changes
 						$feature_settings_container.find( '[name="archive_content_sub_categories_display_mode"]' ).prop( 'checked', false );
@@ -524,12 +597,12 @@ jQuery( document ).ready( function( $ ) {
 					}
 
 					// Update HTML of the entire Archive content
-					if ( response.data.preview_html ) {
+					if ( response.data.preview_html && response.data.preview_html.length > 0 ) {
 						$( '#eckb-archive-page-container' ).replaceWith( response.data.preview_html );
 					}
 
 					// Inline styles - changed every time a module setting was changed
-					if ( response.data.inline_styles ) {
+					if ( response.data.inline_styles && response.data.inline_styles.length > 0 ) {
 						let $inlineStyles = $( '#epkb-cp-frontend-layout-inline-css' );
 						if ( $inlineStyles.length ) {
 							$inlineStyles.html( response.data.inline_styles );
@@ -811,8 +884,8 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Special handling for TOC fields synchronization
-		if ( $field.attr( 'name' ) === 'toc_toggler' || 
-			 $field.attr( 'name' ) === 'toc_left' || 
+		if ( $field.attr( 'name' ) === 'toc_toggler' ||
+			 $field.attr( 'name' ) === 'toc_left' ||
 			 $field.attr( 'name' ) === 'toc_right' ) {
 			
 			ignore_setting_update_flag = true;
@@ -1011,12 +1084,12 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Unselected module does not need to trigger AJAX update for preview
-		if ( $field.closest( '.epkb-fe__feature-settings' ).attr( 'data-row-number' ) === 'none' ) {
+		if ( $field.closest( '.epkb-fe__feature-settings' ).attr( 'data-row-number' ) === 'none' && ! $field.closest( '.epkb-fe__feature-settings' ).attr( 'data-non-row-feature' ) ) {
 			return;
 		}
 
 		// For some settings need to reload the entire page
-		if ( $field.attr( 'name' ) === 'templates_for_kb' ) {
+		if ( $field.attr( 'name' ) === 'templates_for_kb' || $field.attr( 'name' ) === 'template_main_page_display_title' || $field.attr( 'name' ) === 'general_typography_font_family' ) {
 			update_preview_via_page_reload( event );
 			return;
 		}
@@ -1217,6 +1290,15 @@ jQuery( document ).ready( function( $ ) {
 				kb_config[feature + '_module_position'] = 'none';
 			}
 		});
+
+		// General typography
+		const $general_typography_input = frontendEditor.find( '[name="general_typography_font_family"]' );
+		const $general_typography_loader = frontendEditor.find( '.epkb-general_typography-loader' );
+		if ( $general_typography_input.length > 0 ) {
+			kb_config.general_typography_font_family = $general_typography_input.val();
+		} else if ( $general_typography_loader.length > 0 ) {
+			kb_config.general_typography_font_family = $general_typography_loader.data( 'selected' );
+		}
 
 		return kb_config;
 	}
@@ -1929,5 +2011,108 @@ jQuery( document ).ready( function( $ ) {
 		$( admin_report_error_form ).find( '.epkb-admin__error-form__desc' ).text( epkb_vars.fe_report_error_desc );
 		$( admin_report_error_form ).find( '#epkb-admin__error-form__message' ).val( error_message_text );
 		$( admin_report_error_form ).css( 'display', 'block' ).parent().css( 'display', 'block' );
+	}
+
+	// Update typography font family hidden input when font is selected
+	$( document ).on( 'epkb-font-selected', function( e, fontFamily ) {
+		$( '#general_typography_font_family' ).val( fontFamily );
+		$( '.epkb-general_typography-current' ).text( fontFamily );
+	});
+
+	// Load General Typography on demand
+	$( document ).on( 'click', '.epkb-general_typography-loader', function() {
+
+		let loader = $( this );
+
+		let postData = {
+			action: 'epkb_load_general_typography',
+			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+			active_font_family: loader.data( 'selected' )
+		};
+
+		epkb_send_ajax( postData, function( response ) {
+			loader.closest( '.epkb-general_typography-loader-wrap' ).replaceWith( response.data );
+			ignore_setting_update_flag = true;
+			$( '#general_typography_font_family' ).trigger( 'change' );
+			ignore_setting_update_flag = false;
+		} );
+	} );
+
+	/*************************************************************************************************
+	 *
+	 *          AJAX calls
+	 *
+	 ************************************************************************************************/
+
+	// generic AJAX call handler
+	function epkb_send_ajax( postData, refreshCallback, callbackParam, reload, alwaysCallback, $loader ) {
+
+		let errorMsg;
+		let theResponse;
+		refreshCallback = (typeof refreshCallback === 'undefined') ? 'epkb_callback_noop' : refreshCallback;
+		let loadingContainer = $( '#epkb-modular-main-page-container, #eckb-kb-template' );
+
+		$.ajax({
+			type: 'POST',
+			dataType: 'json',
+			data: postData,
+			url: epkb_vars.ajaxurl,
+			beforeSend: function (xhr)
+			{
+				if ( typeof $loader == 'undefined' || $loader === false ) {
+					epkb_loading_Dialog('show', '', loadingContainer);
+				}
+
+				if ( typeof $loader == 'object' ) {
+					epkb_loading_Dialog('show', '', $loader);
+				}
+			}
+		}).done(function (response)        {
+			theResponse = ( response ? response : '' );
+			if ( theResponse.error || typeof theResponse.message === 'undefined' ) {
+				//noinspection JSUnresolvedVariable,JSUnusedAssignment
+				errorMsg = theResponse.message ? theResponse.message : epkb_admin_notification('', epkb_vars.reload_try_again, 'error');
+			}
+
+		}).fail( function ( response, textStatus, error )        {
+			//noinspection JSUnresolvedVariable
+			errorMsg = ( error ? ' [' + error + ']' : epkb_vars.unknown_error );
+			//noinspection JSUnresolvedVariable
+			errorMsg = epkb_admin_notification(epkb_vars.error_occurred + '. ' + epkb_vars.msg_try_again, errorMsg, 'error');
+		}).always(function() {
+
+			theResponse = (typeof theResponse === 'undefined') ? '' : theResponse;
+
+			if ( typeof alwaysCallback == 'function' ) {
+				alwaysCallback( theResponse );
+			}
+
+			if ( ! reload ) {
+				epkb_loading_Dialog('remove', '', loadingContainer);
+			}
+
+			if ( errorMsg ) {
+				$('.eckb-bottom-notice-message').remove();
+				$('body').append(errorMsg).removeClass('fadeOutDown');
+
+				setTimeout( function() {
+					$('.eckb-bottom-notice-message').addClass( 'fadeOutDown' );
+				}, 10000 );
+				return;
+			}
+
+			if ( typeof refreshCallback === "function" ) {
+
+				if ( typeof callbackParam === 'undefined' ) {
+					refreshCallback(theResponse);
+				} else {
+					refreshCallback(theResponse, callbackParam);
+				}
+			} else {
+				if ( reload ) {
+					location.reload();
+				}
+			}
+		});
 	}
 });

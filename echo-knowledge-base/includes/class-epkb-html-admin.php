@@ -323,6 +323,8 @@ class EPKB_HTML_Admin {
 
 		// CASE: Horizontal boxes
 		if ( ! empty( $page_view['horizontal_boxes'] ) && is_array( $page_view['horizontal_boxes'] ) ) {	?>
+
+			<div class="epkb-admin__boxes-list__settings-title"><?php esc_html_e( 'Customize Knowledge Base Pages', 'echo-knowledge-base' ); ?></div>
 			<!-- Admin Form -->
 			<div class="epkb-setting-box-container epkb-setting-box-container--horizontal"><?php
 				foreach ( $page_view['horizontal_boxes']['boxes'] as $box_config ) {

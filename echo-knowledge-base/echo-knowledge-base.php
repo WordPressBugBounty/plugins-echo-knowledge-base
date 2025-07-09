@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 14.1.0
+ * Version: 15.0.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '14.1.0';
+	public static $version = '15.0.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -110,6 +110,10 @@ final class Echo_Knowledge_Base {
 
 		// subscribe to category actions create/edit/delete including for REST requests in Gutenberg
 		new EPKB_Categories_Admin();
+
+		//new EPKB_AI_Cron();
+		//new EPKB_AI_REST_Chat_Controller();
+		//new EPKB_AI_REST_Search_Controller();
 	}
 
 	/**
@@ -153,6 +157,7 @@ final class Echo_Knowledge_Base {
 		new EPKB_Templates();
 		new EPKB_Shortcodes();
 		new EPKB_Frontend_Editor();
+		//new EPKB_AI_Chat_Frontend();
 	}
 
 	/**
@@ -190,7 +195,7 @@ final class Echo_Knowledge_Base {
 			new EPKB_Need_Help_Features();
 			return;
 		} else if ( in_array( $action, array( 'epkb_wpml_enable', 'eckb_update_category_slug_parameter', 'eckb_update_tag_slug_parameter', 'epkb_preload_fonts','epkb_enable_legacy_open_ai',
-												'epkb_load_resource_links_icons', 'epkb_load_general_typography', 'epkb_save_access_control', 'epkb_apply_settings_changes', 'epkb_save_tools_settings' ) ) ) {
+												'epkb_load_resource_links_icons', 'epkb_load_general_typography', 'epkb_save_access_control', 'epkb_apply_settings_changes' ) ) ) {
 			new EPKB_KB_Config_Controller();
 			return;
 		} else if ( in_array( $action, array( 'epkb_reset_sequence', 'epkb_show_sequence' ) ) ) {
@@ -207,6 +212,9 @@ final class Echo_Knowledge_Base {
 			return;
 		} else if ( in_array( $action, array( 'epkb_editor_error' ) ) ) {
 			new EPKB_Frontend_Editor();
+			return;
+		} else if ( in_array( $action, array( 'epkb_ai_beta_signup' ) ) ) {
+			new EPKB_AI_Admin_Page();
 			return;
 		}
 		
@@ -240,11 +248,6 @@ final class Echo_Knowledge_Base {
 			return;
 		}
 
-		if ( in_array( $action, [ 'epkb_ai_request', 'epkb_ai_feedback' ] ) ) {
-			new EPKB_AI_Help_Sidebar_Ctrl();
-			return;
-		}
-
 		if ( $action == 'epkb_count_article_view' ) {
 			new EPKB_Article_Count_Cntrl();
 			return;
@@ -266,10 +269,9 @@ final class Echo_Knowledge_Base {
 		$request_page = empty( $_REQUEST['page'] ) ? '' : EPKB_Utilities::request_key( 'page' );
 		$admin_pages = [ 'post.php', 'edit.php', 'post-new.php', 'edit-tags.php', 'term.php' ];
 
-		// show KB notice and AI Help Sidebar on our pages or when potential KB Main Page is being edited
+		// show KB notice on our pages or when potential KB Main Page is being edited
 		if ( $is_kb_request && in_array( $pagenow, $admin_pages ) ) {
 			new EPKB_Admin_Notices();
-			new EPKB_AI_Help_Sidebar();
 		}
 
 		// article new page
@@ -282,7 +284,6 @@ final class Echo_Knowledge_Base {
 		if ( $pagenow == 'post.php' && ! empty( $_REQUEST['post'] ) && ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) {
 			$kb_post_type = get_post_type( sanitize_text_field( wp_unslash( $_REQUEST['post'] ) ) );
 			if ( EPKB_KB_Handler::is_kb_post_type( $kb_post_type ) ) {
-				new EPKB_AI_Help_Sidebar();
 				add_action( 'admin_enqueue_scripts', 'epkb_load_admin_article_page_styles' );
 			}
 		}
@@ -321,6 +322,9 @@ final class Echo_Knowledge_Base {
 		if ( ! empty( $pagenow ) && in_array( $pagenow, [ 'plugins.php', 'plugins-network.php' ] ) ) {
 			new EPKB_Deactivate_Feedback();
 		}
+		
+		// Instantiate AI admin page to register AJAX handlers (like deactivation form)
+		new EPKB_AI_Admin_Page();
 	}
 
 	public function load_text_domain() {

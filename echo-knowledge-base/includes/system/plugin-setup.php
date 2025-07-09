@@ -56,6 +56,5 @@ function epkb_deactivation() {
 
 	// Clear the permalinks to remove our post type's rules
 	flush_rewrite_rules( false );
-
 }
 register_deactivation_hook( Echo_Knowledge_Base::$plugin_file, 'epkb_deactivation' );

@@ -6,13 +6,9 @@
  * @copyright   Copyright (C) 2018, Echo Plugins
  * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-class EPKB_AI_Help_Sidebar_Ctrl {
+class EPKB_AI_Help_Sidebar_Ctrl {   // TODO remove
 
 	public function __construct() {
-		add_action( 'wp_ajax_epkb_ai_request', array( $this, 'ai_request' ) );
-		add_action( 'wp_ajax_nopriv_epkb_ai_request', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
-
-		add_action( 'wp_ajax_epkb_ai_feedback', [ $this, 'ai_feedback' ] );
 	}
 
 	/**
@@ -60,7 +56,7 @@ class EPKB_AI_Help_Sidebar_Ctrl {
 		$input_text = EPKB_Utilities::post( 'input_text', '', 'wp_editor' );
 		//$input_text = '"' . str_replace('"', "'", trim($input_text, '"')) . '"';
 
-		$openai_handler = new EPKB_OpenAI();
+		$openai_handler = new EPKB_OpenAI_Orig();
 		$fixed_input_text = $openai_handler->chat_complete(
 			[
 				[
@@ -106,7 +102,7 @@ class EPKB_AI_Help_Sidebar_Ctrl {
 		$input_text = EPKB_Utilities::post( 'input_text', '', 'wp_editor' );
 		//$input_text = '"' . str_replace('"', "'", trim($input_text, '"')) . '"';
 
-		$openai_handler = new EPKB_OpenAI();
+		$openai_handler = new EPKB_OpenAI_Orig();
 		$fixed_input_text = $openai_handler->chat_complete(
 			[
 				[
@@ -153,7 +149,7 @@ class EPKB_AI_Help_Sidebar_Ctrl {
 		$input_text = EPKB_Utilities::post( 'input_text', '', 'wp_editor' );
         //$input_text = '"' . str_replace('"', "'", trim($input_text, '"')) . '"';
 
-		$openai_handler = new EPKB_OpenAI();
+		$openai_handler = new EPKB_OpenAI_Orig();
 		$fixed_input_text = $openai_handler->chat_complete(
 			[
 				[
@@ -198,7 +194,7 @@ class EPKB_AI_Help_Sidebar_Ctrl {
 	private function generate_outline() {
 		$input_text = EPKB_Utilities::post( 'input_text', '', 'text-area' );
 
-		$openai_handler = new EPKB_OpenAI();
+		$openai_handler = new EPKB_OpenAI_Orig();
 		$outline = $openai_handler->chat_complete(
 			[
 				[
@@ -231,7 +227,7 @@ class EPKB_AI_Help_Sidebar_Ctrl {
 		$openai_api_key = EPKB_Utilities::post( 'openai_api_key' );
 
 		if ( empty( $openai_api_key ) || strpos( $openai_api_key, '...' ) === false ) {
-			$result = EPKB_OpenAI::save_openai_api_key( $openai_api_key );
+			$result = EPKB_OpenAI_Orig::save_openai_api_key( $openai_api_key );
 			if ( is_wp_error( $result ) ) {
 				self::ajax_show_error_die($result->get_error_message());
 			}
@@ -256,7 +252,7 @@ class EPKB_AI_Help_Sidebar_Ctrl {
 	private function ai_chat() {
 		$input_text = EPKB_Utilities::post( 'input_text', '', 'text-area' );
 
-		$openai_handler = new EPKB_OpenAI();
+		$openai_handler = new EPKB_OpenAI_Orig();
 		$chat_answer = $openai_handler->chat_complete(
 			[
 				[

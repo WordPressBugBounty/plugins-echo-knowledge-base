@@ -675,6 +675,22 @@ class EPKB_KB_Handler {
 		return (int)$number;
 	}
 
+	public static function reset_kb_main_pages() {
+
+		if ( ! EPKB_Utilities::is_multiple_kbs_enabled() ) {
+			return;
+		}
+
+		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs( true );
+		foreach ( $all_kb_configs as $one_kb_config ) {
+			if ( empty( $one_kb_config['kb_main_pages'] ) || ! is_array( $one_kb_config['kb_main_pages'] ) ) {
+				continue;
+			}
+
+			self::get_kb_main_pages( $one_kb_config );
+		}
+	}
+
 	/**
 	 * Return all KB Main pages that we know about. Also remove old ones.
 	 *

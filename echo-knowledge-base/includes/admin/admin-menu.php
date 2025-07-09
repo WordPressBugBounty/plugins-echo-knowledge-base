@@ -23,6 +23,9 @@ function epkb_add_plugin_menus() {
 	add_submenu_page( 'edit.php?post_type=' . $post_type_name, esc_html__( 'Configuration - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'Configuration', 'echo-knowledge-base' ),
 		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_order_articles_write', 'admin_eckb_access_frontend_editor_write'] ), 'epkb-kb-configuration', array( new EPKB_Config_Page(), 'display_kb_config_page') );
 
+	add_submenu_page( 'edit.php?post_type=' . $post_type_name, esc_html__( 'AI', 'echo-knowledge-base' ), esc_html__( 'AI', 'echo-knowledge-base' ) .
+		'&nbsp;&nbsp;<span style="color: #ff0000; font-weight: bold; font-size: 11px;">' . esc_html__( 'BETA', 'echo-knowledge-base' ) . ' !</span>', 'manage_options', 'epkb-kb-ai-chat', array( new EPKB_AI_Admin_Page(), 'display_page' ) );
+
 	do_action( 'eckb_add_kb_menu_item', $post_type_name );
 
 	add_submenu_page( 'edit.php?post_type=' . $post_type_name, esc_html__( 'Analytics - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'Analytics', 'echo-knowledge-base' ),

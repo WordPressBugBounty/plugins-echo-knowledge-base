@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Shared
 --------------------------------------------------------------*/
 @keyframes spin {
@@ -11,6 +12,14 @@
 /* Public
 --------------------------------------------------------------*/
 /* Use Search Box styles as a function to let to include its styles inside CSS selectors via '@use/@include' instead of deprecated @import */
+#eckb-article-page-container-v2 {
+  /* -------------------------------------------------------------------------
+  FIX: Override theme-wide clearfix pseudo-elements that break KB layout
+  ------------------------------------------------------------------------
+  Theme “Mesmerize” (and others) injects empty ::before/::after tables on
+  every block element, which adds stray boxes inside the Echo KB container.
+  ---------------------------------------------------------------------- */
+}
 #eckb-article-page-container-v2 .epkb-doc-search-container .epkb-search .epkb-search-box input[type=text] {
   color: #000000;
   border-style: solid !important;
@@ -678,6 +687,17 @@
   float: left;
   width: 100%;
   padding: 5px 0 5px 0;
+}
+#eckb-article-page-container-v2 div:not(.epkb-admin-dbl-icon)::before, #eckb-article-page-container-v2 div:not(.epkb-admin-dbl-icon)::after,
+#eckb-article-page-container-v2 article:not(.epkb-admin-dbl-icon)::before,
+#eckb-article-page-container-v2 article:not(.epkb-admin-dbl-icon)::after,
+#eckb-article-page-container-v2 section:not(.epkb-admin-dbl-icon)::before,
+#eckb-article-page-container-v2 section:not(.epkb-admin-dbl-icon)::after,
+#eckb-article-page-container-v2 ul:not(.epkb-admin-dbl-icon)::before,
+#eckb-article-page-container-v2 ul:not(.epkb-admin-dbl-icon)::after {
+  content: none !important;
+  display: revert !important;
+  width: auto !important;
 }
 
 @media only screen and (min-width: 768px) {
@@ -2315,6 +2335,11 @@
 .eckb-kb-template {
   width: 100%;
 }
+.eckb-kb-template::before, .eckb-kb-template::after {
+  content: none !important;
+  display: revert !important;
+  width: auto !important;
+}
 
 /* Modular Main Page
 --------------------------------------------------------------*/
@@ -3198,6 +3223,73 @@
 }
 #epkb-ml__module-search #epkb-ml-search-classic-layout .epkb-ml-search-input-height--large #epkb-ml-search-box .epkb-ml-search-box__btn .epkbfa-ml-loading-icon {
   top: 17px !important;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section--above {
+  margin-bottom: 30px;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section--below {
+  margin-top: 30px;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #F0F0F0;
+  border: 1px solid #DDDDDD;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-button:hover {
+  background-color: #E0E0E0;
+  border-color: #CCCCCC;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-button__icon {
+  margin-right: 8px;
+  font-size: 18px;
+  color: #666666;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-button__text {
+  color: #333333;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer {
+  display: none;
+  margin-top: 15px;
+  padding: 20px;
+  background-color: #F9F9F9;
+  border: 1px solid #E0E0E0;
+  border-radius: 5px;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__loading .epkbfa-spin {
+  animation: spin 1s infinite linear;
+  margin-right: 10px;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__content {
+  line-height: 1.6;
+  color: #333333;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__content p {
+  margin-bottom: 10px;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__content p:last-child {
+  margin-bottom: 0;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__error {
+  color: #D32F2F;
+  padding: 10px;
+  background-color: #FFEBEE;
+  border-radius: 3px;
 }
 
 @media only screen and (max-width: 981px) {

@@ -212,9 +212,10 @@ class EPKB_Articles_Setup {
 		$is_modular_page = $args['config']['modular_main_page_toggle'] == 'on';
 		$is_sidebar_layout = $args['config']['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT;
 		$is_kb_main_page_search_off = $is_modular_page ? ! EPKB_Core_Utilities::is_module_present( $args['config'], 'search' ) : $args['config']['search_layout'] == 'epkb-search-form-0';
+		$is_article_search_settings_off = $args['config']['article_search_toggle'] == 'off';
 
 		// SEARCH BOX OFF: no search box if Article Page search is off except Sidebar Layout that behaves like the Main Page
-		$is_article_search_off = $is_sidebar_layout ? $is_kb_main_page_search_off : $args['config']['article_search_toggle'] == 'off';
+		$is_article_search_off = $is_sidebar_layout ? $is_kb_main_page_search_off : $is_article_search_settings_off;
 		if ( $is_article_search_off ) {
 			return;
 		}
@@ -222,6 +223,18 @@ class EPKB_Articles_Setup {
 		// The Sidebar layout on Modular KB Main Page will not output search box as Modular Search will be shown instead
 		if ( EPKB_Utilities::is_kb_main_page() && $is_sidebar_layout && $is_modular_page ) {
 			return;
+		}
+
+		// SEARCH BOX OFF: user uses blocks on KB Main Page so user has option to disable search on Article Page
+		if ( $is_article_search_settings_off && EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $args['config'] ) ) {
+			return;
+			/* $main_page = get_post( EPKB_KB_Handler::get_first_kb_main_page_id( $args['config'] ) );
+			if ( ! empty( $main_page ) ) {
+				$kb_main_page_block_layout = EPKB_Block_Utilities::get_kb_block_layout( $main_page );
+				if ( ! empty( $kb_main_page_block_layout ) ) {
+					return;
+				}
+			} */
 		}
 
 		EPKB_KB_Search::get_search_form_output( $args['config'] );

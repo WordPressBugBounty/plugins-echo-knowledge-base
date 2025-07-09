@@ -647,33 +647,6 @@ jQuery(document).ready(function($) {
 
 			return false;
 		});
-
-		// Tools Settings Form handler
-		$( '#epkb-tools-settings-form' ).on( 'submit', function( e ) {
-			e.preventDefault();
-			
-			let form = $( this );
-			let postData = {
-				action: 'epkb_save_tools_settings',
-				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
-				epkb_kb_id: $( '#epkb-list-of-kbs' ).val(),
-				template_main_page_display_title: form.find( 'input[name="template_main_page_display_title"]' ).is(':checked') ? 'on' : 'off',
-				
-				'general_typography[font-family]': form.find( '.epkb-input-custom-dropdown__option--selected' ).attr( 'data-value' ),
-				kb_name: form.find( 'input[name="kb_name"]' ).val(),
-				frontend_editor_switch_visibility_toggle: form.find( 'input[name="frontend_editor_switch_visibility_toggle"]' ).is(':checked') ? 'on' : 'off',
-				epkb_ml_custom_css: form.find( 'textarea[name="epkb_ml_custom_css"]' ).val()
-			};
-
-			epkb_send_ajax( postData, function( response ) {
-				$( '.eckb-top-notice-message' ).remove();
-				if ( typeof response.message !== 'undefined' ) {
-					$( 'body' ).append( response.message );
-				}
-			} );
-
-			return false;
-		});
 		
 		// Update typography font family hidden input when font is selected
 		$( document ).on( 'epkb-font-selected', function( e, fontFamily ) {

@@ -450,6 +450,9 @@ abstract class EPKB_Abstract_Block {
 			return;
 		}
 
+		// ensure KB Main Pages are cleaned up
+		EPKB_KB_Handler::reset_kb_main_pages();
+
 		// for layout block need to update 'templates_for_kb' in the current KB configuration:
 		// - the KB Template toggle for the block Main Page in Settings UI tab of the admin page is hidden (since they are controlled by the layout block settings in Gutenberg Editor).
 		// - When user chooses KB Template or KB Custom Block Page template then we need to update the value in the KB config (e.g. not only the block attribute)

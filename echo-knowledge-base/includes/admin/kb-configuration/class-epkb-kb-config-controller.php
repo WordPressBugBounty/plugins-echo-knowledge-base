@@ -33,9 +33,6 @@ class EPKB_KB_Config_Controller {
 
 		add_action( 'wp_ajax_epkb_apply_settings_changes', array( $this, 'apply_settings_changes' ) );
 		add_action( 'wp_ajax_nopriv_epkb_apply_settings_changes', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
-
-		add_action( 'wp_ajax_epkb_save_tools_settings', array( $this, 'save_tools_settings' ) );
-		add_action( 'wp_ajax_nopriv_epkb_save_tools_settings', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 	}
 
 	/**
@@ -342,75 +339,5 @@ class EPKB_KB_Config_Controller {
 		$article_sidebar_component_priority['toc_content'] = sanitize_text_field( $new_config['toc_content'] );
 
 		return $article_sidebar_component_priority;
-	}
-
-	/**
-	 * Save tools settings
-	 */
-	public function save_tools_settings() {
-
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
-
-		// get KB ID
-		$kb_id = (int)EPKB_Utilities::post( 'epkb_kb_id', 0 );
-		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
-			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 410 ) );
-		}
-
-		// get current KB configuration
-		$orig_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id, true );
-		if ( is_wp_error( $orig_config ) ) {
-			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 8, $orig_config ) );
-		}
-
-		$new_config = array();
-
-		// Handle KB Main Page Title setting
-		if ( EPKB_Utilities::post( 'template_main_page_display_title' ) !== null ) {
-			$new_config['template_main_page_display_title'] = EPKB_Utilities::post( 'template_main_page_display_title' ) === 'on' ? 'on' : 'off';
-		}
-
-		// Handle Typography settings
-		$font_family = EPKB_Utilities::post( 'general_typography' );
-		if ( ! empty( $font_family ) && is_array( $font_family ) && isset( $font_family['font-family'] ) ) {
-			$new_config['general_typography'] = $orig_config['general_typography'];
-			$new_config['general_typography']['font-family'] = sanitize_text_field( $font_family['font-family'] );
-		}
-
-		// Handle KB Nickname
-		$kb_name = EPKB_Utilities::post( 'kb_name' );
-		if ( ! empty( $kb_name ) ) {
-			$new_config['kb_name'] = sanitize_text_field( $kb_name );
-		}
-
-		// Handle Frontend Editor Toggle
-		if ( EPKB_Utilities::post( 'frontend_editor_switch_visibility_toggle' ) !== null ) {
-			$new_config['frontend_editor_switch_visibility_toggle'] = EPKB_Utilities::post( 'frontend_editor_switch_visibility_toggle' ) === 'on' ? 'on' : 'off';
-		}
-
-		// save Modular Main Page custom CSS if defined
-		$custom_css = EPKB_Utilities::post( 'epkb_ml_custom_css' );
-		$new_config['modular_main_page_custom_css_toggle'] = 'off';
-		if ( ! empty( $custom_css ) ) {
-			$ml_custom_css = trim( wp_kses( $custom_css, [] ) );
-			$new_config['modular_main_page_custom_css_toggle'] = empty( $ml_custom_css ) ? 'off' : 'on';
-			if ( $new_config['modular_main_page_custom_css_toggle'] == 'on' ) {
-				$result = EPKB_Utilities::save_kb_option( $kb_id, 'epkb_ml_custom_css', $ml_custom_css );
-				if ( is_wp_error( $result ) ) {
-					EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 35, $result ) );
-				}
-			}
-		}
-
-		// If we have config changes to save
-		if ( ! empty( $new_config ) ) {
-			$new_config = array_merge( $orig_config, $new_config );
-			$result = epkb_get_instance()->kb_config_obj->update_kb_configuration( $kb_id, $new_config );
-			if ( is_wp_error( $result ) ) {
-				EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 412, $result ) );
-			}
-		}
-
-		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );
 	}
 }

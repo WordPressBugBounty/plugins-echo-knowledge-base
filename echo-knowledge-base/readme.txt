@@ -7,7 +7,7 @@ Tags: knowledge base, knowledgebase, documentation, docs, faq
 Requires at least: 5.2
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 14.1.0
+Stable tag: 15.0.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -422,6 +422,11 @@ For more information about Pro features, visit our [Pricing Page](https://www.ec
 
 
 == Changelog ==
+
+= 15.0.0 =
+Release Date: July 7, 2025
+* New: coming soon AI features
+* Fix: Cleanup and minor fixes
 
 = 14.1.0 =
 Release Date: June 28, 2025

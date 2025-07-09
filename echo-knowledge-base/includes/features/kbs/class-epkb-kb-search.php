@@ -38,6 +38,13 @@ class EPKB_KB_Search {
 		$search_terms = str_replace('?', '', $search_terms);
 		$search_terms = str_replace( array( "\r", "\n" ), '', $search_terms );
 
+		// Normalise typographic quotes/apostrophes to straight ASCII Mobile keyboards often insert U+2018 – U+201D which break MySQL full-text search. Keep it server-side so ALL callers  (widgets, REST, future apps) benefit.
+		$search_terms = str_replace(
+			array( "\u{2018}", "\u{2019}", "\u{201C}", "\u{201D}" ),
+			array( '\'', '\'', '"', '"' ),
+			$search_terms
+		);
+
 		// require minimum size of search word(s)
 		if ( empty( $search_terms ) ) {
 			wp_die( wp_json_encode( array( 'status' => 'success', 'search_result' => esc_html( $kb_config['min_search_word_size_msg'] ) ) ) );
@@ -193,7 +200,7 @@ class EPKB_KB_Search {
 				<<?php echo esc_attr( $search_title_tag_escaped ); ?> class="epkb-doc-search-container__title" <?php echo $style3_escaped; ?>> <?php echo esc_html( $search_title ); ?></<?php echo esc_attr( $search_title_tag_escaped ); ?>>   <?php
 			}	?>
 
-			<form id="epkb_search_form" <?php echo $form_style_escaped . ' ' . $class1_escaped; ?> method="get" action="/">
+			<form id="epkb_search_form" <?php echo $form_style_escaped . ' ' . $class1_escaped; ?> method="get" onsubmit="return false;">
 
 				<div class="epkb-search-box">
 					<input type="text" <?php echo $style4_escaped; ?> id="epkb_search_terms" aria-label="<?php echo esc_attr( $kb_config[$prefix . 'search_box_hint'] ); ?>" name="s" value="" placeholder="<?php echo esc_attr( $kb_config[$prefix . 'search_box_hint'] ); ?>" aria-controls="epkb_search_results" >

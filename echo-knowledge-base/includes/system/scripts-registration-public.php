@@ -228,7 +228,7 @@ function epkb_enqueue_public_resources( $kb_id=0 ) {
 
 	wp_enqueue_script( 'epkb-public-scripts' );
 
-	epkb_enqueue_google_fonts();
+	epkb_enqueue_google_fonts( $kb_config );
 	epkb_enqueue_the_content_scripts();
 }
 add_action( 'epkb_enqueue_scripts', 'epkb_enqueue_public_resources' ); // use this action in any place to add scripts $kb_id as a parameter
@@ -452,10 +452,7 @@ function epkb_frontend_kb_theme_styles_now( $kb_config, $css_file_slug ) {
 /**
  * Enqueue fonts that are configured in KB config
  */
-function epkb_enqueue_google_fonts() {
-
-	$kb_id = EPKB_Utilities::get_eckb_kb_id();
-	$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
+function epkb_enqueue_google_fonts( $kb_config ) {
 	foreach ( $kb_config as $name => $value ) {
 		if ( is_array( $value ) && ! empty( $value['font-family'] ) ) {
 			$font_link = EPKB_Typography::get_google_font_link( $value['font-family'] );

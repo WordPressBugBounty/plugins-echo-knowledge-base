@@ -1,34 +1,3 @@
-/**
- * -- CSS Rules: --
-
-   All Classes must have a KB Prefix
-   If you cannot assign an element a KB prefix try to have a container div that has the KB prefix.
-
-   CSS Structure will be based on the BEM Methodology
-   Ref: http://getbem.com/introduction/
-   		https://www.toptal.com/css/introduction-to-bem-methodology
-
-   -- BEM  Reference guide --
-	Block names:
-		HTML:  <div class="block">...</div>
-		CSS :  .block { color: #042; }
-	Child Element names:
-		Note: Usually contain parent name separated by two __
-		HTML:  <span class="block__elem"></span>
-		CSS :  .block__elem { color: #042; }
-
-	Modifier names:
-		Note:  end follows with two --
-		HTML:  <div class="block block--size-big
-		CSS :  .block__elem--mod { }
-
-	A dash between names is a word separator. Example
-		block-list, main-container
-
-   	-- BreakPoints: --
-		Tablet: xxx
-		Mobile: xxx
- */
 /* Shared
 --------------------------------------------------------------*/
 /**
@@ -651,6 +620,11 @@
 .eckb-kb-template {
   width: 100%;
 }
+.eckb-kb-template::before, .eckb-kb-template::after {
+  content: none !important;
+  display: revert !important;
+  width: auto !important;
+}
 
 /* Category Archive Version 3
 Since @ version: 11.10.0
@@ -1130,6 +1104,73 @@ Note: We will NOT be using any v3 suffix. But using no suffix for V3
 }
 #eckb-archive-page-container #epkb-ml__module-search #epkb-ml-search-classic-layout .epkb-ml-search-input-height--large #epkb-ml-search-box .epkb-ml-search-box__btn .epkbfa-ml-loading-icon {
   top: 17px !important;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section--above {
+  margin-bottom: 30px;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section--below {
+  margin-top: 30px;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #F0F0F0;
+  border: 1px solid #DDDDDD;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-button:hover {
+  background-color: #E0E0E0;
+  border-color: #CCCCCC;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-button__icon {
+  margin-right: 8px;
+  font-size: 18px;
+  color: #666666;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-button__text {
+  color: #333333;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer {
+  display: none;
+  margin-top: 15px;
+  padding: 20px;
+  background-color: #F9F9F9;
+  border: 1px solid #E0E0E0;
+  border-radius: 5px;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__loading .epkbfa-spin {
+  animation: spin 1s infinite linear;
+  margin-right: 10px;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__content {
+  line-height: 1.6;
+  color: #333333;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__content p {
+  margin-bottom: 10px;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__content p:last-child {
+  margin-bottom: 0;
+}
+#eckb-archive-page-container #epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__error {
+  color: #D32F2F;
+  padding: 10px;
+  background-color: #FFEBEE;
+  border-radius: 3px;
 }
 @media only screen and (max-width: 981px) {
   #eckb-archive-page-container .epkb-ml__row #epkb-ml__module-search,
@@ -1850,6 +1891,17 @@ Note: We will NOT be using any v3 suffix. But using no suffix for V3
 #eckb-archive-page-container button:hover,
 #eckb-archive-page-container button:focus {
   background-color: transparent;
+}
+#eckb-archive-page-container div:not(.epkb-admin-dbl-icon)::before, #eckb-archive-page-container div:not(.epkb-admin-dbl-icon)::after,
+#eckb-archive-page-container article:not(.epkb-admin-dbl-icon)::before,
+#eckb-archive-page-container article:not(.epkb-admin-dbl-icon)::after,
+#eckb-archive-page-container section:not(.epkb-admin-dbl-icon)::before,
+#eckb-archive-page-container section:not(.epkb-admin-dbl-icon)::after,
+#eckb-archive-page-container ul:not(.epkb-admin-dbl-icon)::before,
+#eckb-archive-page-container ul:not(.epkb-admin-dbl-icon)::after {
+  content: none !important;
+  display: revert !important;
+  width: auto !important;
 }
 
 @media only screen and (min-width: 981px) {

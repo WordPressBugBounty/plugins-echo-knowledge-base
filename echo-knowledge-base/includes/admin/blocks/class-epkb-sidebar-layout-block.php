@@ -99,6 +99,7 @@ final class EPKB_Sidebar_Layout_Block extends EPKB_Abstract_Block {
 		$block_attributes['article-right-sidebar-match'] = 'off';
 		$block_attributes['article-mobile-break-point-v2'] = '768';
 		$block_attributes['article-tablet-break-point-v2'] = '1025';
+		$block_attributes['article_search_toggle'] = 'on';
 
 		$layout_output = EPKB_Articles_Setup::get_article_content_and_features( $temp_article, $temp_article->post_content, $block_attributes );
 		$handler->set_sidebar_layout_content( $layout_output );
