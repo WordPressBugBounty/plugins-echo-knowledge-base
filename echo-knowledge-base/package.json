@@ -6,7 +6,7 @@
 	"license": "GPL-2.0-or-later",
 	"scripts": {
 		
-		"build-all-js": "npm run minify-public-scripts-js && npm run minify-public-the-content-js && npm run minify-admin-plugin-pages-js && npm run minify-admin-form-controls-js && npm run minify-admin-ai-help-sidebar-js && npm run minify-admin-analytics-js && npm run minify-admin-convert-js && npm run minify-admin-feedback-js && npm run minify-admin-kb-article-edit-script-js && npm run minify-admin-kb-setup-wizard-script-js && npm run minify-admin-kb-wizard-script-js && npm run minify-admin-ui-js && npm run minify-admin-ai-js && npm run minify-error-handlers-js && npm run minify-faq-shortcode-scripts-js && npm run minify-frontend-editor-js",
+		"build-all-js": "npm run minify-public-scripts-js && npm run minify-public-the-content-js && npm run minify-admin-plugin-pages-js && npm run minify-admin-form-controls-js && npm run minify-admin-ai-help-sidebar-js && npm run minify-admin-analytics-js && npm run minify-admin-convert-js && npm run minify-admin-feedback-js && npm run minify-admin-kb-article-edit-script-js && npm run minify-admin-kb-setup-wizard-script-js && npm run minify-admin-kb-wizard-script-js && npm run minify-admin-ui-js && npm run minify-admin-ai-js && npm run minify-error-handlers-js && npm run minify-faq-shortcode-scripts-js && npm run minify-frontend-editor-js && npm run minify-ai-chat-js && npm run minify-ai-chat-api-js && npm run minify-ai-chat-session-js && npm run minify-ai-chat-util-js",
 		
 		"watch-admin-plugin-pages-css": "cross-env CHOKIDAR_USEPOLLING=true WATCHPACK_POLLING=true sass --watch --no-source-map css/scss/admin_plugin_pages.scss:css/admin-plugin-pages.css",
 		"build-admin-plugin-pages-css": "npm run __build-admin-plugin-pages-scss-to-css && npm run __postcss-admin-plugin-pages-css && npm run __minify-admin-plugin-pages-css && npm run __minified-postcss-admin-plugin-pages-css",
@@ -42,6 +42,9 @@
 		"minify-faq-shortcode-scripts-js": "npm exec -- terser js/faq-shortcode-scripts.js -o --compress --mangle --output js/faq-shortcode-scripts.min.js",
 		"minify-frontend-editor-js": "npm exec -- terser js/frontend-editor.js -o --compress --mangle --output js/frontend-editor.min.js",
 		"minify-ai-chat-js": "npm exec -- terser js/ai-chat.js -o --compress --mangle --output js/ai-chat.min.js",
+		"minify-ai-chat-api-js": "npm exec -- terser js/ai-chat-api.js -o --compress --mangle --output js/ai-chat-api.min.js",
+		"minify-ai-chat-session-js": "npm exec -- terser js/ai-chat-session.js -o --compress --mangle --output js/ai-chat-session.min.js",
+		"minify-ai-chat-util-js": "npm exec -- terser js/ai-chat-util.js -o --compress --mangle --output js/ai-chat-util.min.js",
 
 		"build-all-mp-modular-layouts-css": "npm run build-mp-frontend-modular-basic-layout-css && npm run build-mp-frontend-modular-tab-layout-css && npm run build-mp-frontend-modular-category-layout-css && npm run build-mp-frontend-modular-classic-layout-css && npm run build-mp-frontend-modular-drill-down-layout-css && npm run build-mp-frontend-modular-sidebar-layout-css && npm run build-mp-frontend-modular-grid-layout-css",
 
@@ -309,13 +312,14 @@
 	"devDependencies": {
 		"@wordpress/scripts": "^30.18.0",
 		"autoprefixer": "^10.4.21",
+		"cross-env": "^7.0.3",
 		"postcss": "^8.5.4",
 		"postcss-cli": "^11.0.1",
 		"sass": "^1.89.1",
-		"shx": "^0.4.0",
-		"cross-env": "^7.0.3"
+		"shx": "^0.4.0"
 	},
 	"dependencies": {
-		"@wordpress/blocks": "^14.14.0"
+		"@wordpress/blocks": "^14.14.0",
+		"marked": "^16.0.0"
 	}
 }

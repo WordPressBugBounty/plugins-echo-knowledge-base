@@ -22,11 +22,8 @@ class EPKB_AI_Chat_Frontend {
 			return;
 		}
 
-		// Get the KB configuration
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( EPKB_KB_Config_DB::DEFAULT_KB_ID ); // TODO determine KB ID
-		
 		// Check if AI chat is enabled
-		if ( empty( $kb_config['ai_chat_enabled'] ) || $kb_config['ai_chat_enabled'] !== 'on' ) {
+		if ( ! EPKB_AI_Utilities::is_ai_chat_enabled() ) {
 			return;
 		}
 		
@@ -71,9 +68,13 @@ class EPKB_AI_Chat_Frontend {
 		/**
 	 * Return current widget
 	 *
-	 * @return array|null
-	 */
+	 * @return bool
+		 */
 	private static function can_display_chat_widget() {
+
+		if ( ! EPKB_AI_Utilities::is_ai_chat_enabled() ) {
+			return false;
+		}
 
 		// is this page or post or main page to display the Help Dialog on?
 		$post = get_queried_object();

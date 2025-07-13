@@ -1,6 +1,162 @@
 /* global jQuery */
 (function ($) {
 	$(function () {
+		
+		// Priority handlers for chat conversations table - must run before generic handlers
+		function setupChatTableDeleteHandlers() {
+			// Delete selected chat conversations - only for chat table
+			$(document).on('click', '#delete-selected', function(e) {
+				let $button = $(this);
+				let $container = $button.closest('.epkb-submissions-table-container');
+				let $table = $container.find('table');
+				
+				// Only handle if this is the chat conversations table
+				if ($table.attr('id') !== 'epkb-chat-conversations-table') {
+					return;
+				}
+				
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation(); // Prevent other handlers
+				
+				let selectedIds = [];
+				
+				$table.find('.select-row:checked').each(function() {
+					let conversationId = $(this).closest('tr').data('id');
+					if (conversationId) {
+						selectedIds.push(conversationId);
+					}
+				});
+				
+				if (selectedIds.length === 0) {
+					epkb_show_error_notification(epkb_vars.no_conversations_selected || 'No conversations selected.');
+					return;
+				}
+				
+				if (!confirm((epkb_vars.confirm_delete_selected || 'Are you sure you want to delete {count} selected conversation(s)?').replace('{count}', selectedIds.length))) {
+					return;
+				}
+				
+				// Show loading
+				epkb_loading_Dialog('show', epkb_vars.deleting_conversations || 'Deleting conversations...');
+				
+				// Make REST API call to delete selected conversations
+				$.ajax({
+					url: (epkb_vars.wpApiSettings ? epkb_vars.wpApiSettings.root : '/wp-json/') + 'epkb/v1/ai-chat/admin/conversations/bulk',
+					type: 'DELETE',
+					data: JSON.stringify({ ids: selectedIds }),
+					contentType: 'application/json',
+					beforeSend: function(xhr) {
+						if (epkb_vars.wpApiSettings && epkb_vars.wpApiSettings.nonce) {
+							xhr.setRequestHeader('X-WP-Nonce', epkb_vars.wpApiSettings.nonce);
+						} else if (epkb_vars.nonce) {
+							xhr.setRequestHeader('X-WP-Nonce', epkb_vars.nonce);
+						}
+					},
+					success: function(response) {
+						epkb_loading_Dialog('remove');
+						
+						if (response && response.deleted) {
+							epkb_show_success_notification(response.message || (epkb_vars.conversations_deleted || '{count} conversation(s) deleted successfully.').replace('{count}', response.deleted));
+							
+							// Remove deleted rows from table
+							selectedIds.forEach(function(id) {
+								$table.find('tr[data-id="' + id + '"]').fadeOut(400, function() {
+									$(this).remove();
+									
+									// Update checkbox states
+									$container.find('#delete-selected').prop('disabled', true);
+									$('#select-all-epkb-chat-conversations-table').prop('checked', false);
+									
+									// Clear conversation details if deleted conversation was selected
+									let $detailsContent = $('.epkb-ai-conversation-messages');
+									if ($detailsContent.find('[data-conversation-id="' + id + '"]').length > 0) {
+										$detailsContent.empty();
+										$('.epkb-ai-no-selection').show();
+									}
+								});
+							});
+						} else {
+							epkb_show_error_notification(epkb_vars.failed_delete_conversations || 'Failed to delete conversations.');
+						}
+					},
+					error: function(xhr, status, error) {
+						epkb_loading_Dialog('remove');
+						console.error('Failed to delete conversations:', error);
+						epkb_show_error_notification(epkb_vars.failed_delete_conversations || 'Failed to delete conversations.');
+					}
+				});
+				
+				return false; // Ensure no other handlers run
+			});
+
+			// Delete all chat conversations - only for chat table
+			$(document).on('click', '#delete-all', function(e) {
+				let $button = $(this);
+				let $container = $button.closest('.epkb-submissions-table-container');
+				let $table = $container.find('table');
+				
+				// Only handle if this is the chat conversations table
+				if ($table.attr('id') !== 'epkb-chat-conversations-table') {
+					return;
+				}
+				
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation(); // Prevent other handlers
+				
+				if (!confirm(epkb_vars.confirm_delete_all || 'Are you sure you want to delete ALL chat conversations? This action cannot be undone.')) {
+					return;
+				}
+				
+				// Show loading
+				epkb_loading_Dialog('show', epkb_vars.deleting_all_conversations || 'Deleting all conversations...');
+				
+				// Make REST API call to delete all conversations
+				$.ajax({
+					url: (epkb_vars.wpApiSettings ? epkb_vars.wpApiSettings.root : '/wp-json/') + 'epkb/v1/ai-chat/admin/conversations',
+					type: 'DELETE',
+					beforeSend: function(xhr) {
+						if (epkb_vars.wpApiSettings && epkb_vars.wpApiSettings.nonce) {
+							xhr.setRequestHeader('X-WP-Nonce', epkb_vars.wpApiSettings.nonce);
+						} else if (epkb_vars.nonce) {
+							xhr.setRequestHeader('X-WP-Nonce', epkb_vars.nonce);
+						}
+					},
+					success: function(response) {
+						epkb_loading_Dialog('remove');
+						
+						if (response && response.deleted !== undefined) {
+							epkb_show_success_notification(response.message || (epkb_vars.all_conversations_deleted || 'All conversations deleted successfully.'));
+							
+							// Clear the table
+							$table.find('tbody').empty().append(
+								'<tr class="epkb-no-results"><td colspan="100%">' + (epkb_vars.no_conversations_found || 'No conversations found.') + '</td></tr>'
+							);
+							
+							// Clear conversation details
+							$('.epkb-ai-conversation-messages').empty();
+							$('.epkb-ai-no-selection').show();
+							
+							// Disable buttons
+							$container.find('#delete-selected, #delete-all').prop('disabled', true);
+							$('#select-all-epkb-chat-conversations-table').prop('checked', false);
+						} else {
+							epkb_show_error_notification(epkb_vars.failed_delete_all || 'Failed to delete all conversations.');
+						}
+					},
+					error: function(xhr, status, error) {
+						epkb_loading_Dialog('remove');
+						console.error('Failed to delete all conversations:', error);
+						epkb_show_error_notification(epkb_vars.failed_delete_all || 'Failed to delete all conversations.');
+					}
+				});
+				
+				return false; // Ensure no other handlers run
+			});
+		}
+		
+		setupChatTableDeleteHandlers();
 
 		// vector store initialization.
 		$(document).on(
@@ -41,7 +197,7 @@
 					if ($button.prop('disabled')) {
 						$button.prop('disabled', false).html(originalButtonHtml);
 					}
-				}, false);
+				}, false, false);
 			}
 		);
 
@@ -84,7 +240,7 @@
 					if ($button.prop('disabled')) {
 						$button.prop('disabled', false).html(originalButtonHtml);
 					}
-				}, false);
+				}, false, false);
 			}
 		);
 
@@ -127,7 +283,7 @@
 					if ($button.prop('disabled')) {
 						$button.prop('disabled', false).html(originalButtonHtml);
 					}
-				});
+				}, false);
 			}
 		);
 
@@ -170,7 +326,7 @@
 					if ($button.prop('disabled')) {
 						$button.prop('disabled', false).html(originalButtonHtml);
 					}
-				});
+				}, false);
 			}
 		);
 
@@ -185,7 +341,8 @@
 					labels_settings_box 	  = $(".epkb-ai__labels-settings"),
 					disclaimer_settings_box   = $(".epkb-ai__disclaimer-settings"),
 					search_settings_box       = $(".epkb-ai__search-settings"),
-					chat_settings_box         = $(".epkb-ai__chat-settings");
+					chat_settings_box         = $(".epkb-ai__chat-settings"),
+					beta_settings_box         = $(".epkb-ai__beta-settings");
 
 				let disclaimer_accepted = [];
 				disclaimer_settings_box.find('[name="disclaimer_accepted"]:checked').each(function() {
@@ -202,13 +359,17 @@
 					disclaimer_accepted: disclaimer_accepted,
 					ai_search_enabled: search_settings_box.find('[name="ai_search_enabled"]').is(':checked') ? 'on' : 'off',
 					ai_chat_enabled: chat_settings_box.find('[name="ai_chat_enabled"]').is(':checked') ? 'on' : 'off',
+					ai_beta_access_code: beta_settings_box.find('[name="ai_beta_access_code"]').val(),
 				};
 
+				// Show loading dialog with custom message
+				epkb_loading_Dialog("show", epkb_vars.saving_settings || "Saving settings...");
+				
 				epkb_send_ajax(postData, function (response) {
 					if (!response.error && typeof response.message != "undefined") {
 						epkb_show_success_notification(response.message);
 					}
-				});
+				}, null, false, null, false);
 
 				return false;
 			}
@@ -246,23 +407,80 @@
 			$noSelection.hide();
 			$detailsContent.html('<div class="epkb-ai-loading"><div class="epkb-ai-spinner"></div></div>').show();
 
-			// Load conversation details
-			let postData = {
-				action: mode === 'chat' ? 'epkb_get_chat_table_conversation_details' : 'epkb_get_search_table_conversation_details',
-				conversation_id: conversationId,
-				mode: mode,
-				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
-				epkb_kb_id: $('#epkb-list-of-kbs').val()
-			};
-
-			epkb_send_ajax(postData, function(response) {
-				if (response && response.html) {
-					$detailsContent.html(response.html);
-				} else {
-					$detailsContent.html('<p class="epkb-ai-error">Failed to load conversation details.</p>');
+			// Load conversation details using REST API
+			let restUrl = (epkb_vars.wpApiSettings ? epkb_vars.wpApiSettings.root : '/wp-json/') + 'epkb/v1/ai-chat/admin/conversations/' + conversationId;
+			
+			$.ajax({
+				url: restUrl,
+				type: 'GET',
+				beforeSend: function(xhr) {
+					// Add nonce header for authentication
+					if (epkb_vars.wpApiSettings && epkb_vars.wpApiSettings.nonce) {
+						xhr.setRequestHeader('X-WP-Nonce', epkb_vars.wpApiSettings.nonce);
+					} else if (epkb_vars.nonce) {
+						xhr.setRequestHeader('X-WP-Nonce', epkb_vars.nonce);
+					}
+				},
+				success: function(response) {
+					if (response && response.messages) {
+						// Format the conversation HTML
+						let html = '<div class="epkb-ai-conversation-details">';
+						html += '<div class="epkb-ai-conversation-header">';
+						html += '<strong>' + (epkb_vars.user_label || 'User') + ':</strong> ' + response.user + '<br>';
+						html += '<strong>' + (epkb_vars.created_label || 'Created') + ':</strong> ' + response.created;
+						html += '</div>';
+						html += '<div class="epkb-ai-messages">';
+						
+						response.messages.forEach(function(message) {
+							let roleClass = message.role === 'user' ? 'epkb-ai-user-message' : 'epkb-ai-assistant-message';
+							let roleLabel = message.role === 'user' ? (epkb_vars.user_label || 'User') : (epkb_vars.assistant_label || 'Assistant');
+							html += '<div class="epkb-ai-message ' + roleClass + '">';
+							html += '<div class="epkb-ai-message-role">' + roleLabel + '</div>';
+							html += '<div class="epkb-ai-message-content">' + message.content + '</div>';
+							if (message.timestamp) {
+								html += '<div class="epkb-ai-message-timestamp">' + message.timestamp + '</div>';
+							}
+							html += '</div>';
+						});
+						
+						html += '</div></div>';
+						$detailsContent.html(html);
+					} else {
+						$detailsContent.html('<p class="epkb-ai-error">' + (epkb_vars.failed_load_conversation || 'Failed to load conversation details.') + '</p>');
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('Failed to load conversation details:', error);
+					$detailsContent.html('<p class="epkb-ai-error">' + (epkb_vars.failed_load_conversation || 'Failed to load conversation details.') + '</p>');
 				}
 			});
 		});
+
+		// Handle checkbox selection for chat conversations
+		$(document).on('change', '#epkb-chat-conversations-table .select-row', function() {
+			let $table = $(this).closest('table');
+			let $container = $table.closest('.epkb-submissions-table-container');
+			let checkedCount = $table.find('.select-row:checked').length;
+			
+			// Update select all checkbox state
+			let totalCheckboxes = $table.find('.select-row').length;
+			$('#select-all-epkb-chat-conversations-table').prop('checked', checkedCount === totalCheckboxes && totalCheckboxes > 0);
+			
+			// Enable/disable delete selected button
+			$container.find('#delete-selected').prop('disabled', checkedCount === 0);
+		});
+
+		// Handle select all checkbox for chat conversations
+		$(document).on('change', '#select-all-epkb-chat-conversations-table', function() {
+			let isChecked = $(this).prop('checked');
+			let $table = $('#epkb-chat-conversations-table');
+			let $container = $table.closest('.epkb-submissions-table-container');
+			$table.find('.select-row').prop('checked', isChecked);
+			
+			// Enable/disable delete selected button
+			$container.find('#delete-selected').prop('disabled', !isChecked || $table.find('.select-row').length === 0);
+		});
+
 
 		// Add data-mode attribute to tables for identification
 		$(document).ready(function() {
@@ -363,13 +581,12 @@
 				data: postData,
 				url: ajaxurl,
 				beforeSend: function (xhr) {
-					if ( $loader ) {
-						if (typeof $loader == "undefined") {
-							epkb_loading_Dialog("show", "");
-						}
-
+					// Show loading dialog by default unless explicitly disabled
+					if ($loader !== false) {
 						if (typeof $loader == "object") {
 							epkb_loading_Dialog("show", "", $loader);
+						} else {
+							epkb_loading_Dialog("show", "");
 						}
 					}
 				},

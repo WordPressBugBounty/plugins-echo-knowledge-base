@@ -20,6 +20,7 @@ class EPKB_AI_Admin_Page {
 	public function __construct() {
 		add_action( 'wp_ajax_epkb_ai_beta_signup', [ $this, 'ajax_epkb_ai_beta_signup' ] );
 		add_action( 'wp_ajax_nopriv_epkb_ai_beta_signup', [ $this, 'ajax_epkb_ai_beta_signup' ] );
+		add_action( 'wp_ajax_epkb_save_ai_settings', [ $this, 'ajax_save_ai_settings' ] );
 	}
 
 	/**
@@ -27,13 +28,20 @@ class EPKB_AI_Admin_Page {
 	 */
 	public function display_page() {
 
-		$kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
+		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
 
 		// Trigger cleanup check when admin page is loaded
 		do_action( 'epkb_ai_admin_page_loaded' );
 
 		//$this->retrieve_vector_store_status();
-		$this->retrieve_messages_data( 'chat' );
+		
+		// Only retrieve chat data if beta code is valid
+		$entered_code = $ai_config['ai_beta_access_code'];
+		$valid_beta_code = 'EPKB-BETA-2024-AI-CHAT';
+		if ( $entered_code === $valid_beta_code ) {
+			$this->retrieve_messages_data( 'chat' );
+		}
+
 		//$this->retrieve_messages_data( 'search' );
 
 
@@ -46,7 +54,7 @@ class EPKB_AI_Admin_Page {
 					/**
 					 * ADMIN HEADER
 					 */
-					EPKB_HTML_Admin::admin_header( $kb_config, ['admin_eckb_access_order_articles_write', 'admin_eckb_access_frontend_editor_write']  );
+					EPKB_HTML_Admin::admin_header( '', ['admin_eckb_access_order_articles_write', 'admin_eckb_access_frontend_editor_write'] );
 
 					/**
 					 * ADMIN TOP PANEL
@@ -97,9 +105,9 @@ class EPKB_AI_Admin_Page {
 		);
 
 		/**
-		 * VIEW: TODO
+		 * VIEW: Chat History
 		 */
-		/* $views_config[] = array(
+		$views_config[] = array(
 
 			// Shared.
 			'active'     => true,
@@ -110,36 +118,21 @@ class EPKB_AI_Admin_Page {
 			'icon_class' => 'epkbfa epkbfa-envelope-o epkb-icon--black',
 
 			// Boxes List.
-			// 'list_bottom_actions_html' => count( $this->current_chats ) > 0 ? self::get_chats_actions() : '',
 			'boxes_list' => array(
 
-				// Box: chats.
+				// Split view container
 				array(
-					'class'       => 'epkb-ais__chat-list',
-					'title'       => esc_html__( 'Chat Entries', 'echo-knowledge-base' ),
-					'description' => $this->get_chats_list_description(),
-					'html'        => EPKB_HTML_Forms::get_html_table(
-						$this->current_chats,
-						$this->total_chats_number,
-						EPKB_ai_DB::PRIMARY_KEY,
-						EPKB_ai_DB::get_ai_column_fields(),
-						array(),
-						array(),
-						'epkb_ai_load_more'
-					),
-				),
-				array(
-					'class' => 'epkb-ais__chat-details',
-					'title' => esc_html__( 'Chat Details', 'echo-knowledge-base' ),
-					'html'  => '<div id="epkb-ais__ai_messages" class="epkb-ais__chat-messages></div>',
+					'class' => 'epkb-ai-split-view-container',
+					'title' => '',
+					'html' => self::get_table_page( 'chat' ),
 				),
 			),
-		); */
+		);
 
 		/**
 		 * VIEW: Searches
 		 */
-		/* TODO $views_config[] = array(
+		/* $views_config[] = array(
 
 			// Shared.
 			'active'                => true,
@@ -180,11 +173,6 @@ class EPKB_AI_Admin_Page {
 			'boxes_list' => array(
 
 				// Split view container
-				// array(
-				// 	'class' => 'epkb-ai-split-view-container',
-				// 	'title' => '',
-				// 	'html' => self::get_table_page( 'chat' ),
-				// ),
 				array(
 					'title' => esc_html__( 'AI Features Coming Soon!', 'echo-knowledge-base' ),
 					'class' => 'epkb-ai__announcement-box',
@@ -192,12 +180,14 @@ class EPKB_AI_Admin_Page {
 				)
 			),
 		); 
-		$views_config[] = $ai_chat_view_config; */
+
+
+		$views_config[] = $ai_chat_view_config;
 
 		/**
 		 * VIEW: AI Settings
 		 */
-		/* $views_config[] = array(
+		$views_config[] = array(
 
 			// Shared.
 			'active'                => true,
@@ -211,12 +201,12 @@ class EPKB_AI_Admin_Page {
 
 			// Boxes List.
 			'boxes_list'            => $this->get_ai_settings_boxes(),
-		); */
+		);
 
 		/**
 		 * VIEW: Error Log
 		 */
-		$views_config[] = array(
+		/* $views_config[] = array(  TODO
 
 			// Shared.
 			'active'     => true,
@@ -228,7 +218,7 @@ class EPKB_AI_Admin_Page {
 
 			// Boxes List.
 			'boxes_list' => $this->get_ai_error_log_boxes(),
-		);
+		); */
 
 		return $views_config;
 	}
@@ -250,25 +240,25 @@ class EPKB_AI_Admin_Page {
 		);
 
 		// Welcome message box
-		// $dashboard_form_boxes[] = array(
-		// 	'title' => esc_html__( 'Welcome to KB AI Features', 'echo-knowledge-base' ),
-		// 	'class' => 'epkb-ai__welcome-box',
-		// 	'html'  => $this->get_dashboard_welcome_content(),
-		// );
+		/* $dashboard_form_boxes[] = array(
+			'title' => esc_html__( 'Welcome to KB AI Features', 'echo-knowledge-base' ),
+			'class' => 'epkb-ai__welcome-box',
+			'html'  => $this->get_dashboard_welcome_content(),
+		);
 
 		// Quick Stats box (removed Quick Actions and Content Status)
-		// $dashboard_form_boxes[] = array(
-		// 	'title' => esc_html__( 'AI Features Overview', 'echo-knowledge-base' ),
-		// 	'class' => 'epkb-ai__stats-box',
-		// 	'html'  => $this->get_dashboard_stats_content(),
-		// );
+		$dashboard_form_boxes[] = array(
+			'title' => esc_html__( 'AI Features Overview', 'echo-knowledge-base' ),
+			'class' => 'epkb-ai__stats-box',
+			'html'  => $this->get_dashboard_stats_content(),
+		);
 
 		// AI Features box (moved to end and renamed)
-		// $dashboard_form_boxes[] = array(
-		// 	'title' => esc_html__( 'AI Features', 'echo-knowledge-base' ),
-		// 	'class' => 'epkb-ai__features-box',
-		// 	'html'  => $this->get_ai_features_content(),
-		// );
+		$dashboard_form_boxes[] = array(
+			'title' => esc_html__( 'AI Features', 'echo-knowledge-base' ),
+			'class' => 'epkb-ai__features-box',
+			'html'  => $this->get_ai_features_content(),
+		); */
 
 		return $dashboard_form_boxes;
 	}
@@ -321,29 +311,30 @@ class EPKB_AI_Admin_Page {
 	 */
 	private function get_ai_settings_boxes() {
 
-		$kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
+		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
 
 		$settings_form_boxes = array();
 
-		/* if ( $kb_config['ai_disclaimer_accepted'] == 'off' ) {
+		// Beta Access Settings
+		$settings_form_boxes[] = array(
+			'title' => esc_html__( 'Beta Access', 'echo-knowledge-base' ),
+			'class' => 'epkb-ai__beta-settings',
+			'html'  => $this->get_beta_access_settings_box_html( $ai_config ),
+		);
+
+		/*if ( $ai_config['ai_disclaimer_accepted'] == 'off' ) {
 	        $settings_form_boxes[] = array(
 		        'title' => esc_html__( 'Disclaimer', 'echo-knowledge-base' ),
 		        'class' => 'epkb-ai__disclaimer-settings',
-		        'html'  => $this->get_disclaimer_settings_box_html( $kb_config ),
+		        'html'  => $this->get_disclaimer_settings_box_html( $ai_config ),
 	        );
         } */
 
 		// Chat API settings.
-		// $settings_form_boxes[] = array(
-		// 	'title' => esc_html__( 'API Settings', 'echo-knowledge-base' ),
-		// 	'class' => 'epkb-ai__api-settings',
-		// 	'html'  => $this->get_api_settings_box_html( $kb_config ),
-		// );
-
 		$settings_form_boxes[] = array(
-			'title' => esc_html__( 'AI Features Coming Soon!', 'echo-knowledge-base' ),
-			'class' => 'epkb-ai__announcement-box',
-			'html'  => $this->get_ai_announcement_content(),
+			'title' => esc_html__( 'API Settings', 'echo-knowledge-base' ),
+			'class' => 'epkb-ai__api-settings',
+			'html'  => $this->get_api_settings_box_html( $ai_config ),
 		);
 
 		// Set Up Chat AI - moved from Dashboard
@@ -356,15 +347,15 @@ class EPKB_AI_Admin_Page {
 		/* $settings_form_boxes[] = array(
 			'title' => esc_html__( 'AI Search Settings', 'echo-knowledge-base' ),
 			'class' => 'epkb-ai__search-settings',
-			'html'  => $this->get_ai_search_settings_box_html( $kb_config ),
+			'html'  => $this->get_ai_search_settings_box_html( $ai_config ),
 		); */
 
 		// AI Chat Settings - moved from AI Chat tab
-		// $settings_form_boxes[] = array(
-		// 	'title' => esc_html__( 'AI Chat Settings', 'echo-knowledge-base' ),
-		// 	'class' => 'epkb-ai__chat-settings',
-		// 	'html'  => $this->get_ai_chat_settings_box_html( $kb_config ),
-		// );
+		$settings_form_boxes[] = array(
+			'title' => esc_html__( 'AI Chat Settings', 'echo-knowledge-base' ),
+			'class' => 'epkb-ai__chat-settings',
+			'html'  => $this->get_ai_chat_settings_box_html( $ai_config ),
+		);
 
 		return $settings_form_boxes;
 	}
@@ -374,7 +365,7 @@ class EPKB_AI_Admin_Page {
 	 *
 	 * @return string
 	 */
-	private function get_api_settings_box_html( $kb_config ) {
+	private function get_api_settings_box_html( $ai_config ) {
 		ob_start();
 
 		$openai_key = EPKB_AI_Config::get_api_key();
@@ -387,12 +378,15 @@ class EPKB_AI_Admin_Page {
 				'tooltip_body'	=> esc_html__( 'Enter your OpenAI API key.', 'echo-knowledge-base' ) . ' <a href="https://beta.openai.com/account/api-keys" target="_blank" rel="noopener">' . esc_html__( 'Get OpenAI API Key', 'echo-knowledge-base' ) . '</a>',
 			)
 		);
-		EPKB_HTML_Elements::dropdown(
+		$ai_specs = EPKB_AI_Config_Specs::get_ai_config_fields_specifications();
+		/* EPKB_HTML_Elements::dropdown(
 			array(
-				'value'         => $kb_config['ai_api_model'],
-				'specs'         => 'ai_api_model',
-			),
-		);
+				'value'         => $ai_config['ai_api_model'],
+				'label'         => $ai_specs['ai_api_model']['label'],
+				'name'          => 'ai_api_model',
+				'options'       => $ai_specs['ai_api_model']['options'],
+			)
+		); */
 
 		return ob_get_clean();
 	}
@@ -402,12 +396,12 @@ class EPKB_AI_Admin_Page {
 	 *
 	 * @return string
 	 */
-	private function get_disclaimer_settings_box_html( $kb_config ) {
+	private function get_disclaimer_settings_box_html( $ai_config ) {
 		ob_start();
 
 		EPKB_HTML_Elements::checkboxes_multi_select(
 			array(
-				'value' => $kb_config['ai_disclaimer_accepted'] == 'on',
+				'value' => $ai_config['ai_disclaimer_accepted'] == 'on',
 				'name' => 'ai_disclaimer_accepted',
 				'input_group_class' => 'epkb-admin__text-field',
 				'main_tag' => 'div',
@@ -426,17 +420,17 @@ class EPKB_AI_Admin_Page {
 	/**
 	 * AI Search settings options
 	 *
-	 * @param array $kb_config
+	 * @param $ai_config
 	 * @return string
 	 */
-	private function get_ai_search_settings_box_html( $kb_config ) {
+	private function get_ai_search_settings_box_html( $ai_config ) {
 		ob_start();
 
 		// AI Search enabled toggle
 		EPKB_HTML_Elements::checkbox_toggle( array(
 			'name'              => 'ai_search_enabled',
 			'text'             => esc_html__( 'AI Search Feature', 'echo-knowledge-base' ),
-			'checked'           => ! empty( $kb_config['ai_search_enabled'] ) && $kb_config['ai_search_enabled'] === 'on',
+			'checked'           => ! empty( $ai_config['ai_search_enabled'] ) && $ai_config['ai_search_enabled'] === 'on',
 			'input_group_class' => 'epkb-admin__input-field',
 			'label_class'       => 'epkb-admin__input-label',
 			//'input_class'       => '',
@@ -445,18 +439,41 @@ class EPKB_AI_Admin_Page {
 		return ob_get_clean();
 	}
 
-	private function get_ai_chat_settings_box_html( $kb_config ) {
+	private function get_ai_chat_settings_box_html( $ai_config ) {
 		ob_start();
 	
 		// AI Chat enabled toggle
 		EPKB_HTML_Elements::checkbox_toggle( array(
 			'name'              => 'ai_chat_enabled',
 			'text'             => esc_html__( 'AI Chat Feature', 'echo-knowledge-base' ),
-			'checked'           => ! empty( $kb_config['ai_chat_enabled'] ) && $kb_config['ai_chat_enabled'] === 'on',
+			'checked'           => ! empty( $ai_config['ai_chat_enabled'] ) && $ai_config['ai_chat_enabled'] === 'on',
 			'input_group_class' => 'epkb-admin__input-field',
 			'label_class'       => 'epkb-admin__input-label',
 		) );
 
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Beta Access settings options
+	 *
+	 * @param $ai_config
+	 * @return string
+	 */
+	private function get_beta_access_settings_box_html( $ai_config ) {
+		ob_start();
+		
+		// Beta access code input
+		EPKB_HTML_Elements::text( array(
+			'value'             => isset( $ai_config['ai_beta_access_code'] ) ? $ai_config['ai_beta_access_code'] : '',
+			'label'             => esc_html__( 'Beta Access Code', 'echo-knowledge-base' ),
+			'name'              => 'ai_beta_access_code',
+			'input_size'        => 'medium',
+			'tooltip_body'      => esc_html__( 'Enter the beta access code to unlock AI Chat features for testing.', 'echo-knowledge-base' ),
+			'input_group_class' => 'epkb-admin__input-field',
+			'label_class'       => 'epkb-admin__input-label',
+		) );
+		
 		return ob_get_clean();
 	}
 
@@ -465,12 +482,12 @@ class EPKB_AI_Admin_Page {
 	 */
 	private function retrieve_vector_store_status() {
 
-		$kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
+		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
 
 		$vector_store_service = new EPKB_AI_Vector_Store_Service();
 
 		// get Vector Store status.
-		$vector_store_id = $kb_config['ai_vector_store_id'];
+		$vector_store_id = $ai_config['ai_vector_store_id'];
 		if ( ! empty( $vector_store_id ) ) {
 			$vector_store = $vector_store_service->get_vector_store( $vector_store_id );
 
@@ -519,8 +536,6 @@ class EPKB_AI_Admin_Page {
 	 */
 	private function retrieve_messages_data( $mode ) {
 
-		$kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
-
 		$messages_db = new EPKB_AI_Messages_DB();
 
 		// Get conversations for search mode
@@ -556,8 +571,6 @@ class EPKB_AI_Admin_Page {
 				if ( $user ) {
 					$user_display = '<a href="' . esc_url( get_edit_user_link( $user->ID ) ) . '">' . esc_html( $user->display_name ) . '</a>';
 				}
-			} else if ( ! empty( $meta['user_name'] ) ) {
-				$user_display = esc_html( $meta['user_name'] );
 			}
 
 			$conversation_data = array(
@@ -643,7 +656,6 @@ class EPKB_AI_Admin_Page {
 
 		return ob_get_clean();
 	}
-	
 
 	/**
 	 * Get dashboard welcome content
@@ -714,7 +726,7 @@ class EPKB_AI_Admin_Page {
 	 * @return string
 	 */
 	private function get_dashboard_stats_content() {
-		$kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
+		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
 		
 		ob_start(); ?>
 
@@ -723,8 +735,8 @@ class EPKB_AI_Admin_Page {
 
 				<div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #e2e4e7; text-align: center;">
 					<h4 style="margin: 0 0 10px 0; color: #50575e; font-weight: normal;"><?php esc_html_e( 'AI Chat', 'echo-knowledge-base' ); ?></h4>
-					<p style="font-size: 24px; margin: 0; color: <?php echo ( ! empty( $kb_config['ai_chat_enabled'] ) && $kb_config['ai_chat_enabled'] === 'on' ) ? '#46b450' : '#dc3232'; ?>;">
-						<?php if ( ! empty( $kb_config['ai_chat_enabled'] ) && $kb_config['ai_chat_enabled'] === 'on' ) : ?>
+					<p style="font-size: 24px; margin: 0; color: <?php echo ( ! empty( $ai_config['ai_chat_enabled'] ) && $ai_config['ai_chat_enabled'] === 'on' ) ? '#46b450' : '#dc3232'; ?>;">
+						<?php if ( ! empty( $ai_config['ai_chat_enabled'] ) && $ai_config['ai_chat_enabled'] === 'on' ) : ?>
 							<span class="epkbfa epkbfa-check-circle"></span> <?php esc_html_e( 'Enabled', 'echo-knowledge-base' ); ?>
 						<?php else : ?>
 							<span class="epkbfa epkbfa-times-circle"></span> <?php esc_html_e( 'Disabled', 'echo-knowledge-base' ); ?>
@@ -847,31 +859,48 @@ class EPKB_AI_Admin_Page {
 	 * @return string
 	 */
 	private function get_table_page( $mode ) {
-		ob_start(); ?>
-
-		<div class="epkb-ai-discussions-layout">
-			<div class="epkb-ai-discussions-table">
-				<div class="epkb-ai-discussions-header">
-					<h3><?php echo $mode === 'search' ? esc_html__( 'User Searches Answered by AI', 'echo-knowledge-base' ) : esc_html__( 'User Conversations with AI', 'echo-knowledge-base' ); ?></h3>
-				</div>
-				<div class="epkb-ai-discussions-content">
-					<?php echo self::get_messages_table( $mode ); ?>
-				</div>
-			</div>
-			<div class="epkb-ai-discussion-details">
-				<div class="epkb-ai-discussion-details-header">
-					<h3><?php esc_html_e( 'Selected Discussion', 'echo-knowledge-base' ); ?></h3>
-				</div>
-				<div class="epkb-ai-discussion-details-content">
-					<div class="epkb-ai-no-selection">
-						<p><?php esc_html_e( 'Select a conversation from the list to view details.', 'echo-knowledge-base' ); ?></p>
+		ob_start();
+		
+		// Check if beta access code is valid
+		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
+		$entered_code = isset( $ai_config['ai_beta_access_code'] ) ? $ai_config['ai_beta_access_code'] : '';
+		$valid_beta_code = 'EPKB-BETA-2024-AI-CHAT'; // Hard-coded beta access code
+		
+		if ( $mode === 'chat' && $entered_code !== $valid_beta_code ) { ?>
+			<div class="epkb-ai-beta-access-required" style="padding: 40px; text-align: center;">
+				<h3><?php esc_html_e( 'Beta Access Required', 'echo-knowledge-base' ); ?></h3>
+				<p style="margin: 20px 0; font-size: 16px;">
+					<?php esc_html_e( 'The AI Chat History feature is currently in beta testing. Please enter a valid beta access code in the Settings tab to unlock this feature.', 'echo-knowledge-base' ); ?>
+				</p>
+				<a href="#" class="epkb-primary-btn" onclick="jQuery('.epkb-primary-tabs__item[data-target=\'settings\']').trigger('click'); return false;">
+					<?php esc_html_e( 'Go to Settings', 'echo-knowledge-base' ); ?>
+				</a>
+			</div>		<?php
+		} else { ?>
+			<div class="epkb-ai-discussions-layout">
+				<div class="epkb-ai-discussions-table">
+					<div class="epkb-ai-discussions-header">
+						<h3><?php echo $mode === 'search' ? esc_html__( 'User Searches Answered by AI', 'echo-knowledge-base' ) : esc_html__( 'User Conversations with AI', 'echo-knowledge-base' ); ?></h3>
 					</div>
-					<div class="epkb-ai-conversation-messages" style="display: none;">
-						<!-- Conversation details will be loaded here via AJAX -->
+					<div class="epkb-ai-discussions-content">
+						<?php echo self::get_messages_table( $mode ); ?>
 					</div>
 				</div>
-			</div>
-		</div>		<?php
+				<div class="epkb-ai-discussion-details">
+					<div class="epkb-ai-discussion-details-header">
+						<h3><?php esc_html_e( 'Selected Discussion', 'echo-knowledge-base' ); ?></h3>
+					</div>
+					<div class="epkb-ai-discussion-details-content">
+						<div class="epkb-ai-no-selection">
+							<p><?php esc_html_e( 'Select a conversation from the list to view details.', 'echo-knowledge-base' ); ?></p>
+						</div>
+						<div class="epkb-ai-conversation-messages" style="display: none;">
+							<!-- Conversation details will be loaded here via AJAX -->
+						</div>
+					</div>
+				</div>
+			</div>		<?php
+		}
 
 		return ob_get_clean();
 	}
@@ -1175,5 +1204,58 @@ class EPKB_AI_Admin_Page {
 		}
 
 		wp_send_json_success( array( 'message' => 'Thank you for signing up for AI beta!' ) );
+	}
+
+	/**
+	 * Handle AJAX request to save AI settings
+	 */
+	public function ajax_save_ai_settings() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+
+		$settings = array();
+
+		$openai_key = EPKB_Utilities::post( 'openai_key' );
+		if ( ! empty( $openai_key ) && strpos( $openai_key, '...' ) === false ) {
+			$settings['openai_key'] = $openai_key;
+		}
+
+		// Handle model selection
+		/* $model = EPKB_Utilities::post( 'ai_api_model' );
+		if ( ! empty( $model ) ) {
+			$settings['model'] = $model;
+		} */
+
+		$disclaimer_accepted = EPKB_Utilities::post( 'ai_disclaimer_accepted' );
+		if ( is_array( $disclaimer_accepted ) ) {
+			$settings['ai_disclaimer_accepted'] = $disclaimer_accepted;
+		}
+
+		/* $ai_search_enabled = EPKB_Utilities::post( 'ai_search_enabled' );
+		if ( ! is_null( $ai_search_enabled ) ) {
+			$settings['ai_search_enabled'] = $ai_search_enabled === 'on' ? 'on' : 'off';
+		} */
+
+		$ai_chat_enabled = EPKB_Utilities::post( 'ai_chat_enabled' );
+		if ( ! is_null( $ai_chat_enabled ) ) {
+			$settings['ai_chat_enabled'] = $ai_chat_enabled === 'on' ? 'on' : 'off';
+		}
+		
+		$ai_beta_access_code = EPKB_Utilities::post( 'ai_beta_access_code' );
+		if ( ! is_null( $ai_beta_access_code ) ) {
+			$settings['ai_beta_access_code'] = sanitize_text_field( $ai_beta_access_code );
+		}
+
+		$ai_manager = new EPKB_AI_Manager();
+		$result = $ai_manager->save_ai_settings( $settings );
+		if ( is_wp_error( $result ) ) {
+			EPKB_Utilities::ajax_show_error_die( $result->get_error_message() );
+		}
+
+		// Return success
+		wp_send_json_success( array(
+			'message' => __( 'AI settings saved successfully', 'echo-knowledge-base' ),
+			'reload' => false
+		) );
 	}
 }

@@ -17,6 +17,7 @@ class EPKB_AI_Config {
 	const DEFAULT_UPLOAD_TIMEOUT = 300;
 	const DEFAULT_MAX_RETRIES = 3;
 	const DEFAULT_RETRY_DELAY = 1000; // milliseconds
+	const DEFAULT_CONVERSATION_EXPIRY_DAYS = 29; // 29 days
 	
 	const MAX_FILE_SIZE = 1048576; // 1MB
 	const MAX_METADATA_KEYS = 16;

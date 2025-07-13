@@ -231,8 +231,7 @@ class EPKB_AI_Content_Processor {
 	 * @return string
 	 */
 	private function get_post_language_code( $post_id ) {
-		$locale = $this->get_post_language( $post_id );
-		
+		$locale = EPKB_Language_Utilities::get_post_language( $post_id );
 		// Extract language code from locale (e.g., "en_US" -> "en")
 		$parts = explode( '_', $locale );
 		return $parts[0];
@@ -256,22 +255,6 @@ class EPKB_AI_Content_Processor {
 		
 		// Trim to reasonable length
 		return mb_substr( trim( $title ), 0, 100 );
-	}
-	
-	/**
-	 * Get post language
-	 *
-	 * @param int $post_id
-	 * @return string
-	 */
-	private function get_post_language( $post_id ) {
-		// Check for language utilities
-		if ( class_exists( 'EPKB_Language_Utilities' ) && method_exists( 'EPKB_Language_Utilities', 'get_post_language' ) ) {
-			return EPKB_Language_Utilities::get_post_language( $post_id );
-		}
-		
-		// Fallback to site locale
-		return get_locale();
 	}
 	
 	/**

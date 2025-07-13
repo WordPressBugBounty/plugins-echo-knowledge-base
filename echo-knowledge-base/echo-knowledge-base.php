@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 15.0.0
+ * Version: 15.0.1
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '15.0.0';
+	public static $version = '15.0.1';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -52,6 +52,8 @@ final class Echo_Knowledge_Base {
 
 	/* @var EPKB_KB_Config_DB */
 	public $kb_config_obj;
+	/* @var EPKB_AI_Security */
+	public $security_obj;
 
 	/**
 	 * Initialise the plugin
@@ -111,8 +113,9 @@ final class Echo_Knowledge_Base {
 		// subscribe to category actions create/edit/delete including for REST requests in Gutenberg
 		new EPKB_Categories_Admin();
 
+		$this->security_obj = new EPKB_AI_Security();
 		//new EPKB_AI_Cron();
-		//new EPKB_AI_REST_Chat_Controller();
+		new EPKB_AI_REST_Chat_Controller();
 		//new EPKB_AI_REST_Search_Controller();
 	}
 
@@ -157,7 +160,7 @@ final class Echo_Knowledge_Base {
 		new EPKB_Templates();
 		new EPKB_Shortcodes();
 		new EPKB_Frontend_Editor();
-		//new EPKB_AI_Chat_Frontend();
+		new EPKB_AI_Chat_Frontend();
 	}
 
 	/**
@@ -213,7 +216,7 @@ final class Echo_Knowledge_Base {
 		} else if ( in_array( $action, array( 'epkb_editor_error' ) ) ) {
 			new EPKB_Frontend_Editor();
 			return;
-		} else if ( in_array( $action, array( 'epkb_ai_beta_signup' ) ) ) {
+		} else if ( in_array( $action, array( 'epkb_ai_beta_signup', 'epkb_save_ai_settings', 'epkb_get_chat_table_conversation_details' ) ) ) {
 			new EPKB_AI_Admin_Page();
 			return;
 		}
@@ -269,7 +272,7 @@ final class Echo_Knowledge_Base {
 		$request_page = empty( $_REQUEST['page'] ) ? '' : EPKB_Utilities::request_key( 'page' );
 		$admin_pages = [ 'post.php', 'edit.php', 'post-new.php', 'edit-tags.php', 'term.php' ];
 
-		// show KB notice on our pages or when potential KB Main Page is being edited
+		// show KB notice and AI Help Sidebar on our pages or when potential KB Main Page is being edited
 		if ( $is_kb_request && in_array( $pagenow, $admin_pages ) ) {
 			new EPKB_Admin_Notices();
 		}

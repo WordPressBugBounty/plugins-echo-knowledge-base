@@ -57,6 +57,20 @@ abstract class EPKB_DB {
 	}
 
 	/**
+	 * Prepare column value for WHERE clause
+	 *
+	 * @param string $column
+	 * @param mixed $value
+	 * @return string
+	 */
+	protected function prepare_column_value( $column, $value ) {
+		global $wpdb;
+
+		$format = $this->get_column_format()[ $column ];
+		return $wpdb->prepare( "`$column` = $format", $value );
+	}
+
+	/**
 	 * Retrieve a row by the primary key
 	 *
 	 * @param $primary_key_value
@@ -74,13 +88,13 @@ abstract class EPKB_DB {
 			return null;
 		}
 
-		if ( ! EPKB_Utilities::is_positive_int($primary_key_value) ) {
+		if ( ! EPKB_Utilities::is_positive_int( $primary_key_value ) ) {
 			EPKB_Logging::add_log("Primary key is not valid", $primary_key_value);
 			return null;
 		}
 
 		$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $this->primary_key = %s LIMIT 1;", $primary_key_value ) );
-		if ( $result === null && ! empty($wpdb->last_error) ) {
+		if ( $result === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: " . $wpdb_last_error, 'Primary Key: ' . $primary_key_value );
 			return new WP_Error('DB failure', $wpdb_last_error);
@@ -105,7 +119,7 @@ abstract class EPKB_DB {
 
 		$column_name = esc_sql( $column_name );
 		$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $column_name = %s LIMIT 1;", $column_value ) );
-		if ( $result === null && ! empty($wpdb->last_error) ) {
+		if ( $result === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: " . $wpdb_last_error, 'Column - value: ' . $column_name . ' - ' . $column_value );
 			return new WP_Error('DB failure', $wpdb_last_error);
@@ -130,7 +144,7 @@ abstract class EPKB_DB {
 
 		$column_name = esc_sql( $column_name );
 		$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $column_name = %s LIMIT 500;", $column_value ) );
-		if ( ! empty($wpdb->last_error) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: ", $wpdb_last_error );
 			return new WP_Error( 'DB failure', $wpdb_last_error );
@@ -158,7 +172,7 @@ abstract class EPKB_DB {
 		$order_column = esc_sql( $order_column );
 		$order = esc_sql( $order );
 		$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name ORDER BY $order_column $order LIMIT %d, %d;", $offset, $limit ) );
-		if ( ! empty($wpdb->last_error) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: ", $wpdb_last_error );
 			return new WP_Error( 'DB failure', $wpdb_last_error );
@@ -189,7 +203,7 @@ abstract class EPKB_DB {
 		$order_column = esc_sql( $order_column );
 		$order = esc_sql( $order );
 		$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $column = %s ORDER BY $order_column $order LIMIT %d, %d;", $column_value, $offset, $limit ) );
-		if ( ! empty($wpdb->last_error) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: ", $wpdb_last_error );
 			return new WP_Error( 'DB failure', $wpdb_last_error );
@@ -220,10 +234,10 @@ abstract class EPKB_DB {
 			}
 		}
 		$result = $wpdb->get_row( "SELECT * FROM {$this->table_name} WHERE {$where_clause} LIMIT 1;" );
-		if ( $result === null && ! empty($wpdb->last_error) ) {
+		if ( $result === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: ", $wpdb_last_error );
-			return new WP_Error('DB failure', $wpdb_last_error);
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return $result;
@@ -253,10 +267,10 @@ abstract class EPKB_DB {
 		}
 
 		$result = $wpdb->get_var( "SELECT SUM({$select_column}) AS total FROM {$this->table_name} WHERE {$where_clause}" );
-		if ( $result === null && ! empty($wpdb->last_error) ) {
+		if ( $result === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: ", $wpdb_last_error );
-			return new WP_Error('DB failure', $wpdb_last_error);
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return $result;
@@ -285,10 +299,10 @@ abstract class EPKB_DB {
 		}
 
 		$result = $wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE {$where_clause} LIMIT 500" );
-		if ( ! empty($wpdb->last_error) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
-			EPKB_Logging::add_log("DB failure: ", $wpdb_last_error);
-			return new WP_Error('DB failure', $wpdb_last_error);
+			EPKB_Logging::add_log( "DB failure: ", $wpdb_last_error );
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return $result;
@@ -306,10 +320,10 @@ abstract class EPKB_DB {
 		global $wpdb;
 
 		$result = $wpdb->get_results( "SELECT * FROM $this->table_name LIMIT 500;" );
-		if ( ! empty($wpdb->last_error) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
-			EPKB_Logging::add_log("DB failure: ", $wpdb_last_error);
-			return new WP_Error('DB failure', $wpdb_last_error);
+			EPKB_Logging::add_log( "DB failure: ", $wpdb_last_error );
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return $result;
@@ -333,17 +347,17 @@ abstract class EPKB_DB {
 			return null;
 		}
 
-		if ( ! EPKB_Utilities::is_positive_int($primary_key) ) {
+		if ( ! EPKB_Utilities::is_positive_int( $primary_key ) ) {
 			EPKB_Logging::add_log("Primary key is not valid", $primary_key);
 			return null;
 		}
 
 		$column = esc_sql( $column );
 		$result = $wpdb->get_var( $wpdb->prepare( "SELECT $column FROM $this->table_name WHERE $this->primary_key = %s LIMIT 1;", $primary_key ) );
-		if ( $result === null && ! empty($wpdb->last_error) ) {
+		if ( $result === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: " . $wpdb_last_error, 'Column: ' . $column. ', Primary Key: ' . $primary_key );
-			return new WP_Error('DB failure', $wpdb_last_error);
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return $result;
@@ -367,10 +381,10 @@ abstract class EPKB_DB {
 		$select_column = esc_sql( $select_column );
 		$column_name   = esc_sql( $column_name );
 		$result = $wpdb->get_var( $wpdb->prepare( "SELECT $select_column FROM $this->table_name WHERE $column_name = %s LIMIT 1;", $column_value ) );
-		if ( $result === null && ! empty($wpdb->last_error) ) {
+		if ( $result === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: " . $wpdb_last_error, 'Select Column: ' . $select_column. ', Column - value: ' . $column_name . ' - ' . $column_value );
-			return new WP_Error('DB failure', $wpdb_last_error);
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return $result;
@@ -394,10 +408,10 @@ abstract class EPKB_DB {
 		$select_column = esc_sql( $select_column );
 		$column_name   = esc_sql( $column_name );
 		$result = $wpdb->get_results( $wpdb->prepare( "SELECT $select_column FROM $this->table_name WHERE $column_name = %s LIMIT 500;", $column_value ) );
-		if ( ! empty($wpdb->last_error) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: " . $wpdb_last_error, 'Select Column: ' . $select_column. ', Column - value: ' . $column_name . ' - ' . $column_value );
-			return new WP_Error('DB failure', $wpdb_last_error);
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return $result;
@@ -419,10 +433,10 @@ abstract class EPKB_DB {
 
 		$where_between = $wpdb->prepare(" {$date_column_name} between %s and %s {$where_condition}", $date_from, $date_to );
 		$result = $wpdb->get_var( "SELECT count(*) FROM $this->table_name WHERE {$where_between};" );
-		if ( $result === null && ! empty($wpdb->last_error) ) {
+		if ( $result === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
 			EPKB_Logging::add_log( "DB failure: " . $wpdb_last_error, $date_from . ' - ' . $date_to );
-			return new WP_Error('DB failure', $wpdb_last_error);
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return empty($result) ? 0 : (int) $result;
@@ -447,12 +461,12 @@ abstract class EPKB_DB {
 		/** @var $wpdb Wpdb */
 		global $wpdb;
 
-		$where_between = $wpdb->prepare(" {$date_column_name} between %s and %s {$where_condition} ", $date_from, $date_to );
+		$where_between = $wpdb->prepare( " {$date_column_name} between %s and %s {$where_condition} ", $date_from, $date_to );
 		$result = $wpdb->get_results( "SELECT *, count(*) as times FROM $this->table_name WHERE {$where_between}  GROUP BY {$group_by} ORDER BY {$order_by} LIMIT {$limit};" );
-		if ( ! empty($wpdb->last_error) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
-			EPKB_Logging::add_log("DB failure: ", $wpdb_last_error);
-			return new WP_Error('DB failure', $wpdb_last_error);
+			EPKB_Logging::add_log( "DB failure: ", $wpdb_last_error );
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return $result;
@@ -468,10 +482,10 @@ abstract class EPKB_DB {
 		global $wpdb;
 
 		$result = $wpdb->get_results( "SELECT DISTINCT {$column_name} FROM $this->table_name WHERE {$column_name} != '' " );
-		if ( ! empty($wpdb->last_error) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
-			EPKB_Logging::add_log("DB failure: ", $wpdb_last_error);
-			return new WP_Error('DB failure', $wpdb_last_error);
+			EPKB_Logging::add_log( "DB failure: ", $wpdb_last_error );
+			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
 		return $result;
@@ -505,7 +519,6 @@ abstract class EPKB_DB {
 
 		if ( false === $wpdb->insert( $this->table_name, $data, $column_formats ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
-			EPKB_Logging::add_log( 'DB failure: ', $wpdb_last_error );
 			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
@@ -550,9 +563,7 @@ abstract class EPKB_DB {
 		$column_formats = array_merge( array_flip( $data_keys ), $column_formats );
 
 		if ( false === $wpdb->update( $this->table_name, $data, array( $column_name => $id ), $column_formats ) ) {
-			EPKB_Logging::add_log("Could not update record in " . $this->table_name . " table. Row id: " . $id . ". Data to be inserted: ", $data);
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
-			EPKB_Logging::add_log( 'DB failure: ', $wpdb_last_error );
 			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 
@@ -615,9 +626,7 @@ abstract class EPKB_DB {
 		}
 
 		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM $this->table_name WHERE $this->primary_key = %d", $primary_key ) ) ) {
-			EPKB_Logging::add_log("Could not delete record in " . $this->table_name . " table. Row id: " . $primary_key);
 			$wpdb_last_error = $wpdb->last_error;   // add_log changes last_error so store it first
-			EPKB_Logging::add_log( 'DB failure: ', $wpdb_last_error );
 			return new WP_Error( 'DB failure', $wpdb_last_error );
 		}
 

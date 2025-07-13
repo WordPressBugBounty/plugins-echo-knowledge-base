@@ -21,53 +21,72 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			return;
 		}
 
+		// Start session endpoint - creates httpOnly session cookie
+		register_rest_route( $this->namespace, '/' . $this->rest_base . '/start-session', array(
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'start_session' ),
+				'permission_callback' => '__return_true' // Public endpoint for guest users
+			),
+		) );
+
 		// Chat message endpoint
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/message', array(
 			array(
-				'methods'             => WP_REST_Server::CREATABLE,
+				'methods'             => 'POST',
 				'callback'            => array( $this, 'send_message' ),
-				'permission_callback' => array( $this, 'send_message_permissions_check' ),
-				'args'                => $this->get_message_params(),
+				'permission_callback' => [ $this, 'check_rest_nonce' ]
+			),
+		) );
+		
+		// Get active conversation endpoint
+		register_rest_route( $this->namespace, '/' . $this->rest_base . '/active', array(
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_active_conversation' ),
+				'permission_callback' => [ $this, 'check_rest_nonce' ]
+			),
+		) );
+		
+		// Clear conversation endpoint
+		register_rest_route( $this->namespace, '/' . $this->rest_base . '/clear', array(
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'clear_conversation' ),
+				'permission_callback' => [ $this, 'check_rest_nonce' ]
 			),
 		) );
 
-		// Get conversation endpoint
+		// TODO Get conversation endpoint
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/conversation/(?P<chat_id>[a-zA-Z0-9_-]+)', array(
 			array(
-				'methods'             => WP_REST_Server::READABLE,
+				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_conversation' ),
-				'permission_callback' => array( $this, 'get_conversation_permissions_check' ),
-				'args'                => array(
-					'chat_id' => array(
-						'required'          => true,
-						'validate_callback' => array( $this, 'validate_chat_id' ),
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-				),
+				'permission_callback' => [ $this, 'check_rest_nonce' ]
 			),
 		) );
 
-		// Admin endpoints for conversation management
+		// TODO Admin endpoints for conversation management
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/admin/conversations', array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_conversations_table' ),
-				'permission_callback' => array( $this, 'admin_permissions_check' ),
+				'permission_callback' => array( 'EPKB_AI_Security', 'can_access_settings' ),
 				'args'                => $this->get_table_params(),
 			),
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
 				'callback'            => array( $this, 'delete_all_conversations' ),
-				'permission_callback' => array( $this, 'admin_permissions_check' ),
+				'permission_callback' => array( 'EPKB_AI_Security', 'can_access_settings' ),
 			),
 		) );
 
-		// Single conversation admin operations
+		// TODO Single conversation admin operations
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/admin/conversations/(?P<id>\d+)', array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_conversation_details' ),
-				'permission_callback' => array( $this, 'admin_permissions_check' ),
+				'permission_callback' => array( 'EPKB_AI_Security', 'can_access_settings' ),
 				'args'                => array(
 					'id' => array(
 						'required'          => true,
@@ -81,7 +100,7 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
 				'callback'            => array( $this, 'delete_conversation' ),
-				'permission_callback' => array( $this, 'admin_permissions_check' ),
+				'permission_callback' => array( 'EPKB_AI_Security', 'can_access_settings' ),
 				'args'                => array(
 					'id' => array(
 						'required'          => true,
@@ -94,12 +113,12 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			),
 		) );
 
-		// Bulk delete conversations
+		// TODO Bulk delete conversations
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/admin/conversations/bulk', array(
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
 				'callback'            => array( $this, 'delete_selected_conversations' ),
-				'permission_callback' => array( $this, 'admin_permissions_check' ),
+				'permission_callback' => array( 'EPKB_AI_Security', 'can_access_settings' ),
 				'args'                => array(
 					'ids' => array(
 						'required'          => true,
@@ -116,256 +135,197 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 	}
 
 	/**
-	 * Permission check for sending messages
+	 * Start a new session (creates httpOnly session cookie)
 	 * 
 	 * @param WP_REST_Request $request
-	 * @return bool|WP_Error
+	 * @return WP_REST_Response
 	 */
-	public function send_message_permissions_check( $request ) {
-		
-		// Check if AI Chat is enabled
+	public function start_session( $request ) {
+		try {
+			// Get or create session (this sets the httpOnly cookie)
+			$session_id = EPKB_AI_Security::get_or_create_session();
+			if ( is_wp_error( $session_id ) ) {
+				return $this->create_rest_response( array(), 500, $session_id );
+			}
+			
+			// Generate fresh nonce for the session
+			$security = new EPKB_AI_Security();
+			$rest_nonce = $security->get_nonce( true );
+			
+			return $this->create_rest_response( array(
+				'success' => true,
+				'rest_nonce' => $rest_nonce
+			) );
+			
+		} catch ( Exception $e ) {
+			return $this->create_rest_response( array( 'error' => 'session_error', 'message' => $e->getMessage() ), 500 );
+		}
+	}
+
+	// access by WP_REST_Server
+	public function check_rest_nonce( $request ) {
+
 		if ( ! EPKB_AI_Utilities::is_ai_chat_enabled() ) {
-			return new WP_Error(
-				'ai_chat_disabled',
-				__( 'AI Chat is currently disabled.', 'echo-knowledge-base' ),
-				array( 'status' => 403 )
-			);
+			return false;
 		}
 
-		// Validate nonce
-		$nonce_check = $this->validate_nonce( $request );
-		if ( is_wp_error( $nonce_check ) ) {
-			return $nonce_check;
-		}
-
-		// Check rate limiting
-		$rate_check = $this->check_rate_limit();
-		if ( is_wp_error( $rate_check ) ) {
-			return $rate_check;
-		}
-
-		return true;
+		return EPKB_AI_Security::check_rest_nonce( $request );
 	}
 
 	/**
-	 * Permission check for getting conversations
+	 * Handle sending a chat message with two-phase approach
 	 * 
 	 * @param WP_REST_Request $request
-	 * @return bool|WP_Error
-	 */
-	public function get_conversation_permissions_check( $request ) {
-		
-		// Validate nonce
-		$nonce_check = $this->validate_nonce( $request );
-		if ( is_wp_error( $nonce_check ) ) {
-			return $nonce_check;
-		}
-
-		// Get session ID from cookie
-		$session_id = isset( $_COOKIE['epkb_session_id'] ) ? sanitize_text_field( $_COOKIE['epkb_session_id'] ) : '';
-		if ( empty( $session_id ) ) {
-			return new WP_Error(
-				'no_session',
-				__( 'No session found.', 'echo-knowledge-base' ),
-				array( 'status' => 401 )
-			);
-		}
-
-		// Validate session format
-		if ( ! EPKB_AI_Chat_Security::validate_session_id_format( $session_id ) ) {
-			return new WP_Error(
-				'invalid_session',
-				__( 'Invalid session format.', 'echo-knowledge-base' ),
-				array( 'status' => 403 )
-			);
-		}
-
-		// Check session access
-		if ( ! EPKB_AI_Chat_Security::can_access_session( $session_id, get_current_user_id() ) ) {
-			return new WP_Error(
-				'access_denied',
-				__( 'Access denied to this conversation.', 'echo-knowledge-base' ),
-				array( 'status' => 403 )
-			);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Permission check for admin operations
-	 * 
-	 * @param WP_REST_Request $request
-	 * @return bool|WP_Error
-	 */
-	public function admin_permissions_check( $request ) {
-		return $this->check_admin_permission( 'admin_eckb_access_ai_features_write' );
-	}
-
-	/**
-	 * Handle sending a chat message
-	 * 
-	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response|WP_Error
+	 * @return WP_REST_Response
 	 */
 	public function send_message( $request ) {
-		
-		// Get and validate message
-		$message = $request->get_param( 'message' );
-		$message = EPKB_AI_Chat_Security::validate_message( $message );
-		if ( is_wp_error( $message ) ) {
-			return new WP_Error(
-				'invalid_message',
-				$message->get_error_message(),
-				array( 'status' => 400 )
+
+		try {
+			// Extract and validate request data
+			$request_data = $this->extract_request_data( $request );
+			if ( is_wp_error( $request_data ) ) {
+				return $this->create_rest_response( array(), 400, $request_data );
+			}
+			
+			// Get or create session
+			$session_id = EPKB_AI_Security::get_or_create_session();
+			if ( is_wp_error( $session_id ) ) {
+				return $this->create_rest_response( array(), 400, $session_id );
+			}
+			
+			// Process the message using the handler
+			$this->message_handler = new EPKB_AI_Message_Handler();
+			$result = $this->message_handler->process_message(
+				$request_data['message'],
+				$request_data['chat_id'],
+				$session_id,
+				$request_data['idempotency_key'],
+				$request_data['widget_id']
 			);
+			
+			if ( is_wp_error( $result ) ) {
+				return $this->create_rest_response( array(), 400, $result );
+			}
+			
+			// Return successful response
+			return $this->create_rest_response( $result );
+			
+		} catch ( Exception $e ) {  // Catch any unexpected exceptions during frontend request processing
+			EPKB_AI_Utilities::add_log( 'Unexpected error in send_message', array( 'error' => $e->getMessage(), 'trace' => $e->getTraceAsString() ) );
+			return $this->create_rest_response( [ 'success' => false, 'message' => $e->getMessage() ], 500 );
 		}
-
-		// Get optional parameters
-		$message_id = sanitize_text_field( $request->get_param( 'message_id' ) ?: '' );
-		$widget_id = absint( $request->get_param( 'widget_id' ) ?: 1 );
-		$chat_id = sanitize_text_field( $request->get_param( 'chat_id' ) ?: '' );
-
-		// Validate widget ID range
-		if ( $widget_id < 1 || $widget_id > EPKB_AI_Config::MAX_WIDGET_ID ) {
-			$widget_id = 1;
-		}
-
-		// Get or create session ID
-		$session_id = isset( $_COOKIE['epkb_session_id'] ) ? sanitize_text_field( $_COOKIE['epkb_session_id'] ) : '';
-		if ( empty( $session_id ) ) {
-			$session_id = EPKB_AI_Chat_Security::generate_session_id();
-			$this->set_session_cookie( $session_id );
-		} else if ( ! EPKB_AI_Chat_Security::validate_session_id_format( $session_id ) ) {
-			return new WP_Error(
-				'invalid_session',
-				__( 'Invalid session format.', 'echo-knowledge-base' ),
-				array( 'status' => 400 )
-			);
-		}
-
-		// Store session owner
-		EPKB_AI_Chat_Security::store_session_owner( $session_id, get_current_user_id() );
-
-		// Optimize message
-		$message = $this->optimize_message( $message );
-
-		// Initialize conversation service
-		$conversation_service = new EPKB_AI_Conversation_Service();
-
-		// Prepare options
-		$options = array(
-			'message_id' => $message_id,
-			'widget_id'  => $widget_id,
-			'chat_id'    => $chat_id
-		);
-
-		// Handle conversation
-		if ( $conversation_service->get_conversation( $chat_id ) ) {
-			$result = $conversation_service->continue_chat( $chat_id, $message, $options );
-		} else {
-			$result = $conversation_service->start_chat( $message, $options );
-		}
-
-		// Handle errors
-		if ( is_wp_error( $result ) ) {
-			return $this->format_error_response( $result, array(
-				'session_id' => $session_id,
-				'chat_id' => $chat_id,
-				'is_new_chat' => empty( $chat_id )
-			) );
-		}
-
-		// Sanitize response
-		$response = EPKB_AI_Chat_Security::sanitize_output( $result['response'] );
-
-		// Get chat_id from result
-		$response_chat_id = isset( $result['conversation_id'] ) ? $result['conversation_id'] : $chat_id;
-
-		// Build response
-		$response_data = array(
-			'response'   => $response,
-			'session_id' => $session_id,
-			'chat_id'    => $response_chat_id,
-			'message_id' => isset( $result['message_id'] ) ? $result['message_id'] : ''
-		);
-
-		// Set session cookie in response headers if new
-		if ( empty( $_COOKIE['epkb_session_id'] ) ) {
-			$response = new WP_REST_Response( $response_data );
-			$response->header( 'X-Session-Id', $session_id );
-			return $response;
-		}
-
-		return rest_ensure_response( $response_data );
 	}
 
 	/**
-	 * Get conversation history
+	 * Get active conversation for current session
 	 * 
 	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response|WP_Error
+	 * @return WP_REST_Response
+	 */
+	public function get_active_conversation( $request ) {
+		
+		// Get session ID
+		$session_id = EPKB_AI_Security::get_or_create_session();
+		if ( empty( $session_id ) ) {
+			return $this->create_rest_response( array( 'success' => true, 'has_active_conversation' => false ) );
+		}
+		
+		// Get active conversation
+		$messages_db = new EPKB_AI_Messages_DB();
+		$conversation = $messages_db->get_latest_active_conversation_for_session( $session_id );
+		if ( ! $conversation ) {
+			return $this->create_rest_response( array( 'success' => true, 'has_active_conversation' => false ) );
+		}
+		
+		// Validate user matching for the conversation
+		$validation = EPKB_AI_Utilities::validate_ai_user_matching( $conversation->get_chat_id() );
+		if ( is_wp_error( $validation ) ) {
+			return $this->create_rest_response( array(), 403, $validation );
+		}
+		
+		// Format messages for response
+		$messages = $this->format_messages_for_response( $conversation->get_messages() );
+		
+		return $this->create_rest_response( array( 'success'   => true, 'has_active_conversation' => true, 'chat_id'   => $conversation->get_chat_id(), 'messages'  => $messages ) );
+	}
+	
+	/**
+	 * Clear current conversation
+	 * 
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function clear_conversation( $request ) {
+		
+		// Get session ID
+		$session_id = EPKB_AI_Security::get_or_create_session();
+		if ( empty( $session_id ) ) {
+			return $this->create_rest_response( array( 'success' => false ), 400, new WP_Error( 'no_session', __( 'No active session.', 'echo-knowledge-base' ) ) );
+		}
+		
+		// Generate new chat ID for the same session
+		$new_chat_id = EPKB_AI_Security::generate_chat_id();
+		
+		// Set a transient flag to force new conversation on next message. This flag will be checked when processing the next message
+		$transient_key = 'epkb_ai_clear_conv_' . md5( $session_id );
+		set_transient( $transient_key, $new_chat_id, 15 * MINUTE_IN_SECONDS );
+		
+		return $this->create_rest_response( array(
+			'success' => true,
+			'chat_id' => $new_chat_id,
+			'message' => __( 'New conversation started.', 'echo-knowledge-base' )
+		) );
+	}
+	
+	/**
+	 * Get conversation history by chat ID
+	 * 
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
 	 */
 	public function get_conversation( $request ) {
 		
 		$chat_id = $request->get_param( 'chat_id' );
+		$session_id = EPKB_AI_Security::get_or_create_session();
 		
-		// Get session ID from cookie
-		$session_id = isset( $_COOKIE['epkb_session_id'] ) ? sanitize_text_field( $_COOKIE['epkb_session_id'] ) : '';
 		if ( empty( $session_id ) ) {
-			return new WP_Error(
-				'no_session',
-				__( 'No session found.', 'echo-knowledge-base' ),
-				array( 'status' => 401 )
-			);
+			return $this->create_rest_response( array(), 401, new WP_Error( 'no_session', __( 'No active session found.', 'echo-knowledge-base' ) )			);
 		}
-
+		
+		// Validate chat belongs to session
+		if ( ! EPKB_AI_Security::validate_chat_session( $chat_id, $session_id ) ) {
+			return $this->create_rest_response( array(), 403, new WP_Error( 'unauthorized', __( 'Unauthorized access to conversation.', 'echo-knowledge-base' ) ) );
+		}
+		
+		// Additional user matching validation
+		$user_validation = EPKB_AI_Utilities::validate_ai_user_matching( $chat_id );
+		if ( is_wp_error( $user_validation ) ) {
+			return $this->create_rest_response( array(), 403, $user_validation );
+		}
+		
 		// Get conversation from database
-		$conversation_service = new EPKB_AI_Conversation_Service();
-		$conversation = $conversation_service->get_conversation( $chat_id );
-
+		$messages_db = new EPKB_AI_Messages_DB();
+		$conversation = $messages_db->get_conversation_by_chat_and_session( $chat_id, $session_id );
 		if ( ! $conversation ) {
-			return new WP_Error(
-				'not_found',
-				__( 'Conversation not found.', 'echo-knowledge-base' ),
-				array( 'status' => 404 )
-			);
+			return $this->create_rest_response( array(), 404, new WP_Error( 'not_found', __( 'Conversation not found.', 'echo-knowledge-base' ) ) );
 		}
 
 		// Check if conversation is expired
 		if ( $conversation->is_conversation_expired() ) {
-			return new WP_Error(
-				'expired',
-				__( 'Conversation has expired.', 'echo-knowledge-base' ),
-				array( 'status' => 410 )
-			);
+			return $this->create_rest_response( array(), 410, new WP_Error( 'conversation_expired', __( 'Conversation has expired.', 'echo-knowledge-base' ) ) );
 		}
 
-		// Get messages
-		$messages = $conversation->get_messages();
-		$formatted_messages = array();
+		// Format messages for response
+		$messages = $this->format_messages_for_response( $conversation->get_messages() );
 
-		foreach ( $messages as $message ) {
-			$formatted_messages[] = array(
-				'role'      => $message['role'],
-				'content'   => EPKB_AI_Chat_Security::sanitize_output( $message['content'] ),
-				'timestamp' => isset( $message['timestamp'] ) ? $message['timestamp'] : '',
-				'id'        => isset( $message['id'] ) ? $message['id'] : ''
-			);
-		}
-
-		return rest_ensure_response( array(
-			'messages'   => $formatted_messages,
-			'session_id' => $session_id,
-			'chat_id'    => $chat_id
-		) );
+		return $this->create_rest_response( array( 'success' => true, 'messages' => $messages, 'chat_id' => $chat_id ) );
 	}
 
 	/**
 	 * Get conversations table data for admin
 	 * 
 	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response|WP_Error
+	 * @return WP_REST_Response
 	 */
 	public function get_conversations_table( $request ) {
 		
@@ -391,17 +351,17 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 		) );
 
 		if ( is_wp_error( $result ) ) {
-			return $result;
+			return $this->create_rest_response( array(), 500, $result );
 		}
 
-		return rest_ensure_response( $result );
+		return $this->create_rest_response( $result );
 	}
 
 	/**
 	 * Get single conversation details for admin
 	 * 
 	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response|WP_Error
+	 * @return WP_REST_Response
 	 */
 	public function get_conversation_details( $request ) {
 		
@@ -412,16 +372,11 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 		$conversation = $messages_db->get_conversation( $conversation_id );
 		
 		if ( ! $conversation ) {
-			return new WP_Error(
-				'not_found',
-				__( 'Conversation not found.', 'echo-knowledge-base' ),
-				array( 'status' => 404 )
-			);
+			return $this->create_rest_response( array( 'error' => 'not_found', 'message' => __( 'Conversation not found.', 'echo-knowledge-base' ) ), 404 );
 		}
 
 		// Get messages and metadata
 		$messages = $conversation->get_messages();
-		$meta = $conversation->get_meta();
 
 		// Build user display name
 		$user_display = __( 'Guest', 'echo-knowledge-base' );
@@ -430,20 +385,14 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			if ( $user ) {
 				$user_display = $user->display_name;
 			}
-		} else if ( ! empty( $meta['user_name'] ) ) {
-			$user_display = $meta['user_name'];
-		}
+		} 
 
 		// Format response
 		$response = array(
 			'id'         => $conversation->get_id(),
 			'user'       => $user_display,
 			'created'    => $conversation->get_created(),
-			'messages'   => array(),
-			'meta'       => array(
-				'page_title' => isset( $meta['page_title'] ) ? $meta['page_title'] : '',
-				'status'     => isset( $meta['status'] ) ? $meta['status'] : ''
-			)
+			'messages'   => array()
 		);
 
 		// Format messages
@@ -455,108 +404,125 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			);
 		}
 
-		return rest_ensure_response( $response );
+		return $this->create_rest_response( $response );
 	}
 
 	/**
 	 * Delete a single conversation
 	 * 
 	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response|WP_Error
+	 * @return WP_REST_Response
 	 */
 	public function delete_conversation( $request ) {
 		
 		$conversation_id = $request->get_param( 'id' );
 
 		$result = EPKB_AI_Table_Operations::delete_row( 'chat', $conversation_id );
-		
 		if ( is_wp_error( $result ) ) {
-			return $this->format_error_response( $result );
+			return $this->create_rest_response( array(), 500, $result );
 		}
 
-		return rest_ensure_response( array(
-			'message' => __( 'Conversation deleted successfully.', 'echo-knowledge-base' ),
-			'deleted' => true
-		) );
+		return $this->create_rest_response( array( 'message' => __( 'Conversation deleted successfully.', 'echo-knowledge-base' ), 'deleted' => true ) );
 	}
 
 	/**
 	 * Delete selected conversations
 	 * 
 	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response|WP_Error
+	 * @return WP_REST_Response
 	 */
 	public function delete_selected_conversations( $request ) {
 		
 		$ids = $request->get_param( 'ids' );
 
 		$result = EPKB_AI_Table_Operations::delete_selected_rows( 'chat', $ids );
-		
 		if ( is_wp_error( $result ) ) {
-			return $this->format_error_response( $result );
+			return $this->create_rest_response( array(), 500, $result );
 		}
 
-		return rest_ensure_response( array(
-			'message' => sprintf( __( '%d conversations deleted successfully.', 'echo-knowledge-base' ), $result ),
-			'deleted' => $result
-		) );
+		return $this->create_rest_response( array( 'message' => sprintf( __( '%d conversations deleted successfully.', 'echo-knowledge-base' ), $result ), 'deleted' => $result ) );
 	}
 
 	/**
 	 * Delete all conversations
 	 * 
 	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response|WP_Error
+	 * @return WP_REST_Response
 	 */
 	public function delete_all_conversations( $request ) {
 		
 		$result = EPKB_AI_Table_Operations::delete_all_conversations( 'chat' );
-		
 		if ( is_wp_error( $result ) ) {
-			return $this->format_error_response( $result );
+			return $this->create_rest_response( array(), 500, $result );
 		}
 
-		return rest_ensure_response( array(
-			'message' => sprintf( __( '%d conversations deleted successfully.', 'echo-knowledge-base' ), $result ),
-			'deleted' => $result
-		) );
+		return $this->create_rest_response( array( 'message' => sprintf( __( '%d conversations deleted successfully.', 'echo-knowledge-base' ), $result ), 'deleted' => $result ) );
 	}
 
 	/**
-	 * Get schema for message parameters
+	 * Extract and validate request data
 	 * 
+	 * @param WP_REST_Request $request
+	 * @return array|WP_Error
+	 */
+	private function extract_request_data( $request ) {
+		$params = $request->get_json_params();
+		
+		// Get and validate message
+		$message = isset( $params['message'] ) ? $params['message'] : '';
+		$message = $this->optimize_message( $message );
+		$message = EPKB_AI_Validation::validate_message( $message );
+		if ( is_wp_error( $message ) ) {
+			return $message;
+		}
+		
+		// Get optional parameters; keep empty if not provided (handled in Message_Handler)
+		$chat_id = isset( $params['chat_id'] ) ? sanitize_text_field( $params['chat_id'] ) : '';
+		if ( !empty( $chat_id ) && ! EPKB_AI_Validation::validate_uuid( str_replace( EPKB_AI_Security::CHAT_ID_PREFIX, '', $chat_id ) ) ) {
+			$chat_id = EPKB_AI_Security::generate_chat_id();
+		}
+
+		// Get idempotency key
+		$idempotency_key = isset( $params['idempotency_key'] ) ? sanitize_text_field( $params['idempotency_key'] ) : '';
+		$idempotency_key = EPKB_AI_Validation::validate_idempotency_key( $idempotency_key );
+		if ( is_wp_error( $idempotency_key ) ) {
+			$idempotency_key = '';
+		}
+
+		// Get widget ID
+		$widget_id = isset( $params['widget_id'] ) ? absint( $params['widget_id'] ) : 1;
+		$widget_id = EPKB_AI_Validation::validate_widget_id( $widget_id );
+		if ( is_wp_error( $widget_id ) ) {
+			$widget_id = 1;
+		}
+		
+		return array(
+			'message'         => $message,
+			'chat_id'         => $chat_id,
+			'idempotency_key' => $idempotency_key,
+			'widget_id'       => $widget_id,
+			'user_id'         => get_current_user_id()
+		);
+	}
+	
+	/**
+	 * Format messages for API response
+	 * 
+	 * @param array $messages
 	 * @return array
 	 */
-	protected function get_message_params() {
-		return array(
-			'message' => array(
-				'required'          => true,
-				'type'              => 'string',
-				'description'       => __( 'The chat message to send', 'echo-knowledge-base' ),
-				'validate_callback' => function( $param ) {
-					return is_string( $param ) && ! empty( trim( $param ) );
-				},
-				'sanitize_callback' => 'sanitize_textarea_field',
-			),
-			'message_id' => array(
-				'type'              => 'string',
-				'description'       => __( 'Optional message ID', 'echo-knowledge-base' ),
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-			'widget_id' => array(
-				'type'              => 'integer',
-				'description'       => __( 'Widget ID (1-10)', 'echo-knowledge-base' ),
-				'default'           => 1,
-				'minimum'           => 1,
-				'maximum'           => EPKB_AI_Config::MAX_WIDGET_ID,
-				'sanitize_callback' => 'absint',
-			),
-			'chat_id' => array(
-				'type'              => 'string',
-				'description'       => __( 'Chat conversation ID', 'echo-knowledge-base' ),
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-		);
+	private function format_messages_for_response( $messages ) {
+		$formatted = array();
+		
+		foreach ( $messages as $message ) {
+			$formatted[] = array(
+				'role'      => $message['role'],
+				'content'   => EPKB_AI_Security::sanitize_output( $message['content'] ),
+				'timestamp' => isset( $message['timestamp'] ) ? $message['timestamp'] : ''
+			);
+		}
+		
+		return $formatted;
 	}
 
 	/**
@@ -598,19 +564,6 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 				},
 			),
 		);
-	}
-
-	/**
-	 * Validate chat ID parameter
-	 * 
-	 * @param string $param
-	 * @param WP_REST_Request $request
-	 * @param string $key
-	 * @return bool
-	 */
-	public function validate_chat_id( $param, $request, $key ) {
-		// Allow alphanumeric, hyphens and underscores
-		return preg_match( '/^[a-zA-Z0-9_-]+$/', $param );
 	}
 
 	/**

@@ -3,6 +3,16 @@
 /**
  * Base REST API Controller for AI functionality
  * Provides common functionality for all AI REST endpoints
+ * 
+ * Currently provides:
+ * - Common REST response creation with token refresh
+ * - Error handling utilities
+ * - Collection parameter schemas
+ * 
+ * Future considerations:
+ * - If multiple AI services need sessions, consider creating a shared session endpoint here
+ * - Common authentication/authorization logic could be added here
+ * - Shared rate limiting logic could be centralized here
  */
 abstract class EPKB_AI_REST_Base_Controller extends WP_REST_Controller {
 
@@ -15,160 +25,160 @@ abstract class EPKB_AI_REST_Base_Controller extends WP_REST_Controller {
 	 * Constructor
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
+		add_action( 'rest_api_init', array( $this, 'register_routes') );
 	}
 
 	public function init() {
-		if ( EPKB_AI_Utilities::is_ai_enabled() ) {
-			add_action( 'rest_api_init', array( $this, 'register_routes') );
-		}
-	}
-
-	/**
-	 * Common permission check for AI features
-	 * 
-	 * @param WP_REST_Request $request
-	 * @return bool|WP_Error
-	 */
-	protected function check_ai_enabled( $request ) {
-		
-		// Check if AI features are enabled
 		if ( ! EPKB_AI_Utilities::is_ai_enabled() ) {
-			return new WP_Error(
-				'ai_disabled',
-				__( 'AI features are currently disabled.', 'echo-knowledge-base' ),
-				array( 'status' => 403 )
-			);
+			return;
 		}
 
-		return true;
+		// if our REST request, start session
+		if ( EPKB_AI_Security::can_start_session() ) {
+			session_start();
+		}
+	}
+
+	public function register_routes() {
+		// Base routes can be registered here if needed in the future
 	}
 
 	/**
-	 * Validate REST nonce
-	 * 
-	 * @param WP_REST_Request $request
-	 * @return bool|WP_Error
-	 */
-	protected function validate_nonce( $request ) {
-		
-		// Validate nonce from header or request parameter
-		$nonce = $request->get_header( 'X-WP-Nonce' ) ?: $request->get_param( '_wpnonce' );
-		if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return new WP_Error(
-				'invalid_nonce',
-				__( 'Invalid security token. Please refresh the page and try again.', 'echo-knowledge-base' ),
-				array( 'status' => 403 )
-			);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Common rate limit check
-	 * 
-	 * @return bool|WP_Error
-	 */
-	protected function check_rate_limit() {
-		
-		$rate_check = EPKB_AI_Chat_Security::check_rate_limit();
-		if ( is_wp_error( $rate_check ) ) {
-			return new WP_Error(
-				'rate_limit_exceeded',
-				$rate_check->get_error_message(),
-				array( 'status' => 429 )
-			);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Check admin permissions
-	 * 
-	 * @param string $context
-	 * @return bool|WP_Error
-	 */
-	protected function check_admin_permission( $context = 'admin_eckb_access_ai_features_write' ) {
-		
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( $context ) ) {
-			return new WP_Error(
-				'insufficient_permissions',
-				__( 'You do not have permission to perform this action.', 'echo-knowledge-base' ),
-				array( 'status' => 403 )
-			);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Get KB configuration
+	 * Helper method to create REST responses with automatic token refresh
 	 *
-	 * @param int $kb_id
-	 * @return array|WP_Error
+	 * @param array $data The response data
+	 * @param int $status HTTP status code
+	 * @param WP_Error|null $wp_error Optional WP_Error object to process
+	 * @return WP_REST_Response
 	 */
-	protected function get_kb_config( $kb_id = null ) {
+	protected function create_rest_response( $data, $status=200, $wp_error=null ) {
 
-		$kb_id = $kb_id ?: EPKB_KB_Config_DB::DEFAULT_KB_ID;
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
+		// If WP_Error is provided, process it and merge into data
+		if ( $wp_error instanceof WP_Error ) {
+			$error_result = $this->process_wp_error( $wp_error, $status );
+			$data = array_merge( $error_result['data'], $data );
+			$status = $error_result['status'];
 
-		if ( ! $kb_config || is_wp_error( $kb_config ) ) {
-			return new WP_Error(
-				'config_error',
-				__( 'Unable to load configuration.', 'echo-knowledge-base' ),
-				array( 'status' => 500 )
-			);
+		} elseif ( isset( $data['error'] ) && ! isset( $data['status'] ) ) {
+			// If error is provided in data but status is not, add it
+			$data['status'] = 'error';
+			
+			// Use status mapping if status is still 200
+			if ( $status === 200 ) {
+				$status = $this->get_error_status_code( $data['error'] );
+			}
 		}
 
-		return $kb_config;
+		// Always check if we need to provide a new nonce
+		$current_nonce = epkb_get_instance()->security_obj->get_nonce( true );
+		$request_nonce = isset( $_SERVER['HTTP_X_WP_NONCE'] ) ? $_SERVER['HTTP_X_WP_NONCE'] : null;
+
+		// Check if nonce is approaching expiration (WordPress nonces last 12-24 hours)
+		// We'll refresh if the nonce is older than 10 hours to be safe
+		$should_refresh = false;
+
+		if ( $request_nonce ) {
+			// Verify if the nonce is still valid but getting old
+			$verify = wp_verify_nonce( $request_nonce, 'wp_rest' );
+			if ( $verify === 2 ) {
+				// Nonce is valid but was generated 12-24 hours ago
+				$should_refresh = true;
+			}
+		}
+
+		// If the nonce has changed or should be refreshed, include the new one
+		if ( $should_refresh || ( $request_nonce && $current_nonce !== $request_nonce ) ) {
+			$data['new_token'] = $current_nonce;
+		}
+
+		return new WP_REST_Response( $data, $status );
 	}
 
 	/**
-	 * Handle WP_Error responses consistently
+	 * Process a WP_Error object and extract error data
 	 * 
-	 * @param WP_Error $error
-	 * @param array $context
-	 * @return WP_Error
+	 * @param WP_Error $wp_error WP_Error object to process
+	 * @param int $default_status Default status code if none is found
+	 * @return array Array containing error data and status code
 	 */
-	protected function format_error_response( $error, $context = array() ) {
+	protected function process_wp_error( $wp_error, $default_status = 200 ) {
+		if ( ! ( $wp_error instanceof WP_Error ) ) {
+			return array(
+				'data' => array(),
+				'status' => $default_status
+			);
+		}
 		
-		$error_code = $error->get_error_code();
-		$error_data = $error->get_error_data( $error_code );
+		$error_code = $wp_error->get_error_code();
+		$error_data = $wp_error->get_error_data( $error_code );
+		$status = $default_status;
 		
-		// Default status code
-		$status = isset( $error_data['status'] ) ? $error_data['status'] : 500;
+		// Extract status from error data if available
+		if ( is_array( $error_data ) && isset( $error_data['status'] ) ) {
+			$status = (int) $error_data['status'];
+		} elseif ( $default_status === 200 ) {
+			// If no status provided and default is still 200, use appropriate error status
+			$status = $this->get_error_status_code( $error_code );
+		}
 		
-		// Map specific error codes to HTTP status codes
+		// Get all error messages and combine them
+		$error_messages = implode( '; ', $wp_error->get_error_messages( $error_code ) );
+		
+		// Build error response data
+		$error_response = array(
+			'success' => false,
+			'status' => 'error',
+			'error' => $error_code,
+			'message' => $error_messages ?: $wp_error->get_error_message()
+		);
+		
+		return array(
+			'data' => $error_response,
+			'status' => $status
+		);
+	}
+
+	/**
+	 * Get appropriate HTTP status code for error code
+	 * 
+	 * @param string $error_code
+	 * @return int
+	 */
+	protected function get_error_status_code( $error_code ) {
 		$status_map = array(
 			'invalid_input'       => 400,
 			'message_too_long'    => 400,
+			'invalid_idempotency_key' => 400,
+			'empty_message'       => 400,
+			'invalid_content'     => 400,
+			'conversation_limit_reached' => 400,
 			'invalid_session'     => 401,
 			'no_session'          => 401,
 			'login_required'      => 401,
+			'unauthorized'        => 403,
 			'access_denied'       => 403,
 			'ai_disabled'         => 403,
 			'ai_chat_disabled'    => 403,
+			'ai_search_disabled'  => 403,
 			'not_found'           => 404,
+			'conversation_not_found' => 404,
 			'expired'             => 410,
+			'conversation_expired' => 410,
 			'rate_limit_exceeded' => 429,
+			'user_rate_limit'     => 429,
+			'global_rate_limit'   => 429,
+			'version_conflict'    => 409,
+			'server_error'        => 500,
+			'db_error'           => 500,
+			'save_failed'        => 500,
+			'insert_failed'      => 500,
+			'unexpected_error'   => 500,
+			'service_unavailable' => 503,
+			'empty_response'     => 503,
 		);
 		
-		if ( isset( $status_map[ $error_code ] ) ) {
-			$status = $status_map[ $error_code ];
-		}
-		
-		// Add context to error data
-		if ( ! empty( $context ) ) {
-			$error_data = array_merge( (array) $error_data, array( 'context' => $context ) );
-		}
-		
-		return new WP_Error(
-			$error_code,
-			$error->get_error_message(),
-			array( 'status' => $status )
-		);
+		return isset( $status_map[ $error_code ] ) ? $status_map[ $error_code ] : 500;
 	}
 
 	/**
@@ -215,22 +225,5 @@ abstract class EPKB_AI_REST_Base_Controller extends WP_REST_Controller {
 				'sanitize_callback' => 'sanitize_text_field',
 			),
 		);
-	}
-
-	/**
-	 * Set session cookie with proper security flags
-	 *
-	 * @param string $session_id
-	 */
-	protected function set_session_cookie( $session_id ) {
-		$cookie_args = array(
-			'expires'  => 0,  // Session cookie
-			'path'     => '/',
-			'secure'   => is_ssl(),
-			'httponly' => true,
-			'samesite' => 'Lax'
-		);
-
-		setcookie( 'epkb_session_id', $session_id, $cookie_args );
 	}
 }

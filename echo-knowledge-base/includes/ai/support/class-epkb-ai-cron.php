@@ -75,21 +75,8 @@ class EPKB_AI_Cron {
 	 * @return int Number of days to keep conversations (default 90)
 	 */
 	private static function get_retention_days() {
-		// Default retention days
-		$default_retention = 90;
-		
-		// Try to get from KB config
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
-		
-		// Check if we got a valid config (not WP_Error)
-		if ( is_wp_error( $kb_config ) ) {
-			EPKB_AI_Utilities::add_log( 'AI Cron Error: Failed to get KB config - ' . $kb_config->get_error_message() );
-			// Apply filter with default value and return
-			return apply_filters( 'epkb_ai_conversation_retention_days', $default_retention );
-		}
-		
-		// Look for the setting in config, default to 90 days if not set
-		$retention_days = isset( $kb_config['ai_conversation_retention_days'] ) ? absint( $kb_config['ai_conversation_retention_days'] ) : $default_retention;
+		// Get retention days from AI config
+		$retention_days = 10;   //TODO
 		
 		// Apply filter for customization
 		return apply_filters( 'epkb_ai_conversation_retention_days', $retention_days );

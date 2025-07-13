@@ -1451,9 +1451,9 @@ class EPKB_Config_Tools_Page {
 				continue;
 
 			if ( ! in_array($plugin['Name'], $kb_plugins)) {
-				$other_plugins = true;
-				echo ($other_plugins ? "OTHER PLUGINS:	         \n\n" : "");
+				echo ( $other_plugins ? '' : "OTHER PLUGINS:	         \n\n" );
 				echo "		" . esc_html( $plugin['Name'] . ': ' . $plugin['Version'] ) . "\n";
+				$other_plugins = true;
 			}
 		}
 

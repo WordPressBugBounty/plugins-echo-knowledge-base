@@ -3,25 +3,25 @@ Author URI: https://www.echoknowledgebase.com/about-us/
 Plugin URI: https://www.echoknowledgebase.com/
 Contributors: echoplugins
 Donate link: https://www.echoknowledgebase.com
-Tags: knowledge base, knowledgebase, documentation, docs, faq
-Requires at least: 5.2
+Tags: knowledge base, documentation, docs, ai chat chatgpt, faq
+Requires at least: 5.3
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 15.0.0
+Stable tag: 15.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-A fully featured, easy-to-use documentation plugin with AI chat integration. Build beautiful knowledge bases, FAQs, docs, and wikis of any size.
+A fully featured, easy-to-use documentation plugin with AI chat and search integration. Build beautiful knowledge bases, FAQs, docs, and wikis.
 
 == Description ==
 
-Echo Knowledge Base is a powerful documentation tool that helps you create and organize your documentation, FAQs, and articles. It's intuitive and includes comprehensive features to help you build a visually appealing knowledge base.
+Echo Knowledge Base is a powerful documentation tool that helps you create and organize your documentation, FAQs, and articles. It enabled AI search and chat features and includes comprehensive features to help you build a visually appealing knowledge base.
 
 Designed with a modern and professional appearance by default, the plugin offers extensive customization options to align perfectly with your brand identity.
 
 ## KEY FEATURES
 
-* **AI Chatbots Integration**: Easily create interactive chatbots and teach them about your Knowledge Base, FAQs, internal documentation, notes, and any other source of information.
+* **AI Chatbots**: Easily create interactive chatbots and teach them about your Knowledge Base, FAQs, internal documentation, notes, and any other source of information.
 
 * **Frontend Visual Editor**: Customize your Knowledge Base pages live on the front-end with our intuitive visual editor or drag-and-drop Gutenberg blocks.
 
@@ -57,10 +57,8 @@ Designed with a modern and professional appearance by default, the plugin offers
 
 Please note that some features require a Pro license (Content Protection, Unlimited Knowledge Bases, Vote and Feedback form, Links and Advanced Search, Content Import and Export). For more information, check the [official website](https://www.echoknowledgebase.com/bundle-pricing/).
 
-
-## 🚀 AI Chat Integration - Turn Your Knowledge Base into a 24/7 Support Pro
-
-Transform your knowledge base into an intelligent assistant that provides instant, accurate answers to user questions. Our AI integration is powered by the leading WordPress AI plugin, AI Engine.
+## 🚀 AI Chat - Turn Your Knowledge Base into a 24/7 Support Pro
+Transform your knowledge base into an intelligent assistant that provides instant, accurate answers to user questions. 
 
 AI Chat can answer questions based on content from your Knowledge Base, FAQs, internal documentation, notes, pages, or any other information source.
 
@@ -82,11 +80,8 @@ Most teams cut repeat questions by the first week freeing staff for revenue-gene
 - **Pain-point analytics** – Real-time dashboards surface the topics that frustrate users the most, turning support data into a product roadmap.
 - **Smart learning** – As you update or add content, the model re-indexes automatically, keeping answers accurate without manual re-training.
 - **Seamless human hand-off** – Edge-case questions route to a live agent in the same chat window, with full context preserved.
-- **Powered by AI Engine**, the leading WordPress AI plugin that also drives site-wide content and image generation.
 
-Our AI integration is powered by AI Engine, the leading WordPress AI plugin, which supports not only your chat but also site editing and image generation needs.
-
-**Result: fewer tickets, happier users, and support staff who finally have time for the work that moves your business forward.** 
+**Result: fewer tickets, happier users, and support staff who finally have time for the work that moves your business forward.**
 
 For detailed setup instructions, visit our [AI Chat Integration Guide](https://www.echoknowledgebase.com/documentation/ai-chat/)
 
@@ -245,7 +240,7 @@ Enhance the user search experience while tracking analytics, including insights 
 >⭐ <strong>OUR FREE COMPLEMENTARY PLUGINS</strong> ⭐
 >
 >
-> ✅ The **[Help Dialog Chat](https://wordpress.org/plugins/help-dialog/)** offers a chatbot-like dialog for better customer support and increased leads and sales. The Help Dialog Chat includes FAQs, search, and a contact form. [Learn More](https://wordpress.org/plugins/help-dialog/)
+> ✅ The **[AI Chat](https://wordpress.org/plugins/help-dialog/)** offers a AI Chat for better customer support and increased leads and sales. The AI Chat includes FAQs, search, and a contact form. [Learn More](https://wordpress.org/plugins/help-dialog/)
 >
 >
 > ✅ The **[Creative Add-Ons for Elementor](https://wordpress.org/plugins/creative-addons-for-elementor)** helps you write articles and documents faster and more easily using our powerful and practical Elementor widgets. [Learn More](https://wordpress.org/plugins/creative-addons-for-elementor)
@@ -301,7 +296,6 @@ After installation, we recommend:
    * Configure navigation options
 
 3. **Add AI Features (Optional)**
-   * Install the AI Engine plugin
    * Configure your OpenAI API key
    * Start using AI-powered features
 
@@ -342,9 +336,8 @@ Our AI integration provides:
 
 = How do I set up the AI features? =
 Setting up AI features is quick and easy:
-1. Install the AI Engine plugin
-2. Add your OpenAI API key
-3. Start using AI features immediately
+1. Add your OpenAI API key
+2. Start using AI features immediately
 
 ### Support & Updates
 
@@ -423,9 +416,16 @@ For more information about Pro features, visit our [Pricing Page](https://www.ec
 
 == Changelog ==
 
+= 15.0.1 =
+Release Date: July 13, 2025
+* New: AI Search - coming soon
+* New: AI Chat - limited beta
+* Fix: Cleanup and minor fixes
+
 = 15.0.0 =
-Release Date: July 7, 2025
-* New: coming soon AI features
+Release Date: July 6, 2025
+* New: AI Search - answer user questions using AI Chat
+* New: AI Chat - user can ask questions and get answers from your Knowledge Base
 * Fix: Cleanup and minor fixes
 
 = 14.1.0 =

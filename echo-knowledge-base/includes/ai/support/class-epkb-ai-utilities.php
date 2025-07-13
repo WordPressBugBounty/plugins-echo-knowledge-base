@@ -94,6 +94,7 @@ class EPKB_AI_Utilities {
 		}
 		
 		// Check if it's a cron job or system event
+		/** @disregard P1011 */
 		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 			return true;
 		}
@@ -214,90 +215,98 @@ class EPKB_AI_Utilities {
 	 * @return string
 	 */
 	public static function generate_uuid_v4() {
-		// Generate 16 random bytes.
-		try {
-			$data = random_bytes( 16 );
-		} catch ( Exception $e ) {
-			$data = openssl_random_pseudo_bytes( 16 );
-		}
-
-		// Set the version to 0100 (UUID version 4).
-		$data[6] = chr( ord( $data[6] ) & 0x0f | 0x40 );
-
-		// Set the variant to 10 (variant 1).
-		$data[8] = chr( ord( $data[8] ) & 0x3f | 0x80 );
-
-		// Convert binary data to hexadecimal string.
-		$hex = bin2hex( $data );
-
-		// Format as UUID: 8-4-4-4-12.
-		$formatted_uuid = vsprintf( '%s%s-%s-%s-%s-%s%s%s', str_split( $hex, 4 ) );
-
-		return $formatted_uuid;
-	}
-
-	/**
-	 * Validate UUID v4 format
-	 *
-	 * @param string $uuid UUID to validate
-	 * @return bool|WP_Error True if valid, WP_Error on failure
-	 */
-	public static function validate_uuid( $uuid ) {
-		if ( empty( $uuid ) ) {
-			return new WP_Error( 'empty_uuid', __( 'UUID is empty', 'echo-knowledge-base' ) );
-		}
-
-		$uuid = trim( $uuid );
-
-		// Regular expression to validate UUID v4 format
-		$pattern = '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i';
-		if ( preg_match( $pattern, $uuid ) !== 1 ) {
-			return new WP_Error( 'invalid_uuid', sprintf( __( 'Invalid UUID format: %s', 'echo-knowledge-base' ), $uuid ) );
+		// Try multiple methods for generating secure random data
+		$bytes = false;
+		
+		// Method 1: random_bytes (most secure, PHP 7+)
+		if ( function_exists( 'random_bytes' ) ) {
+			try {
+				$bytes = random_bytes( 16 );
+			} catch ( Exception $e ) {
+				$bytes = false;
+			}
 		}
 		
-		return true;
+		// Method 2: openssl_random_pseudo_bytes (widely compatible, PHP 5.3+)
+		if ( $bytes === false && function_exists( 'openssl_random_pseudo_bytes' ) ) {
+			$strong = false;
+			$bytes = openssl_random_pseudo_bytes( 16, $strong );
+			// Only use if cryptographically strong
+			if ( ! $strong ) {
+				$bytes = false;
+			}
+		}
+		
+		// Method 3: Fallback using multiple entropy sources
+		if ( $bytes === false ) {
+			// Combine multiple sources of entropy
+			$entropy = uniqid( '', true );                    // Microsecond precision
+			$entropy .= mt_rand();                            // Mersenne Twister
+			$entropy .= microtime( true );                    // Current time with microseconds
+			$entropy .= serialize( $_SERVER );                // Server variables
+			if ( function_exists( 'wp_salt' ) ) {
+				$entropy .= wp_salt( 'auth' );                // WordPress salt if available
+			}
+			
+			// Hash the combined entropy and take first 16 bytes
+			$bytes = substr( hash( 'sha256', $entropy, true ), 0, 16 );
+		}
+		
+		// Set UUID v4 version and variant bits
+		$bytes[6] = chr( ord( $bytes[6] ) & 0x0f | 0x40 ); // version 4
+		$bytes[8] = chr( ord( $bytes[8] ) & 0x3f | 0x80 ); // variant 10
+		
+		// Format as UUID string
+		return vsprintf( '%s%s-%s-%s-%s-%s%s%s', str_split( bin2hex( $bytes ), 4 ) );
 	}
 
 	/**
 	 * Check if AI Search feature is enabled
 	 *
-	 * @param int $kb_id KB ID to check (default: DEFAULT_KB_ID)
 	 * @return bool True if AI Search is enabled
 	 */
-	public static function is_ai_search_enabled( $kb_id = EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
-		
-		if ( is_wp_error( $kb_config ) ) {
+	public static function is_ai_search_enabled() {
+		$ai_search_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled', 'off', true );
+
+		// Check if chat is enabled
+		if ( $ai_search_enabled !== 'on' ) {
 			return false;
 		}
-		
-		return isset( $kb_config['ai_search_enabled'] ) && $kb_config['ai_search_enabled'] === 'on';
+
+		// Check beta access code
+		$entered_code = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_beta_access_code', '', true );
+		$valid_beta_code = 'EPKB-BETA-2024-AI-CHAT'; // Hard-coded beta access code
+
+		return $entered_code === $valid_beta_code;
 	}
 
 	/**
 	 * Check if AI Chat feature is enabled
 	 *
-	 * @param int $kb_id KB ID to check (default: DEFAULT_KB_ID)
 	 * @return bool True if AI Chat is enabled
 	 */
-	public static function is_ai_chat_enabled( $kb_id = EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
-
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
-		if ( is_wp_error( $kb_config ) ) {
+	public static function is_ai_chat_enabled() {
+		$ai_chat_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled', 'off', true );
+		
+		// Check if chat is enabled
+		if ( $ai_chat_enabled !== 'on' ) {
 			return false;
 		}
 		
-		return isset( $kb_config['ai_chat_enabled'] ) && $kb_config['ai_chat_enabled'] === 'on';
+		// Check beta access code
+		$entered_code = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_beta_access_code', '', true );
+		$valid_beta_code = 'EPKB-BETA-2024-AI-CHAT'; // Hard-coded beta access code
+		
+		return $entered_code === $valid_beta_code;
 	}
 
 	/**
 	 * Check if any AI features are enabled
 	 *
-	 * @param int $kb_id KB ID to check (default: DEFAULT_KB_ID)
 	 * @return bool True if either AI Search or AI Chat is enabled
 	 */
-	public static function is_ai_enabled( $kb_id = EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
-		return self::is_ai_search_enabled( $kb_id ) || self::is_ai_chat_enabled( $kb_id );
+	public static function is_ai_enabled() {
+		return self::is_ai_search_enabled() || self::is_ai_chat_enabled();
 	}
 
 	/**
@@ -548,5 +557,17 @@ class EPKB_AI_Utilities {
 		
 		// Send JSON error response and exit
 		wp_send_json_error( $error_response );
+	}
+
+	/********************************************************************************
+	 * Validations
+	 *********************************************************************************/
+
+	public static function validate_widget_id( $widget_id ) {
+		if ( empty( $widget_id ) ) {	// TODO validate against existing widgets
+			return 1;
+		}
+
+		return $widget_id;
 	}
 }

@@ -44,6 +44,24 @@ function epkb_load_public_resources() {
 	wp_register_script( 'epkb-admin-form-controls-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-form-controls' . $suffix . '.js', array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-frontend-editor', Echo_Knowledge_Base::$plugin_url . 'js/frontend-editor' . $suffix . '.js', array('jquery', 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-ui-widget', 'wp-i18n', 'iris', 'wp-color-picker'), Echo_Knowledge_Base::$version, true );
 
+	// AI Chat Widget resources
+	wp_register_style( 'epkb-ai-chat-widget', Echo_Knowledge_Base::$plugin_url . 'css/ai-chat-widget' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
+	
+	// Register modular AI chat components
+	wp_register_script( 'epkb-ai-chat-util', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat-util' . $suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
+	wp_register_script( 'epkb-ai-chat-session', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat-session' . $suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
+	wp_register_script( 'epkb-ai-chat-api', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat-api' . $suffix . '.js', array( 'epkb-ai-chat-util' ), Echo_Knowledge_Base::$version, true );
+	
+	// Check if wp-element is available, otherwise use react/react-dom directly
+	if ( wp_script_is( 'wp-element', 'registered' ) ) {
+		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat' . $suffix . '.js', array( 'wp-element', 'epkb-ai-chat-util', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
+	} else {
+		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat' . $suffix . '.js', array( 'react', 'react-dom', 'epkb-ai-chat-util', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
+	}
+
+	// Register marked library for markdown parsing
+	wp_register_script( 'epkb-marked', Echo_Knowledge_Base::$plugin_url . 'js/lib/marked' . $suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
+
 	$epkb_vars = array(
 		'ajaxurl'                       => admin_url( 'admin-ajax.php', 'relative' ),
 		'msg_try_again'                 => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
@@ -63,6 +81,7 @@ function epkb_load_public_resources() {
 		'fe_send_report_error' 	    	=> esc_html__( 'Could not submit the error.', 'echo-knowledge-base' ) . EPKB_Utilities::contact_us_for_support(),
 		'fe_update_preview_error'		=> esc_html( 'Frontend Editor AJAX error: failed to update setting preview' ),	// do not translate reporting error
 		'fe_save_settings_error'		=> esc_html( 'Frontend Editor AJAX error: failed to save setting' ),	// do not translate reporting error
+		'ai_error_generic'              => esc_html__( 'Unable to connect. Please refresh the page and try again.', 'echo-knowledge-base' ),
 	);
 
 	// add article views counter method only for KB article pages
@@ -74,6 +93,47 @@ function epkb_load_public_resources() {
 	}
 
 	wp_localize_script( 'epkb-public-scripts', 'epkb_vars', $epkb_vars );
+
+	// Check if AI chat should be loaded on all pages
+	if ( EPKB_AI_Utilities::is_ai_chat_enabled() ) {
+		// Ensure React is available - enqueue react/react-dom if wp-element isn't available
+		if ( ! wp_script_is( 'wp-element', 'registered' ) ) {
+			// React might not be registered on frontend, so check and enqueue if needed
+			if ( ! wp_script_is( 'react', 'registered' ) ) {
+				wp_enqueue_script( 'react' );
+			}
+			if ( ! wp_script_is( 'react-dom', 'registered' ) ) {
+				wp_enqueue_script( 'react-dom' );
+			}
+		}
+		
+		wp_enqueue_style( 'epkb-ai-chat-widget' );
+		wp_enqueue_script( 'epkb-ai-chat-util' );
+		wp_enqueue_script( 'epkb-ai-chat-session' );
+		wp_enqueue_script( 'epkb-ai-chat-api' );
+		wp_enqueue_script( 'epkb-ai-chat' );
+		
+		// Generate chat ID on server
+		$chat_id = EPKB_AI_Security::generate_chat_id();
+		
+		// Widget ID - for now just 'default', later can be customized per widget instance
+		$widget_id = apply_filters( 'epkb_ai_chat_widget_id', '1' );
+		
+		// Localize script with necessary data
+		wp_localize_script( 'epkb-ai-chat', 'epkbAIChat', array(
+			'rest_url'              => esc_url_raw( rest_url() ),
+			'rest_nonce'            => epkb_get_instance()->security_obj->get_nonce( true ),  // Force nonce generation for REST API
+			//'session_id'            => epkb_get_instance()->security_obj->get_session_id(), this would create cookie in frontend when page loads
+			'chat_id'               => $chat_id,
+			'widget_id'             => $widget_id,
+			'page_object_id'        => get_the_ID(),
+			'placeholder'           => esc_html__( 'Type your message...', 'echo-knowledge-base' ),
+			'title'                 => esc_html__( 'AI Assistant', 'echo-knowledge-base' ),
+			'welcome'               => esc_html__( 'Hello! How can I help you today?', 'echo-knowledge-base' ),
+			'error'                 => esc_html__( 'Sorry, I encountered an error. Please try again.', 'echo-knowledge-base' ),
+			'error_generic'         => esc_html__( 'Unable to connect. Please refresh the page and try again.', 'echo-knowledge-base' ),
+		) );
+	}
 
     // load public resources only if this is: KB Main Page, Article Page, or Category Archive page
     if ( empty( $eckb_kb_id ) ) {

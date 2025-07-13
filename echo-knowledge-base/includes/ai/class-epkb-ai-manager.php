@@ -7,44 +7,33 @@
  * Provides simplified methods for common operations.
  */
 class EPKB_AI_Manager {
-	
+
 	/**
-	 * Knowledge Base ID
-	 * @var int
+	 * Search handler
+	 * @var EPKB_AI_Search_Handler
 	 */
-	private $kb_id;
-	
-	/**
-	 * Conversation service
-	 * @var EPKB_AI_Conversation_Service
-	 */
-	private $conversation_service;
+	private $search_handler;
 	
 	/**
 	 * Vector store service
 	 * @var EPKB_AI_Vector_Store_Service
 	 */
 	private $vector_store_service;
-	
-	/**
-	 * Constructor
-	 *
-	 * @param int $kb_id
-	 */
-	public function __construct( $kb_id ) {
-		$this->kb_id = absint( $kb_id );
-		$this->conversation_service = new EPKB_AI_Conversation_Service();
-		$this->vector_store_service = new EPKB_AI_Vector_Store_Service();
+
+	public function __construct() {
+		//$this->search_handler = new EPKB_AI_Search_Handler();
+		//$this->vector_store_service = new EPKB_AI_Vector_Store_Service();
 	}
 	
 	/**
 	 * Search knowledge base
 	 *
 	 * @param string $question
+	 * @param int $widget_id
 	 * @return array|WP_Error
 	 */
-	public function search( $question ) {
-		return $this->conversation_service->search( $question );
+	public function search( $question, $widget_id = 1 ) {
+		return $this->search_handler->search( $question, $widget_id );
 	}
 
 	/**
@@ -54,14 +43,9 @@ class EPKB_AI_Manager {
 	 */
 	public function create_vector_store() {
 
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $this->kb_id );
-		if ( is_wp_error( $kb_config ) ) {
-			return $kb_config;
-		}
-
-		$vector_store_name = sprintf( __( 'KB %d Posts', 'echo-knowledge-base' ), $this->kb_id );
+		$vector_store_name = sprintf( __( 'KB %d Posts', 'echo-knowledge-base' ), EPKB_KB_Config_DB::KB_CONFIG_PREFIX );
 		$metadata = array(
-			'kb_id' => strval( $this->kb_id ),
+			'kb_id' => EPKB_KB_Config_DB::KB_CONFIG_PREFIX,
 			'type'  => 'knowledge_base'
 		);
 		
@@ -72,10 +56,10 @@ class EPKB_AI_Manager {
 		}
 
 		// Save Vector Store ID
-		$updated_kb_config = epkb_get_instance()->kb_config_obj->set_value( $kb_config['id'], 'ai_vector_store_id', $vector_store['id'] );
-		if ( is_wp_error( $updated_kb_config ) ) {
+		$result = EPKB_AI_Config_Specs::update_ai_config_value( 'ai_vector_store_id', $vector_store['id'] );
+		if ( is_wp_error( $result ) ) {
 			EPKB_AI_Utilities::add_log( 'Error occurred on saving configuration. (107)' );
-			return $updated_kb_config;
+			return $result;
 		}
 
 		return array(
@@ -92,12 +76,7 @@ class EPKB_AI_Manager {
 	 */
 	public function recreate_vector_store() {
 
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $this->kb_id );
-		if ( is_wp_error( $kb_config ) ) {
-			return $kb_config;
-		}
-
-		$vector_store_id = $kb_config['ai_vector_store_id'];
+		$vector_store_id = '';
 
 		$vector_store = $this->vector_store_service->get_vector_store( $vector_store_id );
 
@@ -134,12 +113,7 @@ class EPKB_AI_Manager {
 			return new WP_Error( 'no_posts', __( 'No Knowledge base posts found', 'echo-knowledge-base' ) );
 		}
 
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $this->kb_id );
-		if ( is_wp_error( $kb_config ) ) {
-			return $kb_config;
-		}
-
-		$vector_store_id = $kb_config['ai_vector_store_id'];
+		$vector_store_id = '';
 		if ( empty( $vector_store_id ) ) {
 			EPKB_AI_Utilities::add_log( 'Empty vector store id' );
 			return new WP_Error( 'no_vector_store', __( 'Create vector store before uploading content.', 'echo-knowledge-base' ) );
@@ -172,12 +146,7 @@ class EPKB_AI_Manager {
 			return new WP_Error( 'no_posts', __( 'No Knowledge base posts found', 'echo-knowledge-base' ) );
 		}
 
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $this->kb_id );
-		if ( is_wp_error( $kb_config ) ) {
-			return $kb_config;
-		}
-
-		$vector_store_id = $kb_config['ai_vector_store_id'];
+		$vector_store_id = '';
 		if ( empty( $vector_store_id ) ) {
 			EPKB_AI_Utilities::add_log( 'Empty vector store id' );
 			return new WP_Error( 'no_vector_store', __( 'Create vector store before uploading content.', 'echo-knowledge-base' ) );
@@ -211,13 +180,11 @@ class EPKB_AI_Manager {
 	 */
 	public function save_ai_settings( $settings ) {
 
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $this->kb_id );
-		if ( is_wp_error( $kb_config ) ) {
-			return $kb_config;
-		}
+		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
+		$new_ai_config = array();
 
 		// Check if disclaimer needs to be accepted
-		if ( $kb_config['ai_disclaimer_accepted'] == 'off' && isset( $settings['ai_disclaimer_accepted'] ) ) {
+		if ( $ai_config['ai_disclaimer_accepted'] == 'off' && isset( $settings['ai_disclaimer_accepted'] ) ) {
 			$disclaimer_accepted = $settings['ai_disclaimer_accepted'];
 			/* TODO	if ( ! in_array( 'disclaimer_read', $disclaimer_accepted ) ||
 			     ! in_array( 'confidentiality_notice', $disclaimer_accepted ) || 
@@ -225,13 +192,13 @@ class EPKB_AI_Manager {
 			     ! in_array( 'disclaimer_risk_limitation', $disclaimer_accepted ) ) {
 				return new WP_Error( 'disclaimer_not_accepted', __( 'Please accept all disclaimers before continuing.', 'echo-knowledge-base' ) );
 			} */
-			$kb_config['ai_disclaimer_accepted'] = 'on';
+			$new_ai_config['ai_disclaimer_accepted'] = 'on';
 		}
 
 		// Update settings
-		if ( isset( $settings['model'] ) ) {
-			$kb_config['ai_api_model'] = $settings['model'];
-		}
+		/* if ( isset( $settings['model'] ) ) {
+			$new_ai_config['ai_api_model'] = $settings['model'];
+		} */
 
 		// Handle API key update
 		if ( ! empty( $settings['openai_key'] ) && strpos( $settings['openai_key'], '...' ) === false ) {
@@ -244,17 +211,22 @@ class EPKB_AI_Manager {
 
 		// Handle AI feature toggles
 		if ( isset( $settings['ai_search_enabled'] ) ) {
-			$kb_config['ai_search_enabled'] = $settings['ai_search_enabled'];
+			$new_ai_config['ai_search_enabled'] = $settings['ai_search_enabled'];
 		}
 		if ( isset( $settings['ai_chat_enabled'] ) ) {
-			$kb_config['ai_chat_enabled'] = $settings['ai_chat_enabled'];
+			$new_ai_config['ai_chat_enabled'] = $settings['ai_chat_enabled'];
+		}
+		
+		// Handle beta access code
+		if ( isset( $settings['ai_beta_access_code'] ) ) {
+			$new_ai_config['ai_beta_access_code'] = $settings['ai_beta_access_code'];
 		}
 
 		// Save configuration
-		$updated_kb_config = epkb_get_instance()->kb_config_obj->update_kb_configuration( $kb_config['id'], $kb_config );
-		if ( is_wp_error( $updated_kb_config ) ) {
+		$result = EPKB_AI_Config_Specs::update_ai_config( $new_ai_config );
+		if ( is_wp_error( $result ) ) {
 			EPKB_AI_Utilities::add_log( 'Error occurred on saving configuration.' );
-			return $updated_kb_config;
+			return $result;
 		}
 
 		return array(
@@ -295,7 +267,7 @@ class EPKB_AI_Manager {
 		$args = array(
 			'fields'         => 'ids',
 			'posts_per_page' => -1,
-			'post_type'      => EPKB_KB_Handler::KB_POST_TYPE_PREFIX . $this->kb_id,
+			'post_type'      => EPKB_KB_Handler::KB_POST_TYPE_PREFIX . EPKB_KB_Config_DB::KB_CONFIG_PREFIX,
 			'post_status'    => 'publish',
 		);
 		

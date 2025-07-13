@@ -150,7 +150,7 @@ class EPKB_Input_Filter {
 		return new WP_Error( 'invalid_input', ' ' . implode( " ", $errors ) );
 	}
 
-	private function filter_input_field( $value, $field_spec ) {
+	public function filter_input_field( $value, $field_spec ) {
 
 		// further sanitize the field
 		switch ( $field_spec['type'] ) {

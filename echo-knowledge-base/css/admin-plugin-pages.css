@@ -20151,6 +20151,16 @@ input[type=radio]:checked:before {
 	Please try to prefix everything here with: .epkb-
 
  */
+#epkb-admin__boxes-list__chat-history .epkb-admin__boxes-list__box {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+#epkb-admin__boxes-list__ai-search .epkb-admin__boxes-list__box {
+  background-color: transparent !important;
+  border: none !important;
+}
+
 .epkb-ai-split-view-container .epkb-admin__form-box-wrap {
   padding: 0;
   margin: 0;
@@ -20162,14 +20172,15 @@ input[type=radio]:checked:before {
 .epkb-ai-split-view-container .epkb-admin__form-box-content {
   padding: 0;
 }
+.epkb-ai-split-view-container .epkb-admin__boxes-list__box__content {
+  padding: 0 !important;
+}
 
 .epkb-ai-discussions-layout {
   display: flex;
   gap: 20px;
-  height: calc(100vh - 200px);
-  min-height: 600px;
-  background-color: #F6F7F7;
-  padding: 20px;
+  min-height: 524px;
+  max-height: 800px;
 }
 .epkb-ai-discussions-layout .epkb-ai-discussions-table {
   flex: 2;
@@ -20181,7 +20192,7 @@ input[type=radio]:checked:before {
   flex-direction: column;
 }
 .epkb-ai-discussions-layout .epkb-ai-discussions-table .epkb-ai-discussions-header {
-  background-color: #23282D;
+  background-color: #2A8AEB;
   color: #FFFFFF;
   padding: 15px 20px;
   border-bottom: 1px solid #DDDDDD;
@@ -20196,6 +20207,7 @@ input[type=radio]:checked:before {
   flex: 1;
   overflow-y: auto;
   padding: 0;
+  position: relative;
 }
 .epkb-ai-discussions-layout .epkb-ai-discussions-table .epkb-ai-discussions-content .epkb-submissions-table-container {
   margin-top: 0;
@@ -20268,6 +20280,10 @@ input[type=radio]:checked:before {
   width: 40px;
   min-width: 40px;
 }
+.epkb-ai-discussions-layout .epkb-ai-discussions-table .epkb-ai-discussions-content .epkb-submissions-table-container #epkb-search-conversations-table tbody tr:nth-child(even),
+.epkb-ai-discussions-layout .epkb-ai-discussions-table .epkb-ai-discussions-content .epkb-submissions-table-container #epkb-chat-conversations-table tbody tr:nth-child(even) {
+  background-color: #F5F5F5;
+}
 .epkb-ai-discussions-layout .epkb-ai-discussions-table .epkb-ai-discussions-content .epkb-submissions-table-container #epkb-search-conversations-table tbody tr,
 .epkb-ai-discussions-layout .epkb-ai-discussions-table .epkb-ai-discussions-content .epkb-submissions-table-container #epkb-chat-conversations-table tbody tr {
   background-color: #FFFFFF;
@@ -20309,10 +20325,14 @@ input[type=radio]:checked:before {
   white-space: nowrap;
 }
 .epkb-ai-discussions-layout .epkb-ai-discussions-table .epkb-ai-discussions-content .epkb-submissions-table-container .pagination-and-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-color: #F9F9F9;
   border-top: 1px solid #DDDDDD;
   padding: 10px 15px;
-  margin: -15px -15px 0 -15px;
+  margin: 0;
 }
 .epkb-ai-discussions-layout .epkb-ai-discussion-details {
   flex: 1;
@@ -20324,7 +20344,7 @@ input[type=radio]:checked:before {
   flex-direction: column;
 }
 .epkb-ai-discussions-layout .epkb-ai-discussion-details .epkb-ai-discussion-details-header {
-  background-color: #23282D;
+  background-color: #2A8AEB;
   color: #FFFFFF;
   padding: 15px 20px;
   border-bottom: 1px solid #DDDDDD;
@@ -22682,7 +22702,7 @@ button .epkb-ai-spinner {
   width: 100% !important;
 }
 #ekb-admin-page-wrap .epkb-ai-page-container.epkb-ai-admin-tabs-left .epkb-admin__form .epkb-admin__boxes-list .epkb-admin__section-wrap {
-  max-width: none !important;
+  max-width: 1600px !important;
   width: 100% !important;
 }
 #ekb-admin-page-wrap .epkb-ai-page-container .epkb-ai-setup-container {
@@ -22731,10 +22751,6 @@ button .epkb-ai-spinner {
 }
 #ekb-admin-page-wrap .epkb-ai-page-container .epkb-ai-setup-container .epkb-ai-setup .epkb-ai-status-container .epkb-ai-action .epkb-primary-btn {
   min-width: 100px;
-}
-#ekb-admin-page-wrap .epkb-ai-page-container .epkb-admin__top-panel__item--chat-error-log,
-#ekb-admin-page-wrap .epkb-ai-page-container .epkb_save_ai_settings {
-  display: none;
 }
 #ekb-admin-page-wrap .epkb-analytics-page-container #epkb-config-main-info .epkb-active-nav {
   color: #00A0D2;

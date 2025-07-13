@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Knowledge Base for Documents and FAQs\n"
-"POT-Creation-Date: 2025-07-07 13:43-0700\n"
+"POT-Creation-Date: 2025-07-13 10:59-0700\n"
 "PO-Revision-Date: 2025-06-08 08:46-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -156,9 +156,10 @@ msgstr ""
 
 #: includes/admin/blocks/class-epkb-abstract-block.php:672
 #: includes/system/scripts-registration-admin.php:59
-#: includes/system/scripts-registration-admin.php:166
-#: includes/system/scripts-registration-admin.php:194
-#: includes/system/scripts-registration-public.php:49
+#: includes/system/scripts-registration-admin.php:172
+#: includes/system/scripts-registration-admin.php:198
+#: includes/system/scripts-registration-admin.php:226
+#: includes/system/scripts-registration-public.php:67
 msgid "Please try again later."
 msgstr ""
 
@@ -181,26 +182,29 @@ msgstr ""
 #: includes/system/class-epkb-controller.php:92
 #: includes/system/scripts-registration-admin.php:60
 #: includes/system/scripts-registration-admin.php:61
-#: includes/system/scripts-registration-admin.php:167
-#: includes/system/scripts-registration-admin.php:195
-#: includes/system/scripts-registration-public.php:50
-#: includes/system/scripts-registration-public.php:51
+#: includes/system/scripts-registration-admin.php:173
+#: includes/system/scripts-registration-admin.php:199
+#: includes/system/scripts-registration-admin.php:227
+#: includes/system/scripts-registration-public.php:68
+#: includes/system/scripts-registration-public.php:69
 msgid "Error occurred"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-abstract-block.php:674
 #: includes/system/scripts-registration-admin.php:62
-#: includes/system/scripts-registration-admin.php:169
-#: includes/system/scripts-registration-admin.php:197
-#: includes/system/scripts-registration-public.php:52
+#: includes/system/scripts-registration-admin.php:175
+#: includes/system/scripts-registration-admin.php:201
+#: includes/system/scripts-registration-admin.php:229
+#: includes/system/scripts-registration-public.php:70
 msgid "Unknown error"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-abstract-block.php:675
 #: includes/system/scripts-registration-admin.php:63
-#: includes/system/scripts-registration-admin.php:170
-#: includes/system/scripts-registration-admin.php:198
-#: includes/system/scripts-registration-public.php:53
+#: includes/system/scripts-registration-admin.php:174
+#: includes/system/scripts-registration-admin.php:202
+#: includes/system/scripts-registration-admin.php:230
+#: includes/system/scripts-registration-public.php:71
 msgid "Please reload the page and try again."
 msgstr ""
 
@@ -208,22 +212,22 @@ msgstr ""
 #: includes/admin/wizard/class-epkb-kb-wizard-global.php:91
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:69
 #: includes/system/scripts-registration-admin.php:64
-#: includes/system/scripts-registration-admin.php:171
-#: includes/system/scripts-registration-public.php:54
+#: includes/system/scripts-registration-admin.php:203
+#: includes/system/scripts-registration-public.php:72
 msgid "Saving configuration"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-abstract-block.php:677
 #: includes/system/scripts-registration-admin.php:65
-#: includes/system/scripts-registration-admin.php:172
-#: includes/system/scripts-registration-admin.php:199
-#: includes/system/scripts-registration-public.php:55
+#: includes/system/scripts-registration-admin.php:204
+#: includes/system/scripts-registration-admin.php:231
+#: includes/system/scripts-registration-public.php:73
 msgid "Input is required"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-abstract-block.php:679
-#: includes/system/scripts-registration-admin.php:207
-#: includes/system/scripts-registration-public.php:59
+#: includes/system/scripts-registration-admin.php:239
+#: includes/system/scripts-registration-public.php:77
 msgid ""
 "Creating a Knowledge Base with demo categories and articles. It will be "
 "completed shortly."
@@ -258,8 +262,8 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-settings-page.php:3120
 #: includes/admin/pages/class-epkb-config-settings-page.php:3131
 #: includes/admin/pages/class-epkb-config-settings-page.php:3147
-#: includes/ai/class-epkb-ai-admin-page.php:202
-#: includes/ai/class-epkb-ai-admin-page.php:693
+#: includes/ai/class-epkb-ai-admin-page.php:197
+#: includes/ai/class-epkb-ai-admin-page.php:708
 msgid "Settings"
 msgstr ""
 
@@ -301,8 +305,8 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:460
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1860
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3619
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3845
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4120
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3767
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4042
 #: includes/admin/pages/class-epkb-config-settings-page.php:1850
 msgid "Title"
 msgstr ""
@@ -474,12 +478,12 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3059
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3281
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3559
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3795
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3918
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3940
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3942
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3953
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3983
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3717
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3840
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3862
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3864
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3875
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3905
 #: includes/admin/pages/class-epkb-config-settings-page.php:652
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:965
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1274
@@ -540,12 +544,12 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3059
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3282
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3567
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3803
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3926
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3940
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3942
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3954
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3991
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3725
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3848
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3862
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3864
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3876
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3913
 #: includes/admin/pages/class-epkb-config-settings-page.php:654
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:966
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1275
@@ -575,10 +579,10 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2864
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2918
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3575
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3811
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3902
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3952
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3967
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3733
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3824
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3874
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3889
 #: includes/admin/pages/class-epkb-config-settings-page.php:653
 msgid "Top"
 msgstr ""
@@ -607,10 +611,10 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2926
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3097
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3583
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3819
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3873
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3910
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3975
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3741
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3795
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3832
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3897
 msgid "Bottom"
 msgstr ""
 
@@ -634,8 +638,8 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3431
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3513
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3532
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3749
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3768
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3671
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3690
 #: includes/admin/pages/class-epkb-add-ons-features.php:263
 #: includes/admin/pages/class-epkb-config-settings-page.php:1596
 #: includes/admin/pages/class-epkb-need-help-features.php:261
@@ -759,7 +763,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3249
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3271
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3604
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3872
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3794
 #: includes/admin/pages/class-epkb-config-settings-page.php:1309
 msgid "Medium"
 msgstr ""
@@ -787,7 +791,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:331
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:426
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:816
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3870
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3792
 msgid "No Shadow"
 msgstr ""
 
@@ -797,7 +801,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-featured-articles-block.php:222
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:332
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:427
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3871
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3793
 msgid "Light"
 msgstr ""
 
@@ -831,7 +835,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:490
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:459
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3280
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3951
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3873
 msgid "No Icons"
 msgstr ""
 
@@ -841,7 +845,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:433
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:461
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3281
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3953
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3875
 msgid "Start"
 msgstr ""
 
@@ -851,7 +855,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-drill-down-layout-block.php:434
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:462
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3282
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3954
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3876
 msgid "End"
 msgstr ""
 
@@ -896,7 +900,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:311
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:551
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:653
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3860
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3782
 msgid "Variable"
 msgstr ""
 
@@ -905,7 +909,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:624
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:312
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:552
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3861
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3783
 msgid "Minimum"
 msgstr ""
 
@@ -914,7 +918,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-classic-layout-block.php:625
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:313
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:553
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3862
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3784
 msgid "Maximum"
 msgstr ""
 
@@ -1093,7 +1097,7 @@ msgstr ""
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1688
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1697
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1706
-#: includes/ai/class-epkb-ai-admin-page.php:811
+#: includes/ai/class-epkb-ai-admin-page.php:846
 #: includes/class-epkb-html-admin.php:798
 #: includes/class-epkb-html-admin.php:824
 #: includes/class-epkb-html-admin.php:966
@@ -1307,9 +1311,9 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2790
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3323
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3524
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3760
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4110
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4222
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3682
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4032
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4144
 msgid "Border"
 msgstr ""
 
@@ -1400,7 +1404,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:361
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:533
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:752
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3941
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3863
 msgid "Centered"
 msgstr ""
 
@@ -1648,7 +1652,7 @@ msgid "Selection"
 msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:35
-#: includes/ai/class-epkb-ai-admin-page.php:608
+#: includes/ai/class-epkb-ai-admin-page.php:624
 #: includes/ai/support/class-epkb-ai-table-operations.php:240
 #: includes/ai/support/class-epkb-ai-table-operations.php:246
 msgid "Status"
@@ -1724,9 +1728,9 @@ msgstr ""
 #: includes/admin/convert/class-epkb-convert.php:250
 #: includes/admin/editor/class-epkb-frontend-editor.php:226
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1152
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3707
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4350
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4384
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3629
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4272
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4306
 #: includes/admin/pages/class-epkb-config-settings-page.php:1486
 #: includes/admin/pages/class-epkb-need-help-features.php:569
 #: includes/admin/pages/class-epkb-need-help-features.php:1098
@@ -1822,7 +1826,7 @@ msgstr ""
 #: includes/admin/editor/class-epkb-frontend-editor.php:276
 #: includes/admin/pages/class-epkb-config-settings-page.php:1993
 #: includes/admin/pages/class-epkb-need-help-contact-us.php:26
-#: includes/ai/class-epkb-ai-admin-page.php:1024
+#: includes/ai/class-epkb-ai-admin-page.php:1076
 msgid "Contact Us"
 msgstr ""
 
@@ -2104,7 +2108,7 @@ msgid "Edit Group"
 msgstr ""
 
 #: includes/admin/faqs/class-epkb-faqs-page.php:632
-#: includes/ai/class-epkb-ai-admin-page.php:600
+#: includes/ai/class-epkb-ai-admin-page.php:616
 #: includes/ai/support/class-epkb-ai-table-operations.php:239
 msgid "Question"
 msgstr ""
@@ -2394,7 +2398,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-category.php:145
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1410
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4288
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4210
 msgid "Category Icon"
 msgstr ""
 
@@ -2495,7 +2499,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1272
 #: includes/admin/pages/class-epkb-config-settings-page.php:668
 #: includes/admin/pages/class-epkb-config-settings-page.php:742
-#: includes/ai/class-epkb-ai-admin-page.php:727
+#: includes/ai/class-epkb-ai-admin-page.php:742
 msgid "Disabled"
 msgstr ""
 
@@ -2714,7 +2718,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:445
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3203
 #: includes/admin/pages/class-epkb-config-settings-page.php:1496
-#: includes/ai/class-epkb-ai-admin-page.php:287
+#: includes/ai/class-epkb-ai-admin-page.php:280
 msgid "Content"
 msgstr ""
 
@@ -2801,7 +2805,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:591
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2200
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2985
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4214
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4136
 msgid "Background"
 msgstr ""
 
@@ -3153,7 +3157,7 @@ msgid "Tablet"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:649
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3856
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3778
 msgid "Height Mode"
 msgstr ""
 
@@ -3205,20 +3209,20 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:790
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:955
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1197
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4015
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4248
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3937
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4170
 msgid "Category Description"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:796
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3878
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3800
 msgid "Corner Radius"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:804
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2245
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2804
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3886
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3808
 msgid "Border Thickness"
 msgstr ""
 
@@ -3247,7 +3251,7 @@ msgid "Thickness ( px )"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:870
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4039
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3961
 msgid "Article Underline Hover"
 msgstr ""
 
@@ -3265,15 +3269,15 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:901
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2083
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4192
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4114
 #: includes/admin/pages/class-epkb-config-tools-page.php:588
 msgid "Article Title"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:909
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:917
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4200
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4208
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4122
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4130
 msgid "Article Icon"
 msgstr ""
 
@@ -3286,7 +3290,7 @@ msgid "Active Article Background"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:939
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4232
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4154
 msgid "Category Name"
 msgstr ""
 
@@ -3303,7 +3307,7 @@ msgid "Top Category Border Bottom"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:979
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4264
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4186
 msgid "Subcategory Name"
 msgstr ""
 
@@ -3316,12 +3320,12 @@ msgid "Subcategory: Expand Icon"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1009
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4420
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4342
 msgid "Empty Category Message"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1014
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4425
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4347
 msgid "Articles coming soon"
 msgstr ""
 
@@ -3330,7 +3334,7 @@ msgid "Collapse Articles Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1022
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4433
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4355
 msgid "Collapse Articles"
 msgstr ""
 
@@ -3339,7 +3343,7 @@ msgid "Show Remaining Articles Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1030
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4441
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4363
 msgid "Show Remaining Articles"
 msgstr ""
 
@@ -3547,7 +3551,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1524
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1949
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4170
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4092
 msgid "Container Background"
 msgstr ""
 
@@ -4001,7 +4005,7 @@ msgid "All Topics"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2227
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4160
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4082
 msgid "Button Border"
 msgstr ""
 
@@ -4146,8 +4150,8 @@ msgid "Content Toolbar"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2747
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4102
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4152
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4024
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4074
 msgid "Button Background"
 msgstr ""
 
@@ -4374,34 +4378,34 @@ msgid "Number of Articles Displayed"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3483
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3719
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3641
 #: includes/admin/pages/class-epkb-config-settings-page.php:2743
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:106
 msgid "Layout"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3487
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3723
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3645
 msgid "Rounded search button is on the right"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3488
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3724
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3646
 msgid "Squared search Button is on the right"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3489
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3725
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3647
 msgid "Search button is below"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3490
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3726
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3648
 msgid "No search button"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3491
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3727
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3649
 msgid "No search box"
 msgstr ""
 
@@ -4410,19 +4414,19 @@ msgid "Search Title HTML Tag"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3543
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3779
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3701
 #: includes/admin/pages/class-epkb-config-settings-page.php:3752
 msgid "Padding Top"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3551
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3787
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3709
 #: includes/admin/pages/class-epkb-config-settings-page.php:3756
 msgid "Padding Bottom"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3591
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3827
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3749
 msgid "Search Input Width"
 msgstr ""
 
@@ -4435,243 +4439,177 @@ msgid "Narrow"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3609
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3835
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3757
 msgid "Search Results: Match Article Colors"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3615
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3841
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3763
 msgid "Search Results Mode"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3620
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3846
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3768
 msgid "Title and Excerpt"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3631
-msgid "Vector Store ID"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3640
-msgid "AI Model"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3644
-msgid "GPT-4o-mini"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3645
-msgid "GPT-4o"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3646
-msgid "GPT-4-turbo"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3651
-msgid "Conversation Retention Period"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3659
-msgid "AI Disclaimer Accepted"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3668
-#: includes/ai/class-epkb-ai-admin-page.php:435
-msgid "AI Search Feature"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3674
-msgid "AI Search Location"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3678
-msgid "Above Search Results"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3679
-msgid "Below Search Results"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3680
-msgid "Both Above and Below Results"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3685
-msgid "AI Search Display Mode"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3689
-msgid "Show \"Ask AI?\" Button"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3690
-msgid "Show AI Answer Automatically"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3698
-#: includes/ai/class-epkb-ai-admin-page.php:451
-msgid "AI Chat Feature"
-msgstr ""
-
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3713
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3635
 msgid "Use Main Page Search Settings"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3732
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3654
 msgid "Search Title Html Tag"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3866
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3788
 msgid "Article List Shadow"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3894
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3816
 msgid "Height"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3936
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3858
 msgid "Category Name Alignment"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3947
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3869
 msgid "Icon Location"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3959
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3881
 msgid "Icon Size ( px )"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3999
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4256
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3921
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4178
 msgid "Divider"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4005
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3927
 msgid "Divider Thickness ( px )"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4021
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3943
 msgid "Click on Category"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4025
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3947
 msgid "Go to Category Archive Page"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4026
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3948
 msgid "Go to the first Article"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4031
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3953
 msgid "Category Link to Archive page"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4045
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3967
 msgid "Left offset for Articles List"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4053
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3975
 msgid "Left offset for Sub Articles List"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4070
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4328
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4362
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3992
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4250
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4284
 msgid "Search Title"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4078
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4128
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4000
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4050
 msgid "Search Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4086
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4136
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4008
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4058
 msgid "Input Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4094
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4144
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4016
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4066
 msgid "Input Border"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4181
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4103
 msgid "Article List Typography"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4240
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4162
 msgid "Category Name Background"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4272
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4194
 msgid "Subcategory Expand Icon"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4280
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4202
 msgid "Category Expand Hover"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4296
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4218
 msgid "Name Typography"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4307
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4229
 msgid "Description Typography"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4334
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4368
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4256
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4290
 msgid "How Can We Help?"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4337
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4371
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4259
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4293
 msgid "Search Hint"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4342
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4376
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4264
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4298
 msgid "Search the documentation..."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4345
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4379
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4267
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4301
 msgid "Search Button Name"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4353
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4387
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4275
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4309
 msgid "Search Results Message"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4358
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4392
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4280
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4314
 msgid "Search Results for"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4396
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4318
 msgid "No Matches Found Text"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4405
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4327
 msgid "No matches found"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4408
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4330
 msgid "Minimum Search Word Size Message"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4413
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4335
 msgid "Enter a word with at least one character."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4428
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4350
 msgid "Collapse Articles Message"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4436
+#: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4358
 msgid "Show Remaining Articles Message"
 msgstr ""
 
@@ -4815,17 +4753,17 @@ msgid "Enter your request to Chat AI"
 msgstr ""
 
 #: includes/admin/openai/class-epkb-ai-help-sidebar.php:278
-#: includes/ai/class-epkb-ai-admin-page.php:381
+#: includes/ai/class-epkb-ai-admin-page.php:375
 msgid "OpenAI API Key"
 msgstr ""
 
 #: includes/admin/openai/class-epkb-ai-help-sidebar.php:284
-#: includes/ai/class-epkb-ai-admin-page.php:384
+#: includes/ai/class-epkb-ai-admin-page.php:378
 msgid "Enter your OpenAI API key."
 msgstr ""
 
 #: includes/admin/openai/class-epkb-ai-help-sidebar.php:284
-#: includes/ai/class-epkb-ai-admin-page.php:384
+#: includes/ai/class-epkb-ai-admin-page.php:378
 msgid "Get OpenAI API Key"
 msgstr ""
 
@@ -4903,7 +4841,7 @@ msgid "Feedback"
 msgstr ""
 
 #: includes/admin/openai/class-epkb-ai-help-sidebar.php:407
-#: includes/ai/support/class-epkb-ai-utilities.php:364
+#: includes/ai/support/class-epkb-ai-utilities.php:373
 msgid "Email"
 msgstr ""
 
@@ -6269,7 +6207,7 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-config-page.php:604
 #: includes/admin/pages/class-epkb-need-help-features.php:789
-#: includes/system/scripts-registration-public.php:580
+#: includes/system/scripts-registration-public.php:640
 msgid "KB Sidebar"
 msgstr ""
 
@@ -6481,7 +6419,7 @@ msgid "Add an Article to configure the Article Page"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-page.php:1012
-msgid "OR Edit Settings Here in Admin without visual preview"
+msgid "Edit settings here in Admin without visual preview"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-page.php:1018
@@ -7554,12 +7492,12 @@ msgid "Delete All Plugin Data"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:1072
-#: includes/ai/class-epkb-ai-admin-page.php:913
+#: includes/ai/class-epkb-ai-admin-page.php:965
 msgid "Disable Debug"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:1072
-#: includes/ai/class-epkb-ai-admin-page.php:913
+#: includes/ai/class-epkb-ai-admin-page.php:965
 msgid "Enable Debug"
 msgstr ""
 
@@ -7581,12 +7519,12 @@ msgid "Show Logs"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:1124
-#: includes/ai/class-epkb-ai-admin-page.php:942
+#: includes/ai/class-epkb-ai-admin-page.php:994
 msgid "Reset Logs"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:1147
-#: includes/ai/class-epkb-ai-admin-page.php:929
+#: includes/ai/class-epkb-ai-admin-page.php:981
 msgid "Logs are empty"
 msgstr ""
 
@@ -8301,7 +8239,7 @@ msgstr ""
 
 #: includes/admin/wizard/class-epkb-kb-wizard-cntrl.php:158
 #: includes/admin/wizard/class-epkb-kb-wizard-cntrl.php:186
-#: includes/ai/class-epkb-ai-manager.php:262
+#: includes/ai/class-epkb-ai-manager.php:234
 msgid "Configuration Saved"
 msgstr ""
 
@@ -8946,46 +8884,51 @@ msgstr ""
 msgid "Howdy! How can we help you?"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:87
+#: includes/ai/class-epkb-ai-admin-page.php:100
 msgid "Dashboard"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:171
+#: includes/ai/class-epkb-ai-admin-page.php:117
 msgid "Chat History"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:184
-#: includes/ai/class-epkb-ai-admin-page.php:244
-#: includes/ai/class-epkb-ai-admin-page.php:341
+#: includes/ai/class-epkb-ai-admin-page.php:237
 msgid "AI Features Coming Soon!"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:223
-#: includes/ai/class-epkb-ai-admin-page.php:891
-msgid "Error Log"
-msgstr ""
-
-#: includes/ai/class-epkb-ai-admin-page.php:282
+#: includes/ai/class-epkb-ai-admin-page.php:275
 msgid "Vector Store"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:412
+#: includes/ai/class-epkb-ai-admin-page.php:320
+msgid "Beta Access"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:335
+msgid "API Settings"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:355
+msgid "AI Chat Settings"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:409
 msgid "I have read Disclaimer"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:412
+#: includes/ai/class-epkb-ai-admin-page.php:409
 msgid "[here]"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:412
+#: includes/ai/class-epkb-ai-admin-page.php:409
 msgid "in regards to usage of the AI Chat feature"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:413
+#: includes/ai/class-epkb-ai-admin-page.php:410
 msgid "Confidentiality Notice:"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:413
+#: includes/ai/class-epkb-ai-admin-page.php:410
 msgid ""
 "Do not input or share sensitive, confidential, or legally protected "
 "information through the AI chat, as the service does not guarantee "
@@ -8993,65 +8936,85 @@ msgid ""
 "private."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:414
+#: includes/ai/class-epkb-ai-admin-page.php:411
 msgid "No Guarantee of Accuracy:"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:414
+#: includes/ai/class-epkb-ai-admin-page.php:411
 msgid ""
 "The AI chat provides information on an \"as is\" basis without warranties of "
 "accuracy or reliability; do not rely solely on its responses for critical "
 "decisions and always verify information independently."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:415
+#: includes/ai/class-epkb-ai-admin-page.php:412
 msgid "Assumption of Risk and Limitation of Liability:"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:415
+#: includes/ai/class-epkb-ai-admin-page.php:412
 msgid ""
 "By using the AI chat, you agree to use it at your own risk; we are not "
 "liable for any damages, losses, or consequences resulting from your use of "
 "the service, and you must comply with all applicable laws and regulations."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:486
+#: includes/ai/class-epkb-ai-admin-page.php:432
+#: includes/ai/support/class-epkb-ai-config-specs.php:55
+msgid "AI Search Feature"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:448
+#: includes/ai/support/class-epkb-ai-config-specs.php:85
+msgid "AI Chat Feature"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:469
+#: includes/ai/support/class-epkb-ai-config-specs.php:93
+msgid "Beta Access Code"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:472
+msgid "Enter the beta access code to unlock AI Chat features for testing."
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:506
 msgid "Unable to connect to vector store. Please check your settings."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:504
+#: includes/ai/class-epkb-ai-admin-page.php:524
 msgid "Unable to retrieve file information. Please check your settings."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:550
+#: includes/ai/class-epkb-ai-admin-page.php:568
 msgid "Visitor"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:572
+#: includes/ai/class-epkb-ai-admin-page.php:588
 msgid "Completed"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:597
-#: includes/ai/class-epkb-ai-admin-page.php:604
+#: includes/ai/class-epkb-ai-admin-page.php:613
+#: includes/ai/class-epkb-ai-admin-page.php:620
 msgid "Time"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:598
-#: includes/ai/class-epkb-ai-admin-page.php:605
+#: includes/ai/class-epkb-ai-admin-page.php:614
+#: includes/ai/class-epkb-ai-admin-page.php:621
 #: includes/ai/support/class-epkb-ai-table-operations.php:243
+#: includes/system/scripts-registration-admin.php:159
 msgid "User"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:599
+#: includes/ai/class-epkb-ai-admin-page.php:615
 #: includes/ai/support/class-epkb-ai-table-operations.php:244
 msgid "Chat ID"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:606
+#: includes/ai/class-epkb-ai-admin-page.php:622
 msgid "First Message"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:607
+#: includes/ai/class-epkb-ai-admin-page.php:623
 #: includes/ai/support/class-epkb-ai-table-operations.php:238
 #: includes/class-epkb-utilities.php:2285
 #: includes/system/class-epkb-ui-table.php:165
@@ -9059,108 +9022,112 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:656
+#: includes/ai/class-epkb-ai-admin-page.php:671
 msgid "Enhance Your Knowledge Base with AI"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:659
+#: includes/ai/class-epkb-ai-admin-page.php:674
 msgid ""
 "Welcome to the AI Features section! Here you can manage AI-powered search "
 "and chat functionality to provide your users with instant, intelligent "
 "assistance."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:667
+#: includes/ai/class-epkb-ai-admin-page.php:682
 msgid "AI Search"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:670
+#: includes/ai/class-epkb-ai-admin-page.php:685
 msgid ""
 "Provide intelligent search results powered by AI that understands user "
 "intent and delivers the most relevant articles."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:673
+#: includes/ai/class-epkb-ai-admin-page.php:688
 msgid "View AI Search"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:680
-#: includes/ai/class-epkb-ai-admin-page.php:722
+#: includes/ai/class-epkb-ai-admin-page.php:695
+#: includes/ai/class-epkb-ai-admin-page.php:737
 msgid "AI Chat"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:683
+#: includes/ai/class-epkb-ai-admin-page.php:698
 msgid ""
 "Enable an AI-powered chat assistant that can answer questions based on your "
 "knowledge base content."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:686
+#: includes/ai/class-epkb-ai-admin-page.php:701
 msgid "View AI Chat"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:696
+#: includes/ai/class-epkb-ai-admin-page.php:711
 msgid ""
 "Configure API keys, models, and other settings to customize AI features for "
 "your needs."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:699
+#: includes/ai/class-epkb-ai-admin-page.php:714
 msgid "Configure Settings"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:725
+#: includes/ai/class-epkb-ai-admin-page.php:740
 msgid "Enabled"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:733
+#: includes/ai/class-epkb-ai-admin-page.php:748
 msgid "Total AI Conversations"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:756
+#: includes/ai/class-epkb-ai-admin-page.php:771
 msgid "Exciting AI Features Are Coming!"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:759
+#: includes/ai/class-epkb-ai-admin-page.php:774
 msgid ""
 "Be among the first to experience our revolutionary AI-powered search and "
 "chat capabilities. Sign up now for early access, exclusive beta testing "
 "opportunities, and special promotions!"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:763
-msgid "Join Beta & Get Early Access"
+#: includes/ai/class-epkb-ai-admin-page.php:783
+msgid "Enter your email address"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:770
+#: includes/ai/class-epkb-ai-admin-page.php:793
+msgid "Join Beta"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:805
 msgid "Early Access"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:771
+#: includes/ai/class-epkb-ai-admin-page.php:806
 msgid "Get access to new AI features before general release"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:775
+#: includes/ai/class-epkb-ai-admin-page.php:810
 msgid "Special Promotions"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:776
+#: includes/ai/class-epkb-ai-admin-page.php:811
 msgid "Exclusive discounts and offers for beta testers"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:780
+#: includes/ai/class-epkb-ai-admin-page.php:815
 msgid "Shape the Future"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:781
+#: includes/ai/class-epkb-ai-admin-page.php:816
 msgid "Your feedback will help us build better AI features"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:801
+#: includes/ai/class-epkb-ai-admin-page.php:836
 msgid "AI Features Coming Soon"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:804
+#: includes/ai/class-epkb-ai-admin-page.php:839
 msgid ""
 "We are working on exciting AI-powered features including intelligent search "
 "and conversational chat that will transform how your users interact with "
@@ -9168,129 +9135,169 @@ msgid ""
 "more accurately than ever before."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:808
+#: includes/ai/class-epkb-ai-admin-page.php:843
 msgid "Get Notified"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:832
+#: includes/ai/class-epkb-ai-admin-page.php:871
+msgid "Beta Access Required"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:873
+msgid ""
+"The AI Chat History feature is currently in beta testing. Please enter a "
+"valid beta access code in the Settings tab to unlock this feature."
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:876
+msgid "Go to Settings"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:883
 msgid "User Searches Answered by AI"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:832
+#: includes/ai/class-epkb-ai-admin-page.php:883
 msgid "User Conversations with AI"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:840
+#: includes/ai/class-epkb-ai-admin-page.php:891
 msgid "Selected Discussion"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:844
+#: includes/ai/class-epkb-ai-admin-page.php:895
 msgid "Select a conversation from the list to view details."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:871
+#: includes/ai/class-epkb-ai-admin-page.php:923
 msgid "Vector store is not ready"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:872
+#: includes/ai/class-epkb-ai-admin-page.php:924
 msgid ""
 "Vector store setup is in progress. Please refresh the page to check its "
 "status."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:894
+#: includes/ai/class-epkb-ai-admin-page.php:943
+msgid "Error Log"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:946
 msgid "Enable debugging when instructed by the Echo team."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:932
+#: includes/ai/class-epkb-ai-admin-page.php:984
 msgid "Debug Information"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:958
+#: includes/ai/class-epkb-ai-admin-page.php:1010
 msgid "Not initialized"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:961
+#: includes/ai/class-epkb-ai-admin-page.php:1013
 msgid "Missing"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:964
+#: includes/ai/class-epkb-ai-admin-page.php:1016
 msgid "Active"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:967
+#: includes/ai/class-epkb-ai-admin-page.php:1019
+#: includes/system/scripts-registration-admin.php:170
 msgid "Error"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:970
+#: includes/ai/class-epkb-ai-admin-page.php:1022
 msgid "Expired"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:973
+#: includes/ai/class-epkb-ai-admin-page.php:1025
 msgid "In Progress"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:976
+#: includes/ai/class-epkb-ai-admin-page.php:1028
 msgid "Cancelled"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:980
+#: includes/ai/class-epkb-ai-admin-page.php:1032
 msgid "Failed"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:997
+#: includes/ai/class-epkb-ai-admin-page.php:1049
 msgid "Upload"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:998
+#: includes/ai/class-epkb-ai-admin-page.php:1050
 msgid "Create"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:1003
-#: includes/ai/class-epkb-ai-admin-page.php:1017
+#: includes/ai/class-epkb-ai-admin-page.php:1055
+#: includes/ai/class-epkb-ai-admin-page.php:1069
 msgid "Re-create"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:1009
+#: includes/ai/class-epkb-ai-admin-page.php:1061
 msgid "Re-upload"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:1021
+#: includes/ai/class-epkb-ai-admin-page.php:1073
 #: includes/system/scripts-registration-admin.php:102
+#: includes/system/scripts-registration-admin.php:164
 msgid "Processing..."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-admin-page.php:1038
+#: includes/ai/class-epkb-ai-admin-page.php:1090
 #: includes/class-epkb-html-admin.php:314
 msgid "Save Settings"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-manager.php:62
+#: includes/ai/class-epkb-ai-admin-page.php:1128
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:1134
+msgid "Submitting…"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:1145
+msgid "An error occurred. Please try again later."
+msgstr ""
+
+#: includes/ai/class-epkb-ai-admin-page.php:1257
+msgid "AI settings saved successfully"
+msgstr ""
+
+#: includes/ai/class-epkb-ai-manager.php:46
 #, php-format
 msgid "KB %d Posts"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-manager.php:84
+#: includes/ai/class-epkb-ai-manager.php:68
 msgid "Vector store initialized"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-manager.php:119
+#: includes/ai/class-epkb-ai-manager.php:98
 msgid "Vector Store initialized"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-manager.php:134
-#: includes/ai/class-epkb-ai-manager.php:172
+#: includes/ai/class-epkb-ai-manager.php:113
+#: includes/ai/class-epkb-ai-manager.php:146
 msgid "No Knowledge base posts found"
 msgstr ""
 
-#: includes/ai/class-epkb-ai-manager.php:145
-#: includes/ai/class-epkb-ai-manager.php:183
+#: includes/ai/class-epkb-ai-manager.php:119
+#: includes/ai/class-epkb-ai-manager.php:152
 msgid "Create vector store before uploading content."
 msgstr ""
 
-#: includes/ai/class-epkb-ai-manager.php:157
-#: includes/ai/class-epkb-ai-manager.php:202
+#: includes/ai/class-epkb-ai-manager.php:131
+#: includes/ai/class-epkb-ai-manager.php:171
 msgid "Posts successfully uploaded"
+msgstr ""
+
+#: includes/ai/db/class-epkb-ai-messages-db.php:582
+msgid "Invalid metadata format"
 msgstr ""
 
 #: includes/ai/openai/class-epkb-openai-client.php:187
@@ -9299,158 +9306,129 @@ msgid ""
 "later."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:39
-msgid "AI features are currently disabled."
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:60
-msgid "Invalid security token. Please refresh the page and try again."
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:98
-msgid "You do not have permission to perform this action."
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:120
-msgid "Unable to load configuration."
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:182
+#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:192
 msgid "Current page of the collection."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:190
+#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:200
 msgid "Maximum number of items to be returned in result set."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:199
+#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:209
 msgid "Limit results to those matching a string."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:204
+#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:214
 msgid "Sort collection by object attribute."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:211
+#: includes/ai/rest/class-epkb-ai-rest-base-controller.php:221
 msgid "Order sort attribute ascending or descending."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:130
-msgid "AI Chat is currently disabled."
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:263
+msgid "No active session."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:169
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:318
-msgid "No session found."
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:276
+msgid "New conversation started."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:178
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:242
-msgid "Invalid session format."
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:292
+msgid "No active session found."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:187
-msgid "Access denied to this conversation."
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:297
+msgid "Unauthorized access to conversation."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:330
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:417
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:276
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:310
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:375
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:212
 msgid "Conversation not found."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:339
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:315
 msgid "Conversation has expired."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:427
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:295
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:382
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:224
 #: includes/ai/support/class-epkb-ai-table-operations.php:411
 msgid "Guest"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:478
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:425
 msgid "Conversation deleted successfully."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:500
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:520
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:443
+#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:459
 #, php-format
 msgid "%d conversations deleted successfully."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:535
-msgid "The chat message to send"
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:543
-msgid "Optional message ID"
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:548
-msgid "Widget ID (1-10)"
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-chat-controller.php:556
-msgid "Chat conversation ID"
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:120
-msgid "AI Search is currently disabled."
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:147
-msgid "You must be logged in to use the search feature."
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:180
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:124
 msgid "Search query must be at least 3 characters long."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:286
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:217
 msgid "This is not a search conversation."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:336
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:260
 msgid "Search conversation deleted successfully."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:358
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:378
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:278
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:294
 #, php-format
 msgid "%d search conversations deleted successfully."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:393
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:307
 msgid "The search query"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:401
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:315
 msgid "Knowledge Base ID"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:407
+#: includes/ai/rest/class-epkb-ai-rest-search-controller.php:321
 msgid "Maximum number of results"
 msgstr ""
 
-#: includes/ai/services/class-epkb-ai-conversation-service.php:62
-msgid "AI Search feature is not enabled"
+#: includes/ai/services/class-epkb-ai-base-handler.php:49
+msgid "No user message found"
 msgstr ""
 
-#: includes/ai/services/class-epkb-ai-conversation-service.php:286
-#: includes/ai/support/class-epkb-ai-utilities.php:500
+#: includes/ai/services/class-epkb-ai-base-handler.php:74
+msgid "Received empty response from AI"
+msgstr ""
+
+#: includes/ai/services/class-epkb-ai-base-handler.php:111
+msgid ""
+"You are a helpful assistant. Continue the conversation naturally, providing "
+"accurate and helpful responses to the user's questions."
+msgstr ""
+
+#: includes/ai/services/class-epkb-ai-message-handler.php:145
+msgid "Invalid conversation ID for this session"
+msgstr ""
+
+#: includes/ai/services/class-epkb-ai-message-handler.php:165
+#: includes/ai/support/class-epkb-ai-table-operations.php:92
+#: includes/ai/support/class-epkb-ai-table-operations.php:292
+msgid "Conversation not found"
+msgstr ""
+
+#: includes/ai/services/class-epkb-ai-message-handler.php:171
+#: includes/ai/support/class-epkb-ai-utilities.php:509
 msgid "This conversation has expired. Please start a new conversation."
 msgstr ""
 
-#: includes/ai/services/class-epkb-ai-conversation-service.php:500
-msgid ""
-"You are a helpful knowledge base assistant. Answer questions based on the "
-"provided documentation. Be concise and accurate. If you cannot find the "
-"answer in the documentation, say so."
-msgstr ""
-
-#: includes/ai/services/class-epkb-ai-conversation-service.php:602
-msgid "System rate limit exceeded. Please try again later."
+#: includes/ai/services/class-epkb-ai-search-handler.php:45
+msgid "AI Search feature is not enabled"
 msgstr ""
 
 #: includes/ai/services/class-epkb-ai-vector-store-service.php:64
@@ -9462,49 +9440,44 @@ msgstr ""
 msgid "File content exceeds limit. Size %d"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-chat-security.php:33
+#: includes/ai/support/class-epkb-ai-config-specs.php:46
+msgid "AI Disclaimer Accepted"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-config-specs.php:187
+#, php-format
+msgid "Validation failed for field: %s"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-config-specs.php:202
+msgid "Failed to save AI configuration"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-config.php:327
+msgid "Invalid API key format"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-config.php:334
+msgid "Failed to encrypt API key"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-config.php:339
+msgid "Failed to save API key"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-security.php:325
 msgid ""
 "Chat service is temporarily unavailable due to high demand. Please try again "
 "later."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-chat-security.php:42
+#: includes/ai/support/class-epkb-ai-security.php:334
 msgid "You have reached the chat limit. Please try again in an hour."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-chat-security.php:102
-#: includes/ai/support/class-epkb-ai-utilities.php:488
-msgid "Please enter a message."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-chat-security.php:108
-msgid "Message is too long. Please keep it under 5000 characters."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-chat-security.php:125
-msgid "Invalid content detected."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-config.php:326
-msgid "Invalid API key format"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-config.php:333
-msgid "Failed to encrypt API key"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-config.php:338
-msgid "Failed to save API key"
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-table-operations.php:84
 #: includes/ai/support/class-epkb-ai-table-operations.php:284
 msgid "Invalid row ID"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-table-operations.php:92
-#: includes/ai/support/class-epkb-ai-table-operations.php:292
-msgid "Conversation not found"
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-table-operations.php:115
@@ -9542,141 +9515,172 @@ msgstr ""
 msgid "All conversations deleted successfully"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:247
-msgid "UUID is empty"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:255
-#, php-format
-msgid "Invalid UUID format: %s"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:320
+#: includes/ai/support/class-epkb-ai-utilities.php:329
 msgid ""
 "No additional emails will be sent today. Check the Chat AI dashboard for "
 "more details."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:371
+#: includes/ai/support/class-epkb-ai-utilities.php:380
 msgid "Subject"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:378
+#: includes/ai/support/class-epkb-ai-utilities.php:387
 msgid "Message"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:406
+#: includes/ai/support/class-epkb-ai-utilities.php:415
 msgid "Chat record does not exist for this session"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:413
+#: includes/ai/support/class-epkb-ai-utilities.php:422
 msgid "You are not authorized to continue this chat session"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:435
+#: includes/ai/support/class-epkb-ai-utilities.php:444
 msgid "AI features are not enabled"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:449
-#, php-format
-msgid "Failed to delete old conversations: %s"
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-utilities.php:458
 #, php-format
+msgid "Failed to delete old conversations: %s"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-utilities.php:467
+#, php-format
 msgid "Cleanup exception: %s"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:486
+#: includes/ai/support/class-epkb-ai-utilities.php:495
 msgid "Access denied. Please refresh the page and try again."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:487
+#: includes/ai/support/class-epkb-ai-utilities.php:496
 msgid "Please enter a question."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:489
-msgid "AI Search is currently unavailable."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:490
-msgid "AI Chat is currently unavailable."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:491
-msgid "AI features are not enabled."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:492
-#: includes/ai/support/class-epkb-ai-utilities.php:493
-msgid "Too many requests. Please wait a moment and try again."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:494
-msgid "Please enter a valid message."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:495
-msgid "Your session has expired. Please refresh the page."
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:496
-msgid "Invalid email address provided."
-msgstr ""
-
 #: includes/ai/support/class-epkb-ai-utilities.php:497
-msgid "Invalid URL format."
+#: includes/ai/support/class-epkb-ai-validation.php:20
+msgid "Please enter a message."
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-utilities.php:498
-msgid "Invalid URL scheme. Only HTTP and HTTPS are allowed."
+msgid "AI Search is currently unavailable."
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-utilities.php:499
-msgid "Invalid or potentially unsafe URL."
+msgid "AI Chat is currently unavailable."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-utilities.php:500
+msgid "AI features are not enabled."
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-utilities.php:501
-msgid "Service temporarily unavailable. Please try again later."
+#: includes/ai/support/class-epkb-ai-utilities.php:502
+msgid "Too many requests. Please wait a moment and try again."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:502
 #: includes/ai/support/class-epkb-ai-utilities.php:503
-msgid "The AI service is temporarily unavailable. Please try again later."
+msgid "Please enter a valid message."
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-utilities.php:504
-msgid "Authentication failed. Please contact support."
+msgid "Your session has expired. Please refresh the page."
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-utilities.php:505
-msgid "Configuration error. Please contact support."
+msgid "Invalid email address provided."
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-utilities.php:506
-msgid "No relevant articles found. Please try a different question."
+msgid "Invalid URL format."
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-utilities.php:507
+msgid "Invalid URL scheme. Only HTTP and HTTPS are allowed."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-utilities.php:508
+msgid "Invalid or potentially unsafe URL."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-utilities.php:510
+msgid "Service temporarily unavailable. Please try again later."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-utilities.php:511
+#: includes/ai/support/class-epkb-ai-utilities.php:512
+msgid "The AI service is temporarily unavailable. Please try again later."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-utilities.php:513
+msgid "Authentication failed. Please contact support."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-utilities.php:514
+msgid "Configuration error. Please contact support."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-utilities.php:515
+msgid "No relevant articles found. Please try a different question."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-utilities.php:516
 msgid ""
 "No posts found to upload. Please create some knowledge base articles first."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:508
+#: includes/ai/support/class-epkb-ai-utilities.php:517
 msgid "Daily limit reached. Please try again tomorrow."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:509
+#: includes/ai/support/class-epkb-ai-utilities.php:518
 msgid "Service temporarily unavailable. Please try again."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:515
+#: includes/ai/support/class-epkb-ai-utilities.php:524
 msgid "An error occurred. Please try again."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:541
+#: includes/ai/support/class-epkb-ai-utilities.php:550
 #, php-format
 msgid "[Admin Debug] %s"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-validation.php:28
+#, php-format
+msgid "Message is too long. Please keep it under %d characters."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-validation.php:46
+msgid "Invalid content detected."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-validation.php:61
+msgid "UUID is empty"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-validation.php:69
+#, php-format
+msgid "Invalid UUID format: %s"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-validation.php:87
+msgid "Idempotency key is required"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-validation.php:98
+msgid "Idempotency key is too long"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-validation.php:106
+msgid "Invalid idempotency key format"
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-validation.php:130
+#, php-format
+msgid "Widget ID must be between 1 and %d"
 msgstr ""
 
 #: includes/class-epkb-core-utilities.php:242
@@ -11183,51 +11187,154 @@ msgstr ""
 msgid "Color value"
 msgstr ""
 
+#: includes/system/scripts-registration-admin.php:160
+msgid "Assistant"
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:161
+msgid "Created"
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:162
+msgid "Failed to load conversation details."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:163
+msgid "Creating..."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:165
+msgid "Recreating..."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:166
+msgid "Uploading..."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:167
+msgid "Uploading files..."
+msgstr ""
+
 #: includes/system/scripts-registration-admin.php:168
-#: includes/system/scripts-registration-admin.php:196
-msgid "Error occurred - configuration NOT saved"
+msgid "Re-uploading..."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:169
+msgid "Re-uploading files..."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:171
+msgid "Saving settings..."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:176
+msgid "No conversations selected."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:177
+msgid "Are you sure you want to delete {count} selected conversation(s)?"
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:178
+msgid "Deleting conversations..."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:179
+msgid "{count} conversation(s) deleted successfully."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:180
+msgid "Failed to delete conversations."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:181
+msgid ""
+"Are you sure you want to delete ALL chat conversations? This action cannot "
+"be undone."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:182
+msgid "Deleting all conversations..."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:183
+msgid "All conversations deleted successfully."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:184
+msgid "Failed to delete all conversations."
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:185
+msgid "No conversations found."
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:200
-#: includes/system/scripts-registration-public.php:62
+#: includes/system/scripts-registration-admin.php:228
+msgid "Error occurred - configuration NOT saved"
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:232
+#: includes/system/scripts-registration-public.php:80
 msgid "Sending, please wait"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:201
-#: includes/system/scripts-registration-public.php:63
+#: includes/system/scripts-registration-admin.php:233
+#: includes/system/scripts-registration-public.php:81
 msgid "Could not submit the error."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:202
+#: includes/system/scripts-registration-admin.php:234
 msgid "Setup Wizard encountered an error."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:203
-#: includes/system/scripts-registration-public.php:61
+#: includes/system/scripts-registration-admin.php:235
+#: includes/system/scripts-registration-public.php:79
 msgid ""
 "We have detected an error. Please report the issue so that we can help you "
 "resolve it."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:206
+#: includes/system/scripts-registration-admin.php:238
 msgid "Saving changes..."
 msgstr ""
 
-#: includes/system/scripts-registration-public.php:57
+#: includes/system/scripts-registration-public.php:75
 msgid ""
 "The TOC is not displayed because there are no matching headers in the "
 "article."
 msgstr ""
 
-#: includes/system/scripts-registration-public.php:58
+#: includes/system/scripts-registration-public.php:76
 msgid "Article outline"
 msgstr ""
 
-#: includes/system/scripts-registration-public.php:60
+#: includes/system/scripts-registration-public.php:78
 msgid "Frontend Editor encountered an error."
 msgstr ""
 
-#: includes/system/scripts-registration-public.php:671
+#: includes/system/scripts-registration-public.php:84
+#: includes/system/scripts-registration-public.php:134
+msgid "Unable to connect. Please refresh the page and try again."
+msgstr ""
+
+#: includes/system/scripts-registration-public.php:130
+msgid "Type your message..."
+msgstr ""
+
+#: includes/system/scripts-registration-public.php:131
+msgid "AI Assistant"
+msgstr ""
+
+#: includes/system/scripts-registration-public.php:132
+msgid "Hello! How can I help you today?"
+msgstr ""
+
+#: includes/system/scripts-registration-public.php:133
+msgid "Sorry, I encountered an error. Please try again."
+msgstr ""
+
+#: includes/system/scripts-registration-public.php:731
 msgid "Open KB Frontend Editor"
 msgstr ""
 

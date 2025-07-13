@@ -1009,7 +1009,7 @@ class EPKB_Config_Page {
 				),
 			),
 			'bottom_html' => '<a href="' . esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $this->kb_config['id'] . '&page=epkb-kb-configuration&epkb_legacy_settings=on#settings' ) ) . '" class="epkb-enable-backend-settings">' .
-								esc_html__( 'OR Edit Settings Here in Admin without visual preview', 'echo-knowledge-base' ) . '</a>'
+								'<span class="epkbfa epkbfa-info-circle"></span> ' . esc_html__( 'Edit settings here in Admin without visual preview', 'echo-knowledge-base' ) . '</a>'
 		);
 
 		$is_theme_archive_page_template = $this->kb_config['template_for_archive_page'] == 'current_theme_templates';
