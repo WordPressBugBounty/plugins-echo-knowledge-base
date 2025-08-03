@@ -681,6 +681,27 @@ class EPKB_KB_Handler {
 			return;
 		}
 
+		// ensure that KB #1 has unique kb_articles_common_path; if other KB has the same kb_articles_common_path, then change it
+		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs( true );
+		if ( count( $all_kb_configs ) < 2 ) {
+			return;
+		}
+
+		$first_kb_articles_common_path = reset( $all_kb_configs )['kb_articles_common_path'];
+		foreach ( $all_kb_configs as $one_kb_config ) {
+			if ( $one_kb_config['id'] == EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
+				continue;
+			}
+
+			if ( $one_kb_config['kb_articles_common_path'] == $first_kb_articles_common_path ) {
+				$one_kb_config['kb_articles_common_path'] = $one_kb_config['kb_articles_common_path'] . '-' . $one_kb_config['id'];
+				epkb_get_instance()->kb_config_obj->update_kb_configuration( $one_kb_config['id'], $one_kb_config );
+				// flush rewrite rules
+				flush_rewrite_rules();
+			}
+		}
+
+		// get all KB Main Pages
 		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs( true );
 		foreach ( $all_kb_configs as $one_kb_config ) {
 			if ( empty( $one_kb_config['kb_main_pages'] ) || ! is_array( $one_kb_config['kb_main_pages'] ) ) {

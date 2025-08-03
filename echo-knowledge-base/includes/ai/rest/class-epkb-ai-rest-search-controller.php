@@ -6,11 +6,10 @@
  * Provides secure REST endpoints for search operations
  */
 class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
-	
-	/**
-	 * Route base
-	 */
-	protected $rest_base = 'ai-search';
+
+	public function __construct() {
+		parent::__construct();
+	}
 
 	/**
 	 * Register the routes for AI Search
@@ -21,8 +20,7 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 			return;
 		}
 
-		// TODO Search endpoint
-		register_rest_route( $this->namespace, '/' . $this->rest_base . '/search', array(
+		register_rest_route( $this->public_namespace, '/ai-search/search', array(
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'search' ),
@@ -31,55 +29,24 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 			),
 		) );
 
-		// TODO Admin endpoints for search conversation management
-		register_rest_route( $this->namespace, '/' . $this->rest_base . '/admin/conversations', array(
+		// register admin routes only if in admin context
+		$request_uri = $_SERVER['REQUEST_URI'] ?? '';
+		if ( strpos( $request_uri, 'epkb-admin' ) === false ) {
+			return;
+		}
+
+		// Admin endpoints for search conversation management
+		register_rest_route( $this->admin_namespace, '/ai-search/searches', array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_conversations_table' ),
+				'callback'            => array( $this, 'get_searches_history'),
 				'permission_callback' => array( 'EPKB_AI_Security', 'can_access_settings' ),
 				'args'                => $this->get_collection_params(),
 			),
-			array(
-				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => array( $this, 'delete_all_conversations' ),
-				'permission_callback' => array( 'EPKB_AI_Security', 'can_access_settings' ),
-			),
 		) );
 
-		// TODO Single conversation admin operations
-		register_rest_route( $this->namespace, '/' . $this->rest_base . '/admin/conversations/(?P<id>\d+)', array(
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_conversation_details' ),
-				'permission_callback' => array( 'EPKB_AI_Security', 'can_access_settings' ),
-				'args'                => array(
-					'id' => array(
-						'required'          => true,
-						'validate_callback' => function( $param ) {
-							return is_numeric( $param ) && $param > 0;
-						},
-						'sanitize_callback' => 'absint',
-					),
-				),
-			),
-			array(
-				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => array( $this, 'delete_conversation' ),
-				'permission_callback' => array( 'EPKB_AI_Security', 'can_access_settings' ),
-				'args'                => array(
-					'id' => array(
-						'required'          => true,
-						'validate_callback' => function( $param ) {
-							return is_numeric( $param ) && $param > 0;
-						},
-						'sanitize_callback' => 'absint',
-					),
-				),
-			),
-		) );
-
-		// TODO Bulk delete conversations
-		register_rest_route( $this->namespace, '/' . $this->rest_base . '/admin/conversations/bulk', array(
+		// Bulk delete conversations
+		register_rest_route( $this->admin_namespace, '/ai-search/searches/bulk', array(
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
 				'callback'            => array( $this, 'delete_selected_conversations' ),
@@ -99,10 +66,10 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 		) );
 	}
 
-	private function check_rest_nonce( $request ) {
+	public function check_rest_nonce( $request ) {
 
 		if ( ! EPKB_AI_Utilities::is_ai_search_enabled() ) {
-			return false;
+			return new WP_Error( 'ai_search_disabled', __( 'AI search is not enabled', 'echo-knowledge-base' ), array( 'status' => 403 ) );
 		}
 
 		return EPKB_AI_Security::check_rest_nonce( $request );
@@ -115,66 +82,41 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function search( $request ) {
-		
+
+		// Check rate limit before processing
+		/* $rate_limit_check = EPKB_AI_Security::check_rate_limit();
+		if ( is_wp_error( $rate_limit_check ) ) {
+			return 'TODO";
+		} */
+
 		// Get search query
 		$query = $request->get_param( 'query' );
 		
 		// Validate query
 		if ( empty( $query ) || strlen( $query ) < 3 ) {
-			return $this->create_rest_response( array( 'error' => 'invalid_query', 'message' => __( 'Search query must be at least 3 characters long.', 'echo-knowledge-base' ) ), 400 );
+			return $this->create_rest_response( array( 'message' => __( 'Search query must be at least 3 characters long.', 'echo-knowledge-base' ) ), 400 );
 		}
 
-		// Get optional parameters
-		$kb_id = absint( $request->get_param( 'kb_id' ) ?: EPKB_KB_Config_DB::DEFAULT_KB_ID );
-		$limit = absint( $request->get_param( 'limit' ) ?: 5 );
-		
-		// Validate limit
-		if ( $limit < 1 || $limit > 20 ) {
-			$limit = 5;
-		}
-
-		// Initialize search handler for search
+		// Initialize search handler
 		$search_handler = new EPKB_AI_Search_Handler();
 		
-		// Perform search
-		$result = $search_handler->search( $query, array(
-			'kb_id' => $kb_id,
-			'limit' => $limit
-		) );
-
-		// Handle errors
+		// Perform search (widget_id=1 for default AI search widget)
+		$result = $search_handler->search( $query, 1 );
 		if ( is_wp_error( $result ) ) {
-			return $this->create_rest_response( array( 'query' => $query, 'kb_id' => $kb_id ), 500, $result );
+			return $this->create_rest_response( array( 'query' => $query ), 500, $result );
 		}
 
-		// Format response
-		$response_data = array(
-			'query'   => $query,
-			'results' => isset( $result['results'] ) ? $result['results'] : array(),
-			'count'   => isset( $result['count'] ) ? $result['count'] : 0,
-			'kb_id'   => $kb_id
-		);
-
-		// Add AI response if available
-		if ( isset( $result['ai_response'] ) ) {
-			$response_data['ai_response'] = EPKB_AI_Security::sanitize_output( $result['ai_response'] );
-		}
-
-		// Add conversation ID if this search was logged
-		if ( isset( $result['conversation_id'] ) ) {
-			$response_data['conversation_id'] = $result['conversation_id'];
-		}
-
-		return $this->create_rest_response( $response_data );
+		// Return result directly - handler already returns the correct format for JavaScript
+		return $this->create_rest_response( $result );
 	}
 
 	/**
-	 * Get conversations table data for admin
+	 * Get history of searches (conversations) for admin
 	 * 
 	 * @param WP_REST_Request $request
 	 * @return WP_REST_Response
 	 */
-	public function get_conversations_table( $request ) {
+	public function get_searches_history( $request ) {
 		
 		// Get parameters
 		$params = array(
@@ -191,74 +133,15 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 			return $this->create_rest_response( array(), 500, $result );
 		}
 
+		// Transform 'items' to 'searches' for frontend compatibility
+		if ( isset( $result['items'] ) ) {
+			$result['searches'] = $result['items'];
+			unset( $result['items'] );
+		}
+
 		return $this->create_rest_response( $result );
 	}
 
-	/**
-	 * Get single conversation details for admin
-	 * 
-	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response
-	 */
-	public function get_conversation_details( $request ) {
-		
-		$conversation_id = $request->get_param( 'id' );
-
-		// Get conversation from database
-		$messages_db = new EPKB_AI_Messages_DB();
-		$conversation = $messages_db->get_conversation( $conversation_id );
-		
-		if ( ! $conversation ) {
-			return $this->create_rest_response( array( 'error' => 'not_found', 'message' => __( 'Conversation not found.', 'echo-knowledge-base' ) ), 404 );
-		}
-
-		// Check if this is actually a search conversation
-		if ( ! $conversation->is_search() ) {
-			return $this->create_rest_response( array( 'error' => 'invalid_type', 'message' => __( 'This is not a search conversation.', 'echo-knowledge-base' ) ), 400 );
-		}
-
-		// Get messages
-		$messages = $conversation->get_messages();
-
-		// Build user display name
-		$user_display = __( 'Guest', 'echo-knowledge-base' );
-		if ( $conversation->get_user_id() > 0 ) {
-			$user = get_user_by( 'id', $conversation->get_user_id() );
-			if ( $user ) {
-				$user_display = $user->display_name;
-			}
-		}
-
-		// Format response
-		$response = array(
-			'id'         => $conversation->get_id(),
-			'user'       => $user_display,
-			'created'    => $conversation->get_created(),
-			'query'      => isset( $messages[0] ) ? $messages[0]['content'] : '',
-			'answer'     => isset( $messages[1] ) ? $messages[1]['content'] : '',
-			'widget_id'  => $conversation->get_widget_id()
-		);
-
-		return $this->create_rest_response( $response );
-	}
-
-	/**
-	 * Delete a single conversation
-	 * 
-	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response
-	 */
-	public function delete_conversation( $request ) {
-		
-		$conversation_id = $request->get_param( 'id' );
-
-		$result = EPKB_AI_Table_Operations::delete_row( 'search', $conversation_id );
-		if ( is_wp_error( $result ) ) {
-			return $this->create_rest_response( array(), 500, $result );
-		}
-
-		return $this->create_rest_response( array( 'message' => __( 'Search conversation deleted successfully.', 'echo-knowledge-base' ), 'deleted' => true ) );
-	}
 
 	/**
 	 * Delete selected conversations
@@ -278,21 +161,6 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 		return $this->create_rest_response( array( 'message' => sprintf( __( '%d search conversations deleted successfully.', 'echo-knowledge-base' ), $result ), 'deleted' => $result ) );
 	}
 
-	/**
-	 * Delete all conversations
-	 * 
-	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response
-	 */
-	public function delete_all_conversations( $request ) {
-		
-		$result = EPKB_AI_Table_Operations::delete_all_conversations( 'search' );
-		if ( is_wp_error( $result ) ) {
-			return $this->create_rest_response( array(), 500, $result );
-		}
-
-		return $this->create_rest_response( array( 'message' => sprintf( __( '%d search conversations deleted successfully.', 'echo-knowledge-base' ), $result ), 'deleted' => $result ) );
-	}
 
 	/**
 	 * Get schema for search parameters
@@ -309,12 +177,6 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 					return is_string( $param ) && strlen( trim( $param ) ) >= 3;
 				},
 				'sanitize_callback' => 'sanitize_text_field',
-			),
-			'kb_id' => array(
-				'type'              => 'integer',
-				'description'       => __( 'Knowledge Base ID', 'echo-knowledge-base' ),
-				'default'           => EPKB_KB_Config_DB::DEFAULT_KB_ID,
-				'sanitize_callback' => 'absint',
 			),
 			'limit' => array(
 				'type'              => 'integer',

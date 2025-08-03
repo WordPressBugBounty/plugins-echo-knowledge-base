@@ -11,14 +11,8 @@ abstract class EPKB_AI_Base_Handler {
 	 * OpenAI client
 	 * @var EPKB_OpenAI_Client
 	 */
-	protected $ai_client;
-	
-	/**
-	 * AI configuration
-	 * @var EPKB_AI_Config
-	 */
-	protected $config;
-	
+	private $ai_client;
+		
 	/**
 	 * Messages database
 	 * @var EPKB_AI_Messages_DB
@@ -29,32 +23,48 @@ abstract class EPKB_AI_Base_Handler {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->config = new EPKB_AI_Config();
-		$this->ai_client = new EPKB_OpenAI_Client( $this->config );
+		$this->ai_client = new EPKB_OpenAI_Client();
 		$this->messages_db = new EPKB_AI_Messages_DB();
 	}
 
 	/**
 	 * Call AI API with messages
 	 *
-	 * @param array|String $messages
+	 * @param String $message
+	 * @param String $model
 	 * @param null $previous_response_id
 	 * @return array|WP_Error AI response or error
 	 */
-	protected function get_ai_response( $messages, $previous_response_id = null ) {
+	protected function get_ai_response( $message, $model, $previous_response_id = null ) {
 
-		// Get only the last user message for Responses API
-		$message = is_array( $messages ) ? $this->get_last_user_message( $messages ) : $messages;
-		if ( empty( $message ) ) {
-			return new WP_Error( 'no_user_message', __( 'No user message found', 'echo-knowledge-base' ) );
+		// Get and validate max_output_tokens
+		$max_output_tokens = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_max_output_tokens', EPKB_OpenAI_Client::DEFAULT_MAX_OUTPUT_TOKENS );
+		$max_output_tokens = intval( $max_output_tokens );
+		// Ensure it's within valid OpenAI bounds and handle edge cases
+		if ( $max_output_tokens < 1 || $max_output_tokens > 16384 ) {
+			$max_output_tokens = EPKB_OpenAI_Client::DEFAULT_MAX_OUTPUT_TOKENS;
+		}
+
+		// Get and validate temperature
+		$temperature = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_temperature', EPKB_OpenAI_Client::DEFAULT_TEMPERATURE );
+		$temperature = floatval( $temperature );
+		// Ensure it's within valid OpenAI bounds and handle edge cases
+		if ( $temperature < 0.0 || $temperature > 2.0 ) {
+			$temperature = EPKB_OpenAI_Client::DEFAULT_TEMPERATURE;
 		}
 
 		// Build request for Responses API
 		$request = array(
-			'model'             => $this->config->get_model(),
+			'model'             => $model,
 			'instructions'      => $this->get_instructions(),
-			'input'             => $message,
-			'max_output_tokens' => $this->config->get_max_tokens()
+			'input'             => array(
+				array(
+					'role'    => 'user',
+					'content' => $message
+				)
+			),
+			'max_output_tokens' => $max_output_tokens,
+			'temperature'       => $temperature,
 		);
 
 		// Add previous response ID for continuing conversation
@@ -62,14 +72,33 @@ abstract class EPKB_AI_Base_Handler {
 			$request['previous_response_id'] = $previous_response_id;
 		}
 
+		// Add file search tool if vector store is available
+		$vector_store_id = $this->get_vector_store_id_for_chat();
+		if ( ! empty( $vector_store_id ) ) {
+			$request['tools'] = array(
+				array(
+					'type' => 'file_search',
+					'vector_store_ids' => array( $vector_store_id ),
+					'max_num_results' => EPKB_OpenAI_Client::DEFAULT_MAX_NUM_RESULTS
+				)
+			);
+		}
+
 		// Make API call to Responses endpoint
 		$response = $this->ai_client->request( '/responses', $request );
 		if ( is_wp_error( $response ) ) {
+			// Check if it's an authentication error
+			if ( $response->get_error_code() === 'authentication_failed' ) {
+				return new WP_Error( 
+					'authentication_failed', 
+					__( 'AI service authentication failed. Please check your API key in the AI settings.', 'echo-knowledge-base' )
+				);
+			}
 			return $response;
 		}
 
 		// Extract content from response
-		$content = $this->extract_response_content( $response ); // TODO
+		$content = $this->extract_response_content( $response );
 		if ( empty( $content ) ) {
 			return new WP_Error( 'empty_response', __( 'Received empty response from AI', 'echo-knowledge-base' ) );
 		}
@@ -82,94 +111,26 @@ abstract class EPKB_AI_Base_Handler {
 	}
 
 	/**
-	 * Get the last user message from messages array
-	 *
-	 * @param array $messages
-	 * @return string
-	 */
-	protected function get_last_user_message( $messages ) {
-		if ( empty( $messages ) ) {
-			return '';
-		}
-
-		// Iterate backwards to find the last user message
-		for ( $i = count( $messages ) - 1; $i >= 0; $i-- ) {
-			if ( $messages[$i]['role'] === 'user' ) {
-				return $messages[$i]['content'];
-			}
-		}
-
-		return '';
-	}
-
-	/**
 	 * Get AI instructions for chat
 	 *
 	 * @return string
 	 */
 	private function get_instructions() {
-		$instructions = __( 'You are a helpful assistant. Continue the conversation naturally, providing accurate and helpful responses to the user\'s questions.', 'echo-knowledge-base' );
-		return apply_filters( 'epkb_ai_chat_instructions', $instructions );
+
+		$default_instructions = __( "You are a helpful assistant that only answers questions related to the provided content. " .
+										"If the answer is not available, respond with: 'That is not something I can help with. Please try a different question.' " .
+										"Do not refer to documents, files, content, or sources. Do not guess or answer based on general knowledge.", 'echo-knowledge-base' );
+
+		// Determine which instructions to use based on the handler type
+		if ( $this instanceof EPKB_AI_Search_Handler ) {
+			$instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_instructions', $default_instructions );
+			return apply_filters( 'epkb_ai_search_instructions', $instructions );
+		} else {
+			$instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_instructions', $default_instructions );
+			return apply_filters( 'epkb_ai_chat_instructions', $instructions );
+		}
 	}
 
-	/**
-	 * Get client IP address (hashed for privacy)
-	 *
-	 * @return string Hashed IP address or empty string
-	 */
-	protected function get_hashed_ip() {
-		$ip_keys = array( 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR' );
-		$raw_ip = '';
-		
-		foreach ( $ip_keys as $key ) {
-			if ( ! empty( $_SERVER[$key] ) ) {
-				$ip = sanitize_text_field( $_SERVER[$key] );
-				
-				// Handle comma-separated IPs (from proxies)
-				if ( strpos( $ip, ',' ) !== false ) {
-					$ips = explode( ',', $ip );
-					$ip = trim( $ips[0] );
-				}
-				
-				// Validate IP address
-				if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
-					$raw_ip = $ip;
-					break;
-				}
-			}
-		}
-		
-		// If no valid public IP found, check for any valid IP (including private)
-		if ( empty( $raw_ip ) ) {
-			foreach ( $ip_keys as $key ) {
-				if ( ! empty( $_SERVER[$key] ) ) {
-					$ip = sanitize_text_field( $_SERVER[$key] );
-					
-					// Handle comma-separated IPs (from proxies)
-					if ( strpos( $ip, ',' ) !== false ) {
-						$ips = explode( ',', $ip );
-						$ip = trim( $ips[0] );
-					}
-					
-					// Validate any IP address
-					if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
-						$raw_ip = $ip;
-						break;
-					}
-				}
-			}
-		}
-		
-		// Hash the IP address for privacy (GDPR compliance)
-		if ( ! empty( $raw_ip ) ) {
-			// Use a consistent salt for the same IP to produce the same hash
-			// This allows rate limiting while preserving privacy
-			return wp_hash( $raw_ip . wp_salt() );
-		}
-		
-		return '';
-	}
-	
 	/**
 	 * Record API usage for tracking
 	 *
@@ -212,38 +173,52 @@ abstract class EPKB_AI_Base_Handler {
 	 * @param array $response
 	 * @return string
 	 */
-	protected function extract_response_content( $response ) {
-		// Responses API structure
-		if ( isset( $response['output'][0]['content'][0]['text'] ) ) {
-			return $response['output'][0]['content'][0]['text'];
+	private function extract_response_content( $response ) {
+
+		if ( empty( $response['output'] ) || ! is_array( $response['output'] ) ) {
+			return '';
+		}
+
+		// Primary structure for Responses API - output array with content array
+		$last_output = end( $response['output'] );
+		if ( empty( $last_output['content'] ) || ! is_array( $last_output['content'] ) ) {
+			return '';
+		}
+
+		$content = empty( $last_output['content'][0] ) ? '' : $last_output['content'][0];
+		
+		// If content is an object with a 'text' property (from newer OpenAI API), extract it
+		if ( is_array( $content ) && isset( $content['text'] ) ) {
+			return $content['text'];
 		}
 		
-		// Chat completions API structure
-		if ( isset( $response['choices'][0]['message']['content'] ) ) {
-			return $response['choices'][0]['message']['content'];
+		// If content is an object/array, convert to string
+		if ( is_array( $content ) || is_object( $content ) ) {
+			return json_encode( $content );
 		}
 		
-		return '';
+		return $content;
 	}
-	
+
 	/**
-	 * Generate conversation title from first message
-	 * 
-	 * @param string $message
-	 * @return string
+	 * Get vector store ID from the first training data collection
+	 *
+	 * @return string|null Vector store ID or null if not available
 	 */
-	protected function generate_title( $message ) {
-		// Truncate to first sentence or 100 chars
-		$title = wp_strip_all_tags( $message );
-		$title = preg_replace( '/\s+/', ' ', trim( $title ) );
-		
-		$sentences = preg_split( '/[.!?]+/', $title, 2 );
-		$title = ! empty( $sentences[0] ) ? $sentences[0] : $title;
-		
-		if ( strlen( $title ) > 100 ) {
-			$title = substr( $title, 0, 97 ) . '...';
+	private function get_vector_store_id_for_chat() {
+
+		$collections = EPKB_AI_Training_Data_Config_Specs::get_training_data_collections();
+		if ( is_wp_error( $collections ) || empty( $collections ) ) {
+			return null;
 		}
-		
-		return $title;
+
+		// Get the first collection (typically collection ID 1)
+		$first_collection = reset( $collections );
+		if ( ! is_array( $first_collection ) ) {
+			return null;
+		}
+
+		// Return the vector store ID if it exists
+		return ! empty( $first_collection['ai_training_data_store_id'] ) ? $first_collection['ai_training_data_store_id'] : null;
 	}
 } 

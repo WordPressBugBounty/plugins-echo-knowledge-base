@@ -22,11 +22,6 @@ class EPKB_AI_Chat_Frontend {
 			return;
 		}
 
-		// Check if AI chat is enabled
-		if ( ! EPKB_AI_Utilities::is_ai_chat_enabled() ) {
-			return;
-		}
-		
 		// Allow filtering of where to display the chat
 		$display_chat = apply_filters( 'epkb_display_ai_chat', true );
 		if ( ! $display_chat ) {
@@ -50,7 +45,12 @@ class EPKB_AI_Chat_Frontend {
 		<script>
 			// Initialize the chat widget root element ID for the script
 			window.epkbChatWidgetRoot = 'epkb-ai-chat-widget-root';
-		</script>		<?php
+		</script>
+		
+		<!-- Error Form for AI Chat -->
+		<div id="epkb-ai-chat-error-form-wrap" style="display: none !important;">	<?php
+			EPKB_HTML_Admin::display_report_admin_error_form();	?>
+		</div>		<?php
 		
 		$output = ob_get_clean();
 		
@@ -60,6 +60,7 @@ class EPKB_AI_Chat_Frontend {
 				'id'    => array(),
 				'class' => array(),
 				'data-is-admin' => array(),
+				'style' => array(),
 			),
 			'script' => array(),
 		) );
@@ -76,7 +77,7 @@ class EPKB_AI_Chat_Frontend {
 			return false;
 		}
 
-		// is this page or post or main page to display the Help Dialog on?
+		// is this page or post or main page to display the AI Chat on?  TODO home page
 		$post = get_queried_object();
 		if ( empty( $post ) ) {
 			return false;

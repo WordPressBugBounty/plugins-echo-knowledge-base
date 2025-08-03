@@ -1518,9 +1518,6 @@
   display: flex !important;
   justify-content: center;
 }
-#epkb-fe__editor.epkb-fe__editor--block-main-page #epkb-fe__help-tab {
-  display: none !important;
-}
 #epkb-fe__editor.epkb-fe__editor--settings #epkb-fe__header-container {
   min-height: 5.4em;
   border-bottom: none !important;
@@ -2092,7 +2089,7 @@
   height: auto;
   position: fixed;
   display: flex;
-  right: 18px;
+  right: 100px;
   bottom: 18px;
   padding: 12px 18px;
   display: flex;
@@ -2124,6 +2121,16 @@
   display: block;
   white-space: nowrap;
   font-size: 19px;
+}
+.epkb-fe__toggle .epkb-fe__toggle-close {
+  margin-left: 10px;
+  font-size: 16px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+.epkb-fe__toggle .epkb-fe__toggle-close:hover {
+  opacity: 1;
 }
 
 #epkb-modular-main-page-container .epkb-fe-dialog-box-loading,

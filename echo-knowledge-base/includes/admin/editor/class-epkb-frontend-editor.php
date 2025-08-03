@@ -8,10 +8,12 @@
 class EPKB_Frontend_Editor {
 
 	private static $modules = [ 'search', 'categories_articles', 'articles_list', 'faqs', 'resource_links' ];
+	private static $editor_rendered = false;
 
     /**
      * Constructor
      * Initializes the class, sets up KB configuration, and adds AJAX handlers.
+     * Uses multiple hooks to ensure Frontend Editor renders even with non-standard themes.
      */
     public function __construct() {
 
@@ -30,22 +32,55 @@ class EPKB_Frontend_Editor {
 		add_action( 'wp_ajax_eckb_closed_fe_editor', array( $this, 'closed_fe_editor' ) );
 		add_action( 'wp_ajax_nopriv_eckb_closed_fe_editor', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
+		add_action( 'wp_ajax_eckb_hide_fe_toggle_button', array( $this, 'hide_fe_toggle_button' ) );
+		add_action( 'wp_ajax_nopriv_eckb_hide_fe_toggle_button', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+
 		// report uncaught AJAX error
 	    add_action( 'wp_ajax_epkb_editor_error', array( 'EPKB_Controller', 'handle_report_admin_error' ) );
 	    add_action( 'wp_ajax_nopriv_epkb_editor_error', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
-        add_action( 'wp_footer', array( $this, 'generate_page_content' ), 1 );
+		$this->init_page_content_hook();
     }
+
+	private function init_page_content_hook() {
+
+		add_action( 'wp_footer', array( $this, 'generate_page_content' ), 1 );
+
+		// Add wp_body_open as a safety net for themes that might not have wp_footer
+		add_action( 'wp_body_open', array( $this, 'generate_page_content' ), 99 );
+
+		// Additional fallbacks for themes that remove wp_footer and wp_body_open
+		add_action( 'wp_print_footer_scripts', array( $this, 'generate_page_content' ), 99 );
+		add_action( 'get_footer', array( $this, 'generate_page_content' ), 99 );
+
+	}
 
     /**
      * Display Frontend Editor
+     * Uses multiple hooks as fallbacks for themes that may remove standard hooks
      */
     public function generate_page_content() {
+        
+        // Prevent duplicate rendering - important since multiple hooks may trigger this method
+        if ( self::$editor_rendered ) {
+            return;
+        }
+
+		// 'shutdown' fallback hook may be called during AJAX on some pages
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			return;
+		}
+        
+        // Store which hook was used for potential debugging
+        $triggered_hook = current_action();
 
 		$kb_id = EPKB_Utilities::get_eckb_kb_id( '' );
 		if ( empty( $kb_id ) ) {
 			return;
 		}
+
+	    // Mark as rendered to prevent duplicate output
+	    self::$editor_rendered = true;
 
 		// continue only if we are on one of the following page: KB main page, KB article page, KB archive page
 		$kb_page_type = EPKB_Editor_Utilities::epkb_front_end_editor_type();
@@ -57,25 +92,23 @@ class EPKB_Frontend_Editor {
 			return;
 		}
 
-		// get KB configuration	- do nothing on fail
+		// get KB configuration with defaults - do nothing on fail
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
 		if ( is_wp_error( $kb_config ) ) {
 			return;
 		}
-
-		$frontend_editor_state = $kb_config['frontend_editor_switch_visibility_toggle'];
-		if ( $frontend_editor_state == 'off' ) {
+		// Ensure frontend_editor_button_shown exists with proper default
+		if ( ! isset( $kb_config['frontend_editor_button_shown'] ) ) {
+			$kb_config['frontend_editor_button_shown'] = 'on'; // Default from specs
+		}
+		
+		if ( $kb_config['frontend_editor_switch_visibility_toggle'] == 'off' ) {
 
 			// when FE is disabled in settings, then it still can be opened by direct admin links, and admin bar link, and when it refreshes page on settings change via reloading the entire page
 			$is_load_editor_action = EPKB_Utilities::post( 'action' ) == 'epkb_load_editor' || EPKB_Utilities::post( 'epkb_fe_reopen_feature', null ) !== null;
 			if ( ! $is_load_editor_action ) {
 				return;
 			}
-		}
-
-		// do not enable FE for KB Main Page if modular is off
-		if ( $kb_page_type == 'main-page' && $kb_config['modular_main_page_toggle'] != 'on' ) {
-			return;
 		}
 
 		// do not enable FE on Archive Pages for old category archive page v2 or if KB template is current
@@ -98,40 +131,56 @@ class EPKB_Frontend_Editor {
 	    $kb_config = self::fe_preview_config( $kb_config );
 
 		// render settings
-		self::render_editor( $kb_config );
+		self::render_editor( $kb_config, $triggered_hook );
 
-        wp_enqueue_style( 'epkb-frontend-editor' );
-		wp_enqueue_script( 'epkb-admin-form-controls-scripts' );
-		wp_enqueue_script( 'epkb-frontend-editor' );
+		// Enqueue assets - if called late (like via get_footer), output them directly
+		if ( $triggered_hook == 'wp_footer' || $triggered_hook == 'wp_body_open' ) {
+			// For early hooks, use normal WordPress enqueuing
+			wp_enqueue_style( 'epkb-frontend-editor' );
+			wp_enqueue_script( 'epkb-admin-form-controls-scripts' );
+			wp_enqueue_script( 'epkb-frontend-editor' );
+
+		} else {
+			// For late hooks like get_footer, output assets directly
+			wp_print_styles( 'epkb-frontend-editor' );
+			wp_print_scripts( 'epkb-admin-form-controls-scripts' );
+			wp_print_scripts( 'epkb-frontend-editor' );
+		}
     }
 
     /**
      * Renders the HTML content for the settings sidebar.
      * Retrieves configuration settings and generates the form fields.
      */
-    private static function render_editor( $kb_config ) {
+    private static function render_editor( $kb_config, $triggered_hook = '' ) {
 		global $post;
 
-		$frontend_editor_type = EPKB_Editor_Utilities::epkb_front_end_editor_type();
-		$display_frontend_editor_closed = EPKB_Core_Utilities::is_kb_flag_set( 'epkb_fe_editor_closed' ); ?>
+		$frontend_editor_type = $kb_config['modular_main_page_toggle'] == 'on' ? EPKB_Editor_Utilities::epkb_front_end_editor_type() : 'non-modular-page';
+		$display_frontend_editor_closed = EPKB_Core_Utilities::is_kb_flag_set( 'epkb_fe_editor_closed' );   ?>
 
-		<!-- Frontend Editor Toggle -->
-		<div id="epkb-fe__toggle" class="epkb-fe__toggle" style="display: none;">
 		<div id="epkb-fe__admin-url" data-admin-url="<?php echo esc_url( admin_url() ); ?>" style="display: none;"></div>
-
-			<div class="epkb-fe__toggle-wrapper">
-				<div class="epkb-fe_toggle-icon-wrapper">
-					<span class="epkbfa epkbfa-pencil"></span>
+		
+		<!-- EPKB Frontend Editor loaded via hook: <?php echo esc_html( $triggered_hook ); ?> -->
+		
+		<!-- Frontend Editor Toggle --><?php
+		 if ( $kb_config['frontend_editor_button_shown'] == 'on' ) { ?>
+			<div id="epkb-fe__toggle" class="epkb-fe__toggle" style="display: none;">
+				<div class="epkb-fe__toggle-wrapper">
+					<div class="epkb-fe_toggle-icon-wrapper">
+						<span class="epkbfa epkbfa-pencil"></span>
+					</div>
+					<div class="epkb-fe__toggle-title">
+						<span class="epkb-fe__toggle-title__text"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></span>
+					</div>
+					<div class="epkb-fe__toggle-close" title="<?php esc_attr_e( 'Hide this button', 'echo-knowledge-base' ); ?>">
+						<span class="epkbfa epkbfa-times"></span>
+					</div>
 				</div>
-				<div class="epkb-fe__toggle-title">
-					<span class="epkb-fe__toggle-title__text"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></span>
-				</div>
-			</div>
-		</div>		<?php 
+			</div>		<?php
+		 }	?>
 
-		$editor_class = $frontend_editor_type === 'block-main-page' ? 'epkb-fe__editor--block-main-page' : '';	?>
 	    <!-- Frontend Editor Sidebar -->
-		<div id="epkb-fe__editor" class="epkb-admin__form epkb-fe__editor--home <?php echo esc_attr( $editor_class ); ?>" data-kbid="<?php echo esc_attr( $kb_config['id'] ); ?>"
+		<div id="epkb-fe__editor" class="epkb-admin__form epkb-fe__editor--home" data-kbid="<?php echo esc_attr( $kb_config['id'] ); ?>"
 		                    data-post-id="<?php echo empty( $post ) ? 0 : esc_attr( $post->ID ); ?>" style="display: none;"
 		 					data-display-frontend-editor-closed="<?php echo $display_frontend_editor_closed ? 'true' : 'false'; ?>">
 
@@ -248,6 +297,18 @@ class EPKB_Frontend_Editor {
 						self::display_block_main_page_settings( $kb_config );
 						break;
 
+					case 'non-modular-page':	?>
+						<div class="epkb-fe__settings-list">
+							<div class="epkb-fe__sub-content">
+								<div class="epkb-admin__settings-sub">
+									<div class="epkb-admin__settings-sub-header">	<?php
+										echo wp_kses( EPKB_HTML_Admin::display_modular_main_page_toggle( $kb_config, EPKB_Core_Utilities::retrieve_all_kb_specs( $kb_config['id'] ) ), EPKB_Utilities::get_admin_ui_extended_html_tags() );	?>
+									</div>
+								</div>
+							</div>
+						</div>	<?php
+						break;
+
 					default:
 						break;
 				}	?>
@@ -264,12 +325,14 @@ class EPKB_Frontend_Editor {
 				<span id="epkb-tab-instructions" class="epkb-sr-only"><?php esc_html_e( 'Use arrow keys to move between features', 'echo-knowledge-base' ); ?></span>
 
 				<!-- FEATURES CONTAINER -->
-				<div id="epkb-fe__tab-container" role="tablist" aria-label="Help Dialog Top Tabs" aria-describedby="epkb-tab-instructions">
+				<div id="epkb-fe__tab-container" role="tablist" aria-label="Help Dialog Top Tabs" aria-describedby="epkb-tab-instructions">	<?php
 
-					<div id="epkb-fe__help-tab" role="tab" aria-selected="true" tabindex="0" class="epkb-fe__tab epkb-fe__tab__help-btn epkb-fe__tab--active" data-epkb-target-tab="help">
-						<span class="epkb-fe__tab__icon epkbfa epkbfa-book"></span>
-						<span class="epkb-fe__tab__text"><?php esc_html_e( 'Help', 'echo-knowledge-base' ); ?></span>
-					</div>  
+					if ( ! in_array( $frontend_editor_type, ['block-main-page', 'non-modular-page'] ) ) {	?>
+						<div id="epkb-fe__help-tab" role="tab" aria-selected="true" tabindex="0" class="epkb-fe__tab epkb-fe__tab__help-btn epkb-fe__tab--active" data-epkb-target-tab="help">
+							<span class="epkb-fe__tab__icon epkbfa epkbfa-book"></span>
+							<span class="epkb-fe__tab__text"><?php esc_html_e( 'Help', 'echo-knowledge-base' ); ?></span>
+						</div>	<?php
+					}	?>
 
 					<a id="epkb-fe__contact-tab" href="<?php echo esc_url( 'https://www.echoknowledgebase.com/contact-us/' ); ?>" target="_blank" rel="noopener noreferrer" aria-selected="false" tabindex="-1" class="epkb-fe__tab epkb-fe__tab__contact-btn" data-epkb-target-tab="contact">
 						<span class="epkb-fe__tab__icon epkbfa epkbfa-envelope-o"></span>
@@ -400,6 +463,11 @@ class EPKB_Frontend_Editor {
 
 	private static function display_main_page_settings( $features_config, $kb_config ) {
 
+		// Bail early if structure isn't there - normally should never happen
+		if ( empty( $features_config['main-page']['sub_tabs'] ) || ! is_array( $features_config['main-page']['sub_tabs'] ) ) {
+			return;
+		}
+
 		$is_elay_enabled = EPKB_Utilities::is_elegant_layouts_enabled();
 
 		foreach ( $features_config['main-page']['sub_tabs'] as $row_index => $row_config ) {
@@ -443,6 +511,11 @@ class EPKB_Frontend_Editor {
 	}
 
 	private static function display_article_page_settings( $features_config ) {
+		
+		// Bail early if structure isn't there - normally should never happen
+		if ( empty( $features_config['article-page']['sub_tabs'] ) || ! is_array( $features_config['article-page']['sub_tabs'] ) ) {
+			return;
+		}
 
 		foreach ( $features_config['article-page']['sub_tabs'] as $feature_index => $feature_config ) {	?>
 
@@ -463,7 +536,12 @@ class EPKB_Frontend_Editor {
 		}
 	}
 
-	private static function display_archive_page_settings( $features_config ) {	?>
+	private static function display_archive_page_settings( $features_config ) {
+
+		// Bail early if structure isn't there - normally should never happen
+		if ( empty( $features_config['archive-page']['contents'] ) || ! is_array( $features_config['archive-page']['contents'] ) ) {
+			return;
+		}	?>
 
 		<!-- Feature icon -->
 		<div class="epkb-fe__feature-select-button" data-feature="archive-page-settings">
@@ -1091,6 +1169,11 @@ class EPKB_Frontend_Editor {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 149 ) );
 		}
 
+		// let non-modular KB to try modular version if toggle was switched to 'on' without saving its value
+		if ( $orig_config['modular_main_page_toggle'] != 'on' ) {
+			$new_config['modular_main_page_toggle'] = 'on';
+		}
+
 		if ( $merge_module_position ) {
 			$new_config = self::update_module_position( $new_config );
 		}
@@ -1357,5 +1440,32 @@ class EPKB_Frontend_Editor {
 			case 'Basic':
 			default: return 'mp-frontend-modular-basic-layout';
 		}
+	}
+
+	/**
+	 * AJAX handler to hide the frontend editor toggle button permanently
+	 */
+	public function hide_fe_toggle_button() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
+
+		$kb_id = EPKB_Utilities::post( 'kb_id', 0 );
+		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid Knowledge Base ID', 'echo-knowledge-base' ) ) );
+		}
+
+		// get current KB configuration or default
+		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
+
+		// update the setting
+		$kb_config['frontend_editor_button_shown'] = 'off';
+
+		// save the configuration
+		$result = epkb_get_instance()->kb_config_obj->update_kb_configuration( $kb_id, $kb_config );
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Failed to save configuration', 'echo-knowledge-base' ) ) );
+		}
+
+		wp_send_json_success( array( 'message' => esc_html__( 'Frontend Editor button hidden', 'echo-knowledge-base' ) ) );
 	}
 } 

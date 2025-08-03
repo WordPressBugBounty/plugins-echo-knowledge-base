@@ -14,17 +14,10 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 	 */
 	private $repository;
 
-	/**
-	 * Vector store ID
-	 * @var string
-	 */
-	private $vector_store_id;
-
 	public function __construct() {
 		parent::__construct();
 
 		$this->repository = new EPKB_AI_Messages_DB();
-		$this->vector_store_id = $this->get_kb_vector_store_id();
 	}
 	
 	/**
@@ -41,7 +34,7 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 		}
 		
 		// Check if AI Search is enabled
-		if ( ! EPKB_AI_Utilities::is_ai_search_enabled( EPKB_KB_Config_DB::DEFAULT_KB_ID ) ) {
+		if ( ! EPKB_AI_Utilities::is_ai_search_enabled() ) {
 			return new WP_Error( 'ai_search_disabled', __( 'AI Search feature is not enabled', 'echo-knowledge-base' ) );
 		}
 		
@@ -51,33 +44,38 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 			return $rate_limit_check;
 		}
 		
-		// Create conversation model with proper chat_id
+		// Get or create session
+		$session_id = EPKB_AI_Security::get_or_create_session();
+		if ( is_wp_error( $session_id ) ) {
+			return $session_id;
+		}
+		
+		// Make API request
+		$model = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_model' );
+		$ai_response = $this->get_ai_response( $question, $model );
+		if ( is_wp_error( $ai_response ) ) {
+			return $ai_response;
+		}
+		
+		// Get language info
+		$language = EPKB_Language_Utilities::detect_current_language();
+		
+		// Add messages to conversation
 		$conversation = new EPKB_AI_Conversation_Model( array(
 			'user_id'         => get_current_user_id(),
 			'mode'            => 'search',
-			'model'           => $this->config->get_model(),
-			'vector_store_id' => $this->vector_store_id,
 			'chat_id'         => 'search_' . EPKB_AI_Utilities::generate_uuid_v4(),
+			'session_id'      => $session_id,
 			'widget_id'       => $widget_id,
-			'language'        => EPKB_Language_Utilities::detect_current_language(),
-			'ip'              => $this->get_hashed_ip()
+			'language'        => $language['locale'],
+			'ip'              => EPKB_AI_Utilities::get_hashed_ip()
 		) );
-		
-		// Make API request
-		$response = $this->get_ai_response( $question );
-		
-		if ( is_wp_error( $response ) ) {
-			// Save conversation even on error for debugging
-			$this->repository->save_conversation( $conversation );
-			return $response;
-		}
-		
-		// Add messages to conversation
+
 		$conversation->add_message( 'user', $question );
-		$conversation->add_message( 'assistant', $response['content'], array( 'usage' => $response['usage'] ) );
+		$conversation->add_message( 'assistant', $ai_response['content'], array( 'usage' => $ai_response['usage'] ) );
 		
 		// Update conversation with response ID
-		$conversation->set_conversation_id( $response['response_id'] );
+		$conversation->set_conversation_id( $ai_response['response_id'] );
 		
 		// Save to database
 		$message_id = $this->repository->save_conversation( $conversation );
@@ -89,20 +87,14 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 		// Record usage for tracking
 		// TODO $this->record_usage( $response['usage'] );
 
+		// Return format matching what JavaScript expects (same as AI Chat)
 		return array(
-			'answer'          => $response['content'],
+			'success'     => true,
+			'response'    => $ai_response['content'],  // Using 'response' to match AI Chat
+			'query'       => $question,
 			'conversation_id' => $conversation->get_chat_id(),
-			'message_id'      => $message_id,
-			'usage'           => $response['usage']
+			'results'     => array(), // AI search doesn't return traditional results
+			'count'       => 0        // AI search doesn't return count
 		);
-	}
-
-	/**
-	 * Get KB vector store ID
-	 *
-	 * @return string
-	 */
-	private function get_kb_vector_store_id() {
-		return 1; // TODO
 	}
 }

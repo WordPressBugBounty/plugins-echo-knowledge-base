@@ -312,7 +312,7 @@ class EPKB_Add_Ons_Features {
 			'title'             => esc_html__( 'Print Article', 'echo-knowledge-base'),
 			'description'       => '<p>' . esc_html__( 'Display a print button so that users can easily print the article and save it as a PDF file. The printed article excludes the redundant site header and footer.', 'echo-knowledge-base') . '</p>',
 			'image'             => 'https://www.echoknowledgebase.com/wp-content/uploads/2021/01/featured-screenshots-print-button.jpg',
-			'learn_more_url'    => ( epkb_get_instance()->kb_config_obj->get_value( EPKB_KB_Config_DB::DEFAULT_KB_ID, 'print_button_enable', null ) == 'on' ) ? EPKB_Need_Help_Features::get_settings_link( EPKB_KB_Config_DB::DEFAULT_KB_ID, 'settings', 'labels', '', 'print_button' ) : 'https://www.echoknowledgebase.com/documentation/print-button/',
+			'learn_more_url'    => ( epkb_get_instance()->kb_config_obj->get_value( EPKB_KB_Config_DB::DEFAULT_KB_ID, 'print_button_enable', null ) == 'on' ) ? admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( EPKB_KB_Config_DB::DEFAULT_KB_ID ) . '&page=epkb-kb-configuration#settings__labels____print_button' ) : 'https://www.echoknowledgebase.com/documentation/print-button/',
 			'button_name'       => esc_html__( 'Try Now!', 'echo-knowledge-base'),
 			'plugin-type'       => 'core',
 			'type'              => 'new-feature'

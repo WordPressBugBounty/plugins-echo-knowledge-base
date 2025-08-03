@@ -47,23 +47,28 @@ function epkb_load_public_resources() {
 	// AI Chat Widget resources
 	wp_register_style( 'epkb-ai-chat-widget', Echo_Knowledge_Base::$plugin_url . 'css/ai-chat-widget' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
 	
-	// Register modular AI chat components
-	wp_register_script( 'epkb-ai-chat-util', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat-util' . $suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
-	wp_register_script( 'epkb-ai-chat-session', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat-session' . $suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
-	wp_register_script( 'epkb-ai-chat-api', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat-api' . $suffix . '.js', array( 'epkb-ai-chat-util' ), Echo_Knowledge_Base::$version, true );
+	$ai_suffix = ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG && file_exists( Echo_Knowledge_Base::$plugin_dir . 'js/ai/admin-ai-app.js' ) ) ? '' : '.min';
 	
+	// Register modular AI chat components
+	wp_register_script( 'epkb-ai-chat-util', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-util' . $ai_suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
+	wp_register_script( 'epkb-ai-chat-session', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-session' . $ai_suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
+	wp_register_script( 'epkb-ai-chat-api', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-api' . $ai_suffix . '.js', array( 'epkb-ai-chat-util' ), Echo_Knowledge_Base::$version, true );
+		
+	// Register AI search script
+	wp_register_script( 'epkb-ai-search', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-search' . $ai_suffix . '.js', array( 'jquery', 'epkb-public-scripts', 'epkb-ai-chat-util', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
+
 	// Check if wp-element is available, otherwise use react/react-dom directly
 	if ( wp_script_is( 'wp-element', 'registered' ) ) {
-		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat' . $suffix . '.js', array( 'wp-element', 'epkb-ai-chat-util', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
+		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat' . $ai_suffix . '.js', array( 'wp-element', 'epkb-ai-chat-util', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
 	} else {
-		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai-chat' . $suffix . '.js', array( 'react', 'react-dom', 'epkb-ai-chat-util', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
+		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat' . $ai_suffix . '.js', array( 'react', 'react-dom', 'epkb-ai-chat-util', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
 	}
 
 	// Register marked library for markdown parsing
 	wp_register_script( 'epkb-marked', Echo_Knowledge_Base::$plugin_url . 'js/lib/marked' . $suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
 
 	$epkb_vars = array(
-		'ajaxurl'                       => admin_url( 'admin-ajax.php', 'relative' ),
+		'ajaxurl'                       => admin_url( 'admin-ajax.php' ),
 		'msg_try_again'                 => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
 		'error_occurred'                => esc_html__( 'Error occurred', 'echo-knowledge-base' ) . ' (1936)',
 		'not_saved'                     => esc_html__( 'Error occurred', 'echo-knowledge-base' ). ' (2456)',
@@ -82,6 +87,7 @@ function epkb_load_public_resources() {
 		'fe_update_preview_error'		=> esc_html( 'Frontend Editor AJAX error: failed to update setting preview' ),	// do not translate reporting error
 		'fe_save_settings_error'		=> esc_html( 'Frontend Editor AJAX error: failed to save setting' ),	// do not translate reporting error
 		'ai_error_generic'              => esc_html__( 'Unable to connect. Please refresh the page and try again.', 'echo-knowledge-base' ),
+		'is_admin'						=> current_user_can( 'manage_options' ),
 	);
 
 	// add article views counter method only for KB article pages
@@ -106,16 +112,13 @@ function epkb_load_public_resources() {
 				wp_enqueue_script( 'react-dom' );
 			}
 		}
-		
+
 		wp_enqueue_style( 'epkb-ai-chat-widget' );
 		wp_enqueue_script( 'epkb-ai-chat-util' );
 		wp_enqueue_script( 'epkb-ai-chat-session' );
 		wp_enqueue_script( 'epkb-ai-chat-api' );
 		wp_enqueue_script( 'epkb-ai-chat' );
-		
-		// Generate chat ID on server
-		$chat_id = EPKB_AI_Security::generate_chat_id();
-		
+
 		// Widget ID - for now just 'default', later can be customized per widget instance
 		$widget_id = apply_filters( 'epkb_ai_chat_widget_id', '1' );
 		
@@ -123,8 +126,6 @@ function epkb_load_public_resources() {
 		wp_localize_script( 'epkb-ai-chat', 'epkbAIChat', array(
 			'rest_url'              => esc_url_raw( rest_url() ),
 			'rest_nonce'            => epkb_get_instance()->security_obj->get_nonce( true ),  // Force nonce generation for REST API
-			//'session_id'            => epkb_get_instance()->security_obj->get_session_id(), this would create cookie in frontend when page loads
-			'chat_id'               => $chat_id,
 			'widget_id'             => $widget_id,
 			'page_object_id'        => get_the_ID(),
 			'placeholder'           => esc_html__( 'Type your message...', 'echo-knowledge-base' ),
@@ -132,6 +133,25 @@ function epkb_load_public_resources() {
 			'welcome'               => esc_html__( 'Hello! How can I help you today?', 'echo-knowledge-base' ),
 			'error'                 => esc_html__( 'Sorry, I encountered an error. Please try again.', 'echo-knowledge-base' ),
 			'error_generic'         => esc_html__( 'Unable to connect. Please refresh the page and try again.', 'echo-knowledge-base' ),
+		) );
+	}
+
+	// Enqueue AI search script if AI search is enabled - independent of AI chat
+	if ( EPKB_AI_Utilities::is_ai_search_enabled() ) {
+		wp_enqueue_script( 'epkb-ai-chat-util' );
+		wp_enqueue_script( 'epkb-marked' );
+		wp_enqueue_script( 'epkb-ai-search' );
+		
+		// Localize script with AI Search specific data
+		wp_localize_script( 'epkb-ai-search', 'epkbAISearch', array(
+			'rest_url'              => esc_url_raw( rest_url() ),
+			'rest_nonce'            => epkb_get_instance()->security_obj->get_nonce( true ),  // Force nonce generation for REST API
+			'search_endpoint'       => 'epkb-public/v1/ai-search/search',
+			'msg_loading'           => esc_html__( 'Searching...', 'echo-knowledge-base' ),
+			'msg_error'             => esc_html__( 'Sorry, an error occurred during search. Please try again.', 'echo-knowledge-base' ),
+			'msg_no_results'        => esc_html__( 'No results found. Please try a different search term.', 'echo-knowledge-base' ),
+			'msg_try_again'         => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
+			'is_admin'              => current_user_can( 'manage_options' ),
 		) );
 	}
 
@@ -602,21 +622,44 @@ function epkb_front_end_body_classes( $classes ) {
 	// adjust for KB Pages
 	$is_kb_main_page = EPKB_Utilities::is_kb_main_page();
 	$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
-	if ( $kb_config['templates_for_kb'] == 'kb_templates' ) {
+	
+	// Determine template type
+	$is_kb_template = $kb_config['templates_for_kb'] == 'kb_templates';
+	$template_prefix = $is_kb_template ? 'eckb-kb-template-' : 'eckb-kb-current-theme-template-';
+	
+	
+
+	// Determine page type and add appropriate class
+	if ( $is_kb_main_page ) {
+		$classes[] = $template_prefix . 'main-page';
+	} elseif ( is_archive() ) {
+		// Archive pages have their own template setting
+		$is_archive_kb_template = $kb_config['template_for_archive_page'] == 'kb_templates';
+		$archive_template_prefix = $is_archive_kb_template ? 'eckb-kb-template-' : 'eckb-kb-current-theme-template-';
+		
+		// Check if it's tag archive or category archive
+		if ( isset( $GLOBALS['taxonomy'] ) && EPKB_KB_Handler::is_kb_tag_taxonomy( $GLOBALS['taxonomy'] ) ) {
+			$classes[] = $archive_template_prefix . 'tag-page';
+		} else {
+			$classes[] = $archive_template_prefix . 'category-page';
+		}
+	} else {
+		// Check if it's an article page
+		$post = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : '';
+		if ( ! empty( $post ) && $post instanceof WP_Post && EPKB_KB_Handler::is_kb_post_type( $post->post_type ) ) {
+			$classes[] = $template_prefix . 'article-page';
+		}
+	}
+
+	// Keep existing class for backward compatibility
+	if ( $is_kb_template ) {
 		$classes[] = 'eckb-kb-template-active';
 	}
 
-	if ( $is_kb_main_page ) {
-		return $classes;
-	}
-
-	$post = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : '';
-	if ( empty( $post ) || ! $post instanceof WP_Post ) {
-		return $classes;
-	}
-
-	// adjust TOC for Article and Category Archive Pages
-	$classes[] = 'eckb-front-end-body';
+	 //Keep existing class for non-main pages for backward compatibility
+	 if ( ! $is_kb_main_page ) {
+	 	$classes[] = 'eckb-front-end-body';
+	 }
 
 	return $classes;
 

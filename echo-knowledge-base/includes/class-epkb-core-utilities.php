@@ -388,9 +388,6 @@ class EPKB_Core_Utilities {
 			EPKB_Utilities::ajax_show_error_die( esc_html__( 'Could not save the new configuration.', 'echo-knowledge-base' ) . ' ' . $update_kb_msg . '. (32) ' . EPKB_Utilities::contact_us_for_support() );
 		}
 
-		if ( ! self::run_setup_wizard_first_time() ) {
-			self::add_kb_flag( 'settings_tab_visited' );
-		}
 	}
 
 	public static function update_article_sidebar_priority( $orig_config, $new_config ) {
@@ -1489,11 +1486,16 @@ class EPKB_Core_Utilities {
 			}
 		</style>
 		
-		<h1 class="epkb-css-missing-message epkb-css-working-hide-message">' .
-			esc_html__( 'The Knowledge Base files containing CSS are missing, causing page elements below to misalign. This issue may be due to a 3rd-party plugin or caching conflict. ' .
-						'Please contact us for help or ensure the KB CSS files are correctly included.', 'echo-knowledge-base' ) . ' ' .
-				'<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank">' . esc_html__( 'Our Contact Form', 'echo-knowledge-base' ) . '</a>' .
-		'</h1>';
+		<!--googleoff: all-->   
+		<!--noindex-->         
+			<div class="epkb-css-missing-message epkb-css-working-hide-message epkb-css-alert robots-nocontent" role="alert" data-nosnippet>' .
+				esc_html__( 'The Knowledge Base files containing CSS are missing, causing page elements below to misalign. This issue may be due to a 3rd-party plugin or caching conflict. ' .
+							'Please contact us for help or ensure the KB CSS files are correctly included.', 'echo-knowledge-base' ) . ' ' .
+					'<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank">' . esc_html__( 'Our Contact Form', 'echo-knowledge-base' ) . '</a>' .
+			'</div>
+		<!--/noindex-->
+		<!--googleon: all-->
+		';
 	}
 
 	/**
@@ -1549,76 +1551,76 @@ class EPKB_Core_Utilities {
 
 	public static function run_asea_upgrade( $plugin_config, $last_version ) {
 		/**@disregard P1009, P1014 */
-		if ( class_exists( 'Echo_Advanced_Search' ) && $last_version != Echo_Advanced_Search::$version && class_exists('ASEA_Upgrades') && is_callable( array( 'ASEA_Upgrades', 'run_upgrade' ) ) ) {
+		if ( class_exists( 'Echo_Advanced_Search' ) && $last_version != Echo_Advanced_Search::$version && class_exists('ASEA_Upgrades') && is_callable( array( 'ASEA_Upgrades', 'run_upgrade' ) ) ) {/* @disregard PREFIX */
 			/**@disregard P1009, P1008 */
-			ASEA_Upgrades::run_upgrade( $plugin_config, $last_version );
+			ASEA_Upgrades::run_upgrade( $plugin_config, $last_version );/* @disregard PREFIX */
 		}
 	}
 
 	public static function run_elay_upgrade( $plugin_config, $last_version ) {
 		/**@disregard P1009, P1014 */
-		if ( class_exists( 'Echo_Elegant_Layouts' ) && $last_version != Echo_Elegant_Layouts::$version && class_exists('ELAY_Upgrades') && is_callable( array( 'ELAY_Upgrades', 'run_upgrade' ) ) ) {
-			/**@disregard P1009, P1008 */
-			ELAY_Upgrades::run_upgrade( $plugin_config, $last_version );
+		if ( class_exists( 'Echo_Elegant_Layouts' ) && $last_version != Echo_Elegant_Layouts::$version && class_exists('ELAY_Upgrades') && is_callable( array( 'ELAY_Upgrades', 'run_upgrade' ) ) ) {  /* @disregard PREFIX */
+		/**@disregard P1009, P1008 */
+			ELAY_Upgrades::run_upgrade( $plugin_config, $last_version );/* @disregard PREFIX */
 		}
 	}
 
 	public static function run_eprf_upgrade( $plugin_config, $last_version ) {
 		/**@disregard P1009, P1014 */
-		if ( class_exists( 'Echo_Article_Rating_And_Feedback' ) && $last_version != Echo_Article_Rating_And_Feedback::$version && class_exists( 'EPRF_Upgrades' ) && is_callable( array( 'EPRF_Upgrades', 'run_upgrade' ) ) ) {
+		if ( class_exists( 'Echo_Article_Rating_And_Feedback' ) && $last_version != Echo_Article_Rating_And_Feedback::$version && class_exists( 'EPRF_Upgrades' ) && is_callable( array( 'EPRF_Upgrades', 'run_upgrade' ) ) ) {/* @disregard PREFIX */
 			/**@disregard P1009, P1008 */
-			EPRF_Upgrades::run_upgrade( $plugin_config, $last_version );
+			EPRF_Upgrades::run_upgrade( $plugin_config, $last_version );/* @disregard PREFIX */
 		}
 	}
 
 	public static function get_asea_plugin_url() {
 		/**@disregard P1009, P1014 */
-		return class_exists( 'Echo_Advanced_Search' ) && ! empty( Echo_Advanced_Search::$plugin_url ) ? Echo_Advanced_Search::$plugin_url . 'img/' : '';
+		return class_exists( 'Echo_Advanced_Search' ) && ! empty( Echo_Advanced_Search::$plugin_url ) ? Echo_Advanced_Search::$plugin_url . 'img/' : '';/* @disregard PREFIX */
 	}
 
 	public static function get_elay_plugin_url() {
 		/**@disregard P1009, P1014 */
-		return class_exists( 'Echo_Elegant_Layouts' ) && ! empty( Echo_Elegant_Layouts::$plugin_url ) ? Echo_Elegant_Layouts::$plugin_url . 'img/' : '';
+		return class_exists( 'Echo_Elegant_Layouts' ) && ! empty( Echo_Elegant_Layouts::$plugin_url ) ? Echo_Elegant_Layouts::$plugin_url . 'img/' : '';/* @disregard PREFIX */
 	}
 
 	public static function get_eprf_plugin_url() {
 		/**@disregard P1009, P1014 */
-		return class_exists( 'Echo_Article_Rating_And_Feedback' ) && ! empty( Echo_Article_Rating_And_Feedback::$plugin_url ) ? Echo_Article_Rating_And_Feedback::$plugin_url . 'img/' : '';
+		return class_exists( 'Echo_Article_Rating_And_Feedback' ) && ! empty( Echo_Article_Rating_And_Feedback::$plugin_url ) ? Echo_Article_Rating_And_Feedback::$plugin_url . 'img/' : '';/* @disregard PREFIX */
 	}
 
 	public static function register_asea_block_public_styles( $block_name, $suffix, $block_styles_dependencies ) {
-		if ( class_exists( 'ASEA_Blocks' ) && is_callable( array( 'ASEA_Blocks', 'register_block_public_styles' ) ) ) {
+		if ( class_exists( 'ASEA_Blocks' ) && is_callable( array( 'ASEA_Blocks', 'register_block_public_styles' ) ) ) {/* @disregard PREFIX */
 			/**@disregard P1009 */
-			ASEA_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );
+			ASEA_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );/* @disregard PREFIX */
 		}
 	}
 
 	public static function register_asea_block_public_scripts( $suffix ) {
-		if ( class_exists( 'ASEA_Blocks' ) && is_callable( array( 'ASEA_Blocks', 'register_block_public_scripts' ) ) ) {
+		if ( class_exists( 'ASEA_Blocks' ) && is_callable( array( 'ASEA_Blocks', 'register_block_public_scripts' ) ) ) {/* @disregard PREFIX */
 			/**@disregard P1009 */
-			ASEA_Blocks::register_block_public_scripts( $suffix );
+			ASEA_Blocks::register_block_public_scripts( $suffix );/* @disregard PREFIX */
 		}
 	}
 
 	public static function register_elay_block_public_styles( $block_name, $suffix, $block_styles_dependencies ) {
-		if ( class_exists( 'ELAY_Blocks' ) && is_callable( array( 'ELAY_Blocks', 'register_block_public_styles' ) ) ) {
+		if ( class_exists( 'ELAY_Blocks' ) && is_callable( array( 'ELAY_Blocks', 'register_block_public_styles' ) ) ) {/* @disregard PREFIX */
 			/**@disregard P1009 */
-			ELAY_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );
+			ELAY_Blocks::register_block_public_styles( $block_name, $suffix, $block_styles_dependencies );/* @disregard PREFIX */
 		}
 	}
 
 	public static function register_elay_block_public_scripts( $suffix ) {
-		if ( class_exists( 'ELAY_Blocks' ) && is_callable( array( 'ELAY_Blocks', 'register_block_public_scripts' ) ) ) {
+		if ( class_exists( 'ELAY_Blocks' ) && is_callable( array( 'ELAY_Blocks', 'register_block_public_scripts' ) ) ) {/* @disregard PREFIX */
 			/**@disregard P1009 */
-			ELAY_Blocks::register_block_public_scripts( $suffix );
+			ELAY_Blocks::register_block_public_scripts( $suffix );/* @disregard PREFIX */
 		}
 	}
 
 	public static function get_elay_styles( $output, $kb_config ) {
 		// Elegant Layout outputs its own Sidebar and CSS - Elegant Layout version 2.15.3 and earlier does not have method get_inline_styles() and outputs the inline CSS directly itself
-		if ( EPKB_Utilities::is_elegant_layouts_enabled() && class_exists( 'ELAY_Layout_Sidebar_v2' ) && method_exists( 'ELAY_Layout_Sidebar_v2', 'get_inline_styles' ) ) {
+		if ( EPKB_Utilities::is_elegant_layouts_enabled() && class_exists( 'ELAY_Layout_Sidebar_v2' ) && method_exists( 'ELAY_Layout_Sidebar_v2', 'get_inline_styles' ) ) {/* @disregard PREFIX */
 			/**@disregard P1009 */
-			return ELAY_Layout_Sidebar_v2::get_inline_styles( $output, $kb_config );
+			return ELAY_Layout_Sidebar_v2::get_inline_styles( $output, $kb_config );/* @disregard PREFIX */
 		}
 
 		return $output;
@@ -1643,7 +1645,8 @@ class EPKB_Core_Utilities {
 	public static function sync_article_page_search_with_main_page_search( $new_config, $orig_config ) {
 
 		// sync Article Search with Main Search settings - Sidebar layout does not use Article Search settings, still keep the settings synced if required
-		if ( EPKB_Utilities::is_article_search_synced( $new_config ) ||
+		$temp_config = array_merge( $orig_config, $new_config );
+		if ( EPKB_Utilities::is_article_search_synced( $temp_config ) ||
 			( empty( $new_config['article_search_sync_toggle'] ) && EPKB_Utilities::is_article_search_synced( $orig_config ) ) ) {
 
 			foreach ( $orig_config as $setting_name => $orig_setting_value ) {

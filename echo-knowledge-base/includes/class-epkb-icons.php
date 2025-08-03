@@ -2323,6 +2323,9 @@ class EPKB_Icons {
 				'image',
 				'image_tabs',
 				'office',
+				'organized',
+				'teal',
+				'sharp',
 				'office_tabs',
 				'office_categories',
 				'elegant',
@@ -2372,6 +2375,30 @@ class EPKB_Icons {
 				'image_4'                               => 'img/demo-icons/icons/pink-kb-icon-lightbulb-100.png',
 				'image_5'                               => 'img/demo-icons/icons/pink-kb-icon-briefcase-100.png',
 				'image_6'                               => 'img/demo-icons/icons/pink-kb-icon-handshake-100.png',
+			),
+			'organized' => array( 
+				'image_1'                               => 'img/demo-icons/icons/soft-kb-icon-budget.png',              // Finance and Expenses
+				'image_2'                               => 'img/demo-icons/icons/soft-kb-icon-task-assignment.png',     // Human Resources
+				'image_3'                               => 'img/demo-icons/icons/soft-kb-icon-api-integration.png',     // IT support
+				'image_4'                               => 'img/demo-icons/icons/soft-kb-icon-feedback-form.png',       // Operations and Logistics
+				'image_5'                               => 'img/demo-icons/icons/soft-kb-icon-performance-metrics.png', // Professional Development
+				'image_6'                               => 'img/demo-icons/icons/soft-kb-icon-employee-onboarding.png', // Sales and Marketing
+			),
+			'sharp' => array(
+				'image_1'                               => 'img/demo-icons/icons/soft-kb-icon-budget.png',              // Finance and Expenses
+				'image_2'                               => 'img/demo-icons/icons/soft-kb-icon-task-assignment.png',     // Human Resources
+				'image_3'                               => 'img/demo-icons/icons/soft-kb-icon-api-integration.png',     // IT support
+				'image_4'                               => 'img/demo-icons/icons/soft-kb-icon-feedback-form.png',       // Operations and Logistics
+				'image_5'                               => 'img/demo-icons/icons/soft-kb-icon-performance-metrics.png', // Professional Development
+				'image_6'                               => 'img/demo-icons/icons/soft-kb-icon-employee-onboarding.png', // Sales and Marketing
+			),
+			'teal' => array( 
+				'image_1'                               => 'img/demo-icons/icons/soft-kb-icon-budget.png',              // Finance and Expenses
+				'image_2'                               => 'img/demo-icons/icons/soft-kb-icon-task-assignment.png',     // Human Resources
+				'image_3'                               => 'img/demo-icons/icons/soft-kb-icon-api-integration.png',     // IT support
+				'image_4'                               => 'img/demo-icons/icons/soft-kb-icon-feedback-form.png',       // Operations and Logistics
+				'image_5'                               => 'img/demo-icons/icons/soft-kb-icon-performance-metrics.png', // Professional Development
+				'image_6'                               => 'img/demo-icons/icons/soft-kb-icon-employee-onboarding.png', // Sales and Marketing
 			),
 			'standard_drill_down' => array(
 				'image_1'                               => 'img/demo-icons/icons/pink-kb-icon-laptop-100.png',

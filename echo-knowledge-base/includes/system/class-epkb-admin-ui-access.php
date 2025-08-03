@@ -27,6 +27,7 @@ class EPKB_Admin_UI_Access {
 		'admin_eckb_access_need_help_read',
 		'admin_eckb_access_addons_news_read',
 		'admin_eckb_access_faqs_write',
+		'admin_eckb_access_ai_feature',
 	);
 
 	/**

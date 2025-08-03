@@ -114,6 +114,8 @@ class EPKB_KB_Wizard_Cntrl {
 	 */
 	private function apply_url_wizard_changes( $orig_config, $new_config ) {
 
+		EPKB_KB_Handler::reset_kb_main_pages();
+
 		// make sure currently active KB Main Page is at the top of KB Main Pages list if the current KB has more than one Main Page
 		$active_kb_main_page_id = EPKB_Utilities::post( 'kb_main_page_id' );
 		if ( count( $orig_config['kb_main_pages'] ) > 1 && isset( $orig_config['kb_main_pages'][$active_kb_main_page_id] ) ) {
@@ -482,7 +484,7 @@ class EPKB_KB_Wizard_Cntrl {
 
 		wp_die( wp_json_encode( array(
 			'message' => 'success',
-			'redirect_to_url' => admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $new_config['id'] ) . '&page=epkb-kb-need-help&epkb_after_kb_setup' ) ) ) );
+			'redirect_to_url' => admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $new_config['id'] ) . '&page=epkb-dashboard&epkb_after_kb_setup' ) ) ) );
 	}
 
 	/**

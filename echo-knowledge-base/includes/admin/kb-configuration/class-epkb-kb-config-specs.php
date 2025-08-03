@@ -337,6 +337,12 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'on'
 			),
+			'frontend_editor_button_shown' => array(
+				'label'       => esc_html__( 'Frontend Editor Button Shown', 'echo-knowledge-base' ),
+				'name'        => 'frontend_editor_button_shown',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'on'
+			),
 
 
 			/******************************************************************************
@@ -3187,6 +3193,17 @@ class EPKB_KB_Config_Specs {
 				'min'         => '3',
 				'allowed_access'  => array( EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY, EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
 				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
+			),
+
+			// Access to AI Features
+			'admin_eckb_access_ai_feature' => array(
+				'label'       => esc_html__( 'AI Features', 'echo-knowledge-base' ),
+				'name'        => 'admin_eckb_access_ai_feature',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'max'         => '60',
+				'min'         => '3',
+				'allowed_access'  => array( EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
+				'default'     => EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY
 			),
 
 			/******************************************************************************

@@ -16,7 +16,12 @@ jQuery( document ).ready( function( $ ) {
 	let admin_report_error_form = $( '#epkb-fe__error-form-wrap .epkb-admin__error-form__container' );
 
 	// Handle FE Open Button and Admin bar FE edit link
-	$( '.epkb-fe__toggle, #wp-admin-bar-epkb-edit-mode-button' ).on( 'click', function ( e ) {
+	$( document ).on( 'click', '.epkb-fe__toggle, #wp-admin-bar-epkb-edit-mode-button', function ( e ) {
+		
+		// Don't open editor if close button was clicked
+		if ( $(e.target).closest('.epkb-fe__toggle-close').length > 0 ) {
+			return;
+		}
 
 		const params      = new URLSearchParams( window.location.search );
 		const bodyClasses = document.body.classList;
@@ -118,6 +123,29 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	} );
 
+	// Close FE Toggle Button - Hide permanently
+	$( document ).on( 'click', '.epkb-fe__toggle-close', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		e.stopImmediatePropagation();
+		
+		// Hide the toggle button
+		$( '.epkb-fe__toggle' ).hide();
+		
+		// Save the setting to hide the button permanently
+		$.ajax( {
+			url: epkb_vars.ajaxurl,
+			method: 'POST',
+			data: {
+				action: 'eckb_hide_fe_toggle_button',
+				kb_id: frontendEditor.data( 'kbid' ),
+				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+			}
+		} );
+		
+		return false;
+	} );
+
 	// Open Help tab
 	$( document ).on( 'click', '#epkb-fe__help-tab', function() {
 
@@ -146,6 +174,15 @@ jQuery( document ).ready( function( $ ) {
 		$( '.epkb-fe__feature-select-button' ).hide();
 		$( '.epkb-fe__feature-settings' ).removeClass( 'epkb-fe__feature-settings--active' );
 		$tab.addClass( 'epkb-fe__feature-settings--active' );
+
+		// Restore all sections to their default open state
+		$tab.find( '.epkb-fe__settings-section' ).each( function() {
+			let $section = $( this );
+			if ( ! $section.hasClass( 'epkb-fe__is_opened' ) ) {
+				$section.addClass( 'epkb-fe__is_opened' );
+				$section.find( '.epkb-fe__settings-section-body' ).show();
+			}
+		} );
 
 		// Refresh conditional settings
 		$tab.find( '.eckb-conditional-setting-input' ).trigger( 'click' );
@@ -441,7 +478,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 
 					// Update Categories & Articles module settings (after applying design preset)
-					if ( response.data.categories_articles_design_settings && response.data.categories_articles_design_settings.length > 0 ) {
+					if ( response.data.categories_articles_design_settings && Object.keys(response.data.categories_articles_design_settings).length > 0 ) {
 
 						// Unselect preset name to prevent continuing preset applying on further settings changes
 						$feature_settings_container.find( '[name="categories_articles_preset"]' ).val( 'current' ).trigger( 'change' );
@@ -807,12 +844,13 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		let $field = $( this );
+		const field_name = $field.attr( 'name' );
 
 		// some settings do not need to trigger AJAX update for preview
 		const noPreviewUpdateSettings = [ 'search_result_mode', 'search_box_results_style', 'article_search_box_results_style', 'article_search_result_mode', 'advanced_search_mp_show_top_category',
 			'advanced_search_ap_show_top_category', 'advanced_search_mp_results_list_size', 'advanced_search_ap_results_list_size', 'advanced_search_text_highlight_enabled',
 			'advanced_search_mp_results_page_size', 'advanced_search_ap_results_page_size', 'advanced_search_mp_box_results_style', 'advanced_search_ap_box_results_style', 'article_views_counter_method', 'back_navigation_mode'];
-		if ( noPreviewUpdateSettings.includes( $field[0].name ) ) {
+		if ( noPreviewUpdateSettings.includes( field_name ) ) {
 			return;
 		}
 
@@ -841,9 +879,9 @@ jQuery( document ).ready( function( $ ) {
 		};
 
 		// Special handling for instant toggle settings
-		if ( instantToggleSettings[$field[0].name] ) {
+		if ( instantToggleSettings[field_name] ) {
 			const isToggleOn = $field.attr('type') === 'checkbox' ? $field.prop('checked') : $field.val() === 'on';
-			const selectors = instantToggleSettings[$field[0].name];
+			const selectors = instantToggleSettings[field_name];
 			let foundExisting = false;
 
 			// If toggling OFF, hide all matching elements and skip backend call
@@ -884,14 +922,14 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Special handling for TOC fields synchronization
-		if ( $field.attr( 'name' ) === 'toc_toggler' ||
-			 $field.attr( 'name' ) === 'toc_left' ||
-			 $field.attr( 'name' ) === 'toc_right' ) {
+		if ( field_name === 'toc_toggler' ||
+			field_name === 'toc_left' ||
+			field_name === 'toc_right' ) {
 			
 			ignore_setting_update_flag = true;
 			
 			// Handle TOC toggler change
-			if ( $field.attr( 'name' ) === 'toc_toggler' ) {
+			if ( field_name === 'toc_toggler' ) {
 				const isChecked = $field.prop( 'checked' );
 				
 				if ( isChecked ) {
@@ -922,7 +960,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 			
 			// Handle TOC location change (radio buttons)
-			else if ( $field.attr( 'name' ) === 'toc_locations' && $field.prop( 'checked' ) ) {
+			else if ( field_name === 'toc_locations' && $field.prop( 'checked' ) ) {
 				const location = $field.val();
 				let is_toc_set = false;
 				
@@ -969,8 +1007,8 @@ jQuery( document ).ready( function( $ ) {
 			}
 			
 			// Handle Article Sidebar Position dropdowns
-			else if ( $field.attr( 'name' ) === 'toc_left' || $field.attr( 'name' ) === 'toc_right' ) {
-				const sidebarSuffix = $field.attr( 'name' ) === 'toc_left' ? 'left' : 'right';
+			else if ( field_name === 'toc_left' || field_name === 'toc_right' ) {
+				const sidebarSuffix = field_name === 'toc_left' ? 'left' : 'right';
 				const currentValue = parseInt( $field.val() );
 				
 				if ( currentValue > 0 ) {
@@ -1006,11 +1044,9 @@ jQuery( document ).ready( function( $ ) {
 			ignore_setting_update_flag = true;
 
 			// Handle change of value
-			const current_input_name = $field.attr( 'name' );
-
 			// Unset current value in other dropdowns of the current unselection group
 			$( '[data-custom-unselection-group="' + current_unselection_group + '"] select' ).each( function() {
-				if ( current_input_name !== $( this ).attr( 'name' ) && $( this ).val() === $field.val() ) {
+				if ( field_name !== $( this ).attr( 'name' ) && $( this ).val() === $field.val() ) {
 					$( this ).val( 'none' ).trigger( 'change', true ); // trigger 'change' to have the updated appearance of select element in browser
 					$( this ).closest( '.eckb-conditional-setting-input' ).trigger( 'click' ); // trigger dependent fields
 				}
@@ -1018,7 +1054,7 @@ jQuery( document ).ready( function( $ ) {
 
 			// Unset other dropdowns of the current unselection group if any of them has non-zero value
 			$( '[data-custom-nonzero-unselection-group="' + current_nonzero_unselection_group + '"] select' ).each( function() {
-				if ( parseInt( $field.val() ) > 0 && current_input_name !== $( this ).attr( 'name' ) && parseInt( $( this ).val() ) > 0 ) {
+				if ( parseInt( $field.val() ) > 0 && field_name !== $( this ).attr( 'name' ) && parseInt( $( this ).val() ) > 0 ) {
 					$( this ).val( '0' ).trigger( 'change', true ); // trigger 'change' to have the updated appearance of select element in browser
 					$( this ).closest( '.eckb-conditional-setting-input' ).trigger( 'click' ); // trigger dependent fields
 				}
@@ -1028,7 +1064,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Article Right Sidebar (the UI has hidden fields which need to update on visual UI change - required to have the correct values in KB config when call AJAX update)
-		if ( $field.attr( 'name' ) === 'nav_sidebar_right' ) {
+		if ( field_name === 'nav_sidebar_right' ) {
 
 			// When unselected, then set current sidebar navigation type to none
 			const current_value = $( this ).val();
@@ -1046,7 +1082,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Article Left Sidebar (the UI has hidden fields which need to update on visual UI change - required to have the correct values in KB config when call AJAX update)
-		if ( $field.attr( 'name' ) === 'nav_sidebar_left' ) {
+		if ( field_name === 'nav_sidebar_left' ) {
 
 			// When unselected, then set current sidebar navigation type to none
 			const current_value = $( this ).val();
@@ -1089,7 +1125,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// For some settings need to reload the entire page
-		if ( $field.attr( 'name' ) === 'templates_for_kb' || $field.attr( 'name' ) === 'template_main_page_display_title' || $field.attr( 'name' ) === 'general_typography_font_family' ) {
+		if ( field_name === 'templates_for_kb' || field_name === 'template_main_page_display_title' || field_name === 'general_typography_font_family' || field_name === 'modular_main_page_toggle' ) {
 			update_preview_via_page_reload( event );
 			return;
 		}

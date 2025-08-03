@@ -252,10 +252,19 @@ class EPKB_ML_Search {
 			$icon_style_escaped = EPKB_Utilities::get_inline_style( 'color:: ' . $setting_names['article_icon_color'] , $kb_config );
 		}
 
+		// Check AI Search settings
+		$ai_search_enabled = EPKB_AI_Utilities::is_ai_search_enabled();
+
+		// Limit results to 6 if AI is shown below results
+		$results_to_show = $search_results;
+		if ( $ai_search_enabled ) {
+			$results_to_show = array_slice( $search_results, 0, 6 );
+		}
+
 		ob_start(); ?>
 
-		<ul>    <?php
-			foreach ( $search_results as $article ) {
+		<ul class="epkb-ml-search-results-list">    <?php
+			foreach ( $results_to_show as $article ) {
 
 				$article_url = get_permalink( $article->ID );
 				if ( empty( $article_url ) || is_wp_error( $article_url ) ) {
@@ -290,7 +299,39 @@ class EPKB_ML_Search {
 				</li>   <?php
 			}   ?>
 		</ul>   <?php
+		
+		// Display AI search below results if configured
+		if ( $ai_search_enabled ) {
+			self::display_ai_search_section( $kb_config, 'below' );
+		}
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Display AI Search Section
+	 *
+	 * @param array $kb_config
+	 * @param string $position
+	 */
+	public static function display_ai_search_section( $kb_config, $position ) {
+		$section_class = 'epkb-ml-ai-search-section epkb-ml-ai-search-section--' . esc_attr( $position ); ?>
+
+		<div class="<?php echo esc_attr( $section_class ); ?>" data-display-mode="<?php echo esc_attr( 'below' ); ?>" data-kb-id="<?php echo esc_attr( $kb_config['id'] ); ?>" data-is-admin="<?php echo esc_attr( current_user_can( 'manage_options' ) ? 'true' : 'false' ); ?>">
+			<button type="button" class="epkb-ml-ai-search-button">
+				<span class="epkb-ml-ai-search-button__icon epkbfa epkbfa-comments-o" aria-hidden="true"></span>
+				<span class="epkb-ml-ai-search-button__text"><?php esc_html_e( 'Ask AI?', 'echo-knowledge-base' ); ?></span>
+			</button>
+		</div>		<?php
+		
+		// Add error form once per page for AI Search
+		static $error_form_added = false;
+		if ( ! $error_form_added ) {
+			$error_form_added = true;		?>
+			<!-- Error Form for AI Search -->
+			<div id="epkb-ai-search-error-form-wrap" style="display: none !important;">	<?php
+				EPKB_HTML_Admin::display_report_admin_error_form();	?>
+			</div>		<?php
+		}
 	}
 }

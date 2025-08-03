@@ -69,10 +69,6 @@ class EPKB_Articles_Admin {
 			return;
 		}
 
-		// add flag for get started page
-		if ( ! EPKB_Core_Utilities::run_setup_wizard_first_time() ) {
-			EPKB_Core_Utilities::add_kb_flag( 'edit_articles_categories_visited' );
-		}
 
 		$this->update_articles_sequence( $kb_id );
 	}

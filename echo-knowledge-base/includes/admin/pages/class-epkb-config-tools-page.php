@@ -989,6 +989,12 @@ class EPKB_Config_Tools_Page {
 		$delete_kb_handler = new EPKB_Delete_KB();
 		$specification = EPKB_Core_Utilities::retrieve_all_kb_specs( $kb_config['id'] );
 
+		// KB Nickname
+		$boxes_config[] = array(
+			'title' => esc_html__( 'KB Nickname', 'echo-knowledge-base' ),
+			'html'  => self::get_kb_nickname_html( $kb_config ),
+		);
+
 		// Translations
 		if ( ! EPKB_Utilities::is_amag_on() ) {
 			$boxes_config[] = array(
@@ -1272,11 +1278,36 @@ class EPKB_Config_Tools_Page {
 			}
 
 			$output .= "\n\n";
+
+			// Add multilang debug info for this KB if WPML is enabled
+			if ( EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
+				$output .= self::get_polylang_debug_info( $kb_id );
+				$output .= "\n\n";
+			}
 		}
 
 		// retrieve add-on data
 		$add_on_output = apply_filters( 'eckb_add_on_debug_data', '' );
 		$output .= is_string( $add_on_output ) ? $add_on_output : '';
+
+		// retrieve AI Activity Logs
+		$output .= "\n\nAI Activity Logs:\n";
+		$output .= "==================\n";
+		$ai_logs = get_option( 'epkb_ai_logs', array() );
+		if ( empty( $ai_logs ) ) {
+			$output .= "No AI logs found.\n";
+		} else {
+			// Show last 100 logs
+			$recent_logs = array_slice( $ai_logs, -100 );
+			foreach ( $recent_logs as $log ) {
+				$output .= "\n[" . ( isset( $log['timestamp'] ) ? $log['timestamp'] : 'N/A' ) . "] ";
+				$output .= isset( $log['message'] ) ? $log['message'] : 'No message';
+				if ( ! empty( $log['context'] ) && is_array( $log['context'] ) ) {
+					$output .= " | Context: " . wp_json_encode( $log['context'] );
+				}
+				$output .= "\n";
+			}
+		}
 
 		$output .= '</textarea>';
 
@@ -1642,5 +1673,193 @@ class EPKB_Config_Tools_Page {
 		</form><?php
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Display KB Nickname field
+	 * @param $kb_config
+	 * @return string
+	 */
+	private static function get_kb_nickname_html( $kb_config ) {
+
+		ob_start(); ?>
+
+		<form id="epkb-kb-nickname__form" class="epkb-kb-nickname__form epkb-admin__kb__form" method="POST">
+			<p class="epkb-kb-nickname__form-title">    <?php
+				esc_html_e( 'Give your Knowledge Base a name. The name will show when we refer to it or when you see a list of post types.', 'echo-knowledge-base' ); ?>
+			</p>    <?php
+			EPKB_HTML_Elements::text( array(
+				'title'     => '',
+				'label'     => esc_html__( 'Knowledge Base Name', 'echo-knowledge-base' ),
+				'value' => $kb_config['kb_name'],
+				'name'    => 'kb_name',
+				'specs' => 'kb_name',
+				'required' => true,
+				'input_size' => 'large',
+			) );
+			EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save', 'echo-knowledge-base' ), 'epkb_save_kb_name', '', '', false, '', 'epkb-primary-btn' );  ?>
+		</form><?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Get Polylang/WPML debug information for troubleshooting multilingual issues
+	 *
+	 * @return string
+	 */
+	private static function get_polylang_debug_info( $kb_id = 1 ) {
+		
+		// Get the KB configuration for the selected KB
+		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
+		if ( is_wp_error( $kb_config ) ) {
+			return '';
+		}
+
+		// Only output debug info if WPML is enabled for this KB
+		if ( empty( $kb_config['wpml_is_enabled'] ) || $kb_config['wpml_is_enabled'] != 'on' ) {
+			return '';
+		}
+
+		$output = "Polylang/WPML Debug Information:\n";
+		$output .= "================================\n\n";
+
+		// Check if Polylang is active
+		if ( function_exists( 'pll_languages_list' ) ) {
+			$output .= "Polylang Status: Active\n";
+			$output .= "Polylang Version: " . ( defined( 'POLYLANG_VERSION' ) ? POLYLANG_VERSION : 'Unknown' ) . "\n\n";
+
+			// Get all languages
+			$languages = pll_languages_list( array( 'fields' => '' ) );
+			$output .= "Configured Languages:\n";
+			foreach ( $languages as $lang ) {
+				$output .= "  - " . $lang->name . " (" . $lang->slug . ")";
+				$output .= " [Locale: " . $lang->locale . "]";
+				$output .= " [Home URL: " . $lang->home_url . "]";
+				$output .= $lang->is_default ? " [DEFAULT]" : "";
+				$output .= "\n";
+			}
+			$output .= "\n";
+
+			// Get current language
+			if ( function_exists( 'pll_current_language' ) ) {
+				$current_lang = pll_current_language();
+				$output .= "Current Language: " . ( $current_lang ? $current_lang : 'Not set' ) . "\n";
+			}
+
+			// Check URL modifications
+			if ( function_exists( 'PLL' ) && isset( PLL()->options ) ) {
+				$options = PLL()->options;
+				$output .= "\nPolylang Settings:\n";
+				$output .= "  - Hide default language in URL: " . ( ! empty( $options['hide_default'] ) ? 'Yes' : 'No' ) . "\n";
+				$output .= "  - Force language in links: " . ( ! empty( $options['force_lang'] ) ? $options['force_lang'] : 'Not set' ) . "\n";
+				$output .= "  - Rewrite rules: " . ( ! empty( $options['rewrite'] ) ? $options['rewrite'] : 'Not set' ) . "\n";
+			}
+		} elseif ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+			$output .= "WPML Status: Active\n";
+			$output .= "WPML Version: " . ICL_SITEPRESS_VERSION . "\n\n";
+		} else {
+			$output .= "Polylang/WPML Status: Not Active\n\n";
+		}
+
+		// Display KB-specific multilingual settings
+		$output .= "\nKB " . $kb_id . " Multilingual Settings:\n";
+		$output .= "  - wpml_is_enabled: Yes\n";
+		$output .= "  - kb_articles_common_path: " . $kb_config['kb_articles_common_path'] . "\n";
+		$output .= "  - category_slug: " . $kb_config['category_slug'] . "\n";
+		$output .= "  - categories_in_url_enabled: " . $kb_config['categories_in_url_enabled'] . "\n\n";
+
+		// Check taxonomies registration
+		$category_taxonomy = EPKB_KB_Handler::get_category_taxonomy_name( $kb_id );
+		$tag_taxonomy = EPKB_KB_Handler::get_tag_taxonomy_name( $kb_id );
+
+		$output .= "Taxonomy Registration:\n";
+		$output .= "  - Category taxonomy: " . $category_taxonomy . " - " . ( taxonomy_exists( $category_taxonomy ) ? "Registered" : "NOT REGISTERED" ) . "\n";
+		$output .= "  - Tag taxonomy: " . $tag_taxonomy . " - " . ( taxonomy_exists( $tag_taxonomy ) ? "Registered" : "NOT REGISTERED" ) . "\n\n";
+
+		// Check if taxonomies are translatable in Polylang
+		if ( function_exists( 'pll_is_translated_taxonomy' ) ) {
+			$output .= "Polylang Taxonomy Translation:\n";
+			$output .= "  - Category taxonomy translatable: " . ( pll_is_translated_taxonomy( $category_taxonomy ) ? "Yes" : "No" ) . "\n";
+			$output .= "  - Tag taxonomy translatable: " . ( pll_is_translated_taxonomy( $tag_taxonomy ) ? "Yes" : "No" ) . "\n\n";
+		}
+
+		// Get some example category URLs for each language
+		if ( function_exists( 'pll_languages_list' ) && taxonomy_exists( $category_taxonomy ) ) {
+			$categories = get_terms( array(
+				'taxonomy' => $category_taxonomy,
+				'hide_empty' => false,
+				'number' => 3
+			) );
+
+			if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) {
+				$output .= "Sample Category URLs by Language:\n";
+				$first_category = $categories[0];
+				$languages = pll_languages_list( array( 'fields' => '' ) );
+
+				foreach ( $languages as $lang ) {
+					// Get translated category
+					$translated_cat_id = function_exists( 'pll_get_term' ) ? pll_get_term( $first_category->term_id, $lang->slug ) : $first_category->term_id;
+					if ( $translated_cat_id ) {
+						$cat_url = get_term_link( $translated_cat_id, $category_taxonomy );
+						$output .= "  - " . $lang->name . ": " . ( is_wp_error( $cat_url ) ? "Error: " . $cat_url->get_error_message() : $cat_url ) . "\n";
+					}
+				}
+				$output .= "\n";
+			}
+		}
+
+		// Display current rewrite rules for KB categories
+		global $wp_rewrite;
+		$output .= "Rewrite Rules for KB " . $kb_id . " Categories:\n";
+		$category_base = $kb_config['kb_articles_common_path'] . '/' . $kb_config['category_slug'];
+		$found_rules = false;
+
+		if ( ! empty( $wp_rewrite->rules ) ) {
+			foreach ( $wp_rewrite->rules as $pattern => $rule ) {
+				if ( strpos( $pattern, $category_base ) !== false || strpos( $rule, $category_taxonomy ) !== false ) {
+					$output .= "  Pattern: " . $pattern . "\n";
+					$output .= "  Rule: " . $rule . "\n\n";
+					$found_rules = true;
+				}
+			}
+		}
+
+		if ( ! $found_rules ) {
+			$output .= "  No rewrite rules found for category base: " . $category_base . "\n\n";
+		}
+
+		// Check if rewrite rules need flushing
+		$output .= "\nRewrite Rules Status:\n";
+		$output .= "  - Total rules count: " . ( ! empty( $wp_rewrite->rules ) ? count( $wp_rewrite->rules ) : 0 ) . "\n";
+		$output .= "  - Permalink structure: " . get_option( 'permalink_structure' ) . "\n\n";
+
+		// Debug current request if on a category archive
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$output .= "Current Request Debug:\n";
+			$output .= "  - REQUEST_URI: " . $_SERVER['REQUEST_URI'] . "\n";
+			if ( ! empty( $GLOBALS['wp']->query_vars ) ) {
+				$output .= "  - Query vars: " . print_r( $GLOBALS['wp']->query_vars, true ) . "\n";
+			}
+		}
+
+		// Troubleshooting recommendations
+		$output .= "\nTroubleshooting Recommendations for 404 Issues:\n";
+		$output .= "================================================\n";
+		$output .= "1. Flush Rewrite Rules:\n";
+		$output .= "   - Go to Settings > Permalinks and click 'Save Changes' (without making changes)\n";
+		$output .= "   - Or deactivate and reactivate the Echo Knowledge Base plugin\n\n";
+		$output .= "2. Check Polylang Settings:\n";
+		$output .= "   - Ensure KB categories are set as translatable in Languages > Settings > Custom post types and Taxonomies\n";
+		$output .= "   - Check 'Hide URL language information for default language' setting\n\n";
+		$output .= "3. Verify Category Translations:\n";
+		$output .= "   - Make sure categories have translations for all languages\n";
+		$output .= "   - Check that category slugs are unique for each language\n\n";
+		$output .= "4. Common Issues with English (Default Language):\n";
+		$output .= "   - If 'Hide default language in URL' is enabled, English URLs won't have /en/ prefix\n";
+		$output .= "   - This can cause conflicts with rewrite rules expecting language prefixes\n";
+		$output .= "   - Try disabling 'Hide default language in URL' temporarily to test\n\n";
+
+		return $output;
 	}
 }

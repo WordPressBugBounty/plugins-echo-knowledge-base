@@ -60,6 +60,13 @@ class EPKB_KB_Search {
                         <span class="epkb-ml-search-results__no-results__icon epkbfa epkbfa-exclamation-circle"></span>
                         <span class="epkb-ml-search-results__no-results__text">' . $kb_config['no_results_found'] . '</span>
                     </div>';
+                    
+				// Add AI search section if enabled
+				if ( EPKB_AI_Utilities::is_ai_search_enabled() ) {
+					ob_start();
+					EPKB_ML_Search::display_ai_search_section( $kb_config, 'below' );
+					$search_result .= ob_get_clean();
+				}
             } else {
 				$search_result = $kb_config['no_results_found'];
             }

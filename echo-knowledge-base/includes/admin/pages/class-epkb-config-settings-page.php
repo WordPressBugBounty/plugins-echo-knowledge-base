@@ -240,13 +240,12 @@ class EPKB_Config_Settings_Page {
 		}
 
 		// Articles Page
-		$article_page_contents = array();
 		$tabs_config['article-page'] = array(
 			'title'     => esc_html__( 'KB Article Page', 'echo-knowledge-base' ),
 			'icon'      => 'epkb-article-page-icon',
 			'key'       => 'article-page',
 			'active'    => false,
-			'contents'  => $article_page_contents,
+			'contents'  => array(),
 			'top_html'	=> $this->is_frontend_editor || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_button_above_article_page_settings( $this->kb_config ),
 			'sub_tabs'  => array(
 					array(
@@ -273,13 +272,12 @@ class EPKB_Config_Settings_Page {
 		);
 
 		// Archive Page
-		$archive_page_contents = array();
 		$tabs_config['archive-page'] = array(
 			'title'  => esc_html__( 'Category Archive Page', 'echo-knowledge-base' ),
 			'icon'   => 'epkb-archive-page-icon',
 			'key'    => 'archive-page',
 			'active' => false,
-			'contents' => $archive_page_contents,
+			'contents' => array(),
 			'top_html' => $this->is_frontend_editor || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_button_above_archive_page_settings( $this->kb_config ),
 		);
 
@@ -1450,12 +1448,6 @@ class EPKB_Config_Settings_Page {
 
 		$contents_configs['about-kb'] = array(
 			array(
-					'title'     => esc_html__( 'KB Nickname', 'echo-knowledge-base' ),
-					'fields'    => [
-						'kb_name' => '',
-					],
-				),
-			array(
 				'title'     => esc_html__( 'Frontend Editor Toggle Visibility', 'echo-knowledge-base' ),
 				'desc'      => '',
 				'fields'    => [
@@ -1972,15 +1964,15 @@ class EPKB_Config_Settings_Page {
 			'title'    => esc_html__( 'Getting Started', 'echo-knowledge-base' ),
 			'desc'     => esc_html__( 'Set up your Knowledge Base name, url, and design', 'echo-knowledge-base' ),
 			'icon'     => 'img/need-help/rocket-2.jpg',
-			'btn_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ),
-			'btn_url'  => admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&page=epkb-kb-need-help' ),
+			'btn_text' => esc_html__( 'Go to Dashboard', 'echo-knowledge-base' ),
+			'btn_url'  => admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&page=epkb-dashboard' ),
 		);
 		$list_configs[] = array(
 			'title'    => esc_html__( 'Explore Features', 'echo-knowledge-base' ),
 			'desc'     => esc_html__( 'Get familiar with features and how they function', 'echo-knowledge-base' ),
 			'icon'     => 'img/need-help/mountain-flag.jpg',
 			'btn_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ),
-			'btn_url'  => admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&page=epkb-kb-need-help#features__design' ),
+			'btn_url'  => 'https://www.echoknowledgebase.com/features/',
 		);
 		$list_configs[] = array(
 			'title'    => esc_html__( 'Online Documentation', 'echo-knowledge-base' ),
@@ -1994,7 +1986,7 @@ class EPKB_Config_Settings_Page {
 			'desc'     => esc_html__( 'Support question for something that is not working correctly', 'echo-knowledge-base' ),
 			'icon'     => 'img/need-help/mail.jpg',
 			'btn_text' => esc_html__( 'Ask a Question', 'echo-knowledge-base' ),
-			'btn_url'  => admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&page=epkb-kb-need-help#contact-us' ),
+			'btn_url'  => 'https://www.echoknowledgebase.com/contact-us/',
 		);
 
 		return $list_configs;

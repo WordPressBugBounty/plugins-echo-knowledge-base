@@ -1370,9 +1370,9 @@ class EPKB_KB_Wizard_Setup {
 					'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-basic-modern.jpg',
 					'title'         => esc_html__( 'Modern', 'echo-knowledge-base' ),
 				],
-				'gray' => [
-					'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-basic-gray.jpg',
-					'title'         => esc_html__( 'Gray', 'echo-knowledge-base' ),
+				'teal' => [
+					'image_url'     => Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-4/cat-art-module-basic-teal.jpg',
+					'title'         => esc_html__( 'Teal', 'echo-knowledge-base' ),
 				],
 			],
 		];

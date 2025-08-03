@@ -62,22 +62,28 @@ class EPKB_AI_Conversation_Model {
 	public $messages;
 	
 	/**
-	 * Model used
-	 * @var string
-	 */
-	protected $model;
-	
-	/**
 	 * Widget ID
 	 * @var string
 	 */
 	protected $widget_id;
 
 	/**
+	 * Idempotency key
+	 * @var string
+	 */
+	protected $idempotency_key;
+
+	/**
 	 * Language
 	 * @var string
 	 */
 	protected $language;
+	
+	/**
+	 * IP address (hashed)
+	 * @var string
+	 */
+	protected $ip;
 	
 	/**
 	 * Metadata
@@ -112,12 +118,13 @@ class EPKB_AI_Conversation_Model {
 		$this->mode = isset( $data['mode'] ) ? $this->validate_mode( $data['mode'] ) : 'search';
 		$this->title = isset( $data['title'] ) ? EPKB_AI_Validation::validate_title( $data['title'] ) : '';
 		$this->messages = isset( $data['messages'] ) ? $this->parse_messages( $data['messages'] ) : array();
-		$this->model = isset( $data['model'] ) ? $this->validate_model( $data['model'] ) : '';
-		$this->widget_id = isset( $data['widget_id'] ) ? $this->validate_widget_id( $data['widget_id'] ) : '1';
+		$this->widget_id = isset( $data['widget_id'] ) ? EPKB_AI_Validation::validate_widget_id( $data['widget_id'] ) : '1';
+		$this->idempotency_key = isset( $data['idempotency_key'] ) ? EPKB_AI_Validation::validate_idempotency_key( $data['idempotency_key'] ) : '';
 		$this->language = isset( $data['language'] ) ? EPKB_AI_Validation::validate_language( $data['language'] ) : '';
+		$this->ip = isset( $data['ip'] ) ? sanitize_text_field( $data['ip'] ) : '';
 		$this->metadata = isset( $data['metadata'] ) ? $this->parse_metadata( $data['metadata'] ) : array();
-		$this->created = isset( $data['created'] ) ? $data['created'] : current_time( 'mysql' );
-		$this->updated = isset( $data['updated'] ) ? $data['updated'] : current_time( 'mysql' );
+		$this->created = isset( $data['created'] ) ? $data['created'] : gmdate( 'Y-m-d H:i:s' );
+		$this->updated = isset( $data['updated'] ) ? $data['updated'] : gmdate( 'Y-m-d H:i:s' );
 	}
 
 	public function set_chat_id( $chat_id ) {
@@ -138,7 +145,7 @@ class EPKB_AI_Conversation_Model {
 		if ( is_string( $messages ) ) {
 			$decoded = json_decode( $messages, true );
 			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				EPKB_AI_Utilities::add_log( 'Failed to decode messages JSON: ' . json_last_error_msg() );
+				EPKB_AI_Log::add_log( 'Failed to decode messages JSON: ' . json_last_error_msg() );
 				return array();
 			}
 			$messages = is_array( $decoded ) ? $decoded : array();
@@ -157,7 +164,7 @@ class EPKB_AI_Conversation_Model {
 		if ( is_string( $metadata ) ) {
 			$decoded = json_decode( $metadata, true );
 			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				EPKB_AI_Utilities::add_log( 'Failed to decode metadata JSON: ' . json_last_error_msg() );
+				EPKB_AI_Log::add_log( 'Failed to decode metadata JSON: ' . json_last_error_msg() );
 				return array();
 			}
 			$metadata = is_array( $decoded ) ? $decoded : array();
@@ -182,7 +189,7 @@ class EPKB_AI_Conversation_Model {
 		
 		// Check for duplicate message ID
 		if ( $this->has_message_id( $message_id ) ) {
-			EPKB_AI_Utilities::add_log( 'Duplicate message ID detected: ' . $message_id );
+			EPKB_AI_Log::add_log( 'Duplicate message ID detected: ' . $message_id );
 			return false;
 		}
 		
@@ -190,17 +197,17 @@ class EPKB_AI_Conversation_Model {
 			'id' => $message_id,
 			'role' => $role,
 			'content' => $content,
-			'timestamp' => current_time( 'mysql' ),
+			'timestamp' => gmdate( 'Y-m-d H:i:s' ),
 			'metadata' => $metadata
 		);
 		
 		$this->messages[] = $message;
-		$this->updated = current_time( 'mysql' );
+		$this->updated = gmdate( 'Y-m-d H:i:s' );
 		
 		// Update title from first user message if empty
 		if ( empty( $this->title ) && $role === 'user' ) {
 			// Generate title from content without creating circular dependency
-			$this->title = $this->generate_title_from_content( $content );
+			$this->title = EPKB_AI_Content_Processor::generate_title_from_content( $content );
 		}
 		
 		return true;
@@ -247,35 +254,6 @@ class EPKB_AI_Conversation_Model {
 		return $id;
 	}
 
-	/**
-	 * Validate model name
-	 *
-	 * @param string $model
-	 * @return string
-	 */
-	protected function validate_model( $model ) {
-		$model = sanitize_text_field( $model );
-		// Limit model length and ensure it matches expected pattern
-		if ( ! preg_match( '/^[a-zA-Z0-9.-]+$/', $model ) || strlen( $model ) > 64 ) {
-			return EPKB_AI_Config::DEFAULT_MODEL;
-		}
-		return $model;
-	}
-
-	/**
-	 * Validate widget ID
-	 *
-	 * @param string|int $widget_id
-	 * @return string
-	 */
-	protected function validate_widget_id( $widget_id ) {
-		// Convert to integer and validate range
-		$widget_id = absint( $widget_id );
-		if ( $widget_id < 1 || $widget_id > EPKB_AI_Config::MAX_WIDGET_ID ) {
-			return '1';
-		}
-		return (string) $widget_id;
-	}
 
 	public function has_message_id( $message_id ) {
 		foreach ( $this->messages as $message ) {
@@ -294,6 +272,11 @@ class EPKB_AI_Conversation_Model {
 		return $this->messages;
 	}
 	
+	public function set_messages( $messages ) {
+		$this->messages = $this->parse_messages( $messages );
+		$this->updated = gmdate( 'Y-m-d H:i:s' );
+	}
+	
 	public function get_id() {
 		return $this->id;
 	}
@@ -309,9 +292,9 @@ class EPKB_AI_Conversation_Model {
 	public function set_conversation_id( $conversation_id ) {
 		$this->conversation_id = $conversation_id;
 		// Update the timestamp when setting new conversation ID
-		$this->updated = current_time( 'mysql' );
+		$this->updated = gmdate( 'Y-m-d H:i:s' );
 	}
-	
+
 	/**
 	 * Check if conversation expired
 	 *
@@ -322,7 +305,7 @@ class EPKB_AI_Conversation_Model {
 			return true;
 		}
 		// Check if conversation is older than x days based on last update
-		return ( time() - strtotime( $this->updated ) ) > ( EPKB_AI_Config::DEFAULT_CONVERSATION_EXPIRY_DAYS * DAY_IN_SECONDS );
+		return ( time() - strtotime( $this->updated ) ) > ( EPKB_OpenAI_Client::DEFAULT_CONVERSATION_EXPIRY_DAYS * DAY_IN_SECONDS );
 	}
 
 	public function get_mode() {
@@ -340,9 +323,19 @@ class EPKB_AI_Conversation_Model {
 	/**
 	 * Convert to array for database
 	 *
-	 * @return array
+	 * @return array|WP_Error
 	 */
 	public function to_db_array() {
+		$messages_json = wp_json_encode( $this->get_messages_array() );
+		if ( $messages_json === false ) {
+			return new WP_Error( 'json_encode_error', 'Failed to encode messages: ' . json_last_error_msg() );
+		}
+		
+		$metadata_json = wp_json_encode( $this->metadata );
+		if ( $metadata_json === false ) {
+			return new WP_Error( 'json_encode_error', 'Failed to encode metadata: ' . json_last_error_msg() );
+		}
+		
 		return array(
 			'user_id'         => $this->user_id,
 			'session_id'      => $this->session_id,
@@ -350,11 +343,11 @@ class EPKB_AI_Conversation_Model {
 			'conversation_id' => $this->conversation_id,
 			'mode'            => $this->mode,
 			'title'           => $this->title,
-			'messages'        => wp_json_encode( $this->get_messages_array() ),
-			'model'           => $this->model,
+			'messages'        => $messages_json,
 			'widget_id'       => $this->widget_id,
 			'language'        => $this->language,
-			'metadata'        => wp_json_encode( $this->metadata ),
+			'ip'              => $this->ip,
+			'metadata'        => $metadata_json,
 			'updated'         => $this->updated
 		);
 	}
@@ -370,28 +363,6 @@ class EPKB_AI_Conversation_Model {
 		return new self( $data );
 	}
 	
-	/**
-	 * Generate title from content
-	 * This is a simple version to avoid circular dependency with EPKB_Content_Processor
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	private function generate_title_from_content( $content ) {
-		// Remove extra whitespace
-		$title = preg_replace( '/\s+/', ' ', trim( $content ) );
-		
-		// Truncate to first sentence or 100 characters
-		$sentences = preg_split( '/[.!?]+/', $title, 2 );
-		$title = ! empty( $sentences[0] ) ? $sentences[0] : $title;
-		
-		// Limit length
-		if ( strlen( $title ) > 100 ) {
-			$title = substr( $title, 0, 97 ) . '...';
-		}
-		
-		return $title;
-	}
 
 	public function get_created() {
 		return $this->created;
@@ -410,9 +381,17 @@ class EPKB_AI_Conversation_Model {
 	}
 	
 	public function set_widget_id( $widget_id ) {
-		$this->widget_id = $this->validate_widget_id( $widget_id );
+		$this->widget_id = EPKB_AI_Validation::validate_widget_id( $widget_id );
 	}
 	
+	public function get_idempotency_key() {
+		return $this->idempotency_key;
+	}
+
+	public function set_idempotency_key( $idempotency_key ) {
+		$this->idempotency_key = EPKB_AI_Validation::validate_idempotency_key( $idempotency_key );
+	}
+
 	public function get_session_id() {
 		return $this->session_id;
 	}
@@ -431,14 +410,5 @@ class EPKB_AI_Conversation_Model {
 
 	public function set_metadata( $metadata ) {
 		$this->metadata = $metadata;
-	}
-	
-	/**
-	 * Alias for get_metadata() for backwards compatibility
-	 *
-	 * @return array
-	 */
-	public function get_meta() {
-		return $this->get_metadata();
 	}
 }

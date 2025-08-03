@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, docs, ai chat chatgpt, faq
 Requires at least: 5.3
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 15.0.1
+Stable tag: 15.111.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -415,6 +415,12 @@ For more information about Pro features, visit our [Pricing Page](https://www.ec
 
 
 == Changelog ==
+
+= 15.111.0 =
+Release Date: Aug 3, 2025
+* New: AI Search - limited beta
+* New: AI Chat - limited beta
+* Fix: Cleanup and minor fixes
 
 = 15.0.1 =
 Release Date: July 13, 2025

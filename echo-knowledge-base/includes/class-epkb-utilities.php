@@ -539,28 +539,24 @@ class EPKB_Utilities {
 	public static function sanitize_get_id( $id ) {
 
 		if ( empty( $id ) || is_wp_error( $id ) ) {
-			EPKB_Logging::add_log( 'Error occurred (01)' );
 			return new WP_Error( 'E001', 'invalid ID' );
 		}
 
 		if ( is_array( $id ) ) {
 			if ( ! isset( $id['id']) ) {
-				EPKB_Logging::add_log( 'Error occurred (02)' );
 				return new WP_Error('E002', 'invalid ID' );
 			}
 
 			$id_value = $id['id'];
 			if ( ! self::is_positive_int( $id_value ) ) {
-				EPKB_Logging::add_log( 'Error occurred (03)', $id_value );
-				return new WP_Error( 'E003', 'invalid ID' );
+				return new WP_Error( 'E003', 'invalid ID: ' . self::get_variable_string( $id_value ) );
 			}
 
 			return (int) $id_value;
 		}
 
 		if ( ! self::is_positive_int( $id ) ) {
-			EPKB_Logging::add_log( 'Error occurred (04)', $id );
-			return new WP_Error( 'E004', 'invalid ID' );
+			return new WP_Error( 'E004', 'invalid ID: ' . self::get_variable_string( $id ) );
 		}
 
 		return (int) $id;
@@ -984,7 +980,6 @@ class EPKB_Utilities {
  												 ON DUPLICATE KEY UPDATE `option_name` = VALUES(`option_name`), `option_value` = VALUES(`option_value`), `autoload` = VALUES(`autoload`)",
 												$option_name, $serialized_value, 'no' ) );
 		if ( $result === false ) {
-			EPKB_Logging::add_log( 'Failed to update option', $option_name );
 			return new WP_Error( '435', 'Failed to update option ' . $option_name );
 		}
 
@@ -1975,7 +1970,6 @@ class EPKB_Utilities {
 
 		/** $epkb_email_error @ WP_Error */
 		if ( is_wp_error( $epkb_email_error ) ) {
-			EPKB_Logging::add_log( 'Email error: ' . $epkb_email_error->get_error_message() );
 			$error_message = $epkb_email_error->get_error_message();
 		}
 

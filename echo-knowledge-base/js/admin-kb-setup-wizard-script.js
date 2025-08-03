@@ -611,7 +611,7 @@ jQuery(document).ready(function($) {
 
 			// On internal server error assume the error is outside Setup Wizard - force finish the Setup Wizard like on success
 			let current_url = window.location.href;
-			let success_url = current_url.replace( '&page=epkb-kb-configuration&setup-wizard-on', '&page=epkb-kb-need-help&epkb_after_kb_setup' );
+			let success_url = current_url.replace( '&page=epkb-kb-configuration&setup-wizard-on', '&page=epkb-dashboard&epkb_after_kb_setup' );
 			$('#epkb-wizard-success-message').addClass('epkb-dialog-box-form--active');
 			$('#epkb-wizard-success-message .epkb-accept-button').on('click', function () {
 				window.location = success_url;

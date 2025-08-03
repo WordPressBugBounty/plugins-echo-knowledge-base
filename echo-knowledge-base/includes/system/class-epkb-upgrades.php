@@ -558,7 +558,7 @@ class EPKB_Upgrades {
 		$current_version = Echo_Knowledge_Base::$version;
 		$new_version = empty( $args['new_version'] ) ? $current_version : $args['new_version'];
 
-		// versions x.y0.z are major releases
+		// versions x.y11.z are major releases
 		if ( ! preg_match( '/^\d+\.\d{1,}11\.\d+$/', $new_version ) ) {
 			return;
 		}

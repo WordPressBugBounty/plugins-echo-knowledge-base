@@ -33,6 +33,9 @@ class EPKB_KB_Config_Controller {
 
 		add_action( 'wp_ajax_epkb_apply_settings_changes', array( $this, 'apply_settings_changes' ) );
 		add_action( 'wp_ajax_nopriv_epkb_apply_settings_changes', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+
+		add_action( 'wp_ajax_epkb_save_kb_name', array( $this, 'save_kb_name' ) );
+		add_action( 'wp_ajax_nopriv_epkb_save_kb_name', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 	}
 
 	/**
@@ -339,5 +342,34 @@ class EPKB_KB_Config_Controller {
 		$article_sidebar_component_priority['toc_content'] = sanitize_text_field( $new_config['toc_content'] );
 
 		return $article_sidebar_component_priority;
+	}
+
+	/**
+	 * Triggered when user sets KB Name.
+	 */
+	public function save_kb_name() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+
+		// get KB ID
+		$kb_id = (int)EPKB_Utilities::post( 'epkb_kb_id', 0 );
+		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 410 ) );
+		}
+
+		$kb_name = EPKB_Utilities::post( 'kb_name' );
+		if ( empty( $kb_name ) ) {
+			EPKB_Utilities::ajax_show_error_die( esc_html__( 'Please enter Knowledge Base name.', 'echo-knowledge-base' ) );
+		}
+
+		// sanitize the KB name
+		$kb_name = sanitize_text_field( $kb_name );
+
+		$result = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'kb_name', $kb_name );
+		if ( is_wp_error( $result ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 412, $result ) );
+		}
+
+		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );
 	}
 }

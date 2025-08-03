@@ -1545,6 +1545,49 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
 #eckb-archive-page-container button:focus {
   background-color: transparent;
 }
+#eckb-archive-page-container .eckb-article-cat-layout-list .eckb-article-cat-layout-list__inner {
+  padding: 10px;
+}
+#eckb-archive-page-container .eckb-article-cat-layout-list .eckb-article-cat-layout-list__inner .eckb-acll__title {
+  font-size: 1.2em;
+  margin: 0.5em;
+  font-weight: bold;
+  border-bottom: solid 1px #CCCCCC;
+}
+#eckb-archive-page-container .eckb-article-cat-layout-list .eckb-article-cat-layout-list__inner ul {
+  margin: 0.5em;
+  padding: 0;
+}
+#eckb-archive-page-container .eckb-article-cat-layout-list .eckb-article-cat-layout-list__inner ul li {
+  line-height: 1.5em;
+  margin: 10px 0;
+}
+#eckb-archive-page-container .eckb-article-cat-layout-list .eckb-article-cat-layout-list__inner ul li a {
+  display: grid;
+  grid-template-rows: auto;
+  align-items: center;
+  grid-template-columns: 85% 15%;
+  width: 100%;
+  max-width: 100%;
+  grid-template-areas: "col_1 col_2";
+}
+#eckb-archive-page-container .eckb-article-cat-layout-list .eckb-article-cat-layout-list__inner ul li .eckb-acll__cat-item__name {
+  line-height: 1.5em;
+}
+#eckb-archive-page-container .eckb-article-cat-layout-list .eckb-article-cat-layout-list__inner ul li .eckb-acll__cat-item__count {
+  border-radius: 6px;
+  text-align: center;
+  padding: 0.18em 0;
+  display: inline-block;
+  width: 100%;
+  max-width: 40px;
+}
+#eckb-archive-page-container .eckb-article-cat-layout-list .eckb-article-cat-layout-list__inner ul li.eckb--acll__cat-item--active a {
+  font-weight: bold;
+}
+#eckb-archive-page-container .eckb-article-cat-layout-list .eckb-article-cat-layout-list__inner ul li.eckb--acll__cat-item--active a span {
+  font-weight: bold;
+}
 
 .eckb-tag-archive-reset h1, .eckb-tag-archive-reset h2, .eckb-tag-archive-reset h3, .eckb-tag-archive-reset h4, .eckb-tag-archive-reset h5, .eckb-tag-archive-reset h6, .eckb-tag-archive-reset p, .eckb-tag-archive-reset a, .eckb-tag-archive-reset div, .eckb-tag-archive-reset span, .eckb-tag-archive-reset strong, .eckb-tag-archive-reset b, .eckb-tag-archive-reset i, .eckb-tag-archive-reset ol, .eckb-tag-archive-reset ul, .eckb-tag-archive-reset li, .eckb-tag-archive-reset section, .eckb-tag-archive-reset nav, .eckb-tag-archive-reset menu, .eckb-tag-archive-reset header, .eckb-tag-archive-reset form, .eckb-tag-archive-reset input, .eckb-tag-archive-reset button, .eckb-tag-archive-reset img {
   margin: 0;

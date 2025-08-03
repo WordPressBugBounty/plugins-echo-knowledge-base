@@ -229,15 +229,15 @@ class EPKB_KB_Demo_Data {
 	private static function get_category_description( $category_name ) {
 		switch ( $category_name ) {
 			case esc_html__( 'Sales and Marketing', 'echo-knowledge-base' ):
-				return esc_html__( 'Strategies for promoting products and reaching customers.', 'echo-knowledge-base' );
+				return esc_html__( 'Innovative strategies for promoting products and effectively reaching new customers.', 'echo-knowledge-base' );
 			case esc_html__( 'Operations and Logistics', 'echo-knowledge-base' ):
-				return esc_html__( 'Streamline processes for efficient business operations.', 'echo-knowledge-base' );
+				return esc_html__( 'Streamline processes for efficient, agile, and scalable business operations.', 'echo-knowledge-base' );
 			case esc_html__( 'Human Resources', 'echo-knowledge-base' ):
 				return esc_html__( 'Policies, procedures, and support for effective workforce management.', 'echo-knowledge-base' );
 			case esc_html__( 'Finance and Expenses', 'echo-knowledge-base' ):
 				return esc_html__( 'Efficiently manage finances, track expenditure accurately, and optimize budgets.', 'echo-knowledge-base' );
 			case esc_html__( 'IT Support', 'echo-knowledge-base' ):
-				return esc_html__( 'Technical assistance and solutions for digital infrastructure.', 'echo-knowledge-base' );
+				return esc_html__( 'Comprehensive technical assistance and forward‑thinking solutions for resilient digital infrastructure.', 'echo-knowledge-base' );
 			case esc_html__( 'Professional Development', 'echo-knowledge-base' ):
 				return esc_html__( 'Enhance skills, explore career growth opportunities, and foster professional development.', 'echo-knowledge-base' );
 			case esc_html__( 'Department Resources', 'echo-knowledge-base' ):

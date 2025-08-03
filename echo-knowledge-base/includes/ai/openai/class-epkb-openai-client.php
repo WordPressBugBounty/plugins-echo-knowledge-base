@@ -9,22 +9,28 @@
 class EPKB_OpenAI_Client {
 	
 	/**
-	 * API configuration
-	 * @var EPKB_AI_Config
+	 * OpenAI API Constants
 	 */
-	private $config;
-	
+	const API_BASE_URL = 'https://api.openai.com';
+	const API_VERSION = 'v1';
+	const DEFAULT_MODEL = 'gpt-4o';
+	const DEFAULT_TIMEOUT = 120;
+	const DEFAULT_UPLOAD_TIMEOUT = 300;
+	const DEFAULT_MAX_RETRIES = 3;
+	const DEFAULT_CONVERSATION_EXPIRY_DAYS = 29; // 29 days
+	const MAX_FILE_SIZE = 1048576; // 1MB
+	const DEFAULT_MAX_OUTPUT_TOKENS = 4096;
+	const DEFAULT_TEMPERATURE = 0.7;
+	const DEFAULT_MAX_NUM_RESULTS = 3;
+
 	/**
-	 * Constructor
-	 *
-	 * @param EPKB_AI_Config $config
-	 */
-	public function __construct( EPKB_AI_Config $config ) {
-		$this->config = $config;
-	}
-	
-	/**
-	 * Make a request to the OpenAI API
+	 * Make a request to the OpenAI API with automatic retry logic
+	 * 
+	 * Retry behavior:
+	 * - Rate limit errors (429): No retry (return immediately to client)
+	 * - Other client errors (4xx): No retry
+	 * - Server errors (5xx): Retry up to 3 times with exponential backoff
+	 * - Network/timeout errors: Retry up to 3 times with exponential backoff
 	 *
 	 * @param string $endpoint
 	 * @param array $data
@@ -34,29 +40,31 @@ class EPKB_OpenAI_Client {
 	 */
 	public function request( $endpoint, $data = array(), $method = 'POST', $additional_headers = array() ) {
 		
-		$url = $this->config->get_api_url() . $endpoint;
+		// Check if API key is configured
+		$api_key_check = $this->check_api_key();
+		if ( is_wp_error( $api_key_check ) ) {
+			return $api_key_check;
+		}
+		
+		$url = $this->get_api_url() . $endpoint;
 		$headers = $this->build_headers( $additional_headers );
 		
-		$max_retries = $this->config->get_max_retries();
-		$retry_delay = $this->config->get_retry_delay();
+		$max_retries = self::DEFAULT_MAX_RETRIES;
+		$last_error = null;
 		
 		for ( $attempt = 0; $attempt <= $max_retries; $attempt++ ) {
 			
-			if ( $attempt > 0 ) {
-				$this->wait_with_backoff( $retry_delay, $attempt );
+			if ( $attempt > 0 && $last_error ) {
+				// Use intelligent backoff delay calculation with error information
+				$delay_seconds = EPKB_AI_OpenAI_Handler::calculate_backoff_delay( $attempt - 1, 1, 60, $last_error );
+				EPKB_AI_Utilities::safe_sleep( $delay_seconds );
 			}
 			
 			$response = $this->execute_request( $url, $method, $headers, $data );
 			if ( is_wp_error( $response ) ) {
-				// Retry on rate limit errors
-				if ( $response->get_error_code() === 'rate_limit_exceeded' && $attempt < $max_retries ) {
-					EPKB_AI_Utilities::add_log( 'OpenAI API rate limit retry', array(
-						'endpoint' => $endpoint,
-						'attempt' => $attempt + 1,
-						'max_retries' => $max_retries,
-						'error_code' => $response->get_error_code(),
-						'error_message' => $response->get_error_message()
-					) );
+				// Check if error is retryable
+				if ( EPKB_AI_OpenAI_Handler::is_retryable_error( $response ) && $attempt < $max_retries ) {
+					$last_error = $response;
 					continue;
 				}
 				// Don't retry on other errors
@@ -65,8 +73,9 @@ class EPKB_OpenAI_Client {
 			
 			$parsed = $this->parse_response( $response );
 			if ( is_wp_error( $parsed ) ) {
-				// Retry on rate limit errors
-				if ( $parsed->get_error_code() === 'rate_limit_exceeded' && $attempt < $max_retries ) {
+				// Check if error is retryable
+				if ( EPKB_AI_OpenAI_Handler::is_retryable_error( $parsed ) && $attempt < $max_retries ) {
+					$last_error = $parsed;
 					continue;
 				}
 				// Don't retry on other errors
@@ -93,31 +102,29 @@ class EPKB_OpenAI_Client {
 		$args = array(
 			'method'  => $method,
 			'headers' => $headers,
-			'timeout' => $this->config->get_timeout(),
-			'sslverify' => $this->config->get_ssl_verify()
+			'timeout' => self::DEFAULT_TIMEOUT,
+			'sslverify' => true
 		);
 		
 		if ( ! empty( $data ) ) {
 			if ( $method === 'GET' ) {
 				$url = add_query_arg( $data, $url );
 			} else {
-				$args['body'] = json_encode( $data );
+				$json_body = json_encode( $data );
+				if ( $json_body === false ) {
+					return new WP_Error( 'json_encode_error', 'Failed to encode request data: ' . json_last_error_msg() );
+				}
+				$args['body'] = $json_body;
 			}
 		}
 		
 		$response = wp_remote_request( $url, $args );
-		
 		if ( is_wp_error( $response ) ) {
-			EPKB_AI_Utilities::add_log( 'OpenAI API network error', array(
-				'url' => $url,
-				'method' => $method,
-				'error_code' => $response->get_error_code(),
-				'error_message' => $response->get_error_message()
-			) );
-			return new WP_Error( 
-				'network_error',
-				'Network error: ' . $response->get_error_message()
-			);
+			$error = new WP_Error( 'network_error', 'Network error: ' . $response->get_error_message() );
+			// Add response data to make it compatible with is_retryable_error check
+			$error->add_data( array( 'response' => array( 'code' => 0 ) ) );
+
+			return $error;
 		}
 		
 		return $response;
@@ -133,6 +140,57 @@ class EPKB_OpenAI_Client {
 		
 		$status_code = wp_remote_retrieve_response_code( $response );
 		$body = wp_remote_retrieve_body( $response );
+		$headers = wp_remote_retrieve_headers( $response );
+		
+		// Extract rate limit headers for intelligent retry timing; see Rate limiting information documentation
+		$rate_limit_info = array();
+		
+		// Check for request-based rate limits
+		if ( isset( $headers['x-ratelimit-limit-requests'] ) ) {
+			$rate_limit_info['limit_requests'] = intval( $headers['x-ratelimit-limit-requests'] );
+		}
+		if ( isset( $headers['x-ratelimit-remaining-requests'] ) ) {
+			$rate_limit_info['remaining_requests'] = intval( $headers['x-ratelimit-remaining-requests'] );
+		}
+		if ( isset( $headers['x-ratelimit-reset-requests'] ) ) {
+			$reset_timestamp = $headers['x-ratelimit-reset-requests'];
+			// Handle both timestamp and duration formats
+			if ( strpos( $reset_timestamp, 's' ) !== false || strpos( $reset_timestamp, 'm' ) !== false ) {
+				// Parse duration format (e.g., "5s", "2m30s")
+				$seconds = $this->parse_duration_to_seconds( $reset_timestamp );
+				$rate_limit_info['reset_requests'] = time() + $seconds;
+				$rate_limit_info['reset_requests_in'] = $seconds;
+			} else {
+				$rate_limit_info['reset_requests'] = intval( $reset_timestamp );
+				$rate_limit_info['reset_requests_in'] = max( 0, $rate_limit_info['reset_requests'] - time() );
+			}
+		}
+		
+		// Check for token-based rate limits
+		if ( isset( $headers['x-ratelimit-limit-tokens'] ) ) {
+			$rate_limit_info['limit_tokens'] = intval( $headers['x-ratelimit-limit-tokens'] );
+		}
+		if ( isset( $headers['x-ratelimit-remaining-tokens'] ) ) {
+			$rate_limit_info['remaining_tokens'] = intval( $headers['x-ratelimit-remaining-tokens'] );
+		}
+		if ( isset( $headers['x-ratelimit-reset-tokens'] ) ) {
+			$reset_timestamp = $headers['x-ratelimit-reset-tokens'];
+			// Handle both timestamp and duration formats
+			if ( strpos( $reset_timestamp, 's' ) !== false || strpos( $reset_timestamp, 'm' ) !== false ) {
+				// Parse duration format (e.g., "5s", "2m30s")
+				$seconds = $this->parse_duration_to_seconds( $reset_timestamp );
+				$rate_limit_info['reset_tokens'] = time() + $seconds;
+				$rate_limit_info['reset_tokens_in'] = $seconds;
+			} else {
+				$rate_limit_info['reset_tokens'] = intval( $reset_timestamp );
+				$rate_limit_info['reset_tokens_in'] = max( 0, $rate_limit_info['reset_tokens'] - time() );
+			}
+		}
+
+		// Store rate limit info for next request timing
+		if ( ! empty( $rate_limit_info ) ) {
+			set_transient( 'epkb_openai_rate_limit', $rate_limit_info, 300 );
+		}
 		
 		// Try to decode JSON response
 		$data = json_decode( $body, true );
@@ -155,12 +213,26 @@ class EPKB_OpenAI_Client {
 		// Handle specific error types
 		switch ( $status_code ) {
 			case 401:
-				return new WP_Error( 'authentication_failed', $error_message );
+			case 403:
+				$wp_error = new WP_Error( 'authentication_failed', $error_message );
+				$wp_error->add_data( array(
+					'status_code' => $status_code,
+					'response' => array( 'code' => $status_code )
+				) );
+				return $wp_error;
 				
 			case 429:
 				$retry_after = wp_remote_retrieve_header( $response, 'retry-after' );
 				$error = new WP_Error( 'rate_limit_exceeded', $error_message );
-				$error->add_data( array( 'retry_after' => $retry_after ) );
+				$error_data = array( 
+					'retry_after' => $retry_after,
+					'response' => array( 'code' => 429 )
+				);
+				// Include rate limit headers if available
+				if ( ! empty( $rate_limit_info ) ) {
+					$error_data['rate_limit'] = $rate_limit_info;
+				}
+				$error->add_data( $error_data );
 				return $error;
 				
 			case 404:
@@ -172,21 +244,26 @@ class EPKB_OpenAI_Client {
 			case 500:
 			case 502:
 			case 503:
-				return new WP_Error( 'server_error', $error_message );
+				$error = new WP_Error( 'server_error', $error_message );
+				$error_data = array( 
+					'response' => array( 'code' => $status_code )
+				);
+				// Include rate limit headers if available
+				if ( ! empty( $rate_limit_info ) ) {
+					$error_data['rate_limit'] = $rate_limit_info;
+				}
+				$error->add_data( $error_data );
+				return $error;
 				
 			default:
-				// Log error details internally without exposing sensitive information
-				EPKB_AI_Utilities::add_log( 'OpenAI API error response', array(
+				// Create WP_Error with original message for proper handling
+				$wp_error = new WP_Error( 'api_error', $error_message );
+				$wp_error->add_data( array(
 					'status_code' => $status_code,
 					'error_code' => $error_code,
-					'error_message' => $this->sanitize_error_message( $error_message ),
-					'response_body' => substr( $this->sanitize_response_body( $body ), 0, 200 )
+					'response' => array( 'code' => $status_code )
 				) );
-				
-				// Return generic error message to user
-				$user_message = __( 'An error occurred while communicating with the AI service. Please try again later.', 'echo-knowledge-base' );
-
-				return new WP_Error( 'api_error', $user_message );
+				return $wp_error;
 		}
 	}
 	
@@ -199,15 +276,14 @@ class EPKB_OpenAI_Client {
 	private function build_headers( $additional_headers = array() ) {
 		
 		$headers = array(
-			'Authorization' => 'Bearer ' . $this->config->get_api_key(),
+			'Authorization' => 'Bearer ' . self::get_api_key(),
 			'Content-Type'  => 'application/json',
 			'User-Agent'    => 'Echo-Knowledge-Base/' . \Echo_Knowledge_Base::$version
 		);
 		
 		// Add organization ID if configured
-		$org_id = $this->config->get_organization_id();
-		if ( ! empty( $org_id ) ) {
-			$headers['OpenAI-Organization'] = $org_id;
+		if ( ! empty( $this->organization_id ) ) {
+			$headers['OpenAI-Organization'] = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_organization_id' );
 		}
 		
 		// Merge additional headers
@@ -238,32 +314,25 @@ class EPKB_OpenAI_Client {
 	}
 	
 	/**
-	 * Wait with exponential backoff
-	 *
-	 * @param int $base_delay Base delay in milliseconds
-	 * @param int $attempt Current attempt number
-	 */
-	private function wait_with_backoff( $base_delay, $attempt ) {
-		$delay = min( $base_delay * pow( 2, $attempt - 1 ), 10000 ); // Max 10 seconds
-		// Using usleep for rate limiting/backoff is appropriate for API retry logic
-		// This prevents overwhelming the API with rapid retry attempts
-		usleep( $delay * 1000 );
-	}
-	
-	/**
 	 * Upload file using multipart form data
 	 *
 	 * @param string $endpoint
 	 * @param string $file_content
 	 * @param string $filename
-	 * @param array $fields Additional form fields
+	 * @param array $fields Additional form fields e.g. array( 'purpose' => 'assistants' )
 	 * @param array $additional_headers
 	 * @return array|WP_Error
 	 */
 	public function upload_file( $endpoint, $file_content, $filename, $fields = array(), $additional_headers = array() ) {
 		
+		// Check if API key is configured
+		$api_key_check = $this->check_api_key();
+		if ( is_wp_error( $api_key_check ) ) {
+			return $api_key_check;
+		}
+		
 		$boundary = wp_generate_password( 24 );
-		$url = $this->config->get_api_url() . $endpoint;
+		$url = $this->get_api_url() . $endpoint;
 		
 		// Build headers
 		$headers = $this->build_headers( $additional_headers );
@@ -276,18 +345,11 @@ class EPKB_OpenAI_Client {
 			'method'  => 'POST',
 			'headers' => $headers,
 			'body'    => $body,
-			'timeout' => $this->config->get_upload_timeout()
+			'timeout' => self::DEFAULT_UPLOAD_TIMEOUT
 		);
 		
 		$response = wp_remote_post( $url, $args );
 		if ( is_wp_error( $response ) ) {
-			EPKB_AI_Utilities::add_log( 'OpenAI API file upload failed', array(
-				'endpoint' => $endpoint,
-				'filename' => $filename,
-				'file_size' => strlen( $file_content ),
-				'error_code' => $response->get_error_code(),
-				'error_message' => $response->get_error_message()
-			) );
 			return new WP_Error( 
 				'upload_error',
 				'File upload failed: ' . $response->get_error_message()
@@ -372,5 +434,101 @@ class EPKB_OpenAI_Client {
 		
 		// Apply same pattern sanitization as error messages
 		return $this->sanitize_error_message( $body );
+	}
+
+	/**
+	 * Get API URL
+	 *
+	 * @return string
+	 */
+	private function get_api_url() {
+		return self::API_BASE_URL . '/' . self::API_VERSION;
+	}
+
+	/**
+	 * Check if API key is configured
+	 *
+	 * @return true|WP_Error
+	 */
+	private function check_api_key() {
+		$api_key = self::get_api_key();
+		if ( empty( $api_key ) ) {
+			return new WP_Error(
+				'missing_api_key',
+				__( 'OpenAI API key is not configured. Please configure your API key in the AI settings.', 'echo-knowledge-base' )
+			);
+		}
+		return true;
+	}
+
+	/**
+	 * Get API key from WordPress options (static)
+	 *
+	 * @return string
+	 */
+	public static function get_api_key() {
+
+		$encrypted_key = EPKB_AI_Config_Specs::get_unmasked_api_key();
+		if ( empty( $encrypted_key ) ) {
+			return '';
+		}
+
+		$decrypted = EPKB_Utilities::decrypt_data( $encrypted_key );
+
+		return $decrypted !== false ? $decrypted : '';
+	}
+	
+	/**
+	 * Parse duration string to seconds
+	 * Handles formats like "5s", "2m30s", "1h30m", etc.
+	 *
+	 * @param string $duration
+	 * @return int Seconds
+	 */
+	private function parse_duration_to_seconds( $duration ) {
+		$seconds = 0;
+		
+		// Match hours
+		if ( preg_match( '/(\d+)h/i', $duration, $matches ) ) {
+			$seconds += intval( $matches[1] ) * 3600;
+		}
+		
+		// Match minutes
+		if ( preg_match( '/(\d+)m/i', $duration, $matches ) ) {
+			$seconds += intval( $matches[1] ) * 60;
+		}
+		
+		// Match seconds
+		if ( preg_match( '/(\d+)s/i', $duration, $matches ) ) {
+			$seconds += intval( $matches[1] );
+		}
+		
+		// If no units found, assume it's seconds
+		if ( $seconds === 0 && is_numeric( $duration ) ) {
+			$seconds = intval( $duration );
+		}
+		
+		return $seconds;
+	}
+
+	/**
+	 * Test connection to OpenAI API
+	 *
+	 * @return true|WP_Error True if connection is successful, WP_Error on failure
+	 */
+	public function test_connection() {
+		// Try to list models as a simple test
+		$response = $this->request( '/models', array(), 'GET' );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		// Check if we got a valid response structure
+		if ( ! isset( $response['data'] ) || ! is_array( $response['data'] ) ) {
+			return new WP_Error( 'invalid_response', __( 'Invalid response from OpenAI API', 'echo-knowledge-base' ) );
+		}
+		
+		return true;
 	}
 }

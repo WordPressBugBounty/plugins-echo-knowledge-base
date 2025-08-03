@@ -16,68 +16,46 @@
  */
 abstract class EPKB_AI_REST_Base_Controller extends WP_REST_Controller {
 
-	/**
-	 * Namespace and version
-	 */
-	protected $namespace = 'epkb/v1';
+	protected $admin_namespace = 'epkb-admin/v1';
+	protected $public_namespace = 'epkb-public/v1';
 	
-	/**
-	 * Constructor
-	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'init' ) );
 		add_action( 'rest_api_init', array( $this, 'register_routes') );
-	}
-
-	public function init() {
-		if ( ! EPKB_AI_Utilities::is_ai_enabled() ) {
-			return;
-		}
-
-		// if our REST request, start session
-		if ( EPKB_AI_Security::can_start_session() ) {
-			session_start();
-		}
-	}
-
-	public function register_routes() {
-		// Base routes can be registered here if needed in the future
 	}
 
 	/**
 	 * Helper method to create REST responses with automatic token refresh
 	 *
 	 * @param array $data The response data
-	 * @param int $status HTTP status code
+	 * @param int $http_status_code HTTP status code
 	 * @param WP_Error|null $wp_error Optional WP_Error object to process
 	 * @return WP_REST_Response
 	 */
-	protected function create_rest_response( $data, $status=200, $wp_error=null ) {
+	protected function create_rest_response( $data, $http_status_code=200, $wp_error=null ) {
 
 		// If WP_Error is provided, process it and merge into data
 		if ( $wp_error instanceof WP_Error ) {
-			$error_result = $this->process_wp_error( $wp_error, $status );
+			$error_result = EPKB_AI_Log::rest_process_wp_error( $wp_error, $http_status_code );
 			$data = array_merge( $error_result['data'], $data );
-			$status = $error_result['status'];
+			$http_status_code = $error_result['status'];
 
 		} elseif ( isset( $data['error'] ) && ! isset( $data['status'] ) ) {
 			// If error is provided in data but status is not, add it
 			$data['status'] = 'error';
 			
 			// Use status mapping if status is still 200
-			if ( $status === 200 ) {
-				$status = $this->get_error_status_code( $data['error'] );
+			if ( $http_status_code === 200 ) {
+				$http_status_code = EPKB_AI_Log::get_error_status_code( $data['error'] );
 			}
 		}
 
 		// Always check if we need to provide a new nonce
-		$current_nonce = epkb_get_instance()->security_obj->get_nonce( true );
+		$current_nonce = epkb_get_instance()->security_obj->get_nonce();
 		$request_nonce = isset( $_SERVER['HTTP_X_WP_NONCE'] ) ? $_SERVER['HTTP_X_WP_NONCE'] : null;
 
 		// Check if nonce is approaching expiration (WordPress nonces last 12-24 hours)
 		// We'll refresh if the nonce is older than 10 hours to be safe
 		$should_refresh = false;
-
 		if ( $request_nonce ) {
 			// Verify if the nonce is still valid but getting old
 			$verify = wp_verify_nonce( $request_nonce, 'wp_rest' );
@@ -92,93 +70,7 @@ abstract class EPKB_AI_REST_Base_Controller extends WP_REST_Controller {
 			$data['new_token'] = $current_nonce;
 		}
 
-		return new WP_REST_Response( $data, $status );
-	}
-
-	/**
-	 * Process a WP_Error object and extract error data
-	 * 
-	 * @param WP_Error $wp_error WP_Error object to process
-	 * @param int $default_status Default status code if none is found
-	 * @return array Array containing error data and status code
-	 */
-	protected function process_wp_error( $wp_error, $default_status = 200 ) {
-		if ( ! ( $wp_error instanceof WP_Error ) ) {
-			return array(
-				'data' => array(),
-				'status' => $default_status
-			);
-		}
-		
-		$error_code = $wp_error->get_error_code();
-		$error_data = $wp_error->get_error_data( $error_code );
-		$status = $default_status;
-		
-		// Extract status from error data if available
-		if ( is_array( $error_data ) && isset( $error_data['status'] ) ) {
-			$status = (int) $error_data['status'];
-		} elseif ( $default_status === 200 ) {
-			// If no status provided and default is still 200, use appropriate error status
-			$status = $this->get_error_status_code( $error_code );
-		}
-		
-		// Get all error messages and combine them
-		$error_messages = implode( '; ', $wp_error->get_error_messages( $error_code ) );
-		
-		// Build error response data
-		$error_response = array(
-			'success' => false,
-			'status' => 'error',
-			'error' => $error_code,
-			'message' => $error_messages ?: $wp_error->get_error_message()
-		);
-		
-		return array(
-			'data' => $error_response,
-			'status' => $status
-		);
-	}
-
-	/**
-	 * Get appropriate HTTP status code for error code
-	 * 
-	 * @param string $error_code
-	 * @return int
-	 */
-	protected function get_error_status_code( $error_code ) {
-		$status_map = array(
-			'invalid_input'       => 400,
-			'message_too_long'    => 400,
-			'invalid_idempotency_key' => 400,
-			'empty_message'       => 400,
-			'invalid_content'     => 400,
-			'conversation_limit_reached' => 400,
-			'invalid_session'     => 401,
-			'no_session'          => 401,
-			'login_required'      => 401,
-			'unauthorized'        => 403,
-			'access_denied'       => 403,
-			'ai_disabled'         => 403,
-			'ai_chat_disabled'    => 403,
-			'ai_search_disabled'  => 403,
-			'not_found'           => 404,
-			'conversation_not_found' => 404,
-			'expired'             => 410,
-			'conversation_expired' => 410,
-			'rate_limit_exceeded' => 429,
-			'user_rate_limit'     => 429,
-			'global_rate_limit'   => 429,
-			'version_conflict'    => 409,
-			'server_error'        => 500,
-			'db_error'           => 500,
-			'save_failed'        => 500,
-			'insert_failed'      => 500,
-			'unexpected_error'   => 500,
-			'service_unavailable' => 503,
-			'empty_response'     => 503,
-		);
-		
-		return isset( $status_map[ $error_code ] ) ? $status_map[ $error_code ] : 500;
+		return new WP_REST_Response( $data, $http_status_code );
 	}
 
 	/**

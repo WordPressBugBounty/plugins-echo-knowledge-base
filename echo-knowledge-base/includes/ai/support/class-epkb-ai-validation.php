@@ -1,4 +1,5 @@
 <?php
+
 /**
  * AI Validation Utility
  * 
@@ -7,6 +8,10 @@
  */
 class EPKB_AI_Validation {
 	
+	const MAX_METADATA_KEYS = 100;
+	const MAX_METADATA_KEY_LENGTH = 64;
+	const MAX_METADATA_VALUE_LENGTH = 255;
+
 	/**
 	 * Validate and sanitize chat message
 	 *
@@ -114,21 +119,15 @@ class EPKB_AI_Validation {
 	 * Validate widget ID
 	 *
 	 * @param int|string $widget_id
-	 * @return int|WP_Error Validated widget ID or error
+	 * @return int Validated widget ID or error
 	 */
 	public static function validate_widget_id( $widget_id ) {
 		
-		// Convert to integer
 		$widget_id = absint( $widget_id );
 		
 		// Check range
-		$max_widget_id = defined( 'EPKB_AI_Config::MAX_WIDGET_ID' ) ? EPKB_AI_Config::MAX_WIDGET_ID : 10;
-		
-		if ( $widget_id < 1 || $widget_id > $max_widget_id ) {
-			return new WP_Error( 
-				'invalid_widget_id', 
-				sprintf( __( 'Widget ID must be between 1 and %d', 'echo-knowledge-base' ), $max_widget_id )
-			);
+		if ( $widget_id < 1 || $widget_id > 500 ) {
+			$widget_id = 1;
 		}
 		
 		return $widget_id;
@@ -138,7 +137,7 @@ class EPKB_AI_Validation {
 	 * Validate language code
 	 *
 	 * @param string $language
-	 * @return string|WP_Error Validated language or error
+	 * @return string Validated language or error
 	 */
 	public static function validate_language( $language ) {
 		$language = sanitize_text_field( $language );
@@ -196,5 +195,130 @@ class EPKB_AI_Validation {
 		}
 		
 		return $validated;
+	}
+	
+	/**
+	 * Validate metadata according to OpenAI limits
+	 *
+	 * @param array $metadata
+	 * @return array
+	 */
+	public static function validate_metadata( $metadata ) {
+
+		$validated = array();
+		$count = 0;
+		foreach ( $metadata as $key => $value ) {
+			// Limit to max keys
+			if ( $count >= self::MAX_METADATA_KEYS ) {
+				break;
+			}
+
+			// Validate key
+			$key = sanitize_key( substr( $key, 0, self::MAX_METADATA_KEY_LENGTH ) );
+			if ( empty( $key ) ) {
+				continue;
+			}
+
+			// Convert boolean values to string representation
+			if ( is_bool( $value ) ) {
+				$value = $value ? 'true' : 'false';
+			}
+
+			// Convert other non-string types to string
+			if ( ! is_string( $value ) ) {
+				$value = strval( $value );
+			}
+
+			// Validate value
+			$value = substr( sanitize_text_field( $value ), 0, self::MAX_METADATA_VALUE_LENGTH );
+			if ( empty( $value ) && $value !== '0' ) {
+				continue;
+			}
+
+			$validated[ $key ] = $value;
+			$count++;
+		}
+
+		return $validated;
+	}
+	
+	/**
+	 * Validate session ID format
+	 * 
+	 * @param string $session_id
+	 * @return bool|WP_Error True if valid, WP_Error if invalid
+	 */
+	public static function validate_session( $session_id ) {
+		
+		// Check if empty
+		if ( empty( $session_id ) ) {
+			return new WP_Error( 'empty_session', __( 'Session ID is required', 'echo-knowledge-base' ), array( 'status' => 400 ) );
+		}
+		
+		// Allow special cases
+		$special_cases = array( 'wp-cron', 'wp-cli' );
+		if ( in_array( $session_id, $special_cases, true ) ) {
+			return true;
+		}
+		
+		// Validate format: 32 character hexadecimal
+		if ( ! preg_match( '/^[a-f0-9]{32}$/', $session_id ) ) {
+			return new WP_Error( 'invalid_session', __( 'Invalid session format', 'echo-knowledge-base' ), array( 'status' => 400 ) );
+		}
+		
+		return true;
+	}
+		
+	/**
+	 * Validate API key format
+	 *
+	 * @param string $api_key
+	 * @return bool
+	 */
+	public static function validate_api_key_format( $api_key ) {
+
+		if ( empty( $api_key ) || ! is_string( $api_key ) ) {
+			return false;
+		}
+		
+		// Basic format validation
+		if ( ! preg_match( '/^sk-[\w\-]+$/i', $api_key ) ) {
+			return false;
+		}
+		
+		// Check reasonable length (OpenAI keys are typically 40-60 chars)
+		$key_length = strlen( $api_key );
+		if ( $key_length < 20 || $key_length > 500 ) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	/**
+	 * Validate collection ID
+	 *
+	 * @param mixed $collection_id Collection ID to validate
+	 * @return int|WP_Error Valid collection ID or error
+	 */
+	public static function validate_collection_id( $collection_id ) {
+
+		if ( empty( $collection_id ) ) {
+			return new WP_Error( 'missing_collection_id', __( 'Collection ID is required', 'echo-knowledge-base' ) );
+		}
+
+		// Ensure it's a positive integer
+		$collection_id = intval( $collection_id );
+		if ( $collection_id <= 0 ) {
+			return new WP_Error( 'invalid_collection_id', __( 'Collection ID must be a positive number', 'echo-knowledge-base' ) );
+		}
+
+		// Verify collection exists in configuration
+		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
+		if ( !$collection_config ) {
+			return new WP_Error( 'collection_not_found', sprintf( __( 'Collection %d does not exist', 'echo-knowledge-base' ), $collection_id ) );
+		}
+
+		return $collection_id;
 	}
 }

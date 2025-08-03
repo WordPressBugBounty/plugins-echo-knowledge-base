@@ -136,11 +136,11 @@ class EPKB_Editor_Utilities {
 	}
 
 	public static function initialize_advanced_search_box( $use_main_page_settings = true ) {
-		if ( EPKB_Utilities::is_advanced_search_enabled() && class_exists( 'ASEA_Search_Box_View' ) ) {
+		if ( EPKB_Utilities::is_advanced_search_enabled() && class_exists( 'ASEA_Search_Box_View' ) ) { /* @disregard PREFIX */
 			global $asea_use_main_page_settings;
 			$asea_use_main_page_settings = $use_main_page_settings;	// for AJAX request we need to hard-code the value here
 			/**@disregard P1009 */
-			new ASEA_Search_Box_View();		// TODO: move to KB Utilities Constants
+			new ASEA_Search_Box_View();	/* @disregard PREFIX */	// TODO: move to KB Utilities Constants
 		}
 	}
 }

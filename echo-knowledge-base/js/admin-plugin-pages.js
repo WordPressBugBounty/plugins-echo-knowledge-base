@@ -647,6 +647,27 @@ jQuery(document).ready(function($) {
 
 			return false;
 		});
+
+		// KB Nickname
+		$( document ).on( 'submit', '#epkb-kb-nickname__form', function( e ) {
+			e.preventDefault();
+			let form = $( this );
+			let postData = {
+				action: 'epkb_save_kb_name',
+				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+				kb_name: form.find( 'input[name="kb_name"]' ).val(),
+				epkb_kb_id: $( '#epkb-list-of-kbs' ).val(),
+			};
+
+			epkb_send_ajax( postData, function( response ) {
+				$( '.eckb-top-notice-message' ).remove();
+				if ( typeof response.message !== 'undefined' ) {
+					$( 'body' ).append( response.message );
+				}
+			} );
+
+			return false;
+		});
 		
 		// Update typography font family hidden input when font is selected
 		$( document ).on( 'epkb-font-selected', function( e, fontFamily ) {
@@ -2449,7 +2470,7 @@ jQuery(document).ready(function($) {
 	$( document ).on( 'click', '.epkb-admin__kb__form-save__button', save_config_tab_settings );
 
 	// Allow only one active sidebar
-	$( '.epkb-input[name="article_nav_sidebar_type_left"]' ).change( function() {
+	$( '.epkb-input[name="article_nav_sidebar_type_left"]' ).on( 'change', function() {
 		if ( $( this ).closest( '.epkb-admin__select-field' ).css( 'display' ) === 'none' ) {
 			return;
 		}
@@ -2458,7 +2479,7 @@ jQuery(document).ready(function($) {
 			$( this ).click();
 		}
 	});
-	$( '.epkb-input[name="article_nav_sidebar_type_right"]' ).change( function() {
+	$( '.epkb-input[name="article_nav_sidebar_type_right"]' ).on( 'change', function() {
 		if ( $( this ).closest( '.epkb-admin__select-field' ).css( 'display' ) === 'none' ) {
 			return;
 		}

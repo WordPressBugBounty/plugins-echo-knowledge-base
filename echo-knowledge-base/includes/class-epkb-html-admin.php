@@ -22,11 +22,11 @@ class EPKB_HTML_Admin {
 	 * @param string $content_type
 	 * @param string $position
 	 */
-	public static function admin_header( $kb_config, $permissions, $content_type='header', $position = '' ) {  ?>
+	public static function admin_header( $kb_config, $permissions, $content_type='header' ) {  ?>
 
 		<!-- Admin Header -->
 		<div class="epkb-admin__header">
-			<div class="epkb-admin__section-wrap <?php echo empty( $position ) ? '' : 'epkb-admin__section-wrap--' . esc_attr( $position ); ?> epkb-admin__section-wrap__header">   <?php
+			<div class="epkb-admin__section-wrap epkb-admin__section-wrap__header">   <?php
 
 				switch ( $content_type ) {
 					case 'header':
@@ -738,7 +738,7 @@ class EPKB_HTML_Admin {
 							<div class="epkb-admin__error-form__body">
 
 								<label for="epkb-admin__error-form__message"><?php esc_html_e( 'Error Details', 'echo-knowledge-base' ); ?>*</label>
-								<textarea name="admin_error" class="admin_error" required id="epkb-admin__error-form__message"></textarea>
+								<textarea name="admin_error" class="admin_error" id="epkb-admin__error-form__message"></textarea>
 
 								<div class="epkb-admin__error-form__btn-wrap">
 									<input type="submit" name="submit_error" value="<?php esc_attr_e( 'Submit', 'echo-knowledge-base' ); ?>" class="epkb-admin__error-form__btn epkb-admin__error-form__btn-submit">
