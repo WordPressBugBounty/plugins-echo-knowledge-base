@@ -2503,4 +2503,12 @@ class EPKB_Utilities {
 		// Compare hosts (case-insensitive)
 		return strcasecmp( $site_host, $url_host ) === 0;
 	}
+
+	/**
+	 * Check if AI Features Pro plugin is enabled
+	 * @return bool True if AI Features Pro is active
+	 */
+	public static function is_ai_features_pro_enabled() {
+		return defined( 'AI_FEATURES_PRO_PLUGIN_NAME' );
+	}
 }

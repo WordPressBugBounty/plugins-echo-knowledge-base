@@ -30,20 +30,6 @@ class EPKB_AI_General_Settings_Tab {
 	 */
 	private static function get_settings_sections( $ai_config ) {
 		return array(
-			'beta_access' => array(
-				'id' => 'beta_access',
-				'title' => __( 'Beta Access', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-lock',
-				'fields' => array(
-					'ai_beta_code' => array(
-						'type' => 'text',
-						'label' => __( 'Beta Access Code', 'echo-knowledge-base' ),
-						'value' => $ai_config['ai_beta_code'],
-						'description' => __( 'Enter your beta access code to unlock Training Data features. Contact support for access.', 'echo-knowledge-base' ),
-						'placeholder' => __( 'Enter beta code', 'echo-knowledge-base' )
-					)
-				)
-			),
 			'api_settings' => array(
 				'id' => 'api_settings',
 				'title' => __( 'API Configuration', 'echo-knowledge-base' ),
@@ -119,22 +105,5 @@ class EPKB_AI_General_Settings_Tab {
 				checked( 'on', EPKB_AI_Config_Specs::get_ai_config_value( 'ai_disclaimer_accepted' ), false )
 			)
 		);
-	}
-
-	/**
-	 * Check if user has valid beta code
-	 *
-	 * @return bool
-	 */
-	public static function has_valid_beta_code() {
-		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
-		$beta_code = isset( $ai_config['ai_beta_code'] ) ? trim( $ai_config['ai_beta_code'] ) : '';
-		
-		// Define valid beta codes (can be expanded or fetched from database)
-		$valid_codes = array(
-			'EPKB-BETA-2024-AI-CHAT'
-		);
-		
-		return in_array( $beta_code, $valid_codes );
 	}
 }

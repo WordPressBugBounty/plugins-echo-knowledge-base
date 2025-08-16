@@ -39,12 +39,11 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 */
 	public function get_column_format() {
 		return array(
-			'training_collection_id' => '%d',
+			'collection_id' => '%d',
 			'item_id'               => '%s',  // Can be post ID or UUID
 			'store_id'              => '%s',
 			'file_id'               => '%s',  // OpenAI file ID
 			'last_synced'           => '%s',
-			'expires'               => '%s',
 			'title'                 => '%s',
 			'type'                  => '%s',
 			'status'                => '%s',
@@ -68,12 +67,11 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	public function get_column_defaults() {
 		return array(
 			'id'                    => 0,
-			'training_collection_id'=> 0,
+			'collection_id'=> 0,
 			'item_id'               => '',
 			'store_id'              => '',
 			'file_id'               => '',
 			'last_synced'           => null,
-			'expires'               => null,
 			'title'                 => '',
 			'type'                  => 'post',
 			'status'                => 'adding',
@@ -87,6 +85,27 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			'created'               => gmdate( 'Y-m-d H:i:s' ),
 			'updated'               => gmdate( 'Y-m-d H:i:s' )
 		);
+	}
+	
+	/**
+	 * Get all unique collection IDs from the database
+	 *
+	 * @return array|WP_Error Array of collection IDs or error
+	 */
+	public function get_all_collection_ids_from_db() {
+		global $wpdb;
+		
+		$sql = "SELECT DISTINCT collection_id 
+				FROM {$this->table_name} 
+				WHERE collection_id IS NOT NULL 
+				AND collection_id > 0 
+				ORDER BY collection_id ASC";
+
+		$collection_ids = $wpdb->get_col( $sql );
+		$this->handle_db_error( $collection_ids, 'insert_training_data' );
+		
+		// Convert to integers
+		return array_map( 'intval', $collection_ids );
 	}
 	
 	/**
@@ -164,7 +183,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 
 		$sql = $wpdb->prepare( 
 			"SELECT * FROM {$this->table_name} 
-			WHERE training_collection_id = %d AND item_id = %s",
+			WHERE collection_id = %d AND item_id = %s",
 			$collection_id, $item_id
 		);
 		
@@ -185,7 +204,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		global $wpdb;
 		
 		$where = array();
-		$where[] = $wpdb->prepare( "training_collection_id = %d", $collection_id );
+		$where[] = $wpdb->prepare( "collection_id = %d", $collection_id );
 		
 		if ( ! empty( $filters['status'] ) ) {
 			$where[] = $wpdb->prepare( "status = %s", $filters['status'] );
@@ -242,12 +261,15 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 * @return array
 	 */
 	public function get_training_data_list( $args = array() ) {
+		global $wpdb;
+		
 		$defaults = array(
 			'page'                  => 1,
 			'per_page'              => self::PER_PAGE,
-			'training_collection_id'=> 0,
+			'collection_id'=> 0,
 			'type'                  => '',
 			'status'                => '',
+			'search'                => '',
 			'orderby'               => 'created',
 			'order'                 => 'DESC'
 		);
@@ -257,8 +279,8 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		// Build WHERE clauses
 		$where = array();
 		
-		if ( ! empty( $args['training_collection_id'] ) ) {
-			$where[] = $this->prepare_column_value( 'training_collection_id', $args['training_collection_id'] );
+		if ( ! empty( $args['collection_id'] ) ) {
+			$where[] = $this->prepare_column_value( 'collection_id', $args['collection_id'] );
 		}
 		
 		if ( ! empty( $args['type'] ) ) {
@@ -269,19 +291,41 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			$where[] = $this->prepare_column_value( 'status', $args['status'] );
 		}
 		
+		// Add search condition if search term is provided
+		if ( ! empty( $args['search'] ) ) {
+			$search_term = '%' . $wpdb->esc_like( $args['search'] ) . '%';
+			$search_conditions = array();
+			$search_conditions[] = $wpdb->prepare( 'title LIKE %s', $search_term );
+			$search_conditions[] = $wpdb->prepare( 'type LIKE %s', $search_term );
+			$search_conditions[] = $wpdb->prepare( 'url LIKE %s', $search_term );
+			$search_conditions[] = $wpdb->prepare( 'item_id LIKE %s', $search_term );
+			$where[] = '(' . implode( ' OR ', $search_conditions ) . ')';
+		}
+		
 		// Calculate offset
 		$page = max( 1, absint( $args['page'] ) );
 		$per_page = max( 1, min( 100, absint( $args['per_page'] ) ) );
 		$offset = ( $page - 1 ) * $per_page;
 		
-		// Get rows
-		$rows = $this->get_rows_with_conditions( 
-			$where, 
-			$args['orderby'], 
-			$args['order'], 
-			$per_page, 
-			$offset 
-		);
+		// Get rows with search support
+		if ( ! empty( $args['search'] ) ) {
+			// Build custom query when search is active
+			$where_clause = ! empty( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '';
+			$order_by = in_array( $args['orderby'], array( 'created', 'updated', 'title', 'type', 'status' ) ) ? $args['orderby'] : 'created';
+			$order = in_array( strtoupper( $args['order'] ), array( 'ASC', 'DESC' ) ) ? strtoupper( $args['order'] ) : 'DESC';
+			
+			$sql = "SELECT * FROM {$this->table_name} {$where_clause} ORDER BY {$order_by} {$order} LIMIT %d OFFSET %d";
+			$rows = $wpdb->get_results( $wpdb->prepare( $sql, $per_page, $offset ) );
+		} else {
+			// Use existing method when no search
+			$rows = $this->get_rows_with_conditions( 
+				$where, 
+				$args['orderby'], 
+				$args['order'], 
+				$per_page, 
+				$offset 
+			);
+		}
 		
 		$this->handle_db_error( $rows, 'get_training_data_list' );
 		
@@ -299,10 +343,12 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 * @return int
 	 */
 	public function get_training_data_count( $args = array() ) {
+		global $wpdb;
+		
 		$where = array();
 		
-		if ( ! empty( $args['training_collection_id'] ) ) {
-			$where[] = $this->prepare_column_value( 'training_collection_id', $args['training_collection_id'] );
+		if ( ! empty( $args['collection_id'] ) ) {
+			$where[] = $this->prepare_column_value( 'collection_id', $args['collection_id'] );
 		}
 		
 		if ( ! empty( $args['type'] ) ) {
@@ -313,11 +359,31 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			$where[] = $this->prepare_column_value( 'status', $args['status'] );
 		}
 		
-		$count = $this->get_count_with_conditions( $where );
+		// Add search condition if search term is provided
+		if ( ! empty( $args['search'] ) ) {
+			$search_term = '%' . $wpdb->esc_like( $args['search'] ) . '%';
+			$search_conditions = array();
+			$search_conditions[] = $wpdb->prepare( 'title LIKE %s', $search_term );
+			$search_conditions[] = $wpdb->prepare( 'type LIKE %s', $search_term );
+			$search_conditions[] = $wpdb->prepare( 'url LIKE %s', $search_term );
+			$search_conditions[] = $wpdb->prepare( 'item_id LIKE %s', $search_term );
+			$where[] = '(' . implode( ' OR ', $search_conditions ) . ')';
+		}
+		
+		// Get count with search support
+		if ( ! empty( $args['search'] ) ) {
+			// Build custom query when search is active
+			$where_clause = ! empty( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '';
+			$sql = "SELECT COUNT(*) FROM {$this->table_name} {$where_clause}";
+			$count = $wpdb->get_var( $sql );
+		} else {
+			// Use existing method when no search
+			$count = $this->get_count_with_conditions( $where );
+		}
 		
 		$this->handle_db_error( $count, 'get_training_data_count' );
 		
-		return $count;
+		return intval( $count );
 	}
 	
 	/**
@@ -441,7 +507,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 * @param string $item_id Item ID
 	 * @return bool|WP_Error
 	 */
-	public function delete_by_source( $type, $item_id ) {
+	public function delete_training_data_by_source( $type, $item_id ) {
 		global $wpdb;
 		
 		$result = $wpdb->delete(
@@ -487,7 +553,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		
 		$where = '';
 		if ( $collection_id > 0 ) {
-			$where = $wpdb->prepare( ' WHERE training_collection_id = %d', $collection_id );
+			$where = $wpdb->prepare( ' WHERE collection_id = %d', $collection_id );
 		}
 		
 		$sql = "SELECT status, COUNT(*) as count FROM {$this->table_name} {$where} GROUP BY status";
@@ -536,7 +602,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		
 		$where = '';
 		if ( $collection_id > 0 ) {
-			$where = $wpdb->prepare( ' WHERE training_collection_id = %d AND last_synced IS NOT NULL', $collection_id );
+			$where = $wpdb->prepare( ' WHERE collection_id = %d AND last_synced IS NOT NULL', $collection_id );
 		} else {
 			$where = ' WHERE last_synced IS NOT NULL';
 		}
@@ -590,7 +656,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		
 		$result = $wpdb->delete(
 			$this->table_name,
-			array( 'training_collection_id' => $collection_id ),
+			array( 'collection_id' => $collection_id ),
 			array( '%d' )
 		);
 		
@@ -687,7 +753,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		
 		$collection_id = absint( $collection_id );
 		
-		$sql = $wpdb->prepare( "SELECT item_id FROM {$this->table_name} WHERE training_collection_id = %d", $collection_id );
+		$sql = $wpdb->prepare( "SELECT item_id FROM {$this->table_name} WHERE collection_id = %d", $collection_id );
 		
 		$post_ids = $wpdb->get_col( $sql );
 		$this->handle_db_error( $post_ids, 'get_existing_post_ids' );
@@ -700,6 +766,68 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	}
 	
 	/**
+	 * Get all unique types for a collection, optionally filtered by status
+	 *
+	 * @param int $collection_id Collection ID
+	 * @param string $status Optional status filter
+	 * @return array Array of unique types with labels
+	 */
+	public function get_collection_types( $collection_id, $status = '' ) {
+		global $wpdb;
+		
+		$collection_id = absint( $collection_id );
+		if ( empty( $collection_id ) ) {
+			return array();
+		}
+		
+		// Build query
+		$sql = "SELECT DISTINCT type FROM {$this->table_name} WHERE collection_id = %d";
+		$params = array( $collection_id );
+		
+		// Add status filter if provided
+		if ( ! empty( $status ) && $status !== 'all' ) {
+			$sql .= " AND status = %s";
+			$params[] = $status;
+		}
+		
+		$sql .= " ORDER BY type ASC";
+		
+		// Get unique types
+		$types = $wpdb->get_col( $wpdb->prepare( $sql, $params ) );
+		
+		if ( empty( $types ) ) {
+			return array();
+		}
+		
+		// Format types with labels
+		$formatted_types = array();
+		foreach ( $types as $type ) {
+			$post_type_obj = get_post_type_object( $type );
+			if ( $post_type_obj && isset( $post_type_obj->labels->name ) ) {
+				if ( strpos( $type, 'epkb_post_type' ) === 0 && isset( $post_type_obj->labels->name ) ) {
+					$type_name = $post_type_obj->labels->name;
+				} else {
+					$type_name = $post_type_obj->labels->singular_name;
+				}
+			} else {
+				$type_name = ucfirst( $type );
+			}
+			
+			// Limit to 20 characters with ellipsis if longer
+			if ( strlen( $type_name ) > 20 ) {
+				$type_name = substr( $type_name, 0, 18 ) . '..';
+			}
+			
+			$formatted_types[] = array(
+				'value' => $type,
+				'label' => $type_name
+			);
+		}
+		
+		return $formatted_types;
+	}
+
+	/**
 	 * Get the table version
 	 * 
 	 * @return string
@@ -709,18 +837,48 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	}
 
 	/**
+	 * Mark all records in a collection as pending
+	 *
+	 * @param int $collection_id Collection ID
+	 * @param bool $use_summary Whether summary mode is enabled
+	 * @return int|false Number of rows updated or false on error
+	 */
+	public function mark_all_as_pending( $collection_id, $use_summary = false ) {
+		global $wpdb;
+		
+		$collection_id = absint( $collection_id );
+		if ( empty( $collection_id ) ) {
+			return false;
+		}
+		
+		// Mark all records in this collection as pending
+		$sql = $wpdb->prepare(
+			"UPDATE {$this->table_name} 
+			SET status = 'pending', updated = %s, retry_count = 0, error_code = NULL, error_message = NULL
+			WHERE collection_id = %d", gmdate( 'Y-m-d H:i:s' ), $collection_id
+		);
+		
+		$result = $wpdb->query( $sql );
+		if ( $result === false ) {
+			$this->handle_db_error( false, 'mark_all_as_pending' );
+			return false;
+		}
+		
+		return $result;
+	}
+
+	/**
 	 * Create the table
 	 * 
 	 * Table stores sync state for AI training data items.
 	 * 
 	 * Table columns:
 	 * - id: Primary key
-	 * - training_collection_id: Collection of posts and other documents stored in a single unique store
+	 * - collection_id: Collection of posts and other documents stored in a single unique store
 	 * - item_id: Post ID, attachment ID, or generated UUID for uploads/AI-generated content
 	 * - store_id: ID of the Vector Store or other storage
 	 * - file_id: OpenAI file id
 	 * - last_synced: Timestamp of last successful sync
-	 * - expires: Expiration date for the training data
 	 * - title: Post/page/attachment/note title; file name
 	 * - type: Post, page, CPT, attachment, file, note, PDF, CSV, XML, AI-generated, URL
 	 * - status: 'error', 'adding' → 'added', 'updating' → 'updated', 'outdated', 'pending'
@@ -745,12 +903,11 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 
 		$sql = "CREATE TABLE {$this->table_name} (
 				    id                      BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-				    training_collection_id  INT UNSIGNED        NOT NULL DEFAULT 1,
+				    collection_id  			INT UNSIGNED        NOT NULL DEFAULT 1,
 				    item_id                 VARCHAR(255)        NOT NULL,
 				    store_id                VARCHAR(255)        NULL,
 				    file_id                 VARCHAR(255)        NULL,
 				    last_synced             DATETIME            NULL,
-				    expires                 DATETIME            NULL,
 				    title                   VARCHAR(255)        NOT NULL,
 				    type                    VARCHAR(50)         NOT NULL,
 				    status                  VARCHAR(20)         NOT NULL DEFAULT 'adding',
@@ -764,7 +921,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 				    created	                DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP,
 					updated                 DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				    PRIMARY KEY (id),
-				    KEY         idx_collection_item         (training_collection_id, item_id),
+				    KEY         idx_collection_item         (collection_id, item_id),
 				    KEY         idx_status                  (status),
 				    KEY         idx_type                    (type),
 				    KEY         idx_file_id                 (file_id),

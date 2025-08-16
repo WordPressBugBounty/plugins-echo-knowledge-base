@@ -39,6 +39,11 @@ function epkb_load_public_resources() {
 	wp_register_style( 'epkb-icon-fonts', Echo_Knowledge_Base::$plugin_url . 'css/epkb-icon-fonts' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
 	wp_register_style( 'epkb-shortcodes', Echo_Knowledge_Base::$plugin_url . 'css/shortcodes' . $suffix . '.css', array( 'epkb-icon-fonts' ), Echo_Knowledge_Base::$version );
 	wp_register_style( 'epkb-frontend-editor', Echo_Knowledge_Base::$plugin_url . 'css/frontend-editor' . $suffix . '.css', array('wp-color-picker'), Echo_Knowledge_Base::$version );
+	
+	if ( is_rtl() ) {
+		wp_register_style( 'epkb-frontend-editor-rtl', Echo_Knowledge_Base::$plugin_url . 'css/frontend-editor-rtl' . $suffix . '.css', array('wp-color-picker'), Echo_Knowledge_Base::$version );
+	}
+
 	wp_register_script( 'epkb-public-scripts', Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-faq-shortcode-scripts', Echo_Knowledge_Base::$plugin_url . 'js/faq-shortcode-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-admin-form-controls-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-form-controls' . $suffix . '.js', array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable'), Echo_Knowledge_Base::$version );

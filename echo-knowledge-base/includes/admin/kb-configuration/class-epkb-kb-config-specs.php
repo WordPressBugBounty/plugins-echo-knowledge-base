@@ -127,6 +127,13 @@ class EPKB_KB_Config_Specs {
 				'internal'    => true,
 				'default'     => Echo_Knowledge_Base::$version,
 			),
+			'plugin_install_date' => array(
+				'label'       => 'plugin_install_date',
+				'name'        => 'plugin_install_date',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'internal'    => true,
+				'default'     => date( 'Y-m-d H:i:s' )
+			),
 
 
 			/******************************************************************************

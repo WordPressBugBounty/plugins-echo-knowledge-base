@@ -3,10 +3,16 @@
 /**
  * AI Sync Cron Handler
  * 
- * Handles WP-Cron execution of sync jobs
+ * Handles WP-Cron execution of sync jobs using a sequential approach:
+ * - Each cron event processes exactly one post
+ * - The next cron event is scheduled only after the current one completes
+ * - This prevents concurrent execution and race conditions
+ * - No locks needed as execution is naturally sequential
  */
 class EPKB_AI_Sync_Cron_Handler {
 
+	const CRON_INTERVAL = 5; // Seconds between processing each post
+	
 	/**
 	 * Initialize cron handler
 	 */
@@ -15,9 +21,10 @@ class EPKB_AI_Sync_Cron_Handler {
 	}
 	
 	/**
-	 * Process sync via cron
+	 * Process sync via cron - processes one post at a time
 	 * 
-	 * This method is called by WP-Cron to process sync jobs in the background
+	 * This method is called by WP-Cron to process sync jobs in the background.
+	 * Each invocation processes one post and schedules the next invocation after completion.
 	 */
 	public static function process_sync_cron() {
 		
@@ -46,19 +53,19 @@ class EPKB_AI_Sync_Cron_Handler {
 			EPKB_AI_Sync_Job_Manager::update_sync_job( array( 'status' => 'running' ) );
 		}
 		
-		// Process batch
-		$result = EPKB_AI_Sync_Job_Manager::process_next_batch();
+		// Process one post at a time (same as direct sync)
+		$result = EPKB_AI_Sync_Job_Manager::process_next_sync_item();
 		
-		// Check result
+		// Check result and schedule next cron ONLY if still running
 		if ( $result['status'] === 'running' ) {
-			// Schedule next batch
-			wp_schedule_single_event( time() + 60, EPKB_AI_Sync_Job_Manager::CRON_HOOK );
+			// Schedule next cron event after a delay
+			// This ensures no overlap - next cron only runs after this one completes
+			wp_schedule_single_event( time() + self::CRON_INTERVAL, EPKB_AI_Sync_Job_Manager::CRON_HOOK );
 			
-			// Update status back to scheduled
-			EPKB_AI_Sync_Job_Manager::update_sync_job( array( 'status' => 'scheduled' ) );
-			
-			EPKB_AI_Log::add_log( 'Cron sync batch completed, next batch scheduled', array(	'processed' => isset( $result['processed'] ) ? $result['processed'] : 0,
-										'errors' => isset( $result['errors'] ) ? $result['errors'] : 0 ) );
+			EPKB_AI_Log::add_log( 'Cron sync post processed, next cron scheduled', array(
+				'processed' => isset( $result['processed'] ) ? $result['processed'] : 0,
+				'errors' => isset( $result['errors'] ) ? $result['errors'] : 0
+			) );
 
 		} elseif ( $result['status'] === 'completed' ) {
 			EPKB_AI_Log::add_log( 'Cron sync completed successfully', array( 'job' => $job ) );

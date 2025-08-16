@@ -231,7 +231,12 @@ class EPKB_AI_Table_Operations {
 			$row_data['chat_id'] = $conversation->get_chat_id();
 			$row_data['message_count'] = count( $messages );
 			$row_data['time'] = $created_date;
-			$row_data['user'] = $user_name;
+			// Mark support conversations differently
+			if ( $conversation->get_mode() === 'support' ) {
+				$row_data['user'] = '🎧 ' . $user_name;
+			} else {
+				$row_data['user'] = $user_name;
+			}
 			$row_data['user_id'] = $user_id;
 			$row_data['conversation'] = $first_message;
 			$row_data['first_message'] = $first_message;

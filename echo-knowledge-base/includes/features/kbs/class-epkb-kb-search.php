@@ -199,7 +199,7 @@ class EPKB_KB_Search {
 		$search_input_width = $kb_config[$prefix . 'search_box_input_width'];
 		$form_style_escaped = self::get_inline_style( $kb_config, 'width:' . $search_input_width . '%' );
 
-	   $main_page_indicator = $is_main_page_search ? 'eckb_search_on_main_page' : '';    ?>
+		$main_page_indicator = $is_main_page_search ? 'eckb_search_on_main_page' : '';    ?>
 
 		<div class="epkb-doc-search-container <?php echo esc_attr( $main_page_indicator ); ?>" <?php echo $style1_escaped; ?> >     <?php
 

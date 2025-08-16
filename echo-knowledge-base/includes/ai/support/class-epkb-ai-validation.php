@@ -315,8 +315,8 @@ class EPKB_AI_Validation {
 
 		// Verify collection exists in configuration
 		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
-		if ( !$collection_config ) {
-			return new WP_Error( 'collection_not_found', sprintf( __( 'Collection %d does not exist', 'echo-knowledge-base' ), $collection_id ) );
+		if ( is_wp_error( $collection_config ) ) {
+			return $collection_config;
 		}
 
 		return $collection_id;

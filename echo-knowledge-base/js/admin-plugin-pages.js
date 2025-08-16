@@ -7,8 +7,72 @@ jQuery(document).ready(function($) {
 		$( '#wpwrap' ).addClass( 'epkb-admin__wpwrap' );
 	}
 
+	// Handle Frontend Editor button click when no KB Main Page exists
+	$( '.epkb-btn-no-kb-main-page' ).on( 'click', function(e) {
+		e.preventDefault();
+		var setupWizardUrl = $( this ).data( 'setup-wizard-url' );
+		
+		// Create and show custom dialog
+		var dialogHtml = 
+			'<div id="epkb-no-kb-main-page-dialog" class="epkb-dialog-box-form epkb-dialog-box-form--active">' +
+				'<div class="epkb-dbf__header">' +
+					'<h4>' + ( epkb_vars.no_kb_main_page_title || 'Setup Required' ) + '</h4>' +
+				'</div>' +
+				'<div class="epkb-dbf__body">' +
+					( epkb_vars.no_kb_main_page_msg || 'KB Main Page is not set. Please run the Setup Wizard first to create a KB Main Page. Would you like to run the Setup Wizard now?' ) +
+				'</div>' +
+				'<div class="epkb-dbf__footer">' +
+					'<div class="epkb-dbf__footer__accept epkb-dbf__footer__accept--success">' +
+						'<span class="epkb-accept-button epkb-dbf__footer__accept__btn">' +
+							( epkb_vars.setup_wizard_btn_text || 'Run Setup Wizard' ) +
+						'</span>' +
+					'</div>' +
+					'<div class="epkb-dbf__footer__cancel">' +
+						'<span class="epkb-dbf__footer__cancel__btn">' + ( epkb_vars.cancel_text || 'Cancel' ) + '</span>' +
+					'</div>' +
+				'</div>' +
+				'<div class="epkb-dbf__close epkbfa epkbfa-times"></div>' +
+			'</div>' +
+			'<div class="epkb-dialog-box-form-black-background"></div>';
+		
+		// Add dialog to body
+		$( 'body' ).append( dialogHtml );
+		
+		// Handle Accept button
+		$( '#epkb-no-kb-main-page-dialog .epkb-dbf__footer__accept__btn' ).on( 'click', function() {
+			window.location.href = setupWizardUrl;
+		});
+		
+		// Handle Cancel and Close buttons
+		$( '#epkb-no-kb-main-page-dialog .epkb-dbf__footer__cancel__btn, #epkb-no-kb-main-page-dialog .epkb-dbf__close' ).on( 'click', function() {
+			$( '#epkb-no-kb-main-page-dialog' ).remove();
+			$( '.epkb-dialog-box-form-black-background' ).remove();
+		});
+	});
+
 	let remove_message_timeout = false;
 	let $confirmation_dialog = $( '#epkb-admin-page-reload-confirmation' );
+	
+	// Initialize TinyMCE for sidebar intro text if it exists on page load
+	setTimeout( function() {
+		if ( typeof tinymce !== 'undefined' && $( '#epkb_sidebar_main_page_intro_text' ).length && ! tinymce.get( 'epkb_sidebar_main_page_intro_text' ) ) {
+			// Check if WordPress has already initialized the editor settings
+			if ( typeof tinyMCEPreInit !== 'undefined' && tinyMCEPreInit.mceInit && tinyMCEPreInit.mceInit.epkb_sidebar_main_page_intro_text ) {
+				// Use WordPress's pre-configured settings
+				tinymce.init( tinyMCEPreInit.mceInit.epkb_sidebar_main_page_intro_text );
+			} else {
+				// Fallback initialization
+				tinymce.execCommand( 'mceAddEditor', true, 'epkb_sidebar_main_page_intro_text' );
+			}
+			
+			// Switch to visual mode after init
+			setTimeout( function() {
+				if ( $( '#epkb_sidebar_main_page_intro_text-tmce' ).length ) {
+					$( '#epkb_sidebar_main_page_intro_text-tmce' ).trigger( 'click' );
+				}
+			}, 100 );
+		}
+	}, 500 );
 
 
 	/*************************************************************************************************
@@ -87,6 +151,37 @@ jQuery(document).ready(function($) {
 				}
 			}
 		);
+	});
+	
+	// Save Sidebar Introduction Text (using form submit like KB Nickname)
+	$( document ).on( 'submit', '#epkb-sidebar-intro-text__form', function(e) {
+		e.preventDefault();
+		
+		let form = $( this );
+		
+		// Get content from TinyMCE editor
+		let intro_text = '';
+		if ( typeof tinymce !== 'undefined' && tinymce.get( 'epkb_sidebar_main_page_intro_text' ) ) {
+			intro_text = tinymce.get( 'epkb_sidebar_main_page_intro_text' ).getContent();
+		} else {
+			intro_text = form.find( '#epkb_sidebar_main_page_intro_text' ).val();
+		}
+		
+		let postData = {
+			action: 'epkb_save_sidebar_intro_text',
+			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+			sidebar_main_page_intro_text: intro_text,
+			epkb_kb_id: $( '#epkb-list-of-kbs' ).val()
+		};
+		
+		epkb_send_ajax( postData, function( response ) {
+			$( '.eckb-top-notice-message' ).remove();
+			if ( typeof response.message !== 'undefined' ) {
+				$( 'body' ).append( response.message );
+			}
+		} );
+		
+		return false;
 	});
 
 	// open panel
@@ -294,6 +389,40 @@ jQuery(document).ready(function($) {
 		// Change class for active Boxes List
 		$( '#epkb-admin__boxes-list__' + parent_list_key ).find( '.epkb-setting-box__list' ).removeClass( active_secondary_boxes_list_class );
 		$( '#epkb-setting-box__list-' + list_key ).addClass( active_secondary_boxes_list_class );
+		
+		// Reinitialize TinyMCE editor for sidebar intro text when "Other" tab is clicked
+		if ( list_key === 'tools__other' && typeof tinymce !== 'undefined' ) {
+			// Small delay to ensure DOM is ready
+			setTimeout( function() {
+				// Get the current value from the textarea
+				let currentValue = $( '#epkb_sidebar_main_page_intro_text' ).val();
+				
+				// Remove existing editor instance if exists
+				if ( tinymce.get( 'epkb_sidebar_main_page_intro_text' ) ) {
+					tinymce.execCommand( 'mceRemoveEditor', true, 'epkb_sidebar_main_page_intro_text' );
+				}
+				
+				// Reinitialize the editor using WordPress settings
+				if ( typeof tinyMCEPreInit !== 'undefined' && tinyMCEPreInit.mceInit && tinyMCEPreInit.mceInit.epkb_sidebar_main_page_intro_text ) {
+					tinymce.init( tinyMCEPreInit.mceInit.epkb_sidebar_main_page_intro_text );
+				} else {
+					tinymce.execCommand( 'mceAddEditor', true, 'epkb_sidebar_main_page_intro_text' );
+				}
+				
+				// Set the content and switch to visual mode after initialization
+				setTimeout( function() {
+					if ( tinymce.get( 'epkb_sidebar_main_page_intro_text' ) ) {
+						if ( currentValue ) {
+							tinymce.get( 'epkb_sidebar_main_page_intro_text' ).setContent( currentValue );
+						}
+						// Switch to visual mode
+						if ( $( '#epkb_sidebar_main_page_intro_text-tmce' ).length ) {
+							$( '#epkb_sidebar_main_page_intro_text-tmce' ).trigger( 'click' );
+						}
+					}
+				}, 100 );
+			}, 200 );
+		}
 
 		// Update anchor
 		window.location.hash = '#' + list_key;

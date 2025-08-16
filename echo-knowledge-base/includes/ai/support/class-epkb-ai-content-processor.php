@@ -6,35 +6,53 @@
  * Processes and cleans content for AI consumption.
  */
 class EPKB_AI_Content_Processor {
-	
+
 	/**
 	 * Prepare a post for AI
 	 *
-	 * @param int $post_id
-	 * @return array Array with 'content', 'metadata', 'size'
+	 * @param $post
+	 * @return array|WP_Error Array with 'content', 'metadata', 'size' or WP_Error on failure
 	 */
-	public function prepare_post( $post_id ) {
+	public function prepare_post( $post ) {
 		
-		$post = get_post( $post_id );
-		if ( ! $post || $post->post_status !== 'publish' ) {
-			return array(
-				'content'  => '',
-				'metadata' => array(),
-				'size'     => 0
-			);
+		// Validate post object
+		if ( ! $post || ! is_object( $post ) || empty( $post->ID ) ) {
+			return new WP_Error( 'invalid_post', __( 'Invalid post object', 'echo-knowledge-base' ) );
 		}
 		
-		// Clean content
-		$content = $this->clean_content( $post->post_content, $post_id );
+		// Check post status
+		if ( $post->post_status !== 'publish' ) {
+			return new WP_Error( 'post_not_published', __( 'Post is not published', 'echo-knowledge-base' ) );
+		}
 		
+		// Get the post type
+		$post_type = $post->post_type;
+		if ( $post_type === 'attachment' ) {
+			$result = $this->process_attachment( $post->ID );
+			return $result;
+		} 
+
+		if ( $post_type === EPKB_AI_Utilities::AI_PRO_NOTES_POST_TYPE ) {
+			$content = EPKB_Utilities::is_ai_features_pro_enabled() ? $post->post_content : '';
+			if ( empty( $content ) ) {
+				return new WP_Error( 'ai_note_empty', __( 'AI note content is empty', 'echo-knowledge-base' ) );
+			}
+		} else {
+			$content = $this->clean_content( $post->post_content, $post->ID );
+			if ( is_wp_error( $content ) ) {
+				return $content;
+			}
+		}
+
+		// Validate content is not empty
+		if ( empty( $content ) ) {
+			return new WP_Error( 'empty_content', __( 'Post content is empty after processing', 'echo-knowledge-base' ) );
+		}
+
 		// Build metadata
 		$metadata = $this->build_post_metadata( $post );
 		
-		return array(
-			'content'  => $content,
-			'metadata' => $metadata,
-			'size'     => strlen( $content )
-		);
+		return array( 'content'  => $content, 'metadata' => $metadata, 'size' => strlen( $content ) );
 	}
 
 	/**
@@ -42,7 +60,7 @@ class EPKB_AI_Content_Processor {
 	 *
 	 * @param string $content
 	 * @param int $post_id
-	 * @return string
+	 * @return string|WP_Error Cleaned content or WP_Error on failure
 	 */
 	public function clean_content( $content, $post_id = 0 ) {
 		
@@ -56,12 +74,21 @@ class EPKB_AI_Content_Processor {
 		
 		// Remove WordPress block comments
 		$content = preg_replace( '/<!--\s*\/?wp:[^\>]+-->/s', '', $content );
+		if ( $content === null ) {
+			return new WP_Error( 'regex_failed', __( 'Failed to process WordPress block comments', 'echo-knowledge-base' ) );
+		}
 		
 		// Remove HTML comments
 		$content = preg_replace( '/<!--.*?-->/s', '', $content );
+		if ( $content === null ) {
+			return new WP_Error( 'regex_failed', __( 'Failed to process HTML comments', 'echo-knowledge-base' ) );
+		}
 		
 		// Remove Echo KB specific shortcodes
 		$content = preg_replace( '/\[epkb[-_].*?\]/s', '', $content );
+		if ( $content === null ) {
+			return new WP_Error( 'regex_failed', __( 'Failed to process shortcodes', 'echo-knowledge-base' ) );
+		}
 		
 		// Process shortcodes based on filter
 		$process_shortcodes = apply_filters( 'epkb_process_shortcodes_in_ai', false );
@@ -78,11 +105,21 @@ class EPKB_AI_Content_Processor {
 		// Convert to plain text
 		$content = wp_strip_all_tags( $content, true );
 		
+		// Fix missing spaces after sentence-ending punctuation that may occur after stripping tags
+		// Matches period, exclamation, or question mark followed immediately by a capital letter
+		$content = preg_replace( '/([.!?])([A-Z])/u', '$1 $2', $content );
+		if ( $content === null ) {
+			return new WP_Error( 'regex_failed', __( 'Failed to normalize punctuation spacing', 'echo-knowledge-base' ) );
+		}
+		
 		// Normalize whitespace
 		$content = $this->normalize_whitespace( $content );
 		
 		// Remove control characters
 		$content = preg_replace( '/[\x00-\x1F\x7F]/u', '', $content );
+		if ( $content === null ) {
+			return new WP_Error( 'regex_failed', __( 'Failed to remove control characters', 'echo-knowledge-base' ) );
+		}
 		
 		// Apply final length limit in case content expanded during processing
 		$content = $this->apply_length_limit( $content, $post_id );
@@ -94,7 +131,54 @@ class EPKB_AI_Content_Processor {
 		
 		return $content;
 	}
-	
+
+	/**
+	 * Generate a title from content by extracting the first sentence or truncating.
+	 *
+	 * @param string $content The content to generate title from
+	 * @param int $max_length Maximum length for the title (default 100)
+	 * @return string Generated title
+	 */
+	public static function generate_title_from_content( $content, $max_length = 100 ) {
+		// Remove HTML tags
+		$title = wp_strip_all_tags( $content );
+
+		// Decode HTML entities
+		$title = html_entity_decode( $title, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+		// Remove special characters and normalize whitespace
+		$title = preg_replace( '/[^\p{L}\p{N}\s\-.,!?]/u', '', $title );
+		$title = preg_replace( '/\s+/', ' ', trim( $title ) );
+
+		// Try to extract first sentence
+		$sentences = preg_split( '/(?<=[.!?])\s+/', $title, 2 );
+		if ( ! empty( $sentences[0] ) && mb_strlen( $sentences[0] ) <= $max_length ) {
+			$title = $sentences[0];
+		} else {
+			// Otherwise truncate at word boundary
+			if ( mb_strlen( $title ) > $max_length ) {
+				$title = mb_substr( $title, 0, $max_length );
+				$last_space = mb_strrpos( $title, ' ' );
+				if ( $last_space !== false && $last_space > ( $max_length * 0.7 ) ) {
+					$title = mb_substr( $title, 0, $last_space );
+				} else {
+					// If no good word boundary, just truncate and add ellipsis
+					$title = mb_substr( $title, 0, $max_length - 3 ) . '...';
+				}
+			}
+		}
+
+		// Final cleanup
+		$title = trim( $title );
+
+		// Ensure title is not empty
+		if ( empty( $title ) ) {
+			$title = __( 'Untitled', 'echo-knowledge-base' );
+		}
+
+		return $title;
+	}
+
 	/**
 	 * Strip shortcodes but keep their content
 	 *
@@ -245,99 +329,32 @@ class EPKB_AI_Content_Processor {
 	}
 	
 	/**
-	 * Generate a title from content by extracting the first sentence or truncating.
-	 *
-	 * @param string $content The content to generate title from
-	 * @param int $max_length Maximum length for the title (default 100)
-	 * @return string Generated title
-	 */
-	public static function generate_title_from_content( $content, $max_length = 100 ) {
-		// Remove HTML tags
-		$title = wp_strip_all_tags( $content );
-		
-		// Decode HTML entities
-		$title = html_entity_decode( $title, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-		
-		// Remove special characters and normalize whitespace
-		$title = preg_replace( '/[^\p{L}\p{N}\s\-.,!?]/u', '', $title );
-		$title = preg_replace( '/\s+/', ' ', trim( $title ) );
-		
-		// Try to extract first sentence
-		$sentences = preg_split( '/(?<=[.!?])\s+/', $title, 2 );
-		if ( ! empty( $sentences[0] ) && mb_strlen( $sentences[0] ) <= $max_length ) {
-			$title = $sentences[0];
-		} else {
-			// Otherwise truncate at word boundary
-			if ( mb_strlen( $title ) > $max_length ) {
-				$title = mb_substr( $title, 0, $max_length );
-				$last_space = mb_strrpos( $title, ' ' );
-				if ( $last_space !== false && $last_space > ( $max_length * 0.7 ) ) {
-					$title = mb_substr( $title, 0, $last_space );
-				} else {
-					// If no good word boundary, just truncate and add ellipsis
-					$title = mb_substr( $title, 0, $max_length - 3 ) . '...';
-				}
-			}
-		}
-		
-		// Final cleanup
-		$title = trim( $title );
-		
-		// Ensure title is not empty
-		if ( empty( $title ) ) {
-			$title = __( 'Untitled', 'echo-knowledge-base' );
-		}
-		
-		return $title;
-	}
-	
-	/**
 	 * Process an attachment for AI
 	 *
 	 * @param int $attachment_id
-	 * @return array Array with 'content', 'metadata', 'size'
+	 * @return array|WP_Error Array with 'content', 'metadata', 'size' or WP_Error on failure
 	 */
-	public function process_attachment( $attachment_id ) {
+	private function process_attachment( $attachment_id ) {
 		
 		$attachment = get_post( $attachment_id );
 		if ( ! $attachment || $attachment->post_type !== 'attachment' ) {
-			return array(
-				'content'  => '',
-				'metadata' => array(),
-				'size'     => 0
-			);
+			return new WP_Error( 'invalid_attachment', __( 'Invalid attachment', 'echo-knowledge-base' ) );
 		}
 		
 		// Get file path and mime type
 		$file_path = get_attached_file( $attachment_id );
 		$mime_type = get_post_mime_type( $attachment_id );
 		if ( ! file_exists( $file_path ) ) {
-			EPKB_AI_Log::add_log( 'Attachment file not found', array(
-				'attachment_id' => $attachment_id,
-				'file_path' => $file_path
-			) );
-			return array(
-				'content'  => '',
-				'metadata' => array(),
-				'size'     => 0
-			);
+			EPKB_AI_Log::add_log( 'Attachment file not found', array( 'attachment_id' => $attachment_id, 'file_path' => $file_path ) );
+			return new WP_Error( 'attachment_file_missing', __( 'Attachment file not found', 'echo-knowledge-base' ) );
 		}
 		
 		// Check file size limit before processing
 		$file_size = filesize( $file_path );
 		$max_size = $this->get_max_attachment_size( $mime_type );
 		if ( $file_size > $max_size ) {
-			EPKB_AI_Log::add_log( 'Attachment exceeds size limit', array(
-				'attachment_id' => $attachment_id,
-				'mime_type' => $mime_type,
-				'file_size' => $file_size,
-				'max_size' => $max_size
-			) );
-			return array(
-				'content'  => '',
-				'metadata' => array(),
-				'size'     => 0
-			);
+			EPKB_AI_Log::add_log( 'Attachment exceeds size limit', array( 'attachment_id' => $attachment_id, 'mime_type' => $mime_type, 'file_size' => $file_size, 'max_size' => $max_size ) );
+			return new WP_Error( 'attachment_too_large', sprintf( __( 'Attachment exceeds size limit (%s)', 'echo-knowledge-base' ), size_format( $max_size ) ) );
 		}
 		
 		// Extract content based on file type
@@ -372,26 +389,22 @@ class EPKB_AI_Content_Processor {
 					$content = $this->extract_text_file_content( $file_path );
 				} else {
 					// Log unsupported MIME type
-					EPKB_AI_Log::add_log( 'Unsupported attachment MIME type for extraction', array(
-						'attachment_id' => $attachment_id,
-						'mime_type' => $mime_type
-					) );
+					EPKB_AI_Log::add_log( 'Unsupported attachment MIME type for extraction', array(	'attachment_id' => $attachment_id, 'mime_type' => $mime_type ) );
 				}
 				break;
 		}
 		
 		// Log if extraction resulted in empty content
 		if ( empty( $content ) ) {
-			EPKB_AI_Log::add_log( 'Empty content extracted from attachment', array(
-				'attachment_id' => $attachment_id,
-				'mime_type' => $mime_type,
-				'file_path' => $file_path
-			) );
+			EPKB_AI_Log::add_log( 'Empty content extracted from attachment', array( 'attachment_id' => $attachment_id, 'mime_type' => $mime_type, 'file_path' => $file_path ) );
 		}
 		
 		// Clean the extracted content
 		if ( ! empty( $content ) ) {
-			$content = $this->clean_content( $content );
+			$cleaned_content = $this->clean_content( $content );
+			if ( is_wp_error( $cleaned_content ) ) {
+				return $cleaned_content;
+			}
 		}
 		
 		// Build metadata
@@ -449,7 +462,7 @@ class EPKB_AI_Content_Processor {
 		
 		// Log that PDF extraction is not available
 		if ( empty( $content ) ) {
-			EPKB_AI_Log::add_log( 'No extractor for application/pdf – skipped', array('file_path' => $file_path, 'mime_type' => 'application/pdf', 'context' => 'extract_pdf_content') );
+			EPKB_AI_Log::add_log( 'No extractor for application/pdf skipped', array('file_path' => $file_path, 'mime_type' => 'application/pdf', 'context' => 'extract_pdf_content') );
 		}
 		
 		return $content;

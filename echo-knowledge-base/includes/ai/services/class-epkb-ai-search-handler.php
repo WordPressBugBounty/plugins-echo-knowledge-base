@@ -39,10 +39,10 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 		}
 		
 		// Check rate limit
-		$rate_limit_check = EPKB_AI_Security::check_rate_limit();
+		/* $rate_limit_check = EPKB_AI_Security::check_rate_limit();  TODO
 		if ( is_wp_error( $rate_limit_check ) ) {
 			return $rate_limit_check;
-		}
+		} */
 		
 		// Get or create session
 		$session_id = EPKB_AI_Security::get_or_create_session();
@@ -80,8 +80,7 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 		// Save to database
 		$message_id = $this->repository->save_conversation( $conversation );
 		if ( is_wp_error( $message_id ) ) {
-			return new WP_Error( 'save_failed', 'Failed to save conversation: ' . $message_id->get_error_message()
-			);
+			return new WP_Error( 'save_failed', 'Failed to save conversation: ' . $message_id->get_error_message() );
 		}
 		
 		// Record usage for tracking

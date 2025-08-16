@@ -38,6 +38,12 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 				'default'     => [EPKB_KB_Handler::KB_POST_TYPE_PREFIX . EPKB_KB_Config_DB::DEFAULT_KB_ID], // Default to the main knowledge base post type
 				'options'     => array()  // Options will be populated when needed via get_field_options()
 			),
+			// Summarization feature disabled for now
+			'ai_training_data_use_summary' => array(
+				'name'        => 'ai_training_data_use_summary',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'off'  // Always off - feature disabled
+			),
 		);
 
 		return $training_data_specs;
@@ -53,6 +59,7 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 			'ai_training_data_store_name' => self::get_default_collection_name( self::DEFAULT_COLLECTION_ID ),
 			'ai_training_data_store_id' => '',
 			'ai_training_data_store_post_types' => [EPKB_KB_Handler::KB_POST_TYPE_PREFIX . EPKB_KB_Config_DB::DEFAULT_KB_ID], // Default to the main knowledge base post type
+			'ai_training_data_use_summary' => 'off',
 		);
 	}
 
@@ -65,7 +72,7 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 	public static function get_training_data_collections( $strict_mode = false ) {
 
 		$collections = get_option( self::OPTION_NAME, array() );
-		
+
 		// Check if get_option failed (returns false on failure)
 		if ( $collections === false && $strict_mode ) {
 			return new WP_Error( 'option_read_failed', __( 'Failed to read training data collections from database', 'echo-knowledge-base' ) );
@@ -73,14 +80,13 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 		
 		if ( ! is_array( $collections ) ) {
 			if ( $strict_mode ) {
-				return new WP_Error( 'invalid_data_format', __( 'Training data collections data is corrupted', 'echo-knowledge-base' ) );
+				return new WP_Error( 'invalid_data_format', __( 'Training data collections is corrupted', 'echo-knowledge-base' ) );
 			}
 			
 			return array();
 		}
 		
 		// If no collection exists, return empty array instead of creating a default one
-		// User can use 'Add New' button to create collections as needed
 		if ( empty( $collections ) ) {
 			return array();
 		}
@@ -92,15 +98,64 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 	 * Get a specific training data collection by ID
 	 *
 	 * @param int $collection_id
-	 * @return array|false Collection configuration or false if not found
+	 * @return array|WP_Error Collection configuration or WP_Error if not found
 	 */
 	public static function get_training_data_collection( $collection_id ) {
 		$collections = self::get_training_data_collections();
 		if ( is_wp_error( $collections ) ) {
-			return false;
+			return $collections;
 		}
 		
-		return isset( $collections[$collection_id] ) ? $collections[$collection_id] : false;
+		return isset( $collections[$collection_id] ) ? $collections[$collection_id] : new WP_Error( 'collection_not_found', sprintf( __( 'Collection %d does not exist', 'echo-knowledge-base' ), $collection_id ) );
+	}
+
+	/**
+	 * Sync collections from database with configuration
+	 * Ensures all collections that exist in the database are also in the configuration
+	 *
+	 * @return bool|WP_Error True on success, WP_Error on failure
+	 */
+	public static function sync_collections_from_database() {
+		// Get the training data DB instance
+		$training_data_db = new EPKB_AI_Training_Data_DB();
+		
+		// Get all collection IDs from the database
+		$db_collection_ids = $training_data_db->get_all_collection_ids_from_db();
+		if ( is_wp_error( $db_collection_ids ) ) {
+			return $db_collection_ids;
+		}
+		
+		// Get existing collections from configuration
+		$config_collections = self::get_training_data_collections();
+		if ( is_wp_error( $config_collections ) ) {
+			$config_collections = array(); // Start with empty if error
+		}
+		
+		$updated = false;
+		
+		// Check each database collection ID
+		foreach ( $db_collection_ids as $collection_id ) {
+			// If collection doesn't exist in config, add it with default settings
+			if ( ! isset( $config_collections[$collection_id] ) ) {
+				$config_collections[$collection_id] = array(
+					'ai_training_data_store_name' => self::get_default_collection_name( $collection_id ),
+					'ai_training_data_store_id' => '',
+					'ai_training_data_store_post_types' => [EPKB_KB_Handler::KB_POST_TYPE_PREFIX . EPKB_KB_Config_DB::DEFAULT_KB_ID],
+					'ai_training_data_use_summary' => 'off',
+				);
+				$updated = true;
+			}
+		}
+		
+		// Save updated collections if changes were made
+		if ( $updated ) {
+			$result = self::update_training_data_collections( $config_collections, true );
+			if ( is_wp_error( $result ) || ! $result ) {
+				return new WP_Error( 'save_failed', __( 'Failed to save synchronized collections', 'echo-knowledge-base' ) );
+			}
+		}
+		
+		return true;
 	}
 
 	/**
@@ -271,7 +326,7 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 	 */
 	private static function collection_has_data( $collection_id ) {
 		$training_data_db = new EPKB_AI_Training_Data_DB();
-		$count = $training_data_db->get_training_data_count( array( 'training_collection_id' => $collection_id ) );
+		$count = $training_data_db->get_training_data_count( array( 'collection_id' => $collection_id ) );
 		return $count > 0;
 	}
 

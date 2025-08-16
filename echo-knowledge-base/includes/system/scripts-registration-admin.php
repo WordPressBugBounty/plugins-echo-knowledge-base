@@ -66,6 +66,10 @@ function epkb_load_admin_plugin_pages_resources() {
 		'sending_feedback'              => esc_html__('Sending feedback', 'echo-knowledge-base' ) . '...',
 		'changing_debug'                => esc_html__('Changing debug', 'echo-knowledge-base' ) . '...',
 		'help_text_coming'              => esc_html__('Help text is coming soon.', 'echo-knowledge-base' ),
+		'no_kb_main_page_title'         => esc_html__( 'Setup Required', 'echo-knowledge-base' ),
+		'no_kb_main_page_msg'           => esc_html__( 'KB Main Page is not set. Please run the Setup Wizard first to create a KB Main Page. Would you like to run the Setup Wizard now?', 'echo-knowledge-base' ),
+		'setup_wizard_btn_text'         => esc_html__( 'Run Setup Wizard', 'echo-knowledge-base' ),
+		'cancel_text'                   => esc_html__( 'Cancel', 'echo-knowledge-base' ),
 		'nonce'                         => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
 		'msg_reading_posts'             => esc_html__('Reading items', 'echo-knowledge-base') . '...',
 		'msg_confirm_kb'                => esc_html__('Please confirm Knowledge Base to import into.', 'echo-knowledge-base'),
@@ -151,12 +155,21 @@ function epkb_load_admin_plugin_pages_resources() {
 		wp_enqueue_script( 'wp-data' );
 		wp_enqueue_style( 'wp-components' );
 		
+		// Load AI admin page styles
+		$css_suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		wp_enqueue_style( 'epkb-admin-ai-page-styles', Echo_Knowledge_Base::$plugin_url . 'css/admin-ai-page' . $css_suffix . '.css', array(), Echo_Knowledge_Base::$version );
+		
 		$ai_suffix = ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG && file_exists( Echo_Knowledge_Base::$plugin_dir . 'js/ai/admin-ai-app.js' ) ) ? '' : '.min';
 		
-		// Load React utilities first
+		// Register ai-chat-util if not already registered (contains error handling utilities)
+		if ( ! wp_script_is( 'epkb-ai-chat-util', 'registered' ) ) {
+			wp_register_script( 'epkb-ai-chat-util', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-util' . $ai_suffix . '.js', array(), Echo_Knowledge_Base::$version );
+		}
+		
+		// Register and enqueue React utilities first
 		wp_enqueue_script( 'epkb-admin-ai-util', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-util' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-api-fetch', 'wp-i18n'), Echo_Knowledge_Base::$version );
-		
+
 		// Load React tab components
 		wp_enqueue_script( 'epkb-admin-ai-dashboard', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-dashboard' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
@@ -165,48 +178,111 @@ function epkb_load_admin_plugin_pages_resources() {
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
 		
 		wp_enqueue_script( 'epkb-admin-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-chat' . $ai_suffix . '.js',
-			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-ai-chat-util'), Echo_Knowledge_Base::$version );
 		
 		wp_enqueue_script( 'epkb-admin-ai-search', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-search' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
 		
 		// Sync component (must load before training data files)
 		wp_enqueue_script( 'epkb-admin-ai-sync', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-sync' . $ai_suffix . '.js',
-			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-ai-chat-util'), Echo_Knowledge_Base::$version );
 		
 		// Training data table component (must load before main training data file)
 		wp_enqueue_script( 'epkb-admin-ai-training-data-table', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-training-data-table' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
 		
 		wp_enqueue_script( 'epkb-admin-ai-training-data', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-training-data' . $ai_suffix . '.js',
-			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-admin-ai-training-data-table', 'epkb-admin-ai-sync'), Echo_Knowledge_Base::$version );
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-admin-ai-training-data-table', 'epkb-admin-ai-sync', 'epkb-ai-chat-util'), Echo_Knowledge_Base::$version );
+		
+		// Load Tuning tab component
+		wp_enqueue_script( 'epkb-admin-ai-tuning', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-tuning' . $ai_suffix . '.js',
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
 		
 		// Load Tools tab component
 		wp_enqueue_script( 'epkb-admin-ai-tools', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-tools' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
 		
+		// Load PRO Features tab component
+		wp_enqueue_script( 'epkb-admin-ai-pro-features', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-pro-features' . $ai_suffix . '.js',
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
+		
 		// Load main app last as it depends on all other components
 		wp_enqueue_script( 'epkb-admin-ai-app', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-app' . $ai_suffix . '.js',
-			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util',
-				'epkb-admin-ai-dashboard', 'epkb-admin-ai-general-settings', 'epkb-admin-ai-chat', 'epkb-admin-ai-search', 'epkb-admin-ai-training-data', 'epkb-admin-ai-tools'),
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-admin-ai-dashboard', 'epkb-admin-ai-general-settings',
+					'epkb-admin-ai-chat', 'epkb-admin-ai-search', 'epkb-admin-ai-training-data', 'epkb-admin-ai-tuning', 'epkb-admin-ai-tools', 'epkb-admin-ai-pro-features'),
 			Echo_Knowledge_Base::$version );
 		
-		// Set up API Fetch middleware
-		wp_localize_script( 'epkb-admin-ai-util', 'epkb_ai_api', array(
-			'nonce' => wp_create_nonce( 'wp_rest' ),
-			'root' => esc_url_raw( rest_url() ),
-			'admin_url' => esc_url_raw( admin_url() ),
+		// Set up API Fetch middleware and AI presets
+		$ai_presets = array();
+		$chat_presets = EPKB_OpenAI_Client::get_model_presets( 'chat' );
+		$search_presets = EPKB_OpenAI_Client::get_model_presets( 'search' );
+
+		// Convert presets to simpler format for JS (removing label and description)
+		foreach ( $chat_presets as $key => $preset ) {
+			// Skip custom preset as it doesn't have actual values
+			if ( $key === 'custom' ) {
+				continue;
+			}
+			$ai_presets['chat'][$key] = array();
+			// Only include parameters that actually exist in the preset
+			if ( isset( $preset['model'] ) ) {
+				$ai_presets['chat'][$key]['model'] = $preset['model'];
+			}
+			if ( isset( $preset['verbosity'] ) ) {
+				$ai_presets['chat'][$key]['verbosity'] = $preset['verbosity'];
+			}
+			if ( isset( $preset['reasoning'] ) ) {
+				$ai_presets['chat'][$key]['reasoning'] = $preset['reasoning'];
+			}
+			if ( isset( $preset['temperature'] ) ) {
+				$ai_presets['chat'][$key]['temperature'] = $preset['temperature'];
+			}
+			if ( isset( $preset['max_output_tokens'] ) ) {
+				$ai_presets['chat'][$key]['max_output_tokens'] = $preset['max_output_tokens'];
+			}
+			if ( isset( $preset['top_p'] ) ) {
+				$ai_presets['chat'][$key]['top_p'] = $preset['top_p'];
+			}
+		}
+
+		foreach ( $search_presets as $key => $preset ) {
+			// Skip custom preset as it doesn't have actual values
+			if ( $key === 'custom' ) {
+				continue;
+			}
+			$ai_presets['search'][$key] = array();
+			// Only include parameters that actually exist in the preset
+			if ( isset( $preset['model'] ) ) {
+				$ai_presets['search'][$key]['model'] = $preset['model'];
+			}
+			if ( isset( $preset['verbosity'] ) ) {
+				$ai_presets['search'][$key]['verbosity'] = $preset['verbosity'];
+			}
+			if ( isset( $preset['reasoning'] ) ) {
+				$ai_presets['search'][$key]['reasoning'] = $preset['reasoning'];
+			}
+			if ( isset( $preset['temperature'] ) ) {
+				$ai_presets['search'][$key]['temperature'] = $preset['temperature'];
+			}
+			if ( isset( $preset['max_output_tokens'] ) ) {
+				$ai_presets['search'][$key]['max_output_tokens'] = $preset['max_output_tokens'];
+			}
+			if ( isset( $preset['top_p'] ) ) {
+				$ai_presets['search'][$key]['top_p'] = $preset['top_p'];
+			}
+		}
+
+		wp_localize_script( 'epkb-admin-ai-util', 'epkb_ai_api', array( 
+			'nonce' => wp_create_nonce( 'wp_rest' ), 
+			'root' => esc_url_raw( rest_url() ), 
+			'admin_url' => esc_url_raw( admin_url() ), 
+			'presets' => $ai_presets,
+			'timezone_string' => wp_timezone_string(),
+			'gmt_offset' => get_option( 'gmt_offset', 0 )
 		) );
 		
 		// Initialize nonce middleware
-		wp_add_inline_script(
-			'epkb-admin-ai-util',
-			sprintf(
-				'wp.apiFetch.use( wp.apiFetch.createNonceMiddleware( "%s" ) );',
-				wp_create_nonce( 'wp_rest' )
-			),
-			'after'
-		);
+		wp_add_inline_script( 'epkb-admin-ai-util', sprintf( 'wp.apiFetch.use( wp.apiFetch.createNonceMiddleware( "%s" ) );', wp_create_nonce( 'wp_rest' ) ), 'after' );
 		
 	}
 }
@@ -269,3 +345,93 @@ function epkb_load_admin_article_page_styles() {
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 	wp_enqueue_style( 'epkb-admin-plugin-pages-styles', Echo_Knowledge_Base::$plugin_url . 'css/admin-article-page' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
 }
+
+// Admin Help Chat - Temporarily disabled (not released yet)
+/* Temporarily disabled - backend help chat not released yet
+function epkb_enqueue_admin_help_chat() {
+	
+	$screen = get_current_screen();
+	if ( empty( $screen ) || strpos( $screen->id, 'epkb' ) === false ) {
+		return;
+	}
+
+	// Only for admin users
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+	// Enqueue React (use WordPress bundled version)
+	wp_enqueue_script( 'react' );
+	wp_enqueue_script( 'react-dom' );
+
+	// Enqueue admin help chat CSS
+	wp_enqueue_style( 'epkb-admin-help-chat-styles', Echo_Knowledge_Base::$plugin_url . 'css/admin-help-chat' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
+
+	// Check if admin AI utilities are already loaded (enqueued or registered)
+	$ai_suffix = ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG && file_exists( Echo_Knowledge_Base::$plugin_dir . 'js/ai/admin-ai-app.js' ) ) ? '' : '.min';
+	if ( ! wp_script_is( 'epkb-admin-ai-util', 'registered' ) && ! wp_script_is( 'epkb-admin-ai-util', 'enqueued' ) ) {
+		wp_register_script( 'epkb-admin-ai-util', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-util' . $ai_suffix . '.js', array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch'), Echo_Knowledge_Base::$version );
+	}
+	
+	// Register ai-chat-util if not already registered (contains error handling utilities)
+	if ( ! wp_script_is( 'epkb-ai-chat-util', 'registered' ) ) {
+		wp_register_script( 'epkb-ai-chat-util', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-util' . $ai_suffix . '.js', array(), Echo_Knowledge_Base::$version );
+	}
+	
+	// Enqueue help chat script with proper suffix - WordPress will automatically enqueue dependencies
+	wp_enqueue_script( 'epkb-admin-help-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-help-chat' . $ai_suffix . '.js', array( 'react', 'react-dom', 'epkb-admin-ai-util', 'epkb-ai-chat-util' ), Echo_Knowledge_Base::$version, true );
+
+	// Get AI configuration status (non-identifiable)
+	$ai_config = array(
+		'chat_enabled' => EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled' ) === 'on',
+		'search_enabled' => EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled' ) === 'on',
+	);
+
+	// Determine endpoint - use local for testing if on localhost
+	$endpoint = 'http://kb.local//wp-json/epkb/v1/ai-support/chat';
+	
+	// Get current user info
+	$current_user = wp_get_current_user();
+	
+	// Localize script with necessary data
+	wp_localize_script( 'epkb-admin-help-chat', 'epkbAdminHelp', array(
+		'endpoint' => $endpoint,
+		'ticket_endpoint' => 'https://www.echoknowledgebase.com/wp-json/epkb/v1/support/ticket',
+		'token' => 'epkb_support_2024_token',
+		'plugin_version' => Echo_Knowledge_Base::$version,
+		'wp_version' => get_bloginfo( 'version' ),
+		'ai_config' => $ai_config,
+		'nonce' => wp_create_nonce( 'epkb_admin_help' ),
+		'user' => array(
+			'name' => $current_user->display_name,
+			'email' => $current_user->user_email
+		),
+		'i18n' => array(
+			'help_button' => __( 'Need Help?', 'echo-knowledge-base' ),
+			'welcome' => __( 'Hi! I can help you with the Knowledge Base plugin. What would you like to know?', 'echo-knowledge-base' ),
+			'placeholder' => __( 'Type your question...', 'echo-knowledge-base' ),
+			'send' => __( 'Send', 'echo-knowledge-base' ),
+			'close' => __( 'Close', 'echo-knowledge-base' ),
+			'error' => __( 'Sorry, I couldn\'t get a response. Please reload your page and try again.', 'echo-knowledge-base' ),
+			'contact_support' => __( 'contact support', 'echo-knowledge-base' ),
+			'if_issue_persists' => __( 'If the issue persists, please', 'echo-knowledge-base' ),
+			'typing' => __( 'Typing...', 'echo-knowledge-base' ),
+			'need_human' => __( 'Need a human?', 'echo-knowledge-base' ),
+			'submit_ticket' => __( 'Submit Support Ticket', 'echo-knowledge-base' ),
+			'your_name' => __( 'Your Name', 'echo-knowledge-base' ),
+			'your_email' => __( 'Your Email', 'echo-knowledge-base' ),
+			'ticket_intro' => __( 'We\'ll create a support ticket for you and our team will review your conversation.', 'echo-knowledge-base' ),
+			'cancel' => __( 'Cancel', 'echo-knowledge-base' ),
+			'submit' => __( 'Submit Ticket', 'echo-knowledge-base' ),
+			'submitting' => __( 'Submitting...', 'echo-knowledge-base' ),
+			'ticket_submitted' => __( 'Your support ticket has been submitted successfully! Our team will get back to you soon.', 'echo-knowledge-base' ),
+			'ticket_error' => __( 'Failed to submit ticket. Please try again or contact support directly.', 'echo-knowledge-base' ),
+			'fill_required' => __( 'Please fill in all required fields.', 'echo-knowledge-base' ),
+			'new_conversation' => __( 'New Conversation', 'echo-knowledge-base' )
+		)
+	));
+}
+add_action( 'admin_enqueue_scripts', 'epkb_enqueue_admin_help_chat' );
+*/

@@ -17,7 +17,6 @@ function epkb_add_plugin_menus() {
 	add_submenu_page( 'edit.php?post_type=' . $post_type_name, esc_html__( 'Dashboard - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'Dashboard', 'echo-knowledge-base' ),
 		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_need_help_read'] ), 'epkb-dashboard', array( new EPKB_Dashboard_Page(), 'display_dashboard_page' ) );
 
-
 	add_submenu_page( 'edit.php?post_type=' . $post_type_name, esc_html__( 'FAQs - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'FAQs', 'echo-knowledge-base' ),
 		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ), 'epkb-faqs', array( new EPKB_FAQs_Page(), 'display_faqs_page') );
 

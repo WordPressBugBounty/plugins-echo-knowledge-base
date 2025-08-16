@@ -54,7 +54,16 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 		register_rest_route( $this->admin_namespace, '/sync-progress', array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'sync_progress' ),
+				'callback'            => array( $this, 'get_sync_progress' ),
+				'permission_callback' => array( $this, 'check_admin_permission' ),
+			)
+		) );
+		
+		// Process next post (for direct sync)
+		register_rest_route( $this->admin_namespace, '/process-next', array(
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'process_next_post' ),
 				'permission_callback' => array( $this, 'check_admin_permission' ),
 			)
 		) );
@@ -93,9 +102,8 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 		$selected_post_ids = $request->get_param( 'selected_post_ids' );
 		$collection_id = intval( $request->get_param( 'collection_id' ) );
 		
-		// Start sync job
-		$result = EPKB_AI_Sync_Job_Manager::start_sync_job( $selected_post_ids, 'direct', $collection_id );
-		
+		// Initialize sync job
+		$result = EPKB_AI_Sync_Job_Manager::initialize_sync_job( $selected_post_ids, 'direct', $collection_id );
 		if ( is_wp_error( $result ) ) {
 			return $this->create_rest_response( array( 'success' => false, 'error' => $result->get_error_code(), 'message' => $result->get_error_message() ), 400 );
 		}
@@ -114,41 +122,29 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 		$selected_post_ids = $request->get_param( 'selected_post_ids' );
 		$collection_id = intval( $request->get_param( 'collection_id' ) );
 		
-		// Start sync job
-		$result = EPKB_AI_Sync_Job_Manager::start_sync_job( $selected_post_ids, 'cron', $collection_id );
+		// Initialize sync job
+		$result = EPKB_AI_Sync_Job_Manager::initialize_sync_job( $selected_post_ids, 'cron', $collection_id );
 		
 		if ( is_wp_error( $result ) ) {
 			return $this->create_rest_response( array( 'success' => false, 'error' => $result->get_error_code(), 'message' => $result->get_error_message() ), 400 );
 		}
 		
-		// Schedule cron event
+		// Schedule the first cron event to start the chain
+		// Each cron execution will schedule the next one, ensuring no overlap
 		wp_schedule_single_event( time() + 1, EPKB_AI_Sync_Job_Manager::CRON_HOOK );
 		
 		return $this->create_rest_response( array( 'success' => true, 'job' => $result, 'total' => $result['total'] ) );
 	}
 	
 	/**
-	 * Get sync progress and optionally process next batch for direct sync
+	 * Get sync progress
 	 * 
 	 * @param WP_REST_Request $request
 	 * @return WP_REST_Response
 	 */
-	public function sync_progress( $request ) {
+	public function get_sync_progress( $request ) {
 		
 		$job = EPKB_AI_Sync_Job_Manager::get_sync_job();
-		
-		// For direct sync that's running, process next batch
-		if ( $job['type'] === 'direct' && $job['status'] === 'running' ) {
-			$batch_result = EPKB_AI_Sync_Job_Manager::process_next_batch();
-			
-			// Refresh job data after processing
-			$job = EPKB_AI_Sync_Job_Manager::get_sync_job();
-			
-			// Include updated posts info if available
-			if ( ! empty( $batch_result['updated_posts'] ) ) {
-				$job['updated_posts'] = $batch_result['updated_posts'];
-			}
-		}
 		
 		return $this->create_rest_response( array(
 								'success' => true,
@@ -159,8 +155,49 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 									'percent' => $job['percent'],
 									'errors' => isset( $job['errors'] ) ? $job['errors'] : 0,
 									'type' => $job['type'],
-									'updated_posts' => isset( $job['updated_posts'] ) ? $job['updated_posts'] : array()
+									'retrying' => isset( $job['retrying'] ) ? $job['retrying'] : false,
+									'cancel_requested' => isset( $job['cancel_requested'] ) ? $job['cancel_requested'] : false
 								)
+		) );
+	}
+	
+	/**
+	 * Process next post for direct sync
+	 * 
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function process_next_post( $request ) {
+		
+		$job = EPKB_AI_Sync_Job_Manager::get_sync_job();
+		
+		// Only process if direct sync is running
+		if ( $job['type'] !== 'direct' || $job['status'] !== 'running' ) {
+			return $this->create_rest_response( array(
+				'success' => false,
+				'message' => __( 'No active direct sync job', 'echo-knowledge-base' )
+			) );
+		}
+		
+		// Process one post
+		$batch_result = EPKB_AI_Sync_Job_Manager::process_next_sync_item();
+		
+		// Get updated job status
+		$job = EPKB_AI_Sync_Job_Manager::get_sync_job();
+		
+		return $this->create_rest_response( array(
+			'success' => true,
+			'status' => $batch_result['status'],
+			'updated_posts' => isset( $batch_result['updated_posts'] ) ? $batch_result['updated_posts'] : array(),
+			'progress' => array(
+				'status' => $job['status'],
+				'total' => $job['total'],
+				'processed' => $job['processed'],
+				'percent' => $job['percent'],
+				'errors' => $job['errors'],
+				'retrying' => ! empty( $job['retrying'] ),
+				'cancel_requested' => ! empty( $job['cancel_requested'] )
+			)
 		) );
 	}
 	

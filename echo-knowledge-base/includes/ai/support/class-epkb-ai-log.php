@@ -300,6 +300,7 @@ class EPKB_AI_Log {
 			'rate_limit_exceeded' => 429,
 			'user_rate_limit'     => 429,
 			'global_rate_limit'   => 429,
+			'insufficient_quota'  => 429,
 			'version_conflict'    => 409,
 			'server_error'        => 500,
 			'db_error'           => 500,
@@ -324,7 +325,7 @@ class EPKB_AI_Log {
 		$http_status_map = array(
 			401 => 'authentication_failed',
 			403 => 'authentication_failed',
-			429 => 'rate_limit_exceeded',
+			429 => 'rate_limit_exceeded',  // Default for 429; actual API error code takes precedence
 			404 => 'not_found',
 			400 => 'bad_request',
 			408 => 'timeout',
@@ -352,7 +353,8 @@ class EPKB_AI_Log {
 			'http_request_failed',
 			'connection_error',
 			'service_unavailable',
-			'empty_response'
+			'empty_response',
+			'rate_limit_exceeded'  // Rate limits are retryable after appropriate delay
 		);
 		
 		if ( in_array( $error_code, $retryable_codes, true ) ) {

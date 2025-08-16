@@ -21,6 +21,21 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	 */
 	public static function get_config_fields_specifications() {
 
+		// Get available models from OpenAI client
+		$models_data = EPKB_OpenAI_Client::get_models_and_default_params();
+		$ai_models = array();
+		foreach ( $models_data as $model_key => $model_info ) {
+			$ai_models[$model_key] = $model_info['name'];
+		}
+		
+		// Get default model specs for default values
+		$default_model_spec = EPKB_OpenAI_Client::get_models_and_default_params( EPKB_OpenAI_Client::DEFAULT_MODEL );
+		$default_params = $default_model_spec['default_params'];
+
+		$default_instructions = 'Avoid answering questions unrelated to your knowledge. DO NOT mention, reference, or describe documents, files, files you uploaded, or sources. ' .
+								'Do not guess, speculate, or use outside knowledge. ONLY use the provided content. If no relevant information is found, ' .
+								'reply exactly with: "That is not something I can help with. Please try a different question"';
+
 		$ai_specs = array(
 
 			/***  AI General Settings ***/
@@ -43,13 +58,6 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'min'		  => 3,
 				'max'  => 256
 			),
-			'ai_beta_code' => array(
-				'name'        => 'ai_beta_code',
-				'type'        => EPKB_Input_Filter::TEXT,
-				'default'     => '',
-				'min'         => 0,
-				'max'         => 50
-			),
 
 			/***  AI Search Settings ***/
 			'ai_search_enabled' => array(
@@ -60,25 +68,57 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			'ai_search_model' => array(
 				'name'        => 'ai_search_model',
 				'type'        => EPKB_Input_Filter::SELECTION,
-				'options'     => array(
-					'o4-mini'       => 'o4-mini' . ' (' . 'Faster reasoning' . ')',
-					'gpt-4.1-mini'  => 'GPT-4.1 mini' . ' (' . 'Balanced' . ')',
-					'gpt-4.1-nano'  => 'GPT-4.1 nano' . ' (' . 'Fastest' . ')',
-					'o3-mini'       => 'o3-mini' . ' (' . 'Small model' . ')',
-					'gpt-4o-mini'   => 'GPT-4o mini' . ' (' . 'Fast, affordable' . ')',
-					'gpt-4o'        => 'GPT-4o',
-					'gpt-4-turbo'   => 'GPT-4-turbo',
-				),
-				'default'      => EPKB_OpenAI_Client::DEFAULT_MODEL
+				'options'     => $ai_models,
+				'default'     => EPKB_OpenAI_Client::DEFAULT_MODEL
 			),
 			'ai_search_instructions' => array(
 				'name'        => 'ai_search_instructions',
-				'type'        => EPKB_Input_Filter::TEXT,
-				'default'     => 'You are a helpful assistant that only answers questions related to the provided content. If the answer is not available, respond with:' .
-									"That is not something I can help with. Please try a different question.' Do not refer to documents, files, content, or sources. " .
-									'Do not guess or answer based on general knowledge.',   // TODO translation
+				'type'        => EPKB_Input_Filter::WP_EDITOR,
+				'default'     => $default_instructions,
 				'min'         => 0,
 				'max'         => 1000
+			),
+			// Search-specific tuning parameters
+			'ai_search_temperature' => array(
+				'name'        => 'ai_search_temperature',
+				'type'        => EPKB_Input_Filter::FLOAT_NUMBER,
+				'default'     => isset( $default_params['temperature'] ) ? $default_params['temperature'] : 0.2,
+				'min'         => 0.0,
+				'max'         => 2.0
+			),
+			'ai_search_top_p' => array(
+				'name'        => 'ai_search_top_p',
+				'type'        => EPKB_Input_Filter::FLOAT_NUMBER,
+				'default'     => isset( $default_params['top_p'] ) ? $default_params['top_p'] : 1.0,
+				'min'         => 0.0,
+				'max'         => 1.0
+			),
+			'ai_search_max_output_tokens' => array(
+				'name'        => 'ai_search_max_output_tokens',
+				'type'        => EPKB_Input_Filter::NUMBER,
+				'default'     => isset( $default_params['max_output_tokens'] ) ? $default_params['max_output_tokens'] : EPKB_OpenAI_Client::DEFAULT_MAX_OUTPUT_TOKENS,
+				'min'         => 50,
+				'max'         => 16384
+			),
+			'ai_search_verbosity' => array(
+				'name'        => 'ai_search_verbosity',
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'low'    => 'Low',
+					'medium' => 'Medium',
+					'high'   => 'High',
+				),
+				'default'     => isset( $default_params['verbosity'] ) ? $default_params['verbosity'] : 'medium'
+			),
+			'ai_search_reasoning' => array(
+				'name'        => 'ai_search_reasoning',
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'low'    => 'Low',
+					'medium' => 'Medium',
+					'high'   => 'High',
+				),
+				'default'     => isset( $default_params['reasoning'] ) ? $default_params['reasoning'] : 'medium'
 			),
 			/* 'ai_search_location' => array(
 				'name'        => 'ai_search_location',
@@ -109,39 +149,57 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			'ai_chat_model' => array(
 				'name'         => 'ai_chat_model',
 				'type'         => EPKB_Input_Filter::SELECTION,
-				'options'      => array(
-					'o4-mini'       => 'o4-mini' . ' (' . 'Faster reasoning' . ')',
-					'gpt-4.1-mini'  => 'GPT-4.1 mini' . ' (' . 'Balanced' . ')',
-					'gpt-4.1-nano'  => 'GPT-4.1 nano' . ' (' . 'Fastest' . ')',
-					'o3-mini'       => 'o3-mini' . ' (' . 'Small model' . ')',
-					'gpt-4o-mini'   => 'GPT-4o mini' . ' (' . 'Fast, affordable' . ')',
-					'gpt-4o'        => 'GPT-4o',
-					'gpt-4-turbo'   => 'GPT-4-turbo',
-				),
+				'options'      => $ai_models,
 				'default'      => EPKB_OpenAI_Client::DEFAULT_MODEL
 			),
 			'ai_chat_instructions' => array(
 				'name'        => 'ai_chat_instructions',
-				'type'        => EPKB_Input_Filter::TEXT,
-				'default'     => 'You are a helpful assistant that only answers questions related to the provided content. If the answer is not available, respond with:' .
-				                "That is not something I can help with. Please try a different question.' Do not refer to documents, files, content, or sources. " .
-								'Do not guess or answer based on general knowledge.',
+				'type'        => EPKB_Input_Filter::WP_EDITOR,
+				'default'     => $default_instructions,
 				'min'         => 0,
 				'max'         => 1000
 			),
-			'ai_temperature' => array(
-				'name'        => 'ai_temperature',
+			// Chat-specific tuning parameters
+			'ai_chat_temperature' => array(
+				'name'        => 'ai_chat_temperature',
 				'type'        => EPKB_Input_Filter::FLOAT_NUMBER,
-				'default'     => 0.7,
+				'default'     => isset( $default_params['temperature'] ) ? $default_params['temperature'] : 0.2,
 				'min'         => 0.0,
 				'max'         => 2.0
 			),
-			'ai_max_output_tokens' => array(
-				'name'        => 'ai_max_output_tokens',
+			'ai_chat_top_p' => array(
+				'name'        => 'ai_chat_top_p',
+				'type'        => EPKB_Input_Filter::FLOAT_NUMBER,
+				'default'     => isset( $default_params['top_p'] ) ? $default_params['top_p'] : 1.0,
+				'min'         => 0.0,
+				'max'         => 1.0
+			),
+			'ai_chat_max_output_tokens' => array(
+				'name'        => 'ai_chat_max_output_tokens',
 				'type'        => EPKB_Input_Filter::NUMBER,
-				'default'     => 4096,
-				'min'         => 1,
+				'default'     => isset( $default_params['max_output_tokens'] ) ? $default_params['max_output_tokens'] : EPKB_OpenAI_Client::DEFAULT_MAX_OUTPUT_TOKENS,
+				'min'         => 50,
 				'max'         => 16384
+			),
+			'ai_chat_verbosity' => array(
+				'name'        => 'ai_chat_verbosity',
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'low'    => 'Low',
+					'medium' => 'Medium',
+					'high'   => 'High',
+				),
+				'default'     => isset( $default_params['verbosity'] ) ? $default_params['verbosity'] : 'medium'
+			),
+			'ai_chat_reasoning' => array(
+				'name'        => 'ai_chat_reasoning',
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'low'    => 'Low',
+					'medium' => 'Medium',
+					'high'   => 'High',
+				),
+				'default'     => isset( $default_params['reasoning'] ) ? $default_params['reasoning'] : 'medium'
 			),
 
 			/***  AI Sync Custom Settings ***/
@@ -157,11 +215,6 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'off'
 			)
-			/* 'ai_sync_attachments' => array( TODO FUTURE
-				'name'        => 'ai_sync_attachments',
-				'type'        => EPKB_Input_Filter::CHECKBOX,
-				'default'     => 'off'
-			), */
 		);
 
 		return $ai_specs;
@@ -228,7 +281,14 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	 * @return bool|WP_Error
 	 */
 	public static function update_ai_config_value( $field_name, $value ) {
-		return parent::update_config_value( $field_name, $value );
+		$result = parent::update_config_value( $field_name, $value );
+		
+		// Clear the dashboard status cache when AI config is updated
+		if ( ! is_wp_error( $result ) ) {
+			delete_transient( 'epkb_ai_dashboard_status' );
+		}
+		
+		return $result;
 	}
 
 	/**
@@ -239,7 +299,14 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	 * @return array|WP_Error Updated configuration or error
 	 */
 	public static function update_ai_config( $new_config ) {
-		return parent::update_config( $new_config );
+		$result = parent::update_config( $new_config );
+		
+		// Clear the dashboard status cache when AI config is updated
+		if ( ! is_wp_error( $result ) ) {
+			delete_transient( 'epkb_ai_dashboard_status' );
+		}
+		
+		return $result;
 	}
 	
 	/**
@@ -261,5 +328,16 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	public static function get_unmasked_api_key() {
 		// Get directly from parent to bypass masking
 		return parent::get_config_value( 'ai_key', '' );
+	}
+	
+	/**
+	 * Get the default value for a specific field
+	 *
+	 * @param string $field_name The field name to get default value for
+	 * @return mixed The default value or null if not found
+	 */
+	public static function get_default_value( $field_name ) {
+		$specs = self::get_config_fields_specifications();
+		return isset( $specs[$field_name]['default'] ) ? $specs[$field_name]['default'] : null;
 	}
 }

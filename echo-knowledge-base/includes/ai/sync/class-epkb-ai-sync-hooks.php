@@ -197,12 +197,12 @@ class EPKB_AI_Sync_Hooks {
 
 		// Schedule cleanup for each collection
 		foreach ( $collection_ids as $collection_id ) {
-			$sync_manager->schedule_cron_sync( array(
+			/* $sync_manager->schedule_cron_sync( array(
 				'type' => 'cleanup',
 				'action' => 'remove_attachment',
 				'attachment_id' => $attachment_id,
 				'collection_id' => $collection_id
-			) );
+			) ); */
 		}
 	}
 	
@@ -284,20 +284,17 @@ class EPKB_AI_Sync_Hooks {
 		$collection_id = $collection_ids[0];
 		
 		// Start a direct sync for just this post
-		$result = EPKB_AI_Sync_Job_Manager::start_sync_job( array( $post->ID ), 'direct', $collection_id );
+		$result = EPKB_AI_Sync_Job_Manager::initialize_sync_job( array( $post->ID ), 'direct', $collection_id );
 		
 		if ( is_wp_error( $result ) ) {
 			// If sync can't start, mark as outdated for later sync
 			$this->mark_post_outdated( $post->ID, $post->post_type );
-			EPKB_AI_Log::add_log( 'Failed to start auto-sync for post', array(
-				'post_id' => $post->ID,
-				'error' => $result->get_error_message()
-			) );
+			EPKB_AI_Log::add_log( $result, array( 'post_id' => $post->ID, 'message' => 'Failed to start auto-sync for post' ) );
 			return;
 		}
 		
 		// Process the sync immediately since it's just one post
-		EPKB_AI_Sync_Job_Manager::process_next_batch();
+		EPKB_AI_Sync_Job_Manager::process_next_sync_item();
 	}
 	
 	/**
@@ -326,20 +323,17 @@ class EPKB_AI_Sync_Hooks {
 		$collection_id = $collection_ids[0];
 		
 		// Start a direct sync for just this attachment
-		$result = EPKB_AI_Sync_Job_Manager::start_sync_job( array( $attachment_id ), 'direct', $collection_id );
+		$result = EPKB_AI_Sync_Job_Manager::initialize_sync_job( array( $attachment_id ), 'direct', $collection_id );
 		
 		if ( is_wp_error( $result ) ) {
 			// If sync can't start, mark as outdated for later sync
 			$this->mark_attachment_outdated( $attachment_id );
-			EPKB_AI_Log::add_log( 'Failed to start auto-sync for attachment', array(
-				'attachment_id' => $attachment_id,
-				'error' => $result->get_error_message()
-			) );
+			EPKB_AI_Log::add_log( $result, array( 'attachment_id' => $attachment_id, 'message' => 'Failed to start auto-sync for attachment' ) );
 			return;
 		}
 		
 		// Process the sync immediately since it's just one attachment
-		EPKB_AI_Sync_Job_Manager::process_next_batch();
+		EPKB_AI_Sync_Job_Manager::process_next_sync_item();
 	}
 	
 	/**

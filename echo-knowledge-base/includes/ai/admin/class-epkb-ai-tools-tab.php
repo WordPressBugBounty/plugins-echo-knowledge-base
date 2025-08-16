@@ -22,7 +22,7 @@ class EPKB_AI_Tools_Tab {
 	 * @return array
 	 */
 	public static function get_tab_config() {
-		
+
 		// Get debug enabled status
 		$debug_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_tools_debug_enabled', 'off' );
 		
@@ -40,37 +40,26 @@ class EPKB_AI_Tools_Tab {
 		// Get data collections info
 		$data_collections = self::get_data_collections_info();
 		
+		// Get tuning configuration for the tuning sub-tab
+		$tuning_config = EPKB_AI_Tools_Tuning_Tab::get_tab_config();
+		
 		$config = array(
 			'tab_id' => 'tools',
 			'title' => __( 'Tools', 'echo-knowledge-base' ),
-			'sub_tabs' => self::get_sub_tabs_config(),
 			'settings_sections' => self::get_settings_sections(),
 			'active_sub_tab' => 'debug',
 			// Additional data for React component
 			'debug_enabled' => $debug_enabled,
 			'system_info' => $system_info,
 			'data_collections' => $data_collections,
-			'nonce' => wp_create_nonce( 'epkb_ai_tools_debug' )
+			'nonce' => wp_create_nonce( 'epkb_ai_tools_debug' ),
+			// Include tuning configuration for the tuning sub-tab
+			'tuning_config' => $tuning_config
 		);
 		
 		return $config;
 	}
-	
-	/**
-	 * Get sub-tabs configuration
-	 *
-	 * @return array
-	 */
-	private static function get_sub_tabs_config() {
-		return array(
-			'debug' => array(
-				'id' => 'debug',
-				'title' => __( 'Debug', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-bug'
-			)
-		);
-	}
-	
+
 	/**
 	 * Get settings sections configuration
 	 *
@@ -129,13 +118,7 @@ class EPKB_AI_Tools_Tab {
 	 * AJAX handler to toggle debug mode
 	 */
 	public static function ajax_toggle_debug_mode() {
-		
-		// Verify nonce
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'epkb_ai_tools_debug' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Security check failed', 'echo-knowledge-base' ) ) );
-			return;
-		}
-		
+
 		// Security check
 		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access denied', 'echo-knowledge-base' ) ) );
@@ -155,20 +138,6 @@ class EPKB_AI_Tools_Tab {
 		
 		// Update the flag that setting has been set
 		update_option( 'epkb_ai_debug_setting_exists', true );
-		
-		// Add a test log entry when debug mode is toggled
-		if ( $enabled === 'on' ) {
-			EPKB_AI_Log::add_log( 'AI Debug mode enabled', array(
-				'user_id' => get_current_user_id(),
-				'timestamp' => current_time( 'mysql' )
-			) );
-		} else {
-			// Add log before disabling (it won't be logged after)
-			EPKB_AI_Log::add_log( 'AI Debug mode disabled', array(
-				'user_id' => get_current_user_id(),
-				'timestamp' => current_time( 'mysql' )
-			) );
-		}
 		
 		wp_send_json_success( array( 'message' => __( 'Debug mode updated successfully', 'echo-knowledge-base' ) ) );
 	}
@@ -358,12 +327,6 @@ class EPKB_AI_Tools_Tab {
 	 * AJAX handler to get data collections info
 	 */
 	public static function ajax_get_data_collections_info() {
-		
-		// Verify nonce
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'epkb_ai_tools_debug' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Security check failed', 'echo-knowledge-base' ) ) );
-			return;
-		}
 		
 		// Security check
 		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' ) ) {

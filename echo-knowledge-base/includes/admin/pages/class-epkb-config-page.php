@@ -996,9 +996,9 @@ class EPKB_Config_Page {
 				array(
 					'title' => esc_html__( 'Main Page', 'echo-knowledge-base' ),
 					'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-main-page.png',
-					'button_url' => empty( $first_kb_main_page_url ) ? '' : esc_url( $first_kb_main_page_url ) . '?epkb_fe_reopen_feature=none',
-					'button_text' => empty( $first_kb_main_page_url ) ? '' : esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' ),
-					'message' => empty( $first_kb_main_page_url ) ? esc_html__( 'Main Page is not set', 'echo-knowledge-base' ) : '',
+					'button_url' => empty( $first_kb_main_page_url ) ? esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&page=epkb-kb-configuration&setup-wizard-on=true' ) ) : esc_url( $first_kb_main_page_url ) . '?epkb_fe_reopen_feature=none',
+					'button_text' => empty( $first_kb_main_page_url ) ? esc_html__( 'Run Setup Wizard', 'echo-knowledge-base' ) : esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' ),
+					'message' => empty( $first_kb_main_page_url ) ? esc_html__( 'Main Page is not set. Please run the Setup Wizard to create one.', 'echo-knowledge-base' ) : '',
 				),
 				array(
 					'title' => esc_html__( 'Article Page', 'echo-knowledge-base' ),

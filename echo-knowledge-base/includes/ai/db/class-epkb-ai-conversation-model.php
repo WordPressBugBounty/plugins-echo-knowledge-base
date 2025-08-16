@@ -145,7 +145,7 @@ class EPKB_AI_Conversation_Model {
 		if ( is_string( $messages ) ) {
 			$decoded = json_decode( $messages, true );
 			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				EPKB_AI_Log::add_log( 'Failed to decode messages JSON: ' . json_last_error_msg() );
+				EPKB_AI_Log::add_log( 'Failed to decode messages JSON: ' . json_last_error_msg(), $messages );
 				return array();
 			}
 			$messages = is_array( $decoded ) ? $decoded : array();
@@ -164,7 +164,7 @@ class EPKB_AI_Conversation_Model {
 		if ( is_string( $metadata ) ) {
 			$decoded = json_decode( $metadata, true );
 			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				EPKB_AI_Log::add_log( 'Failed to decode metadata JSON: ' . json_last_error_msg() );
+				EPKB_AI_Log::add_log( 'Failed to decode metadata JSON: ' . json_last_error_msg(), $metadata );
 				return array();
 			}
 			$metadata = is_array( $decoded ) ? $decoded : array();

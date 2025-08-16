@@ -104,11 +104,11 @@ class EPKB_Add_Ons_Page {
 
 			self::add_on_product( array(
 				'id'                => '',
-				'title'             => esc_html__( 'Elegant Layouts', 'echo-knowledge-base' ),
-				'special_note'      => esc_html__( 'More ways to design your KB', 'echo-knowledge-base' ),
-				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-EL'.'AY-1.1.jpg',
-				'desc'              => sprintf( esc_html__( 'Use %sGrid Layout%s or %sSidebar Layout%s for KB Main page or combine Basic, Tabs, Grid and Sidebar layouts in many cool ways.', 'echo-knowledge-base' ), '<strong>', '</strong>', '<strong>', '</strong>' ),
-				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/elegant-layouts/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=elegant-layouts',
+				'title'             => esc_html__( 'AI Features', 'echo-knowledge-base' ),
+				'special_note'      => esc_html__( 'Smart AI-powered support', 'echo-knowledge-base' ),
+				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/08/ai-features-banner.jpg',
+				'desc'              => sprintf( esc_html__( '%sAI Chat%s with instant answers, %sSmart Search%s with AI-generated responses, and %sAdvanced Training%s on posts, pages & custom content.', 'echo-knowledge-base' ), '<strong>', '</strong>', '<strong>', '</strong>', '<strong>', '</strong>' ),
+				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=ai-features',
 			) );
 
 			self::add_on_product( array(
@@ -127,6 +127,15 @@ class EPKB_Add_Ons_Page {
 				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-AS'.'EA-1.jpg',
 				'desc'              => esc_html__( "Enhance users' search experience and view search analytics, including popular searches and no results searches.", 'echo-knowledge-base' ),
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/advanced-search/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=advanced-search'
+			) );
+
+			self::add_on_product( array(
+				'id'                => '',
+				'title'             => esc_html__( 'Elegant Layouts', 'echo-knowledge-base' ),
+				'special_note'      => esc_html__( 'More ways to design your KB', 'echo-knowledge-base' ),
+				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-EL'.'AY-1.1.jpg',
+				'desc'              => sprintf( esc_html__( 'Use %sGrid Layout%s or %sSidebar Layout%s for KB Main page or combine Basic, Tabs, Grid and Sidebar layouts in many cool ways.', 'echo-knowledge-base' ), '<strong>', '</strong>', '<strong>', '</strong>' ),
+				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/elegant-layouts/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=elegant-layouts',
 			) );
 
 			self::add_on_product( array(
@@ -233,6 +242,20 @@ class EPKB_Add_Ons_Page {
 						echo wp_kses_post( $license_content );      ?>
 					</ul>
 				</section>
+			</div>      <?php
+		} else {    ?>
+			<div class="add_on_container">
+				<div class="epkb-no-addons-message" style="min-width: 500px;">
+					<p style="padding: 20px; font-size: 16px; white-space: nowrap;">
+						<span class="dashicons dashicons-info" style="color: #0073aa; margin-right: 5px;"></span>
+						<?php esc_html_e( 'No Knowledge Base add-ons are currently installed.', 'echo-knowledge-base' ); ?>
+					</p>
+					<p style="padding: 0 20px 20px 20px;">
+						<a href="https://www.echoknowledgebase.com/documentation/how-to-install-kb-add-on/" target="_blank" class="button button-primary">
+							<?php esc_html_e( 'View Installation Guide', 'echo-knowledge-base' ); ?>
+						</a>
+					</p>
+				</div>
 			</div>      <?php
 		}
 
@@ -878,23 +901,21 @@ class EPKB_Add_Ons_Page {
 		}
 
 		/**
-		 * View: Licenses
+		 * View: Licenses - Always show this tab
 		 */
-		if ( ! empty( $license_content ) ) {
-			$views_config[] = [
+		$views_config[] = [
 
-				// Shared
-				'list_id'    => 'eckb_license_tab',
-				'list_key'   => 'licenses',
+			// Shared
+			'list_id'    => 'eckb_license_tab',
+			'list_key'   => 'licenses',
 
-				// Top Panel Item
-				'label_text' => esc_html__( 'Licenses', 'echo-knowledge-base' ),
-				'icon_class' => 'epkbfa epkbfa-key',
+			// Top Panel Item
+			'label_text' => esc_html__( 'Licenses', 'echo-knowledge-base' ),
+			'icon_class' => 'epkbfa epkbfa-key',
 
-				// Boxes List
-				'boxes_list' => self::get_license_boxes( $license_content ),
-			];
-		}
+			// Boxes List
+			'boxes_list' => self::get_license_boxes( $license_content ),
+		];
 
 		return $views_config;
 	}

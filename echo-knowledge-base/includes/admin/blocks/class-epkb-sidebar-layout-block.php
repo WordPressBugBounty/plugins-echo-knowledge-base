@@ -282,7 +282,7 @@ final class EPKB_Sidebar_Layout_Block extends EPKB_Abstract_Block {
 								'setting_type' => 'section_description',
 								'description' => esc_html__( 'To Edit Introduction Text', 'echo-knowledge-base' ) . ', ',
 								'link_text' => esc_html__( 'click here', 'echo-knowledge-base' ),
-								'link_url' => admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( EPKB_KB_Config_DB::DEFAULT_KB_ID ) . '&page=epkb-kb-configuration#settings__labels____sidebar_main_page_intro_text' ),
+								'link_url' => admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( EPKB_KB_Config_DB::DEFAULT_KB_ID ) . '&page=epkb-kb-configuration#tools__other' ),
 							),
 							'sidebar_main_page_link_to_edit' => array(
 								'setting_type' => 'section_description',

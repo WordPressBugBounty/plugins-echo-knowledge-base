@@ -23,12 +23,6 @@ class EPKB_AI_Chat_Handler extends EPKB_AI_Base_Handler {
 	 */
 	public function process_message( $user_message, $conversation_obj ) {
 
-		// check for stale user message
-		/* TODO $stale_result = $this->check_stale_user_message( $conversation );
-		if ( is_wp_error( $stale_result ) ) {
-			return $stale_result;
-		} */
-
 		// Call AI API to get response for user message
 		$model = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_model' );
 		$ai_response = $this->get_ai_response( $user_message, $model, $conversation_obj->get_conversation_id() );
@@ -50,58 +44,6 @@ class EPKB_AI_Chat_Handler extends EPKB_AI_Base_Handler {
 			'chat_id' => $conversation_obj->get_chat_id(),
 			'is_duplicate' => false
 		);
-	}
-
-	/**
-	 * Check and handle stale user message by getting AI response
-	 * 
-	 * @param EPKB_AI_Conversation_Model $conversation
-	 * @return array|WP_Error Updated conversation or error
-	 * TODO needs to pass back to AI Chat both the stale reply and the new reply + ensure to send to AI correct conversation_id
-	 */
-	private function check_stale_user_message( EPKB_AI_Conversation_Model $conversation ) {
-
-		$messages = $conversation->get_messages();
-		if ( empty( $messages ) ) {
-			return false;
-		}
-		
-		$last_message = end( $messages );
-		if ( $last_message['role'] !== 'user' ) {
-			return false;
-		}
-		
-		// Check if message is older than 5 minutes and ignore if it is old
-		$message_time = isset( $last_message['timestamp'] ) ? strtotime( $last_message['timestamp'] ) : strtotime( $conversation->get_updated() );
-		if ( ( time() - $message_time ) > 300 ) { // 5 minutes
-			return false;
-		}
-
-		// Call AI for the stale message
-		$model = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_model' );
-		$ai_response = $this->get_ai_response( $last_message['content'], $model, $conversation->get_conversation_id() );
-		if ( is_wp_error( $ai_response ) ) {
-			return $ai_response;
-		}
-		
-		// Add assistant response to messages
-		$messages[] = array(
-			'role' => 'assistant',
-			'content' => $ai_response['content'],
-			'timestamp' => gmdate( 'Y-m-d H:i:s' )
-		);
-		
-		// Update conversation
-		$conversation->messages = $messages;
-		$conversation->set_conversation_id( $ai_response['response_id'] );
-		
-		// Save updated conversation
-		$result = $this->messages_db->save_conversation( $conversation );  // TODO update vs insert
-		if ( is_wp_error( $result ) ) {
-			return $result;
-		}
-		
-		return array( 'conversation_obj' => $conversation );
 	}
 
 	/**

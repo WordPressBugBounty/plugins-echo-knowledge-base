@@ -73,14 +73,54 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			if ( $validated_settings['ai_key'] == '********' ) {
 				unset( $validated_settings['ai_key'] );
             } else {
-				$validated_settings['ai_key'] = EPKB_Utilities::encrypt_data( $validated_settings['ai_key'] );
+				// First validate the format
+				if ( ! EPKB_AI_Validation::validate_api_key_format( $validated_settings['ai_key'] ) ) {
+					return $this->create_rest_response( array( 
+						'error' => 'invalid_api_key_format', 
+						'message' => __( 'Invalid API key format. OpenAI API keys should start with "sk-" and contain alphanumeric characters.', 'echo-knowledge-base' ) 
+					), 400 );
+				}
+				
+				// Test the API key with OpenAI before saving
+				$encrypted_test_key = EPKB_Utilities::encrypt_data( $validated_settings['ai_key'] );
+				$old_key = EPKB_AI_Config_Specs::get_unmasked_api_key();
+				
+				// Temporarily set the new key to test it
+				EPKB_AI_Config_Specs::update_ai_config_value( 'ai_key', $encrypted_test_key );
+				
+				$client = new EPKB_OpenAI_Client();
+				$test_result = $client->test_connection();
+				
+				// Restore old key if test fails
+				if ( is_wp_error( $test_result ) ) {
+					EPKB_AI_Config_Specs::update_ai_config_value( 'ai_key', $old_key );
+					return $this->create_rest_response( array( 'error' => $test_result->get_error_code(),  'message' => $test_result->get_error_message() ), 400 );
+				}
+				
+				// Test passed, keep the encrypted key for saving
+				EPKB_AI_Config_Specs::update_ai_config_value( 'ai_key', $old_key ); // Restore for now, will be saved properly below
+				$validated_settings['ai_key'] = $encrypted_test_key;
 			}
 		}
 
+		// Get current config before update to check if we're enabling features
+		$old_config = EPKB_AI_Config_Specs::get_ai_config();
+		
 		// Update only the provided fields (partial update)
 		$result = EPKB_AI_Config_Specs::update_ai_config( $validated_settings );
 		if ( is_wp_error( $result ) ) {
 			return $this->create_rest_response([], 500, $result );
+		}
+
+		// Check if user switched AI features from off to on
+		$old_search_off = $old_config['ai_search_enabled'] !== 'on';
+		$old_chat_off = $old_config['ai_chat_enabled'] !== 'on';
+		$both_were_off = $old_search_off && $old_chat_off;
+		
+		// If both were off and now at least one is on, create tables
+		if ( $both_were_off && EPKB_AI_Utilities::is_ai_enabled() ) {
+			new EPKB_AI_Messages_DB();
+			new EPKB_AI_Training_Data_DB();
 		}
 
 		return $this->create_rest_response( array( 'success' => true, 'message' => __( 'Settings saved successfully.', 'echo-knowledge-base' ), 'settings' => $validated_settings ) );

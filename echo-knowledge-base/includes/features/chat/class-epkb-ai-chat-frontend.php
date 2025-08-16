@@ -77,45 +77,6 @@ class EPKB_AI_Chat_Frontend {
 			return false;
 		}
 
-		// is this page or post or main page to display the AI Chat on?  TODO home page
-		$post = get_queried_object();
-		if ( empty( $post ) ) {
-			return false;
-		}
-
-		// woocommerce shop page. Queried object is not WP_Post for woo shop page, so we need special code for edge case
-		 /** @disregard P1010 */
-		if ( function_exists( 'is_shop' ) && function_exists( 'wc_get_page_id' ) && is_shop() ) {
-			/** @disregard P1010 */
-			$page_id = wc_get_page_id( 'shop' );
-			if ( empty( $page_id ) || $page_id < 1 ) {
-				return false;
-			}
-			$post = get_post( $page_id );
-		}
-
-		$is_front_page = is_front_page();
-
-		if ( ! $is_front_page && ( empty( $post ) || ( get_class( $post ) != 'WP_Post' && get_class( $post ) != 'WP_Post_Type' && get_class( $post ) != 'WP_Term' ) ) ) {
-			return false;
-		}
-
-		/* if ( ! empty( $post ) && get_class( $post ) == 'WP_Term' ) {
-			$post_type = 'taxonomy';
-			$key       = '';
-		} elseif ( $is_front_page ) {
-			$post_type = 'page';
-			$key       = 0; // 'Home Page' is always signed to '0' ID as it is not dependent to any page ID
-		} elseif ( empty( $post->post_type ) ) {
-			return false;
-		} elseif ( $post->post_type == 'post' || $post->post_type == 'page' ) {
-			$post_type = $post->post_type;
-			$key       = empty( $post->ID ) ? '' : $post->ID;
-		} else {
-			$post_type = 'cpt';
-			$key       = $post->post_type;
-		} */
-
 		return true;
 	}
 }

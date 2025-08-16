@@ -48,8 +48,8 @@ class EPKB_AI_OpenAI_Handler {
 
 		// Get collection configuration
 		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
-		if ( ! $collection_config ) {
-			return new WP_Error( 'invalid_collection', __( 'Invalid training data collection', 'echo-knowledge-base' ) );
+		if ( is_wp_error( $collection_config ) ) {
+			return $collection_config;
 		}
 
 		// Check if vector store already exists for this collection
@@ -99,18 +99,10 @@ class EPKB_AI_OpenAI_Handler {
 	/**
 	 * Create file content for OpenAI
 	 *
-	 * @param int $post_id Post ID
 	 * @param array $processed Processed content data
 	 * @return string|WP_Error File content or error if content would exceed size limit
 	 */
-	public function create_file_content( $post_id, $processed ) {
-
-		/* $content = '# ' . $processed['metadata']['title'] . "\n\n";
-		$content .= 'URL: ' . $processed['metadata']['url'] . "\n";
-		$content .= 'Post ID: ' . $post_id . "\n";
-		$content .= 'Language: ' . $processed['metadata']['language'] . "\n\n";
-		$content .= "## Content\n\n";
-		$content .= $processed['content']; */
+	public function create_file_content( $processed ) {
 
 		// Check if content size would exceed the limit
 		$content_size = strlen( $processed['content'] );
@@ -127,10 +119,10 @@ class EPKB_AI_OpenAI_Handler {
 	 *
 	 * @param string $content File content
 	 * @param string $purpose File purpose (e.g., 'assistants')
-	 * @param string $filename Optional filename
+	 * @param string $file_name Optional filename
 	 * @return array|WP_Error File object with 'id' or error
 	 */
-	public function upload_file( $id, $content, $purpose = 'assistants', $filename = null ) {
+	public function upload_file( $id, $content, $file_type, $purpose = 'assistants', $file_name = null ) {
 		
 		if ( empty( $content ) ) {
 			return new WP_Error( 'empty_content', __( 'File content cannot be empty', 'echo-knowledge-base' ) );
@@ -149,9 +141,19 @@ class EPKB_AI_OpenAI_Handler {
 			);
 		}
 		
+		// map file type to recognized type e.g. 'post', "page", "article"
+		switch ( $file_type ) {
+			case 'post':
+			case 'page':
+				break;
+			default:
+				$file_type = 'article';
+				break;
+		}
+
 		// Generate filename if not provided
-		if ( empty( $filename ) ) {
-			$filename = 'kb-article-' . $id . '- ' . time() . '.txt';
+		if ( empty( $file_name ) ) {
+			$file_name = 'kb-' . $file_type . '-' . $id . '- ' . time() . '.txt';
 		}
 		
 		// Use the client's upload_file method which properly handles multipart form data
@@ -159,7 +161,7 @@ class EPKB_AI_OpenAI_Handler {
 			'purpose' => $purpose
 		);
 		
-		return $this->client->upload_file( self::FILES_ENDPOINT, $content, $filename, $fields );
+		return $this->client->upload_file( self::FILES_ENDPOINT, $content, $file_name, $fields );
 	}
 	
 	/**
@@ -169,7 +171,7 @@ class EPKB_AI_OpenAI_Handler {
 	 * @param string $file_id File ID
 	 * @return array|WP_Error Vector store file object with 'id' or error
 	 */
-	public function add_file_to_vector_store( $vector_store_id, $file_id ) {
+    public function add_file_to_vector_store( $vector_store_id, $file_id, $max_wait = 90 ) {
 		
 		if ( empty( $vector_store_id ) || empty( $file_id ) ) {
 			return new WP_Error( 'missing_params', __( 'Vector store ID and file ID are required', 'echo-knowledge-base' ) );
@@ -184,13 +186,73 @@ class EPKB_AI_OpenAI_Handler {
 			return $response;
 		}
 		
-		// Wait for file to be processed
-		$file_status = $this->wait_for_file_processing( $vector_store_id, $response['id'] );
+        // Wait for file to be processed
+        $file_status = $this->wait_for_file_processing( $vector_store_id, $response['id'], $max_wait );
 		if ( is_wp_error( $file_status ) ) {
 			return $file_status;
 		}
 		
 		return $response;
+	}
+
+	/**
+	 * Add multiple files to a vector store via file batch and poll until processed
+	 *
+	 * @param string $vector_store_id Vector store ID
+	 * @param array $file_ids Array of file IDs (from /files upload)
+	 * @param int $max_wait Maximum wait time in seconds (default 300)
+	 * @return array|WP_Error Batch object on success or error
+	 */
+	public function add_files_to_vector_store_batch( $vector_store_id, $file_ids, $max_wait = 300 ) {
+
+		if ( empty( $vector_store_id ) || empty( $file_ids ) || ! is_array( $file_ids ) ) {
+			return new WP_Error( 'missing_params', __( 'Vector store ID and an array of file IDs are required', 'echo-knowledge-base' ) );
+		}
+
+		// Create the batch
+		$payload = array( 'file_ids' => array_values( $file_ids ) );
+		$create = $this->client->request(
+			self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}/file_batches",
+			$payload,
+			'POST',
+			self::OPENAI_BETA_HEADERS
+		);
+		if ( is_wp_error( $create ) ) {
+			return $create;
+		}
+
+		$batch_id = isset( $create['id'] ) ? $create['id'] : '';
+		if ( empty( $batch_id ) ) {
+			return new WP_Error( 'invalid_response', __( 'Missing batch ID in response', 'echo-knowledge-base' ) );
+		}
+
+		// Poll the batch until completed or failed
+		$start_time = time();
+		while ( ( time() - $start_time ) < $max_wait ) {
+			$status = $this->client->request(
+				self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}/file_batches/{$batch_id}",
+				array(),
+				'GET',
+				self::OPENAI_BETA_HEADERS
+			);
+			if ( is_wp_error( $status ) ) {
+				return $status;
+			}
+
+			if ( isset( $status['status'] ) ) {
+				if ( $status['status'] === 'completed' ) {
+					return $status;
+				}
+				if ( $status['status'] === 'failed' ) {
+					$failed = isset( $status['file_counts']['failed'] ) ? intval( $status['file_counts']['failed'] ) : 0;
+					return new WP_Error( 'batch_failed', sprintf( __( 'File batch failed. %d files failed to process', 'echo-knowledge-base' ), $failed ) );
+				}
+			}
+
+			EPKB_AI_Utilities::safe_sleep( 2 );
+		}
+
+		return new WP_Error( 'timeout', __( 'File batch processing timed out', 'echo-knowledge-base' ) );
 	}
 	
 	/**
@@ -261,13 +323,7 @@ class EPKB_AI_OpenAI_Handler {
 			return new WP_Error( 'missing_id', __( 'Vector store ID is required', 'echo-knowledge-base' ) );
 		}
 		
-		$response = $this->client->request(
-			self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}",
-			array(),
-			'DELETE',
-			self::OPENAI_BETA_HEADERS
-		);
-		
+		$response = $this->client->request( self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}", array(), 'DELETE', self::OPENAI_BETA_HEADERS );
 		if ( is_wp_error( $response ) ) {
 			// Ignore 404 errors - vector store already deleted
 			if ( $response->get_error_code() === 'not_found' ) {
@@ -281,7 +337,7 @@ class EPKB_AI_OpenAI_Handler {
 			return true;
 		}
 		
-		return new WP_Error( 'delete_failed', __( 'Failed to delete vector store', 'echo-knowledge-base' ) );
+		return new WP_Error( 'delete_failed', __( 'Failed to delete vector store', 'echo-knowledge-base' ) . ' ' . $vector_store_id );
 	}
 	
 	/**
@@ -289,10 +345,10 @@ class EPKB_AI_OpenAI_Handler {
 	 *
 	 * @param string $vector_store_id Vector store ID
 	 * @param string $file_id File ID
-	 * @param int $max_wait Maximum wait time in seconds
+	 * @param int $max_wait Maximum wait time in seconds (default 90 = 1.5 minutes)
 	 * @return bool|WP_Error True when ready or error
 	 */
-	private function wait_for_file_processing( $vector_store_id, $file_id, $max_wait = 30 ) {
+	private function wait_for_file_processing( $vector_store_id, $file_id, $max_wait = 90 ) {
 		
 		$start_time = time();
 		
@@ -314,9 +370,7 @@ class EPKB_AI_OpenAI_Handler {
 				if ( $response['status'] === 'completed' ) {
 					return true;
 				} elseif ( $response['status'] === 'failed' ) {
-					$error_msg = isset( $response['last_error']['message'] ) ? 
-						$response['last_error']['message'] : 
-						__( 'File processing failed', 'echo-knowledge-base' );
+					$error_msg = isset( $response['last_error']['message'] ) ? $response['last_error']['message'] : __( 'File processing failed', 'echo-knowledge-base' );
 					return new WP_Error( 'processing_failed', $error_msg );
 				}
 			}
@@ -411,9 +465,18 @@ class EPKB_AI_OpenAI_Handler {
 		$is_retryable = EPKB_AI_Log::is_retryable_error( $error_code, $http_code );
 		
 		// OpenAI-specific overrides:
-		// - Don't retry 429 rate limits (let them bubble up to client)
 		// - Don't retry 401/403 auth errors (API key issues)
-		if ( $http_code === 429 || $http_code === 401 || $http_code === 403 ) {
+		if ( $http_code === 401 || $http_code === 403 ) {
+			return false;
+		}
+		
+		// - Don't retry insufficient_quota errors (billing issues) or invalid API key
+		if ( $error_code === 'insufficient_quota' || $error_code === 'invalid_api_key' ) {
+			return false;
+		}
+		
+		// - Don't retry incomplete responses (won't be fixed by retrying)
+		if ( $error_code === 'response_incomplete' ) {
 			return false;
 		}
 		
@@ -430,8 +493,8 @@ class EPKB_AI_OpenAI_Handler {
 		
 		// Get collection configuration
 		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
-		if ( empty( $collection_config ) ) {
-			return new WP_Error( 'collection_not_found', __( 'Collection not found', 'echo-knowledge-base' ) );
+		if ( is_wp_error( $collection_config ) ) {
+			return $collection_config;
 		}
 		
 		// Get vector store ID from collection config
@@ -440,32 +503,30 @@ class EPKB_AI_OpenAI_Handler {
 			return new WP_Error( 'no_vector_store', __( 'No vector store found', 'echo-knowledge-base' ) );
 		}
 		
+		return $this->get_vector_store_info_by_id( $vector_store_id );
+	}
+
+	/**
+	 * Get vector store info by store id
+	 *
+	 * @param string $vector_store_id
+	 * @return array|WP_Error
+	 */
+	public function get_vector_store_info_by_id( $vector_store_id ) {
+
 		// Get vector store details from OpenAI
-		$response = $this->client->request( 
-			self::VECTOR_STORES_ENDPOINT . '/' . $vector_store_id, 
-			array(), 
-			'GET', 
-			self::OPENAI_BETA_HEADERS 
-		);
-		
+		$response = $this->client->request( self::VECTOR_STORES_ENDPOINT . '/' . $vector_store_id, array(), 'GET', self::OPENAI_BETA_HEADERS );
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
-		
+
 		// Get file count
-		$files_response = $this->client->request(
-			self::VECTOR_STORES_ENDPOINT . '/' . $vector_store_id . '/files',
-			array( 'limit' => 1 ),
-			'GET',
-			self::OPENAI_BETA_HEADERS
-		);
-		
+		$files_response = $this->client->request( self::VECTOR_STORES_ENDPOINT . '/' . $vector_store_id . '/files', array( 'limit' => 1 ), 'GET', self::OPENAI_BETA_HEADERS );
 		$file_count = 0;
 		if ( ! is_wp_error( $files_response ) && isset( $files_response['data'] ) ) {
-			// The response includes pagination info
 			$file_count = isset( $files_response['total'] ) ? $files_response['total'] : count( $files_response['data'] );
 		}
-		
+
 		return array(
 			'id' => $response['id'],
 			'name' => isset( $response['name'] ) ? $response['name'] : '',
@@ -480,6 +541,56 @@ class EPKB_AI_OpenAI_Handler {
 			'created_at' => isset( $response['created_at'] ) ? $response['created_at'] : '',
 			'metadata' => isset( $response['metadata'] ) ? $response['metadata'] : array()
 		);
+	}
+	
+	/**
+	 * Verify vector store has all files processed and ready
+	 *
+	 * @param string $vector_store_id Vector store ID
+	 * @param int $expected_files Expected number of files
+	 * @param int $max_wait Maximum wait time in seconds
+	 * @return bool|WP_Error True when ready or error
+	 */
+	public function verify_vector_store_ready( $vector_store_id, $expected_files, $max_wait = 120 ) {
+		
+		$start_time = time();
+		
+		while ( ( time() - $start_time ) < $max_wait ) {
+			
+			// Get vector store info
+			$response = $this->client->request( self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}", array(), 'GET', self::OPENAI_BETA_HEADERS );
+			if ( is_wp_error( $response ) ) {
+				return $response;
+			}
+			
+			// Check file counts
+			if ( isset( $response['file_counts'] ) ) {
+				$completed = isset( $response['file_counts']['completed'] ) ? $response['file_counts']['completed'] : 0;
+				$in_progress = isset( $response['file_counts']['in_progress'] ) ? $response['file_counts']['in_progress'] : 0;
+				$failed = isset( $response['file_counts']['failed'] ) ? $response['file_counts']['failed'] : 0;
+				
+				// Check if any files failed
+				if ( $failed > 0 ) {
+					return new WP_Error( 'files_failed', sprintf( __( '%d files failed to process in vector store', 'echo-knowledge-base' ), $failed ) );
+				}
+				
+				// Check if all files are completed
+				if ( $completed >= $expected_files && $in_progress === 0 ) {
+					return true;
+				}
+				
+				// If we're close to timeout, provide detailed status
+				if ( ( time() - $start_time ) >= ( $max_wait - 5 ) ) {
+					return new WP_Error( 'incomplete_processing', sprintf( __( 'Vector store incomplete: Expected %d files, but only %d completed, %d in progress, %d failed', 'echo-knowledge-base' ), $expected_files, $completed, $in_progress, $failed 
+					) );
+				}
+			}
+			
+			// Wait before next check
+			EPKB_AI_Utilities::safe_sleep( 2 );
+		}
+		
+		return new WP_Error( 'timeout', sprintf( __( 'Vector store processing timed out. Expected %d files, but processing did not complete.', 'echo-knowledge-base' ), $expected_files ) );
 	}
 	
 	/**
@@ -604,5 +715,61 @@ class EPKB_AI_OpenAI_Handler {
 		}
 		
 		return true;
+	}
+
+	/**
+	 * Call OpenAI API to rewrite content
+	 *
+	 * @param string $instructions Instructions for the AI to follow
+	 * @param string $original_content Original content
+	 * @return string|WP_Error Rewritten content or error
+	 */
+	public static function call_openai_for_rewrite( $instructions, $original_content ) {
+		
+		// Calculate max tokens based on input length
+		$input_length = strlen( $original_content );
+		if ( $input_length > 5000 ) {
+			$max_output_tokens = 800;
+		} elseif ( $input_length > 2000 ) {
+			$max_output_tokens = 500;
+		} else {
+			$max_output_tokens = 300;
+		}
+		
+		// Prepare the request
+		$request = array(
+			'model' => EPKB_OpenAI_Client::DEFAULT_MODEL,
+			'messages' => array(
+				array(
+					'role' => 'system',
+					'content' => $instructions
+				),
+				array(
+					'role' => 'user',
+					'content' => $original_content
+				)
+			),
+		);
+		
+		// Apply model-specific parameters using the generic method
+		$params = array(
+			'temperature' => 0.3, // Low temperature for consistency
+			//'max_output_tokens' => $max_output_tokens
+		);
+		$request = EPKB_OpenAI_Client::apply_model_parameters( $request, EPKB_OpenAI_Client::DEFAULT_MODEL, $params );
+		
+		// Make the API call
+		$client = new EPKB_OpenAI_Client();
+		$response = $client->request( '/chat/completions', $request );
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		// Extract the content from response
+		if ( ! isset( $response['choices'][0]['message']['content'] ) ) {
+			return new WP_Error( 'invalid_response', __( 'Invalid response from AI service', 'echo-knowledge-base' ) );
+		}
+		
+		return trim( $response['choices'][0]['message']['content'] );
 	}
 }

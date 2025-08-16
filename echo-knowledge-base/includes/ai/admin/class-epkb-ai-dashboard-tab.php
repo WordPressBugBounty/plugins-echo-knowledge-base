@@ -16,12 +16,23 @@ class EPKB_AI_Dashboard_Tab {
 	 * @return array
 	 */
 	public static function get_tab_config() {
-		return array(
+		$config = array(
 			'tab_id' => 'dashboard',
 			'title' => __( 'Dashboard', 'echo-knowledge-base' ),
-			'beta_signup' => self::get_beta_signup_config(),
 			'load_status_async' => true
 		);
+		
+		// Do a quick status check for immediate display (no API calls)
+		$quick_status = self::get_ai_status( true );
+		$config['status'] = $quick_status;
+		
+		// Show dashboard content
+		$config['dashboard_stats'] = self::get_dashboard_stats();
+		$config['news'] = self::get_news_items();
+		$config['upcoming_features'] = self::get_upcoming_features();
+		$config['quick_links'] = self::get_quick_links();
+		
+		return $config;
 	}
 
 	/**
@@ -29,9 +40,26 @@ class EPKB_AI_Dashboard_Tab {
 	 */
 	public function ajax_get_ai_status() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_ai_admin_page' );
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
 
-		$status = self::get_ai_status();
+		// Check for force refresh parameter
+		$force_refresh = isset( $_POST['force_refresh'] ) && $_POST['force_refresh'] === 'true';
+		
+		// Try to get cached status first (cache for 30 seconds to avoid repeated checks)
+		$cache_key = 'epkb_ai_dashboard_status';
+		$cached_status = get_transient( $cache_key );
+		
+		if ( ! $force_refresh && $cached_status !== false ) {
+			wp_send_json_success( $cached_status );
+			return;
+		}
+
+		// Use quick check by default, full check only on force refresh
+		$quick_check = ! $force_refresh;
+		$status = self::get_ai_status( $quick_check );
+		
+		// Cache the status for 30 seconds
+		set_transient( $cache_key, $status, 30 );
 
 		wp_send_json_success( $status );
 	}
@@ -39,9 +67,10 @@ class EPKB_AI_Dashboard_Tab {
 	/**
 	 * Get comprehensive AI status
 	 *
+	 * @param bool $quick_check If true, perform quick checks without API calls
 	 * @return array Status information with issues and warnings
 	 */
-	private static function get_ai_status() {
+	private static function get_ai_status( $quick_check = true ) {
 
 		$status = array(
 			'issues' => array(),
@@ -50,8 +79,16 @@ class EPKB_AI_Dashboard_Tab {
 			'checks' => array()
 		);
 		
-		// 1. Check API Key
-		$api_key_status = self::check_api_key();
+		// Only check if user has used AI if AI is enabled (to avoid DB errors)
+		$status['show_get_started'] = !EPKB_AI_Utilities::is_ai_enabled() || !EPKB_AI_Messages_DB::has_user_used_ai();
+		
+		// Check if this is initial setup (no API key and no disclaimer accepted)
+		$encrypted_key = EPKB_AI_Config_Specs::get_unmasked_api_key();
+		$disclaimer_accepted = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_disclaimer_accepted' );
+		$status['is_initial_setup'] = empty( $encrypted_key ) && $disclaimer_accepted !== 'on';
+		
+		// 1. Check API Key - use quick check for dashboard loading
+		$api_key_status = self::check_api_key( $quick_check );
 		$status['checks']['api_key'] = $api_key_status;
 		if ( $api_key_status['status'] === 'error' ) {
 			$status['issues'][] = $api_key_status;
@@ -59,13 +96,15 @@ class EPKB_AI_Dashboard_Tab {
 			$status['warnings'][] = $api_key_status;
 		}
 		
-		// 2. Check Vector Store
-		$vector_store_status = self::check_vector_store();
-		$status['checks']['vector_store'] = $vector_store_status;
-		if ( $vector_store_status['status'] === 'error' ) {
-			$status['issues'][] = $vector_store_status;
-		} elseif ( $vector_store_status['status'] === 'warning' ) {
-			$status['warnings'][] = $vector_store_status;
+		// 2. Check Vector Store - skip for quick check to avoid API calls
+		if ( ! $quick_check ) {
+			$vector_store_status = self::check_vector_store();
+			$status['checks']['vector_store'] = $vector_store_status;
+			if ( $vector_store_status['status'] === 'error' ) {
+				$status['issues'][] = $vector_store_status;
+			} elseif ( $vector_store_status['status'] === 'warning' ) {
+				$status['warnings'][] = $vector_store_status;
+			}
 		}
 		
 		// 3. Check Disclaimer Agreement
@@ -75,11 +114,13 @@ class EPKB_AI_Dashboard_Tab {
 			$status['issues'][] = $disclaimer_status;
 		}
 		
-		// 4. Check AI Tables
-		$tables_status = self::check_ai_tables();
-		$status['checks']['tables'] = $tables_status;
-		if ( $tables_status['status'] === 'error' ) {
-			$status['issues'][] = $tables_status;
+		// 4. Check AI Tables only if AI is enabled (skip DB checks otherwise)
+		if ( EPKB_AI_Utilities::is_ai_enabled() ) {
+			$tables_status = self::check_ai_tables();
+			$status['checks']['tables'] = $tables_status;
+			if ( $tables_status['status'] === 'error' ) {
+				$status['issues'][] = $tables_status;
+			}
 		}
 		
 		// 5. Check AI Configuration
@@ -98,23 +139,18 @@ class EPKB_AI_Dashboard_Tab {
 			$status['issues'][] = $rest_status;
 		}
 		
-		// 7. Check Beta Code
-		$beta_status = self::check_beta_code();
-		$status['checks']['beta_code'] = $beta_status;
-		if ( $beta_status['status'] === 'warning' ) {
-			$status['warnings'][] = $beta_status;
-		}
-		
-		// 8. Additional System Checks
-		$system_checks = self::check_system_requirements();
-		foreach ( $system_checks as $check ) {
-			$status['checks'][$check['id']] = $check;
-			if ( $check['status'] === 'error' ) {
-				$status['issues'][] = $check;
-			} elseif ( $check['status'] === 'warning' ) {
-				$status['warnings'][] = $check;
-			} elseif ( $check['status'] === 'info' ) {
-				$status['info'][] = $check;
+		// 8. Additional System Checks - only if AI is enabled
+		if ( EPKB_AI_Utilities::is_ai_enabled() ) {
+			$system_checks = self::check_system_requirements();
+			foreach ( $system_checks as $check ) {
+				$status['checks'][$check['id']] = $check;
+				if ( $check['status'] === 'error' ) {
+					$status['issues'][] = $check;
+				} elseif ( $check['status'] === 'warning' ) {
+					$status['warnings'][] = $check;
+				} elseif ( $check['status'] === 'info' ) {
+					$status['info'][] = $check;
+				}
 			}
 		}
 		
@@ -133,9 +169,10 @@ class EPKB_AI_Dashboard_Tab {
 	/**
 	 * Check API Key validity
 	 *
+	 * @param bool $quick_check If true, skip OpenAI connection test for faster loading
 	 * @return array Status information
 	 */
-	private static function check_api_key() {
+	private static function check_api_key( $quick_check = false ) {
 		
 		$encrypted_key = EPKB_AI_Config_Specs::get_unmasked_api_key();
 		
@@ -143,10 +180,21 @@ class EPKB_AI_Dashboard_Tab {
 		if ( empty( $encrypted_key ) ) {
 			return array(
 				'id' => 'api_key_missing',
-				'status' => 'error',
+				'status' => 'warning',
 				'message' => __( 'OpenAI API key is not configured', 'echo-knowledge-base' ),
 				'action' => __( 'Add your API key in General Settings', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' )
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' ),
+				'is_setup_step' => true
+			);
+		}
+		
+		// For quick check, just verify the key exists and has basic format
+		if ( $quick_check ) {
+			// Simple format check without decryption
+			return array(
+				'id' => 'api_key_valid',
+				'status' => 'success',
+				'message' => __( 'API key is configured', 'echo-knowledge-base' )
 			);
 		}
 		
@@ -155,7 +203,7 @@ class EPKB_AI_Dashboard_Tab {
 		if ( $api_key === false ) {
 			return array(
 				'id' => 'api_key_decrypt_failed',
-				'status' => 'error',
+				'status' => 'warning',
 				'message' => __( 'Failed to decrypt API key', 'echo-knowledge-base' ),
 				'action' => __( 'Re-enter your API key in General Settings', 'echo-knowledge-base' ),
 				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' )
@@ -166,7 +214,7 @@ class EPKB_AI_Dashboard_Tab {
 		if ( ! EPKB_AI_Validation::validate_api_key_format( $api_key ) ) {
 			return array(
 				'id' => 'api_key_invalid_format',
-				'status' => 'error',
+				'status' => 'warning',
 				'message' => __( 'API key format is invalid', 'echo-knowledge-base' ),
 				'action' => __( 'Check your API key format (should start with sk-)', 'echo-knowledge-base' ),
 				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' )
@@ -179,7 +227,7 @@ class EPKB_AI_Dashboard_Tab {
 		if ( is_wp_error( $test_result ) ) {
 			return array(
 				'id' => 'api_key_invalid_openai',
-				'status' => 'error',
+				'status' => 'warning',
 				'message' => __( 'OpenAI does not recognize the API key', 'echo-knowledge-base' ),
 				'action' => __( 'Verify your API key on OpenAI dashboard', 'echo-knowledge-base' ),
 				'details' => $test_result->get_error_message(),
@@ -252,10 +300,11 @@ class EPKB_AI_Dashboard_Tab {
 		if ( $disclaimer_accepted !== 'on' ) {
 			return array(
 				'id' => 'disclaimer_not_accepted',
-				'status' => 'error',
-				'message' => __( 'AI disclaimer has not been accepted', 'echo-knowledge-base' ),
-				'action' => __( 'Accept the disclaimer in General Settings', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' )
+				'status' => 'warning',
+				'message' => __( 'Data privacy agreement needed', 'echo-knowledge-base' ),
+				'action' => __( 'Review and accept the data privacy terms', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' ),
+				'is_setup_step' => true
 			);
 		}
 		
@@ -272,7 +321,7 @@ class EPKB_AI_Dashboard_Tab {
 	 * @return array Status information
 	 */
 	private static function check_ai_tables() {
-		
+
 		global $wpdb;
 		$missing_tables = array();
 		
@@ -296,13 +345,14 @@ class EPKB_AI_Dashboard_Tab {
 		if ( ! empty( $missing_tables ) ) {
 			return array(
 				'id' => 'ai_tables_missing',
-				'status' => 'error',
-				'message' => sprintf( 
-					__( 'Missing AI database tables: %s', 'echo-knowledge-base' ), 
-					implode( ', ', $missing_tables ) 
+				'status' => 'warning',
+				'message' => __( 'Database setup required', 'echo-knowledge-base' ),
+				'action' => sprintf( 
+					__( 'Please deactivate and reactivate the plugin to create the necessary database tables (%s)', 'echo-knowledge-base' ),
+					implode( ', ', $missing_tables )
 				),
-				'action' => __( 'Run database upgrade to create missing tables', 'echo-knowledge-base' ),
-				'details' => $missing_tables
+				'details' => $missing_tables,
+				'is_setup_step' => true
 			);
 		}
 		
@@ -325,7 +375,7 @@ class EPKB_AI_Dashboard_Tab {
 		if ( empty( $ai_config ) || ! is_array( $ai_config ) ) {
 			return array(
 				'id' => 'ai_config_missing',
-				'status' => 'error',
+				'status' => 'warning',
 				'message' => __( 'AI configuration is missing', 'echo-knowledge-base' ),
 				'action' => __( 'Contact support - configuration needs to be initialized', 'echo-knowledge-base' )
 			);
@@ -364,7 +414,7 @@ class EPKB_AI_Dashboard_Tab {
 		if ( apply_filters( 'rest_enabled', true ) === false ) {
 			return array(
 				'id' => 'rest_api_disabled_filter',
-				'status' => 'error',
+				'status' => 'warning',
 				'message' => __( 'REST API is disabled by a filter', 'echo-knowledge-base' ),
 				'action' => __( 'Remove any filters disabling the REST API', 'echo-knowledge-base' ),
 				'details' => __( 'AI features require REST API to be enabled', 'echo-knowledge-base' )
@@ -376,7 +426,7 @@ class EPKB_AI_Dashboard_Tab {
 		if ( empty( $rest_url ) ) {
 			return array(
 				'id' => 'rest_api_url_missing',
-				'status' => 'error',
+				'status' => 'warning',
 				'message' => __( 'REST API URL is not available', 'echo-knowledge-base' ),
 				'action' => __( 'Check permalink settings and server configuration', 'echo-knowledge-base' )
 			);
@@ -410,40 +460,6 @@ class EPKB_AI_Dashboard_Tab {
 		);
 	}
 	
-	/**
-	 * Check beta code validity
-	 *
-	 * @return array Status information
-	 */
-	private static function check_beta_code() {
-		
-		$beta_code = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_beta_code' );
-		
-		if ( empty( $beta_code ) ) {
-			return array(
-				'id' => 'beta_code_missing',
-				'status' => 'info',
-				'message' => __( 'No beta code configured', 'echo-knowledge-base' ),
-				'action' => __( 'Add beta code if you have one', 'echo-knowledge-base' )
-			);
-		}
-		
-		// Validate beta code format/validity
-		if ( ! EPKB_AI_General_Settings_Tab::has_valid_beta_code() ) {
-			return array(
-				'id' => 'beta_code_invalid',
-				'status' => 'warning',
-				'message' => __( 'Beta code is invalid', 'echo-knowledge-base' ),
-				'action' => __( 'Check your beta code', 'echo-knowledge-base' )
-			);
-		}
-		
-		return array(
-			'id' => 'beta_code_valid',
-			'status' => 'success',
-			'message' => __( 'Beta code is valid', 'echo-knowledge-base' )
-		);
-	}
 	
 	/**
 	 * Check system requirements and additional issues
@@ -458,7 +474,7 @@ class EPKB_AI_Dashboard_Tab {
 		if ( version_compare( PHP_VERSION, '7.2', '<' ) ) {
 			$checks[] = array(
 				'id' => 'php_version',
-				'status' => 'error',
+				'status' => 'warning',
 				'message' => sprintf( __( 'PHP version %s is too old', 'echo-knowledge-base' ), PHP_VERSION ),
 				'action' => __( 'Upgrade to PHP 7.2 or higher', 'echo-knowledge-base' )
 			);
@@ -635,43 +651,315 @@ class EPKB_AI_Dashboard_Tab {
 		return null;
 	}
 
+	
 	/**
-	 * Get beta signup configuration
+	 * Get dashboard statistics
 	 *
 	 * @return array
 	 */
-	private static function get_beta_signup_config() {
-		$current_user = wp_get_current_user();
-
+	private static function get_dashboard_stats() {
+		global $wpdb;
+		
+		$stats = array();
+		
+		// Check if AI is enabled - if not, return default values without DB queries
+		if ( ! EPKB_AI_Utilities::is_ai_enabled() ) {
+			return self::get_default_stats();
+		}
+		
+		// Training Data Statistics
+		$training_data_table = $wpdb->prefix . 'epkb_ai_training_data';
+		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $training_data_table ) ) === $training_data_table ) {
+			$total_items = $wpdb->get_var( "SELECT COUNT(*) FROM {$training_data_table}" );
+			$synced_items = $wpdb->get_var( "SELECT COUNT(*) FROM {$training_data_table} WHERE status = 'synced'" );
+			$failed_items = $wpdb->get_var( "SELECT COUNT(*) FROM {$training_data_table} WHERE status = 'failed'" );
+			$last_sync = $wpdb->get_var( "SELECT MAX(last_synced) FROM {$training_data_table}" );
+			
+			$stats['training_data'] = array(
+				'icon' => 'epkbfa epkbfa-database',
+				'color' => '#4F46E5',
+				'title' => __( 'Training Data', 'echo-knowledge-base' ),
+				'value' => intval( $synced_items ),
+				'total' => intval( $total_items ),
+				'synced' => intval( $synced_items ),
+				'failed' => intval( $failed_items ),
+				'last_sync' => $last_sync,
+				'description' => sprintf( __( '%d items synced', 'echo-knowledge-base' ), $synced_items )
+			);
+		} else {
+			$stats['training_data'] = array(
+				'icon' => 'epkbfa epkbfa-database',
+				'color' => '#4F46E5',
+				'title' => __( 'Training Data', 'echo-knowledge-base' ),
+				'value' => 0,
+				'total' => 0,
+				'synced' => 0,
+				'failed' => 0,
+				'last_sync' => null,
+				'description' => __( 'No training data synced yet', 'echo-knowledge-base' )
+			);
+		}
+		
+		// Chat Statistics
+		$messages_table = $wpdb->prefix . 'epkb_ai_messages';
+		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $messages_table ) ) === $messages_table ) {
+			$total_conversations = $wpdb->get_var( "SELECT COUNT(DISTINCT conversation_id) FROM {$messages_table}" );
+			$total_messages = $wpdb->get_var( "SELECT COUNT(*) FROM {$messages_table}" );
+			$today_conversations = $wpdb->get_var( $wpdb->prepare( 
+				"SELECT COUNT(DISTINCT conversation_id) FROM {$messages_table} WHERE DATE(created) = %s",
+				current_time( 'Y-m-d' )
+			) );
+			
+			$stats['chat'] = array(
+				'icon' => 'epkbfa epkbfa-comments',
+				'color' => '#10B981',
+				'title' => __( 'AI Chat', 'echo-knowledge-base' ),
+				'value' => intval( $today_conversations ),
+				'conversations' => intval( $total_conversations ),
+				'messages' => intval( $total_messages ),
+				'today' => intval( $today_conversations ),
+				'description' => __( 'Today\'s Activity', 'echo-knowledge-base' ),
+				'bottom_text' => sprintf( __( '%d total conversations', 'echo-knowledge-base' ), $total_conversations ),
+				'show_as_main' => true
+			);
+		} else {
+			$stats['chat'] = array(
+				'icon' => 'epkbfa epkbfa-comments',
+				'color' => '#10B981',
+				'title' => __( 'AI Chat', 'echo-knowledge-base' ),
+				'value' => 0,
+				'conversations' => 0,
+				'messages' => 0,
+				'today' => 0,
+				'description' => __( 'Today\'s Activity', 'echo-knowledge-base' ),
+				'bottom_text' => __( '0 total conversations', 'echo-knowledge-base' ),
+				'show_as_main' => true
+			);
+		}
+		
+		// Search Statistics
+		$search_logs_table = $wpdb->prefix . 'epkb_ai_search_logs';
+		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $search_logs_table ) ) === $search_logs_table ) {
+			$total_searches = $wpdb->get_var( "SELECT COUNT(*) FROM {$search_logs_table}" );
+			$today_searches = $wpdb->get_var( $wpdb->prepare( 
+				"SELECT COUNT(*) FROM {$search_logs_table} WHERE DATE(created) = %s",
+				current_time( 'Y-m-d' )
+			) );
+			
+			$stats['search'] = array(
+				'icon' => 'epkbfa epkbfa-search',
+				'color' => '#F59E0B',
+				'title' => __( 'AI Search', 'echo-knowledge-base' ),
+				'value' => intval( $today_searches ),
+				'total' => intval( $total_searches ),
+				'today' => intval( $today_searches ),
+				'description' => __( 'Today\'s Activity', 'echo-knowledge-base' ),
+				'bottom_text' => sprintf( __( '%d total searches', 'echo-knowledge-base' ), $total_searches ),
+				'show_as_main' => true
+			);
+		} else {
+			$stats['search'] = array(
+				'icon' => 'epkbfa epkbfa-search',
+				'color' => '#F59E0B',
+				'title' => __( 'AI Search', 'echo-knowledge-base' ),
+				'value' => 0,
+				'total' => 0,
+				'today' => 0,
+				'description' => __( 'Today\'s Activity', 'echo-knowledge-base' ),
+				'bottom_text' => __( '0 total searches', 'echo-knowledge-base' ),
+				'show_as_main' => true
+			);
+		}
+		
+		// API Token Usage Statistics
+		$api_usage = get_option( 'epkb_ai_api_usage', array() );
+		$monthly_tokens = isset( $api_usage['monthly_tokens'] ) ? $api_usage['monthly_tokens'] : 0;
+		$monthly_cost = isset( $api_usage['monthly_cost'] ) ? $api_usage['monthly_cost'] : 0;
+		
+		$stats['api_usage'] = array(
+			'icon' => 'epkbfa epkbfa-line-chart',
+			'color' => '#EF4444',
+			'title' => __( 'API Token Usage', 'echo-knowledge-base' ),
+			'value' => __( 'upcoming feature', 'echo-knowledge-base' ),
+			'tokens' => $monthly_tokens,
+			'cost' => number_format( $monthly_cost, 2 ),
+			'description' => __( 'Token counter upcoming feature', 'echo-knowledge-base' ),
+			'is_coming_soon' => true,
+			'bottom_text' => sprintf( __( '%s tokens used', 'echo-knowledge-base' ), number_format( $monthly_tokens ) )
+		);
+		
+		return $stats;
+	}
+	
+	/**
+	 * Get default statistics when AI is not enabled
+	 *
+	 * @return array
+	 */
+	private static function get_default_stats() {
 		return array(
-			'enabled' => true,
-			'title' => __( 'Exciting AI Features Are Coming!', 'echo-knowledge-base' ),
-			'description' => __( 'Be among the first to experience our revolutionary AI-powered search and chat capabilities. Sign up now for early access, exclusive beta testing opportunities, and special promotions!', 'echo-knowledge-base' ),
-			'benefits' => array(
-				array(
-					'icon' => 'epkbfa epkbfa-bolt',
-					'title' => __( 'Early Access', 'echo-knowledge-base' ),
-					'description' => __( 'Get access to new AI features before general release', 'echo-knowledge-base' )
-				),
-				array(
-					'icon' => 'epkbfa epkbfa-gift',
-					'title' => __( 'Special Promotions', 'echo-knowledge-base' ),
-					'description' => __( 'Exclusive discounts and offers for beta testers', 'echo-knowledge-base' )
-				),
-				array(
-					'icon' => 'epkbfa epkbfa-comments',
-					'title' => __( 'Shape the Future', 'echo-knowledge-base' ),
-					'description' => __( 'Your feedback will help us build better AI features', 'echo-knowledge-base' )
-				)
+			'training_data' => array(
+				'icon' => 'epkbfa epkbfa-database',
+				'color' => '#4F46E5',
+				'title' => __( 'Training Data', 'echo-knowledge-base' ),
+				'value' => 0,
+				'total' => 0,
+				'synced' => 0,
+				'failed' => 0,
+				'last_sync' => null,
+				'description' => __( 'Enable AI to sync training data', 'echo-knowledge-base' )
 			),
-			'form_fields' => array(
-				'email' => array(
-					'type' => 'email',
-					'placeholder' => __( 'Enter your email address', 'echo-knowledge-base' ),
-					'required' => true,
-					'default' => $current_user->user_email
-				)
+			'chat' => array(
+				'icon' => 'epkbfa epkbfa-comments',
+				'color' => '#10B981',
+				'title' => __( 'AI Chat', 'echo-knowledge-base' ),
+				'value' => 0,
+				'conversations' => 0,
+				'messages' => 0,
+				'today' => 0,
+				'description' => __( 'Today\'s Activity', 'echo-knowledge-base' ),
+				'bottom_text' => __( 'Enable AI to start conversations', 'echo-knowledge-base' ),
+				'show_as_main' => true
 			),
+			'search' => array(
+				'icon' => 'epkbfa epkbfa-search',
+				'color' => '#F59E0B',
+				'title' => __( 'AI Search', 'echo-knowledge-base' ),
+				'value' => 0,
+				'total' => 0,
+				'today' => 0,
+				'description' => __( 'Today\'s Activity', 'echo-knowledge-base' ),
+				'bottom_text' => __( 'Enable AI to track searches', 'echo-knowledge-base' ),
+				'show_as_main' => true
+			),
+			'api_usage' => array(
+				'icon' => 'epkbfa epkbfa-line-chart',
+				'color' => '#EF4444',
+				'title' => __( 'API Token Usage', 'echo-knowledge-base' ),
+				'value' => __( 'upcoming feature', 'echo-knowledge-base' ),
+				'tokens' => 0,
+				'cost' => '0.00',
+				'description' => __( 'Token counter upcoming feature', 'echo-knowledge-base' ),
+				'is_coming_soon' => true,
+				'bottom_text' => __( '0 tokens used', 'echo-knowledge-base' )
+			)
+		);
+	}
+	
+	/**
+	 * Get news items for the dashboard
+	 *
+	 * @return array
+	 */
+	private static function get_news_items() {
+		return array(
+			array(
+				'date' => '2025-01-15',
+				'type' => 'feature',
+				'title' => __( 'AI Search Enhancements', 'echo-knowledge-base' ),
+				'description' => __( 'Improved semantic search with better context understanding, faster response times, and more relevant article suggestions.', 'echo-knowledge-base' ),
+				'link' => null
+			),
+			array(
+				'date' => '2025-01-10',
+				'type' => 'improvement',
+				'title' => __( 'AI Chat Upgrades', 'echo-knowledge-base' ),
+				'description' => __( 'Enhanced conversation flow with better context retention, multi-turn conversations, and improved answer accuracy.', 'echo-knowledge-base' ),
+				'link' => null
+			),
+			array(
+				'date' => '2025-01-05',
+				'type' => 'update',
+				'title' => __( 'Training Data Improvements', 'echo-knowledge-base' ),
+				'description' => __( 'Faster sync process, better handling of large datasets, automatic content updates, and improved vector storage management.', 'echo-knowledge-base' ),
+				'link' => null
+			)
+		);
+	}
+	
+	/**
+	 * Get upcoming features
+	 *
+	 * @return array
+	 */
+	private static function get_upcoming_features() {
+		return array(
+			array(
+				'icon' => 'epkbfa epkbfa-envelope',
+				'title' => __( 'Smart Email Notifications (PRO)', 'echo-knowledge-base' ),
+				'description' => __( 'Never miss a customer conversation. Get instant email alerts when users complete chats, with full conversation transcripts and insights.', 'echo-knowledge-base' ),
+			),
+			array(
+				'icon' => 'epkbfa epkbfa-chart-line',
+				'title' => __( 'AI-Powered Article Analysis (PRO)', 'echo-knowledge-base' ),
+				'description' => __( 'Get intelligent insights about your content. AI analyzes article quality, readability, and suggests improvements to maximize user engagement.', 'echo-knowledge-base' ),
+			),
+			array(
+				'icon' => 'epkbfa epkbfa-book',
+				'title' => __( 'AI-Generated Glossary Terms (PRO)', 'echo-knowledge-base' ),
+				'description' => __( 'Automatically generate and manage glossary terms with AI. Intelligently prioritize technical terms, acronyms, and industry-specific language.', 'echo-knowledge-base' ),
+			),
+			array(
+				'icon' => 'epkbfa epkbfa-database',
+				'title' => __( 'Advanced AI Capabilities', 'echo-knowledge-base' ),
+				'description' => __( 'Train your AI on posts, pages, custom post types, and private notes. Create a comprehensive knowledge base that understands all your content.', 'echo-knowledge-base' ),
+			),
+		);
+	}
+	
+	/**
+	 * Get quick links for the dashboard
+	 *
+	 * @return array
+	 */
+	private static function get_quick_links() {
+		return array(
+			array(
+				'icon' => 'epkbfa epkbfa-key',
+				'title' => __( 'Step 1: Add OpenAI API Key', 'echo-knowledge-base' ),
+				'description' => __( 'Enter your OpenAI API key to enable AI features. Get your key from OpenAI platform.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' ),
+				'external' => false
+			),
+			array(
+				'icon' => 'epkbfa epkbfa-check-circle',
+				'title' => __( 'Step 2: Accept Data Privacy Terms', 'echo-knowledge-base' ),
+				'description' => __( 'Review and accept the data privacy disclaimer to proceed with AI setup.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' ),
+				'external' => false
+			),
+			array(
+				'icon' => 'epkbfa epkbfa-comments',
+				'title' => __( 'Step 3: Enable AI Chat', 'echo-knowledge-base' ),
+				'description' => __( 'Configure and enable AI Chat to provide instant answers to your users.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=chat&sub_tab=settings' ),
+				'external' => false
+			),
+			array(
+				'icon' => 'epkbfa epkbfa-search',
+				'title' => __( 'Step 4: Enable AI Search', 'echo-knowledge-base' ),
+				'description' => __( 'Set up AI-powered semantic search for more accurate results.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=search&sub_tab=settings' ),
+				'external' => false
+			),
+			array(
+				'icon' => 'epkbfa epkbfa-sync',
+				'title' => __( 'Step 5: Sync Training Data', 'echo-knowledge-base' ),
+				'description' => __( 'Sync your knowledge base articles to train the AI on your content.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=training-data' ),
+				'external' => false
+			),
+			/* Temporarily hidden - backend help chat
+			array(
+				'icon' => 'epkbfa epkbfa-life-ring',
+				'title' => __( 'Need Help? Open AI Assistant', 'echo-knowledge-base' ),
+				'description' => __( 'Click here to open the "Need Help?" dialog for instant AI assistance.', 'echo-knowledge-base' ),
+				'link' => '#',
+				'external' => false,
+				'class' => 'epkb-ai-help-trigger',
+				'onclick' => 'var button = document.querySelector("#epkb-admin-help-chat-root .epkb-help-chat-button"); if(button) { button.click(); } else { alert("AI Help is loading. Please try again in a moment."); } return false;'
+			)
+			*/
 		);
 	}
 }

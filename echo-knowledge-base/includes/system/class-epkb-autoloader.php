@@ -48,6 +48,7 @@ class EPKB_Autoloader {
 				'epkb_admin_notices'                =>  'includes/admin/class-epkb-admin-notices.php',
 				'epkb_site_builders'                =>  'includes/admin/class-epkb-site-builders.php',
 				'epkb_debug_controller'             =>  'includes/admin/settings/class-epkb-debug-controller.php',
+				'epkb_ai_admin_help_chat'           =>  'includes/admin/ai/class-epkb-ai-admin-help-chat.php',
 
 				// ADMIN PAGES
 				'epkb_config_page'                  =>  'includes/admin/pages/class-epkb-config-page.php',
@@ -149,11 +150,6 @@ class EPKB_Autoloader {
 				// TEMPLATES
 				'epkb_templates_various'            =>  'templates/helpers/class-epkb-templates-various.php',
 
-				// OpenAI
-				'epkb_openai_orig'                  =>  'includes/admin/openai/class-epkb-openai-orig.php',
-				'epkb_ai_help_sidebar'              =>  'includes/admin/openai/class-epkb-ai-help-sidebar.php',
-				'epkb_ai_help_sidebar_ctrl'         =>  'includes/admin/openai/class-epkb-ai-help-sidebar-ctrl.php',
-
 				// AI Admin
 				'epkb_ai_admin_page'          		=>  'includes/ai/admin/class-epkb-ai-admin-page.php',
 				'epkb_ai_chat_tab'         			=>  'includes/ai/admin/class-epkb-ai-chat-tab.php',
@@ -162,7 +158,9 @@ class EPKB_Autoloader {
 				'epkb_ai_search_tab'          		=>  'includes/ai/admin/class-epkb-ai-search-tab.php',
 				'epkb_ai_training_data_tab'      	=>  'includes/ai/admin/class-epkb-ai-training-data-tab.php',
 				'epkb_ai_tools_tab'      			=>  'includes/ai/admin/class-epkb-ai-tools-tab.php',
-				'epkb_ai_tools_debug_sub_tab'      	=>  'includes/ai/admin/class-epkb-ai-tools-debug-sub-tab.php',
+				'epkb_ai_tools_debug_tab'           =>  'includes/ai/admin/class-epkb-ai-tools-debug-tab.php',
+				'epkb_ai_tools_tuning_tab'      	=>  'includes/ai/admin/class-epkb-ai-tools-tuning-tab.php',
+				'epkb_ai_pro_features_tab'		    =>  'includes/ai/admin/class-epkb-ai-pro-features-tab.php',
 
 				// AI Config
 				'epkb_ai_config_base'				=>  'includes/ai/config/class-epkb-ai-config-base.php',
@@ -186,6 +184,7 @@ class EPKB_Autoloader {
 				'epkb_ai_rest_search_controller'        =>  'includes/ai/rest/class-epkb-ai-rest-search-controller.php',
 				'epkb_ai_rest_training_data_controller' =>  'includes/ai/rest/class-epkb-ai-rest-training-data-controller.php',
 				'epkb_ai_rest_sync_controller'          =>  'includes/ai/rest/class-epkb-ai-rest-sync-controller.php',
+				'epkb_ai_rest_support_controller'       =>  'includes/ai/rest/class-epkb-ai-rest-support-controller.php',
 
 				// AI Services
 				'epkb_ai_base_handler'              =>  'includes/ai/services/class-epkb-ai-base-handler.php',

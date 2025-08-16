@@ -42,22 +42,44 @@ abstract class EPKB_AI_Config_Base {
 		$specs = static::get_config_fields_specifications();
 		
 		foreach ( $specs as $field_name => $field_spec ) {
-			$default_config[ $field_name ] = isset( $field_spec['default'] ) ? $field_spec['default'] : '';
+			$default_config[ $field_name ] = static::get_field_default( $field_name );
 		}
 		
 		return $default_config;
 	}
 
 	/**
+	 * Get default value for a specific field
+	 *
+	 * @param string $field_name Configuration field name
+	 * @return mixed Default value for the field or empty string if not defined
+	 */
+	public static function get_field_default( $field_name ) {
+		$specs = static::get_config_fields_specifications();
+		return isset( $specs[ $field_name ]['default'] ) ? $specs[ $field_name ]['default'] : '';
+	}
+
+	/**
 	 * Get a specific configuration value
 	 *
 	 * @param string $field_name Configuration field name
-	 * @param mixed $default Default value if not found
+	 * @param mixed $default Default value if not found or default from specs
 	 * @return mixed
 	 */
 	public static function get_config_value( $field_name, $default = null ) {
 		$config = static::get_config();
-		return isset( $config[ $field_name ] ) ? $config[ $field_name ] : $default;
+		
+		// If field exists in config, return it
+		if ( isset( $config[ $field_name ] ) ) {
+			return $config[ $field_name ];
+		}
+		
+		// If no default was supplied, get default from field specifications
+		if ( $default === null ) {
+			return static::get_field_default( $field_name );
+		}
+		
+		return $default;
 	}
 
 	/**
@@ -210,7 +232,7 @@ abstract class EPKB_AI_Config_Base {
 			
 			// Skip internal fields unless explicitly provided
 			if ( isset( $field_spec['internal'] ) && $field_spec['internal'] && ! isset( $config[ $field_name ] ) ) {
-				$default_value = isset( $field_spec['default'] ) ? $field_spec['default'] : '';
+				$default_value = static::get_field_default( $field_name );
 				$validated_config[ $field_name ] = isset( $current_config[ $field_name ] ) ? $current_config[ $field_name ] : $default_value;
 				continue;
 			}
@@ -232,7 +254,7 @@ abstract class EPKB_AI_Config_Base {
 				
 				$validated_config[ $field_name ] = $validated_value;
 			} else {
-				$default_value = isset( $field_spec['default'] ) ? $field_spec['default'] : '';
+				$default_value = static::get_field_default( $field_name );
 				$validated_config[ $field_name ] = isset( $current_config[ $field_name ] ) ? $current_config[ $field_name ] : $default_value;
 			}
 		}
@@ -272,6 +294,7 @@ abstract class EPKB_AI_Config_Base {
 				if ( isset( $field_spec['options'] ) && is_array( $field_spec['options'] ) ) {
 					$allowed = array_keys( $field_spec['options'] );
 				}
+				// Note: Can't use static::get_field_default() here since we only have field_spec, not field_name
 				$default_value = isset( $field_spec['default'] ) ? $field_spec['default'] : '';
 				return in_array( $value, $allowed ) ? $value : $default_value;
 				

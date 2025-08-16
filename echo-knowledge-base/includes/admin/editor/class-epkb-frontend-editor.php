@@ -137,12 +137,20 @@ class EPKB_Frontend_Editor {
 		if ( $triggered_hook == 'wp_footer' || $triggered_hook == 'wp_body_open' ) {
 			// For early hooks, use normal WordPress enqueuing
 			wp_enqueue_style( 'epkb-frontend-editor' );
+			if ( is_rtl() ) {
+				wp_enqueue_style( 'epkb-frontend-editor-rtl' );
+			}
+
 			wp_enqueue_script( 'epkb-admin-form-controls-scripts' );
 			wp_enqueue_script( 'epkb-frontend-editor' );
 
 		} else {
 			// For late hooks like get_footer, output assets directly
 			wp_print_styles( 'epkb-frontend-editor' );
+			if ( is_rtl() ) {
+				wp_print_styles( 'epkb-frontend-editor-rtl' );
+			}
+
 			wp_print_scripts( 'epkb-admin-form-controls-scripts' );
 			wp_print_scripts( 'epkb-frontend-editor' );
 		}

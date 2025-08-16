@@ -6,46 +6,88 @@
 class EPKB_AI_Admin_Page {
 
 	public function __construct() {
-		add_action( 'wp_ajax_epkb_ai_beta_signup', array( $this, 'ajax_epkb_ai_beta_signup' ) );    // TODO
-		
 		// Initialize tabs to register AJAX handlers
 		new EPKB_AI_Tools_Tab();
 		new EPKB_AI_Dashboard_Tab();
+		new EPKB_AI_Tools_Tuning_Tab();
 	}
 
 	// top tabs - base configuration
-	private $base_tabs = array(
+	private $top_tabs = array(
 		'dashboard' => array(
 			'title' => 'Dashboard',
 			'icon' => 'epkbfa epkbfa-tachometer',
-			'class' => 'EPKB_AI_Dashboard_Tab'
-		),
-		'general-settings' => array(
-			'title' => 'General Settings',
-			'icon' => 'epkbfa epkbfa-cogs',
-			'class' => 'EPKB_AI_General_Settings_Tab'
+			'class' => 'EPKB_AI_Dashboard_Tab',
+			'requires_ai' => false
 		),
 		'chat' => array(
 			'title' => 'Chat',
 			'icon' => 'epkbfa epkbfa-comments',
-			'class' => 'EPKB_AI_Chat_Tab'
+			'class' => 'EPKB_AI_Chat_Tab',
+			'requires_ai' => false
 		),
 		'search' => array(
 			'title' => 'Search',
 			'icon' => 'epkbfa epkbfa-search',
-			'class' => 'EPKB_AI_Search_Tab'
+			'class' => 'EPKB_AI_Search_Tab',
+			'requires_ai' => false
 		),
 		'training-data' => array(
 			'title' => 'Training Data',
 			'icon' => 'epkbfa epkbfa-database',
-			'class' => 'EPKB_AI_Training_Data_Tab'
+			'class' => 'EPKB_AI_Training_Data_Tab',
+			'requires_ai' => true
 		),
 		'tools' => array(
 			'title' => 'Tools',
 			'icon' => 'epkbfa epkbfa-wrench',
-			'class' => 'EPKB_AI_Tools_Tab'
-		)
+			'class' => 'EPKB_AI_Tools_Tab',
+			'requires_ai' => true,
+			'has_sub_tabs' => true
+		),
+		'general-settings' => array(
+			'title' => 'General Settings',
+			'icon' => 'epkbfa epkbfa-cogs',
+			'class' => 'EPKB_AI_General_Settings_Tab',
+			'requires_ai' => false
+		),
+		'pro-features' => array(
+			'title' => 'PRO Features',
+			'icon' => 'epkbfa epkbfa-star',
+			'class' => 'EPKB_AI_PRO_Features_Tab',
+			'requires_ai' => false
+		),
 	);
+
+	// Sub-tabs configuration
+	private $sub_tabs = array();
+
+	/**
+	 * Get sub-tabs configuration with translations
+	 *
+	 * @return array
+	 */
+	private function get_sub_tabs() {
+		if ( empty( $this->sub_tabs ) ) {
+			$this->sub_tabs = array(
+				'tools' => array(
+					'debug' => array(
+						'id' => 'debug',
+						'title' => __( 'Debug Information', 'echo-knowledge-base' ),
+						'icon' => 'epkbfa epkbfa-bug'
+					),
+					'tuning' => array(
+						'id' => 'tuning',
+						'title' => __( 'Advanced AI Tuning', 'echo-knowledge-base' ),
+						'icon' => 'epkbfa epkbfa-sliders',
+						'description' => __( 'Optional - For advanced users only', 'echo-knowledge-base' )
+					)
+				)
+			);
+		}
+		
+		return $this->sub_tabs;
+	}
 
 	/**
 	 * Get tabs array with dynamic ordering based on settings
@@ -53,14 +95,18 @@ class EPKB_AI_Admin_Page {
 	 * @return array
 	 */
 	private function get_ordered_tabs() {
-		$tabs = $this->base_tabs;
+		$tabs = $this->top_tabs;
 		
-		// Check if general settings are configured
-		if ( EPKB_AI_General_Settings_Tab::are_settings_configured() ) {
-			// Move general-settings to the end if settings are configured
+		// Always keep dashboard first, but prioritize general-settings as second if not configured
+		if ( ! EPKB_AI_General_Settings_Tab::are_settings_configured() ) {
+			// Extract dashboard and general-settings
+			$dashboard = $tabs['dashboard'];
 			$general_settings = $tabs['general-settings'];
+			unset( $tabs['dashboard'] );
 			unset( $tabs['general-settings'] );
-			$tabs['general-settings'] = $general_settings;
+			
+			// Reconstruct with dashboard first, general-settings second, then the rest
+			$tabs = array( 'dashboard' => $dashboard, 'general-settings' => $general_settings ) + $tabs;
 		}
 		
 		return $tabs;
@@ -80,13 +126,18 @@ class EPKB_AI_Admin_Page {
 		$active_tab = EPKB_Utilities::get( 'active_tab', 'dashboard' );
 		$active_tab = isset( $tabs[$active_tab] ) ? $active_tab : 'dashboard';
 
+		// Pre-calculate show_get_started flag for immediate display
+		// Only check if AI is enabled to avoid DB errors
+		$show_get_started = !EPKB_AI_Utilities::is_ai_enabled() || !EPKB_AI_Messages_DB::has_user_used_ai();
+
 		$react_data = array(
 			'active_tab' => $active_tab,
 			'tabs' => array_values( array_map( function( $key, $tab ) {
 				$tab_data = array(
 					'key' => $key,
 					'title' => __( $tab['title'], 'echo-knowledge-base' ),
-					'icon' => $tab['icon']
+					'icon' => $tab['icon'],
+					'requires_ai' => $this->tab_requires_ai( (array)$tab )
 				);
 				
 				// Mark dashboard tab to check for issues in background
@@ -94,16 +145,23 @@ class EPKB_AI_Admin_Page {
 					$tab_data['check_status'] = true;
 				}
 				
+				// Add sub-tabs indicator if present
+				if ( ! empty( $tab['has_sub_tabs'] ) ) {
+					$tab_data['has_sub_tabs'] = true;
+				}
+				
 				return $tab_data;
 			}, array_keys( $tabs ), $tabs ) ),
+			'sub_tabs' => $this->get_sub_tabs(),  // Sub-tabs configuration
+			'ai_enabled' => EPKB_AI_Utilities::is_ai_enabled(),  // Current AI status
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 			'rest_url' => rest_url( 'epkb-admin/v1/' ),
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'ajax_nonce' => wp_create_nonce( '_wpnonce_epkb_ajax_action' ),
 			'i18n' => $this->get_i18n_strings(),
 			'tabs_data' => $this->get_all_tabs_data(),  // Pre-load all tab settings
-			'has_valid_beta_code' => EPKB_AI_General_Settings_Tab::has_valid_beta_code(),
-			'are_settings_configured' => EPKB_AI_General_Settings_Tab::are_settings_configured()
+			'are_settings_configured' => EPKB_AI_General_Settings_Tab::are_settings_configured(),
+			'show_get_started' => $show_get_started  // Pre-calculated for immediate display
 		);
 
 		// Start the page output
@@ -149,12 +207,6 @@ class EPKB_AI_Admin_Page {
 			'logs_reset_success' => __( 'AI logs have been reset successfully.', 'echo-knowledge-base' ),
 			'settings_saved' => __( 'Settings saved successfully.', 'echo-knowledge-base' ),
 			'settings_save_error' => __( 'Failed to save settings. Please try again.', 'echo-knowledge-base' ),
-			'beta_signup_success' => __( 'Thank you for signing up for the beta!', 'echo-knowledge-base' ),
-			'beta_signup_error' => __( 'Failed to sign up for beta. Please try again.', 'echo-knowledge-base' ),
-			'beta_access_required' => __( 'Beta Access Required', 'echo-knowledge-base' ),
-			'beta_access_message' => __( 'This feature requires beta access. Please sign up for the beta program to use AI features.', 'echo-knowledge-base' ),
-			'beta_signup_button' => __( 'Sign Up for Beta', 'echo-knowledge-base' ),
-			'beta_learn_more' => __( 'Learn More', 'echo-knowledge-base' ),
 			'disclaimer_required' => __( 'Data Privacy Agreement Required', 'echo-knowledge-base' ),
 			'disclaimer_message' => __( 'To use AI features, you must accept our data privacy agreement. This ensures you understand how your data will be processed by AI services.', 'echo-knowledge-base' ),
 			'go_to_settings' => __( 'Go to General Settings', 'echo-knowledge-base' ),
@@ -171,61 +223,62 @@ class EPKB_AI_Admin_Page {
 		$tabs_data = array();
 		$tabs = $this->get_ordered_tabs();
 		
-		foreach ( $tabs as $tab_key => $tab ) {		
-			$tabs_data[$tab_key] = call_user_func( array( $tab['class'], 'get_tab_config' ) );
+		foreach ( $tabs as $tab_key => $tab ) {
+			$tabs_data[$tab_key] = $this->get_tab_config( $tab_key, $tab );
 		}
 		
 		return $tabs_data;
 	}
 
 	/**
-	 * AJAX handler for beta signup
+	 * Get the tab configuration with AI enabled check
+	 *
+	 * @param string $tab_key
+	 * @param array $tab
+	 * @return array
 	 */
-	public function ajax_epkb_ai_beta_signup() {
-
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_ai_admin_page' );
-
-		// Get email from form
-		$user_email = EPKB_Utilities::post( 'user_email' );
-		if ( empty( $user_email ) || ! is_email( $user_email ) ) {
-			wp_send_json_error( array( 'message' => 'Invalid email address.' ) );
+	private function get_tab_config( $tab_key, $tab ) {
+		// Check if this tab requires AI to be enabled
+		if ( $this->tab_requires_ai( $tab ) && ! EPKB_AI_Utilities::is_ai_enabled() ) {
+			return $this->get_ai_disabled_config( $tab_key, $tab['title'] );
 		}
-
-		// retrieve current user info or use email from form
-		$user = EPKB_Utilities::get_current_user();
-		$first_name = empty( $user ) ? 'AI Beta User' : ( empty( $user->user_firstname ) ? $user->display_name : $user->user_firstname );
-
-		// send feedback to same endpoint as deactivation form
-		$api_params = array(
-			'epkb_action'       => 'epkb_process_user_feedback',
-			'feedback_type'     => 'Beta Tester Sign Up',
-			'feedback_input'    => 'User signed up for AI beta testing features - Email: ' . $user_email,
-			'plugin_name'       => 'KB',
-			'plugin_version'    => class_exists('Echo_Knowledge_Base') ? Echo_Knowledge_Base::$version : 'N/A',
-			'first_version'     => '',
-			'wp_version'        => '',
-			'theme_info'        => '',
-			'contact_user'      => $user_email . ' - ' . $first_name,
-			'first_name'        => $first_name,
-			'email_subject'     => 'Beta Tester Sign Up',
-		);
-
-		// Call the API
-		$response = wp_remote_post(
-			esc_url_raw( add_query_arg( $api_params, 'https://www.echoknowledgebase.com' ) ),
-			array(
-				'timeout'   => 15,
-				'body'      => $api_params,
-				'sslverify' => false
-			)
-		);
-
-		// Check if the request was successful
-		if ( is_wp_error( $response ) ) {
-			wp_send_json_error( array( 'message' => 'Failed to submit signup. Please try again.' ) );
+		
+		// Get the tab configuration from the tab class
+		$config = call_user_func( array( $tab['class'], 'get_tab_config' ) );
+		
+		// Add sub-tabs information if this tab has sub-tabs
+		$sub_tabs = $this->get_sub_tabs();
+		if ( ! empty( $tab['has_sub_tabs'] ) && isset( $sub_tabs[$tab_key] ) ) {
+			$config['sub_tabs'] = $sub_tabs[$tab_key];
 		}
-
-		wp_send_json_success( array( 'message' => 'Thank you for signing up for AI beta!' ) );
+		
+		return $config;
 	}
 
+	/**
+	 * Check if a tab requires AI to be enabled
+	 *
+	 * @param array $tab
+	 * @return bool
+	 */
+	private function tab_requires_ai( $tab ) {
+		return isset( $tab['requires_ai'] ) && $tab['requires_ai'];
+	}
+
+	/**
+	 * Get configuration when AI is disabled
+	 *
+	 * @param string $tab_key
+	 * @param string $tab_title
+	 * @return array
+	 */
+	private function get_ai_disabled_config( $tab_key, $tab_title ) {
+		return array(
+			'tab_id' => $tab_key,
+			'title' => __( $tab_title, 'echo-knowledge-base' ),
+			'ai_disabled' => true,
+			'message' => __( 'AI Features Required', 'echo-knowledge-base' ),
+			'instructions' => __( 'To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.', 'echo-knowledge-base' )
+		);
+	}
 }

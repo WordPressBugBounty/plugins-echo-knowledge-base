@@ -3022,9 +3022,31 @@
 [dir=rtl] .epkb-notification-box-popup.epkb-notification-box-popup--info {
   border-right-color: #2EA3F2;
 }
+[dir=rtl] #wpbody-content .epkb-admin__section-wrap.epkb-admin__section-wrap--left {
+  margin-left: auto;
+  margin-right: 0;
+}
+[dir=rtl] #wpbody-content .epkb-admin__section-wrap.epkb-admin__section-wrap--left .epkb-admin__header__logo-wrap {
+  margin-right: 0;
+  margin-left: 100px;
+}
+[dir=rtl] #wpbody-content .epkb-admin__section-wrap.epkb-admin__section-wrap--left .epkb-admin__header__controls-wrap {
+  margin-right: 0;
+  margin-left: auto;
+}
 [dir=rtl] #wpbody-content .epkb-admin__section-wrap ul.epkb__radio-wrap li {
   margin-left: 25px;
   margin-right: 0;
+}
+@media (max-width: 782px) {
+  [dir=rtl] #wpbody-content .epkb-admin__section-wrap.epkb-admin__section-wrap--left .epkb-admin__header__logo-wrap {
+    margin-left: 0;
+    left: initial;
+    right: 0;
+  }
+  [dir=rtl] #wpbody-content .epkb-admin__section-wrap.epkb-admin__section-wrap--left .epkb-admin__header__controls-wrap {
+    margin-left: 0;
+  }
 }
 [dir=rtl] .epkb-settings-control-type-toggle--right .epkb-settings-control__field .epkb-settings-control__input {
   margin-left: 15px !important;

@@ -14,6 +14,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	const TABLE_VERSION = '1.0';    /** update when table schema changes **/
 	const PER_PAGE = 20;
 	const PRIMARY_KEY = 'id';
+	const TABLE_NAME_SUFFIX = 'epkb_ai_messages';
 
 	/**
 	 * Get things started
@@ -22,7 +23,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		parent::__construct();
 		
 		global $wpdb;
-		$this->table_name = $wpdb->prefix . 'epkb_ai_messages';
+		$this->table_name = $wpdb->prefix . self::TABLE_NAME_SUFFIX;
 		$this->primary_key = self::PRIMARY_KEY;
 		
 		// Ensure latest table exists
@@ -337,7 +338,12 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		$where = array();
 		
 		if ( ! empty( $args['mode'] ) ) {
-			$where[] = $this->prepare_column_value( 'mode', $args['mode'] );
+			// Special handling for chat mode - include both 'chat' and 'support'
+			if ( $args['mode'] === 'chat' ) {
+				$where[] = "mode IN ('chat', 'support')";
+			} else {
+				$where[] = $this->prepare_column_value( 'mode', $args['mode'] );
+			}
 		}
 		
 		
@@ -404,7 +410,12 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		$where = array();
 		
 		if ( ! empty( $args['mode'] ) ) {
-			$where[] = $this->prepare_column_value( 'mode', $args['mode'] );
+			// Special handling for chat mode - include both 'chat' and 'support'
+			if ( $args['mode'] === 'chat' ) {
+				$where[] = "mode IN ('chat', 'support')";
+			} else {
+				$where[] = $this->prepare_column_value( 'mode', $args['mode'] );
+			}
 		}
 
 		if ( ! empty( $args['user_id'] ) ) {
@@ -638,6 +649,28 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 */
 	protected function get_table_version() {
 		return self::TABLE_VERSION;
+	}
+	
+	/**
+	 * Check if user has used AI features i.e. the table exists and user has messages
+	 *
+	 * @return bool True if messages exist, false otherwise
+	 */
+	public static function has_user_used_ai() {
+		global $wpdb;
+		
+		// Get table name without instantiating (avoids check_db call)
+		$table_name = $wpdb->prefix . self::TABLE_NAME_SUFFIX;
+		
+		// Check if table exists
+		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name ) ) !== $table_name ) {
+			return false;
+		}
+		
+		// Check if any messages exist
+		$message_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$table_name}" );
+		
+		return intval( $message_count ) > 0;
 	}
 
 	/**

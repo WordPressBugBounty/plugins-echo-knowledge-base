@@ -31,7 +31,7 @@ abstract class EPKB_DB {
 	protected function check_db() {
 		static $already_checked = false;
 		
-		if ( $already_checked ) {
+		if ( $already_checked || ! EPKB_AI_Utilities::is_ai_enabled() ) {
 			return;
 		}
 

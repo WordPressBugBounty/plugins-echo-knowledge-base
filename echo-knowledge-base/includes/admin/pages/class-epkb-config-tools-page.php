@@ -18,21 +18,6 @@ class EPKB_Config_Tools_Page {
 
 		$secondary_tabs = [];
 
-		// SECONDARY VIEW: MENU ACCESS CONTROL
-		$secondary_tabs[] = array(
-
-			// Shared
-			'list_key'              => 'access-control',
-
-			// Secondary Panel Item
-			'label_text'            => esc_html__( 'Menu Access Control', 'echo-knowledge-base' ),
-
-			// Secondary Boxes List
-			'list_top_actions_html' => '<div class="epkb-admin__list-actions-row">' . EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save Access Control Settings', 'echo-knowledge-base' ),
-											 'epkb_save_access_control', 'epkb-admin__save-access-control-btn', '', true, true, 'epkb-success-btn' ) . '</div>',
-			'boxes_list'            => EPKB_Admin_UI_Access::get_access_boxes( $kb_config ),
-		);
-
 		// SECONDARY VIEW: EXPORT
 		$secondary_tabs[] = array(
 
@@ -84,6 +69,21 @@ class EPKB_Config_Tools_Page {
 
 			// Secondary Boxes List
 			'boxes_list' => self::get_other_boxes( $kb_config )
+		);
+
+		// SECONDARY VIEW: MENU ACCESS CONTROL
+		$secondary_tabs[] = array(
+
+			// Shared
+			'list_key'              => 'access-control',
+
+			// Secondary Panel Item
+			'label_text'            => esc_html__( 'Menu Access Control', 'echo-knowledge-base' ),
+
+			// Secondary Boxes List
+			'list_top_actions_html' => '<div class="epkb-admin__list-actions-row">' . EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save Access Control Settings', 'echo-knowledge-base' ),
+											 'epkb_save_access_control', 'epkb-admin__save-access-control-btn', '', true, true, 'epkb-success-btn' ) . '</div>',
+			'boxes_list'            => EPKB_Admin_UI_Access::get_access_boxes( $kb_config ),
 		);
 
 		// SECONDARY VIEW: DEBUG
@@ -995,6 +995,14 @@ class EPKB_Config_Tools_Page {
 			'html'  => self::get_kb_nickname_html( $kb_config ),
 		);
 
+		// Sidebar Introduction Text - only show if using Sidebar Layout (shortcode or block)
+		if ( EPKB_Utilities::is_elegant_layouts_enabled() && $kb_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ) {
+			$boxes_config[] = array(
+				'title' => esc_html__( 'Sidebar Layout - Introduction Text', 'echo-knowledge-base' ),
+				'html'  => self::get_sidebar_intro_text_html( $kb_config ),
+			);
+		}
+
 		// Translations
 		if ( ! EPKB_Utilities::is_amag_on() ) {
 			$boxes_config[] = array(
@@ -1290,17 +1298,134 @@ class EPKB_Config_Tools_Page {
 		$add_on_output = apply_filters( 'eckb_add_on_debug_data', '' );
 		$output .= is_string( $add_on_output ) ? $add_on_output : '';
 
-		// retrieve AI Activity Logs
-		$output .= "\n\nAI Activity Logs:\n";
+		// retrieve AI Configuration
+		$output .= "\n\nAI Configuration:\n";
+		$output .= "==================\n";
+		
+		// Get AI configuration
+		$ai_config = EPKB_AI_Config_Specs::get_config();
+		$ai_specs = EPKB_AI_Config_Specs::get_config_fields_specifications();
+		
+		if ( ! empty( $ai_config ) ) {
+			// Loop through all AI configuration fields
+			foreach ( $ai_specs as $field_name => $field_spec ) {
+				$value = isset( $ai_config[$field_name] ) ? $ai_config[$field_name] : $field_spec['default'];
+				
+				// Format the value based on field type and name
+				if ( $field_name === 'ai_key' ) {
+					// Mask API key for security
+					$formatted_value = ! empty( $value ) && $value !== '' ? 'Yes (configured)' : 'No (not configured)';
+				} elseif ( $field_name === 'ai_organization_id' ) {
+					// Partially mask organization ID
+					$formatted_value = ! empty( $value ) ? substr( $value, 0, 10 ) . '...' : 'Not set';
+				} elseif ( strpos( $field_name, '_instructions' ) !== false ) {
+					// For instruction fields, show full content and length
+					if ( ! empty( $value ) ) {
+						$formatted_value = "\n" . str_repeat( ' ', 4 ) . $value . "\n" . str_repeat( ' ', 4 ) . '(' . strlen( $value ) . ' chars)';
+					} else {
+						$formatted_value = 'Not set (0 chars)';
+					}
+				} elseif ( $field_spec['type'] === EPKB_Input_Filter::CHECKBOX ) {
+					// Format checkbox values
+					$formatted_value = ( ! empty( $value ) && $value === 'on' ) ? 'Yes' : 'No';
+				} elseif ( $field_spec['type'] === EPKB_Input_Filter::SELECTION && ! empty( $field_spec['options'] ) ) {
+					// Show selection value with label if available
+					$formatted_value = ! empty( $value ) ? $value : 'Not set';
+					if ( isset( $field_spec['options'][$value] ) ) {
+						$formatted_value = $field_spec['options'][$value];
+					}
+				} else {
+					// Default formatting
+					$formatted_value = ! empty( $value ) ? $value : ( isset( $field_spec['default'] ) ? $field_spec['default'] : 'Not set' );
+				}
+				
+				$output .= '- ' . $field_name . ' = ' . $formatted_value . "\n";
+			}
+		} else {
+			$output .= "No AI configuration found.\n";
+		}
+		
+		// AI Sync Status
+		$output .= "\n\nAI Sync Status:\n";
+		$output .= "==================\n";
+		
+		// Check sync lock
+		$sync_lock = get_transient( 'epkb_ai_sync_lock' );
+		$output .= "Sync Lock: " . ( $sync_lock !== false ? 'Active (locked at ' . date( 'Y-m-d H:i:s', $sync_lock ) . ')' : 'Not active' ) . "\n";
+		
+		// Check sync status
+		$sync_status = get_transient( 'epkb_ai_sync_status' );
+		if ( ! empty( $sync_status ) && is_array( $sync_status ) ) {
+			$output .= "Sync Type: " . ( ! empty( $sync_status['type'] ) ? $sync_status['type'] : 'N/A' ) . "\n";
+			$output .= "Sync Start Time: " . ( ! empty( $sync_status['start_time'] ) ? $sync_status['start_time'] : 'N/A' ) . "\n";
+			$output .= "Current Step: " . ( ! empty( $sync_status['current_step'] ) ? $sync_status['current_step'] : 'N/A' ) . "\n";
+			$output .= "Progress: " . ( ! empty( $sync_status['current'] ) ? $sync_status['current'] : '0' ) . " / " . ( ! empty( $sync_status['total'] ) ? $sync_status['total'] : '0' ) . "\n";
+		} else {
+			$output .= "No active sync status.\n";
+		}
+		
+		// Last sync info
+		$last_sync_completed = get_option( 'epkb_ai_last_sync_completed', 0 );
+		if ( $last_sync_completed > 0 ) {
+			$output .= "Last Sync Completed: " . date( 'Y-m-d H:i:s', $last_sync_completed ) . " (" . human_time_diff( $last_sync_completed ) . " ago)\n";
+		} else {
+			$output .= "Last Sync Completed: Never\n";
+		}
+		
+		// Check for sync errors
+		$sync_error = get_transient( 'epkb_ai_sync_error' );
+		if ( ! empty( $sync_error ) ) {
+			$output .= "Sync Error: " . ( is_string( $sync_error ) ? $sync_error : wp_json_encode( $sync_error ) ) . "\n";
+		}
+		
+		// AI Training Data Collections
+		$output .= "\n\nAI Training Data Collections:\n";
+		$output .= "==================\n";
+		
+		$collections = get_option( 'epkb_ai_training_data_collections', array() );
+		if ( ! empty( $collections ) && is_array( $collections ) ) {
+			foreach ( $collections as $collection ) {
+				$output .= "\nCollection ID: " . ( ! empty( $collection['id'] ) ? $collection['id'] : 'N/A' ) . "\n";
+				$output .= "Name: " . ( ! empty( $collection['name'] ) ? $collection['name'] : 'N/A' ) . "\n";
+				$output .= "Vector Store ID: " . ( ! empty( $collection['vector_store_id'] ) ? $collection['vector_store_id'] : 'Not created' ) . "\n";
+				$output .= "Vector Store Status: " . ( ! empty( $collection['vector_store_status'] ) ? $collection['vector_store_status'] : 'N/A' ) . "\n";
+				$output .= "Status: " . ( ! empty( $collection['status'] ) ? $collection['status'] : 'N/A' ) . "\n";
+				$output .= "Created: " . ( ! empty( $collection['created_at'] ) ? $collection['created_at'] : 'N/A' ) . "\n";
+				$output .= "Last Modified: " . ( ! empty( $collection['last_modified'] ) ? $collection['last_modified'] : 'N/A' ) . "\n";
+				
+				// Get record counts from database if available
+				if ( ! empty( $collection['id'] ) && class_exists( 'EPKB_AI_Training_Data_DB' ) ) {
+					$db = new EPKB_AI_Training_Data_DB();
+					$counts = $db->get_status_counts( $collection['id'] );
+					if ( ! empty( $counts ) ) {
+						$output .= "Records - Total: " . array_sum( $counts ) . " (";
+						$status_parts = array();
+						foreach ( $counts as $status => $count ) {
+							if ( $count > 0 ) {
+								$status_parts[] = ucfirst( $status ) . ": " . $count;
+							}
+						}
+						$output .= implode( ', ', $status_parts ) . ")\n";
+					}
+				}
+			}
+		} else {
+			$output .= "No training data collections found.\n";
+		}
+		
+		
+		// AI Activity Logs
+		$output .= "\n\nAI Activity Logs (Last 50):\n";
 		$output .= "==================\n";
 		$ai_logs = get_option( 'epkb_ai_logs', array() );
 		if ( empty( $ai_logs ) ) {
 			$output .= "No AI logs found.\n";
 		} else {
-			// Show last 100 logs
-			$recent_logs = array_slice( $ai_logs, -100 );
+			// Show last 50 logs instead of 100 for better readability
+			$recent_logs = array_slice( $ai_logs, -50 );
 			foreach ( $recent_logs as $log ) {
 				$output .= "\n[" . ( isset( $log['timestamp'] ) ? $log['timestamp'] : 'N/A' ) . "] ";
+				$output .= "[" . ( isset( $log['level'] ) ? strtoupper( $log['level'] ) : 'INFO' ) . "] ";
 				$output .= isset( $log['message'] ) ? $log['message'] : 'No message';
 				if ( ! empty( $log['context'] ) && is_array( $log['context'] ) ) {
 					$output .= " | Context: " . wp_json_encode( $log['context'] );
@@ -1308,6 +1433,21 @@ class EPKB_Config_Tools_Page {
 				$output .= "\n";
 			}
 		}
+		
+		// OpenAI Rate Limit Status
+		$output .= "\n\nOpenAI Rate Limit Status:\n";
+		$output .= "==================\n";
+		$rate_limit = get_transient( 'epkb_openai_rate_limit' );
+		if ( $rate_limit !== false ) {
+			$output .= "Rate Limited: Yes (expires in " . ( $rate_limit - time() ) . " seconds)\n";
+		} else {
+			$output .= "Rate Limited: No\n";
+		}
+		
+		// Error notification count
+		$current_date = date( 'Y-m-d' );
+		$error_count = get_transient( 'epkb_ai_error_notification_count_' . $current_date );
+		$output .= "Error Notifications Today: " . ( $error_count !== false ? $error_count : '0' ) . "\n";
 
 		$output .= '</textarea>';
 
@@ -1447,18 +1587,19 @@ class EPKB_Config_Tools_Page {
 		$active_plugins = get_option( 'active_plugins', array() );
 
 		$kb_plugins = array(
+			'Knowledge Base for Documents and FAQs',
+			'AI Features',
 			'KB - Article Rating and Feedback',
 			'KB - Links Editor','Articles Import and Export',
 			'KB - Multiple Knowledge Bases','KB - Widgets',
-			'Knowledge Base for Documents and FAQs',
 			'KB - Elegant Layouts',
 			'KB - Advanced Search',
 			'Knowledge Base with Access Manager',
 			'KB - Custom Roles',
 			'KB Groups',
 			'KB - Articles Import and Export',
-			'Blocks for Documents, Articles and FAQs',
-			'Creative Addons for Elementor' );
+			'Creative Addons for Elementor'
+		);
 
 		echo "\n\n";
 		echo "KB PLUGINS:	         \n\n";
@@ -1698,6 +1839,56 @@ class EPKB_Config_Tools_Page {
 				'input_size' => 'large',
 			) );
 			EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save', 'echo-knowledge-base' ), 'epkb_save_kb_name', '', '', false, '', 'epkb-primary-btn' );  ?>
+		</form><?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Display Sidebar Introduction Text editor
+	 * @param $kb_config
+	 * @return string
+	 */
+	private static function get_sidebar_intro_text_html( $kb_config ) {
+
+		// Get full configuration including add-on settings (for Elegant Layouts)
+		$add_ons_kb_config = apply_filters( 'elay_block_config', $kb_config, $kb_config['id'] );
+		if ( is_wp_error( $add_ons_kb_config ) || empty( $add_ons_kb_config ) || ! is_array( $add_ons_kb_config ) || count( $add_ons_kb_config ) < 100 ) {
+			$add_ons_kb_config = $kb_config;
+		}
+
+		$sidebar_intro_text = isset( $add_ons_kb_config['sidebar_main_page_intro_text'] ) ? $add_ons_kb_config['sidebar_main_page_intro_text'] : '<missing>';
+		
+		// Apply the same filter used in the frontend to get the actual value
+		$sidebar_intro_text = apply_filters( 'eckb_main_page_sidebar_intro_text', $sidebar_intro_text, $kb_config['id'] );
+		
+		ob_start(); 
+		
+		// Ensure editor scripts are enqueued
+		wp_enqueue_editor(); ?>
+
+		<form id="epkb-sidebar-intro-text__form" class="epkb-sidebar-intro-text__form epkb-admin__kb__form" method="POST">
+			<p class="epkb-sidebar-intro-text__form-title">    <?php
+				esc_html_e( 'Enter the introduction text for the Sidebar Layout main page. This text appears at the top of the sidebar navigation.', 'echo-knowledge-base' ); ?>
+			</p>
+			<!-- Hidden field to debug value -->
+			<input type="hidden" id="epkb_sidebar_intro_text_debug" value="<?php echo esc_attr( $sidebar_intro_text ); ?>" />
+			<div class="epkb-input-group epkb-admin__wp-editor-field">
+				<label for="epkb_sidebar_main_page_intro_text"><?php echo esc_html__( 'Introduction Text', 'echo-knowledge-base' ); ?></label>
+				<div class="input_container ekb-wp-editor"><?php
+					// Use wp_editor with full editor capabilities
+					wp_editor( $sidebar_intro_text, 'epkb_sidebar_main_page_intro_text', array( 
+						'textarea_name' => 'sidebar_main_page_intro_text',
+						'media_buttons' => false,  // Keep media buttons off for intro text
+						'teeny' => false,          // Use full editor not teeny
+						'textarea_rows' => 12,
+						'quicktags' => true,
+						'wpautop' => true,
+						'tinymce' => true          // Let WordPress handle the full TinyMCE configuration
+					) ); ?>
+				</div>
+			</div>    <?php
+			EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Save', 'echo-knowledge-base' ), 'epkb_save_sidebar_intro_text', '', '', false, '', 'epkb-primary-btn' );  ?>
 		</form><?php
 
 		return ob_get_clean();

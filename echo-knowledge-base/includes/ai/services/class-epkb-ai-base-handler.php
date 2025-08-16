@@ -37,22 +37,6 @@ abstract class EPKB_AI_Base_Handler {
 	 */
 	protected function get_ai_response( $message, $model, $previous_response_id = null ) {
 
-		// Get and validate max_output_tokens
-		$max_output_tokens = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_max_output_tokens', EPKB_OpenAI_Client::DEFAULT_MAX_OUTPUT_TOKENS );
-		$max_output_tokens = intval( $max_output_tokens );
-		// Ensure it's within valid OpenAI bounds and handle edge cases
-		if ( $max_output_tokens < 1 || $max_output_tokens > 16384 ) {
-			$max_output_tokens = EPKB_OpenAI_Client::DEFAULT_MAX_OUTPUT_TOKENS;
-		}
-
-		// Get and validate temperature
-		$temperature = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_temperature', EPKB_OpenAI_Client::DEFAULT_TEMPERATURE );
-		$temperature = floatval( $temperature );
-		// Ensure it's within valid OpenAI bounds and handle edge cases
-		if ( $temperature < 0.0 || $temperature > 2.0 ) {
-			$temperature = EPKB_OpenAI_Client::DEFAULT_TEMPERATURE;
-		}
-
 		// Build request for Responses API
 		$request = array(
 			'model'             => $model,
@@ -63,9 +47,11 @@ abstract class EPKB_AI_Base_Handler {
 					'content' => $message
 				)
 			),
-			'max_output_tokens' => $max_output_tokens,
-			'temperature'       => $temperature,
 		);
+
+		// Get context-specific parameters and apply them
+		$params = $this->get_model_parameters( $model );
+		$request = EPKB_OpenAI_Client::apply_model_parameters( $request, $model, $params );
 
 		// Add previous response ID for continuing conversation
 		if ( ! empty( $previous_response_id ) ) {
@@ -111,22 +97,91 @@ abstract class EPKB_AI_Base_Handler {
 	}
 
 	/**
+	 * Get model parameters based on context (chat or search)
+	 *
+	 * @param string $model The model being used
+	 * @return array Parameters array with temperature, max_output_tokens, etc.
+	 */
+	protected function get_model_parameters( $model ) {
+		
+		// Determine context - search or chat
+		$is_search = $this instanceof EPKB_AI_Search_Handler;
+		$prefix = $is_search ? 'ai_search_' : 'ai_chat_';
+		
+		// Get model specifications to determine which parameters are applicable
+		$model_spec = EPKB_OpenAI_Client::get_models_and_default_params( $model );
+		
+		$params = array();
+		
+		// Add max_output_tokens
+		$max_output_tokens_key = $prefix . 'max_output_tokens';
+		$max_output_tokens = EPKB_AI_Config_Specs::get_ai_config_value( $max_output_tokens_key );
+		if ( ! empty( $max_output_tokens ) ) {
+			$max_output_tokens = intval( $max_output_tokens );
+			// Validate against model limits
+			$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : 16384;
+			if ( $max_output_tokens > 0 && $max_output_tokens <= $max_limit ) {
+				// Use appropriate key based on model requirements
+				$params['max_output_tokens'] = $max_output_tokens;
+			}
+		}
+		
+		// Add temperature for models that support it
+		if ( $model_spec['supports_temperature'] ) {
+			$temperature_key = $prefix . 'temperature';
+			$temperature = EPKB_AI_Config_Specs::get_ai_config_value( $temperature_key );
+			if ( $temperature !== null ) {
+				$temperature = floatval( $temperature );
+				if ( $temperature >= 0.0 && $temperature <= 2.0 ) {
+					$params['temperature'] = $temperature;
+				}
+			}
+		}
+		
+		// Add top_p for models that support it (alternative to temperature)
+		if ( $model_spec['supports_top_p'] && ! isset( $params['temperature'] ) ) {
+			$top_p_key = $prefix . 'top_p';
+			$top_p = EPKB_AI_Config_Specs::get_ai_config_value( $top_p_key );
+			if ( $top_p !== null ) {
+				$top_p = floatval( $top_p );
+				if ( $top_p >= 0.0 && $top_p <= 1.0 ) {
+					$params['top_p'] = $top_p;
+				}
+			}
+		}
+		
+		// Add verbosity for models that support it
+		if ( $model_spec['supports_verbosity'] ) {
+			$verbosity_key = $prefix . 'verbosity';
+			$verbosity = EPKB_AI_Config_Specs::get_ai_config_value( $verbosity_key );
+			if ( ! empty( $verbosity ) ) {
+				$params['verbosity'] = $verbosity;
+			}
+		}
+		
+		// Add reasoning for models that support it
+		if ( $model_spec['supports_reasoning'] ) {
+			$reasoning_key = $prefix . 'reasoning';
+			$reasoning = EPKB_AI_Config_Specs::get_ai_config_value( $reasoning_key );
+			if ( ! empty( $reasoning ) ) {
+				$params['reasoning'] = $reasoning;
+			}
+		}
+		
+		return $params;
+	}
+
+	/**
 	 * Get AI instructions for chat
 	 *
 	 * @return string
 	 */
 	private function get_instructions() {
-
-		$default_instructions = __( "You are a helpful assistant that only answers questions related to the provided content. " .
-										"If the answer is not available, respond with: 'That is not something I can help with. Please try a different question.' " .
-										"Do not refer to documents, files, content, or sources. Do not guess or answer based on general knowledge.", 'echo-knowledge-base' );
-
-		// Determine which instructions to use based on the handler type
 		if ( $this instanceof EPKB_AI_Search_Handler ) {
-			$instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_instructions', $default_instructions );
+			$instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_instructions' );
 			return apply_filters( 'epkb_ai_search_instructions', $instructions );
 		} else {
-			$instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_instructions', $default_instructions );
+			$instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_instructions' );
 			return apply_filters( 'epkb_ai_chat_instructions', $instructions );
 		}
 	}
@@ -138,6 +193,7 @@ abstract class EPKB_AI_Base_Handler {
 	 * @return void
 	 */
 	protected function record_usage( $usage ) {
+
 		if ( empty( $usage ) ) {
 			return;
 		}

@@ -2,6 +2,8 @@
 
 class EPKB_AI_Utilities {
 
+	const AI_PRO_NOTES_POST_TYPE = 'aipro_ai_note';
+
 	/**
 	 * Generate uuid v4 output.
 	 *
@@ -190,23 +192,26 @@ class EPKB_AI_Utilities {
 	public static function get_available_post_types_for_ai() {
 		$post_types = array();
 		
-		// Add KB post types
+		// Add KB post types (list all when Multiple KBs is active; otherwise stop after the first)
 		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs();
+		$show_all_kbs = EPKB_Utilities::is_multiple_kbs_enabled();
 		foreach ( $all_kb_configs as $kb_config ) {
 			$kb_id = $kb_config['id'];
 			$kb_post_type = EPKB_KB_Handler::get_post_type( $kb_id );
 			$kb_name = isset( $kb_config['kb_name'] ) ? $kb_config['kb_name'] : sprintf( __( 'Knowledge Base %d', 'echo-knowledge-base' ), $kb_id );
 			$post_types[ $kb_post_type ] = $kb_name;
+			if ( ! $show_all_kbs ) { break; }
 		}
-		
-		// Add FAQ post type if available
-		if ( post_type_exists( EPKB_FAQs_CPT_Setup::FAQS_POST_TYPE ) ) {
-			$post_types[EPKB_FAQs_CPT_Setup::FAQS_POST_TYPE] = __( 'FAQs', 'echo-knowledge-base' );
-		}
-		
-		// Add standard post types
-		$post_types['post'] = __( 'Posts', 'echo-knowledge-base' );
-		$post_types['page'] = __( 'Pages', 'echo-knowledge-base' );
+
+		// FAQ post type removed from AI training content options
+		// if ( class_exists( 'EPKB_FAQs_CPT_Setup' ) && post_type_exists( EPKB_FAQs_CPT_Setup::FAQS_POST_TYPE ) ) {
+		// 	$post_types[ EPKB_FAQs_CPT_Setup::FAQS_POST_TYPE ] = __( 'FAQs', 'echo-knowledge-base' );
+		// }
+
+		/**
+		 * Add the list of available post types for AI training data.
+		 */
+		$post_types = apply_filters( 'epkb_ai_training_available_post_types', $post_types );
 		
 		return $post_types;
 	}
