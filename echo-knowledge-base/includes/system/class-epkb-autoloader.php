@@ -165,7 +165,7 @@ class EPKB_Autoloader {
 				// AI Config
 				'epkb_ai_config_base'				=>  'includes/ai/config/class-epkb-ai-config-base.php',
 				'epkb_ai_config_specs'              =>  'includes/ai/config/class-epkb-ai-config-specs.php',
-				'epkb_ai_widget_config_specs'       =>  'includes/ai/config/class-epkb-ai-widget-config-specs.php',
+				'epkb_ai_chat_widget_config_specs'  =>  'includes/ai/config/class-epkb-ai-chat-widget-config-specs.php',
 				'epkb_ai_training_data_config_specs'=>  'includes/ai/config/class-epkb-ai-training-data-config-specs.php',
 
 				// AI DB
@@ -187,9 +187,9 @@ class EPKB_Autoloader {
 				'epkb_ai_rest_support_controller'       =>  'includes/ai/rest/class-epkb-ai-rest-support-controller.php',
 
 				// AI Services
-				'epkb_ai_base_handler'              =>  'includes/ai/services/class-epkb-ai-base-handler.php',
-				'epkb_ai_chat_handler'              =>  'includes/ai/services/class-epkb-ai-chat-handler.php',
-				'epkb_ai_search_handler'            =>  'includes/ai/services/class-epkb-ai-search-handler.php',
+				'epkb_ai_base_handler'              	=>  'includes/ai/services/class-epkb-ai-base-handler.php',
+				'epkb_ai_chat_handler'              	=>  'includes/ai/services/class-epkb-ai-chat-handler.php',
+				'epkb_ai_search_handler'            	=>  'includes/ai/services/class-epkb-ai-search-handler.php',
 
 				// AI Support
 				'epkb_ai_content_processor'         =>  'includes/ai/support/class-epkb-ai-content-processor.php',

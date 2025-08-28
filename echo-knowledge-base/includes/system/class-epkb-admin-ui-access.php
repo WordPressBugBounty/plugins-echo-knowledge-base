@@ -31,6 +31,43 @@ class EPKB_Admin_UI_Access {
 	);
 
 	/**
+	 * Check if a post is eligible for AI training data.
+	 * Centralizes all eligibility checks for posts being added to AI training.
+	 *
+	 * @param WP_Post|int $post Post object or post ID
+	 * @return true|WP_Error True if eligible, WP_Error with reason if not
+	 */
+	public static function is_post_eligible_for_ai_training( $post ) {
+		
+		// Get post object if ID was passed
+		if ( is_numeric( $post ) ) {
+			$post = get_post( $post );
+		}
+		
+		// Validate post object
+		if ( ! $post || ! is_object( $post ) || empty( $post->ID ) ) {
+			return new WP_Error( 'invalid_post', __( 'Invalid post object', 'echo-knowledge-base' ) );
+		}
+		
+		// Check post status
+		if ( $post->post_status !== 'publish' ) {
+			return new WP_Error( 'post_not_published', __( 'Post is not published', 'echo-knowledge-base' ) );
+		}
+		
+		// Check if post is password protected
+		if ( ! empty( $post->post_password ) ) {
+			return new WP_Error( 'post_password_protected', __( 'Post is password protected', 'echo-knowledge-base' ) );
+		}
+		
+		// Check if it's a linked article (from echo-links-editor plugin)
+		if ( $post->post_mime_type === 'kb_link' ) {
+			return new WP_Error( 'linked_article', __( 'Linked articles are excluded from AI training data', 'echo-knowledge-base' ) );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Check if the current user has access to the current context
 	 *
 	 * @param $context

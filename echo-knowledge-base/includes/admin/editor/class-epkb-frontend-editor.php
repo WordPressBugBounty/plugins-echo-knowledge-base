@@ -97,11 +97,8 @@ class EPKB_Frontend_Editor {
 		if ( is_wp_error( $kb_config ) ) {
 			return;
 		}
-		// Ensure frontend_editor_button_shown exists with proper default
-		if ( ! isset( $kb_config['frontend_editor_button_shown'] ) ) {
-			$kb_config['frontend_editor_button_shown'] = 'on'; // Default from specs
-		}
-		
+
+		// do not show FE launcher if toggle is off in settings except...
 		if ( $kb_config['frontend_editor_switch_visibility_toggle'] == 'off' ) {
 
 			// when FE is disabled in settings, then it still can be opened by direct admin links, and admin bar link, and when it refreshes page on settings change via reloading the entire page
@@ -111,15 +108,10 @@ class EPKB_Frontend_Editor {
 			}
 		}
 
-		// do not enable FE on Archive Pages for old category archive page v2 or if KB template is current
+		// do not enable FE on Archive Pages for old category archive page v2
 		if ( $kb_page_type == 'archive-page' && ( $kb_config['archive_page_v3_toggle'] != 'on' || $kb_config['template_for_archive_page'] == 'current_theme_templates' ) ) {
 			return;
 		}
-
-		// do not show if a page builder is opened
-		/* done in JS if ( EPKB_Editor_Utilities::is_page_builder_enabled() ) {
-		    return;
-		} */
 
 		// if FE is opened then in Settings UI do not show legacy settings UI
 		$is_legacy_settings = EPKB_Core_Utilities::is_kb_flag_set( 'is_legacy_settings' );

@@ -1968,7 +1968,7 @@ class EPKB_Utilities {
 		// Log email errors if need
 		$error_message = esc_html__( 'Failed to send the email.', 'echo-knowledge-base' );
 
-		/** $epkb_email_error @ WP_Error */
+		/** @var WP_Error $epkb_email_error */
 		if ( is_wp_error( $epkb_email_error ) ) {
 			$error_message = $epkb_email_error->get_error_message();
 		}

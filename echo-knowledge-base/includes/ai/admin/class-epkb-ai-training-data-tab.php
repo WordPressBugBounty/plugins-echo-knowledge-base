@@ -14,13 +14,19 @@ class EPKB_AI_Training_Data_Tab {
 	 */
 	public static function get_tab_config() {
 
+		if ( ! EPKB_AI_Utilities::is_ai_enabled() ) {
+			return array(
+				'error' => __( 'AI features are not enabled. Please enable any AI feature to access the Training Data tab.', 'echo-knowledge-base' )
+			);
+		}
+
 		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
 		
 		// Sync collections from database first to ensure we have all collections
 		EPKB_AI_Training_Data_Config_Specs::sync_collections_from_database();
 		
 		// Get training data collections
-		$data_collections_result = self::get_data_collections_with_error_handling();
+		$data_collections_result = self::get_data_collections_post_stats();
 		$data_collections = $data_collections_result['collections'];
 		$collections_error = $data_collections_result['error'];
 		
@@ -64,7 +70,8 @@ class EPKB_AI_Training_Data_Tab {
 			'available_post_types' => EPKB_AI_Utilities::get_available_post_types_for_ai(),
 			'collection_defaults' => EPKB_AI_Training_Data_Config_Specs::get_default_collection_config(),
             'is_wp_cron_disabled' => ( defined( 'DISABLE_WP_CRON' ) && constant( 'DISABLE_WP_CRON' ) ),
-			'is_ai_features_pro_enabled' => EPKB_Utilities::is_ai_features_pro_enabled()
+			'is_ai_features_pro_enabled' => EPKB_Utilities::is_ai_features_pro_enabled(),
+			'is_access_manager_active' => EPKB_Utilities::is_amag_on()
 		);
 		
 		// Add error information if collections couldn't be retrieved
@@ -76,10 +83,10 @@ class EPKB_AI_Training_Data_Tab {
 	}
 
 	/**
-	 * Get data collections with error handling
+	 * Get data collections to display in the Training Data tab (optimized version without expensive post stats)
 	 * @return array
 	 */
-	private static function get_data_collections_with_error_handling() {
+	private static function get_data_collections_post_stats() {
 
 		$collections = EPKB_AI_Training_Data_Config_Specs::get_training_data_collections();
 		$has_error = false;
@@ -97,49 +104,10 @@ class EPKB_AI_Training_Data_Tab {
 			$db_stats = $training_data_db->get_status_statistics( $collection_id );
 			$last_sync_date = $training_data_db->get_last_sync_date( $collection_id );
 
-			// Get available post types with their content status
-			$available_post_types = EPKB_AI_Utilities::get_available_post_types_for_ai();
-			$post_types_with_status = array();
-			
-			foreach ( $available_post_types as $post_type => $label ) {
-				// Check if post type exists
-				if ( ! post_type_exists( $post_type ) ) {
-					$post_types_with_status[$post_type] = array(
-						'label' => $label,
-						'available' => false,
-						'count' => 0,
-						'already_added' => 0,
-						'new_items' => 0
-					);
-					continue;
-				}
-				
-				// Count published posts
-				$count_query = new WP_Query( array(
-					'post_type' => $post_type,
-					'post_status' => 'publish',
-					'posts_per_page' => 1,
-					'fields' => 'ids'
-				) );
-				$total_count = $count_query->found_posts;
-				
-				// Count already added to this collection
-				$already_added = $training_data_db->get_training_data_count( array(
-					'collection_id' => $collection_id,
-					'type' => $post_type
-				) );
-				
-				$post_types_with_status[$post_type] = array(
-					'label' => $label,
-					'available' => $total_count > 0,
-					'count' => $total_count,
-					'already_added' => $already_added,
-					'new_items' => max( 0, $total_count - $already_added )
-				);
-			}
-			
-			// Add the post types with status to the collection config
-			$collection_config['ai_training_data_store_post_types_options'] = $post_types_with_status;
+			// OPTIMIZATION: Don't calculate expensive post type stats here
+			// These will be loaded on-demand when user clicks "Add Training Data"
+			// Just set a flag that post types options need to be loaded
+			$collection_config['ai_training_data_store_post_types_options'] = 'load_on_demand';
 
 			// Pre-load first page of training data for this collection
 			$preloaded_data = self::get_preloaded_training_data( $collection_id );

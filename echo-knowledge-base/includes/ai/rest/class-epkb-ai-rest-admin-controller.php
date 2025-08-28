@@ -46,6 +46,10 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		if ( empty( $settings ) || ! is_array( $settings ) ) {
 			return $this->create_rest_response( array( 'error' => 'invalid_input', 'message' => __( 'Invalid settings data provided.', 'echo-knowledge-base' ) ), 400 );
 		}
+		
+		// Extract widget settings if present
+		$widget_settings = $request->get_param( 'widget_settings' );
+		$widget_id = $request->get_param( 'widget_id' );
 
 		// Validate and sanitize settings
 		$validated_settings = array();
@@ -104,17 +108,17 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		}
 
 		// Get current config before update to check if we're enabling features
-		$old_config = EPKB_AI_Config_Specs::get_ai_config();
+		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
 		
 		// Update only the provided fields (partial update)
-		$result = EPKB_AI_Config_Specs::update_ai_config( $validated_settings );
+		$result = EPKB_AI_Config_Specs::update_ai_config( $orig_config, $validated_settings );
 		if ( is_wp_error( $result ) ) {
 			return $this->create_rest_response([], 500, $result );
 		}
 
 		// Check if user switched AI features from off to on
-		$old_search_off = $old_config['ai_search_enabled'] !== 'on';
-		$old_chat_off = $old_config['ai_chat_enabled'] !== 'on';
+		$old_search_off = $orig_config['ai_search_enabled'] == 'off';
+		$old_chat_off = $orig_config['ai_chat_enabled'] == 'off';
 		$both_were_off = $old_search_off && $old_chat_off;
 		
 		// If both were off and now at least one is on, create tables
@@ -122,7 +126,34 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			new EPKB_AI_Messages_DB();
 			new EPKB_AI_Training_Data_DB();
 		}
+		
+		// Handle widget settings if provided
+		$widget_config = null;
+		if ( ! empty( $widget_settings ) && is_array( $widget_settings ) ) {
+			$widget_id = empty( $widget_id ) ? EPKB_AI_Chat_Widget_Config_Specs::DEFAULT_WIDGET_ID : absint( $widget_id );
+			
+			// Update widget configuration
+			$widget_result = EPKB_AI_Chat_Widget_Config_Specs::update_widget_config( $widget_id, $widget_settings );
+			if ( is_wp_error( $widget_result ) ) {
+				return $this->create_rest_response( array( 
+					'error' => $widget_result->get_error_code(), 
+					'message' => $widget_result->get_error_message() 
+				), 400 );
+			}
+			
+			$widget_config = EPKB_AI_Chat_Widget_Config_Specs::get_widget_config( $widget_id );
+		}
+		
+		$response_data = array( 
+			'success' => true, 
+			'message' => __( 'Settings saved successfully.', 'echo-knowledge-base' ), 
+			'settings' => $validated_settings 
+		);
+		
+		if ( $widget_config !== null ) {
+			$response_data['widget_config'] = $widget_config;
+		}
 
-		return $this->create_rest_response( array( 'success' => true, 'message' => __( 'Settings saved successfully.', 'echo-knowledge-base' ), 'settings' => $validated_settings ) );
+		return $this->create_rest_response( $response_data );
 	}
 }

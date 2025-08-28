@@ -1104,6 +1104,95 @@ jQuery( document ).ready( function( $ ) {
 			return;
 		}
 
+		// Handle template_for_archive_page with current_theme_templates value
+		if ( field_name === 'template_for_archive_page' && $field.val() === 'current_theme_templates' ) {
+			// Create dialog HTML
+			const dialogHtml = `
+				<div id="epkb-theme-template-dialog" class="epkb-dialog-box-form epkb-dialog-box-form--active">
+					<div class="epkb-dbf__header">
+						<h4>${epkb_vars.theme_template_switch_title || 'Switch to Theme Template'}</h4>
+					</div>
+					<div class="epkb-dbf__body">
+						${epkb_vars.theme_template_switch_msg || 'The page will reload with your theme template. You can switch back in KB Settings.'}
+					</div>
+					<div class="epkb-dbf__footer">
+						<div class="epkb-dbf__footer__accept">
+							<span class="epkb-dbf__footer__accept__btn">OK</span>
+						</div>
+						<div class="epkb-dbf__footer__cancel">
+							<span class="epkb-dbf__footer__cancel__btn">Cancel</span>
+						</div>
+					</div>
+					<div class="epkb-dbf__close epkbfa epkbfa-times"></div>
+				</div>
+				<div class="epkb-dialog-box-form-black-background"></div>
+			`;
+			
+			// Remove any existing dialog
+			$( '#epkb-theme-template-dialog, .epkb-dialog-box-form-black-background' ).remove();
+			
+			// Add dialog to body
+			$( 'body' ).append( dialogHtml );
+			
+			// Handle OK button click
+			$( '#epkb-theme-template-dialog .epkb-dbf__footer__accept__btn' ).on( 'click', function() {
+				// Remove dialog
+				$( '#epkb-theme-template-dialog, .epkb-dialog-box-form-black-background' ).remove();
+				
+				// Show loading dialog on the archive page container
+				const loadingContainer = $( '#eckb-archive-page-container' );
+				epkb_loading_Dialog( 'show', epkb_vars.switching_template_msg || 'Switching to theme template...', loadingContainer );
+				
+				// Call the switch_kb_template AJAX function to switch to current theme template
+				$.ajax({
+					url: epkb_vars.ajaxurl,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						action: 'epkb_switch_kb_template',
+						_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+						epkb_kb_id: $('#epkb-fe__editor').data('kbid'),
+						template_type: 'current_theme_templates'
+					},
+					success: function( response ) {
+						if ( response.reload === true ) {
+							// Update the loading message to indicate page reload
+							loadingContainer.find( '.epkb-admin-text' ).text( epkb_vars.reloading_page_msg || 'Reloading page...' );
+							
+							// Reload the page after a short delay
+							setTimeout( function() {
+								window.location.reload();
+							}, 500 );
+						} else {
+							// Remove loading dialog if no reload needed
+							epkb_loading_Dialog( 'remove', '', loadingContainer );
+						}
+					},
+					error: function( jqXHR, textStatus, errorThrown ) {
+						// Remove loading dialog on error
+						epkb_loading_Dialog( 'remove', '', loadingContainer );
+						
+						// Show error notification
+						$('.eckb-bottom-notice-message').remove();
+						$('body').append( epkb_admin_notification( '', epkb_vars.switch_template_error || 'Failed to switch template. Please try again.', 'error' ) );
+						
+						console.error( 'Failed to switch template:', errorThrown );
+					}
+				});
+			});
+			
+			// Handle Cancel button and close X click
+			$( '#epkb-theme-template-dialog .epkb-dbf__footer__cancel__btn, #epkb-theme-template-dialog .epkb-dbf__close' ).on( 'click', function() {
+				// Remove dialog
+				$( '#epkb-theme-template-dialog, .epkb-dialog-box-form-black-background' ).remove();
+				// Revert radio button selection back to previous value (kb_templates)
+				$( 'input[name="template_for_archive_page"][value="kb_templates"]' ).prop( 'checked', true );
+			});
+			
+			// Prevent default processing
+			return;
+		}
+
 		// Color-picker handles its update through 'iris' library
 		if ( $field.hasClass( 'wp-color-picker' ) ) {
 			return;
@@ -1851,6 +1940,8 @@ jQuery( document ).ready( function( $ ) {
 		const current_url = new URL( window.location.href );
 		const feature_name = current_url.searchParams.get( 'epkb_fe_reopen_feature' )
 		if ( feature_name && feature_name.length > 0 ) {
+
+			open_frontend_editor( null );
 
 			// Re-open editor feature
 			$( '.epkb-fe__toggle' ).trigger( 'click' );

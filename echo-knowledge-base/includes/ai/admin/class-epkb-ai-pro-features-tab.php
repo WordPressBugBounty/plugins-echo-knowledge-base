@@ -16,8 +16,12 @@ class EPKB_AI_PRO_Features_Tab {
 			'title' => __( 'PRO Features', 'echo-knowledge-base' ),
 			'type' => 'pro_showcase',
 			'header' => array(
-				'title' => __( 'Unlock Premium AI Features', 'echo-knowledge-base' ),
-				'subtitle' => __( 'Take your knowledge base to the next level with advanced AI capabilities', 'echo-knowledge-base' ),
+				'title' => __( 'Welcome to Echo Knowledge Base Pro', 'echo-knowledge-base' ),
+				'subtitle' => array(
+					__( 'We\'re grateful you\'re using Echo Knowledge Base and hope it\'s been valuable for your team.', 'echo-knowledge-base' ),
+					__( 'Upgrading to Pro unlocks powerful features that enhance your knowledge base experience.', 'echo-knowledge-base' ),
+					__( 'Your support also helps us continue developing and improving the plugin for our amazing community.', 'echo-knowledge-base' )
+				),
 				'status' => self::get_pro_status()
 			),
 			'discount_coupon' => self::get_discount_coupon(),
@@ -128,88 +132,91 @@ class EPKB_AI_PRO_Features_Tab {
 	private static function get_pro_features() {
 		return array(
 			array(
-				'id' => 'advanced-training',
-				'title' => __( 'Advanced Training Data Sources', 'echo-knowledge-base' ),
-				'description' => __( 'Train your AI on posts, pages, custom post types, and private notes. Create a comprehensive knowledge base that understands all your content.', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-database',
-				'icon_color' => '#4A90E2',
-				'benefits' => array(
-					__( 'WordPress Posts & Pages', 'echo-knowledge-base' ),
-					__( 'Custom Post Types', 'echo-knowledge-base' ),
-					__( 'Notes and PDF Documents', 'echo-knowledge-base' ),
-				)
+				'id'          => 'advanced-training',
+			'title'       => __( 'Advanced Training Data Sources', 'echo-knowledge-base' ),
+			'description' => __( 'Train your AI using posts, pages, custom post types, and private notes. Build a comprehensive knowledge base that understands all your content.', 'echo-knowledge-base' ),
+			'icon'        => 'epkbfa epkbfa-database',
+			'icon_color'  => '#4A90E2',
+			'benefits'    => array(
+				__( 'WordPress posts and pages (e.g. About Us, Contact Us).', 'echo-knowledge-base' ),
+				__( 'Custom post types (e.g. Products, Events, Courses).', 'echo-knowledge-base' ),
+				__( 'Internal notes created for reference, available to AI without being published publicly.', 'echo-knowledge-base' ),
+               ),
+
+				'image' => esc_url( Echo_Knowledge_Base::$plugin_url . 'img/ai-pro-features-training-data.png' )
 			),
 			array(
 				'id' => 'email-notifications',
 				'title' => __( 'Smart Email Notifications', 'echo-knowledge-base' ),
-				'description' => __( 'Never miss a customer conversation. Get instant email alerts when users complete chats, with full conversation transcripts and insights.', 'echo-knowledge-base' ),
+				'description' => __( 'Stay informed with automated daily summaries of AI Chat and Search activity, delivered straight to your inbox.', 'echo-knowledge-base' ),
 				'icon' => 'epkbfa epkbfa-envelope',
 				'icon_color' => '#E74C3C',
 				'benefits' => array(
-					__( 'Real-time chat completion alerts', 'echo-knowledge-base' ),
-					__( 'Full conversation transcripts', 'echo-knowledge-base' ),
-					__( 'Custom notification rules', 'echo-knowledge-base' )
+					__( 'Daily email reports at your chosen time', 'echo-knowledge-base' ),
+					__( 'Customizable recipient and subject line', 'echo-knowledge-base' ),
+					__( 'Includes AI Chat and Search query titles', 'echo-knowledge-base' )
 				),
-				'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
-				'badge_type' => 'coming-soon'
+				'image' => esc_url( Echo_Knowledge_Base::$plugin_url . 'img/ai-pro-features-email-notifications.png' )
+				//'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
+				//'badge_type' => 'coming-soon'
 			),
-			array(
-				'id' => 'articles-analysis',
-				'title' => __( 'AI-Powered Article Analysis', 'echo-knowledge-base' ),
-				'description' => __( 'Get intelligent insights about your content. AI analyzes article quality, readability, and suggests improvements to maximize user engagement.', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-chart-line',
-				'icon_color' => '#27AE60',
-				'benefits' => array(
-					__( 'Content quality scoring', 'echo-knowledge-base' ),
-					__( 'Readability analysis', 'echo-knowledge-base' ),
-					__( 'SEO optimization tips', 'echo-knowledge-base' ),
-				),
-				'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
-				'badge_type' => 'coming-soon'
-			),
-			array(
-				'id' => 'glossary-terms',
-				'title' => __( 'AI-Generated Glossary Terms', 'echo-knowledge-base' ),
-				'description' => __( 'Automatically generate and manage glossary terms with AI. Intelligently prioritize technical terms, acronyms, and industry-specific language in search results and content ordering.', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-book',
-				'icon_color' => '#9B59B6',
-				'benefits' => array(
-					__( 'Auto-generate glossary definitions', 'echo-knowledge-base' ),
-					__( 'Smart term prioritization', 'echo-knowledge-base' ),
-					__( 'Context-aware term ordering', 'echo-knowledge-base' )
-				),
-				'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
-				'badge_type' => 'coming-soon'
-			),
-			array(
-				'id' => 'enhanced-search',
-				'title' => __( 'Enhanced AI Search Results', 'echo-knowledge-base' ),
-				'description' => __( 'Deliver rich, comprehensive search results with visual aids. Include diagrams, related articles, glossary terms, and more to provide complete answers.', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-search-plus',
-				'icon_color' => '#F39C12',
-				'benefits' => array(
-					__( 'Visual diagrams and charts', 'echo-knowledge-base' ),
-					__( 'Related articles suggestions', 'echo-knowledge-base' ),
-					__( 'Integrated glossary terms', 'echo-knowledge-base' )
-				),
-				'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
-				'badge_type' => 'coming-soon'
-			),
-			array(
-				'id' => 'advanced-features',
-				'title' => __( 'Advanced AI Capabilities', 'echo-knowledge-base' ),
-				'description' => __( 'Unlock powerful features including PDF search, human agent handoff, and intelligent auto-suggestions for a complete support experience.', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-rocket',
-				'icon_color' => '#E67E22',
-				'benefits' => array(
-					__( 'PDF document search', 'echo-knowledge-base' ),
-					__( 'Human agent handoff', 'echo-knowledge-base' ),
-					__( 'Smart auto-suggestions', 'echo-knowledge-base' ),
-					__( 'Multi-language support', 'echo-knowledge-base' )
-				),
-				'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
-				'badge_type' => 'coming-soon'
-			)
+			// array(
+			// 	'id' => 'articles-analysis',
+			// 	'title' => __( 'AI-Powered Article Analysis', 'echo-knowledge-base' ),
+			// 	'description' => __( 'Get intelligent insights about your content. AI analyzes article quality, readability, and suggests improvements to maximize user engagement.', 'echo-knowledge-base' ),
+			// 	'icon' => 'epkbfa epkbfa-chart-line',
+			// 	'icon_color' => '#27AE60',
+			// 	'benefits' => array(
+			// 		__( 'Content quality scoring', 'echo-knowledge-base' ),
+			// 		__( 'Readability analysis', 'echo-knowledge-base' ),
+			// 		__( 'SEO optimization tips', 'echo-knowledge-base' ),
+			// 	),
+			// 	'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
+			// 	'badge_type' => 'coming-soon'
+			// ),
+			// array(
+			// 	'id' => 'glossary-terms',
+			// 	'title' => __( 'AI-Generated Glossary Terms', 'echo-knowledge-base' ),
+			// 	'description' => __( 'Automatically generate and manage glossary terms with AI. Intelligently prioritize technical terms, acronyms, and industry-specific language in search results and content ordering.', 'echo-knowledge-base' ),
+			// 	'icon' => 'epkbfa epkbfa-book',
+			// 	'icon_color' => '#9B59B6',
+			// 	'benefits' => array(
+			// 		__( 'Auto-generate glossary definitions', 'echo-knowledge-base' ),
+			// 		__( 'Smart term prioritization', 'echo-knowledge-base' ),
+			// 		__( 'Context-aware term ordering', 'echo-knowledge-base' )
+			// 	),
+			// 	'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
+			// 	'badge_type' => 'coming-soon'
+			// ),
+			// array(
+			// 	'id' => 'enhanced-search',
+			// 	'title' => __( 'Enhanced AI Search Results', 'echo-knowledge-base' ),
+			// 	'description' => __( 'Deliver rich, comprehensive search results with visual aids. Include diagrams, related articles, glossary terms, and more to provide complete answers.', 'echo-knowledge-base' ),
+			// 	'icon' => 'epkbfa epkbfa-search-plus',
+			// 	'icon_color' => '#F39C12',
+			// 	'benefits' => array(
+			// 		__( 'Visual diagrams and charts', 'echo-knowledge-base' ),
+			// 		__( 'Related articles suggestions', 'echo-knowledge-base' ),
+			// 		__( 'Integrated glossary terms', 'echo-knowledge-base' )
+			// 	),
+			// 	'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
+			// 	'badge_type' => 'coming-soon'
+			// ),
+			// array(
+			// 	'id' => 'advanced-features',
+			// 	'title' => __( 'Advanced AI Capabilities', 'echo-knowledge-base' ),
+			// 	'description' => __( 'Unlock powerful features including PDF search, human agent handoff, and intelligent auto-suggestions for a complete support experience.', 'echo-knowledge-base' ),
+			// 	'icon' => 'epkbfa epkbfa-rocket',
+			// 	'icon_color' => '#E67E22',
+			// 	'benefits' => array(
+			// 		__( 'PDF document search', 'echo-knowledge-base' ),
+			// 		__( 'Human agent handoff', 'echo-knowledge-base' ),
+			// 		__( 'Smart auto-suggestions', 'echo-knowledge-base' ),
+			// 		__( 'Multi-language support', 'echo-knowledge-base' )
+			// 	),
+			// 	'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
+			// 	'badge_type' => 'coming-soon'
+			// )
 		);
 	}
 

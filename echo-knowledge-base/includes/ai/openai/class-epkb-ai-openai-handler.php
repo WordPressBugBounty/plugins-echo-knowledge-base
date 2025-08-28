@@ -141,19 +141,24 @@ class EPKB_AI_OpenAI_Handler {
 			);
 		}
 		
-		// map file type to recognized type e.g. 'post', "page", "article"
-		switch ( $file_type ) {
-			case 'post':
-			case 'page':
-				break;
-			default:
-				$file_type = 'article';
-				break;
+		// Map KB post types to 'article' for clarity, use the actual type for others
+		// KB post types follow pattern: epkb_post_type_1, epkb_post_type_2, etc.
+		if ( strpos( $file_type, 'epkb_post_type_' ) === 0 ) {
+			$safe_type = 'article';
+		} else {
+			// WordPress post_type is already slug-like (lowercase, underscores, safe)
+			// Just do minimal sanitization to ensure it's safe for OpenAI API
+			$safe_type = preg_replace( '/[^a-z0-9_-]/', '_', strtolower( $file_type ) );
+		}
+		
+		// Default to 'article' if empty
+		if ( empty( $safe_type ) ) {
+			$safe_type = 'article';
 		}
 
 		// Generate filename if not provided
 		if ( empty( $file_name ) ) {
-			$file_name = 'kb-' . $file_type . '-' . $id . '- ' . time() . '.txt';
+			$file_name = 'kb_' . $safe_type . '_' . $id . '_' . time() . '.txt';
 		}
 		
 		// Use the client's upload_file method which properly handles multipart form data
@@ -181,7 +186,7 @@ class EPKB_AI_OpenAI_Handler {
 			'file_id' => $file_id
 		);
 		
-		$response = $this->client->request( self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}/" . self::FILES_ENDPOINT, $data, 'POST', self::OPENAI_BETA_HEADERS );
+		$response = $this->client->request( self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}" . self::FILES_ENDPOINT, $data, 'POST', self::OPENAI_BETA_HEADERS );
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
@@ -195,66 +200,6 @@ class EPKB_AI_OpenAI_Handler {
 		return $response;
 	}
 
-	/**
-	 * Add multiple files to a vector store via file batch and poll until processed
-	 *
-	 * @param string $vector_store_id Vector store ID
-	 * @param array $file_ids Array of file IDs (from /files upload)
-	 * @param int $max_wait Maximum wait time in seconds (default 300)
-	 * @return array|WP_Error Batch object on success or error
-	 */
-	public function add_files_to_vector_store_batch( $vector_store_id, $file_ids, $max_wait = 300 ) {
-
-		if ( empty( $vector_store_id ) || empty( $file_ids ) || ! is_array( $file_ids ) ) {
-			return new WP_Error( 'missing_params', __( 'Vector store ID and an array of file IDs are required', 'echo-knowledge-base' ) );
-		}
-
-		// Create the batch
-		$payload = array( 'file_ids' => array_values( $file_ids ) );
-		$create = $this->client->request(
-			self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}/file_batches",
-			$payload,
-			'POST',
-			self::OPENAI_BETA_HEADERS
-		);
-		if ( is_wp_error( $create ) ) {
-			return $create;
-		}
-
-		$batch_id = isset( $create['id'] ) ? $create['id'] : '';
-		if ( empty( $batch_id ) ) {
-			return new WP_Error( 'invalid_response', __( 'Missing batch ID in response', 'echo-knowledge-base' ) );
-		}
-
-		// Poll the batch until completed or failed
-		$start_time = time();
-		while ( ( time() - $start_time ) < $max_wait ) {
-			$status = $this->client->request(
-				self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}/file_batches/{$batch_id}",
-				array(),
-				'GET',
-				self::OPENAI_BETA_HEADERS
-			);
-			if ( is_wp_error( $status ) ) {
-				return $status;
-			}
-
-			if ( isset( $status['status'] ) ) {
-				if ( $status['status'] === 'completed' ) {
-					return $status;
-				}
-				if ( $status['status'] === 'failed' ) {
-					$failed = isset( $status['file_counts']['failed'] ) ? intval( $status['file_counts']['failed'] ) : 0;
-					return new WP_Error( 'batch_failed', sprintf( __( 'File batch failed. %d files failed to process', 'echo-knowledge-base' ), $failed ) );
-				}
-			}
-
-			EPKB_AI_Utilities::safe_sleep( 2 );
-		}
-
-		return new WP_Error( 'timeout', __( 'File batch processing timed out', 'echo-knowledge-base' ) );
-	}
-	
 	/**
 	 * Remove a file from a vector store
 	 *

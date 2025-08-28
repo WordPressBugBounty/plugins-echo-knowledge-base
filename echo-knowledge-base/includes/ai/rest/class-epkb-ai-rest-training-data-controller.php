@@ -160,6 +160,19 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 			)
 		) );
 		
+		// Get collection post stats (for Add Training Data section)
+		register_rest_route( $this->admin_namespace, '/training-collections/(?P<collection_id>\d+)/post-stats', array(
+			'methods'             => WP_REST_Server::READABLE,
+			'callback'            => array( $this, 'get_collection_post_stats' ),
+			'permission_callback' => array( $this, 'check_admin_permission' ),
+			'args'                => array(
+				'collection_id' => array(
+					'required' => true,
+					'type' => 'integer'
+				)
+			)
+		) );
+		
 		// Add data to training data collection
 		register_rest_route( $this->admin_namespace, '/training-collections/(?P<collection_id>\d+)/add-data', array(
 			'methods'             => WP_REST_Server::CREATABLE,
@@ -773,7 +786,6 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 		
 		// Initialize counters
 		$total_added = 0;
-		$total_errors = 0;
 
 		// Determine which post types are allowed (UI and API gate)
 		$available_post_types = array_keys( EPKB_AI_Utilities::get_available_post_types_for_ai() );
@@ -795,7 +807,7 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 			// Default handling: treat $data_type as a WP post type slug and add its posts
 			$result = $this->add_posts_to_collection( $collection_id, $data_type );
 			if ( is_wp_error( $result ) ) {
-				$total_errors++;
+				return $this->create_rest_response( [], 400, $result );
 			} else {
 				$total_added += $result;
 			}
@@ -803,11 +815,7 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 		
 		// Prepare response message
 		if ( $total_added > 0 ) {
-			$message = sprintf( __( 'Successfully added %d new items to the collection', 'echo-knowledge-base' ), $total_added );
-			if ( $total_errors > 0 ) {
-				$message .= sprintf( __( ' (%d errors)', 'echo-knowledge-base' ), $total_errors );
-			}
-			return $this->create_rest_response( array( 'success' => true, 'message' => $message, 'items_added' => $total_added ) );
+			return $this->create_rest_response( array( 'success' => true, 'message' => sprintf( __( 'Successfully added %d new items to the collection', 'echo-knowledge-base' ), $total_added ), 'items_added' => $total_added ) );
 		}
 
 		// Nothing added; determine a more precise message for selected types
@@ -823,68 +831,93 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 
 		return $this->create_rest_response( [], 400, new WP_Error( 'no_data_added', __( 'No published items were found for the selected content types.', 'echo-knowledge-base' ) ) );
 	}
+
+	/**
+	 * Get post statistics for a collection (expensive operation, called on-demand)
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function get_collection_post_stats( $request ) {
+		
+		$collection_id = $request->get_param( 'collection_id' );
+		
+		// Validate collection exists
+		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
+		if ( is_wp_error( $collection_config ) ) {
+			return $this->create_rest_response( [], 400, $collection_config );
+		}
+		
+		$training_data_db = new EPKB_AI_Training_Data_DB();
+		
+		// Get available post types with their content status
+		$post_types_with_status = array();
+		$available_post_types = EPKB_AI_Utilities::get_available_post_types_for_ai();
+		foreach ( $available_post_types as $post_type => $label ) {
+			
+			// Use common function to get eligible posts - use stats_only mode for performance
+			$posts_data = $this->get_eligible_posts_for_collection( $collection_id, $post_type, true );
+			if ( is_wp_error( $posts_data ) ) {
+				return $this->create_rest_response( [], 400, $collection_config );
+			}
+
+			// Handle the count - it could be a number or '500+'
+			$eligible_count = isset( $posts_data['count'] ) ? $posts_data['count'] : count( $posts_data['eligible_posts'] );
+			$is_approximate = isset( $posts_data['is_approximate'] ) && $posts_data['is_approximate'];
+			
+			// Get total count for this post type in the collection (already added)
+			$already_added_in_collection = $training_data_db->get_training_data_count( array(
+				'collection_id' => $collection_id,
+				'type' => $post_type
+			) );
+			
+			$post_types_with_status[$post_type] = array(
+				'label' => $label,
+				'available' => $eligible_count === '500+' || $eligible_count > 0,
+				'count' => $eligible_count,
+				'linked_articles' => $posts_data['linked_articles_count'],
+				'password_protected' => $posts_data['password_protected_count'],
+				'excluded' => $posts_data['excluded_count'],
+				'already_added' => $already_added_in_collection,
+				'new_items' => $eligible_count,
+				'is_approximate' => $is_approximate
+			);
+		}
+		
+		return $this->create_rest_response( array( 'success' => true, 'post_types_status' => $post_types_with_status ) );
+	}
 	
 	/**
 	 * Add posts to collection (extracted from load_posts_for_default_collection)
 	 *
 	 * @param int $collection_id
 	 * @param string $post_type
-	 * @return int Number of posts added or error
+	 * @return int|WP_Error Number of posts added or WP_Error on failure
 	 */
 	private function add_posts_to_collection( $collection_id, $post_type ) {
 		
 		$training_data_db = new EPKB_AI_Training_Data_DB();
 		
-		// Get existing post IDs for this collection
-		$existing_post_ids = $training_data_db->get_existing_post_ids( $collection_id );
-		if ( is_wp_error( $existing_post_ids ) ) {
-			$existing_post_ids = array();
+		// Use common function to get eligible posts
+		$posts_data = $this->get_eligible_posts_for_collection( $collection_id, $post_type );
+		if ( is_wp_error( $posts_data ) ) {
+			return $posts_data;
 		}
 		
-		// Validate post type exists; if not, nothing to add
-		if ( ! post_type_exists( $post_type ) ) {
-			return 0;
-		}
-
-		// Get all published posts for the requested type
-		$query = new WP_Query( array(
-			'post_type'           => $post_type,
-			'post_status'         => 'publish',
-			'posts_per_page'      => -1,
-			'fields'              => 'ids',
-			'no_found_rows'       => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-		) );
-		$post_ids = is_a( $query, 'WP_Query' ) ? $query->posts : array();
-		if ( empty( $post_ids ) ) {
-			return 0;
-		}
-		
-		// Filter out posts that already exist in the collection
-		$new_post_ids = array_diff( $post_ids, $existing_post_ids );
-		
-		if ( empty( $new_post_ids ) ) {
-			// All posts already exist
+		// Get eligible posts that are not already in the collection
+		$eligible_posts = $posts_data['eligible_posts'];
+		if ( empty( $eligible_posts ) ) {
+			// No eligible posts to add
 			return 0;
 		}
 		
 		// Batch insert for better performance
 		$batch_size = 100;
-		$batches = array_chunk( $new_post_ids, $batch_size );
+		$batches = array_chunk( $eligible_posts, $batch_size );
 		$total_loaded = 0;
 		
 		foreach ( $batches as $batch ) {
-			// Get posts data in one query
-			$posts = get_posts( array(
-				'post__in'       => $batch,
-				'post_type'      => 'any',
-				'post_status'    => 'publish',
-				'posts_per_page' => -1,
-				'orderby'        => 'post__in'
-			) );
-			
-			foreach ( $posts as $post ) {
+			foreach ( $batch as $post ) {
 				// Prepare training data record
 				$training_data = array(
 					'collection_id' => $collection_id,
@@ -899,15 +932,127 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 				
 				// Insert the record
 				$result = $training_data_db->insert_training_data( $training_data );
-				if ( ! is_wp_error( $result ) ) {
-					$total_loaded++;
+				if ( is_wp_error( $result ) ) {
+					return $result;
 				}
+
+				$total_loaded++;
 			}
 		}
 		
 		return $total_loaded;
 	}
-	
+
+	/**
+	 * Get eligible posts for a collection
+	 *
+	 * @param int $collection_id
+	 * @param string $post_type
+	 * @param bool $stats_only If true, returns approximate stats for large datasets
+	 * @return array|WP_Error Contains: eligible_posts, linked_articles_count, password_protected_count, excluded_count, already_added_ids, or WP_Error on database failure
+	 */
+	private function get_eligible_posts_for_collection( $collection_id, $post_type, $stats_only = false ) {
+		
+		$result = array(
+			'eligible_posts' => array(),
+			'linked_articles_count' => 0,
+			'password_protected_count' => 0,
+			'excluded_count' => 0,
+			'already_added_ids' => array(),
+			'is_approximate' => false
+		);
+		
+		// Validate post type exists
+		if ( ! post_type_exists( $post_type ) ) {
+			return $result;
+		}
+		
+		// Get existing post IDs for this collection
+		$training_data_db = new EPKB_AI_Training_Data_DB();
+		$existing_post_ids = $training_data_db->get_existing_post_ids( $collection_id );
+		if ( is_wp_error( $existing_post_ids ) ) {
+			return $existing_post_ids;
+		}
+		$result['already_added_ids'] = $existing_post_ids;
+		
+		// Determine query limit based on mode
+		$query_limit = -1; // Default: get all posts
+		$check_for_more = false;
+		
+		if ( $stats_only ) {
+			// For stats mode, limit to 501 posts to check if there are 500+
+			$query_limit = 501;
+			$check_for_more = true;
+		}
+		
+		// Get published posts with controlled limit
+		$posts_query = new WP_Query( array(
+			'post_type' => $post_type,
+			'post_status' => 'publish',
+			'posts_per_page' => $query_limit,
+			'fields' => 'ids',
+			'no_found_rows' => ! $check_for_more, // Only get total count if checking for more
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'post__not_in' => ! empty( $existing_post_ids ) ? $existing_post_ids : array( 0 )
+		) );
+		
+		// Check if we have 500+ posts available
+		$has_more_than_500 = false;
+		if ( $check_for_more && $posts_query->found_posts > 500 ) {
+			$has_more_than_500 = true;
+			$result['is_approximate'] = true;
+		}
+		
+		// Process posts to check eligibility
+		$eligible_count = 0;
+		$posts_to_check = $posts_query->posts;
+		
+		// If we have 500+, just check a sample of 100 for stats
+		if ( $has_more_than_500 && $stats_only ) {
+			$posts_to_check = array_slice( $posts_to_check, 0, 100 );
+		}
+		
+		foreach ( $posts_to_check as $post_id ) {
+			$post = get_post( $post_id );
+			if ( ! $post ) {
+				continue;
+			}
+			
+			$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
+			if ( $eligibility_check === true ) {
+				if ( $stats_only ) {
+					$eligible_count++;
+				} else {
+					$result['eligible_posts'][] = $post;
+				}
+			} else if ( is_wp_error( $eligibility_check ) ) {
+				// Count different types of exclusions
+				$error_code = $eligibility_check->get_error_code();
+				if ( $error_code === 'linked_article' ) {
+					$result['linked_articles_count']++;
+				} else if ( $error_code === 'post_password_protected' ) {
+					$result['password_protected_count']++;
+				} else {
+					$result['excluded_count']++;
+				}
+			}
+		}
+		
+		// Set the count for stats mode
+		if ( $stats_only ) {
+			if ( $has_more_than_500 && $eligible_count > 0 ) {
+				// If we found eligible items in our sample and have 500+ posts, show 500+
+				$result['count'] = '500+';
+			} else {
+				$result['count'] = $eligible_count;
+			}
+			$result['eligible_posts'] = array(); // Empty array for stats only
+		}
+		
+		return $result;
+	}
+
 	/**
 	 * Toggle summary mode for a training data collection
 	 *

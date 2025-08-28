@@ -39,8 +39,8 @@ abstract class EPKB_AI_Config_Base {
 	 */
 	public static function get_default_config() {
 		$default_config = array();
+
 		$specs = static::get_config_fields_specifications();
-		
 		foreach ( $specs as $field_name => $field_spec ) {
 			$default_config[ $field_name ] = static::get_field_default( $field_name );
 		}

@@ -17,7 +17,7 @@ class EPKB_AI_Sync_Cron_Handler {
 	 * Initialize cron handler
 	 */
 	public static function init() {
-		add_action( EPKB_AI_Sync_Job_Manager::CRON_HOOK, array( __CLASS__, 'process_sync_cron' ) );
+		// TODO add_action( EPKB_AI_Sync_Job_Manager::CRON_HOOK, array( __CLASS__, 'process_sync_cron' ) );
 	}
 	
 	/**

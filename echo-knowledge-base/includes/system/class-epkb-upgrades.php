@@ -8,7 +8,7 @@
 class EPKB_Upgrades {
 
 	const GRID_UPGRADE_DONE = 3;
-	const NOT_INITIALIZED = '12.30.99'; // TODO remove 2025
+	const NOT_INITIALIZED = '12.30.99'; // TODO remove 2026
 
 	public function __construct() {
 		// will run after plugin is updated but not always like front-end rendering
@@ -208,6 +208,42 @@ class EPKB_Upgrades {
 
 		if ( version_compare( $last_version, '13.60.0', '<' ) ) {	
 			self::upgrade_to_v13_60_0( $kb_config );
+		}
+
+		if ( version_compare( $last_version, '15.210.0', '<' ) ) {
+			self::upgrade_to_v15_210_0( $kb_config );
+		}
+	}
+
+	private static function upgrade_to_v15_210_0( &$kb_config ) {
+		global $wpdb;
+
+		/*** Update AI instructions if user hasn't changed them from old default **/
+
+		$old_instructions = 'Avoid answering questions unrelated to your knowledge. DO NOT mention, reference, or describe documents, files, files you uploaded, or sources. ' .
+			'Do not guess, speculate, or use outside knowledge. ONLY use the provided content. If no relevant information is found, ' .
+			'reply exactly with: "That is not something I can help with. Please try a different question"';
+
+
+		$default_instructions = 'You may ONLY answer using information from the vector store. Do not mention references, documents, files, or sources. ' .
+			'Do not reveal retrieval, guess, speculate, or use outside knowledge. If no relevant information is found, reply exactly: "That is not something I can help with. Please try a different question". ' .
+			'If relevant information is found, you may give structured explanations, including comparisons, pros and cons, or decision factors, but only if they are in the data. ' .
+			'Answer only what the data supports; when unsure, leave it out.';
+
+		// Get current AI search instructions
+		$current_search_instructions = EPKB_AI_Config_Specs::get_config_value( 'ai_search_instructions' );
+
+		// If the current instructions match the old default, update to new default
+		if ( $current_search_instructions === $old_instructions ) {
+			EPKB_AI_Config_Specs::update_config_value( 'ai_search_instructions', $default_instructions );
+		}
+
+		// Get current AI chat instructions
+		$current_chat_instructions = EPKB_AI_Config_Specs::get_config_value( 'ai_chat_instructions' );
+
+		// If the current instructions match the old default, update to new default
+		if ( $current_chat_instructions === $old_instructions ) {
+			EPKB_AI_Config_Specs::update_config_value( 'ai_chat_instructions', $default_instructions );
 		}
 	}
 

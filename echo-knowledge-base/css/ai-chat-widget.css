@@ -49,7 +49,7 @@
   animation: epkb-slideUp 0.3s ease-out;
 }
 #epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-header {
-  background: linear-gradient(135deg, #0066CC 0%, #004499 100%);
+  background: linear-gradient(135deg, #0073AA 0%, #005A87 100%);
   color: white;
   padding: 16px;
   display: flex;
@@ -211,7 +211,6 @@
   word-wrap: break-word;
   line-height: 1.5;
   font-size: 14px;
-  white-space: pre-wrap;
 }
 #epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-messages .epkb-ai-chat-message-content p {
   margin: 0 0 8px 0;
@@ -397,12 +396,13 @@
     transform: rotate(360deg);
   }
 }
-@media (max-width: 450px) {
+@media (max-width: 600px) {
   .epkb-ai-chat-window {
-    width: calc(100vw - 20px);
+    position: fixed !important;
+    width: 90% !important;
     right: 10px;
-    left: 10px;
-    height: calc(80vh - 100px);
+    left: 5%;
+    height: calc(80vh - 100px) !important;
     bottom: 70px;
   }
   .epkb-ai-chat-toggle {

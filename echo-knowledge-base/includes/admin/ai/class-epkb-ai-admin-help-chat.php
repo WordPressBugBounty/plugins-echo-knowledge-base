@@ -28,7 +28,7 @@ class EPKB_AI_Admin_Help_Chat {
 				'welcome' => __( 'Welcome to KB Configuration!', 'echo-knowledge-base' ),
 				'helper' => __( 'I can help you with Settings (layouts, colors, search), Order Articles, manage KB URLs, set up Blocks/Shortcodes, or use Tools for import/export and access control.', 'echo-knowledge-base' )
 			),
-			'epkb-kb-ai-chat' => array(
+			'epkb-kb-ai-features' => array(
 				'welcome' => __( 'Welcome to AI-powered features!', 'echo-knowledge-base' ),
 				'helper' => __( 'I can help you set up AI chat, configure search parameters, manage training data, or explain how AI features work.', 'echo-knowledge-base' )
 			),
@@ -120,7 +120,7 @@ class EPKB_AI_Admin_Help_Chat {
 		$page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
 		if ( ! empty( $page ) ) {
 			// Check for AI page tabs
-			if ( $page === 'epkb-kb-ai-chat' ) {
+			if ( $page === 'epkb-kb-ai-features' ) {
 				$tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'dashboard';
 				if ( $tab !== 'dashboard' ) {
 					$tab_id = 'ai-' . $tab . '-tab';

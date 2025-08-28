@@ -51,8 +51,9 @@ class EPKB_AI_Sync_Hooks {
 			return;
 		}
 		
-		// Skip if not published
-		if ( $post->post_status !== 'publish' ) {
+		// Use centralized eligibility check
+		$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $eligibility_check ) ) {
 			return;
 		}
 		
@@ -93,7 +94,7 @@ class EPKB_AI_Sync_Hooks {
 		}
 		
 		$sync_manager = new EPKB_AI_Sync_Manager();
-		$training_data_db = new EPKB_AI_Training_Data_DB();
+		$training_data_db = new EPKB_AI_Training_Data_DB( false );
 
 		// Remove from each collection that contains this post
 		foreach ( $collections as $collection_id => $collection_config ) {
@@ -130,9 +131,10 @@ class EPKB_AI_Sync_Hooks {
 			$this->handle_post_delete( $post->ID );
 		}
 		
-		// Post published - add to sync
+		// Post published - add to sync (check eligibility)
 		elseif ( $old_status !== 'publish' && $new_status === 'publish' ) {
-			if ( $this->is_auto_sync_enabled() ) {
+			$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
+			if ( ! is_wp_error( $eligibility_check ) && $this->is_auto_sync_enabled() ) {
 				$this->sync_one_post( $post );
 			}
 		}
@@ -238,7 +240,7 @@ class EPKB_AI_Sync_Hooks {
 	 * @return void
 	 */
 	private function mark_post_outdated( $post_id, $post_type ) {
-		$training_data_db = new EPKB_AI_Training_Data_DB();
+		$training_data_db = new EPKB_AI_Training_Data_DB( false );
 		$training_data_db->mark_source_as_outdated( $post_type, (string) $post_id );
 	}
 	
@@ -249,7 +251,7 @@ class EPKB_AI_Sync_Hooks {
 	 * @return void
 	 */
 	private function mark_attachment_outdated( $attachment_id ) {
-		$training_data_db = new EPKB_AI_Training_Data_DB();
+		$training_data_db = new EPKB_AI_Training_Data_DB( false );
 		$training_data_db->mark_source_as_outdated( 'attachment', $attachment_id );
 	}
 	
@@ -263,6 +265,11 @@ class EPKB_AI_Sync_Hooks {
 		
 		// Validate post object
 		if ( ! $post || ! is_object( $post ) || ! isset( $post->post_type ) || ! isset( $post->ID ) ) {
+			return;
+		}
+		
+		// Skip linked articles (from echo-links-editor plugin)
+		if ( $post->post_mime_type === 'kb_link' ) {
 			return;
 		}
 		

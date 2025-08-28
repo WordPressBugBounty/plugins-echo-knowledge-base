@@ -39,6 +39,9 @@ class EPKB_KB_Config_Controller {
 
 		add_action( 'wp_ajax_epkb_save_sidebar_intro_text', array( $this, 'save_sidebar_intro_text' ) );
 		add_action( 'wp_ajax_nopriv_epkb_save_sidebar_intro_text', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+		
+		add_action( 'wp_ajax_epkb_switch_kb_template', array( $this, 'switch_kb_template' ) );
+		add_action( 'wp_ajax_nopriv_epkb_switch_kb_template', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 	}
 
 	/**
@@ -404,5 +407,39 @@ class EPKB_KB_Config_Controller {
 		}
 
 		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Introduction text saved', 'echo-knowledge-base' ) );
+	}
+	
+	/**
+	 * Switch archive page template between KB template and current theme template
+	 */
+	public function switch_kb_template() {
+		
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+		
+		// get KB ID
+		$kb_id = (int)EPKB_Utilities::post( 'epkb_kb_id', 0 );
+		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 410 ) );
+		}
+		
+		// get template type to switch to
+		$template_type = EPKB_Utilities::post( 'template_type', 'kb_templates' );
+		if ( ! in_array( $template_type, array( 'kb_templates', 'current_theme_templates' ) ) ) {
+			$template_type = 'kb_templates';
+		}
+		
+		// Set template_for_archive_page
+		$result = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'template_for_archive_page', $template_type );
+		if ( is_wp_error( $result ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 412, $result ) );
+		}
+		
+		// Set appropriate message based on template type
+		$message = $template_type === 'kb_templates' 
+			? esc_html__( 'Switched to KB Template successfully', 'echo-knowledge-base' )
+			: esc_html__( 'Switched to Theme Template successfully', 'echo-knowledge-base' );
+		
+		// Return success with reload instruction
+		wp_die( wp_json_encode( array( 'status' => 'success', 'message' => $message, 'reload' => true ) ) );
 	}
 }

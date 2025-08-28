@@ -9,8 +9,8 @@ class EPKB_Dashboard_Page {
 	private $kb_config;
 
 	public function __construct() {
-		$this->kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_dashboard_scripts' ) );
+		add_action( 'wp_ajax_epkb_kb_vote_for_features', array( $this, 'ajax_vote_for_features' ) );
 	}
 
 	/**
@@ -20,6 +20,7 @@ class EPKB_Dashboard_Page {
 
 		$kb_id = EPKB_KB_Handler::get_current_kb_id();
 		$kb_id = empty( $kb_id ) ? EPKB_KB_Config_DB::DEFAULT_KB_ID : $kb_id;
+		$kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
 				
 		$post_type = EPKB_KB_Handler::get_post_type( $kb_id );
 		
@@ -47,7 +48,7 @@ class EPKB_Dashboard_Page {
 		
 		// Get views this month
 		$views_this_month = 0;
-		if ( $this->kb_config['article_views_counter_enable'] == 'on' ) {
+		if ( $kb_config['article_views_counter_enable'] == 'on' ) {
 			$year = date( 'Y' );
 			$month_weeks = $this->get_month_weeks();
 			
@@ -95,7 +96,7 @@ class EPKB_Dashboard_Page {
 		}
 		
 		EPKB_HTML_Admin::admin_page_header();
-		EPKB_HTML_Admin::admin_header( $this->kb_config, ['admin_eckb_access_need_help_read'] );   ?>
+		EPKB_HTML_Admin::admin_header( $kb_config, ['admin_eckb_access_need_help_read'] );   ?>
 
 		<div id="ekb-admin-page-wrap">
 			<div id="epkb-dashboard-page-container">
@@ -111,7 +112,7 @@ class EPKB_Dashboard_Page {
 							<?php esc_html_e( '+ Add New FAQs', 'echo-knowledge-base' ); ?>
 						</a>						<?php 
 						
-						$kb_main_page_url = EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config );
+						$kb_main_page_url = EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config );
 						if ( empty( $kb_main_page_url ) ) { ?>
 							<a href="#" class="epkb-btn epkb-btn-frontend-editor epkb-btn-no-kb-main-page" data-setup-wizard-url="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&setup-wizard-on=true' ) ); ?>">
 								<?php esc_html_e( 'Frontend Editor', 'echo-knowledge-base' ); ?>
@@ -138,7 +139,6 @@ class EPKB_Dashboard_Page {
 				
 				<!-- ================= Top KPI tiles ================ -->
 				<section class="epkb-kpi-grid">
-					
 
 					<a href="#" class="epkb-kpi-card">
 						<div class="epkb-kpi-icon-container epkb-kpi-articles">
@@ -247,7 +247,7 @@ class EPKB_Dashboard_Page {
 
 								// Get most viewed articles
 								$most_viewed_articles = array();
-								if ( $this->kb_config['article_views_counter_enable'] == 'on' ) {
+								if ( $kb_config['article_views_counter_enable'] == 'on' ) {
 									$args = array(
 										'post_type'      => $post_type,
 										'post_status'    => 'publish',
@@ -352,7 +352,7 @@ class EPKB_Dashboard_Page {
 									<p><?php esc_html_e( 'Transform your knowledge base with AI-powered chat that instantly answers visitor questions. Our intelligent chatbot learns from your documentation to provide accurate, context-aware responses 24/7. Reduce support tickets, improve user satisfaction, and let AI handle repetitive queries while your team focuses on complex issues.', 'echo-knowledge-base' ); ?></p>
 								</div>
 								<div class="epkb-chatbot-button">
-									<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-ai-chat&active_tab=chat' ) ); ?>" class="epkb-btn epkb-btn-primary-outline">
+									<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-ai-features&active_tab=chat' ) ); ?>" class="epkb-btn epkb-btn-primary-outline">
 										<?php esc_html_e( 'Get AI Chatbot', 'echo-knowledge-base' ); ?>
 									</a>
 								</div>
@@ -377,14 +377,14 @@ class EPKB_Dashboard_Page {
 							<h3><?php esc_html_e( 'Quick Actions', 'echo-knowledge-base' ); ?></h3>
 						</div>
 						<div class="epkb-quick-actions-list">
-							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=training-data' ) ); ?>" class="epkb-quick-action-item">
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' ) ); ?>" class="epkb-quick-action-item">
 								<span class="epkb-quick-action-icon epkbfa epkbfa-sync"></span>
 								<div class="epkb-quick-action-content">
 									<h4><?php esc_html_e( 'Sync Training Data', 'echo-knowledge-base' ); ?></h4>
 									<p><?php esc_html_e( 'Update your AI knowledge base with latest content', 'echo-knowledge-base' ); ?></p>
 								</div>
 							</a>
-							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' ) ); ?>" class="epkb-quick-action-item">
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' ) ); ?>" class="epkb-quick-action-item">
 								<span class="epkb-quick-action-icon epkbfa epkbfa-cog"></span>
 								<div class="epkb-quick-action-content">
 									<h4><?php esc_html_e( 'Configure AI Settings', 'echo-knowledge-base' ); ?></h4>
@@ -408,6 +408,21 @@ class EPKB_Dashboard_Page {
 						</div>
 					</aside>
 					*/ ?>
+
+					<!-- Vote for Features -->
+					<aside class='epkb-card epkb-card--vote-features'>
+						<div class='epkb-vote-header'>
+							<span class='epkb-vote-icon epkbfa epkbfa-check-square-o'></span>
+							<h3><?php esc_html_e( 'Vote for Features', 'echo-knowledge-base' ); ?></h3>
+						</div>
+						<div class="epkb-vote-content">
+							<p><?php esc_html_e( 'Help us prioritize new features! Tell us what you\'d like to see next.', 'echo-knowledge-base' ); ?></p>
+							<button id="epkb-open-vote-dialog" class="epkb-btn epkb-btn-vote-open">
+								<span class="epkbfa epkbfa-bullhorn"></span>
+								<?php esc_html_e( 'Vote for Features', 'echo-knowledge-base' ); ?>
+							</button>
+						</div>
+					</aside>
 
 					<!-- What's New -->
 					<aside class="epkb-card epkb-card--whatsnew">
@@ -455,12 +470,11 @@ class EPKB_Dashboard_Page {
 							<div class="epkb-upsell-header">
 								<span class="epkb-upsell-icon epkbfa epkbfa-trophy"></span>
 								<h3><?php esc_html_e( 'Premium Add-Ons', 'echo-knowledge-base' ); ?></h3>
+							</div>
 								<a href="https://www.echoknowledgebase.com/bundle-pricing/" target="_blank" class="epkb-btn epkb-btn-upgrade-pro">
 									<span class="epkbfa epkbfa-trophy"></span>
 									<?php esc_html_e( 'Upgrade to PRO', 'echo-knowledge-base' ); ?>
 								</a>
-							</div>
-							
 							<!-- Add-ons Carousel -->
 							<div class="epkb-addons-carousel-wrapper">
 								<div class="epkb-addons-carousel">
@@ -478,6 +492,81 @@ class EPKB_Dashboard_Page {
 						</div>
 					</aside>
 					
+					<!-- Vote Dialog (hidden by default) -->
+					<div id="epkb-vote-dialog" style="display: none;" title="<?php esc_attr_e( 'Vote for Future Features', 'echo-knowledge-base' ); ?>">
+						<form id="epkb-kb-vote-features-form" class="epkb-vote-form">
+							<p class="epkb-vote-dialog-intro"><?php esc_html_e( 'Select the features you\'d like to see implemented:', 'echo-knowledge-base' ); ?></p>
+							
+							<div class="epkb-vote-features-list">
+								<label class="epkb-vote-feature-item">
+									<input type="checkbox" name="features[]" value="pdf-manual">
+									<span class="epkb-vote-feature-label">
+										<span class="epkb-vote-checkbox-icon"></span>
+										<span class="epkb-vote-feature-text"><?php esc_html_e( 'Print Articles as PDF Manual', 'echo-knowledge-base' ); ?></span>
+									</span>
+								</label>
+								
+								<label class="epkb-vote-feature-item">
+									<input type="checkbox" name="features[]" value="pdf-to-article">
+									<span class="epkb-vote-feature-label">
+										<span class="epkb-vote-checkbox-icon"></span>
+										<span class="epkb-vote-feature-text"><?php esc_html_e( 'PDF to Article Conversion', 'echo-knowledge-base' ); ?></span>
+									</span>
+								</label>
+								
+								<label class="epkb-vote-feature-item">
+									<input type="checkbox" name="features[]" value="pdf-search">
+									<span class="epkb-vote-feature-label">
+										<span class="epkb-vote-checkbox-icon"></span>
+										<span class="epkb-vote-feature-text"><?php esc_html_e( 'PDF Search', 'echo-knowledge-base' ); ?></span>
+									</span>
+								</label>
+								
+								<label class="epkb-vote-feature-item">
+									<input type="checkbox" name="features[]" value="related-articles">
+									<span class="epkb-vote-feature-label">
+										<span class="epkb-vote-checkbox-icon"></span>
+										<span class="epkb-vote-feature-text"><?php esc_html_e( 'Related Articles', 'echo-knowledge-base' ); ?></span>
+									</span>
+								</label>
+								
+								<label class="epkb-vote-feature-item">
+									<input type="checkbox" name="features[]" value="glossary">
+									<span class="epkb-vote-feature-label">
+										<span class="epkb-vote-checkbox-icon"></span>
+										<span class="epkb-vote-feature-text"><?php esc_html_e( 'Glossary', 'echo-knowledge-base' ); ?></span>
+									</span>
+								</label>
+								
+								<label class="epkb-vote-feature-item epkb-vote-feature-other">
+									<input type="checkbox" name="features[]" value="custom-feature">
+									<span class="epkb-vote-feature-label">
+										<span class="epkb-vote-checkbox-icon"></span>
+										<span class="epkb-vote-feature-text"><?php esc_html_e( 'Custom Feature (please specify)', 'echo-knowledge-base' ); ?></span>
+									</span>
+								</label>
+								
+								<div class="epkb-vote-other-input" style="display: none;">
+									<textarea name="other_feature_text" placeholder="<?php esc_attr_e( 'Describe the feature you would like...', 'echo-knowledge-base' ); ?>" rows="3"></textarea>
+								</div>
+							</div>
+							
+							<div class="epkb-vote-user-info">
+								<div class="epkb-vote-field">
+									<label><?php esc_html_e( 'First Name', 'echo-knowledge-base' ); ?> <span class="required">*</span></label>
+									<input type="text" name="first_name" value="<?php echo esc_attr( wp_get_current_user()->first_name ?: wp_get_current_user()->display_name ); ?>" required>
+								</div>
+								<div class="epkb-vote-field">
+									<label><?php esc_html_e( 'Email', 'echo-knowledge-base' ); ?> <span class="required">*</span></label>
+									<input type="email" name="email" value="<?php echo esc_attr( wp_get_current_user()->user_email ); ?>" required>
+								</div>
+								<input type="hidden" name="site_url" value="<?php echo esc_attr( get_site_url() ); ?>">
+							</div>
+							
+							<div class="epkb-vote-message" style="display: none;"></div>
+						</form>
+					</div>
+					
 					</div> <!-- End of Sidebar -->
 
 				</section>
@@ -492,15 +581,6 @@ class EPKB_Dashboard_Page {
 						<h3><?php esc_html_e( 'Documentation', 'echo-knowledge-base' ); ?></h3>
 						<p><?php esc_html_e( 'Get started by spending some time with the documentation and build an awesome Knowledge Base for your customers.', 'echo-knowledge-base' ); ?></p>
 						<span class="epkb-action-text"><?php esc_html_e( 'Read Me', 'echo-knowledge-base' ); ?></span>
-					</a>
-
-					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-ai-chat' ) ); ?>" target="_blank" class="epkb-ql-card epkb-ql-card--beta">
-						<div class="epkb-ql-icon-container">
-							<span class="epkb-ql-icon epkbfa epkbfa-rocket"></span>
-						</div>
-						<h3><?php esc_html_e( 'Join the AI Beta', 'echo-knowledge-base' ); ?></h3>
-						<p><?php esc_html_e( 'Join the AI Beta program, connect with fellow developers and get early access to new features.', 'echo-knowledge-base' ); ?></p>
-						<span class="epkb-action-text"><?php esc_html_e( 'Join Beta', 'echo-knowledge-base' ); ?></span>
 					</a>
 
 					<div class="epkb-ql-card epkb-ql-card--help epkb-ql-card--split">
@@ -536,165 +616,7 @@ class EPKB_Dashboard_Page {
 				</section>
 
 			</div>
-		</div>
-		
-		<script>
-		jQuery(document).ready(function($) {
-			// Add-ons Carousel functionality
-			let currentIndex = 0;
-			const $track = $('.epkb-addons-carousel-track');
-			const $items = $('.epkb-carousel-item');
-			const itemCount = $items.length;
-			
-			function updateCarousel() {
-				const translateX = -currentIndex * 100;
-				$track.css('transform', 'translateX(' + translateX + '%)');
-				
-				// Update button states
-				$('.epkb-carousel-prev').prop('disabled', currentIndex === 0);
-				$('.epkb-carousel-next').prop('disabled', currentIndex === itemCount - 1);
-			}
-			
-			$('.epkb-carousel-prev').on('click', function() {
-				if (currentIndex > 0) {
-					currentIndex--;
-					updateCarousel();
-				}
-			});
-			
-			$('.epkb-carousel-next').on('click', function() {
-				if (currentIndex < itemCount - 1) {
-					currentIndex++;
-					updateCarousel();
-				}
-			});
-			
-			// Initialize carousel
-			updateCarousel();
-			
-			// Add click handler for carousel items
-			$('.epkb-carousel-item img, .epkb-carousel-item h4').on('click', function() {
-				const $item = $(this).closest('.epkb-carousel-item');
-				const addonData = $item.data('addon');
-				
-				if (addonData) {
-					// Create and show modal dialog
-					const dialogContent = '<div class="epkb-addon-dialog-content">' +
-						'<div class="epkb-addon-dialog-image">' +
-							'<img src="' + addonData.img + '" alt="' + addonData.title + '">' +
-						'</div>' +
-						'<div class="epkb-addon-dialog-text">' +
-							'<h3>' + addonData.title + '</h3>' +
-							(addonData.special_note ? '<p class="epkb-addon-note"><i>' + addonData.special_note + '</i></p>' : '') +
-							'<p class="epkb-addon-desc">' + addonData.desc + '</p>' +
-							'<a href="' + addonData.learn_more_url + '" target="_blank" class="epkb-primary-btn">Learn More</a>' +
-						'</div>' +
-					'</div>';
-					
-					const $dialog = $('<div>').html(dialogContent).dialog({
-						title: addonData.title,
-						modal: true,
-						width: 750,
-						maxWidth: '90%',
-						height: 'auto',
-						maxHeight: '80vh',
-						resizable: false,
-						dialogClass: 'epkb-addon-dialog',
-						close: function() {
-							$(this).dialog('destroy').remove();
-						}
-					});
-					
-					// Close dialog when clicking outside (on overlay)
-					$('.ui-widget-overlay').on('click', function() {
-						$dialog.dialog('close');
-					});
-				}
-			});
-		});
-		</script>
-		
-		<style>
-		.epkb-carousel-item img,
-		.epkb-carousel-item h4 {
-			cursor: pointer;
-			transition: opacity 0.2s ease;
-		}
-		
-		.epkb-carousel-item img:hover {
-			opacity: 0.9;
-		}
-		
-		.epkb-carousel-item h4:hover {
-			color: #0073aa;
-		}
-		
-		.epkb-addon-dialog {
-			z-index: 10000;
-		}
-		
-		.epkb-addon-dialog .ui-dialog-content {
-			padding: 30px !important;
-			max-height: 70vh;
-			overflow-y: auto;
-		}
-		
-		.epkb-addon-dialog-content {
-			display: flex;
-			flex-direction: column;
-			gap: 25px;
-		}
-		
-		.epkb-addon-dialog-image {
-			text-align: center;
-		}
-		
-		.epkb-addon-dialog-image img {
-			width: 100%;
-			max-width: 600px;
-			height: auto;
-			border-radius: 10px;
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-		}
-		
-		.epkb-addon-dialog-text h3 {
-			margin: 0 0 15px 0;
-			font-size: 24px;
-			font-weight: 600;
-			color: #2c3e50;
-		}
-		
-		.epkb-addon-note {
-			color: #666;
-			font-style: italic;
-			margin: 0 0 15px 0;
-			font-size: 15px;
-		}
-		
-		.epkb-addon-desc {
-			margin: 0 0 25px 0;
-			line-height: 1.7;
-			font-size: 15px;
-			color: #4a5568;
-		}
-		
-		.epkb-addon-dialog .epkb-primary-btn {
-			display: inline-block;
-			padding: 12px 30px;
-			background: #0073aa;
-			color: #fff;
-			text-decoration: none;
-			border-radius: 5px;
-			transition: background 0.2s ease;
-			font-size: 15px;
-			font-weight: 500;
-		}
-		
-		.epkb-addon-dialog .epkb-primary-btn:hover {
-			background: #005a87;
-			box-shadow: 0 2px 8px rgba(0, 115, 170, 0.3);
-		}
-		</style>	    <?php
+		</div>    <?php
 	}
 
 
@@ -772,7 +694,8 @@ class EPKB_Dashboard_Page {
 	private function should_show_setup_wizard() {
 		
 		// Get the installation date from KB config
-		$install_date = empty( $this->kb_config['plugin_install_date'] ) ? '' : $this->kb_config['plugin_install_date'];
+		$kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
+		$install_date = empty( $kb_config['plugin_install_date'] ) ? '' : $kb_config['plugin_install_date'];
 		
 		// If no install date set, this is a new installation
 		if ( empty( $install_date ) ) {
@@ -837,7 +760,7 @@ class EPKB_Dashboard_Page {
 			array(
 				'title'             => esc_html__( 'AI Features', 'echo-knowledge-base' ),
 				'special_note'      => esc_html__( 'Smart AI-powered support', 'echo-knowledge-base' ),
-				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/08/ai-features-banner.jpg',
+				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/08/AI-Pro-Features-List.jpg',
 				'desc'              => sprintf( esc_html__( '%sAI Chat%s with instant answers, %sSmart Search%s with AI-generated responses, and %sAdvanced Training%s on posts, pages & custom content.', 'echo-knowledge-base' ), '<strong>', '</strong>', '<strong>', '</strong>', '<strong>', '</strong>' ),
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/?utm_source=plugin&utm_medium=dashboard&utm_content=carousel&utm_campaign=ai-features',
 			),
@@ -888,5 +811,68 @@ class EPKB_Dashboard_Page {
 		}
 		
 		return $html;
+	}
+	
+	/**
+	 * AJAX handler to vote for features
+	 */
+	public function ajax_vote_for_features() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
+
+		// Get the submitted data
+		$first_name = isset( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : '';
+		$email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
+		$site_url = get_site_url();
+		$features = isset( $_POST['features'] ) ? array_map( 'sanitize_text_field', $_POST['features'] ) : array();
+		$other_feature_text = isset( $_POST['other_feature_text'] ) ? sanitize_textarea_field( $_POST['other_feature_text'] ) : '';
+
+		// Validate required fields
+		if ( empty( $first_name ) || empty( $email ) || empty( $features ) ) {
+			wp_send_json_error( __( 'Please fill in all required fields and select at least one feature.', 'echo-knowledge-base' ) );
+		}
+
+		// Validate email
+		if ( ! is_email( $email ) ) {
+			wp_send_json_error( __( 'Please provide a valid email address.', 'echo-knowledge-base' ) );
+		}
+
+		// Build feedback message
+		$feedback_message = 'KB Dashboard - User voted for features: ' . implode( ', ', $features );
+		if ( ! empty( $other_feature_text ) && in_array( 'custom-feature', $features ) ) {
+			$feedback_message .= "\nCustom feature requested: " . $other_feature_text;
+		}
+
+		// send feedback to same endpoint as deactivation form
+		$vote_data = array(
+			'epkb_action'       => 'epkb_process_user_feedback',
+			'feedback_type'     => 'kb_feature_vote',
+			'feedback_input'    => $feedback_message,
+			'plugin_name'       => 'KB',
+			'plugin_version'    => class_exists('Echo_Knowledge_Base') ? Echo_Knowledge_Base::$version : 'N/A',
+			'first_version'     => '',
+			'wp_version'        => '',
+			'theme_info'        => '',
+			'contact_user'      => $email . ' - ' . $first_name,
+			'first_name'        => $first_name,
+			'email_subject'     => 'KB Feature Vote',
+		);
+
+		// Call the API
+		$response = wp_remote_post(
+			esc_url_raw( add_query_arg( $vote_data, 'https://www.echoknowledgebase.com' ) ),
+			array(
+				'timeout'   => 15,
+				'body'      => $vote_data,
+				'sslverify' => false
+			)
+		);
+
+		// Check if the request was successful
+		if ( is_wp_error( $response ) ) {
+			wp_send_json_error( array( 'message' => __( 'Failed to submit vote. Please try again.', 'echo-knowledge-base' ) ) );
+		}
+
+		wp_send_json_success( array( 'message' => __( 'Thank you for voting! Your feedback helps us prioritize future features.', 'echo-knowledge-base' ) ) );
 	}
 }

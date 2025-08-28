@@ -997,7 +997,12 @@ class EPKB_HTML_Admin {
 					if ( !empty( $box_config['is_open_settings_link'] ) ) {	?>
 						<a class="epkb-primary-btn epkb-admin__form-tab-settings-link" href="#tools__settings"><?php esc_html_e( 'View Settings', 'echo-knowledge-base' ); ?></a>	<?php
 					}
-					if ( !empty( $box_config['message'] ) ) {	?>
+					if ( !empty( $box_config['message_html'] ) ) {	?>
+						<p class="epkb-admin__boxes-list__box__message"><?php echo wp_kses_post( $box_config['message_html'] ); ?></p> 	<?php
+						if ( !empty( $box_config['message_link_text'] ) && !empty( $box_config['message_link'] ) ) {	?>
+							<a href="<?php echo esc_url( $box_config['message_link'] ); ?>" target="_blank"><?php echo esc_html( $box_config['message_link_text'] ); ?></a>	<?php
+						}
+					} else if ( !empty( $box_config['message'] ) ) {	?>
 						<p class="epkb-admin__boxes-list__box__message"><?php echo esc_html( $box_config['message'] ); ?></p> 	<?php
 						if ( !empty( $box_config['message_link_text'] ) && !empty( $box_config['message_link'] ) ) {	?>
 							<a href="<?php echo esc_url( $box_config['message_link'] ); ?>" target="_blank"><?php echo esc_html( $box_config['message_link_text'] ); ?></a>	<?php

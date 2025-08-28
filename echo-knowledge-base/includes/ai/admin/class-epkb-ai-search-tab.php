@@ -129,10 +129,16 @@ class EPKB_AI_Search_Tab {
 				'icon' => 'epkbfa epkbfa-search',
 				'fields' => array(
 					'ai_search_enabled' => array(
-						'type' => 'toggle',
-						'label' => __( 'Enable AI Search', 'echo-knowledge-base' ),
+						'type' => 'radio',
+						'label' => __( 'AI Search Mode', 'echo-knowledge-base' ),
 						'value' => $ai_config['ai_search_enabled'],
-						'description' => __( 'Enable AI-enhanced search functionality', 'echo-knowledge-base' )
+						'options' => array(
+							'off'     => __( 'Off', 'echo-knowledge-base' ),
+							'preview' => __( 'Preview (Admins only)', 'echo-knowledge-base' ),
+							'on'      => __( 'On (Public)', 'echo-knowledge-base' )
+						),
+						'description' => __( 'Control AI Search visibility: Off (disabled), Preview (admins only for testing), or On (public access)', 'echo-knowledge-base' ),
+						'field_class' => 'epkb-ai-search-mode' // add epkb-ai-radio-vertical if you want vertical radio buttons
 					),
 					'ai_search_preset' => array(
 						'type' => 'select',

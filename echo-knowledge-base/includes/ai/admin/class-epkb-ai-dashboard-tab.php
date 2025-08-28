@@ -7,6 +7,8 @@ class EPKB_AI_Dashboard_Tab {
 	
 	public function __construct() {
 		add_action( 'wp_ajax_epkb_get_ai_status', array( $this, 'ajax_get_ai_status' ) );
+		add_action( 'wp_ajax_epkb_vote_for_features', array( $this, 'ajax_vote_for_features' ) );
+		add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_training_data_sync' ) );
 	}
 
 	/**
@@ -22,6 +24,14 @@ class EPKB_AI_Dashboard_Tab {
 			'load_status_async' => true
 		);
 		
+		// Add current user info for prepopulating forms
+		$current_user = wp_get_current_user();
+		$config['current_user'] = array(
+			'first_name' => $current_user->first_name ?: $current_user->display_name,
+			'email' => $current_user->user_email,
+			'site_url' => get_site_url()
+		);
+		
 		// Do a quick status check for immediate display (no API calls)
 		$quick_status = self::get_ai_status( true );
 		$config['status'] = $quick_status;
@@ -30,7 +40,7 @@ class EPKB_AI_Dashboard_Tab {
 		$config['dashboard_stats'] = self::get_dashboard_stats();
 		$config['news'] = self::get_news_items();
 		$config['upcoming_features'] = self::get_upcoming_features();
-		$config['quick_links'] = self::get_quick_links();
+		$config['quick_links'] = self::get_setup_steps();
 		
 		return $config;
 	}
@@ -62,6 +72,82 @@ class EPKB_AI_Dashboard_Tab {
 		set_transient( $cache_key, $status, 30 );
 
 		wp_send_json_success( $status );
+	}
+
+	/**
+	 * AJAX handler to check training data sync status
+	 */
+	public function ajax_check_training_data_sync() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
+
+		// Check if training data table exists and has synced data
+		$result['has_synced_data'] = EPKB_AI_Utilities::is_ai_enabled() && EPKB_AI_Training_Data_DB::count_synced_data() > 0;
+
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * AJAX handler to vote for features
+	 */
+	public function ajax_vote_for_features() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
+
+		// Get the submitted data
+		$first_name = isset( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : '';
+		$email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
+		$site_url = isset( $_POST['site_url'] ) ? esc_url_raw( $_POST['site_url'] ) : '';
+		$features = isset( $_POST['features'] ) ? array_map( 'sanitize_text_field', $_POST['features'] ) : array();
+		$other_feature_text = isset( $_POST['other_feature_text'] ) ? sanitize_textarea_field( $_POST['other_feature_text'] ) : '';
+
+		// Validate required fields
+		if ( empty( $first_name ) || empty( $email ) || empty( $features ) ) {
+			wp_send_json_error( __( 'Please fill in all required fields and select at least one feature.', 'echo-knowledge-base' ) );
+		}
+
+		// Validate email
+		if ( ! is_email( $email ) ) {
+			wp_send_json_error( __( 'Please provide a valid email address.', 'echo-knowledge-base' ) );
+		}
+
+		// Build feedback message
+		$feedback_message = 'User voted for features: ' . implode( ', ', $features );
+		if ( ! empty( $other_feature_text ) && in_array( 'other-feature', $features ) ) {
+			$feedback_message .= "\nOther feature requested: " . $other_feature_text;
+		}
+
+		// send feedback to same endpoint as deactivation form
+		$vote_data = array(
+			'epkb_action'       => 'epkb_process_user_feedback',
+			'feedback_type'     => 'feature_vote',
+			'feedback_input'    => $feedback_message,
+			'plugin_name'       => 'AI',
+			'plugin_version'    => class_exists('Echo_Knowledge_Base') ? Echo_Knowledge_Base::$version : 'N/A',
+			'first_version'     => '',
+			'wp_version'        => '',
+			'theme_info'        => '',
+			'contact_user'      => $email . ' - ' . $first_name,
+			'first_name'        => $first_name,
+			'email_subject'     => 'Feature Vote',
+		);
+
+		// Call the API
+		$response = wp_remote_post(
+			esc_url_raw( add_query_arg( $vote_data, 'https://www.echoknowledgebase.com' ) ),
+			array(
+				'timeout'   => 15,
+				'body'      => $vote_data,
+				'sslverify' => false
+			)
+		);
+
+		// Check if the request was successful
+		if ( is_wp_error( $response ) ) {
+			wp_send_json_error( array( 'message' => __( 'Failed to submit vote. Please try again.', 'echo-knowledge-base' ) ) );
+		}
+
+		wp_send_json_success( array( 'message' => __( 'Thank you for voting! Your feedback helps us prioritize future features.', 'echo-knowledge-base' ) ) );
 	}
 
 	/**
@@ -183,7 +269,7 @@ class EPKB_AI_Dashboard_Tab {
 				'status' => 'warning',
 				'message' => __( 'OpenAI API key is not configured', 'echo-knowledge-base' ),
 				'action' => __( 'Add your API key in General Settings', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' ),
 				'is_setup_step' => true
 			);
 		}
@@ -206,7 +292,7 @@ class EPKB_AI_Dashboard_Tab {
 				'status' => 'warning',
 				'message' => __( 'Failed to decrypt API key', 'echo-knowledge-base' ),
 				'action' => __( 'Re-enter your API key in General Settings', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' )
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' )
 			);
 		}
 		
@@ -217,7 +303,7 @@ class EPKB_AI_Dashboard_Tab {
 				'status' => 'warning',
 				'message' => __( 'API key format is invalid', 'echo-knowledge-base' ),
 				'action' => __( 'Check your API key format (should start with sk-)', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' )
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' )
 			);
 		}
 		
@@ -278,7 +364,7 @@ class EPKB_AI_Dashboard_Tab {
 				),
 				'action' => __( 'Re-sync your training data to create new vector stores', 'echo-knowledge-base' ),
 				'details' => $missing_stores,
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=training-data' )
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' )
 			);
 		}
 		
@@ -303,7 +389,7 @@ class EPKB_AI_Dashboard_Tab {
 				'status' => 'warning',
 				'message' => __( 'Data privacy agreement needed', 'echo-knowledge-base' ),
 				'action' => __( 'Review and accept the data privacy terms', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' ),
 				'is_setup_step' => true
 			);
 		}
@@ -371,7 +457,6 @@ class EPKB_AI_Dashboard_Tab {
 	private static function check_ai_configuration() {
 		
 		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
-		
 		if ( empty( $ai_config ) || ! is_array( $ai_config ) ) {
 			return array(
 				'id' => 'ai_config_missing',
@@ -382,17 +467,13 @@ class EPKB_AI_Dashboard_Tab {
 		}
 		
 		// Check if any AI features are enabled
-		$chat_enabled = isset( $ai_config['ai_chat_enabled'] ) && $ai_config['ai_chat_enabled'] === 'on';
-		$search_enabled = isset( $ai_config['ai_search_enabled'] ) && $ai_config['ai_search_enabled'] === 'on';
-		$auto_sync_enabled = isset( $ai_config['ai_auto_sync_enabled'] ) && $ai_config['ai_auto_sync_enabled'] === 'on';
-		
-		if ( ! $chat_enabled && ! $search_enabled ) {
+		if ( $ai_config['ai_chat_enabled'] == 'off' && $ai_config['ai_search_enabled'] == 'off' ) {
 			return array(
 				'id' => 'ai_features_disabled',
 				'status' => 'warning',
 				'message' => __( 'No AI features are enabled', 'echo-knowledge-base' ),
 				'action' => __( 'Enable AI Chat or AI Search to use AI features', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' )
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' )
 			);
 		}
 		
@@ -514,7 +595,7 @@ class EPKB_AI_Dashboard_Tab {
 			);
 		}
 		
-		// Check cron status
+		/** @disregard P1011 Check cron status */
 		if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) {
 			$auto_sync = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_auto_sync_enabled' );
 			if ( $auto_sync === 'on' ) {
@@ -599,7 +680,7 @@ class EPKB_AI_Dashboard_Tab {
 					'status' => 'warning',
 					'message' => __( 'AI sync appears to be stuck', 'echo-knowledge-base' ),
 					'action' => __( 'Clear sync lock in Tools tab', 'echo-knowledge-base' ),
-					'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=tools' )
+					'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=tools' )
 				);
 			}
 		}
@@ -617,7 +698,7 @@ class EPKB_AI_Dashboard_Tab {
 						round( $days_since_sync ) 
 					),
 					'action' => __( 'Consider syncing your training data', 'echo-knowledge-base' ),
-					'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=training-data' )
+					'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' )
 				);
 			}
 		}
@@ -662,11 +743,7 @@ class EPKB_AI_Dashboard_Tab {
 		
 		$stats = array();
 		
-		// Check if AI is enabled - if not, return default values without DB queries
-		if ( ! EPKB_AI_Utilities::is_ai_enabled() ) {
-			return self::get_default_stats();
-		}
-		
+		// Always check training data stats (needed for setup steps)
 		// Training Data Statistics
 		$training_data_table = $wpdb->prefix . 'epkb_ai_training_data';
 		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $training_data_table ) ) === $training_data_table ) {
@@ -885,81 +962,134 @@ class EPKB_AI_Dashboard_Tab {
 	private static function get_upcoming_features() {
 		return array(
 			array(
-				'icon' => 'epkbfa epkbfa-envelope',
-				'title' => __( 'Smart Email Notifications (PRO)', 'echo-knowledge-base' ),
-				'description' => __( 'Never miss a customer conversation. Get instant email alerts when users complete chats, with full conversation transcripts and insights.', 'echo-knowledge-base' ),
+				'id' => 'ai-content-analysis',
+				'icon' => 'epkbfa epkbfa-line-chart',
+				'title' => __( 'AI Content Analysis (Knowledge Base Audit)', 'echo-knowledge-base' ),
+				'description' => __( 'Advanced analysis with content gap alerts, outdated article flags, and pain-point analytics to focus documentation efforts.', 'echo-knowledge-base' ),
 			),
 			array(
-				'icon' => 'epkbfa epkbfa-chart-line',
-				'title' => __( 'AI-Powered Article Analysis (PRO)', 'echo-knowledge-base' ),
-				'description' => __( 'Get intelligent insights about your content. AI analyzes article quality, readability, and suggests improvements to maximize user engagement.', 'echo-knowledge-base' ),
+				'id' => 'pdf-support',
+				'icon' => 'epkbfa epkbfa-file-pdf-o',
+				'title' => __( 'PDFs - Convert to Articles or Notes', 'echo-knowledge-base' ),
+				'description' => __( 'Convert PDFs into knowledge base articles or notes and include them in AI training data.', 'echo-knowledge-base' ),
 			),
 			array(
+				'id' => 'ai-enriched-search',
+				'icon' => 'epkbfa epkbfa-search',
+				'title' => __( 'AI-Generated Enriched Search Results', 'echo-knowledge-base' ),
+				'description' => __( 'Search results with AI-generated snippets, glossary definitions, related articles, and relevant charts for more informative results.', 'echo-knowledge-base' ),
+			),
+			array(
+				'id' => 'ai-human-handoff',
+				'icon' => 'epkbfa epkbfa-group',
+				'title' => __( 'AI Chat with Human Handoff', 'echo-knowledge-base' ),
+				'description' => __( 'Seamless handover from AI chatbot to human agent with conversation context preserved for frustration-free support.', 'echo-knowledge-base' ),
+			),
+			array(
+				'id' => 'related-articles-list',
+				'icon' => 'epkbfa epkbfa-list',
+				'title' => __( 'Related Articles List', 'echo-knowledge-base' ),
+				'description' => __( 'Show articles closely connected to user\'s search or chat question for exploring relevant content without query refinement.', 'echo-knowledge-base' ),
+			),
+			array(
+				'id' => 'ai-glossary-terms',
 				'icon' => 'epkbfa epkbfa-book',
-				'title' => __( 'AI-Generated Glossary Terms (PRO)', 'echo-knowledge-base' ),
-				'description' => __( 'Automatically generate and manage glossary terms with AI. Intelligently prioritize technical terms, acronyms, and industry-specific language.', 'echo-knowledge-base' ),
+				'title' => __( 'AI-Generated Glossary Terms', 'echo-knowledge-base' ),
+				'description' => __( 'Automatic suggestions and creation of glossary definitions with minimal manual effort for improved clarity.', 'echo-knowledge-base' ),
 			),
 			array(
-				'icon' => 'epkbfa epkbfa-database',
-				'title' => __( 'Advanced AI Capabilities', 'echo-knowledge-base' ),
-				'description' => __( 'Train your AI on posts, pages, custom post types, and private notes. Create a comprehensive knowledge base that understands all your content.', 'echo-knowledge-base' ),
+				'id' => 'search-auto-suggest',
+				'icon' => 'epkbfa epkbfa-magic',
+				'title' => __( 'Search Auto-Suggest', 'echo-knowledge-base' ),
+				'description' => __( 'Enhanced search bar with AI-powered auto-suggestions offering completions and popular queries for faster searching.', 'echo-knowledge-base' ),
+			),
+			array(
+				'id' => 'gemini-ai-support',
+				'icon' => 'epkbfa epkbfa-robot',
+				'title' => __( 'Google Gemini AI Integration', 'echo-knowledge-base' ),
+				'description' => __( 'Add support for Google Gemini AI as an alternative to OpenAI, providing advanced language capabilities and multi-modal understanding.', 'echo-knowledge-base' ),
+			),
+			array(
+				'id' => 'deepseek-ai-support',
+				'icon' => 'epkbfa epkbfa-brain',
+				'title' => __( 'DeepSeek AI Integration', 'echo-knowledge-base' ),
+				'description' => __( 'Integrate DeepSeek AI for enhanced reasoning capabilities and cost-effective AI solutions with strong performance on complex tasks.', 'echo-knowledge-base' ),
+			),
+			array(
+				'id' => 'other-feature',
+				'icon' => 'epkbfa epkbfa-lightbulb-o',
+				'title' => __( 'Other Feature Not Listed', 'echo-knowledge-base' ),
+				'description' => __( 'Have a different feature in mind? Select this option and tell us what you would like to see added to the AI features.', 'echo-knowledge-base' ),
+				'requires_input' => true
 			),
 		);
 	}
 	
 	/**
-	 * Get quick links for the dashboard
+	 * Get quick links for the dashboard (Setup Steps)
 	 *
 	 * @return array
 	 */
-	private static function get_quick_links() {
-		return array(
+	private static function get_setup_steps() {
+		
+		// Check current status to determine which step to highlight
+		$encrypted_key = EPKB_AI_Config_Specs::get_unmasked_api_key();
+		$disclaimer_accepted = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_disclaimer_accepted' );
+		$ai_search_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled' );
+		$ai_chat_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled' );
+		
+		$step1_complete = ! empty( $encrypted_key ) && $disclaimer_accepted === 'on';
+		$features_enabled = ( $ai_search_enabled !== 'off' || $ai_chat_enabled !== 'off' );
+		
+		// Check if training data is synced (for initial display)
+		$has_synced_data = false;
+		if ( EPKB_AI_Utilities::is_ai_enabled() ) {
+			$has_synced_data = EPKB_AI_Training_Data_DB::count_synced_data() > 0;
+		}
+		
+		$links = array(
 			array(
 				'icon' => 'epkbfa epkbfa-key',
-				'title' => __( 'Step 1: Add OpenAI API Key', 'echo-knowledge-base' ),
-				'description' => __( 'Enter your OpenAI API key to enable AI features. Get your key from OpenAI platform.', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' ),
-				'external' => false
-			),
-			array(
-				'icon' => 'epkbfa epkbfa-check-circle',
-				'title' => __( 'Step 2: Accept Data Privacy Terms', 'echo-knowledge-base' ),
-				'description' => __( 'Review and accept the data privacy disclaimer to proceed with AI setup.', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=general-settings' ),
-				'external' => false
-			),
-			array(
-				'icon' => 'epkbfa epkbfa-comments',
-				'title' => __( 'Step 3: Enable AI Chat', 'echo-knowledge-base' ),
-				'description' => __( 'Configure and enable AI Chat to provide instant answers to your users.', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=chat&sub_tab=settings' ),
-				'external' => false
-			),
-			array(
-				'icon' => 'epkbfa epkbfa-search',
-				'title' => __( 'Step 4: Enable AI Search', 'echo-knowledge-base' ),
-				'description' => __( 'Set up AI-powered semantic search for more accurate results.', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=search&sub_tab=settings' ),
-				'external' => false
-			),
-			array(
-				'icon' => 'epkbfa epkbfa-sync',
-				'title' => __( 'Step 5: Sync Training Data', 'echo-knowledge-base' ),
-				'description' => __( 'Sync your knowledge base articles to train the AI on your content.', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-chat&active_tab=training-data' ),
-				'external' => false
-			),
-			/* Temporarily hidden - backend help chat
-			array(
-				'icon' => 'epkbfa epkbfa-life-ring',
-				'title' => __( 'Need Help? Open AI Assistant', 'echo-knowledge-base' ),
-				'description' => __( 'Click here to open the "Need Help?" dialog for instant AI assistance.', 'echo-knowledge-base' ),
-				'link' => '#',
+				'title' => __( 'Step 1: Configure API Key & Privacy', 'echo-knowledge-base' ),
+				'description' => __( 'Add your OpenAI API key and accept the data privacy agreement.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' ),
 				'external' => false,
-				'class' => 'epkb-ai-help-trigger',
-				'onclick' => 'var button = document.querySelector("#epkb-admin-help-chat-root .epkb-help-chat-button"); if(button) { button.click(); } else { alert("AI Help is loading. Please try again in a moment."); } return false;'
+				'completed' => $step1_complete
+			),
+			array(
+				'icon' => 'epkbfa epkbfa-rocket',
+				'title' => __( 'Step 2: Enable AI Chat and/or AI Search', 'echo-knowledge-base' ),
+				'description' => __( 'Enable AI Search or Chat features for your website.', 'echo-knowledge-base' ),
+				'link' => $features_enabled ? 
+					admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=chat' ) :
+					admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=search&sub_tab=settings' ),
+				'external' => false,
+				'disabled' => ! $step1_complete,
+				'completed' => $features_enabled
+			),
+			array(
+				'icon' => 'epkbfa epkbfa-database',
+				'title' => __( 'Step 3: Add Training Data & Sync', 'echo-knowledge-base' ),
+				'description' => __( 'Select content and sync it to OpenAI for AI processing.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' ),
+				'external' => false,
+				'disabled' => ! $features_enabled,
+				'completed' => $has_synced_data
 			)
-			*/
 		);
+		
+		/* Temporarily hidden - backend help chat
+		$links[] = array(
+			'icon' => 'epkbfa epkbfa-life-ring',
+			'title' => __( 'Need Help? Open AI Assistant', 'echo-knowledge-base' ),
+			'description' => __( 'Click here to open the "Need Help?" dialog for instant AI assistance.', 'echo-knowledge-base' ),
+			'link' => '#',
+			'external' => false,
+			'class' => 'epkb-ai-help-trigger',
+			'onclick' => 'var button = document.querySelector("#epkb-admin-help-chat-root .epkb-help-chat-button"); if(button) { button.click(); } else { alert("AI Help is loading. Please try again in a moment."); } return false;'
+		);
+		*/
+		
+		return $links;
 	}
 }

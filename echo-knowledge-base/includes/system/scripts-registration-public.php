@@ -124,20 +124,26 @@ function epkb_load_public_resources() {
 		wp_enqueue_script( 'epkb-ai-chat-api' );
 		wp_enqueue_script( 'epkb-ai-chat' );
 
-		// Widget ID - for now just 'default', later can be customized per widget instance
-		$widget_id = apply_filters( 'epkb_ai_chat_widget_id', '1' );
+		// Get widget configuration
+		$widget_config = EPKB_AI_Chat_Widget_Config_Specs::get_widget_config( EPKB_AI_Chat_Widget_Config_Specs::DEFAULT_WIDGET_ID );
 		
-		// Localize script with necessary data
 		wp_localize_script( 'epkb-ai-chat', 'epkbAIChat', array(
-			'rest_url'              => esc_url_raw( rest_url() ),
-			'rest_nonce'            => epkb_get_instance()->security_obj->get_nonce( true ),  // Force nonce generation for REST API
-			'widget_id'             => $widget_id,
-			'page_object_id'        => get_the_ID(),
-			'placeholder'           => esc_html__( 'Type your message...', 'echo-knowledge-base' ),
-			'title'                 => esc_html__( 'AI Assistant', 'echo-knowledge-base' ),
-			'welcome'               => esc_html__( 'Hello! How can I help you today?', 'echo-knowledge-base' ),
-			'error'                 => esc_html__( 'Sorry, I encountered an error. Please try again.', 'echo-knowledge-base' ),
-			'error_generic'         => esc_html__( 'Unable to connect. Please refresh the page and try again.', 'echo-knowledge-base' ),
+			'rest_url'                        => esc_url_raw( rest_url() ),
+			'rest_nonce'                      => epkb_get_instance()->security_obj->get_nonce( true ),  // Force nonce generation for REST API
+			'widget_id'                       => EPKB_AI_Chat_Widget_Config_Specs::DEFAULT_WIDGET_ID,
+			'page_object_id'                  => get_the_ID(),
+			
+			// Widget configuration
+			'widget_enabled'               => $widget_config['widget_enabled'],
+			'widget_header_title'             => esc_html( $widget_config['widget_header_title'] ),
+			'input_placeholder_text'          => esc_html( $widget_config['input_placeholder_text'] ),
+			'welcome_message'                 => wp_kses_post( $widget_config['welcome_message'] ),
+			'launcher_background_color'       => $widget_config['launcher_background_color'],
+			'widget_header_background_color'  => $widget_config['widget_header_background_color'],
+			'error_generic_message'           => esc_html( $widget_config['error_generic_message'] ),
+			'error_network_message'           => esc_html( $widget_config['error_network_message'] ),
+			'error_timeout_message'           => esc_html( $widget_config['error_timeout_message'] ),
+			'error_rate_limit_message'        => esc_html( $widget_config['error_rate_limit_message'] ),
 		) );
 	}
 
@@ -174,7 +180,6 @@ function epkb_load_public_resources() {
 	// CASE: KB Category Archive page
 	$current_css_file_slug = '';
 	if ( is_archive() ) {
-		$page_type = 'archive';
 		$current_css_file_slug = 'cp-frontend-layout';
 
 		if ( EPKB_KB_Handler::is_kb_tag_taxonomy( $GLOBALS['taxonomy'] ) ) {
@@ -247,7 +252,7 @@ function epkb_load_public_resources() {
 add_action( 'wp_enqueue_scripts', 'epkb_load_public_resources', 500 );
 
 /**
- * Queue for FRONT-END pages using our plugin features
+ * KB Main Page with shortcode -> Queue for FRONT-END pages
  * @noinspection PhpUnusedParameterInspection
  * @param int $kb_id - legacy
  */

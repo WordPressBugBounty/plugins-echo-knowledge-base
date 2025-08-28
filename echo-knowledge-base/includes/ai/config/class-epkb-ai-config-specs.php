@@ -32,9 +32,10 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 		$default_model_spec = EPKB_OpenAI_Client::get_models_and_default_params( EPKB_OpenAI_Client::DEFAULT_MODEL );
 		$default_params = $default_model_spec['default_params'];
 
-		$default_instructions = 'Avoid answering questions unrelated to your knowledge. DO NOT mention, reference, or describe documents, files, files you uploaded, or sources. ' .
-								'Do not guess, speculate, or use outside knowledge. ONLY use the provided content. If no relevant information is found, ' .
-								'reply exactly with: "That is not something I can help with. Please try a different question"';
+		$default_instructions = 'You may ONLY answer using information from the vector store. Do not mention references, documents, files, or sources. ' .
+								'Do not reveal retrieval, guess, speculate, or use outside knowledge. If no relevant information is found, reply exactly: "That is not something I can help with. Please try a different question". ' .
+								'If relevant information is found, you may give structured explanations, including comparisons, pros and cons, or decision factors, but only if they are in the data. ' .
+								'Answer only what the data supports; when unsure, leave it out.';
 
 		$ai_specs = array(
 
@@ -62,7 +63,12 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			/***  AI Search Settings ***/
 			'ai_search_enabled' => array(
 				'name'        => 'ai_search_enabled',
-				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'off'     => __( 'Off', 'echo-knowledge-base' ),
+					'preview' => __( 'Preview (Admins only)', 'echo-knowledge-base' ),
+					'on'      => __( 'On (Public)', 'echo-knowledge-base' )
+				),
 				'default'     => 'off'
 			),
 			'ai_search_model' => array(
@@ -143,8 +149,18 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			/***  AI Chat Settings ***/
 			'ai_chat_enabled' => array(
 				'name'        => 'ai_chat_enabled',
-				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'off'     => __( 'Off', 'echo-knowledge-base' ),
+					'preview' => __( 'Preview (Admins only)', 'echo-knowledge-base' ),
+					'on'      => __( 'On (Public)', 'echo-knowledge-base' )
+				),
 				'default'     => 'off'
+			),
+			'ai_chat_widgets' => array(
+				'name'        => 'ai_chat_widgets',
+				'type'        => EPKB_Input_Filter::INTERNAL_ARRAY,
+				'default'     => array( 1 ),
 			),
 			'ai_chat_model' => array(
 				'name'         => 'ai_chat_model',
@@ -207,6 +223,34 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'name'        => 'ai_auto_sync_enabled',
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'off'
+			),
+
+			/***  AI Email Notification Settings ***/
+			'ai_email_notifications_enabled' => array(
+				'name'        => 'ai_email_notifications_enabled',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'off'
+			),
+			'ai_email_notifications_send_time' => array(
+				'name'        => 'ai_email_notifications_send_time',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => '09:00',
+				'min'         => 5,
+				'max'         => 5
+			),
+			'ai_email_notifications_recipient' => array(
+				'name'        => 'ai_email_notifications_recipient',
+				'type'        => EPKB_Input_Filter::EMAIL,
+				'default'     => '',
+				'min'         => 0,
+				'max'         => 100
+			),
+			'ai_email_notification_subject' => array(
+				'name'        => 'ai_email_notification_subject',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => 'Daily AI Activity Summary - {site_name}',
+				'min'         => 5,
+				'max'         => 200
 			),
 
 			/***  AI Debug Settings ***/
@@ -298,7 +342,23 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	 * @param array $new_config New configuration values
 	 * @return array|WP_Error Updated configuration or error
 	 */
-	public static function update_ai_config( $new_config ) {
+	public static function update_ai_config( $original_config, $new_config ) {
+
+		// Check if AI features are being enabled (from off to preview/on) and ensure DB tables exist
+		$search_was_off = $original_config['ai_search_enabled'] == 'off';
+		$search_enabled = empty( $new_config['ai_search_enabled'] ) ? $original_config['ai_search_enabled'] : $new_config['ai_search_enabled'];
+		$chat_was_off = $original_config['ai_chat_enabled'] == 'off';
+		$chat_enabled = empty( $new_config['ai_chat_enabled'] ) ? $original_config['ai_chat_enabled'] : $new_config['ai_chat_enabled'];
+
+		// If either feature is being enabled from off state, ensure DB tables exist
+		if ( ( $search_was_off && $search_enabled ) || ( $chat_was_off && $chat_enabled ) ) {
+			// Force DB table creation by instantiating the DB classes
+			new EPKB_AI_Training_Data_DB();
+			new EPKB_AI_Messages_DB();
+		}
+
+		do_action( 'eckb_ai_config_updated', $original_config, $new_config );
+
 		$result = parent::update_config( $new_config );
 		
 		// Clear the dashboard status cache when AI config is updated

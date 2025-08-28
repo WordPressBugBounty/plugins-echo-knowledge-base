@@ -1,13 +1,13 @@
-=== Advanced Knowledge Base Documentation, Articles and FAQ Tool with AI Chat, AI Search, and Import/Export ===
+=== Advanced Knowledge Base Documentation, Articles and FAQ with AI Chat, AI Search, and Import/Export ===
 Author URI: https://www.echoknowledgebase.com/about-us/
 Plugin URI: https://www.echoknowledgebase.com/
 Contributors: echoplugins
 Donate link: https://www.echoknowledgebase.com
-Tags: knowledge base, documentation, docs, ai chat chatgpt, faq
+Tags: knowledge base, documentation, ai, chatbot, faq
 Requires at least: 5.3
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 15.200.0
+Stable tag: 15.210.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,13 +15,13 @@ A fully featured, easy-to-use documentation plugin with AI chat and search integ
 
 == Description ==
 
-Echo Knowledge Base is a powerful documentation tool that helps you create and organize your documentation, FAQs, and articles. It has built-in AI search and AI chat features and includes comprehensive features to help you build a visually appealing knowledge base.
+Echo Knowledge Base is a powerful documentation tool that helps you create and organize your documentation, FAQs, and articles. It has built-in AI search and AI chatbot features and includes comprehensive features to help you build a visually appealing knowledge base.
 
 Designed with a modern and professional appearance by default, the plugin offers extensive customization options to align perfectly with your brand identity.
 
 ## KEY FEATURES
 
-* **AI Chat**: Add a frontend chat dialog where users and visitors can ask questions and get instant AI-powered answers based on on your Knowledge Base, FAQs, internal documentation, notes, and any other source of information.
+* **AI Chat (Chatbot)**: Add a frontend chat dialog where users and visitors can ask questions and get instant AI-powered answers based on on your Knowledge Base, FAQs, internal documentation, notes, and any other source of information.
 
 * **AI Search**: When users search, results show relevant KB articles plus an 'Ask AI' button to dive deeper with the same query.
 
@@ -65,9 +65,9 @@ Designed with a modern and professional appearance by default, the plugin offers
 
 ## 🚀 AI Chat - Turn Your Knowledge Base into a 24/7 Support Pro
 
-Transform your knowledge base into an intelligent assistant that provides instant, accurate answers to user questions.
+Transform your knowledge base into an intelligent chatbot that provides instant, accurate answers to user questions.
 
-**AI Chat** can answer questions by drawing on content from your Knowledge Base, FAQs, internal documentation, notes, pages, or any other information source you choose.
+**AI Chat** can answer questions by drawing on content from your Knowledge Base, FAQs, internal documentation, notes, pages, or any other information source you choose, essentially serving as a chatbot on your site.
 
 **73% fewer repeat tickets (our own numbers)** – After enabling AI Chat, we saw a 73% drop in repetitive questions. Response times shrank, customers got answers faster, and the team could finally tackle higher-value projects *without* hiring extra staff.
 
@@ -77,12 +77,13 @@ Transform your knowledge base into an intelligent assistant that provides instan
 * **Set-Up in a Coffee Break** – A guided wizard takes you from install to "live" in under 30 minutes. No coding, no external APIs, no fuss.
 * **Visible ROI, Fast** – Most teams cut repeat questions within the first week, freeing staff for revenue-generating work instead of copy-paste responses.
 
-
 ### AI-Powered Search Integration
 
 Not only does Echo Knowledge Base offer an interactive chatbot, it also **supercharges your site’s search**. When users perform a search, they’ll see the usual article results *alongside* an option to **“Ask AI”** the same question. This means visitors can get immediate, concise answers from your content – without ever leaving the search page. It’s like giving your search bar the power of a support agent, helping users find what they need faster than ever.
 
 **Result:** fewer repetitive support tickets and unanswered questions, happier users, and a support team free to focus on high-value work that moves your business forward.
+
+Bring the latest OpenAI models (GPT-5, GPT 4.1) to WordPress.
 
 For detailed setup instructions, visit our [AI Integration Guide](https://www.echoknowledgebase.com/documentation/ai-features/).
 
@@ -145,7 +146,7 @@ Echo Knowledge Base works great with popular page builders:
 * **Regular Updates:** Continuously improved with new features (our roadmap is packed with upcoming enhancements!).
 * **Global Ready:** Translate your documentation and serve users in any language with full multilingual support.
 
-**About Us:** We are a Canadian company with over a decade of experience in WordPress and web technologies. We’re passionate about helping you provide better support to your customers. *Stay tuned – we have many more exciting features (including more AI tools) coming in the next few months!*
+**About Us:** We are a Canadian company with over a decade of experience in WordPress and web technologies. We’re passionate about helping you provide better support to your customers. *Stay tuned – we have many more exciting features (including additional AI tools and even more advanced chatbot capabilities) coming in the next few months!*
 
 ##_____
 
@@ -232,18 +233,17 @@ KNOWLEDGE BASE GRID LAYOUT (PRO)
 The Grid Layout presents top categories along with the count of articles in each. Clicking on a category navigates the user to either an article page or a category archive page.
 
 KNOWLEDGE BASE RESOURCE LINKS (PRO)
-The Resource Links block allows you to add links to external resources—such as PDFs, videos, and websites within your documentation.
+The Resource Links block allows you to add links to external resources - such as PDFs, videos, and websites - within your documentation.
 
 KNOWLEDGE BASE ADVANCED SEARCH (PRO)
 Enhance the user search experience while tracking analytics, including insights into popular queries and searches that yield no results.
 
 ##_____
 
-
 >⭐ <strong>OUR FREE COMPLEMENTARY PLUGINS</strong> ⭐
 >
 >
-> ✅ The **[AI Chat](https://wordpress.org/plugins/help-dialog/)** offers a AI Chat for better customer support and increased leads and sales. The AI Chat includes FAQs, search, and a contact form. [Learn More](https://wordpress.org/plugins/help-dialog/)
+> ✅ The **[AI Chat](https://wordpress.org/plugins/help-dialog/)** offers an AI Chat for better customer support and increased leads and sales. The AI Chat includes FAQs, search, and a contact form. [Learn More](https://wordpress.org/plugins/help-dialog/)
 >
 >
 > ✅ The **[Creative Add-Ons for Elementor](https://wordpress.org/plugins/creative-addons-for-elementor)** helps you write articles and documents faster and more easily using our powerful and practical Elementor widgets. [Learn More](https://wordpress.org/plugins/creative-addons-for-elementor)
@@ -252,7 +252,7 @@ Enhance the user search experience while tracking analytics, including insights 
 > ✅ **[Show IDs](https://wordpress.org/plugins/echo-show-ids/)** reveals IDs on admin screens, including posts, pages, custom post types and taxonomies, and others. [Learn More](https://wordpress.org/plugins/echo-show-ids/)
 >
 >
-> ✅ The **[Scroll Down Arrow](https://wordpress.org/plugins/scroll-down-arrow/)** Scroll Down Arrow is an easy-to-use WordPress plugin that displays a downward-pointing arrow. It provides users with a visual cue that there is more content further down the page.
+> ✅ The **[Scroll Down Arrow](https://wordpress.org/plugins/scroll-down-arrow/)** is an easy-to-use WordPress plugin that displays a downward-pointing arrow. It provides users with a visual cue that there is more content further down the page.
 >
 >
 
@@ -302,7 +302,7 @@ After activation, here’s how to build your knowledge base in minutes:
 
 3. **Add AI Features (Optional):**
 
-   * Enter your OpenAI API key in the AI settings (this key is needed to enable AI Chat and AI Search features).
+   * Enter your OpenAI API key in the AI settings (this key is needed to enable AI Chatbot and AI Search features).
    * Once configured, your AI Chatbot will be live on the front-end and the “Ask AI” option will appear on search result pages.
    * Use AI writing assistance in the editor to help create or improve articles (e.g., check grammar or generate an outline).
 
@@ -345,10 +345,13 @@ For detailed setup and configuration instructions, please visit our [Documentati
 **A:** Setting up AI features is quick and easy:
 
 1. Obtain an API key from OpenAI (for the ChatGPT integration) and add it in **Knowledge Base → AI Settings**.
-2. Enable the AI features you want (chatbot, search integration, writing assistance) – they should start working immediately using your existing content.
+2. Enable the AI features you want (ChatGPT like chatbot, search integration, writing assistance) – they should start working immediately using your existing content.
 3. (Pro) If you have **Echo Knowledge Base Pro**, you can include additional content like pages and posts in the AI’s training data for even better answers.
 
 *(For more details, see our [AI Integration Guide](https://www.echoknowledgebase.com/documentation/ai-features/) in the documentation.)*
+
+**Q: What OpenAI / ChatGPT models do you support?
+**A:** We currently support ChatGPT‑compatible models — gpt-5, gpt-5-nano, and gpt-4.1-mini — selected for their strong performance and reliability.
 
 ### Support & Updates
 
@@ -370,6 +373,7 @@ For detailed setup and configuration instructions, please visit our [Documentati
 * Compatibility updates for the latest WordPress versions or third-party plugins.
 
 You can safely update via the WordPress dashboard whenever a new version is available.
+
 
 ### Pro Features
 
@@ -421,6 +425,13 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 
 
 == Changelog ==
+
+= 15.210.0 =
+Release Date: Aug 28, 2025
+* New: Email notifications for AI Chat and Search (Pro)
+* Update: vote on AI features
+* Update: AI Chat and AI Search improvements
+* Fix: Cleanup and minor fixes
 
 = 15.200.0 =
 Release Date: Aug 16, 2025

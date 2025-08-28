@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Knowledge Base for Documents and FAQs\n"
-"POT-Creation-Date: 2025-08-16 13:39-0700\n"
+"POT-Creation-Date: 2025-08-28 14:10-0700\n"
 "PO-Revision-Date: 2025-06-08 08:46-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: echo-knowledge-base.php\n"
@@ -82,7 +82,7 @@ msgid "Dashboard - Echo Knowledge Base"
 msgstr ""
 
 #: includes/admin/admin-menu.php:17
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:21
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:23
 #: includes/system/plugin-links.php:38
 msgid "Dashboard"
 msgstr ""
@@ -92,8 +92,8 @@ msgid "FAQs - Echo Knowledge Base"
 msgstr ""
 
 #: includes/admin/admin-menu.php:20
-#: includes/admin/editor/class-epkb-frontend-editor.php:209
-#: includes/admin/editor/class-epkb-frontend-editor.php:286
+#: includes/admin/editor/class-epkb-frontend-editor.php:201
+#: includes/admin/editor/class-epkb-frontend-editor.php:278
 #: includes/admin/faqs/class-epkb-faqs-page.php:132
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:43
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:77
@@ -343,28 +343,28 @@ msgstr ""
 msgid "KB Basic Search"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:100
+#: includes/admin/blocks/class-epkb-abstract-block.php:104
 msgid "Please switch to Modular mode to use this block. Contact us for help."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:110
+#: includes/admin/blocks/class-epkb-abstract-block.php:114
 #: includes/features/layouts/class-epkb-layouts-setup.php:132
 msgid "This knowledge base was archived."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:672
-#: includes/admin/pages/class-epkb-dashboard-page.php:727
+#: includes/admin/blocks/class-epkb-abstract-block.php:690
+#: includes/admin/pages/class-epkb-dashboard-page.php:649
 #: includes/system/scripts-registration-admin.php:59
-#: includes/system/scripts-registration-admin.php:298
-#: includes/system/scripts-registration-admin.php:326
+#: includes/system/scripts-registration-admin.php:304
+#: includes/system/scripts-registration-admin.php:332
 #: includes/system/scripts-registration-public.php:77
-#: includes/system/scripts-registration-public.php:158
+#: includes/system/scripts-registration-public.php:164
 msgid "Please try again later."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:673
-#: includes/admin/pages/class-epkb-dashboard-page.php:728
-#: includes/admin/pages/class-epkb-dashboard-page.php:729
+#: includes/admin/blocks/class-epkb-abstract-block.php:691
+#: includes/admin/pages/class-epkb-dashboard-page.php:650
+#: includes/admin/pages/class-epkb-dashboard-page.php:651
 #: includes/class-epkb-utilities.php:441 includes/class-epkb-utilities.php:446
 #: includes/class-epkb-utilities.php:899 includes/class-epkb-utilities.php:975
 #: includes/class-epkb-utilities.php:1018
@@ -380,52 +380,52 @@ msgstr ""
 #: includes/system/class-epkb-controller.php:92
 #: includes/system/scripts-registration-admin.php:60
 #: includes/system/scripts-registration-admin.php:61
-#: includes/system/scripts-registration-admin.php:299
-#: includes/system/scripts-registration-admin.php:327
+#: includes/system/scripts-registration-admin.php:305
+#: includes/system/scripts-registration-admin.php:333
 #: includes/system/scripts-registration-public.php:78
 #: includes/system/scripts-registration-public.php:79
 msgid "Error occurred"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:674
-#: includes/admin/pages/class-epkb-dashboard-page.php:730
+#: includes/admin/blocks/class-epkb-abstract-block.php:692
+#: includes/admin/pages/class-epkb-dashboard-page.php:652
 #: includes/system/scripts-registration-admin.php:62
-#: includes/system/scripts-registration-admin.php:301
-#: includes/system/scripts-registration-admin.php:329
+#: includes/system/scripts-registration-admin.php:307
+#: includes/system/scripts-registration-admin.php:335
 #: includes/system/scripts-registration-public.php:80
 msgid "Unknown error"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:675
-#: includes/admin/pages/class-epkb-dashboard-page.php:731
+#: includes/admin/blocks/class-epkb-abstract-block.php:693
+#: includes/admin/pages/class-epkb-dashboard-page.php:653
 #: includes/system/scripts-registration-admin.php:63
-#: includes/system/scripts-registration-admin.php:302
-#: includes/system/scripts-registration-admin.php:330
+#: includes/system/scripts-registration-admin.php:308
+#: includes/system/scripts-registration-admin.php:336
 #: includes/system/scripts-registration-public.php:81
 msgid "Please reload the page and try again."
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:676
-#: includes/admin/pages/class-epkb-dashboard-page.php:732
+#: includes/admin/blocks/class-epkb-abstract-block.php:694
+#: includes/admin/pages/class-epkb-dashboard-page.php:654
 #: includes/admin/wizard/class-epkb-kb-wizard-global.php:91
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:69
 #: includes/system/scripts-registration-admin.php:64
-#: includes/system/scripts-registration-admin.php:303
+#: includes/system/scripts-registration-admin.php:309
 #: includes/system/scripts-registration-public.php:82
 msgid "Saving configuration"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:677
-#: includes/admin/pages/class-epkb-dashboard-page.php:733
+#: includes/admin/blocks/class-epkb-abstract-block.php:695
+#: includes/admin/pages/class-epkb-dashboard-page.php:655
 #: includes/system/scripts-registration-admin.php:65
-#: includes/system/scripts-registration-admin.php:304
-#: includes/system/scripts-registration-admin.php:331
+#: includes/system/scripts-registration-admin.php:310
+#: includes/system/scripts-registration-admin.php:337
 #: includes/system/scripts-registration-public.php:83
 msgid "Input is required"
 msgstr ""
 
-#: includes/admin/blocks/class-epkb-abstract-block.php:679
-#: includes/system/scripts-registration-admin.php:339
+#: includes/admin/blocks/class-epkb-abstract-block.php:697
+#: includes/system/scripts-registration-admin.php:345
 #: includes/system/scripts-registration-public.php:87
 msgid ""
 "Creating a Knowledge Base with demo categories and articles. It will be "
@@ -443,25 +443,25 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-search-block.php:141
 #: includes/admin/blocks/class-epkb-sidebar-layout-block.php:264
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:190
-#: includes/admin/editor/class-epkb-frontend-editor.php:216
-#: includes/admin/editor/class-epkb-frontend-editor.php:225
-#: includes/admin/editor/class-epkb-frontend-editor.php:230
-#: includes/admin/editor/class-epkb-frontend-editor.php:557
+#: includes/admin/editor/class-epkb-frontend-editor.php:208
+#: includes/admin/editor/class-epkb-frontend-editor.php:217
+#: includes/admin/editor/class-epkb-frontend-editor.php:222
+#: includes/admin/editor/class-epkb-frontend-editor.php:549
 #: includes/admin/faqs/class-epkb-faqs-page.php:776
 #: includes/admin/pages/class-epkb-config-page.php:178
 #: includes/admin/pages/class-epkb-config-settings-page.php:252
-#: includes/admin/pages/class-epkb-config-settings-page.php:1558
-#: includes/admin/pages/class-epkb-config-settings-page.php:2743
-#: includes/admin/pages/class-epkb-config-settings-page.php:2763
-#: includes/admin/pages/class-epkb-config-settings-page.php:2788
-#: includes/admin/pages/class-epkb-config-settings-page.php:2809
-#: includes/admin/pages/class-epkb-config-settings-page.php:2830
-#: includes/admin/pages/class-epkb-config-settings-page.php:3112
-#: includes/admin/pages/class-epkb-config-settings-page.php:3123
-#: includes/admin/pages/class-epkb-config-settings-page.php:3139
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:47
+#: includes/admin/pages/class-epkb-config-settings-page.php:1549
+#: includes/admin/pages/class-epkb-config-settings-page.php:2741
+#: includes/admin/pages/class-epkb-config-settings-page.php:2761
+#: includes/admin/pages/class-epkb-config-settings-page.php:2786
+#: includes/admin/pages/class-epkb-config-settings-page.php:2807
+#: includes/admin/pages/class-epkb-config-settings-page.php:2828
+#: includes/admin/pages/class-epkb-config-settings-page.php:3110
+#: includes/admin/pages/class-epkb-config-settings-page.php:3121
+#: includes/admin/pages/class-epkb-config-settings-page.php:3137
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:52
 #: includes/ai/admin/class-epkb-ai-search-tab.php:47
-#: js/ai/admin-ai-chat.js:1102 js/ai/admin-ai-search.js:1031
+#: js/ai/admin-ai-chat.js:1230 js/ai/admin-ai-search.js:1240
 msgid "Settings"
 msgstr ""
 
@@ -505,8 +505,8 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3643
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3791
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4066
-#: includes/admin/pages/class-epkb-config-settings-page.php:1842
-#: js/ai/admin-ai-training-data-table.js:1274
+#: includes/admin/pages/class-epkb-config-settings-page.php:1840
+#: js/ai/admin-ai-training-data-table.js:1276
 msgid "Title"
 msgstr ""
 
@@ -522,7 +522,7 @@ msgid "Description"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-advanced-search-block.php:281
-#: js/ai/admin-ai-training-data-table.js:1303
+#: js/ai/admin-ai-training-data-table.js:1305
 msgid "Filter"
 msgstr ""
 
@@ -535,13 +535,13 @@ msgid "Top + Sub Level"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-advanced-search-block.php:322
-#: includes/admin/pages/class-epkb-config-settings-page.php:3006
+#: includes/admin/pages/class-epkb-config-settings-page.php:3004
 msgid "Search Results List"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-advanced-search-block.php:347
 #: includes/admin/blocks/class-epkb-advanced-search-block.php:778
-#: includes/admin/pages/class-epkb-config-settings-page.php:3029
+#: includes/admin/pages/class-epkb-config-settings-page.php:3027
 msgid "Search Results Page"
 msgstr ""
 
@@ -585,16 +585,16 @@ msgid "Apply Preset"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-advanced-search-block.php:402
-#: includes/admin/editor/class-epkb-frontend-editor.php:206
-#: includes/admin/editor/class-epkb-frontend-editor.php:217
-#: includes/admin/editor/class-epkb-frontend-editor.php:387
+#: includes/admin/editor/class-epkb-frontend-editor.php:198
+#: includes/admin/editor/class-epkb-frontend-editor.php:209
+#: includes/admin/editor/class-epkb-frontend-editor.php:379
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:40
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:74
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:108
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:142
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:176
 #: includes/admin/pages/class-epkb-config-settings-page.php:256
-#: includes/admin/pages/class-epkb-config-settings-page.php:2999
+#: includes/admin/pages/class-epkb-config-settings-page.php:2997
 msgid "Search Box"
 msgstr ""
 
@@ -840,7 +840,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3695
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3714
 #: includes/admin/pages/class-epkb-add-ons-features.php:263
-#: includes/admin/pages/class-epkb-config-settings-page.php:1588
+#: includes/admin/pages/class-epkb-config-settings-page.php:1586
 msgid "Typography"
 msgstr ""
 
@@ -917,11 +917,11 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:212
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:589
 #: includes/admin/blocks/class-epkb-tabs-layout-block.php:267
-#: includes/admin/editor/class-epkb-frontend-editor.php:218
+#: includes/admin/editor/class-epkb-frontend-editor.php:210
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:264
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:172
 #: includes/admin/pages/class-epkb-config-settings-page.php:260
-#: includes/admin/pages/class-epkb-config-settings-page.php:1533
+#: includes/admin/pages/class-epkb-config-settings-page.php:1524
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:635
 msgid "Sidebar"
 msgstr ""
@@ -1253,7 +1253,7 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-blocks-settings.php:119
 #: includes/admin/blocks/class-epkb-blocks-settings.php:166
 #: includes/admin/convert/class-epkb-convert.php:282
-#: includes/admin/editor/class-epkb-frontend-editor.php:441
+#: includes/admin/editor/class-epkb-frontend-editor.php:433
 #: includes/admin/faqs/class-epkb-faqs-page.php:339
 #: includes/admin/faqs/class-epkb-faqs-page.php:361
 #: includes/admin/faqs/class-epkb-faqs-page.php:403
@@ -1263,37 +1263,37 @@ msgstr ""
 #: includes/admin/pages/class-epkb-add-ons-page.php:78
 #: includes/admin/pages/class-epkb-config-page.php:345
 #: includes/admin/pages/class-epkb-config-page.php:427
-#: includes/admin/pages/class-epkb-config-page.php:1023
+#: includes/admin/pages/class-epkb-config-page.php:1032
 #: includes/admin/pages/class-epkb-config-settings-page.php:1181
-#: includes/admin/pages/class-epkb-config-settings-page.php:1974
-#: includes/admin/pages/class-epkb-config-settings-page.php:1981
-#: includes/admin/pages/class-epkb-config-settings-page.php:2074
-#: includes/admin/pages/class-epkb-config-settings-page.php:2085
-#: includes/admin/pages/class-epkb-config-settings-page.php:2090
-#: includes/admin/pages/class-epkb-config-settings-page.php:2093
-#: includes/admin/pages/class-epkb-config-settings-page.php:2096
-#: includes/admin/pages/class-epkb-config-settings-page.php:2099
-#: includes/admin/pages/class-epkb-config-settings-page.php:2102
-#: includes/admin/pages/class-epkb-config-settings-page.php:2105
-#: includes/admin/pages/class-epkb-config-settings-page.php:2115
-#: includes/admin/pages/class-epkb-config-settings-page.php:2118
-#: includes/admin/pages/class-epkb-config-settings-page.php:2121
-#: includes/admin/pages/class-epkb-config-settings-page.php:2124
-#: includes/admin/pages/class-epkb-config-settings-page.php:2129
-#: includes/admin/pages/class-epkb-config-settings-page.php:2134
-#: includes/admin/pages/class-epkb-config-settings-page.php:2139
-#: includes/admin/pages/class-epkb-config-settings-page.php:2144
-#: includes/admin/pages/class-epkb-config-settings-page.php:2149
-#: includes/admin/pages/class-epkb-config-settings-page.php:2154
-#: includes/admin/pages/class-epkb-config-settings-page.php:2182
-#: includes/admin/pages/class-epkb-config-settings-page.php:2190
-#: includes/admin/pages/class-epkb-config-settings-page.php:2196
-#: includes/admin/pages/class-epkb-config-settings-page.php:2216
-#: includes/admin/pages/class-epkb-config-settings-page.php:2251
-#: includes/admin/pages/class-epkb-config-settings-page.php:2257
-#: includes/admin/pages/class-epkb-config-settings-page.php:2276
-#: includes/admin/pages/class-epkb-config-settings-page.php:2282
-#: includes/admin/pages/class-epkb-config-settings-page.php:2359
+#: includes/admin/pages/class-epkb-config-settings-page.php:1972
+#: includes/admin/pages/class-epkb-config-settings-page.php:1979
+#: includes/admin/pages/class-epkb-config-settings-page.php:2072
+#: includes/admin/pages/class-epkb-config-settings-page.php:2083
+#: includes/admin/pages/class-epkb-config-settings-page.php:2088
+#: includes/admin/pages/class-epkb-config-settings-page.php:2091
+#: includes/admin/pages/class-epkb-config-settings-page.php:2094
+#: includes/admin/pages/class-epkb-config-settings-page.php:2097
+#: includes/admin/pages/class-epkb-config-settings-page.php:2100
+#: includes/admin/pages/class-epkb-config-settings-page.php:2103
+#: includes/admin/pages/class-epkb-config-settings-page.php:2113
+#: includes/admin/pages/class-epkb-config-settings-page.php:2116
+#: includes/admin/pages/class-epkb-config-settings-page.php:2119
+#: includes/admin/pages/class-epkb-config-settings-page.php:2122
+#: includes/admin/pages/class-epkb-config-settings-page.php:2127
+#: includes/admin/pages/class-epkb-config-settings-page.php:2132
+#: includes/admin/pages/class-epkb-config-settings-page.php:2137
+#: includes/admin/pages/class-epkb-config-settings-page.php:2142
+#: includes/admin/pages/class-epkb-config-settings-page.php:2147
+#: includes/admin/pages/class-epkb-config-settings-page.php:2152
+#: includes/admin/pages/class-epkb-config-settings-page.php:2180
+#: includes/admin/pages/class-epkb-config-settings-page.php:2188
+#: includes/admin/pages/class-epkb-config-settings-page.php:2194
+#: includes/admin/pages/class-epkb-config-settings-page.php:2214
+#: includes/admin/pages/class-epkb-config-settings-page.php:2249
+#: includes/admin/pages/class-epkb-config-settings-page.php:2255
+#: includes/admin/pages/class-epkb-config-settings-page.php:2274
+#: includes/admin/pages/class-epkb-config-settings-page.php:2280
+#: includes/admin/pages/class-epkb-config-settings-page.php:2357
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:858
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1671
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1679
@@ -1304,7 +1304,7 @@ msgstr ""
 #: includes/class-epkb-html-admin.php:824
 #: includes/class-epkb-html-admin.php:966
 #: includes/class-epkb-html-elements.php:1043
-#: includes/class-epkb-html-forms.php:983 js/ai/admin-ai-pro-features.js:120
+#: includes/class-epkb-html-forms.php:983 js/ai/admin-ai-pro-features.js:144
 msgid "Learn More"
 msgstr ""
 
@@ -1562,8 +1562,8 @@ msgid "List Title Typography"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-featured-articles-block.php:274
-#: includes/admin/editor/class-epkb-frontend-editor.php:208
-#: includes/admin/editor/class-epkb-frontend-editor.php:285
+#: includes/admin/editor/class-epkb-frontend-editor.php:200
+#: includes/admin/editor/class-epkb-frontend-editor.php:277
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:42
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:76
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:110
@@ -1572,7 +1572,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:390
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1682
 #: includes/class-epkb-core-utilities.php:351
-#: includes/system/class-epkb-upgrades.php:280
+#: includes/system/class-epkb-upgrades.php:316
 msgid "Featured Articles"
 msgstr ""
 
@@ -1624,7 +1624,7 @@ msgid "Category Description Padding"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-grid-layout-block.php:485
-#: includes/admin/pages/class-epkb-config-settings-page.php:2913
+#: includes/admin/pages/class-epkb-config-settings-page.php:2911
 msgid "Category Icons"
 msgstr ""
 
@@ -1647,7 +1647,7 @@ msgstr ""
 
 #: includes/admin/blocks/class-epkb-search-block.php:197
 #: includes/admin/blocks/class-epkb-search-block.php:366
-#: js/ai/admin-ai-search.js:441
+#: js/ai/admin-ai-search.js:593
 msgid "Search Results"
 msgstr ""
 
@@ -1656,7 +1656,7 @@ msgid "Padding"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-sidebar-layout-block.php:85
-#: includes/admin/editor/class-epkb-frontend-editor.php:723
+#: includes/admin/editor/class-epkb-frontend-editor.php:715
 #: includes/features/layouts/class-epkb-layouts-setup.php:175
 msgid "Demo Article"
 msgstr ""
@@ -1683,7 +1683,7 @@ msgstr ""
 
 #: includes/admin/blocks/class-epkb-sidebar-layout-block.php:413
 #: includes/admin/blocks/class-epkb-sidebar-layout-block.php:536
-#: includes/admin/pages/class-epkb-config-settings-page.php:3037
+#: includes/admin/pages/class-epkb-config-settings-page.php:3035
 msgid "Featured Articles Sidebar"
 msgstr ""
 
@@ -1764,9 +1764,9 @@ msgstr ""
 #: includes/admin/class-epkb-site-builders.php:94
 #: includes/admin/faqs/class-epkb-faqs-utilities.php:829
 #: includes/admin/pages/class-epkb-config-settings-page.php:827
-#: includes/admin/pages/class-epkb-config-settings-page.php:2210
-#: includes/admin/pages/class-epkb-config-settings-page.php:2245
-#: includes/admin/pages/class-epkb-config-settings-page.php:2270
+#: includes/admin/pages/class-epkb-config-settings-page.php:2208
+#: includes/admin/pages/class-epkb-config-settings-page.php:2243
+#: includes/admin/pages/class-epkb-config-settings-page.php:2268
 #: includes/class-epkb-utilities.php:416
 #: includes/features/layouts/class-epkb-layout.php:221
 msgid "here"
@@ -1858,7 +1858,7 @@ msgid "Selection"
 msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:35
-#: js/ai/admin-ai-training-data-table.js:1266
+#: js/ai/admin-ai-training-data-table.js:1268
 msgid "Status"
 msgstr ""
 
@@ -1926,23 +1926,23 @@ msgid "Choose CPT tag to map to Article tag"
 msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:210
-#: js/ai/admin-ai-training-data-table.js:1129
+#: js/ai/admin-ai-training-data-table.js:1131
 msgid "All"
 msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:250
-#: includes/admin/editor/class-epkb-frontend-editor.php:283
+#: includes/admin/editor/class-epkb-frontend-editor.php:275
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1165
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3653
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4296
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4330
-#: includes/admin/pages/class-epkb-config-settings-page.php:1478
+#: includes/admin/pages/class-epkb-config-settings-page.php:1469
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1665
 #: includes/ai/admin/class-epkb-ai-search-tab.php:26
 msgid "Search"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:181
+#: includes/admin/editor/class-epkb-frontend-editor.php:173
 #: includes/admin/pages/class-epkb-config-page.php:983
 #: includes/admin/pages/class-epkb-config-page.php:1000
 #: includes/admin/pages/class-epkb-config-page.php:1007
@@ -1952,29 +1952,29 @@ msgstr ""
 msgid "Open Frontend Editor"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:183
+#: includes/admin/editor/class-epkb-frontend-editor.php:175
 msgid "Hide this button"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:199
-#: includes/admin/pages/class-epkb-dashboard-page.php:117
-#: includes/admin/pages/class-epkb-dashboard-page.php:121
+#: includes/admin/editor/class-epkb-frontend-editor.php:191
+#: includes/admin/pages/class-epkb-dashboard-page.php:118
+#: includes/admin/pages/class-epkb-dashboard-page.php:122
 msgid "Frontend Editor"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:200
-#: includes/admin/editor/class-epkb-frontend-editor.php:341
+#: includes/admin/editor/class-epkb-frontend-editor.php:192
+#: includes/admin/editor/class-epkb-frontend-editor.php:333
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:210
 msgid "Help"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:207
-#: includes/admin/editor/class-epkb-frontend-editor.php:403
+#: includes/admin/editor/class-epkb-frontend-editor.php:199
+#: includes/admin/editor/class-epkb-frontend-editor.php:395
 msgid "Categories and Articles"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:210
-#: includes/admin/editor/class-epkb-frontend-editor.php:287
+#: includes/admin/editor/class-epkb-frontend-editor.php:202
+#: includes/admin/editor/class-epkb-frontend-editor.php:279
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:44
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:78
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:112
@@ -1984,31 +1984,31 @@ msgstr ""
 msgid "Resource Links"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:211
-#: includes/admin/editor/class-epkb-frontend-editor.php:282
+#: includes/admin/editor/class-epkb-frontend-editor.php:203
+#: includes/admin/editor/class-epkb-frontend-editor.php:274
 #: includes/admin/pages/class-epkb-config-settings-page.php:175
 msgid "Page Settings"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:219
+#: includes/admin/editor/class-epkb-frontend-editor.php:211
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1976
 msgid "Table of Contents"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:220
+#: includes/admin/editor/class-epkb-frontend-editor.php:212
 #: includes/admin/pages/class-epkb-config-settings-page.php:268
 msgid "Rating and Feedback"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:248
+#: includes/admin/editor/class-epkb-frontend-editor.php:240
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:490
 #: includes/admin/pages/class-epkb-config-tools-page.php:147
 #: includes/admin/pages/class-epkb-config-tools-page.php:899
-#: js/ai/admin-ai-training-data.js:807
+#: js/ai/admin-ai-training-data.js:854
 msgid "Back"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:250
+#: includes/admin/editor/class-epkb-frontend-editor.php:242
 #: includes/admin/faqs/class-epkb-faqs-page.php:477
 #: includes/admin/faqs/class-epkb-faqs-page.php:643
 #: includes/admin/pages/class-epkb-config-tools-page.php:1759
@@ -2016,12 +2016,12 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-tools-page.php:1813
 #: includes/admin/pages/class-epkb-config-tools-page.php:1841
 #: includes/admin/pages/class-epkb-config-tools-page.php:1891
-#: includes/ai/admin/class-epkb-ai-admin-page.php:194
-#: js/ai/admin-ai-training-data.js:1038
+#: includes/ai/admin/class-epkb-ai-admin-page.php:195
+#: js/ai/admin-ai-training-data.js:1187
 msgid "Save"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:284
+#: includes/admin/editor/class-epkb-frontend-editor.php:276
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:41
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:75
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:109
@@ -2031,50 +2031,50 @@ msgstr ""
 msgid "Categories & Articles"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:333
+#: includes/admin/editor/class-epkb-frontend-editor.php:325
 msgid "Use arrow keys to move between features"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:347
-#: includes/admin/pages/class-epkb-config-settings-page.php:1985
+#: includes/admin/editor/class-epkb-frontend-editor.php:339
+#: includes/admin/pages/class-epkb-config-settings-page.php:1983
 msgid "Contact Us"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:383
+#: includes/admin/editor/class-epkb-frontend-editor.php:375
 msgid "Page width"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:391
-#: includes/admin/editor/class-epkb-frontend-editor.php:406
+#: includes/admin/editor/class-epkb-frontend-editor.php:383
+#: includes/admin/editor/class-epkb-frontend-editor.php:398
 msgid "Actual width"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:393
+#: includes/admin/editor/class-epkb-frontend-editor.php:385
 msgid "KB setting for Search Width"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:395
+#: includes/admin/editor/class-epkb-frontend-editor.php:387
 msgid "of the page."
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:397
-#: includes/admin/editor/class-epkb-frontend-editor.php:410
+#: includes/admin/editor/class-epkb-frontend-editor.php:389
+#: includes/admin/editor/class-epkb-frontend-editor.php:402
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:408
+#: includes/admin/editor/class-epkb-frontend-editor.php:400
 msgid "KB setting for categories list width"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:409
+#: includes/admin/editor/class-epkb-frontend-editor.php:401
 msgid "of the total page width."
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:415
+#: includes/admin/editor/class-epkb-frontend-editor.php:407
 msgid "Troubleshooting"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:417
+#: includes/admin/editor/class-epkb-frontend-editor.php:409
 msgid ""
 "If the value you set in the KB settings does not match the actual value, it "
 "may be because your theme or page builder is limiting the overall width. In "
@@ -2082,90 +2082,90 @@ msgid ""
 "theme or page builder. Try the following"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:422
+#: includes/admin/editor/class-epkb-frontend-editor.php:414
 #, php-format
 msgid ""
 "If the KB Shortcode is inserted inside your page builder, then you will need "
 "to check the section width of that page builder. %s"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:423
-#: includes/admin/editor/class-epkb-frontend-editor.php:428
-#: js/ai/admin-ai-dashboard.js:406
+#: includes/admin/editor/class-epkb-frontend-editor.php:415
+#: includes/admin/editor/class-epkb-frontend-editor.php:420
+#: js/ai/admin-ai-dashboard.js:671
 msgid "Learn more"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:427
+#: includes/admin/editor/class-epkb-frontend-editor.php:419
 #, php-format
 msgid ""
 "You are currently using the Current Theme Template. Check your theme "
 "settings or switch to the KB template. %s"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:435
+#: includes/admin/editor/class-epkb-frontend-editor.php:427
 msgid "Is this page or search box too narrow?"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:440
+#: includes/admin/editor/class-epkb-frontend-editor.php:432
 #, php-format
 msgid ""
 "The Knowledge Base offers two template options for both Main and Article "
 "Pages: %sKB Template%s and %sCurrent Theme Template%s."
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:444
+#: includes/admin/editor/class-epkb-frontend-editor.php:436
 msgid ""
 "If you're experiencing layout issues or want to see a different look, try "
 "switching the template"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:445
+#: includes/admin/editor/class-epkb-frontend-editor.php:437
 msgid "Click here to switch the template"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:449
+#: includes/admin/editor/class-epkb-frontend-editor.php:441
 msgid "Issues with the page layout, header, or menu?"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:836
+#: includes/admin/editor/class-epkb-frontend-editor.php:828
 msgid "Demo Article Title"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:997
-#: includes/admin/editor/class-epkb-frontend-editor.php:1051
-#: includes/admin/editor/class-epkb-frontend-editor.php:1128
-#: includes/admin/editor/class-epkb-frontend-editor.php:1462
+#: includes/admin/editor/class-epkb-frontend-editor.php:989
+#: includes/admin/editor/class-epkb-frontend-editor.php:1043
+#: includes/admin/editor/class-epkb-frontend-editor.php:1120
+#: includes/admin/editor/class-epkb-frontend-editor.php:1454
 msgid "Invalid Knowledge Base ID"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:1026
-#: includes/admin/editor/class-epkb-frontend-editor.php:1083
-#: includes/admin/editor/class-epkb-frontend-editor.php:1141
-#: js/ai/admin-ai-chat.js:1037 js/ai/admin-ai-general-settings.js:331
-#: js/ai/admin-ai-search.js:967 js/ai/admin-ai-tuning.js:86
+#: includes/admin/editor/class-epkb-frontend-editor.php:1018
+#: includes/admin/editor/class-epkb-frontend-editor.php:1075
+#: includes/admin/editor/class-epkb-frontend-editor.php:1133
+#: js/ai/admin-ai-chat.js:1157 js/ai/admin-ai-general-settings.js:430
+#: js/ai/admin-ai-search.js:1176 js/ai/admin-ai-tuning.js:86
 msgid "Settings saved successfully"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:1415
+#: includes/admin/editor/class-epkb-frontend-editor.php:1407
 msgid "Enable Feature"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:1427
+#: includes/admin/editor/class-epkb-frontend-editor.php:1419
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1049
 msgid "Move Up"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:1427
+#: includes/admin/editor/class-epkb-frontend-editor.php:1419
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1047
 msgid "Move Down"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:1474
+#: includes/admin/editor/class-epkb-frontend-editor.php:1466
 #: includes/ai/config/class-epkb-ai-config-base.php:183
 msgid "Failed to save configuration"
 msgstr ""
 
-#: includes/admin/editor/class-epkb-frontend-editor.php:1477
+#: includes/admin/editor/class-epkb-frontend-editor.php:1469
 msgid "Frontend Editor button hidden"
 msgstr ""
 
@@ -2313,8 +2313,8 @@ msgid "Group Name"
 msgstr ""
 
 #: includes/admin/faqs/class-epkb-faqs-page.php:478
-#: js/ai/admin-ai-training-data-table.js:1690 js/ai/admin-ai-util.js:99
-#: js/ai/admin-ai-util.js:819
+#: js/ai/admin-ai-training-data-table.js:1692 js/ai/admin-ai-util.js:116
+#: js/ai/admin-ai-util.js:852
 msgid "Close"
 msgstr ""
 
@@ -2344,17 +2344,17 @@ msgid "Answer"
 msgstr ""
 
 #: includes/admin/faqs/class-epkb-faqs-page.php:644
-#: includes/ai/admin/class-epkb-ai-admin-page.php:203
+#: includes/ai/admin/class-epkb-ai-admin-page.php:204
 #: includes/class-epkb-html-admin.php:745
 #: includes/class-epkb-html-forms.php:374
 #: includes/system/class-epkb-deactivate-feedback.php:49
-#: includes/system/scripts-registration-admin.php:72 js/ai/admin-ai-chat.js:139
-#: js/ai/admin-ai-chat.js:680 js/ai/admin-ai-search.js:138
-#: js/ai/admin-ai-search.js:670 js/ai/admin-ai-tools.js:283
-#: js/ai/admin-ai-training-data-table.js:603
-#: js/ai/admin-ai-training-data-table.js:925
-#: js/ai/admin-ai-training-data.js:271 js/ai/admin-ai-training-data.js:410
-#: js/ai/admin-ai-training-data.js:580 js/ai/admin-ai-util.js:625
+#: includes/system/scripts-registration-admin.php:72 js/ai/admin-ai-chat.js:168
+#: js/ai/admin-ai-chat.js:742 js/ai/admin-ai-dashboard.js:461
+#: js/ai/admin-ai-search.js:166 js/ai/admin-ai-search.js:879
+#: js/ai/admin-ai-tools.js:283 js/ai/admin-ai-training-data-table.js:605
+#: js/ai/admin-ai-training-data-table.js:927
+#: js/ai/admin-ai-training-data.js:302 js/ai/admin-ai-training-data.js:441
+#: js/ai/admin-ai-training-data.js:648 js/ai/admin-ai-util.js:658
 msgid "Cancel"
 msgstr ""
 
@@ -2383,7 +2383,7 @@ msgid "Customize the appearance and behavior of your FAQs."
 msgstr ""
 
 #: includes/admin/faqs/class-epkb-faqs-page.php:843
-#: includes/admin/pages/class-epkb-config-settings-page.php:2168
+#: includes/admin/pages/class-epkb-config-settings-page.php:2166
 #, php-format
 msgid "To change FAQ Title %sclick here%s"
 msgstr ""
@@ -2671,40 +2671,48 @@ msgid ""
 "work the best."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:70
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:98
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:126
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:143
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:160
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:315
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:376
-#: includes/system/class-epkb-admin-ui-access.php:377
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:73
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:101
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:129
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:146
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:163
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:318
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:379
+#: includes/system/class-epkb-admin-ui-access.php:414
 msgid "Configuration saved"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:194
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:197
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3449
 #: includes/admin/pages/class-epkb-config-settings-page.php:1246
-#: includes/admin/pages/class-epkb-config-settings-page.php:2693
+#: includes/admin/pages/class-epkb-config-settings-page.php:2691
 msgid "Font Family"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:274
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:277
 #: includes/class-epkb-utilities.php:335 includes/class-epkb-utilities.php:359
 msgid "You do not have permission to edit this knowledge base"
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:285
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:288
 #: includes/admin/wizard/class-epkb-kb-wizard-cntrl.php:203
 msgid "Invalid parameters. Please refresh your page."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:365
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:368
 msgid "Please enter Knowledge Base name."
 msgstr ""
 
-#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:406
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:409
 msgid "Introduction text saved"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:439
+msgid "Switched to KB Template successfully"
+msgstr ""
+
+#: includes/admin/kb-configuration/class-epkb-kb-config-controller.php:440
+msgid "Switched to Theme Template successfully"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:21
@@ -2713,7 +2721,7 @@ msgid "Modular Main Page"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:27
-#: includes/admin/pages/class-epkb-config-settings-page.php:1596
+#: includes/admin/pages/class-epkb-config-settings-page.php:1594
 msgid "Custom CSS"
 msgstr ""
 
@@ -2956,7 +2964,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:445
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3227
-#: includes/admin/pages/class-epkb-config-settings-page.php:1488
+#: includes/admin/pages/class-epkb-config-settings-page.php:1479
 msgid "Content"
 msgstr ""
 
@@ -2972,7 +2980,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-layout-modular.php:466
 #: includes/class-epkb-core-utilities.php:347
 #: includes/features/kbs/class-epkb-kb-demo-data.php:502
-#: includes/system/class-epkb-upgrades.php:276
+#: includes/system/class-epkb-upgrades.php:312
 msgid "Frequently Asked Questions"
 msgstr ""
 
@@ -3113,7 +3121,7 @@ msgid "Basic"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:167
-#: includes/admin/pages/class-epkb-config-settings-page.php:2842
+#: includes/admin/pages/class-epkb-config-settings-page.php:2840
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:575
 msgid "Tabs"
 msgstr ""
@@ -3149,10 +3157,10 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:217
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1238
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1244
+#: includes/admin/pages/class-epkb-config-settings-page.php:1531
 #: includes/admin/pages/class-epkb-config-settings-page.php:1540
-#: includes/admin/pages/class-epkb-config-settings-page.php:1549
-#: includes/admin/pages/class-epkb-config-settings-page.php:1736
-#: includes/admin/pages/class-epkb-config-settings-page.php:1749
+#: includes/admin/pages/class-epkb-config-settings-page.php:1734
+#: includes/admin/pages/class-epkb-config-settings-page.php:1747
 msgid "Right Sidebar"
 msgstr ""
 
@@ -3162,10 +3170,10 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:217
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1238
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1244
+#: includes/admin/pages/class-epkb-config-settings-page.php:1531
 #: includes/admin/pages/class-epkb-config-settings-page.php:1540
-#: includes/admin/pages/class-epkb-config-settings-page.php:1549
-#: includes/admin/pages/class-epkb-config-settings-page.php:1736
-#: includes/admin/pages/class-epkb-config-settings-page.php:1749
+#: includes/admin/pages/class-epkb-config-settings-page.php:1734
+#: includes/admin/pages/class-epkb-config-settings-page.php:1747
 msgid "Left Sidebar"
 msgstr ""
 
@@ -3247,7 +3255,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:280
 #: includes/admin/pages/class-epkb-config-settings-page.php:276
-#: includes/admin/pages/class-epkb-config-settings-page.php:1572
+#: includes/admin/pages/class-epkb-config-settings-page.php:1563
 msgid "Category Archive Page"
 msgstr ""
 
@@ -3260,7 +3268,7 @@ msgid "Articles Sequence"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:299
-#: includes/admin/pages/class-epkb-config-settings-page.php:2684
+#: includes/admin/pages/class-epkb-config-settings-page.php:2682
 msgid "Choose Template"
 msgstr ""
 
@@ -3741,7 +3749,7 @@ msgid "Article Count Text (Singular)"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1376
-#: js/ai/admin-ai-training-data-table.js:1454
+#: js/ai/admin-ai-training-data-table.js:1456
 msgid "Article"
 msgstr ""
 
@@ -3824,12 +3832,12 @@ msgid "Page Title"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1633
-#: includes/admin/pages/class-epkb-config-settings-page.php:3751
+#: includes/admin/pages/class-epkb-config-settings-page.php:3749
 msgid "Margin Top"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1641
-#: includes/admin/pages/class-epkb-config-settings-page.php:3755
+#: includes/admin/pages/class-epkb-config-settings-page.php:3753
 msgid "Margin Bottom"
 msgstr ""
 
@@ -3879,7 +3887,7 @@ msgid "Date Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1782
-#: js/ai/admin-ai-search.js:428
+#: js/ai/admin-ai-search.js:459
 msgid "Date:"
 msgstr ""
 
@@ -3902,7 +3910,6 @@ msgid "Categories:"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1804
-#: js/ai/admin-ai-search.js:286
 msgid "Date"
 msgstr ""
 
@@ -3958,7 +3965,7 @@ msgid "Active Background"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1881
-#: includes/admin/pages/class-epkb-config-settings-page.php:1851
+#: includes/admin/pages/class-epkb-config-settings-page.php:1849
 msgid "Headings"
 msgstr ""
 
@@ -4162,7 +4169,7 @@ msgid "5"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2147
-#: includes/admin/pages/class-epkb-config-settings-page.php:1689
+#: includes/admin/pages/class-epkb-config-settings-page.php:1687
 msgid "Back Navigation"
 msgstr ""
 
@@ -4174,7 +4181,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2731
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3059
 #: includes/admin/pages/class-epkb-config-settings-page.php:184
-#: includes/admin/pages/class-epkb-config-settings-page.php:2717
+#: includes/admin/pages/class-epkb-config-settings-page.php:2715
 msgid "Row 1"
 msgstr ""
 
@@ -4186,7 +4193,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2732
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3060
 #: includes/admin/pages/class-epkb-config-settings-page.php:192
-#: includes/admin/pages/class-epkb-config-settings-page.php:2756
+#: includes/admin/pages/class-epkb-config-settings-page.php:2754
 msgid "Row 2"
 msgstr ""
 
@@ -4198,7 +4205,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2733
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3061
 #: includes/admin/pages/class-epkb-config-settings-page.php:200
-#: includes/admin/pages/class-epkb-config-settings-page.php:2781
+#: includes/admin/pages/class-epkb-config-settings-page.php:2779
 msgid "Row 3"
 msgstr ""
 
@@ -4210,7 +4217,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2734
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3062
 #: includes/admin/pages/class-epkb-config-settings-page.php:208
-#: includes/admin/pages/class-epkb-config-settings-page.php:2802
+#: includes/admin/pages/class-epkb-config-settings-page.php:2800
 msgid "Row 4"
 msgstr ""
 
@@ -4222,7 +4229,7 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2735
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3063
 #: includes/admin/pages/class-epkb-config-settings-page.php:216
-#: includes/admin/pages/class-epkb-config-settings-page.php:2823
+#: includes/admin/pages/class-epkb-config-settings-page.php:2821
 msgid "Row 5"
 msgstr ""
 
@@ -4327,9 +4334,9 @@ msgid "Updated Date Prefix"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2508
-#: js/ai/admin-ai-sync.js:702 js/ai/admin-ai-training-data-table.js:968
-#: js/ai/admin-ai-training-data-table.js:1135
-#: js/ai/admin-ai-training-data-table.js:1330
+#: js/ai/admin-ai-sync.js:702 js/ai/admin-ai-training-data-table.js:970
+#: js/ai/admin-ai-training-data-table.js:1137
+#: js/ai/admin-ai-training-data-table.js:1332
 msgid "Updated"
 msgstr ""
 
@@ -4429,7 +4436,7 @@ msgid "Text Hover"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2916
-#: includes/admin/pages/class-epkb-config-settings-page.php:1714
+#: includes/admin/pages/class-epkb-config-settings-page.php:1712
 msgid "Print Button"
 msgstr ""
 
@@ -4442,7 +4449,7 @@ msgid "Print"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2966
-#: includes/admin/pages/class-epkb-config-settings-page.php:1701
+#: includes/admin/pages/class-epkb-config-settings-page.php:1699
 msgid "Prev/Next Navigation"
 msgstr ""
 
@@ -4454,7 +4461,7 @@ msgstr ""
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:110
 #: includes/features/articles/class-epkb-articles-setup.php:646
 #: includes/system/class-epkb-ui-table.php:166
-#: js/ai/admin-ai-training-data-table.js:1510
+#: js/ai/admin-ai-training-data-table.js:1512
 #: templates/archive-categories.php:504
 msgid "Next"
 msgstr ""
@@ -4467,7 +4474,7 @@ msgstr ""
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:107
 #: includes/features/articles/class-epkb-articles-setup.php:645
 #: includes/system/class-epkb-ui-table.php:164
-#: js/ai/admin-ai-training-data-table.js:1498
+#: js/ai/admin-ai-training-data-table.js:1500
 #: templates/archive-categories.php:503
 msgid "Previous"
 msgstr ""
@@ -4525,7 +4532,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3174
 #: includes/admin/pages/class-epkb-config-settings-page.php:98
-#: js/ai/admin-ai-pro-features.js:120
+#: js/ai/admin-ai-pro-features.js:144
 msgid "Get Started"
 msgstr ""
 
@@ -4537,7 +4544,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3207
 #: includes/admin/pages/class-epkb-add-ons-page.php:107
-#: includes/admin/pages/class-epkb-dashboard-page.php:838
+#: includes/admin/pages/class-epkb-dashboard-page.php:761
 #: includes/ai/admin/class-epkb-ai-tools-tab.php:193
 msgid "AI Features"
 msgstr ""
@@ -4634,7 +4641,7 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3507
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3665
-#: includes/admin/pages/class-epkb-config-settings-page.php:2735
+#: includes/admin/pages/class-epkb-config-settings-page.php:2733
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:106
 msgid "Layout"
 msgstr ""
@@ -4670,13 +4677,13 @@ msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3567
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3725
-#: includes/admin/pages/class-epkb-config-settings-page.php:3744
+#: includes/admin/pages/class-epkb-config-settings-page.php:3742
 msgid "Padding Top"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3575
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:3733
-#: includes/admin/pages/class-epkb-config-settings-page.php:3748
+#: includes/admin/pages/class-epkb-config-settings-page.php:3746
 msgid "Padding Bottom"
 msgstr ""
 
@@ -4989,7 +4996,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-features.php:92
-#: includes/admin/pages/class-epkb-config-settings-page.php:1640
+#: includes/admin/pages/class-epkb-config-settings-page.php:1638
 msgid "Article Views Counter"
 msgstr ""
 
@@ -5168,7 +5175,7 @@ msgstr ""
 #: includes/admin/pages/class-epkb-add-ons-features.php:342
 #: includes/admin/pages/class-epkb-add-ons-features.php:452
 #: includes/admin/pages/class-epkb-add-ons-page.php:125
-#: includes/admin/pages/class-epkb-dashboard-page.php:852
+#: includes/admin/pages/class-epkb-dashboard-page.php:775
 msgid "Advanced Search"
 msgstr ""
 
@@ -5555,12 +5562,12 @@ msgid "Save up to 50% when buying multiple add-ons together."
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:108
-#: includes/admin/pages/class-epkb-dashboard-page.php:839
+#: includes/admin/pages/class-epkb-dashboard-page.php:762
 msgid "Smart AI-powered support"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:110
-#: includes/admin/pages/class-epkb-dashboard-page.php:841
+#: includes/admin/pages/class-epkb-dashboard-page.php:764
 #, php-format
 msgid ""
 "%sAI Chat%s with instant answers, %sSmart Search%s with AI-generated "
@@ -5568,46 +5575,46 @@ msgid ""
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:116
-#: includes/admin/pages/class-epkb-dashboard-page.php:845
+#: includes/admin/pages/class-epkb-dashboard-page.php:768
 msgid "Unlimited Knowledge Bases"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:117
-#: includes/admin/pages/class-epkb-dashboard-page.php:846
+#: includes/admin/pages/class-epkb-dashboard-page.php:769
 msgid "Expand your documentation"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:119
-#: includes/admin/pages/class-epkb-dashboard-page.php:848
+#: includes/admin/pages/class-epkb-dashboard-page.php:771
 #, php-format
 msgid "Create a separate Knowledge Base for each %sproduct, service or team%s."
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:126
-#: includes/admin/pages/class-epkb-dashboard-page.php:853
+#: includes/admin/pages/class-epkb-dashboard-page.php:776
 msgid "Enhance and analyze user searches"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:128
 #: includes/admin/pages/class-epkb-analytics-page.php:259
-#: includes/admin/pages/class-epkb-dashboard-page.php:855
+#: includes/admin/pages/class-epkb-dashboard-page.php:778
 msgid ""
 "Enhance users' search experience and view search analytics, including "
 "popular searches and no results searches."
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:134
-#: includes/admin/pages/class-epkb-dashboard-page.php:859
+#: includes/admin/pages/class-epkb-dashboard-page.php:782
 msgid "Elegant Layouts"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:135
-#: includes/admin/pages/class-epkb-dashboard-page.php:860
+#: includes/admin/pages/class-epkb-dashboard-page.php:783
 msgid "More ways to design your KB"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:137
-#: includes/admin/pages/class-epkb-dashboard-page.php:862
+#: includes/admin/pages/class-epkb-dashboard-page.php:785
 #, php-format
 msgid ""
 "Use %sGrid Layout%s or %sSidebar Layout%s for KB Main page or combine Basic, "
@@ -5650,17 +5657,17 @@ msgid ""
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:170
-#: includes/admin/pages/class-epkb-dashboard-page.php:866
+#: includes/admin/pages/class-epkb-dashboard-page.php:789
 msgid "Access Manager"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:171
-#: includes/admin/pages/class-epkb-dashboard-page.php:867
+#: includes/admin/pages/class-epkb-dashboard-page.php:790
 msgid "Protect your KB content"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:173
-#: includes/admin/pages/class-epkb-dashboard-page.php:869
+#: includes/admin/pages/class-epkb-dashboard-page.php:792
 msgid ""
 "Restrict your Articles to certain Groups using KB Categories. Assign users "
 "to specific KB Roles within Groups."
@@ -5671,7 +5678,7 @@ msgid "Try Access Manager Demo"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-add-ons-page.php:181
-#: includes/admin/pages/class-epkb-dashboard-page.php:873
+#: includes/admin/pages/class-epkb-dashboard-page.php:796
 msgid "Migrate, Copy, Import and Export"
 msgstr ""
 
@@ -6156,7 +6163,7 @@ msgid "Show a list of the most popular articles based on article views."
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-page.php:604
-#: includes/system/scripts-registration-public.php:688
+#: includes/system/scripts-registration-public.php:693
 msgid "KB Sidebar"
 msgstr ""
 
@@ -6262,7 +6269,7 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-config-page.php:821
 #: includes/admin/pages/class-epkb-config-settings-page.php:1394
-#: includes/admin/pages/class-epkb-dashboard-page.php:126
+#: includes/admin/pages/class-epkb-dashboard-page.php:127
 msgid "Setup Wizard"
 msgstr ""
 
@@ -6338,20 +6345,24 @@ msgstr ""
 msgid "Edit settings here in Admin without visual preview"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-page.php:1018
+#: includes/admin/pages/class-epkb-config-page.php:1020
+msgid "You are using current theme template."
+msgstr ""
+
+#: includes/admin/pages/class-epkb-config-page.php:1022
+msgid "Switch to KB Template"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-config-page.php:1026
 msgid "Category Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-page.php:1021
+#: includes/admin/pages/class-epkb-config-page.php:1029
 msgid "Open Frontend Editor\t"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-page.php:1022
+#: includes/admin/pages/class-epkb-config-page.php:1030
 msgid "Add an article with a category to configure the Archive Page"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-config-page.php:1022
-msgid "Open Your Theme Editor or Switch to KB Template"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:104
@@ -6444,7 +6455,7 @@ msgid "Detailed"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:711
-#: includes/admin/pages/class-epkb-config-settings-page.php:1762
+#: includes/admin/pages/class-epkb-config-settings-page.php:1760
 msgid "Categories and Articles Navigation"
 msgstr ""
 
@@ -6511,7 +6522,7 @@ msgid "Switch Between KB and Current Template"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-settings-page.php:845
-#: includes/admin/pages/class-epkb-config-settings-page.php:2702
+#: includes/admin/pages/class-epkb-config-settings-page.php:2700
 msgid "Custom CSS for Main Page"
 msgstr ""
 
@@ -6660,152 +6671,152 @@ msgstr ""
 msgid "Edit Categories"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1451
-msgid "Frontend Editor Toggle Visibility"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-config-settings-page.php:1463
+#: includes/admin/pages/class-epkb-config-settings-page.php:1454
 msgid "Switch to New Category Archive Pages"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1464
+#: includes/admin/pages/class-epkb-config-settings-page.php:1455
 msgid ""
 "We have released a new Category Archive Page design featuring optional "
 "sidebars, search functionality, various designs, and more. Please switch to "
 "the new archive pages."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1472
-#: includes/admin/pages/class-epkb-config-settings-page.php:2725
+#: includes/admin/pages/class-epkb-config-settings-page.php:1463
+#: includes/admin/pages/class-epkb-config-settings-page.php:2723
 msgid "Template Setup"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1505
-#: includes/admin/pages/class-epkb-config-settings-page.php:2929
+#: includes/admin/pages/class-epkb-config-settings-page.php:1496
+#: includes/admin/pages/class-epkb-config-settings-page.php:2927
 msgid "List of Articles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1518
+#: includes/admin/pages/class-epkb-config-settings-page.php:1509
 msgid "List of Sub Categories"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1573
+#: includes/admin/pages/class-epkb-config-settings-page.php:1564
 msgid "Additional Styling of Category Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1582
+#: includes/admin/pages/class-epkb-config-settings-page.php:1573
 msgid "KB Main Page Page Title"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1588
+#: includes/admin/pages/class-epkb-config-settings-page.php:1579
+msgid "Frontend Editor Toggle Visibility"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-config-settings-page.php:1586
 msgid "Typography for Article Page and Category Archive Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1633
+#: includes/admin/pages/class-epkb-config-settings-page.php:1631
 msgid "Article Content Settings"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1648
+#: includes/admin/pages/class-epkb-config-settings-page.php:1646
 msgid ""
 "The counter provides an approximate measure of user views, but bot-generated "
 "views cannot be fully filtered out. Comparing view counts between articles "
 "can be more practical than relying on absolute view counts."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1652
+#: includes/admin/pages/class-epkb-config-settings-page.php:1650
 msgid "Article Features - Top"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1667
+#: includes/admin/pages/class-epkb-config-settings-page.php:1665
 msgid "Article Features - Bottom"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1678
+#: includes/admin/pages/class-epkb-config-settings-page.php:1676
 msgid "Breadcrumbs"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1727
+#: includes/admin/pages/class-epkb-config-settings-page.php:1725
 msgid "Widgets/Shortcodes"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1803
+#: includes/admin/pages/class-epkb-config-settings-page.php:1801
 msgid "Categories and Articles Navigation - Colors"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1822
+#: includes/admin/pages/class-epkb-config-settings-page.php:1820
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:1270
 msgid "Location"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1834
+#: includes/admin/pages/class-epkb-config-settings-page.php:1832
 msgid "Header Range"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1864
+#: includes/admin/pages/class-epkb-config-settings-page.php:1862
 msgid "User Rating and Feedback"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1897
+#: includes/admin/pages/class-epkb-config-settings-page.php:1895
 msgid "User Rating - Stars Mode"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1909
+#: includes/admin/pages/class-epkb-config-settings-page.php:1907
 msgid "User Rating - Like/Dislike Mode"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1921
+#: includes/admin/pages/class-epkb-config-settings-page.php:1919
 msgid "Top Statistics"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1927
+#: includes/admin/pages/class-epkb-config-settings-page.php:1925
 msgid "Bottom Statistics"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1935
+#: includes/admin/pages/class-epkb-config-settings-page.php:1933
 msgid "Open Feedback Button"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1964
+#: includes/admin/pages/class-epkb-config-settings-page.php:1962
 msgid "Getting Started"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1965
+#: includes/admin/pages/class-epkb-config-settings-page.php:1963
 msgid "Set up your Knowledge Base name, url, and design"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1967
+#: includes/admin/pages/class-epkb-config-settings-page.php:1965
 msgid "Go to Dashboard"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1971
+#: includes/admin/pages/class-epkb-config-settings-page.php:1969
 msgid "Explore Features"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1972
+#: includes/admin/pages/class-epkb-config-settings-page.php:1970
 msgid "Get familiar with features and how they function"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1978
+#: includes/admin/pages/class-epkb-config-settings-page.php:1976
 msgid "Online Documentation"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1979
+#: includes/admin/pages/class-epkb-config-settings-page.php:1977
 msgid "Read our detailed documentation about all KB features."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1986
+#: includes/admin/pages/class-epkb-config-settings-page.php:1984
 msgid "Support question for something that is not working correctly"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:1988
+#: includes/admin/pages/class-epkb-config-settings-page.php:1986
 msgid "Ask a Question"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2010
+#: includes/admin/pages/class-epkb-config-settings-page.php:2008
 msgid "Edit Categories Icons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2016
+#: includes/admin/pages/class-epkb-config-settings-page.php:2014
 msgid ""
 "We have detected that you are using the Current Theme Template option. If "
 "your width is not expanding the way you want, it is because the theme is "
@@ -6813,24 +6824,24 @@ msgid ""
 "Template option or check your theme settings to expand the width."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2041
+#: includes/admin/pages/class-epkb-config-settings-page.php:2039
 msgid "Bottom Rating Statistics"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2072
+#: includes/admin/pages/class-epkb-config-settings-page.php:2070
 msgid ""
 "The width of the sidebar is determined by the Row Width setting. If the Row "
 "Width is set to 100%, the Sidebar Width can be assigned, for example, as 30% "
 "(Large), leaving the remaining 70% for the rest of the row."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2078
+#: includes/admin/pages/class-epkb-config-settings-page.php:2076
 msgid ""
 "If the sidebar is enabled and it causes the categories to become visually "
 "compressed, consider setting the number of columns to two."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2084
+#: includes/admin/pages/class-epkb-config-settings-page.php:2082
 msgid ""
 "The article width varies based on the chosen template. With the KB template, "
 "the article can expand to the browser's maximum width if selected. With the "
@@ -6838,178 +6849,178 @@ msgid ""
 "overall settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2160
+#: includes/admin/pages/class-epkb-config-settings-page.php:2158
 msgid "Leave empty to hide the title."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2164
+#: includes/admin/pages/class-epkb-config-settings-page.php:2162
 msgid ""
 "When the toggle is ON, then Article Page Search uses Main Page Search "
 "settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2172
+#: includes/admin/pages/class-epkb-config-settings-page.php:2170
 #, php-format
 msgid "To change Featured Articles Title %sclick here%s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2181
+#: includes/admin/pages/class-epkb-config-settings-page.php:2179
 msgid ""
 "Setting the row width will only set the width of its contents. However, if "
 "your theme has a smaller width, it will adhere to that limit, as explained "
 "in the following article."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2189
+#: includes/admin/pages/class-epkb-config-settings-page.php:2187
 msgid ""
 "Set the overall font family. Additional adjustments to font size and weight "
 "are described in our article."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2209
-#: includes/admin/pages/class-epkb-config-settings-page.php:2244
-#: includes/admin/pages/class-epkb-config-settings-page.php:2269
+#: includes/admin/pages/class-epkb-config-settings-page.php:2207
+#: includes/admin/pages/class-epkb-config-settings-page.php:2242
+#: includes/admin/pages/class-epkb-config-settings-page.php:2267
 msgid "After you switch templates, see how it looks on the frontend"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2215
+#: includes/admin/pages/class-epkb-config-settings-page.php:2213
 msgid ""
 "The difference between KB Template and the Current Theme Template is "
 "explained in detail"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2222
+#: includes/admin/pages/class-epkb-config-settings-page.php:2220
 msgid ""
 "Since you currently have the \"Current Theme\" option selected, the HTML and "
 "CSS output is entirely controlled by your active WordPress theme."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2223
+#: includes/admin/pages/class-epkb-config-settings-page.php:2221
 msgid ""
 "The Knowledge Base (KB) no longer handles any visual display or styling "
 "functionality. To customize this archive page, you'll need to review and "
 "adjust your theme settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2224
+#: includes/admin/pages/class-epkb-config-settings-page.php:2222
 msgid ""
 "However, if your theme lacks features for customizing this type of page, we "
 "recommend using the KB template option, which allows you to make adjustments "
 "through the KB settings."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2225
+#: includes/admin/pages/class-epkb-config-settings-page.php:2223
 msgid ""
 "For more details, please refer to this article on the differences between "
 "the KB template and the Current Theme template:"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2227
+#: includes/admin/pages/class-epkb-config-settings-page.php:2225
 msgid "Current Theme Template vs KB Template"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2239
+#: includes/admin/pages/class-epkb-config-settings-page.php:2237
 msgid "Block Template to use for KB Main Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2250
-#: includes/admin/pages/class-epkb-config-settings-page.php:2275
+#: includes/admin/pages/class-epkb-config-settings-page.php:2248
+#: includes/admin/pages/class-epkb-config-settings-page.php:2273
 msgid ""
 "The difference between the KB Template and the Current Theme Template is "
 "explained in detail. This setting also applies to the Article Page."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2256
-#: includes/admin/pages/class-epkb-config-settings-page.php:2281
+#: includes/admin/pages/class-epkb-config-settings-page.php:2254
+#: includes/admin/pages/class-epkb-config-settings-page.php:2279
 msgid "The Category Archive Page has a separate setting"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2264
+#: includes/admin/pages/class-epkb-config-settings-page.php:2262
 msgid "Template to use for KB Main Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2292
+#: includes/admin/pages/class-epkb-config-settings-page.php:2290
 #, php-format
 msgid "Set Image and Font Icons for Categories. %sLearn More%s"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2363
+#: includes/admin/pages/class-epkb-config-settings-page.php:2361
 msgid "Learn more about these settings in the following articles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2374
+#: includes/admin/pages/class-epkb-config-settings-page.php:2372
 msgid "For all other Articles Browser Our Documentation."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2675
+#: includes/admin/pages/class-epkb-config-settings-page.php:2673
 msgid "Pate Title"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2715
-#: includes/admin/pages/class-epkb-config-settings-page.php:2754
-#: includes/admin/pages/class-epkb-config-settings-page.php:2779
-#: includes/admin/pages/class-epkb-config-settings-page.php:2800
-#: includes/admin/pages/class-epkb-config-settings-page.php:2821
+#: includes/admin/pages/class-epkb-config-settings-page.php:2713
+#: includes/admin/pages/class-epkb-config-settings-page.php:2752
+#: includes/admin/pages/class-epkb-config-settings-page.php:2777
+#: includes/admin/pages/class-epkb-config-settings-page.php:2798
+#: includes/admin/pages/class-epkb-config-settings-page.php:2819
 msgid "Feature Selection"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2854
+#: includes/admin/pages/class-epkb-config-settings-page.php:2852
 msgid "Using Tabs Layout"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2859
+#: includes/admin/pages/class-epkb-config-settings-page.php:2857
 msgid "Categories Box"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2877
+#: includes/admin/pages/class-epkb-config-settings-page.php:2875
 msgid "Category Header"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2900
+#: includes/admin/pages/class-epkb-config-settings-page.php:2898
 msgid "Category Body"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2967
+#: includes/admin/pages/class-epkb-config-settings-page.php:2965
 msgid "Content Above the Resources"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2971
+#: includes/admin/pages/class-epkb-config-settings-page.php:2969
 msgid "All Resources - Boxes Styling"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2975
+#: includes/admin/pages/class-epkb-config-settings-page.php:2973
 msgid "All Resources - Icons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2979
+#: includes/admin/pages/class-epkb-config-settings-page.php:2977
 msgid "All Resources - Buttons / Links"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2983
+#: includes/admin/pages/class-epkb-config-settings-page.php:2981
 msgid "Resource Link Individual Settings"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:2992
-#: includes/admin/pages/class-epkb-config-settings-page.php:3149
+#: includes/admin/pages/class-epkb-config-settings-page.php:2990
+#: includes/admin/pages/class-epkb-config-settings-page.php:3147
 msgid "Search Box Designs"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3014
-#: includes/admin/pages/class-epkb-config-settings-page.php:3187
+#: includes/admin/pages/class-epkb-config-settings-page.php:3012
+#: includes/admin/pages/class-epkb-config-settings-page.php:3185
 msgid "Search Labels"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3021
-#: includes/admin/pages/class-epkb-config-settings-page.php:3214
+#: includes/admin/pages/class-epkb-config-settings-page.php:3019
+#: includes/admin/pages/class-epkb-config-settings-page.php:3212
 msgid "Search Style"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3043
+#: includes/admin/pages/class-epkb-config-settings-page.php:3041
 msgid "Sidebar Layout Introduction Page"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-config-settings-page.php:3098
-#: includes/admin/pages/class-epkb-config-settings-page.php:3155
+#: includes/admin/pages/class-epkb-config-settings-page.php:3096
+#: includes/admin/pages/class-epkb-config-settings-page.php:3153
 msgid "Article Page Search Box"
 msgstr ""
 
@@ -7177,7 +7188,7 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-tools-page.php:434
 #: includes/admin/pages/class-epkb-config-tools-page.php:507
 #: includes/admin/pages/class-epkb-config-tools-page.php:849
-#: includes/admin/pages/class-epkb-dashboard-page.php:133
+#: includes/admin/pages/class-epkb-dashboard-page.php:134
 msgid "Convert Posts"
 msgstr ""
 
@@ -7259,7 +7270,7 @@ msgid "I have backed up my database and read all import instructions above."
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:568
-#: includes/admin/pages/class-epkb-dashboard-page.php:738
+#: includes/admin/pages/class-epkb-dashboard-page.php:660
 #: includes/system/scripts-registration-admin.php:74
 msgid "Reading items"
 msgstr ""
@@ -7437,7 +7448,7 @@ msgid "Show Logs"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-config-tools-page.php:1138
-#: includes/ai/admin/class-epkb-ai-admin-page.php:205
+#: includes/ai/admin/class-epkb-ai-admin-page.php:206
 msgid "Reset Logs"
 msgstr ""
 
@@ -7521,15 +7532,15 @@ msgstr ""
 msgid "Introduction Text"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:108
+#: includes/admin/pages/class-epkb-dashboard-page.php:109
 msgid "+ Add New Article"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:111
+#: includes/admin/pages/class-epkb-dashboard-page.php:112
 msgid "+ Add New FAQs"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:130
+#: includes/admin/pages/class-epkb-dashboard-page.php:131
 msgid "Import Data"
 msgstr ""
 
@@ -7636,171 +7647,214 @@ msgstr ""
 msgid "AI Chatbot screenshot"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:415
-msgid "What's New"
+#: includes/admin/pages/class-epkb-dashboard-page.php:416
+#: includes/admin/pages/class-epkb-dashboard-page.php:422
+#: js/ai/admin-ai-dashboard.js:411
+msgid "Vote for Features"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-dashboard-page.php:419
-#: includes/admin/pages/class-epkb-dashboard-page.php:426
-msgid "NEW"
+msgid "Help us prioritize new features! Tell us what you'd like to see next."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:421
-msgid "AI Chat Beta"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-dashboard-page.php:422
-msgid "Intelligent conversational assistant"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-dashboard-page.php:428
-msgid "AI Search Beta"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-dashboard-page.php:429
-msgid "Smart semantic search capabilities"
+#: includes/admin/pages/class-epkb-dashboard-page.php:430
+msgid "What's New"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-dashboard-page.php:434
+#: includes/admin/pages/class-epkb-dashboard-page.php:441
+msgid "NEW"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:436
+msgid "AI Chat Beta"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:437
+msgid "Intelligent conversational assistant"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:443
+msgid "AI Search Beta"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:444
+msgid "Smart semantic search capabilities"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:449
 msgid "AI Dashboard"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:435
+#: includes/admin/pages/class-epkb-dashboard-page.php:450
 msgid "Centralized AI management"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:452
+#: includes/admin/pages/class-epkb-dashboard-page.php:467
 msgid "Background pattern"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:457
+#: includes/admin/pages/class-epkb-dashboard-page.php:472
 msgid "Premium Add-Ons"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:460
+#: includes/admin/pages/class-epkb-dashboard-page.php:476
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:492
+#: includes/admin/pages/class-epkb-dashboard-page.php:496
+msgid "Vote for Future Features"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:498
+msgid "Select the features you'd like to see implemented:"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:505
+msgid "Print Articles as PDF Manual"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:513
+msgid "PDF to Article Conversion"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:521
+msgid "PDF Search"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:529
+msgid "Related Articles"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:537
+msgid "Glossary"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:545
+msgid "Custom Feature (please specify)"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:550
+msgid "Describe the feature you would like..."
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:556
+#: js/ai/admin-ai-dashboard.js:419
+msgid "First Name"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:560
+#: includes/ai/support/class-epkb-ai-utilities.php:182
+#: js/ai/admin-ai-dashboard.js:429
+msgid "Email"
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:581
 #: includes/class-epkb-html-admin.php:853
 #: includes/class-epkb-html-forms.php:965
 msgid "Documentation"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:493
+#: includes/admin/pages/class-epkb-dashboard-page.php:582
 msgid ""
 "Get started by spending some time with the documentation and build an "
 "awesome Knowledge Base for your customers."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:494
+#: includes/admin/pages/class-epkb-dashboard-page.php:583
 msgid "Read Me"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:501
-msgid "Join the AI Beta"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-dashboard-page.php:502
-msgid ""
-"Join the AI Beta program, connect with fellow developers and get early "
-"access to new features."
-msgstr ""
-
-#: includes/admin/pages/class-epkb-dashboard-page.php:503
-msgid "Join Beta"
-msgstr ""
-
-#: includes/admin/pages/class-epkb-dashboard-page.php:510
+#: includes/admin/pages/class-epkb-dashboard-page.php:590
 msgid "Need Help?"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:511
+#: includes/admin/pages/class-epkb-dashboard-page.php:591
 msgid "Get instant answers or contact our support team."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:522
+#: includes/admin/pages/class-epkb-dashboard-page.php:602
 msgid "Human Support"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:531
+#: includes/admin/pages/class-epkb-dashboard-page.php:611
 msgid "Show Your Love"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:532
+#: includes/admin/pages/class-epkb-dashboard-page.php:612
 msgid ""
 "We love to have you in Echo Knowledge Base family. Take your 2 minutes to "
 "review the plugin and spread the love!"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:533
+#: includes/admin/pages/class-epkb-dashboard-page.php:613
 msgid "Review Now"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:734
+#: includes/admin/pages/class-epkb-dashboard-page.php:656
 #: includes/system/scripts-registration-admin.php:66
 msgid "Sending feedback"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:735
+#: includes/admin/pages/class-epkb-dashboard-page.php:657
 #: includes/system/scripts-registration-admin.php:67
 msgid "Changing debug"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:736
+#: includes/admin/pages/class-epkb-dashboard-page.php:658
 #: includes/system/scripts-registration-admin.php:68
 msgid "Help text is coming soon."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:739
+#: includes/admin/pages/class-epkb-dashboard-page.php:661
 #: includes/system/scripts-registration-admin.php:75
 msgid "Please confirm Knowledge Base to import into."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:740
+#: includes/admin/pages/class-epkb-dashboard-page.php:662
 #: includes/system/scripts-registration-admin.php:76
 msgid ""
 "Please confirm you backed up your database or understand that import can "
 "potentially make undesirable changes."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:741
+#: includes/admin/pages/class-epkb-dashboard-page.php:663
 #: includes/system/scripts-registration-admin.php:77
 msgid "Please select post type."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:742
+#: includes/admin/pages/class-epkb-dashboard-page.php:664
 #: includes/system/scripts-registration-admin.php:78
 msgid "No posts to convert."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:743
+#: includes/admin/pages/class-epkb-dashboard-page.php:665
 #: includes/system/scripts-registration-admin.php:79
 msgid "Please select posts to convert."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:744
+#: includes/admin/pages/class-epkb-dashboard-page.php:666
 #: includes/system/scripts-registration-admin.php:80
 msgid "Items converted"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:745
+#: includes/admin/pages/class-epkb-dashboard-page.php:667
 msgid "Converting, please wait..."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:746
+#: includes/admin/pages/class-epkb-dashboard-page.php:668
 msgid ""
 "First, the selected layout will be saved. Then, the page will reload and you "
 "can see the layout change on the KB frontend."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:747
+#: includes/admin/pages/class-epkb-dashboard-page.php:669
 msgid ""
 "First, the KB Base Template will be enabled. Then the page will reload after "
 "which you can see the layout change on the KB frontend."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:748
+#: includes/admin/pages/class-epkb-dashboard-page.php:670
 msgid ""
 "First, the Current Theme Template will be enabled. Then the page will reload "
 "after which you can see the layout change on the KB frontend. If you have "
@@ -7808,80 +7862,102 @@ msgid ""
 "contact us for help."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:749
+#: includes/admin/pages/class-epkb-dashboard-page.php:671
 msgid ""
 "First, the Modular Main Page settings will be saved. Then, the page will "
 "reload and you can see the page structure change on the KB frontend."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:750
-#: includes/admin/pages/class-epkb-dashboard-page.php:751
-#: includes/admin/pages/class-epkb-dashboard-page.php:752
-#: includes/admin/pages/class-epkb-dashboard-page.php:753
-#: includes/admin/pages/class-epkb-dashboard-page.php:754
+#: includes/admin/pages/class-epkb-dashboard-page.php:672
+#: includes/admin/pages/class-epkb-dashboard-page.php:673
+#: includes/admin/pages/class-epkb-dashboard-page.php:674
+#: includes/admin/pages/class-epkb-dashboard-page.php:675
+#: includes/admin/pages/class-epkb-dashboard-page.php:676
 msgid "First, the current settings will be saved. Then, the page will reload."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:755
+#: includes/admin/pages/class-epkb-dashboard-page.php:677
 #: includes/system/scripts-registration-admin.php:101
 msgid "Preview functionality will be implemented soon."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:756
+#: includes/admin/pages/class-epkb-dashboard-page.php:678
 #: includes/system/scripts-registration-admin.php:102
 msgid "Missing input"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:757
+#: includes/admin/pages/class-epkb-dashboard-page.php:679
 #: includes/system/scripts-registration-admin.php:103
 msgid "You have no API key. Please add it here"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:758
+#: includes/admin/pages/class-epkb-dashboard-page.php:680
 #: includes/system/scripts-registration-admin.php:104
 msgid "You have no API key."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:759
+#: includes/admin/pages/class-epkb-dashboard-page.php:681
 #: includes/system/scripts-registration-admin.php:105
 msgid "AI Help"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:760
+#: includes/admin/pages/class-epkb-dashboard-page.php:682
 #: includes/system/scripts-registration-admin.php:106
 msgid "Processing..."
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:761
+#: includes/admin/pages/class-epkb-dashboard-page.php:683
 #: includes/class-epkb-html-elements.php:1006
 #: includes/system/scripts-registration-admin.php:107
 msgid "Copied to clipboard"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:762
+#: includes/admin/pages/class-epkb-dashboard-page.php:684
 #: includes/system/scripts-registration-admin.php:108
-#: js/ai/admin-ai-pro-features.js:168
+#: js/ai/admin-ai-pro-features.js:192
 msgid "Copied!"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:763
+#: includes/admin/pages/class-epkb-dashboard-page.php:685
 #: includes/system/scripts-registration-admin.php:109
 msgid "group selected"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:764
+#: includes/admin/pages/class-epkb-dashboard-page.php:686
 #: includes/system/scripts-registration-admin.php:110
 msgid "groups selected"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:874
+#: includes/admin/pages/class-epkb-dashboard-page.php:797
 msgid "Import, export and copy Articles"
 msgstr ""
 
-#: includes/admin/pages/class-epkb-dashboard-page.php:876
+#: includes/admin/pages/class-epkb-dashboard-page.php:799
 msgid ""
 "Powerful import and export plugin to migrate, create and copy articles and "
 "images from your Knowledge Base."
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:832
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:106
+msgid "Please fill in all required fields and select at least one feature."
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:837
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:111
+msgid "Please provide a valid email address."
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:873
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:147
+#: js/ai/admin-ai-dashboard.js:626
+msgid "Failed to submit vote. Please try again."
+msgstr ""
+
+#: includes/admin/pages/class-epkb-dashboard-page.php:876
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:150
+msgid ""
+"Thank you for voting! Your feedback helps us prioritize future features."
 msgstr ""
 
 #: includes/admin/settings/class-epkb-debug-controller.php:109
@@ -7937,8 +8013,8 @@ msgid "Apply"
 msgstr ""
 
 #: includes/admin/wizard/class-epkb-kb-wizard-global.php:249
-#: includes/ai/admin/class-epkb-ai-admin-page.php:199
-#: js/ai/admin-ai-training-data-table.js:1585 js/ai/admin-ai-util.js:837
+#: includes/ai/admin/class-epkb-ai-admin-page.php:200
+#: js/ai/admin-ai-training-data-table.js:1587 js/ai/admin-ai-util.js:870
 msgid "Loading..."
 msgstr ""
 
@@ -8045,7 +8121,7 @@ msgid "Finish Set Up"
 msgstr ""
 
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:282
-#: includes/ai/admin/class-epkb-ai-admin-page.php:198
+#: includes/ai/admin/class-epkb-ai-admin-page.php:199
 msgid "Success"
 msgstr ""
 
@@ -8532,627 +8608,757 @@ msgstr ""
 msgid "Howdy! How can we help you?"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:76
+#: includes/ai/admin/class-epkb-ai-admin-page.php:77
 msgid "Debug Information"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:81
+#: includes/ai/admin/class-epkb-ai-admin-page.php:82
 #: includes/ai/admin/class-epkb-ai-tools-tuning-tab.php:46
 #: js/ai/admin-ai-tuning.js:547
 msgid "Advanced AI Tuning"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:83
+#: includes/ai/admin/class-epkb-ai-admin-page.php:84
 msgid "Optional - For advanced users only"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:179
-msgid "Loading AI Configuration..."
+#: includes/ai/admin/class-epkb-ai-admin-page.php:180
+msgid "Loading AI Page..."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:195
-#: js/ai/admin-ai-chat.js:796 js/ai/admin-ai-general-settings.js:287
-#: js/ai/admin-ai-search.js:738 js/ai/admin-ai-training-data.js:419
-#: js/ai/admin-ai-training-data.js:1038 js/ai/admin-ai-tuning.js:395
+#: includes/ai/admin/class-epkb-ai-admin-page.php:196
+#: js/ai/admin-ai-chat.js:884 js/ai/admin-ai-general-settings.js:386
+#: js/ai/admin-ai-search.js:947 js/ai/admin-ai-training-data.js:450
+#: js/ai/admin-ai-training-data.js:1187 js/ai/admin-ai-tuning.js:395
 #: js/ai/admin-ai-tuning.js:513
 msgid "Saving..."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:196
+#: includes/ai/admin/class-epkb-ai-admin-page.php:197
 msgid "Saved!"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:197
-#: js/ai/admin-ai-sync.js:698 js/ai/admin-ai-training-data-table.js:970
-#: js/ai/admin-ai-training-data-table.js:1131
+#: includes/ai/admin/class-epkb-ai-admin-page.php:198
+#: js/ai/admin-ai-sync.js:698 js/ai/admin-ai-training-data-table.js:972
+#: js/ai/admin-ai-training-data-table.js:1133
 msgid "Error"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:200
+#: includes/ai/admin/class-epkb-ai-admin-page.php:201
 msgid "Are you sure?"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:201
+#: includes/ai/admin/class-epkb-ai-admin-page.php:202
 #: includes/system/class-epkb-delete-kb.php:52
 msgid "Yes"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:202
+#: includes/ai/admin/class-epkb-ai-admin-page.php:203
 msgid "No"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:204
+#: includes/ai/admin/class-epkb-ai-admin-page.php:205
 msgid "OK"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:206
+#: includes/ai/admin/class-epkb-ai-admin-page.php:207
 msgid "Are you sure you want to reset all AI logs?"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:207
+#: includes/ai/admin/class-epkb-ai-admin-page.php:208
 msgid "AI logs have been reset successfully."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:208
-#: includes/ai/rest/class-epkb-ai-rest-admin-controller.php:126
+#: includes/ai/admin/class-epkb-ai-admin-page.php:209
+#: includes/ai/rest/class-epkb-ai-rest-admin-controller.php:149
 msgid "Settings saved successfully."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:209
+#: includes/ai/admin/class-epkb-ai-admin-page.php:210
 msgid "Failed to save settings. Please try again."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:210
+#: includes/ai/admin/class-epkb-ai-admin-page.php:211
 msgid "Data Privacy Agreement Required"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:211
+#: includes/ai/admin/class-epkb-ai-admin-page.php:212
 msgid ""
 "To use AI features, you must accept our data privacy agreement. This ensures "
 "you understand how your data will be processed by AI services."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:212 js/ai/admin-ai-app.js:213
-#: js/ai/admin-ai-chat.js:1184
+#: includes/ai/admin/class-epkb-ai-admin-page.php:213 js/ai/admin-ai-app.js:213
+#: js/ai/admin-ai-chat.js:1312
 msgid "Go to General Settings"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:213
+#: includes/ai/admin/class-epkb-ai-admin-page.php:214
 msgid "View Privacy Policy"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:280
+#: includes/ai/admin/class-epkb-ai-admin-page.php:281
 msgid "AI Features Required"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-admin-page.php:281 js/ai/admin-ai-app.js:196
+#: includes/ai/admin/class-epkb-ai-admin-page.php:282 js/ai/admin-ai-app.js:196
 msgid ""
 "To use AI features, please configure your API key and accept the data "
 "privacy agreement in General Settings, then enable AI Search or AI Chat."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:26
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:29
 msgid "Chat"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:42 js/ai/admin-ai-chat.js:1101
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:47 js/ai/admin-ai-chat.js:1229
 msgid "Chat History"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:67
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:72
 #: includes/ai/admin/class-epkb-ai-search-tab.php:67
 msgid "(recommended)"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:127
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:132
 msgid "AI Chat Settings"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:132
-msgid "Enable AI Chat"
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:137
+msgid "AI Chat Mode"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:134
-msgid "Enable AI-powered chat functionality on your knowledge base"
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:140
+#: includes/ai/admin/class-epkb-ai-search-tab.php:136
+#: includes/ai/config/class-epkb-ai-config-specs.php:68
+#: includes/ai/config/class-epkb-ai-config-specs.php:154
+msgid "Off"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:138
-#: includes/ai/admin/class-epkb-ai-search-tab.php:139
-msgid "Choose AI Behavior"
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:141
+#: includes/ai/admin/class-epkb-ai-search-tab.php:137
+#: includes/ai/config/class-epkb-ai-config-specs.php:69
+#: includes/ai/config/class-epkb-ai-config-specs.php:155
+msgid "Preview (Admins only)"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-chat-tab.php:142
-#: includes/ai/admin/class-epkb-ai-search-tab.php:143
+#: includes/ai/admin/class-epkb-ai-search-tab.php:138
+#: includes/ai/config/class-epkb-ai-config-specs.php:70
+#: includes/ai/config/class-epkb-ai-config-specs.php:156
+msgid "On (Public)"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:144
+msgid ""
+"Control AI Chat visibility: Off (disabled), Preview (admins only for "
+"testing), or On (public access)"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:150
+#: includes/ai/admin/class-epkb-ai-search-tab.php:145
+msgid "Choose AI Behavior"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:154
+#: includes/ai/admin/class-epkb-ai-search-tab.php:149
 #: includes/ai/openai/class-epkb-openai-client.php:558
 msgid ""
 "Custom model parameters are used and can be further configured in AI "
 "Advanced Tuning."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:143
-#: includes/ai/admin/class-epkb-ai-search-tab.php:144
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:155
+#: includes/ai/admin/class-epkb-ai-search-tab.php:150
 msgid ""
 "Select an AI behavior preset that best fits your needs. All presets use the "
 "default model."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:148
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:160
 msgid "AI Chat Instructions"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:150
-#: includes/ai/admin/class-epkb-ai-search-tab.php:151
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:162
+#: includes/ai/admin/class-epkb-ai-search-tab.php:157
 msgid ""
 "Warning: Modifying these instructions is challenging and can significantly "
 "impact AI performance. The AI is highly sensitive to instruction changes - "
 "even small modifications can cause unexpected behavior."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:171
-#: includes/ai/admin/class-epkb-ai-search-tab.php:172
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:185
+msgid "Chat Widget Appearance"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:204
+msgid "Text Customization"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:205
+msgid "Customize widget text and messages"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:209
+msgid "Widget Header Title"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:211
+msgid "Title displayed in the chat widget header"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:215
+msgid "Input Placeholder"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:217
+msgid "Placeholder text in the message input field"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:221
+msgid "Welcome Message"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:223
+msgid "First message shown when chat opens"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:230
+msgid "Launcher Color"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:232
+msgid "Background color of the floating chat button"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:236
+msgid "Widget Header Color"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:238
+msgid "Background color of the chat widget header"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:271
+msgid "Reset Widget Settings"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:272
+msgid "Reset to Defaults"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:274
+msgid ""
+"Are you sure you want to reset all widget settings to their default values?"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:275
+msgid "Reset all chat widget appearance and text settings to default values"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:292
+#: includes/ai/admin/class-epkb-ai-search-tab.php:178
 msgid "Invalid preset selected"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:178
-#: includes/ai/admin/class-epkb-ai-search-tab.php:179
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:299
+#: includes/ai/admin/class-epkb-ai-search-tab.php:185
 msgid "Custom preset selected. Configure parameters in Advanced AI Tuning."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:187
-#: includes/ai/admin/class-epkb-ai-search-tab.php:188
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:308
+#: includes/ai/admin/class-epkb-ai-search-tab.php:194
 msgid "Invalid preset configuration"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-chat-tab.php:213
+#: includes/ai/admin/class-epkb-ai-chat-tab.php:334
 #, php-format
 msgid "Applied \"%s\" preset for AI Chat"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:184
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:270
 msgid "OpenAI API key is not configured"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:185
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:271
 msgid "Add your API key in General Settings"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:197
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:283
 msgid "API key is configured"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:207
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:293
 msgid "Failed to decrypt API key"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:208
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:294
 msgid "Re-enter your API key in General Settings"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:218
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:304
 msgid "API key format is invalid"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:219
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:305
 msgid "Check your API key format (should start with sk-)"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:231
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:317
 msgid "OpenAI does not recognize the API key"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:232
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:318
 msgid "Verify your API key on OpenAI dashboard"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:241
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:327
 msgid "API key is valid"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:276
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:362
 #, php-format
 msgid "%d vector store(s) are missing in OpenAI"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:279
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:365
 msgid "Re-sync your training data to create new vector stores"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:288
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:374
 msgid "All vector stores are valid"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:304
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:390
 msgid "Data privacy agreement needed"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:305
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:391
 msgid "Review and accept the data privacy terms"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:314
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:400
 msgid "Disclaimer has been accepted"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:330
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:681
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:693
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:804
-#: includes/ai/admin/class-epkb-ai-training-data-tab.php:58
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:416
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:758
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:770
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:881
+#: includes/ai/admin/class-epkb-ai-training-data-tab.php:64
 msgid "Training Data"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:331
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:417
 msgid "Chat Messages"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:349
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:435
 msgid "Database setup required"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:351
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:437
 #, php-format
 msgid ""
 "Please deactivate and reactivate the plugin to create the necessary database "
 "tables (%s)"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:362
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:448
 msgid "All AI database tables exist"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:379
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:464
 msgid "AI configuration is missing"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:380
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:465
 msgid "Contact support - configuration needs to be initialized"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:393
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:474
 msgid "No AI features are enabled"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:394
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:475
 msgid "Enable AI Chat or AI Search to use AI features"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:402
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:483
 msgid "AI configuration is valid"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:418
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:499
 msgid "REST API is disabled by a filter"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:419
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:500
 msgid "Remove any filters disabling the REST API"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:420
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:501
 msgid "AI features require REST API to be enabled"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:430
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:511
 msgid "REST API URL is not available"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:431
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:512
 msgid "Check permalink settings and server configuration"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:451
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:532
 msgid "AI REST API routes are not registered"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:452
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:533
 msgid "Deactivate and reactivate the plugin"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:459
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:540
 msgid "REST API is enabled and working"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:478
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:559
 #, php-format
 msgid "PHP version %s is too old"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:479
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:560
 msgid "Upgrade to PHP 7.2 or higher"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:489
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:570
 #, php-format
 msgid "WordPress %s may have compatibility issues"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:490
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:571
 msgid "Update WordPress to 5.3 or higher"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:499
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:580
 msgid "Site is not using SSL/HTTPS"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:500
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:581
 msgid "Enable SSL for secure API communication"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:501
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:582
 msgid "AI features work best with SSL enabled"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:511
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:592
 msgid "PHP memory limit is low"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:512
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:593
 msgid "Increase memory_limit to at least 128M"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:513
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:594
 #, php-format
 msgid "Current limit: %s"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:524
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:605
 msgid "WP Cron is disabled"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:525
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:606
 msgid "Auto-sync requires WP Cron or external cron"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:526
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:607
 msgid "Set up external cron or enable WP Cron"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:537
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:618
 msgid "Potentially conflicting plugins detected"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:538
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:619
 msgid "Test AI features with these plugins disabled"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:600
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:681
 msgid "AI sync appears to be stuck"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:601
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:682
 msgid "Clear sync lock in Tools tab"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:616
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:697
 #, php-format
 msgid "Last sync was %d days ago"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:619
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:700
 msgid "Consider syncing your training data"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:643
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:724
 #, php-format
 msgid "OpenAI rate limit active for %d more minutes"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:646
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:727
 msgid "Wait for rate limit to expire"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:647
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:728
 msgid "Too many requests were sent to OpenAI"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:687
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:764
 #, php-format
 msgid "%d items synced"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:699
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:776
 msgid "No training data synced yet"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:716
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:729
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:815
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:793
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:806
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:892
 #: includes/ai/admin/class-epkb-ai-tools-tab.php:201
 #: js/ai/admin-ai-tools.js:522
 msgid "AI Chat"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:721
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:734
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:756
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:768
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:820
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:831
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:798
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:811
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:833
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:845
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:897
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:908
 msgid "Today's Activity"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:722
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:799
 #, php-format
 msgid "%d total conversations"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:735
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:812
 msgid "0 total conversations"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:752
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:764
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:827
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:829
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:841
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:904
 #: includes/ai/admin/class-epkb-ai-tools-tab.php:209
 #: js/ai/admin-ai-tools.js:534
 msgid "AI Search"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:757
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:834
 #, php-format
 msgid "%d total searches"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:769
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:846
 msgid "0 total searches"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:782
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:838
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:859
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:915
 msgid "API Token Usage"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:783
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:839
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:153
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:167
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:181
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:195
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:210
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:860
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:916
 msgid "upcoming feature"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:786
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:842
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:863
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:919
 msgid "Token counter upcoming feature"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:788
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:865
 #, php-format
 msgid "%s tokens used"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:810
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:887
 msgid "Enable AI to sync training data"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:821
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:898
 msgid "Enable AI to start conversations"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:832
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:909
 msgid "Enable AI to track searches"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:844
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:921
 msgid "0 tokens used"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:859
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:936
 msgid "AI Search Enhancements"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:860
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:937
 msgid ""
 "Improved semantic search with better context understanding, faster response "
 "times, and more relevant article suggestions."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:866
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:943
 msgid "AI Chat Upgrades"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:867
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:944
 msgid ""
 "Enhanced conversation flow with better context retention, multi-turn "
 "conversations, and improved answer accuracy."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:873
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:950
 msgid "Training Data Improvements"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:874
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:951
 msgid ""
 "Faster sync process, better handling of large datasets, automatic content "
 "updates, and improved vector storage management."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:889
-msgid "Smart Email Notifications (PRO)"
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:967
+msgid "AI Content Analysis (Knowledge Base Audit)"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:890
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:145
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:968
 msgid ""
-"Never miss a customer conversation. Get instant email alerts when users "
-"complete chats, with full conversation transcripts and insights."
+"Advanced analysis with content gap alerts, outdated article flags, and pain-"
+"point analytics to focus documentation efforts."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:894
-msgid "AI-Powered Article Analysis (PRO)"
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:973
+msgid "PDFs - Convert to Articles or Notes"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:895
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:159
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:974
 msgid ""
-"Get intelligent insights about your content. AI analyzes article quality, "
-"readability, and suggests improvements to maximize user engagement."
+"Convert PDFs into knowledge base articles or notes and include them in AI "
+"training data."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:899
-msgid "AI-Generated Glossary Terms (PRO)"
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:979
+msgid "AI-Generated Enriched Search Results"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:900
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:980
 msgid ""
-"Automatically generate and manage glossary terms with AI. Intelligently "
-"prioritize technical terms, acronyms, and industry-specific language."
+"Search results with AI-generated snippets, glossary definitions, related "
+"articles, and relevant charts for more informative results."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:904
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:200
-msgid "Advanced AI Capabilities"
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:985
+msgid "AI Chat with Human Handoff"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:905
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:133
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:986
 msgid ""
-"Train your AI on posts, pages, custom post types, and private notes. Create "
-"a comprehensive knowledge base that understands all your content."
+"Seamless handover from AI chatbot to human agent with conversation context "
+"preserved for frustration-free support."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:919
-msgid "Step 1: Add OpenAI API Key"
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:991
+msgid "Related Articles List"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:920
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:992
 msgid ""
-"Enter your OpenAI API key to enable AI features. Get your key from OpenAI "
-"platform."
+"Show articles closely connected to user's search or chat question for "
+"exploring relevant content without query refinement."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:926
-#: js/ai/admin-ai-dashboard.js:158
-msgid "Step 2: Accept Data Privacy Terms"
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:997
+msgid "AI-Generated Glossary Terms"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:927
-msgid "Review and accept the data privacy disclaimer to proceed with AI setup."
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:998
+msgid ""
+"Automatic suggestions and creation of glossary definitions with minimal "
+"manual effort for improved clarity."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:933
-msgid "Step 3: Enable AI Chat"
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1003
+msgid "Search Auto-Suggest"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:934
-msgid "Configure and enable AI Chat to provide instant answers to your users."
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1004
+msgid ""
+"Enhanced search bar with AI-powered auto-suggestions offering completions "
+"and popular queries for faster searching."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:940
-msgid "Step 4: Enable AI Search"
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1009
+msgid "Google Gemini AI Integration"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:941
-msgid "Set up AI-powered semantic search for more accurate results."
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1010
+msgid ""
+"Add support for Google Gemini AI as an alternative to OpenAI, providing "
+"advanced language capabilities and multi-modal understanding."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:947
-msgid "Step 5: Sync Training Data"
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1015
+msgid "DeepSeek AI Integration"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:948
-msgid "Sync your knowledge base articles to train the AI on your content."
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1016
+msgid ""
+"Integrate DeepSeek AI for enhanced reasoning capabilities and cost-effective "
+"AI solutions with strong performance on complex tasks."
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1021
+msgid "Other Feature Not Listed"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1022
+msgid ""
+"Have a different feature in mind? Select this option and tell us what you "
+"would like to see added to the AI features."
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1053
+#: js/ai/admin-ai-dashboard.js:124
+msgid "Step 1: Configure API Key & Privacy"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1054
+#: js/ai/admin-ai-dashboard.js:125
+msgid "Add your OpenAI API key and accept the data privacy agreement."
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1061
+#: js/ai/admin-ai-dashboard.js:143
+msgid "Step 2: Enable AI Chat and/or AI Search"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1062
+#: js/ai/admin-ai-dashboard.js:144
+msgid "Enable AI Search or Chat features for your website."
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1072
+#: js/ai/admin-ai-dashboard.js:150
+msgid "Step 3: Add Training Data & Sync"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1073
+#: js/ai/admin-ai-dashboard.js:151
+msgid "Select content and sync it to OpenAI for AI processing."
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-general-settings-tab.php:19
@@ -9160,7 +9366,7 @@ msgid "General Settings"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-general-settings-tab.php:35
-#: js/ai/admin-ai-chat.js:1212
+#: js/ai/admin-ai-chat.js:1341
 msgid "API Configuration"
 msgstr ""
 
@@ -9171,9 +9377,8 @@ msgid "OpenAI API Key"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-general-settings-tab.php:42
-msgid ""
-"Enter your OpenAI API key. You can find it at https://platform.openai.com/"
-"api-keys"
+#, php-format
+msgid "Enter your OpenAI API key. You can find it at %s"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-general-settings-tab.php:48
@@ -9194,24 +9399,63 @@ msgstr ""
 msgid "Data Privacy Acknowledgment"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:95
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:73
+msgid "Email Notifications"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:78
+msgid "Enable Daily Email Summary"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:80
+msgid "Send a daily email summary of AI Chat and Search queries"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:84
+msgid "Recipient Email"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:86
+msgid "Leave empty to send to admin email"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:91
+msgid "Send Time"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:93
 #, php-format
+msgid "Time in site timezone (%s)"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:98
+msgid "Email Subject"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:100
+msgid "Available tags: {site_name}"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:106
+msgid "Send Test Email"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:108
+msgid "Send a test email with current settings"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:151
 msgid ""
-"<p style=\"margin-bottom: 15px;\">Please read our AI features privacy and "
-"security disclaimer before enabling AI features.</p>\n"
-"\t\t\t\t<p style=\"margin-bottom: 20px;\">\n"
-"\t\t\t\t\t<a href=\"https://www.echoknowledgebase.com/privacy-security-"
-"disclaimer\" target=\"_blank\" style=\"color: #2271b1; text-decoration: "
-"underline; font-weight: bold;\">\n"
-"\t\t\t\t\t\tView Privacy & Security Disclaimer →\n"
-"\t\t\t\t\t</a>\n"
-"\t\t\t\t</p>\n"
-"\t\t\t\t<label style=\"font-weight: bold; display: flex; align-items: center;"
-"\">\n"
-"\t\t\t\t\t<input type=\"checkbox\" name=\"ai_disclaimer_accepted\" "
-"value=\"on\" %s style=\"margin-right: 8px;\">\n"
-"\t\t\t\t\tI have read and accept the privacy & security disclaimer\n"
-"\t\t\t\t</label>"
+"Please read our AI features privacy and security disclaimer before enabling "
+"AI features."
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:153
+msgid "View Privacy & Security Disclaimer"
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-general-settings-tab.php:155
+msgid "I have read and accept the privacy & security disclaimer"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-pro-features-tab.php:16
@@ -9220,220 +9464,161 @@ msgid "PRO Features"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-pro-features-tab.php:19
-#: js/ai/admin-ai-pro-features.js:275
-msgid "Unlock Premium AI Features"
+msgid "Welcome to Echo Knowledge Base Pro"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:20
-#: js/ai/admin-ai-pro-features.js:276
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:21
 msgid ""
-"Take your knowledge base to the next level with advanced AI capabilities"
+"We're grateful you're using Echo Knowledge Base and hope it's been valuable "
+"for your team."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:26
-#: js/ai/admin-ai-pro-features.js:334
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:22
+msgid ""
+"Upgrading to Pro unlocks powerful features that enhance your knowledge base "
+"experience."
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:23
+msgid ""
+"Your support also helps us continue developing and improving the plugin for "
+"our amazing community."
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:30
+#: js/ai/admin-ai-pro-features.js:357
 msgid "Ready to Unlock All PRO Features?"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:27
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:31
 msgid ""
 "Join thousands of businesses using AI to provide instant, accurate support"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:28
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:32
 msgid "Get PRO Now"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:30
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:34
 msgid "View Pricing"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:32
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:36
 msgid "🎉 Save 20% with annual billing"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:33
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:37
 msgid "30-day money-back guarantee"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:84
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:88
 msgid "🎉 Limited Time: 30% OFF for New Users!"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:85
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:89
 msgid "Start your AI journey with our special promotional discount"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:86
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:96
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:106
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:116
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:90
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:100
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:110
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:120
 #, php-format
 msgid "Offer expires on %s"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:87
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:91
 msgid "NEW USER DISCOUNT"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:94
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:98
 msgid "🎉 Exclusive: 50% OFF for Valued Customers!"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:95
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:99
 msgid "Thank you for being our customer! Enjoy this special discount"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:97
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:101
 msgid "CUSTOMER APPRECIATION"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:104
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:108
 msgid "🎉 VIP Offer: 60% OFF for Premium Members!"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:105
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:109
 msgid "As a premium member, you deserve our best discount"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:107
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:111
 msgid "VIP MEMBER DISCOUNT"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:114
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:118
 msgid "🎉 Elite Special: 80% OFF for Power Users!"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:115
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:119
 msgid "Our most exclusive discount for our most valued partners"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:117
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:121
 msgid "ELITE PARTNER DISCOUNT"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:132
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:136
 msgid "Advanced Training Data Sources"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-pro-features-tab.php:137
-msgid "WordPress Posts & Pages"
+msgid ""
+"Train your AI using posts, pages, custom post types, and private notes. "
+"Build a comprehensive knowledge base that understands all your content."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:138
-msgid "Custom Post Types"
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:141
+msgid "WordPress posts and pages (e.g. About Us, Contact Us)."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:139
-msgid "Notes and PDF Documents"
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:142
+msgid "Custom post types (e.g. Products, Events, Courses)."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:144
-msgid "Smart Email Notifications"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:149
-msgid "Real-time chat completion alerts"
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:143
+msgid ""
+"Internal notes created for reference, available to AI without being "
+"published publicly."
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-pro-features-tab.php:150
-msgid "Full conversation transcripts"
+msgid "Smart Email Notifications"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-pro-features-tab.php:151
-msgid "Custom notification rules"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:158
-msgid "AI-Powered Article Analysis"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:163
-msgid "Content quality scoring"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:164
-msgid "Readability analysis"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:165
-msgid "SEO optimization tips"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:172
-msgid "AI-Generated Glossary Terms"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:173
 msgid ""
-"Automatically generate and manage glossary terms with AI. Intelligently "
-"prioritize technical terms, acronyms, and industry-specific language in "
-"search results and content ordering."
+"Stay informed with automated daily summaries of AI Chat and Search activity, "
+"delivered straight to your inbox."
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:177
-msgid "Auto-generate glossary definitions"
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:155
+msgid "Daily email reports at your chosen time"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:178
-msgid "Smart term prioritization"
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:156
+msgid "Customizable recipient and subject line"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:179
-msgid "Context-aware term ordering"
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:157
+msgid "Includes AI Chat and Search query titles"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:186
-msgid "Enhanced AI Search Results"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:187
-msgid ""
-"Deliver rich, comprehensive search results with visual aids. Include "
-"diagrams, related articles, glossary terms, and more to provide complete "
-"answers."
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:191
-msgid "Visual diagrams and charts"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:192
-msgid "Related articles suggestions"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:193
-msgid "Integrated glossary terms"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:201
-msgid ""
-"Unlock powerful features including PDF search, human agent handoff, and "
-"intelligent auto-suggestions for a complete support experience."
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:205
-msgid "PDF document search"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:206
-msgid "Human agent handoff"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:207
-msgid "Smart auto-suggestions"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:208
-msgid "Multi-language support"
-msgstr ""
-
-#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:236
+#: includes/ai/admin/class-epkb-ai-pro-features-tab.php:243
 msgid "PRO Active"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-search-tab.php:42
-#: js/ai/admin-ai-search.js:1030
+#: js/ai/admin-ai-search.js:1239
 msgid "Search History"
 msgstr ""
 
@@ -9442,18 +9627,20 @@ msgid "AI Search Settings"
 msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-search-tab.php:133
-msgid "Enable AI Search"
+msgid "AI Search Mode"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-search-tab.php:135
-msgid "Enable AI-enhanced search functionality"
+#: includes/ai/admin/class-epkb-ai-search-tab.php:140
+msgid ""
+"Control AI Search visibility: Off (disabled), Preview (admins only for "
+"testing), or On (public access)"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-search-tab.php:149
+#: includes/ai/admin/class-epkb-ai-search-tab.php:155
 msgid "AI Search Instructions"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-search-tab.php:214
+#: includes/ai/admin/class-epkb-ai-search-tab.php:220
 #, php-format
 msgid "Applied \"%s\" preset for AI Search"
 msgstr ""
@@ -9795,13 +9982,68 @@ msgstr ""
 msgid "%s settings reset to defaults"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-training-data-tab.php:50
+#: includes/ai/admin/class-epkb-ai-training-data-tab.php:19
+msgid ""
+"AI features are not enabled. Please enable any AI feature to access the "
+"Training Data tab."
+msgstr ""
+
+#: includes/ai/admin/class-epkb-ai-training-data-tab.php:56
 #: includes/features/faqs/class-epkb-faqs-cpt-setup.php:81
 msgid "Add New"
 msgstr ""
 
-#: includes/ai/admin/class-epkb-ai-training-data-tab.php:72
+#: includes/ai/admin/class-epkb-ai-training-data-tab.php:79
 msgid "Unable to retrieve training data collections. Please try again later."
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:39
+msgid "Default Chat Widget"
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:62
+#: js/ai/admin-ai-chat.js:494 js/ai/admin-ai-search.js:503
+msgid "AI Assistant"
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:70
+msgid "Type your message..."
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:77
+msgid "Hello! How can I help you today?"
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:86
+msgid "Sorry, something went wrong. Please try again."
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:93
+msgid "Connection error. Please check your connection and try again."
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:100
+msgid "Delayed response. Please try again."
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:107
+msgid "Too many requests. Please wait a moment and try again later."
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:192
+msgid "Failed to save widget configuration"
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:222
+msgid "Failed to reset widget configuration"
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:261
+msgid "Cannot delete the default widget"
+msgstr ""
+
+#: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:268
+msgid "Failed to delete widget configuration"
 msgstr ""
 
 #: includes/ai/config/class-epkb-ai-config-base.php:162
@@ -9848,7 +10090,7 @@ msgid "Collection name is required"
 msgstr ""
 
 #: includes/ai/config/class-epkb-ai-training-data-config-specs.php:315
-#: js/ai/admin-ai-training-data.js:481
+#: js/ai/admin-ai-training-data.js:549
 msgid "Collection name cannot be empty"
 msgstr ""
 
@@ -9875,11 +10117,11 @@ msgid "Each collection must be an array"
 msgstr ""
 
 #: includes/ai/config/class-epkb-ai-training-data-config-specs.php:404
-#: js/ai/admin-ai-app.js:375 js/ai/admin-ai-training-data.js:1606
+#: js/ai/admin-ai-app.js:375 js/ai/admin-ai-training-data.js:1755
 msgid "Data Collection"
 msgstr ""
 
-#: includes/ai/db/class-epkb-ai-messages-db.php:626
+#: includes/ai/db/class-epkb-ai-messages-db.php:711
 msgid "Invalid metadata format"
 msgstr ""
 
@@ -9897,81 +10139,64 @@ msgstr ""
 msgid "File size (%s) exceeds maximum allowed size (%s)"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:177
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:268
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:182
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:213
 msgid "Vector store ID and file ID are required"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:209
-msgid "Vector store ID and an array of file IDs are required"
-msgstr ""
-
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:226
-msgid "Missing batch ID in response"
-msgstr ""
-
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:248
-#, php-format
-msgid "File batch failed. %d files failed to process"
-msgstr ""
-
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:255
-msgid "File batch processing timed out"
-msgstr ""
-
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:299
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:244
 msgid "File ID is required"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:323
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:606
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:268
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:551
 msgid "Vector store ID is required"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:340
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:285
 msgid "Failed to delete vector store"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:373
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:318
 msgid "File processing failed"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:382
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:327
 msgid "File processing timed out"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:503
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:448
 msgid "No vector store found"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:574
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:519
 #, php-format
 msgid "%d files failed to process in vector store"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:584
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:529
 #, php-format
 msgid ""
 "Vector store incomplete: Expected %d files, but only %d completed, %d in "
 "progress, %d failed"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:593
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:538
 #, php-format
 msgid ""
 "Vector store processing timed out. Expected %d files, but processing did not "
 "complete."
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:615
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:560
 msgid "Vector store name is required"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:714
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:659
 msgid "Some files could not be removed from the vector store"
 msgstr ""
 
-#: includes/ai/openai/class-epkb-ai-openai-handler.php:770
+#: includes/ai/openai/class-epkb-ai-openai-handler.php:715
 msgid "Invalid response from AI service"
 msgstr ""
 
@@ -10026,7 +10251,7 @@ msgstr ""
 msgid "Invalid settings data provided."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-admin-controller.php:80
+#: includes/ai/rest/class-epkb-ai-rest-admin-controller.php:84
 msgid ""
 "Invalid API key format. OpenAI API keys should start with \"sk-\" and "
 "contain alphanumeric characters."
@@ -10094,90 +10319,85 @@ msgstr ""
 msgid "Sync canceled successfully"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:479
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:492
 msgid "Failed to save training data collection"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:482
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:495
 msgid "Training data collection created successfully"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:522
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:535
 msgid "Failed to update training data collection"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:537
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:550
 msgid "Training data collection updated successfully"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:551
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:564
 msgid "No IDs provided"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:557
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:570
 #, php-format
 msgid "Deleted %d items, %d failed"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:559
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:572
 #, php-format
 msgid " (%d vector store errors)"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:585
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:598
 msgid "Training data not found"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:592
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:593
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:605
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:606
 msgid "Original post not found"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:700
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:713
 msgid "Collection and associated vector store deleted successfully."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:806
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:818
 #, php-format
 msgid "Successfully added %d new items to the collection"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:808
-#, php-format
-msgid " (%d errors)"
-msgstr ""
-
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:821
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:829
 msgid ""
 "All selected content types are already in the collection. No new items were "
 "found to add."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:824
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:832
 msgid "No published items were found for the selected content types."
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:970
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1021
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1058
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1115
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1166
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1203
 msgid "AI Features Pro is required for training notes"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1007
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1152
 msgid "Note created successfully"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1044
-#: js/ai/admin-ai-training-data.js:1216
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1189
+#: js/ai/admin-ai-training-data.js:1365
 msgid "Note updated successfully"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1076
-#: js/ai/admin-ai-training-data.js:287
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1221
+#: js/ai/admin-ai-training-data.js:318
 msgid "Note deleted successfully"
 msgstr ""
 
-#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1095
+#: includes/ai/rest/class-epkb-ai-rest-training-data-controller.php:1240
 msgid "You do not have permission to manage AI sync"
 msgstr ""
 
@@ -10199,75 +10419,67 @@ msgstr ""
 msgid "AI Search feature is not enabled"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:20
-msgid "Invalid post object"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-content-processor.php:25
-msgid "Post is not published"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-content-processor.php:38
+#: includes/ai/support/class-epkb-ai-content-processor.php:34
 msgid "AI note content is empty"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:49
+#: includes/ai/support/class-epkb-ai-content-processor.php:45
 msgid "Post content is empty after processing"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:78
+#: includes/ai/support/class-epkb-ai-content-processor.php:74
 msgid "Failed to process WordPress block comments"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:84
+#: includes/ai/support/class-epkb-ai-content-processor.php:80
 msgid "Failed to process HTML comments"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:90
+#: includes/ai/support/class-epkb-ai-content-processor.php:86
 msgid "Failed to process shortcodes"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:112
+#: includes/ai/support/class-epkb-ai-content-processor.php:108
 msgid "Failed to normalize punctuation spacing"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:121
+#: includes/ai/support/class-epkb-ai-content-processor.php:117
 msgid "Failed to remove control characters"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:176
+#: includes/ai/support/class-epkb-ai-content-processor.php:172
 msgid "Untitled"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:341
+#: includes/ai/support/class-epkb-ai-content-processor.php:337
 msgid "Invalid attachment"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:349
+#: includes/ai/support/class-epkb-ai-content-processor.php:345
 msgid "Attachment file not found"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:357
+#: includes/ai/support/class-epkb-ai-content-processor.php:353
 #, php-format
 msgid "Attachment exceeds size limit (%s)"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:506
+#: includes/ai/support/class-epkb-ai-content-processor.php:502
 #, php-format
 msgid "Alt text: %s"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:511
+#: includes/ai/support/class-epkb-ai-content-processor.php:507
 #, php-format
 msgid "Caption: %s"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:516
+#: includes/ai/support/class-epkb-ai-content-processor.php:512
 #, php-format
 msgid "Description: %s"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-content-processor.php:521
+#: includes/ai/support/class-epkb-ai-content-processor.php:517
 #, php-format
 msgid "Title: %s"
 msgstr ""
@@ -10308,7 +10520,7 @@ msgid ""
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-log.php:67
-#: includes/ai/support/class-epkb-ai-log.php:77
+#: includes/ai/support/class-epkb-ai-log.php:89
 msgid ""
 "Invalid OpenAI API key. Please check your API key in the General Settings."
 msgstr ""
@@ -10319,12 +10531,25 @@ msgid ""
 "account billing."
 msgstr ""
 
+#: includes/ai/support/class-epkb-ai-log.php:75
+#: includes/ai/support/class-epkb-ai-security.php:311
+msgid "Your login status has changed. Please start a new conversation."
+msgstr ""
+
 #: includes/ai/support/class-epkb-ai-log.php:79
+msgid "You are not authorized to continue this chat session."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-log.php:83
+msgid "Your session has expired. Please refresh the page to continue."
+msgstr ""
+
+#: includes/ai/support/class-epkb-ai-log.php:91
 msgid ""
 "OpenAI account issue. Please check your OpenAI account status and billing."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-log.php:81
+#: includes/ai/support/class-epkb-ai-log.php:93
 msgid "An error occurred while processing your request. Please try again."
 msgstr ""
 
@@ -10350,10 +10575,6 @@ msgstr ""
 
 #: includes/ai/support/class-epkb-ai-security.php:303
 msgid "Chat record does not exist for this session"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-security.php:311
-msgid "Your login status has changed. Please start a new conversation."
 msgstr ""
 
 #: includes/ai/support/class-epkb-ai-security.php:314
@@ -10390,42 +10611,38 @@ msgstr ""
 msgid "Guest"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:108
+#: includes/ai/support/class-epkb-ai-utilities.php:131
 msgid ""
 "No additional emails will be sent today. Check the Chat AI dashboard for "
 "more details."
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:111
+#: includes/ai/support/class-epkb-ai-utilities.php:134
 msgid "Daily email notification limit reached"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:118
+#: includes/ai/support/class-epkb-ai-utilities.php:141
 msgid "No email recipients configured"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:125
+#: includes/ai/support/class-epkb-ai-utilities.php:148
 msgid "Failed to update notification count"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:132
+#: includes/ai/support/class-epkb-ai-utilities.php:155
 #, php-format
 msgid "Failed to send email to %s: %s"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:159
-msgid "Email"
-msgstr ""
-
-#: includes/ai/support/class-epkb-ai-utilities.php:166
+#: includes/ai/support/class-epkb-ai-utilities.php:189
 msgid "Subject"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:173
+#: includes/ai/support/class-epkb-ai-utilities.php:196
 msgid "Message"
 msgstr ""
 
-#: includes/ai/support/class-epkb-ai-utilities.php:201
+#: includes/ai/support/class-epkb-ai-utilities.php:224
 #, php-format
 msgid "Knowledge Base %d"
 msgstr ""
@@ -10512,7 +10729,7 @@ msgstr ""
 msgid "Content not found"
 msgstr ""
 
-#: includes/ai/sync/class-epkb-ai-sync-manager.php:90
+#: includes/ai/sync/class-epkb-ai-sync-manager.php:102
 msgid "Content is empty"
 msgstr ""
 
@@ -10623,8 +10840,8 @@ msgstr ""
 msgid "Echo Knowledge Base Logo"
 msgstr ""
 
-#: includes/class-epkb-html-admin.php:314 js/ai/admin-ai-chat.js:796
-#: js/ai/admin-ai-general-settings.js:287 js/ai/admin-ai-search.js:738
+#: includes/class-epkb-html-admin.php:314 js/ai/admin-ai-chat.js:884
+#: js/ai/admin-ai-general-settings.js:386 js/ai/admin-ai-search.js:947
 msgid "Save Settings"
 msgstr ""
 
@@ -10633,9 +10850,9 @@ msgid "Customize Knowledge Base Pages"
 msgstr ""
 
 #: includes/class-epkb-html-admin.php:740
-#: js/ai/admin-ai-training-data-table.js:1574
-#: js/ai/admin-ai-training-data-table.js:1617
-#: js/ai/admin-ai-training-data-table.js:1631
+#: js/ai/admin-ai-training-data-table.js:1576
+#: js/ai/admin-ai-training-data-table.js:1619
+#: js/ai/admin-ai-training-data-table.js:1633
 msgid "Error Details"
 msgstr ""
 
@@ -10733,7 +10950,7 @@ msgid "View Settings"
 msgstr ""
 
 #: includes/class-epkb-html-elements.php:1010
-#: js/ai/admin-ai-pro-features.js:242
+#: js/ai/admin-ai-pro-features.js:266
 msgid "Copy"
 msgstr ""
 
@@ -10846,8 +11063,8 @@ msgid "The value \"%s\" is not a valid HEX color. Expected format: #xxxxxx"
 msgstr ""
 
 #: includes/class-epkb-utilities.php:20 js/ai/admin-ai-sync.js:699
-#: js/ai/admin-ai-training-data-table.js:971
-#: js/ai/admin-ai-training-data-table.js:1132
+#: js/ai/admin-ai-training-data-table.js:973
+#: js/ai/admin-ai-training-data-table.js:1134
 msgid "Pending"
 msgstr ""
 
@@ -10949,7 +11166,7 @@ msgstr ""
 
 #: includes/class-epkb-utilities.php:2279
 #: includes/system/class-epkb-ui-table.php:165
-#: js/ai/admin-ai-training-data-table.js:1501
+#: js/ai/admin-ai-training-data-table.js:1503
 #: templates/archive-categories.php:505
 msgid "Page"
 msgstr ""
@@ -11682,29 +11899,45 @@ msgstr ""
 msgid "No categories found."
 msgstr ""
 
-#: includes/system/class-epkb-admin-ui-access.php:286
+#: includes/system/class-epkb-admin-ui-access.php:49
+msgid "Invalid post object"
+msgstr ""
+
+#: includes/system/class-epkb-admin-ui-access.php:54
+msgid "Post is not published"
+msgstr ""
+
+#: includes/system/class-epkb-admin-ui-access.php:59
+msgid "Post is password protected"
+msgstr ""
+
+#: includes/system/class-epkb-admin-ui-access.php:64
+msgid "Linked articles are excluded from AI training data"
+msgstr ""
+
+#: includes/system/class-epkb-admin-ui-access.php:323
 msgid ""
 "The FAQs feature is not linked to any specific KB; instead, access to it is "
 "defined within the default KB."
 msgstr ""
 
-#: includes/system/class-epkb-admin-ui-access.php:381
+#: includes/system/class-epkb-admin-ui-access.php:418
 msgid "Admins"
 msgstr ""
 
-#: includes/system/class-epkb-admin-ui-access.php:385
+#: includes/system/class-epkb-admin-ui-access.php:422
 msgid "Editors"
 msgstr ""
 
-#: includes/system/class-epkb-admin-ui-access.php:389
+#: includes/system/class-epkb-admin-ui-access.php:426
 msgid "Authors"
 msgstr ""
 
-#: includes/system/class-epkb-admin-ui-access.php:393
+#: includes/system/class-epkb-admin-ui-access.php:430
 msgid "users with"
 msgstr ""
 
-#: includes/system/class-epkb-admin-ui-access.php:393
+#: includes/system/class-epkb-admin-ui-access.php:430
 msgid "capability"
 msgstr ""
 
@@ -11811,13 +12044,13 @@ msgstr ""
 msgid "Write \"%s\" in input box to delete every Knowledge Base."
 msgstr ""
 
-#: includes/system/class-epkb-delete-kb.php:90
+#: includes/system/class-epkb-delete-kb.php:99
 msgid ""
 "All articles and categories deleted. Options will be deleted when plugin is "
 "uninstalled."
 msgstr ""
 
-#: includes/system/class-epkb-delete-kb.php:160
+#: includes/system/class-epkb-delete-kb.php:169
 msgid "Reset Configuration"
 msgstr ""
 
@@ -11858,15 +12091,15 @@ msgid "Actions"
 msgstr ""
 
 #: includes/system/class-epkb-ui-table.php:139
-#: includes/system/class-epkb-ui-table.php:212 js/ai/admin-ai-chat.js:138
-#: js/ai/admin-ai-search.js:137 js/ai/admin-ai-training-data-table.js:602
-#: js/ai/admin-ai-training-data-table.js:924
-#: js/ai/admin-ai-training-data.js:270 js/ai/admin-ai-training-data.js:579
+#: includes/system/class-epkb-ui-table.php:212 js/ai/admin-ai-chat.js:167
+#: js/ai/admin-ai-search.js:165 js/ai/admin-ai-training-data-table.js:604
+#: js/ai/admin-ai-training-data-table.js:926
+#: js/ai/admin-ai-training-data.js:301 js/ai/admin-ai-training-data.js:647
 msgid "Delete"
 msgstr ""
 
-#: includes/system/class-epkb-ui-table.php:156 js/ai/admin-ai-chat.js:242
-#: js/ai/admin-ai-search.js:241 js/ai/admin-ai-training-data.js:1102
+#: includes/system/class-epkb-ui-table.php:156 js/ai/admin-ai-chat.js:271
+#: js/ai/admin-ai-search.js:269 js/ai/admin-ai-training-data.js:1251
 msgid "Delete Selected"
 msgstr ""
 
@@ -11880,7 +12113,7 @@ msgstr ""
 
 #: includes/system/class-epkb-ui-table.php:165 js/ai/admin-ai-sync.js:811
 #: js/ai/admin-ai-sync.js:813 js/ai/admin-ai-sync.js:821
-#: js/ai/admin-ai-training-data-table.js:1501
+#: js/ai/admin-ai-training-data-table.js:1503
 msgid "of"
 msgstr ""
 
@@ -11900,19 +12133,19 @@ msgstr ""
 msgid "Comment:"
 msgstr ""
 
-#: includes/system/class-epkb-upgrades.php:568
+#: includes/system/class-epkb-upgrades.php:604
 msgid ""
 "We highly recommend you back up your site before upgrading. Next, run the "
 "update in a staging environment."
 msgstr ""
 
-#: includes/system/class-epkb-upgrades.php:569
+#: includes/system/class-epkb-upgrades.php:605
 msgid ""
 "After you run the update, clear your browser cache, hosting cache, and "
 "caching plugins."
 msgstr ""
 
-#: includes/system/class-epkb-upgrades.php:570
+#: includes/system/class-epkb-upgrades.php:606
 msgid ""
 "The latest update includes some substantial changes across different areas "
 "of the plugin"
@@ -11994,7 +12227,7 @@ msgid "Then, the page will reload."
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:116
-#: js/ai/admin-ai-chat.js:679 js/ai/admin-ai-search.js:669
+#: js/ai/admin-ai-chat.js:741 js/ai/admin-ai-search.js:878
 msgid "Reset"
 msgstr ""
 
@@ -12010,33 +12243,33 @@ msgstr ""
 msgid "Color value"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:300
-#: includes/system/scripts-registration-admin.php:328
+#: includes/system/scripts-registration-admin.php:306
+#: includes/system/scripts-registration-admin.php:334
 msgid "Error occurred - configuration NOT saved"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:332
+#: includes/system/scripts-registration-admin.php:338
 #: includes/system/scripts-registration-public.php:90
 msgid "Sending, please wait"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:333
+#: includes/system/scripts-registration-admin.php:339
 #: includes/system/scripts-registration-public.php:91
 msgid "Could not submit the error."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:334
+#: includes/system/scripts-registration-admin.php:340
 msgid "Setup Wizard encountered an error."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:335
+#: includes/system/scripts-registration-admin.php:341
 #: includes/system/scripts-registration-public.php:89
 msgid ""
 "We have detected an error. Please report the issue so that we can help you "
 "resolve it."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:338
+#: includes/system/scripts-registration-admin.php:344
 msgid "Saving changes..."
 msgstr ""
 
@@ -12055,40 +12288,22 @@ msgid "Frontend Editor encountered an error."
 msgstr ""
 
 #: includes/system/scripts-registration-public.php:94
-#: includes/system/scripts-registration-public.php:140
 msgid "Unable to connect. Please refresh the page and try again."
 msgstr ""
 
-#: includes/system/scripts-registration-public.php:136
-msgid "Type your message..."
-msgstr ""
-
-#: includes/system/scripts-registration-public.php:137
-#: js/ai/admin-ai-chat.js:462
-msgid "AI Assistant"
-msgstr ""
-
-#: includes/system/scripts-registration-public.php:138
-msgid "Hello! How can I help you today?"
-msgstr ""
-
-#: includes/system/scripts-registration-public.php:139
-msgid "Sorry, I encountered an error. Please try again."
-msgstr ""
-
-#: includes/system/scripts-registration-public.php:155
+#: includes/system/scripts-registration-public.php:161
 msgid "Searching..."
 msgstr ""
 
-#: includes/system/scripts-registration-public.php:156
+#: includes/system/scripts-registration-public.php:162
 msgid "Sorry, an error occurred during search. Please try again."
 msgstr ""
 
-#: includes/system/scripts-registration-public.php:157
+#: includes/system/scripts-registration-public.php:163
 msgid "No results found. Please try a different search term."
 msgstr ""
 
-#: includes/system/scripts-registration-public.php:779
+#: includes/system/scripts-registration-public.php:784
 msgid "Open KB Frontend Editor"
 msgstr ""
 
@@ -12125,398 +12340,479 @@ msgid "New training data collection created"
 msgstr ""
 
 #: js/ai/admin-ai-app.js:393 js/ai/admin-ai-app.js:397
-#: js/ai/admin-ai-training-data.js:1619
+#: js/ai/admin-ai-training-data.js:1768
 msgid "Failed to create collection"
 msgstr ""
 
-#: js/ai/admin-ai-app.js:455 js/ai/admin-ai-app.js:501
+#: js/ai/admin-ai-app.js:489 js/ai/admin-ai-app.js:569
 msgid "AI features must be enabled to access this tab"
 msgstr ""
 
-#: js/ai/admin-ai-app.js:608
+#: js/ai/admin-ai-app.js:676
 msgid "Reloading page..."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:130 js/ai/admin-ai-chat.js:137
+#: js/ai/admin-ai-chat.js:159 js/ai/admin-ai-chat.js:166
 msgid "Are you sure you want to delete the selected conversations?"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:136
+#: js/ai/admin-ai-chat.js:165
 msgid "Delete Conversations"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:149
+#: js/ai/admin-ai-chat.js:178
 msgid "Deleting conversations..."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:188
+#: js/ai/admin-ai-chat.js:217
 msgid "Conversations refreshed successfully"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:208
+#: js/ai/admin-ai-chat.js:237
 msgid "Search conversations..."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:229 js/ai/admin-ai-search.js:228
-#: js/ai/admin-ai-training-data-table.js:1099
-#: js/ai/admin-ai-training-data-table.js:1221
+#: js/ai/admin-ai-chat.js:258 js/ai/admin-ai-search.js:256
+#: js/ai/admin-ai-training-data-table.js:1101
+#: js/ai/admin-ai-training-data-table.js:1223
 msgid "Refreshing..."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:233 js/ai/admin-ai-search.js:232
+#: js/ai/admin-ai-chat.js:262 js/ai/admin-ai-search.js:260
 #: js/ai/admin-ai-tools.js:699 js/ai/admin-ai-tools.js:742
-#: js/ai/admin-ai-tools.js:784 js/ai/admin-ai-training-data-table.js:1101
-#: js/ai/admin-ai-training-data-table.js:1225
+#: js/ai/admin-ai-tools.js:784 js/ai/admin-ai-training-data-table.js:1103
+#: js/ai/admin-ai-training-data-table.js:1227
 msgid "Refresh"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:250
+#: js/ai/admin-ai-chat.js:279
 msgid "Loading conversations..."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:256
+#: js/ai/admin-ai-chat.js:285
 msgid "No conversations found"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:287
+#: js/ai/admin-ai-chat.js:316 js/ai/admin-ai-search.js:314
 msgid "Time"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:292 js/ai/admin-ai-chat.js:462
-#: js/ai/admin-ai-search.js:291
+#: js/ai/admin-ai-chat.js:321 js/ai/admin-ai-chat.js:494
+#: js/ai/admin-ai-search.js:319 js/ai/admin-ai-search.js:503
 msgid "User"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:293
+#: js/ai/admin-ai-chat.js:322
 msgid "Conversation"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:353 js/ai/admin-ai-search.js:356
-#: js/ai/admin-ai-training-data-table.js:1477
+#: js/ai/admin-ai-chat.js:385 js/ai/admin-ai-search.js:387
+#: js/ai/admin-ai-training-data-table.js:1479
 msgid "Searching server for more results..."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:369 js/ai/admin-ai-chat.js:385
+#: js/ai/admin-ai-chat.js:401 js/ai/admin-ai-chat.js:417
 msgid "Conversation Details"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:376
+#: js/ai/admin-ai-chat.js:408
 msgid "Select a conversation to view details"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:395
+#: js/ai/admin-ai-chat.js:427
 msgid "Conversation Info"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:399 js/ai/admin-ai-search.js:408
+#: js/ai/admin-ai-chat.js:431 js/ai/admin-ai-search.js:439
 msgid "User:"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:419
+#: js/ai/admin-ai-chat.js:451
 msgid "Started:"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:425
+#: js/ai/admin-ai-chat.js:457
 msgid "Messages:"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:431 js/ai/admin-ai-tools.js:601
+#: js/ai/admin-ai-chat.js:463 js/ai/admin-ai-search.js:471
+#: js/ai/admin-ai-tools.js:601
 msgid "Status:"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:437
+#: js/ai/admin-ai-chat.js:469 js/ai/admin-ai-search.js:477
 msgid "Rating:"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:444
+#: js/ai/admin-ai-chat.js:476
 msgid "Full Conversation"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:486
+#: js/ai/admin-ai-chat.js:518
 msgid "No messages in this conversation."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:671 js/ai/admin-ai-search.js:661
+#: js/ai/admin-ai-chat.js:733 js/ai/admin-ai-search.js:870
 msgid "Are you sure you want to reset to default instructions?"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:677 js/ai/admin-ai-search.js:667
+#: js/ai/admin-ai-chat.js:739 js/ai/admin-ai-search.js:876
 msgid "Reset Instructions"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:678 js/ai/admin-ai-search.js:668
+#: js/ai/admin-ai-chat.js:740 js/ai/admin-ai-search.js:877
 msgid ""
 "Are you sure you want to reset to default instructions? Your custom "
 "instructions will be lost."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:691 js/ai/admin-ai-search.js:681
+#: js/ai/admin-ai-chat.js:753 js/ai/admin-ai-search.js:890
 msgid "Reset to Default"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:946
+#: js/ai/admin-ai-chat.js:1039
 msgid "Failed to load conversations"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:1050 js/ai/admin-ai-general-settings.js:359
-#: js/ai/admin-ai-search.js:980 js/ai/admin-ai-tuning.js:102
+#: js/ai/admin-ai-chat.js:1177 js/ai/admin-ai-general-settings.js:452
+#: js/ai/admin-ai-search.js:1189 js/ai/admin-ai-tuning.js:102
 #: js/ai/admin-ai-tuning.js:105
 msgid "Failed to save settings"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:1074
+#: js/ai/admin-ai-chat.js:1202
 msgid "Conversations deleted successfully"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:1087 js/ai/admin-ai-chat.js:1090
+#: js/ai/admin-ai-chat.js:1215 js/ai/admin-ai-chat.js:1218
 msgid "Failed to delete conversations"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:1146
+#: js/ai/admin-ai-chat.js:1274
 msgid "AI Chat is Disabled"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:1147
+#: js/ai/admin-ai-chat.js:1275
 msgid "To view chat history, please enable AI Chat in the Settings tab."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:1154 js/ai/admin-ai-dashboard.js:151
-#: js/ai/admin-ai-dashboard.js:316 js/ai/admin-ai-search.js:1083
+#: js/ai/admin-ai-chat.js:1282 js/ai/admin-ai-dashboard.js:136
+#: js/ai/admin-ai-dashboard.js:311 js/ai/admin-ai-search.js:1292
 msgid "Go to Settings"
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:1169
+#: js/ai/admin-ai-chat.js:1297
 msgid ""
 "OpenAI API key is not configured. Please configure it in General Settings to "
 "use AI Chat features."
 msgstr ""
 
-#: js/ai/admin-ai-chat.js:1170
+#: js/ai/admin-ai-chat.js:1298
 msgid ""
 "Please accept the data privacy agreement in General Settings to use AI Chat "
 "features."
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:50
-msgid "AI features are properly configured and ready to use!"
-msgstr ""
-
-#: js/ai/admin-ai-dashboard.js:68 js/ai/admin-ai-dashboard.js:95
+#: js/ai/admin-ai-dashboard.js:53 js/ai/admin-ai-dashboard.js:80
 #: js/ai/admin-ai-tools.js:710 js/ai/admin-ai-tools.js:753
 #: js/ai/admin-ai-tools.js:805
 msgid "Warnings"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:129
+#: js/ai/admin-ai-dashboard.js:114
 msgid "Welcome to AI Features!"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:130
+#: js/ai/admin-ai-dashboard.js:115
 msgid ""
 "Let's get you set up with AI-powered chat and search in just a few steps."
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:139
-msgid "Step 1: Add Your OpenAI API Key"
-msgstr ""
-
-#: js/ai/admin-ai-dashboard.js:140
-msgid "Connect your OpenAI account to enable AI features."
-msgstr ""
-
-#: js/ai/admin-ai-dashboard.js:159
-msgid "Review how your content will be processed by AI services."
-msgstr ""
-
-#: js/ai/admin-ai-dashboard.js:165
-msgid "Step 3: Sync Your Content"
-msgstr ""
-
-#: js/ai/admin-ai-dashboard.js:166
-msgid "Upload your knowledge base articles to train the AI."
-msgstr ""
-
-#: js/ai/admin-ai-dashboard.js:182
+#: js/ai/admin-ai-dashboard.js:167
 msgid "Complete Your Setup"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:183
+#: js/ai/admin-ai-dashboard.js:168
 msgid "Just a few more steps to enable AI features:"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:294
-msgid "Get Started with AI"
+#: js/ai/admin-ai-dashboard.js:289 js/ai/admin-ai-dashboard.js:808
+msgid "Setup Steps"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:304
+#: js/ai/admin-ai-dashboard.js:299
 msgid "Configure API Key & Privacy"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:305
+#: js/ai/admin-ai-dashboard.js:300
 msgid "Add your OpenAI API key and accept the data privacy agreement"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:325 js/ai/admin-ai-dashboard.js:337
-msgid "Configure Training Data"
+#: js/ai/admin-ai-dashboard.js:320
+msgid "Enable AI Chat and/or AI Search"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:326
-msgid "Select which content to include in your AI knowledge base"
+#: js/ai/admin-ai-dashboard.js:321
+msgid "Enable AI Search or Chat features for your website"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:346
-msgid "Start Sync Process"
+#: js/ai/admin-ai-dashboard.js:333
+msgid "Enable AI Features"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:347
-msgid "Upload your content to OpenAI for AI processing"
+#: js/ai/admin-ai-dashboard.js:342
+msgid "Add Training Data & Sync"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:358
+#: js/ai/admin-ai-dashboard.js:343
+msgid "Select content and sync it to OpenAI for AI processing"
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:354
 msgid "Go to Training Data"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:367
-msgid "Test AI Features"
+#: js/ai/admin-ai-dashboard.js:414
+msgid "Help us prioritize features by providing your information:"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:368
-msgid "Try chat and search on your website to see AI in action"
+#: js/ai/admin-ai-dashboard.js:439
+msgid "Website URL"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:387
+#: js/ai/admin-ai-dashboard.js:439
+msgid "(optional)"
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:450
+msgid "Describe Your Feature Request"
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:455
+msgid "Please describe the feature you would like to see..."
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:464
+msgid "Submit Vote"
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:500
+msgid "Please describe the feature you would like to see."
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:508
+msgid "Please fill in all required fields."
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:515
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:560
+msgid "Please select at least one feature to vote for."
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:603
+msgid "Submitting your vote..."
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:620
+msgid "Thank you for voting!"
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:633
+msgid "An error occurred. Please try again."
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:652
 msgid "Latest Updates"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:428
-msgid "Upcoming Features"
+#: js/ai/admin-ai-dashboard.js:708
+msgid "Vote Upcoming Features"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:450 js/ai/admin-ai-pro-features.js:297
-msgid "Note: Future features are subject to change."
+#: js/ai/admin-ai-dashboard.js:710
+msgid "Select the features you would like to see implemented:"
 msgstr ""
 
-#: js/ai/admin-ai-dashboard.js:468
-msgid "Quick Actions"
+#: js/ai/admin-ai-dashboard.js:779
+msgid "Vote for Selected Features"
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:784
+msgid "feature selected"
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:784
+msgid "features selected"
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:790
+msgid ""
+"Note: Your feedback helps us prioritize development. Features are subject to "
+"change."
+msgstr ""
+
+#: js/ai/admin-ai-dashboard.js:841 js/ai/admin-ai-training-data-table.js:975
+msgid "Completed"
+msgstr ""
+
+#: js/ai/admin-ai-general-settings.js:225
+msgid "Sending..."
+msgstr ""
+
+#: js/ai/admin-ai-general-settings.js:247
+msgid "Test email sent successfully"
+msgstr ""
+
+#: js/ai/admin-ai-general-settings.js:249
+#: js/ai/admin-ai-general-settings.js:252
+msgid "Failed to send test email"
+msgstr ""
+
+#: js/ai/admin-ai-general-settings.js:257
+msgid "Failed to send test email. Please check your connection."
 msgstr ""
 
 #: js/ai/admin-ai-pro-features.js:28
 msgid "All features unlocked"
 msgstr ""
 
-#: js/ai/admin-ai-pro-features.js:230
+#: js/ai/admin-ai-pro-features.js:254
 msgid "Use Code:"
 msgstr ""
 
-#: js/ai/admin-ai-pro-features.js:286
+#: js/ai/admin-ai-pro-features.js:299
+msgid "Unlock Premium AI Features"
+msgstr ""
+
+#: js/ai/admin-ai-pro-features.js:303
+msgid ""
+"Take your knowledge base to the next level with advanced AI capabilities"
+msgstr ""
+
+#: js/ai/admin-ai-pro-features.js:313
 msgid "Premium Features"
 msgstr ""
 
-#: js/ai/admin-ai-pro-features.js:305
+#: js/ai/admin-ai-pro-features.js:328
 msgid "Choose Your Plan"
 msgstr ""
 
-#: js/ai/admin-ai-pro-features.js:306
+#: js/ai/admin-ai-pro-features.js:329
 msgid "Flexible pricing to match your needs"
 msgstr ""
 
-#: js/ai/admin-ai-pro-features.js:320
+#: js/ai/admin-ai-pro-features.js:343
 msgid "What Our Customers Say"
 msgstr ""
 
-#: js/ai/admin-ai-pro-features.js:346
+#: js/ai/admin-ai-pro-features.js:369
 msgid "Get AI Features"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:129 js/ai/admin-ai-search.js:136
+#: js/ai/admin-ai-search.js:157 js/ai/admin-ai-search.js:164
 msgid "Are you sure you want to delete the selected searches?"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:135
+#: js/ai/admin-ai-search.js:163
 msgid "Delete Search History"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:148
+#: js/ai/admin-ai-search.js:176
 msgid "Deleting searches..."
 msgstr ""
 
-#: js/ai/admin-ai-search.js:187
+#: js/ai/admin-ai-search.js:215
 msgid "Search history refreshed successfully"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:207
+#: js/ai/admin-ai-search.js:235
 msgid "Search queries..."
 msgstr ""
 
-#: js/ai/admin-ai-search.js:249
+#: js/ai/admin-ai-search.js:277
 msgid "Loading search history..."
 msgstr ""
 
-#: js/ai/admin-ai-search.js:255
+#: js/ai/admin-ai-search.js:283
 msgid "No searches found"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:292
+#: js/ai/admin-ai-search.js:320
 msgid "Search Query"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:293
+#: js/ai/admin-ai-search.js:321
 msgid "Results Found"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:294
+#: js/ai/admin-ai-search.js:322
 msgid "Article Clicked"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:372 js/ai/admin-ai-search.js:388
+#: js/ai/admin-ai-search.js:403 js/ai/admin-ai-search.js:419
 msgid "Search Details"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:379
+#: js/ai/admin-ai-search.js:410
 msgid "Select a search to view details"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:398
+#: js/ai/admin-ai-search.js:429
 msgid "Search Information"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:402
+#: js/ai/admin-ai-search.js:433
 msgid "Query:"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:434
-msgid "Results Found:"
+#: js/ai/admin-ai-search.js:465
+msgid "Results Count:"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:450
-msgid "Clicked"
+#: js/ai/admin-ai-search.js:484
+msgid "Search Interaction"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:455
-msgid "Relevance Score:"
+#: js/ai/admin-ai-search.js:537
+msgid "User Search"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:879
+#: js/ai/admin-ai-search.js:565
+msgid "AI Response"
+msgstr ""
+
+#: js/ai/admin-ai-search.js:624
+msgid "✓ Clicked"
+msgstr ""
+
+#: js/ai/admin-ai-search.js:630
+msgid "Relevance:"
+msgstr ""
+
+#: js/ai/admin-ai-search.js:1088
 msgid "Failed to load search history"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:1004
+#: js/ai/admin-ai-search.js:1213
 msgid "Searches deleted successfully"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:1017 js/ai/admin-ai-search.js:1020
+#: js/ai/admin-ai-search.js:1226 js/ai/admin-ai-search.js:1229
 msgid "Failed to delete searches"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:1075
+#: js/ai/admin-ai-search.js:1284
 msgid "AI Search is Disabled"
 msgstr ""
 
-#: js/ai/admin-ai-search.js:1076
+#: js/ai/admin-ai-search.js:1285
 msgid "To view search history, please enable AI Search in the Settings tab."
 msgstr ""
 
-#: js/ai/admin-ai-search.js:1113
+#: js/ai/admin-ai-search.js:1322
 msgid "Search Configuration"
 msgstr ""
 
@@ -12554,13 +12850,13 @@ msgstr ""
 msgid "Select All Records"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:700 js/ai/admin-ai-training-data-table.js:969
-#: js/ai/admin-ai-training-data-table.js:1133
+#: js/ai/admin-ai-sync.js:700 js/ai/admin-ai-training-data-table.js:971
+#: js/ai/admin-ai-training-data-table.js:1135
 msgid "Outdated"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:701 js/ai/admin-ai-training-data-table.js:967
-#: js/ai/admin-ai-training-data-table.js:1134
+#: js/ai/admin-ai-sync.js:701 js/ai/admin-ai-training-data-table.js:969
+#: js/ai/admin-ai-training-data-table.js:1136
 msgid "Added"
 msgstr ""
 
@@ -12844,421 +13140,431 @@ msgstr ""
 msgid "Failed to load training data"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:592
+#: js/ai/admin-ai-training-data-table.js:594
 msgid "Data refreshed successfully"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:600
+#: js/ai/admin-ai-training-data-table.js:602
 msgid "Delete Selected Items"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:601
-#: js/ai/admin-ai-training-data-table.js:923
+#: js/ai/admin-ai-training-data-table.js:603
+#: js/ai/admin-ai-training-data-table.js:925
 msgid "Are you sure you want to delete the selected items?"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:619
-#: js/ai/admin-ai-training-data-table.js:941
+#: js/ai/admin-ai-training-data-table.js:621
+#: js/ai/admin-ai-training-data-table.js:943
 msgid "Items deleted successfully"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:637
-#: js/ai/admin-ai-training-data-table.js:958
+#: js/ai/admin-ai-training-data-table.js:639
+#: js/ai/admin-ai-training-data-table.js:960
 msgid "Failed to delete items"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:922
+#: js/ai/admin-ai-training-data-table.js:924
 msgid "Delete Items"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:972
-#: js/ai/admin-ai-training-data-table.js:1181
+#: js/ai/admin-ai-training-data-table.js:974
+#: js/ai/admin-ai-training-data-table.js:1183
 msgid "Syncing"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:973
-msgid "Completed"
-msgstr ""
-
-#: js/ai/admin-ai-training-data-table.js:974
+#: js/ai/admin-ai-training-data-table.js:976
 msgid "Canceled"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1082
+#: js/ai/admin-ai-training-data-table.js:1084
 msgid "No published articles found"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1083
+#: js/ai/admin-ai-training-data-table.js:1085
 msgid ""
 "No published knowledge base articles were found. Create and publish some "
 "articles first, then they will automatically appear here ready for AI "
 "synchronization."
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1130
+#: js/ai/admin-ai-training-data-table.js:1132
 msgid "Sync"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1181
+#: js/ai/admin-ai-training-data-table.js:1183
 msgid "Sync Complete"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1198
+#: js/ai/admin-ai-training-data-table.js:1200
 msgid "Search by title, type, URL, or ID..."
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1231
+#: js/ai/admin-ai-training-data-table.js:1233
 msgid "selected"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1238
+#: js/ai/admin-ai-training-data-table.js:1240
 msgid "Preparing sync..."
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1238
+#: js/ai/admin-ai-training-data-table.js:1240
 msgid "Loading training data..."
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1282
-#: js/ai/admin-ai-training-data-table.js:1283
-#: js/ai/admin-ai-training-data-table.js:1338
-#: js/ai/admin-ai-training-data-table.js:1339
+#: js/ai/admin-ai-training-data-table.js:1284
+#: js/ai/admin-ai-training-data-table.js:1285
+#: js/ai/admin-ai-training-data-table.js:1340
+#: js/ai/admin-ai-training-data-table.js:1341
 msgid "Sort"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1293
+#: js/ai/admin-ai-training-data-table.js:1295
 msgid "Type"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1355
+#: js/ai/admin-ai-training-data-table.js:1357
 msgid "No training data found"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1438
+#: js/ai/admin-ai-training-data-table.js:1440
 msgid "Edit note"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1439
+#: js/ai/admin-ai-training-data-table.js:1441
 msgid "View Error"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1439
+#: js/ai/admin-ai-training-data-table.js:1441
 msgid "View content"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1454
+#: js/ai/admin-ai-training-data-table.js:1456
 msgid "KB Files"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1458
-#: js/ai/admin-ai-training-data-table.js:1459
+#: js/ai/admin-ai-training-data-table.js:1460
+#: js/ai/admin-ai-training-data-table.js:1461
 msgid "Never"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1625
-#: js/ai/admin-ai-training-data-table.js:1633
+#: js/ai/admin-ai-training-data-table.js:1627
+#: js/ai/admin-ai-training-data-table.js:1635
 msgid "Failed to load content"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1681
+#: js/ai/admin-ai-training-data-table.js:1683
 msgid "Post ID:"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1704
+#: js/ai/admin-ai-training-data-table.js:1706
 msgid "Loading content..."
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1715
+#: js/ai/admin-ai-training-data-table.js:1717
 msgid "Error Processing Content"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1735
+#: js/ai/admin-ai-training-data-table.js:1737
 msgid "Original Content"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1744
+#: js/ai/admin-ai-training-data-table.js:1746
 msgid "Processed Content"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1753
-msgid "Summarized Content"
-msgstr ""
-
-#: js/ai/admin-ai-training-data-table.js:1765
+#: js/ai/admin-ai-training-data-table.js:1768
 msgid "No content available"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1774
+#: js/ai/admin-ai-training-data-table.js:1777
 msgid "No processed content available"
 msgstr ""
 
-#: js/ai/admin-ai-training-data-table.js:1783
-msgid "No summarized content available"
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:194
+#: js/ai/admin-ai-training-data.js:225
 msgid "Failed to load note content"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:219
+#: js/ai/admin-ai-training-data.js:250
 msgid "Please enter both title and content for the note"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:261
+#: js/ai/admin-ai-training-data.js:292
 msgid "Unable to delete note. Please refresh the page and try again."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:268 js/ai/admin-ai-training-data.js:396
+#: js/ai/admin-ai-training-data.js:299 js/ai/admin-ai-training-data.js:427
 msgid "Delete Note"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:269
+#: js/ai/admin-ai-training-data.js:300
 msgid ""
 "Are you sure you want to delete this note? This action cannot be undone."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:306
+#: js/ai/admin-ai-training-data.js:337
 msgid "Failed to delete note"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:325
+#: js/ai/admin-ai-training-data.js:356
 msgid "Edit Note"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:325 js/ai/admin-ai-training-data.js:731
+#: js/ai/admin-ai-training-data.js:356 js/ai/admin-ai-training-data.js:1045
 msgid "Add Note"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:342
+#: js/ai/admin-ai-training-data.js:373
 msgid "Loading note content..."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:349
+#: js/ai/admin-ai-training-data.js:380
 msgid "Note Title"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:355
+#: js/ai/admin-ai-training-data.js:386
 msgid "Enter note title..."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:362
+#: js/ai/admin-ai-training-data.js:393
 msgid "Note Content"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:368
+#: js/ai/admin-ai-training-data.js:399
 msgid "Enter note content..."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:396 js/ai/admin-ai-training-data.js:1144
+#: js/ai/admin-ai-training-data.js:427 js/ai/admin-ai-training-data.js:1293
 msgid "Deleting..."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:419
+#: js/ai/admin-ai-training-data.js:450
 msgid "Save Note"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:496
+#: js/ai/admin-ai-training-data.js:564
 msgid "Collection name updated successfully"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:504
+#: js/ai/admin-ai-training-data.js:572
 msgid "Failed to update collection name"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:577 js/ai/admin-ai-training-data.js:1144
+#: js/ai/admin-ai-training-data.js:645 js/ai/admin-ai-training-data.js:1293
 msgid "Delete Collection"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:578
+#: js/ai/admin-ai-training-data.js:646
 msgid "Are you sure you want to delete this collection?"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:578
+#: js/ai/admin-ai-training-data.js:646
 msgid "Type the collection name to confirm:"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:583 js/ai/admin-ai-training-data.js:1024
+#: js/ai/admin-ai-training-data.js:651 js/ai/admin-ai-training-data.js:1173
 msgid "Enter collection name"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:600
+#: js/ai/admin-ai-training-data.js:668
 msgid "Collection deleted successfully"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:615
+#: js/ai/admin-ai-training-data.js:683
 msgid "Failed to delete collection"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:624
+#: js/ai/admin-ai-training-data.js:692
 msgid "Please select at least one data type"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:640
+#: js/ai/admin-ai-training-data.js:708
 msgid "Data added successfully"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:652
+#: js/ai/admin-ai-training-data.js:724
 msgid "Failed to add data"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:666
+#: js/ai/admin-ai-training-data.js:738
 msgid "Choose an Action"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:680 js/ai/admin-ai-training-data.js:704
+#: js/ai/admin-ai-training-data.js:752 js/ai/admin-ai-training-data.js:776
 msgid "Cannot change actions while sync is in progress"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:682 js/ai/admin-ai-training-data.js:747
+#: js/ai/admin-ai-training-data.js:754 js/ai/admin-ai-training-data.js:794
 msgid "Choose Training Data"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:693 js/ai/admin-ai-training-data.js:754
-#: js/ai/admin-ai-training-data.js:781
+#: js/ai/admin-ai-training-data.js:765 js/ai/admin-ai-training-data.js:801
+#: js/ai/admin-ai-training-data.js:828
 msgid "Send Data to AI"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:706 js/ai/admin-ai-training-data.js:761
-#: js/ai/admin-ai-training-data.js:783
+#: js/ai/admin-ai-training-data.js:778 js/ai/admin-ai-training-data.js:808
+#: js/ai/admin-ai-training-data.js:830
 msgid "Other Actions"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:719
+#: js/ai/admin-ai-training-data.js:787
+msgid "How to get started"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:796
+msgid "Pick the content types to include."
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:803
+msgid "Select items in the table, then sync them."
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:810
+msgid "Rename the collection or delete items."
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:816
+msgid "Tip: Start with a small set to test the flow."
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:826
+msgid "Add Training Data"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:851
+msgid "Cannot navigate while sync is in progress"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:864
+msgid ""
+"Choose which content types you want to include in your AI training data."
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:879
+msgid "Access Manager Notice"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:880
+msgid ""
+"Currently only publicly accessible articles can be uploaded to AI. Articles "
+"with access restrictions will not be included in the training data."
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:891 js/ai/admin-ai-training-data.js:896
+msgid "Loading content types..."
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:957
+msgid "available"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:962
+msgid "added"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:968
+msgid "excluded"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:999
+msgid "No eligible content"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:1001
+msgid "No published content available"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:1003
+msgid "All eligible items already added to collection"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:1008
+msgid "No content types available."
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:1021
+msgid "Adding Data..."
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:1021
+msgid "Add Data"
+msgstr ""
+
+#: js/ai/admin-ai-training-data.js:1033
 msgid "Notes"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:721
+#: js/ai/admin-ai-training-data.js:1035
 msgid ""
 "Add custom notes to help train the AI with specific information, guidelines, "
 "or context that may not be in your regular content."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:740
-msgid "How to get started"
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:749
-msgid "Pick the content types to include."
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:756
-msgid "Select items in the table, then sync them."
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:763
-msgid "Rename the collection or delete items."
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:769
-msgid "Tip: Start with a small set to test the flow."
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:779
-msgid "Add Training Data"
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:804
-msgid "Cannot navigate while sync is in progress"
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:817
-msgid ""
-"Choose which content types you want to include in your AI training data."
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:868
-msgid "new item"
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:868
-msgid "new items"
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:880
-msgid "No published content available"
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:881
-msgid "All items already added to collection"
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:884
-msgid "No content types available."
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:897
-msgid "Adding Data..."
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:897
-msgid "Add Data"
-msgstr ""
-
-#: js/ai/admin-ai-training-data.js:993
+#: js/ai/admin-ai-training-data.js:1142
 msgid ""
 "Select items from the table and choose a sync method to update your AI "
 "training data."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:999
+#: js/ai/admin-ai-training-data.js:1148
 msgid "Manage your collection settings and data."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1006
+#: js/ai/admin-ai-training-data.js:1155
 msgid "Collection Name"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1044
+#: js/ai/admin-ai-training-data.js:1193
 msgid "Change the display name for this collection."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1089
+#: js/ai/admin-ai-training-data.js:1238
 msgid "Unable to delete items. Please refresh the page and try again."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1107
+#: js/ai/admin-ai-training-data.js:1256
 msgid "Selected Records"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1113
+#: js/ai/admin-ai-training-data.js:1262
 msgid "Delete the selected training data items from this collection."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1149
+#: js/ai/admin-ai-training-data.js:1298
 msgid "This will permanently delete all training data in this collection."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1216
+#: js/ai/admin-ai-training-data.js:1365
 msgid "Note added successfully"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1226
+#: js/ai/admin-ai-training-data.js:1375
 msgid ""
 "AI Features Pro is not properly configured. Please ensure the plugin is "
 "activated."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1228
+#: js/ai/admin-ai-training-data.js:1377
 msgid "Failed to save note"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1593
+#: js/ai/admin-ai-training-data.js:1742
 msgid "Unable to determine next collection ID"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1611
+#: js/ai/admin-ai-training-data.js:1760
 msgid "Collection created successfully"
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1657
+#: js/ai/admin-ai-training-data.js:1806
 msgid "Sync in progress. Please wait..."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1676
+#: js/ai/admin-ai-training-data.js:1825
 msgid "No collections available. Click \"Add New\" to create one."
 msgstr ""
 
-#: js/ai/admin-ai-training-data.js:1688
+#: js/ai/admin-ai-training-data.js:1837
 msgid "No training data configuration available."
 msgstr ""
 
@@ -13343,39 +13649,39 @@ msgstr ""
 msgid "You have unsaved changes"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:331
+#: js/ai/admin-ai-util.js:363
 msgid "Your session has expired. Please refresh the page."
 msgstr ""
 
-#: js/ai/admin-ai-util.js:333
+#: js/ai/admin-ai-util.js:365
 msgid "Too many requests. Please wait a moment and try again."
 msgstr ""
 
-#: js/ai/admin-ai-util.js:337
+#: js/ai/admin-ai-util.js:369
 msgid "An unexpected error occurred. Please try again."
 msgstr ""
 
-#: js/ai/admin-ai-util.js:622
+#: js/ai/admin-ai-util.js:655
 msgid "Confirm Action"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:623
+#: js/ai/admin-ai-util.js:656
 msgid "Are you sure you want to proceed?"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:624
+#: js/ai/admin-ai-util.js:657
 msgid "Confirm"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:816
+#: js/ai/admin-ai-util.js:849
 msgid "Session Expired"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:818
+#: js/ai/admin-ai-util.js:851
 msgid "Refresh Page"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:940
+#: js/ai/admin-ai-util.js:973
 msgid "No results found"
 msgstr ""
 

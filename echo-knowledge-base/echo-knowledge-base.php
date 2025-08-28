@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 15.200.0
+ * Version: 15.210.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '15.200.0';
+	public static $version = '15.210.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -135,7 +135,7 @@ final class Echo_Knowledge_Base {
 			return;
 		}
 
-		// ADMIN or CLI
+		/** @disregard P1011 */
 		if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
             if ( $this->is_kb_plugin_active_for_network( 'echo-knowledge-base/echo-knowledge-base.php' ) ) {
                 add_action( 'plugins_loaded', array( self::$instance, 'setup_backend_classes' ), 11 );
@@ -202,7 +202,7 @@ final class Echo_Knowledge_Base {
 			return;
 		} else if ( in_array( $action, array( 'epkb_wpml_enable', 'eckb_update_category_slug_parameter', 'eckb_update_tag_slug_parameter', 'epkb_preload_fonts','epkb_enable_legacy_open_ai',
 												'epkb_load_resource_links_icons', 'epkb_load_general_typography', 'epkb_save_access_control', 'epkb_apply_settings_changes', 'epkb_save_kb_name',
-												'epkb_save_sidebar_intro_text' ) ) ) {
+												'epkb_save_sidebar_intro_text', 'epkb_switch_kb_template' ) ) ) {
 			new EPKB_KB_Config_Controller();
 			return;
 		} else if ( in_array( $action, array( 'epkb_reset_sequence', 'epkb_show_sequence' ) ) ) {
@@ -229,11 +229,18 @@ final class Echo_Knowledge_Base {
 		} else if ( $action == 'epkb_ai_toggle_debug_mode' ) {
 			new EPKB_AI_Tools_Tab();
 			return;
-		} else if ( $action == 'epkb_get_ai_status' ) {
+		} else if ( in_array( $action, array( 'epkb_get_ai_status', 'epkb_vote_for_features' ) ) ) {
 			new EPKB_AI_Dashboard_Tab();
 			return;
 		} else if ( in_array( $action, array( 'epkb_ai_save_tuning_settings', 'epkb_ai_reset_tuning_defaults' ) )) {
 			new EPKB_AI_Tools_Tuning_Tab();
+			return;
+		} else if ( $action == 'epkb_kb_vote_for_features' ) {
+			new EPKB_Dashboard_Page();
+			return;
+		} else if ( $action == 'epkb_check_training_data_sync' ) {
+			new EPKB_AI_Dashboard_Tab();
+			return;
 		}
 		
 		if ( $action == 'add-tag' ) {

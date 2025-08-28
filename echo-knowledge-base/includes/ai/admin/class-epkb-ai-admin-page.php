@@ -36,14 +36,7 @@ class EPKB_AI_Admin_Page {
 			'title' => 'Training Data',
 			'icon' => 'epkbfa epkbfa-database',
 			'class' => 'EPKB_AI_Training_Data_Tab',
-			'requires_ai' => true
-		),
-		'tools' => array(
-			'title' => 'Tools',
-			'icon' => 'epkbfa epkbfa-wrench',
-			'class' => 'EPKB_AI_Tools_Tab',
-			'requires_ai' => true,
-			'has_sub_tabs' => true
+			'requires_ai' => false
 		),
 		'general-settings' => array(
 			'title' => 'General Settings',
@@ -57,6 +50,13 @@ class EPKB_AI_Admin_Page {
 			'class' => 'EPKB_AI_PRO_Features_Tab',
 			'requires_ai' => false
 		),
+		'tools' => array(
+			'title' => 'Tools',
+			'icon' => 'epkbfa epkbfa-wrench',
+			'class' => 'EPKB_AI_Tools_Tab',
+			'requires_ai' => true,
+			'has_sub_tabs' => true
+		),
 	);
 
 	// Sub-tabs configuration
@@ -68,6 +68,7 @@ class EPKB_AI_Admin_Page {
 	 * @return array
 	 */
 	private function get_sub_tabs() {
+
 		if ( empty( $this->sub_tabs ) ) {
 			$this->sub_tabs = array(
 				'tools' => array(
@@ -155,7 +156,7 @@ class EPKB_AI_Admin_Page {
 			'sub_tabs' => $this->get_sub_tabs(),  // Sub-tabs configuration
 			'ai_enabled' => EPKB_AI_Utilities::is_ai_enabled(),  // Current AI status
 			'nonce' => wp_create_nonce( 'wp_rest' ),
-			'rest_url' => rest_url( 'epkb-admin/v1/' ),
+			'rest_url' => esc_url_raw( rest_url() ),
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'ajax_nonce' => wp_create_nonce( '_wpnonce_epkb_ajax_action' ),
 			'i18n' => $this->get_i18n_strings(),
@@ -176,7 +177,7 @@ class EPKB_AI_Admin_Page {
 				<!-- Initial loading spinner - will be replaced when React mounts -->
 				<div class="epkb-ai-loading-container" id="epkb-ai-initial-loader">
 					<div class="epkb-loading-spinner"></div>
-					<div class="epkb-ai-loading"><?php echo esc_html__( 'Loading AI Configuration...', 'echo-knowledge-base' ); ?></div>
+					<div class="epkb-ai-loading"><?php echo esc_html__( 'Loading AI Page...', 'echo-knowledge-base' ); ?></div>
 				</div>
 			</div>
 		</div>		<?php

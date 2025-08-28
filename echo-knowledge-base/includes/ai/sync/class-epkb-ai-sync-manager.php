@@ -76,6 +76,18 @@ class EPKB_AI_Sync_Manager {
 				return new WP_Error( 'invalid_post', __( 'Post not found', 'echo-knowledge-base' ), array( 'post_id' => $post_id ) );
 			}
 
+			// Use centralized eligibility check
+			$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
+			if ( is_wp_error( $eligibility_check ) ) {
+				$error_code = 404; // Default error code
+				if ( $eligibility_check->get_error_code() === 'post_password_protected' ) {
+					$error_code = 403;
+				}
+				EPKB_AI_Log::add_log( 'Post excluded from sync: ' . $eligibility_check->get_error_message(), array( 'post_id' => $post_id, 'title' => $post->post_title ) );
+				$this->training_data_db->mark_as_error( $post_id, $error_code, $eligibility_check->get_error_message() );
+				return $eligibility_check;
+			}
+
 			// Prepare content for regular posts
 			$content_processor = new EPKB_AI_Content_Processor();
 			$prepared = $content_processor->prepare_post( $post );
@@ -236,7 +248,6 @@ class EPKB_AI_Sync_Manager {
 		}
 	}
 
-
 	/**
 	 * Remove post from sync
 	 *
@@ -294,89 +305,6 @@ class EPKB_AI_Sync_Manager {
 		$error_code = isset( $mapped['code'] ) ? $mapped['code'] : 500;
 		$error_message = isset( $mapped['message'] ) ? $mapped['message'] : $wp_error->get_error_message();
 		$this->training_data_db->mark_as_error( $training_data_id, $error_code, $error_message );
-	}
-
-	/**
-	 * Get posts to sync
-	 *
-	 * @param int $collection_id Collection ID
-	 * @param array $options Sync options
-	 * @return array Post IDs
-	 */
-	public function get_posts_to_sync( $collection_id, $options = array() ) {
-
-		// Get collection configuration
-		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
-		if ( is_wp_error( $collection_config ) ) {
-			$collection_config = EPKB_AI_Training_Data_Config_Specs::get_default_collection_config();
-		}
-
-		// Get configured post types for this collection
-		$configured_post_types = $collection_config['ai_training_data_store_post_types'];
-		if ( empty( $configured_post_types ) ) {
-			return array();
-		}
-
-		$args = array(
-			'post_type' => $configured_post_types,
-			'post_status' => 'publish',
-			'posts_per_page' => -1,
-			'fields' => 'ids',
-			'no_found_rows' => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false
-		);
-
-		// Add specific post IDs if provided
-		if ( ! empty( $options['post_ids'] ) ) {
-			$args['post__in'] = $options['post_ids'];
-		}
-
-		// Handle sync type
-		if ( ! empty( $options['sync_type'] ) ) {
-			switch ( $options['sync_type'] ) {
-				case 'incremental':
-					// Sync only recently modified articles
-					if ( isset( $options['since'] ) ) {
-						// Use specific timestamp if provided
-						$args['date_query'] = array(
-							array(
-								'column' => 'post_modified',
-								'after' => date( 'Y-m-d H:i:s', $options['since'] )
-							)
-						);
-					} else {
-						// Use date range in days
-						$date_range = isset( $options['date_range'] ) ? intval( $options['date_range'] ) : 7;
-						$args['date_query'] = array(
-							array(
-								'column' => 'post_modified',
-								'after' => $date_range . ' days ago',
-							)
-						);
-					}
-					break;
-
-				case 'retry':
-					// Get failed items from training data DB
-					$failed_items = $this->training_data_db->get_items_needing_sync( 1000 );
-					$post_ids = wp_list_pluck( $failed_items, 'item_id' );
-					if ( empty( $post_ids ) ) {
-						return array(); // No failed items to retry
-					}
-					$args['post__in'] = $post_ids;
-					break;
-			}
-		}
-
-		// Limit posts for development mode
-		if ( ! empty( $options['limit_posts'] ) && $options['limit_posts'] > 0 ) {
-			$args['posts_per_page'] = intval( $options['limit_posts'] );
-		}
-
-		$query = new WP_Query( $args );
-
-		return $query->posts;
 	}
 
 	/**

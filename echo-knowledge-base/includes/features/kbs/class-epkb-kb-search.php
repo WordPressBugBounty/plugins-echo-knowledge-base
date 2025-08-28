@@ -62,7 +62,7 @@ class EPKB_KB_Search {
                     </div>';
                     
 				// Add AI search section if enabled
-				if ( EPKB_AI_Utilities::is_ai_search_enabled() ) {
+				if ( EPKB_AI_Utilities::is_ai_search_enabled_for_frontend() ) {
 					ob_start();
 					EPKB_ML_Search::display_ai_search_section( $kb_config, 'below' );
 					$search_result .= ob_get_clean();

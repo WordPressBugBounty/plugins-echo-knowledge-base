@@ -253,7 +253,7 @@ class EPKB_ML_Search {
 		}
 
 		// Check AI Search settings
-		$ai_search_enabled = EPKB_AI_Utilities::is_ai_search_enabled();
+		$ai_search_enabled = EPKB_AI_Utilities::is_ai_search_enabled_for_frontend();
 
 		// Limit results to 6 if AI is shown below results
 		$results_to_show = $search_results;
@@ -323,15 +323,5 @@ class EPKB_ML_Search {
 				<span class="epkb-ml-ai-search-button__text"><?php esc_html_e( 'Ask AI?', 'echo-knowledge-base' ); ?></span>
 			</button>
 		</div>		<?php
-		
-		// Add error form once per page for AI Search
-		static $error_form_added = false;
-		if ( ! $error_form_added ) {
-			$error_form_added = true;		?>
-			<!-- Error Form for AI Search -->
-			<div id="epkb-ai-search-error-form-wrap" style="display: none !important;">	<?php
-				EPKB_HTML_Admin::display_report_admin_error_form();	?>
-			</div>		<?php
-		}
 	}
 }

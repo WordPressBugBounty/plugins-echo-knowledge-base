@@ -798,6 +798,37 @@ jQuery(document).ready(function($) {
 			return false;
 		});
 		
+		// Switch to KB Template button handler
+		$( document ).on( 'click', '.epkb-switch-to-kb-template', function( e ) {
+			e.preventDefault();
+			
+			let button = $( this );
+			let kb_id = button.data( 'kb-id' );
+			
+			let postData = {
+				action: 'epkb_switch_kb_template',
+				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+				epkb_kb_id: kb_id,
+				template_type: 'kb_templates'
+			};
+			
+			epkb_send_ajax( postData, function( response ) {
+				$( '.eckb-top-notice-message' ).remove();
+				
+				// Show success message
+				if ( typeof response.message !== 'undefined' ) {
+					$( 'body' ).append( response.message );
+				}
+				
+				// Reload page if requested
+				if ( response.reload === true ) {
+					setTimeout( function() {
+						location.reload();
+					}, 1000 );
+				}
+			} );
+		});
+		
 		// Update typography font family hidden input when font is selected
 		$( document ).on( 'epkb-font-selected', function( e, fontFamily ) {
 			$( '#general_typography_font_family' ).val( fontFamily );
@@ -3507,4 +3538,193 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		$( '[data-target="faq-shortcodes"]' ).trigger( 'click' );
 	} );
+});
+
+// Dashboard Page Features - wrapped in separate jQuery ready
+jQuery(document).ready(function($) {
+	
+	/*********************************************************************************************
+	 * 
+	 * Dashboard Page - Vote for Features
+	 * 
+	 *********************************************************************************************/
+	
+	// Vote for Features dialog functionality
+	let voteDialog = null;
+	
+	$("#epkb-open-vote-dialog").on("click", function() {
+		if (!voteDialog) {
+			voteDialog = $("#epkb-vote-dialog").dialog({
+				modal: true,
+				width: 600,
+				maxWidth: "90%",
+				height: "auto",
+				maxHeight: "80vh",
+				resizable: false,
+				dialogClass: "epkb-vote-features-dialog",
+				buttons: [
+					{
+						text: "Submit Vote",
+						class: "epkb-btn-vote-submit-dialog",
+						click: function() {
+							$("#epkb-kb-vote-features-form").submit();
+						}
+					},
+					{
+						text: "Cancel",
+						click: function() {
+							$(this).dialog("close");
+						}
+					}
+				],
+				open: function() {
+					$(".ui-widget-overlay").on("click", function() {
+						voteDialog.dialog("close");
+					});
+				}
+			});
+		} else {
+			voteDialog.dialog("open");
+		}
+	});
+	
+	// Vote form submission
+	$("#epkb-kb-vote-features-form").on("submit", function(e) {
+		e.preventDefault();
+		
+		const $form = $(this);
+		const $message = $form.find(".epkb-vote-message");
+		const $submitBtn = $(".epkb-btn-vote-submit-dialog");
+		const formData = new FormData(this);
+		
+		// Add nonce and action
+		formData.append("_wpnonce_epkb_ajax_action", epkb_vars.nonce);
+		formData.append("action", "epkb_kb_vote_for_features");
+		
+		// Disable submit button and show loading
+		$submitBtn.prop("disabled", true).html("<span class=\"epkbfa epkbfa-spinner epkb-icon-spin\"></span> Submitting...");
+		$message.hide().removeClass("epkb-vote-success epkb-vote-error");
+		
+		$.ajax({
+			url: ajaxurl,
+			type: "POST",
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function(response) {
+				if (response.success) {
+					$message.addClass("epkb-vote-success").html(response.data.message).fadeIn();
+					
+					// Close dialog after short delay
+					setTimeout(function() {
+						if (voteDialog) {
+							voteDialog.dialog("close");
+						}
+						// Reset form for next use
+						$form[0].reset();
+						$(".epkb-vote-other-input").hide();
+						$message.hide();
+					}, 2000);
+				} else {
+					$message.addClass("epkb-vote-error").html(response.data || "An error occurred. Please try again.").fadeIn();
+				}
+			},
+			error: function() {
+				$message.addClass("epkb-vote-error").html("Failed to submit vote. Please try again.").fadeIn();
+			},
+			complete: function() {
+				$submitBtn.prop("disabled", false).text("Submit Vote");
+			}
+		});
+	});
+	
+	// Show/hide custom feature input
+	$(document).on("change", "input[name=\"features[]\"][value=\"custom-feature\"]", function() {
+		if ($(this).is(":checked")) {
+			$(".epkb-vote-other-input").slideDown();
+		} else {
+			$(".epkb-vote-other-input").slideUp();
+			$("textarea[name=\"other_feature_text\"]").val("");
+		}
+	});
+
+	/*********************************************************************************************
+	 * 
+	 * Dashboard Page - Add-ons Carousel
+	 * 
+	 *********************************************************************************************/
+	
+	// Add-ons Carousel functionality
+	let currentIndex = 0;
+	const $track = $(".epkb-addons-carousel-track");
+	const $items = $(".epkb-carousel-item");
+	const itemCount = $items.length;
+	
+	function updateCarousel() {
+		// Calculate translateX accounting for 20px gap between items
+		const gapPercentage = 5.5; // Approximate percentage for 20px gap
+		const translateX = -currentIndex * (100 + gapPercentage);
+		$track.css("transform", "translateX(" + translateX + "%)");
+		
+		// Update button states
+		$(".epkb-carousel-prev").prop("disabled", currentIndex === 0);
+		$(".epkb-carousel-next").prop("disabled", currentIndex === itemCount - 1);
+	}
+	
+	$(".epkb-carousel-prev").on("click", function() {
+		if (currentIndex > 0) {
+			currentIndex--;
+			updateCarousel();
+		}
+	});
+	
+	$(".epkb-carousel-next").on("click", function() {
+		if (currentIndex < itemCount - 1) {
+			currentIndex++;
+			updateCarousel();
+		}
+	});
+	
+	// Initialize carousel
+	updateCarousel();
+	
+	// Add click handler for carousel items
+	$(".epkb-carousel-item img, .epkb-carousel-item h4").on("click", function() {
+		const $item = $(this).closest(".epkb-carousel-item");
+		const addonData = $item.data("addon");
+		
+		if (addonData) {
+			// Create and show modal dialog
+			const dialogContent = "<div class=\"epkb-addon-dialog-content\">" +
+				"<div class=\"epkb-addon-dialog-image\">" +
+					"<img src=\"" + addonData.img + "\" alt=\"" + addonData.title + "\">" +
+				"</div>" +
+				"<div class=\"epkb-addon-dialog-text\">" +
+					"<h3>" + addonData.title + "</h3>" +
+					(addonData.special_note ? "<p class=\"epkb-addon-note\"><i>" + addonData.special_note + "</i></p>" : "") +
+					"<p class=\"epkb-addon-desc\">" + addonData.desc + "</p>" +
+					"<a href=\"" + addonData.learn_more_url + "\" target=\"_blank\" class=\"epkb-primary-btn\">Learn More</a>" +
+				"</div>" +
+			"</div>";
+			
+			const $dialog = $("<div>").html(dialogContent).dialog({
+				modal: true,
+				width: 750,
+				maxWidth: "90%",
+				height: "auto",
+				maxHeight: "80vh",
+				resizable: false,
+				dialogClass: "epkb-addon-dialog",
+				close: function() {
+					$(this).dialog("destroy").remove();
+				}
+			});
+			
+			// Close dialog when clicking outside (on overlay)
+			$(".ui-widget-overlay").on("click", function() {
+				$dialog.dialog("close");
+			});
+		}
+	});
+
 });

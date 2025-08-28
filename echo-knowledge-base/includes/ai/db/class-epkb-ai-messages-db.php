@@ -321,15 +321,17 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 */
 	public function get_conversations( $args = array() ) {
 		$defaults = array(
-			'page'     => 1,
-			'per_page' => self::PER_PAGE,
-			'mode'     => '',
-			'user_id'  => 0,
+			'page'      => 1,
+			'per_page'  => self::PER_PAGE,
+			'mode'      => '',
+			'user_id'   => 0,
 			'widget_id' => '',
-			'language' => '',
-			'orderby'  => 'created',
-			'order'    => 'DESC',
-			'search'   => ''
+			'language'  => '',
+			'orderby'   => 'created',
+			'order'     => 'DESC',
+			'search'    => '',
+			'date_from' => '', // Format: 'Y-m-d H:i:s'
+			'date_to'   => ''  // Format: 'Y-m-d H:i:s'
 		);
 		
 		$args = wp_parse_args( $args, $defaults );
@@ -357,6 +359,17 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		
 		if ( ! empty( $args['widget_id'] ) ) {
 			$where[] = $this->prepare_column_value( 'widget_id', $args['widget_id'] );
+		}
+		
+		// Add date range filtering
+		if ( ! empty( $args['date_from'] ) ) {
+			global $wpdb;
+			$where[] = $wpdb->prepare( 'created >= %s', $args['date_from'] );
+		}
+		
+		if ( ! empty( $args['date_to'] ) ) {
+			global $wpdb;
+			$where[] = $wpdb->prepare( 'created <= %s', $args['date_to'] );
 		}
 		
 		// Add search functionality
@@ -426,6 +439,17 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 			$where[] = $this->prepare_column_value( 'widget_id', $args['widget_id'] );
 		}
 		
+		// Add date range filtering
+		if ( ! empty( $args['date_from'] ) ) {
+			global $wpdb;
+			$where[] = $wpdb->prepare( 'created >= %s', $args['date_from'] );
+		}
+		
+		if ( ! empty( $args['date_to'] ) ) {
+			global $wpdb;
+			$where[] = $wpdb->prepare( 'created <= %s', $args['date_to'] );
+		}
+		
 		// Add search functionality
 		if ( ! empty( $args['search'] ) ) {
 			global $wpdb;
@@ -441,6 +465,67 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		$count = $this->get_count_with_conditions( $where );
 
 		return $count;
+	}
+	
+	/**
+	 * Get conversations from the last N hours
+	 *
+	 * @param int $hours Number of hours to look back (default: 24)
+	 * @param string $mode Conversation mode ('search', 'chat', or empty for all)
+	 * @param array $additional_args Additional query arguments
+	 * @return array Array of EPKB_Conversation_Model objects
+	 */
+	public function get_recent_conversations( $hours = 24, $mode = '', $additional_args = array() ) {
+		// Calculate date range
+		$date_from = gmdate( 'Y-m-d H:i:s', strtotime( "-{$hours} hours" ) );
+		$date_to = gmdate( 'Y-m-d H:i:s' );
+		
+		// Build query arguments
+		$args = array(
+			'date_from' => $date_from,
+			'date_to'   => $date_to,
+			'per_page'  => 1000  // Get all conversations in the time period
+		);
+		
+		// Add mode if specified
+		if ( ! empty( $mode ) ) {
+			$args['mode'] = $mode;
+		}
+		
+		// Merge with any additional arguments
+		$args = wp_parse_args( $additional_args, $args );
+		
+		return $this->get_conversations( $args );
+	}
+	
+	/**
+	 * Get count of conversations from the last N hours
+	 *
+	 * @param int $hours Number of hours to look back (default: 24)
+	 * @param string $mode Conversation mode ('search', 'chat', or empty for all)
+	 * @param array $additional_args Additional query arguments
+	 * @return int
+	 */
+	public function get_recent_conversations_count( $hours = 24, $mode = '', $additional_args = array() ) {
+		// Calculate date range
+		$date_from = gmdate( 'Y-m-d H:i:s', strtotime( "-{$hours} hours" ) );
+		$date_to = gmdate( 'Y-m-d H:i:s' );
+		
+		// Build query arguments
+		$args = array(
+			'date_from' => $date_from,
+			'date_to'   => $date_to
+		);
+		
+		// Add mode if specified
+		if ( ! empty( $mode ) ) {
+			$args['mode'] = $mode;
+		}
+		
+		// Merge with any additional arguments
+		$args = wp_parse_args( $additional_args, $args );
+		
+		return $this->get_conversations_count( $args );
 	}
 	
 	/**

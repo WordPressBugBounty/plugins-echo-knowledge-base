@@ -766,6 +766,21 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	}
 	
 	/**
+	 * Check if there is any synced data
+	 *
+	 * @return int
+	 */
+	public static function count_synced_data() {
+		global $wpdb;
+
+		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->prefix . 'epkb_ai_training_data' ) ) !== $wpdb->prefix . 'epkb_ai_training_data' ) {
+			return 0;
+		}
+
+		return intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}epkb_ai_training_data WHERE status = 'updated'" ) );
+	}
+
+	/**
 	 * Get all unique types for a collection, optionally filtered by status
 	 *
 	 * @param int $collection_id Collection ID

@@ -1014,12 +1014,21 @@ class EPKB_Config_Page {
 
 		$is_theme_archive_page_template = $this->kb_config['template_for_archive_page'] == 'current_theme_templates';
 		$first_kb_archive_url = EPKB_KB_Handler::get_kb_category_with_most_articles_url( $this->kb_config );
+		// Generate message HTML for theme template mode
+		$theme_template_message = '';
+		if ( $is_theme_archive_page_template && ! empty( $first_kb_archive_url ) ) {
+			$theme_template_message = esc_html__( 'You are using current theme template.', 'echo-knowledge-base' ) . 
+				' <button type="button" class="epkb-success-btn epkb-switch-to-kb-template" data-kb-id="' . esc_attr( $this->kb_config['id'] ) . '">' . 
+				esc_html__( 'Switch to KB Template', 'echo-knowledge-base' ) . '</button>';
+		}
+
 		$new_settings_links_config['boxes'][] = array(
 			'title' => __( 'Category Page', 'echo-knowledge-base' ),
 			'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-category-page.png',
 			'button_url' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : esc_url( $first_kb_archive_url ) . '?epkb_fe_reopen_feature=archive-page-settings',
 			'button_text' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : __( 'Open Frontend Editor	', 'echo-knowledge-base' ),
-			'message' => empty( $first_kb_archive_url ) ? esc_html__( 'Add an article with a category to configure the Archive Page', 'echo-knowledge-base' ) : ( $is_theme_archive_page_template ? __( 'Open Your Theme Editor or Switch to KB Template', 'echo-knowledge-base' ) : '' ),
+			'message' => empty( $first_kb_archive_url ) && empty( $theme_template_message ) ? esc_html__( 'Add an article with a category to configure the Archive Page', 'echo-knowledge-base' ) : '',
+			'message_html' => ! empty( $theme_template_message ) ? $theme_template_message : '',
 			'message_link_text' => empty( $first_kb_archive_url ) ? '' : esc_html__( 'Learn More', 'echo-knowledge-base' ),
 			'message_link' => 'https://www.echoknowledgebase.com/documentation/category-archive-page/',
 		);

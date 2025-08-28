@@ -41,7 +41,7 @@ class EPKB_OpenAI_Client {
 	 * @return array|WP_Error
 	 */
 	public function request( $endpoint, $data = array(), $method = 'POST', $additional_headers = array() ) {
-		
+
 		// Check if API key is configured
 		$api_key_check = $this->check_api_key();
 		if ( is_wp_error( $api_key_check ) ) {

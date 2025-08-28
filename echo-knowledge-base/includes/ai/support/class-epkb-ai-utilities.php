@@ -58,34 +58,57 @@ class EPKB_AI_Utilities {
 	/**
 	 * Check if AI Search feature is enabled
 	 *
-	 * @return bool True if AI Search is enabled
+	 * @return bool True if AI Search is enabled (on or preview mode for admins)
 	 */
 	public static function is_ai_search_enabled() {
 		$ai_search_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled', 'off' );
 
 		// Check if search is enabled
-		return $ai_search_enabled === 'on';
+		return $ai_search_enabled != 'off';
+	}
+
+	/**
+	 * Check if AI Search feature is enabled for frontend
+	 *
+	 * @return bool True if AI Search is enabled for frontend
+	 */
+	public static function is_ai_search_enabled_for_frontend() {
+		$ai_search_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled', 'off' );
+		if ( $ai_search_enabled == 'off' || ( $ai_search_enabled == 'preview' && ! current_user_can( 'manage_options' ) ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
 	 * Check if AI Chat feature is enabled
 	 *
-	 * @return bool True if AI Chat is enabled
+	 * @return bool True if AI Chat is enabled (on or preview mode for admins)
 	 */
 	public static function is_ai_chat_enabled() {
 		$ai_chat_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled', 'off' );
 		
 		// Check if chat is enabled
-		return $ai_chat_enabled === 'on';
+		return $ai_chat_enabled != 'off';
 	}
 
 	/**
-	 * Check if any AI features are enabled
+	 * Check if any AI features are enabled (including preview mode)
 	 *
-	 * @return bool True if either AI Search or AI Chat is enabled
+	 * @return bool True if either AI Search or AI Chat is not 'off'
 	 */
 	public static function is_ai_enabled() {
 		return self::is_ai_search_enabled() || self::is_ai_chat_enabled();
+	}
+
+	/**
+	 * Check if AI Features Pro is enabled
+	 *
+	 * @return bool True if AI Features Pro is enabled
+	 */
+	public static function is_ai_features_pro_enabled() {
+		return defined( 'AI_FEATURES_PRO_PLUGIN_NAME' );
 	}
 
 	/**

@@ -15,14 +15,10 @@ class EPKB_AI_Content_Processor {
 	 */
 	public function prepare_post( $post ) {
 		
-		// Validate post object
-		if ( ! $post || ! is_object( $post ) || empty( $post->ID ) ) {
-			return new WP_Error( 'invalid_post', __( 'Invalid post object', 'echo-knowledge-base' ) );
-		}
-		
-		// Check post status
-		if ( $post->post_status !== 'publish' ) {
-			return new WP_Error( 'post_not_published', __( 'Post is not published', 'echo-knowledge-base' ) );
+		// Use centralized eligibility check
+		$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $eligibility_check ) ) {
+			return $eligibility_check;
 		}
 		
 		// Get the post type

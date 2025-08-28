@@ -71,6 +71,18 @@ class EPKB_AI_Log {
 				$friendly_message = __( 'Your OpenAI account has insufficient credits. Please check your OpenAI account billing.', 'echo-knowledge-base' );
 				break;
 				
+			case 'user_state_changed':
+				$friendly_message = __( 'Your login status has changed. Please start a new conversation.', 'echo-knowledge-base' );
+				break;
+				
+			case 'user_mismatch':
+				$friendly_message = __( 'You are not authorized to continue this chat session.', 'echo-knowledge-base' );
+				break;
+				
+			case 'rest_cookie_invalid_nonce':
+				$friendly_message = __( 'Your session has expired. Please refresh the page to continue.', 'echo-knowledge-base' );
+				break;
+				
 			default:
 				// For unknown errors, provide a generic message
 				if ( strpos( $error_message, 'Invalid API key' ) !== false ) {
@@ -126,7 +138,7 @@ class EPKB_AI_Log {
 		// If we have a valid internal code, use it instead of the full message
 		if ( $internal_code && strpos( $internal_code, '_' ) !== false ) {
 			$error_message = $internal_code;
-		} else {
+		} if ( empty( $error_message ) ) {
 			// Check if we have an internal error code for this HTTP status
 			$status_code = self::get_code_for_http_status( $error_code );
 			if ( $status_code ) {

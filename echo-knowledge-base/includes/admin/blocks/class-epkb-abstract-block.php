@@ -67,14 +67,18 @@ abstract class EPKB_Abstract_Block {
 				'description' => '',
 				'keywords' => $this->keywords,	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
 				'attributes' => $this->get_attribute_types_and_defaults(),
-				'supports' => ['html' => false, 'align '=> true, 'reusable' => false, 'customClassName' => false ],
+				'supports' => ['html' => false, 'align' => true, 'reusable' => false, 'customClassName' => false ],
 				'editor_script_handles' => [ $this->get_the_block_script_handle_for_editor_only() ],
+		
+				// Front-end scripts: use the block shim handle that depends on the canonical 'epkb-public-scripts'
 				'script_handles' => [ $this->get_block_public_scripts_handle() ],
+		
 				'editor_style_handles' => ['echo-knowledge-base-block-editor'],
 				'style_handles' => $block_public_style_handles,
-				'render_callback' => array( $this, 'render_block' ),
-				'style' => $block_public_style_handles,
-				'script' => $this->get_block_public_scripts_handle(),
+		
+				'render_callback' => [ $this, 'render_block' ],
+		
+				// No 'script' or 'style' keys (avoid duplicate asset printing)
 				'example' => array(
 					'viewportWidth' => 1200,
 					'attributes' => array(),
@@ -661,25 +665,51 @@ abstract class EPKB_Abstract_Block {
 	}
 
 	/**
-	 * Provides a possibility for add-on's block to register its own public scripts by overriding the method
-	 * @param $suffix
-	 * @return void
+	 * Block-side registration with global fallback:
+	 * - Prefer the canonical 'epkb-public-scripts'
+	 * - If not registered yet, register it here (so block works standalone)
+	 * - Always register the block handle as a shim depending on the canonical
 	 */
-	protected function register_block_public_scripts( $suffix ) {
-		wp_register_script( $this->get_block_public_scripts_handle(), Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
-		$epkb_vars = array(
-			'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
-			'msg_try_again' => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
-			'error_occurred' => esc_html__( 'Error occurred', 'echo-knowledge-base' ) . ' (1936)',
-			'unknown_error' => esc_html__( 'Unknown error', 'echo-knowledge-base' ) . ' (1247)',
-			'reload_try_again' => esc_html__( 'Please reload the page and try again.', 'echo-knowledge-base' ),
-			'save_config' => esc_html__( 'Saving configuration', 'echo-knowledge-base' ),
-			'input_required' => esc_html__( 'Input is required', 'echo-knowledge-base' ),
-			'nonce' => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
-			'creating_demo_data' => esc_html__( 'Creating a Knowledge Base with demo categories and articles. It will be completed shortly.', 'echo-knowledge-base' )
+protected function register_block_public_scripts( $suffix ) {
+	$canonical    = 'epkb-public-scripts';
+	$block_handle = $this->get_block_public_scripts_handle(); // typically 'epkb-blocks-public-scripts'
+
+	// If the canonical isn't registered yet, register it here with the real src.
+	if ( ! wp_script_is( $canonical, 'registered' ) ) {
+		wp_register_script(
+			$canonical,
+			Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js',
+			array( 'jquery' ),
+			Echo_Knowledge_Base::$version,
+			true
 		);
-		wp_localize_script( $this->get_block_public_scripts_handle(), 'epkb_vars', $epkb_vars );
+
+		// Localize ONCE here (only when we had to create the canonical).
+		wp_localize_script( $canonical, 'epkb_vars', array(
+			'ajaxurl'           => admin_url( 'admin-ajax.php', 'relative' ),
+			'msg_try_again'     => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
+			'error_occurred'    => esc_html__( 'Error occurred', 'echo-knowledge-base' ) . ' (1936)',
+			'unknown_error'     => esc_html__( 'Unknown error', 'echo-knowledge-base' ) . ' (1247)',
+			'reload_try_again'  => esc_html__( 'Please reload the page and try again.', 'echo-knowledge-base' ),
+			'save_config'       => esc_html__( 'Saving configuration', 'echo-knowledge-base' ),
+			'input_required'    => esc_html__( 'Input is required', 'echo-knowledge-base' ),
+			'nonce'             => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
+			'creating_demo_data'=> esc_html__( 'Creating a Knowledge Base with demo categories and articles. It will be completed shortly.', 'echo-knowledge-base' ),
+		) );
 	}
+
+	// Register the block handle as a shim (no src) that depends on the canonical.
+	if ( ! wp_script_is( $block_handle, 'registered' ) ) {
+		wp_register_script(
+			$block_handle,
+			false,                              // no src -> won't print its own <script>
+			array( $canonical ),                // depend on canonical -> ensures single print
+			Echo_Knowledge_Base::$version,
+			true
+		);
+	}
+}
+
 
 	/**
 	 * Sanitize attributes before pass to KB legacy code (unlike to KB config, the block attributes can be modified in the post content and thus become unsafe)

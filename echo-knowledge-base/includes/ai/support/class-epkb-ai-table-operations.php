@@ -251,6 +251,13 @@ class EPKB_AI_Table_Operations {
 			
 			// Get AI response (second message) to count results
 			$ai_response = isset( $messages[1]['content'] ) ? $messages[1]['content'] : '';
+			// Add AI response to the data
+			$row_data['ai_response'] = $ai_response;
+			$row_data['response'] = $ai_response;
+			
+			// Add full messages for detailed view like chat
+			$row_data['messages'] = $messages;
+			
 			// For AI search, we don't have traditional result count
 			$row_data['results_count'] = $ai_response ? '1' : '0';
 			$row_data['results_found'] = $row_data['results_count'];
@@ -258,6 +265,11 @@ class EPKB_AI_Table_Operations {
 			// TODO: Track clicked articles in metadata
 			$row_data['clicked_article'] = '-';
 			$row_data['article_clicked'] = '-';
+			
+			// Extract results from metadata if available
+			if ( isset( $metadata['results'] ) ) {
+				$row_data['results'] = $metadata['results'];
+			}
 		}
 
 		return $row_data;

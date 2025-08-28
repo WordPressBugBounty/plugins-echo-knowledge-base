@@ -87,7 +87,7 @@ class EPKB_Config_Settings_Page {
 		$contents_configs = $this->get_contents_configs();
 		$sub_contents_configs = $this->get_sub_contents_configs();
 		$helpful_info_box_configs = $this->get_helpful_info_box_config();
-		$access_to_get_started = ! $this->is_modular_main_page_off &&
+		$access_to_get_started = false; // we do not need it any more -> ! $this->is_modular_main_page_off &&
 			( EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_need_help_read' ) || EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) );
 
 		$tabs_config = [];
@@ -1446,15 +1446,6 @@ class EPKB_Config_Settings_Page {
 		 * 		'field_name1' => [ Condition_#1, [ Condition_#2, Condition_#3, etc ] ]
 		 */
 
-		$contents_configs['about-kb'] = array(
-			array(
-				'title'     => esc_html__( 'Frontend Editor Toggle Visibility', 'echo-knowledge-base' ),
-				'desc'      => '',
-				'fields'    => [
-					'frontend_editor_switch_visibility_toggle' => '',
-				],
-			),
-		);
 
 		// Archive Page V2 and V3
 		$contents_configs['archive-page'] = [];
@@ -1582,6 +1573,13 @@ class EPKB_Config_Settings_Page {
 				'title'     => esc_html__( 'KB Main Page Page Title', 'echo-knowledge-base' ),
 				'fields'    => [
 					'template_main_page_display_title' => 'only_kb_templates',
+				],
+			),
+			array(
+				'title'     => esc_html__( 'Frontend Editor Toggle Visibility', 'echo-knowledge-base' ),
+				'desc'      => '',
+				'fields'    => [
+					'frontend_editor_switch_visibility_toggle' => '',
 				],
 			),
 			array(

@@ -369,10 +369,12 @@ class EPKB_AI_Tools_Tab {
 		$data_collections = self::get_data_collections_info();
 		
 		// Get AI config
+		$ai_chat_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled' );
+		$ai_search_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled' );
 		$ai_config = array(
 			'ai_enabled' => EPKB_AI_Config_Specs::get_ai_config_value( 'ai_disclaimer_accepted' ) === 'on',
-			'ai_chat_enabled' => EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled' ) === 'on',
-			'ai_search_enabled' => EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled' ) === 'on',
+			'ai_chat_enabled' => $ai_chat_enabled != 'off',
+			'ai_search_enabled' => $ai_search_enabled != 'off',
 			'api_key_configured' => ! empty( EPKB_AI_Config_Specs::get_ai_config_value( 'ai_key' ) )
 		);
 		

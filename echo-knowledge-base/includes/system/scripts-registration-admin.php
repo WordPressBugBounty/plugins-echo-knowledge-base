@@ -145,7 +145,7 @@ function epkb_load_admin_plugin_pages_resources() {
 	}
 
 	// add script for AI admin page
-	if ( $page == 'epkb-kb-ai-chat' ) {
+	if ( $page == 'epkb-kb-ai-features' ) {
 		
 		// Load React and WordPress components
 		wp_enqueue_script( 'wp-element' );
@@ -274,7 +274,7 @@ function epkb_load_admin_plugin_pages_resources() {
 
 		wp_localize_script( 'epkb-admin-ai-util', 'epkb_ai_api', array( 
 			'nonce' => wp_create_nonce( 'wp_rest' ), 
-			'root' => esc_url_raw( rest_url() ), 
+			'rest_url' => esc_url_raw( rest_url() ), 
 			'admin_url' => esc_url_raw( admin_url() ), 
 			'presets' => $ai_presets,
 			'timezone_string' => wp_timezone_string(),
@@ -283,6 +283,12 @@ function epkb_load_admin_plugin_pages_resources() {
 		
 		// Initialize nonce middleware
 		wp_add_inline_script( 'epkb-admin-ai-util', sprintf( 'wp.apiFetch.use( wp.apiFetch.createNonceMiddleware( "%s" ) );', wp_create_nonce( 'wp_rest' ) ), 'after' );
+		
+		// Localize epkb_vars for AI dashboard voting feature
+		wp_localize_script( 'epkb-admin-ai-dashboard', 'epkb_vars', array(
+			'nonce'     => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
+			'ajax_url'  => admin_url( 'admin-ajax.php', 'relative' ),
+		));
 		
 	}
 }
@@ -384,9 +390,11 @@ function epkb_enqueue_admin_help_chat() {
 	wp_enqueue_script( 'epkb-admin-help-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-help-chat' . $ai_suffix . '.js', array( 'react', 'react-dom', 'epkb-admin-ai-util', 'epkb-ai-chat-util' ), Echo_Knowledge_Base::$version, true );
 
 	// Get AI configuration status (non-identifiable)
+	$ai_chat_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled' );
+	$ai_search_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled' );
 	$ai_config = array(
-		'chat_enabled' => EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled' ) === 'on',
-		'search_enabled' => EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled' ) === 'on',
+		'chat_enabled' => $ai_chat_enabled !== 'off',
+		'search_enabled' => $ai_search_enabled !== 'off',
 	);
 
 	// Determine endpoint - use local for testing if on localhost

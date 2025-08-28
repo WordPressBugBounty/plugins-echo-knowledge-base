@@ -20,13 +20,18 @@ class EPKB_AI_Chat_Tab {
 	public static function get_tab_config() {
 
 		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
+		
+		// Get default widget configuration
+		$default_widget_config = EPKB_AI_Chat_Widget_Config_Specs::get_widget_config( 1 );
 
 		return array(
 			'tab_id' => 'chat',
 			'title' => __( 'Chat', 'echo-knowledge-base' ),
 			'sub_tabs' => self::get_sub_tabs_config(),
 			'settings_sections' => self::get_settings_sections( $ai_config ),
-			'ai_config' => $ai_config
+			'ai_config' => $ai_config,
+			'widget_config' => $default_widget_config,
+			'all_widgets' => EPKB_AI_Chat_Widget_Config_Specs::get_all_widget_configs()
 		);
 	}
 
@@ -128,10 +133,17 @@ class EPKB_AI_Chat_Tab {
 				'icon' => 'epkbfa epkbfa-comments',
 				'fields' => array(
 					'ai_chat_enabled' => array(
-						'type' => 'toggle',
-						'label' => __( 'Enable AI Chat', 'echo-knowledge-base' ),
+						'type' => 'radio',
+						'label' => __( 'AI Chat Mode', 'echo-knowledge-base' ),
 						'value' => $ai_config['ai_chat_enabled'],
-						'description' => __( 'Enable AI-powered chat functionality on your knowledge base', 'echo-knowledge-base' )
+						'options' => array(
+							'off'     => __( 'Off', 'echo-knowledge-base' ),
+							'preview' => __( 'Preview (Admins only)', 'echo-knowledge-base' ),
+							'on'      => __( 'On (Public)', 'echo-knowledge-base' )
+						),
+						'description' => __( 'Control AI Chat visibility: Off (disabled), Preview (admins only for testing), or On (public access)', 'echo-knowledge-base' ),
+						'field_class' => 'epkb-ai-chat-mode' // add epkb-ai-radio-vertical if you want vertical radio buttons
+						
 					),
 					'ai_chat_preset' => array(
 						'type' => 'select',
@@ -154,6 +166,115 @@ class EPKB_AI_Chat_Tab {
 					)
 				)
 			),
+			'default_chat_widget' => self::get_widget_settings_section()
+		);
+	}
+
+	/**
+	 * Get widget settings section configuration
+	 *
+	 * @return array
+	 */
+	private static function get_widget_settings_section() {
+		
+		// Get the default widget configuration (always returns valid config for widget 1)
+		$widget_config = EPKB_AI_Chat_Widget_Config_Specs::get_widget_config( 1 );
+		
+		return array(
+			'id' => 'default_chat_widget',
+			'title' => __( 'Chat Widget Appearance', 'echo-knowledge-base' ),
+			'icon' => 'epkbfa epkbfa-paint-brush',
+			'fields' => array(
+				/* 'widget_enabled' => array(
+					'type' => 'toggle',
+					'label' => __( 'Enable This Widget', 'echo-knowledge-base' ),
+					'value' => isset( $widget_config['widget_enabled'] ) ? $widget_config['widget_enabled'] : 'on',
+					'description' => __( 'Enable or disable this chat widget', 'echo-knowledge-base' )
+				), 
+				'widget_name' => array(
+					'type' => 'text',
+					'label' => __( 'Widget Name', 'echo-knowledge-base' ),
+					'value' => $widget_config['widget_name'],
+					'description' => __( 'Internal name for this chat widget configuration', 'echo-knowledge-base' )
+				), */
+				
+				// Text Customization
+				'text_section' => array(
+					'type' => 'section_header',
+					'label' => __( 'Text Customization', 'echo-knowledge-base' ),
+					'description' => __( 'Customize widget text and messages', 'echo-knowledge-base' )
+				),
+				'widget_header_title' => array(
+					'type' => 'text',
+					'label' => __( 'Widget Header Title', 'echo-knowledge-base' ),
+					'value' => $widget_config['widget_header_title'],
+					'description' => __( 'Title displayed in the chat widget header', 'echo-knowledge-base' )
+				),
+				'input_placeholder_text' => array(
+					'type' => 'text',
+					'label' => __( 'Input Placeholder', 'echo-knowledge-base' ),
+					'value' => $widget_config['input_placeholder_text'],
+					'description' => __( 'Placeholder text in the message input field', 'echo-knowledge-base' )
+				),
+				'welcome_message' => array(
+					'type' => 'textarea',
+					'label' => __( 'Welcome Message', 'echo-knowledge-base' ),
+					'value' => $widget_config['welcome_message'],
+					'description' => __( 'First message shown when chat opens', 'echo-knowledge-base' ),
+					'rows' => 3
+				),
+
+				// Colors
+				'launcher_background_color' => array(
+					'type' => 'color',
+					'label' => __( 'Launcher Color', 'echo-knowledge-base' ),
+					'value' => $widget_config['launcher_background_color'],
+					'description' => __( 'Background color of the floating chat button', 'echo-knowledge-base' )
+				),
+				'widget_header_background_color' => array(
+					'type' => 'color',
+					'label' => __( 'Widget Header Color', 'echo-knowledge-base' ),
+					'value' => $widget_config['widget_header_background_color'],
+					'description' => __( 'Background color of the chat widget header', 'echo-knowledge-base' )
+				),
+				
+				// Error Messages
+				/* 'errors_section' => array(
+					'type' => 'section_header',
+					'label' => __( 'Error Messages', 'echo-knowledge-base' ),
+					'description' => __( 'Customize error messages shown to users', 'echo-knowledge-base' )
+				),
+				'error_generic_message' => array(
+					'type' => 'text',
+					'label' => __( 'Generic Error', 'echo-knowledge-base' ),
+					'value' => $widget_config['error_generic_message']
+				),
+				'error_network_message' => array(
+					'type' => 'text',
+					'label' => __( 'Network Error', 'echo-knowledge-base' ),
+					'value' => $widget_config['error_network_message']
+				),
+				'error_timeout_message' => array(
+					'type' => 'text',
+					'label' => __( 'Timeout Error', 'echo-knowledge-base' ),
+					'value' => $widget_config['error_timeout_message']
+				),
+				'error_rate_limit_message' => array(
+					'type' => 'text',
+					'label' => __( 'Rate Limit Error', 'echo-knowledge-base' ),
+					'value' => $widget_config['error_rate_limit_message']
+				), */
+				
+				// Reset Button
+				'reset_widget_settings' => array(
+					'type' => 'action_button',
+					'label' => __( 'Reset Widget Settings', 'echo-knowledge-base' ),
+					'button_text' => __( 'Reset to Defaults', 'echo-knowledge-base' ),
+					'button_class' => 'epkb-ai-reset-widget-settings',
+					'confirm_message' => __( 'Are you sure you want to reset all widget settings to their default values?', 'echo-knowledge-base' ),
+					'description' => __( 'Reset all chat widget appearance and text settings to default values', 'echo-knowledge-base' )
+				)
+			)
 		);
 	}
 
@@ -223,5 +344,4 @@ class EPKB_AI_Chat_Tab {
 			)
 		) );
 	}
-
 }

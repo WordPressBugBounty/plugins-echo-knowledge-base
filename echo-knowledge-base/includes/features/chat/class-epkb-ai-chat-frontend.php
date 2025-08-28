@@ -45,25 +45,12 @@ class EPKB_AI_Chat_Frontend {
 		<script>
 			// Initialize the chat widget root element ID for the script
 			window.epkbChatWidgetRoot = 'epkb-ai-chat-widget-root';
-		</script>
-		
-		<!-- Error Form for AI Chat -->
-		<div id="epkb-ai-chat-error-form-wrap" style="display: none !important;">	<?php
-			EPKB_HTML_Admin::display_report_admin_error_form();	?>
-		</div>		<?php
+		</script>   <?php
 		
 		$output = ob_get_clean();
 		
 		// Use wp_footer action to ensure proper placement
-		echo wp_kses( $output, array(
-			'div' => array(
-				'id'    => array(),
-				'class' => array(),
-				'data-is-admin' => array(),
-				'style' => array(),
-			),
-			'script' => array(),
-		) );
+		echo $output;
 	}
 
 		/**
@@ -73,7 +60,9 @@ class EPKB_AI_Chat_Frontend {
 		 */
 	private static function can_display_chat_widget() {
 
-		if ( ! EPKB_AI_Utilities::is_ai_chat_enabled() ) {
+		$ai_chat_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled', 'off' );
+
+		if ( $ai_chat_enabled == 'off' || ( $ai_chat_enabled == 'preview' && ! current_user_can( 'manage_options' ) ) ) {
 			return false;
 		}
 
