@@ -40,8 +40,6 @@ class EPKB_AI_Tools_Tab {
 		// Get data collections info
 		$data_collections = self::get_data_collections_info();
 		
-		// Get tuning configuration for the tuning sub-tab
-		$tuning_config = EPKB_AI_Tools_Tuning_Tab::get_tab_config();
 		
 		$config = array(
 			'tab_id' => 'tools',
@@ -53,8 +51,7 @@ class EPKB_AI_Tools_Tab {
 			'system_info' => $system_info,
 			'data_collections' => $data_collections,
 			'nonce' => wp_create_nonce( 'epkb_ai_tools_debug' ),
-			// Include tuning configuration for the tuning sub-tab
-			'tuning_config' => $tuning_config
+			// Tuning sub-tab removed
 		);
 		
 		return $config;

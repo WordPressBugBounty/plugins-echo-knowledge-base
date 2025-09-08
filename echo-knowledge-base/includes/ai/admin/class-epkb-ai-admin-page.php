@@ -9,7 +9,6 @@ class EPKB_AI_Admin_Page {
 		// Initialize tabs to register AJAX handlers
 		new EPKB_AI_Tools_Tab();
 		new EPKB_AI_Dashboard_Tab();
-		new EPKB_AI_Tools_Tuning_Tab();
 	}
 
 	// top tabs - base configuration
@@ -36,7 +35,8 @@ class EPKB_AI_Admin_Page {
 			'title' => 'Training Data',
 			'icon' => 'epkbfa epkbfa-database',
 			'class' => 'EPKB_AI_Training_Data_Tab',
-			'requires_ai' => false
+			// Training Data requires AI to be enabled
+			'requires_ai' => true
 		),
 		'general-settings' => array(
 			'title' => 'General Settings',
@@ -55,7 +55,8 @@ class EPKB_AI_Admin_Page {
 			'icon' => 'epkbfa epkbfa-wrench',
 			'class' => 'EPKB_AI_Tools_Tab',
 			'requires_ai' => true,
-			'has_sub_tabs' => true
+			'has_sub_tabs' => true,
+			'hidden' => true  // Hide from main navigation but keep accessible via direct URL
 		),
 	);
 
@@ -77,12 +78,6 @@ class EPKB_AI_Admin_Page {
 						'title' => __( 'Debug Information', 'echo-knowledge-base' ),
 						'icon' => 'epkbfa epkbfa-bug'
 					),
-					'tuning' => array(
-						'id' => 'tuning',
-						'title' => __( 'Advanced AI Tuning', 'echo-knowledge-base' ),
-						'icon' => 'epkbfa epkbfa-sliders',
-						'description' => __( 'Optional - For advanced users only', 'echo-knowledge-base' )
-					)
 				)
 			);
 		}
@@ -97,6 +92,18 @@ class EPKB_AI_Admin_Page {
 	 */
 	private function get_ordered_tabs() {
 		$tabs = $this->top_tabs;
+		
+		// Hide PRO Features tab if AI Features Pro plugin is active
+		if ( defined( 'AI_FEATURES_PRO_PLUGIN_NAME' ) && ! defined( 'ECHO_WP_RELEASE_VERSION' ) ) {
+			unset( $tabs['pro-features'] );
+		}
+		
+		// Remove hidden tabs from navigation display
+		foreach ( $tabs as $key => $tab ) {
+			if ( ! empty( $tab['hidden'] ) ) {
+				unset( $tabs[$key] );
+			}
+		}
 		
 		// Always keep dashboard first, but prioritize general-settings as second if not configured
 		if ( ! EPKB_AI_General_Settings_Tab::are_settings_configured() ) {
@@ -120,12 +127,12 @@ class EPKB_AI_Admin_Page {
 
 		EPKB_Core_Utilities::display_missing_css_message();
 
-		// Get ordered tabs
+		// Get ordered tabs for display
 		$tabs = $this->get_ordered_tabs();
 		
-		// Get current tab
+		// Get current tab - check against all tabs including hidden ones
 		$active_tab = EPKB_Utilities::get( 'active_tab', 'dashboard' );
-		$active_tab = isset( $tabs[$active_tab] ) ? $active_tab : 'dashboard';
+		$active_tab = isset( $this->top_tabs[$active_tab] ) ? $active_tab : 'dashboard';
 
 		// Pre-calculate show_get_started flag for immediate display
 		// Only check if AI is enabled to avoid DB errors
@@ -222,7 +229,8 @@ class EPKB_AI_Admin_Page {
 	 */
 	private function get_all_tabs_data() {
 		$tabs_data = array();
-		$tabs = $this->get_ordered_tabs();
+		// Use top_tabs instead of get_ordered_tabs() to include hidden tabs
+		$tabs = $this->top_tabs;
 		
 		foreach ( $tabs as $tab_key => $tab ) {
 			$tabs_data[$tab_key] = $this->get_tab_config( $tab_key, $tab );
@@ -274,12 +282,21 @@ class EPKB_AI_Admin_Page {
 	 * @return array
 	 */
 	private function get_ai_disabled_config( $tab_key, $tab_title ) {
-		return array(
+		// Base config (avoid repeating the full array)
+		$base = array(
 			'tab_id' => $tab_key,
 			'title' => __( $tab_title, 'echo-knowledge-base' ),
 			'ai_disabled' => true,
 			'message' => __( 'AI Features Required', 'echo-knowledge-base' ),
-			'instructions' => __( 'To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.', 'echo-knowledge-base' )
 		);
+
+		// Custom instructions per tab
+		$instructions = __( 'To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.', 'echo-knowledge-base' );
+		if ( $tab_key === 'training-data' ) {
+			$instructions = __( 'To use Training Data, please enable either AI Chat or AI Search in their respective tabs.', 'echo-knowledge-base' );
+		}
+
+		$base['instructions'] = $instructions;
+		return $base;
 	}
 }

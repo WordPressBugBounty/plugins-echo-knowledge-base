@@ -981,7 +981,7 @@ class EPKB_Config_Page {
 	private function get_new_settings_boxes_config() {
 
 		$kb_main_page_button_text = esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' );
-		$kb_main_page_button_url = esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config ) ) . '?action=epkb_load_editor';
+		$kb_main_page_button_url = esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $this->kb_config ) ) . '?action=epkb_load_editor&epkb_kb_id=' . $this->kb_config['id'];
 		$kb_main_page_has_kb_blocks = EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $this->kb_config );
 		if ( $kb_main_page_has_kb_blocks ) {
 			$kb_main_page_button_text = esc_html__( 'Edit Main Page', 'echo-knowledge-base' );
@@ -996,14 +996,15 @@ class EPKB_Config_Page {
 				array(
 					'title' => esc_html__( 'Main Page', 'echo-knowledge-base' ),
 					'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-main-page.png',
-					'button_url' => empty( $first_kb_main_page_url ) ? esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&page=epkb-kb-configuration&setup-wizard-on=true' ) ) : esc_url( $first_kb_main_page_url ) . '?epkb_fe_reopen_feature=none',
+					'button_url' => empty( $first_kb_main_page_url ) ? esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&page=epkb-kb-configuration&setup-wizard-on=true' ) )
+										: esc_url( $first_kb_main_page_url ) . '?action=epkb_load_editor&epkb_kb_id=' . $this->kb_config['id'],
 					'button_text' => empty( $first_kb_main_page_url ) ? esc_html__( 'Run Setup Wizard', 'echo-knowledge-base' ) : esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' ),
 					'message' => empty( $first_kb_main_page_url ) ? esc_html__( 'Main Page is not set. Please run the Setup Wizard to create one.', 'echo-knowledge-base' ) : '',
 				),
 				array(
 					'title' => esc_html__( 'Article Page', 'echo-knowledge-base' ),
 					'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-article-page.png',
-					'button_url' => empty( $first_kb_article_url ) ? '' : esc_url( $first_kb_article_url ) . '?epkb_fe_reopen_feature=none',
+					'button_url' => empty( $first_kb_article_url ) ? '' : esc_url( $first_kb_article_url ) . '?action=epkb_load_editor&epkb_kb_id=' . $this->kb_config['id'],
 					'button_text' => empty( $first_kb_article_url ) ? '' : esc_html__( 'Open Frontend Editor', 'echo-knowledge-base' ),
 					'message' => empty( $first_kb_article_url ) ? esc_html__( 'Add an Article to configure the Article Page', 'echo-knowledge-base' ) : '',
 				),
@@ -1025,7 +1026,7 @@ class EPKB_Config_Page {
 		$new_settings_links_config['boxes'][] = array(
 			'title' => __( 'Category Page', 'echo-knowledge-base' ),
 			'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-category-page.png',
-			'button_url' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : esc_url( $first_kb_archive_url ) . '?epkb_fe_reopen_feature=archive-page-settings',
+			'button_url' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : esc_url( $first_kb_archive_url ) . '?action=epkb_load_editor&epkb_kb_id=' . $this->kb_config['id'],
 			'button_text' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : __( 'Open Frontend Editor	', 'echo-knowledge-base' ),
 			'message' => empty( $first_kb_archive_url ) && empty( $theme_template_message ) ? esc_html__( 'Add an article with a category to configure the Archive Page', 'echo-knowledge-base' ) : '',
 			'message_html' => ! empty( $theme_template_message ) ? $theme_template_message : '',

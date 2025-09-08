@@ -95,6 +95,7 @@ abstract class EPKB_Abstract_Block {
 	 * @return false|string
 	 */
 	public function render_block( $block_attributes=[], $content=null, $wp_block=null ) {
+		static $is_fe_generated = false;
 
 		// empty 'kb_id' in stored block attributes means the block has default value
 		$block_kb_id = empty( $block_attributes['kb_id'] ) ? EPKB_KB_Config_DB::DEFAULT_KB_ID : $block_attributes['kb_id'];
@@ -104,6 +105,7 @@ abstract class EPKB_Abstract_Block {
 			return esc_html__( 'Please switch to Modular mode to use this block. Contact us for help.', 'echo-knowledge-base' );
 		}
 
+		// Check if we're rendering a block preview in the Gutenberg editor - this flag is set in js/blocks/components.js
 		$is_editor_preview = EPKB_Utilities::get( 'is_editor_preview', null );
 
 		// ensure block has all attributes before proceeding to rendering of HTML and CSS
@@ -136,6 +138,13 @@ abstract class EPKB_Abstract_Block {
 			<style><?php echo $this->get_block_inline_styles( $block_attributes ); ?></style>	<?php
 			$block_font_slugs = self::register_block_fonts( $block_attributes );
 			EPKB_Blocks_Settings::print_block_fonts( $block_font_slugs );
+		}
+
+		// Add Frontend Editor for layout blocks (not component blocks like search, FAQs, etc.)
+		if ( ! $is_fe_generated && ! $is_editor_preview && $this->is_layout_block() ) {
+			$frontend_editor = new EPKB_Frontend_Editor();
+			$frontend_editor->generate_page_content( $block_attributes, 'block-main-page' );
+			$is_fe_generated = true;
 		}
 
 		return ob_get_clean();
@@ -504,6 +513,8 @@ abstract class EPKB_Abstract_Block {
 		$block_attributes['modular_main_page_toggle'] = $kb_config['modular_main_page_toggle'];
 		$block_attributes['show_articles_before_categories'] = $this->block_name == 'sidebar-layout' ? $kb_config['sidebar_show_articles_before_categories'] : $kb_config['show_articles_before_categories'];
 		$block_attributes['wpml_is_enabled'] = $kb_config['wpml_is_enabled'];
+		$block_attributes['frontend_editor_switch_visibility_toggle'] = $kb_config['frontend_editor_switch_visibility_toggle'];
+		$block_attributes['frontend_editor_button_shown'] = $kb_config['frontend_editor_button_shown'];
 
 		// let blocks to hard-code value of certain KB settings regardless of actual KB config value
 		$block_attributes = $this->add_this_block_required_kb_attributes( $block_attributes );
@@ -749,6 +760,24 @@ protected function register_block_public_scripts( $suffix ) {
 		}
 
 		return $block_attributes;
+	}
+
+	/**
+	 * Check if this block is a layout block (not a component block)
+	 * @return bool
+	 */
+	protected function is_layout_block() {
+		$layout_blocks = array(
+			'basic-layout',
+			'tabs-layout',
+			'categories-layout',
+			'classic-layout',
+			'drill-down-layout',
+			'grid-layout',
+			'sidebar-layout'
+		);
+		
+		return in_array( $this->block_name, $layout_blocks );
 	}
 
 	abstract protected function get_this_block_inline_styles( $block_attributes );

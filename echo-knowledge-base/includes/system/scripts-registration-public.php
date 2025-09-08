@@ -129,7 +129,7 @@ function epkb_load_public_resources() {
 		
 		wp_localize_script( 'epkb-ai-chat', 'epkbAIChat', array(
 			'rest_url'                        => esc_url_raw( rest_url() ),
-			'rest_nonce'                      => epkb_get_instance()->security_obj->get_nonce( true ),  // Force nonce generation for REST API
+			'rest_nonce'                      => epkb_get_instance()->security_obj->get_nonce(),  // Force nonce generation for REST API
 			'widget_id'                       => EPKB_AI_Chat_Widget_Config_Specs::DEFAULT_WIDGET_ID,
 			'page_object_id'                  => get_the_ID(),
 			
@@ -156,7 +156,7 @@ function epkb_load_public_resources() {
 		// Localize script with AI Search specific data
 		wp_localize_script( 'epkb-ai-search', 'epkbAISearch', array(
 			'rest_url'              => esc_url_raw( rest_url() ),
-			'rest_nonce'            => epkb_get_instance()->security_obj->get_nonce( true ),  // Force nonce generation for REST API
+			'rest_nonce'            => epkb_get_instance()->security_obj->get_nonce(),  // Force nonce generation for REST API
 			'search_endpoint'       => 'epkb-public/v1/ai-search/search',
 			'msg_loading'           => esc_html__( 'Searching...', 'echo-knowledge-base' ),
 			'msg_error'             => esc_html__( 'Sorry, an error occurred during search. Please try again.', 'echo-knowledge-base' ),
@@ -779,8 +779,14 @@ function epkb_add_admin_bar_fe_page_button( WP_Admin_Bar $wp_admin_bar ) {
 		return;
 	}
 	
+	// Get the current KB ID
+	$kb_id = EPKB_Utilities::get_eckb_kb_id( '' );
+	if ( empty( $kb_id ) ) {
+		return;
+	}
+	
 	// show the Frontend Editor link on KB Main Page, KB Article Pages, Category Archive Pages
-	$url = add_query_arg( ['action' => 'epkb_load_editor'] );
+	$url = add_query_arg( ['action' => 'epkb_load_editor', 'epkb_kb_id' => $kb_id] );
 	$label = '<span class="ab-label">' . esc_html__( 'Open KB Frontend Editor', 'echo-knowledge-base' ) . '</span>';
 	$wp_admin_bar->add_menu( array(
 	    'id'    => 'epkb-edit-mode-button',

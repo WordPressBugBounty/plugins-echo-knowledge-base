@@ -159,7 +159,6 @@ class EPKB_Autoloader {
 				'epkb_ai_training_data_tab'      	=>  'includes/ai/admin/class-epkb-ai-training-data-tab.php',
 				'epkb_ai_tools_tab'      			=>  'includes/ai/admin/class-epkb-ai-tools-tab.php',
 				'epkb_ai_tools_debug_tab'           =>  'includes/ai/admin/class-epkb-ai-tools-debug-tab.php',
-				'epkb_ai_tools_tuning_tab'      	=>  'includes/ai/admin/class-epkb-ai-tools-tuning-tab.php',
 				'epkb_ai_pro_features_tab'		    =>  'includes/ai/admin/class-epkb-ai-pro-features-tab.php',
 
 				// AI Config

@@ -194,10 +194,6 @@ function epkb_load_admin_plugin_pages_resources() {
 		wp_enqueue_script( 'epkb-admin-ai-training-data', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-training-data' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-admin-ai-training-data-table', 'epkb-admin-ai-sync', 'epkb-ai-chat-util'), Echo_Knowledge_Base::$version );
 		
-		// Load Tuning tab component
-		wp_enqueue_script( 'epkb-admin-ai-tuning', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-tuning' . $ai_suffix . '.js',
-			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
-		
 		// Load Tools tab component
 		wp_enqueue_script( 'epkb-admin-ai-tools', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-tools' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
@@ -209,7 +205,7 @@ function epkb_load_admin_plugin_pages_resources() {
 		// Load main app last as it depends on all other components
 		wp_enqueue_script( 'epkb-admin-ai-app', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-app' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-admin-ai-dashboard', 'epkb-admin-ai-general-settings',
-					'epkb-admin-ai-chat', 'epkb-admin-ai-search', 'epkb-admin-ai-training-data', 'epkb-admin-ai-tuning', 'epkb-admin-ai-tools', 'epkb-admin-ai-pro-features'),
+					'epkb-admin-ai-chat', 'epkb-admin-ai-search', 'epkb-admin-ai-training-data', 'epkb-admin-ai-tools', 'epkb-admin-ai-pro-features'),
 			Echo_Knowledge_Base::$version );
 		
 		// Set up API Fetch middleware and AI presets

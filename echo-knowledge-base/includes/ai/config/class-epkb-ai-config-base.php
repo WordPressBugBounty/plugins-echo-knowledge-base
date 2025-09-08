@@ -249,7 +249,9 @@ abstract class EPKB_AI_Config_Base {
 				// Validate based on field type
 				$validated_value = $input_filter->filter_input_field( $value, $field_spec );
 				if ( is_wp_error( $validated_value ) ) {
-					return new WP_Error( 'validation_failed', sprintf( __( 'Validation failed for field: %s', 'echo-knowledge-base' ), $field_name ) );
+					$error_message = $validated_value->get_error_message();
+					$field_label = isset( $field_spec['label'] ) ? $field_spec['label'] : $field_name;
+					return new WP_Error( 'validation_failed', sprintf( __( 'Validation failed for %s: %s', 'echo-knowledge-base' ), $field_label, $error_message ) );
 				}
 				
 				$validated_config[ $field_name ] = $validated_value;

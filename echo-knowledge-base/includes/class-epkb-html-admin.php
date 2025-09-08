@@ -885,7 +885,7 @@ class EPKB_HTML_Admin {
 		ob_start();	?>
 		<div class="epkb-admin__fe-offer-box epkb-admin__fe-offer-box--top">
 			<p><?php esc_html_e( 'Use our Frontend Editor to change KB Main Page settings.', 'echo-knowledge-base' ); ?></p>
-			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '?action=epkb_load_editor'; ?>"
+			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '?action=epkb_load_editor&epkb_kb_id=' . $kb_config['id']; ?>"
 				target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.
 		</div>	<?php
 		return ob_get_clean();
@@ -905,7 +905,7 @@ class EPKB_HTML_Admin {
 		ob_start();	?>
 		<div class="epkb-admin__fe-offer-box epkb-admin__fe-offer-box--top">
 			<p><?php esc_html_e( 'Use our Frontend Editor to change KB Article Page settings.', 'echo-knowledge-base' ); ?></p>
-			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_article_url( $kb_config ) ) . '?epkb_fe_reopen_feature=none'; ?>"
+			<a href="<?php echo esc_url( EPKB_KB_Handler::get_first_kb_article_url( $kb_config ) ) . '?action=epkb_load_editor&epkb_kb_id=' . $kb_config['id']; ?>"
 				target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.
 		</div>	<?php
 		return ob_get_clean();
@@ -931,7 +931,7 @@ class EPKB_HTML_Admin {
 		ob_start();	?>
 		<div class="epkb-admin__fe-offer-box epkb-admin__fe-offer-box--top">
 			<p><?php esc_html_e( 'Use our Frontend Editor to change Category Archive Page settings.', 'echo-knowledge-base' ); ?></p>
-			<a href="<?php echo esc_url( $first_kb_archive_url ) . '?epkb_fe_reopen_feature=archive-page-settings'; ?>"
+			<a href="<?php echo esc_url( $first_kb_archive_url ) . '?action=epkb_load_editor&epkb_kb_id=' . $kb_config['id']; ?>"
 					 target="_blank" class="epkb-primary-btn" style="text-decoration: none;margin-top: 10px"><?php esc_html_e( 'Open Frontend Editor', 'echo-knowledge-base' ); ?></a>.
 		</div>	<?php
 		return ob_get_clean();

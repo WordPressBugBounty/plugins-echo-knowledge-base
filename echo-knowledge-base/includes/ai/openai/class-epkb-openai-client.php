@@ -510,52 +510,35 @@ class EPKB_OpenAI_Client {
 	 */
 	public static function get_model_presets( $use_case = 'chat' ) {
 		
-		// Get default params for the default model
-		$default_model_spec = self::get_models_and_default_params( self::DEFAULT_MODEL );
-		$default_params = $default_model_spec['default_params'];
-		
-		// Extract default values to variables
-		$default_verbosity = $default_params['verbosity'];
-		$default_reasoning = $default_params['reasoning'];
-		$default_max_output_tokens = $default_params['max_output_tokens'];
-		
-		// Same presets for both chat and search - using the default model with different behavior settings
+		// Same presets for both chat and search
 		return array(
+			'fastest' => array(
+				'label' => __( 'Fastest', 'echo-knowledge-base' ),
+				'description' => __( 'GPT-5 Nano (Low/Low)', 'echo-knowledge-base' ),
+				'model' => 'gpt-5-nano',
+				'verbosity' => 'low',
+				'reasoning' => 'low',
+				'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS,
+			),
+			'smartest' => array(
+				'label' => __( 'Smartest', 'echo-knowledge-base' ),
+				'description' => __( 'GPT-5 (Medium/Medium)', 'echo-knowledge-base' ),
+				'model' => 'gpt-5',
+				'verbosity' => 'medium',
+				'reasoning' => 'medium',
+				'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS,
+			),
 			'balanced' => array(
-				'label' => __( 'Balanced', 'echo-knowledge-base' ) . ' ⚖',
-				'description' => __( 'Good mix of detail, accuracy, and speed — works for most questions.', 'echo-knowledge-base' ),
-				'model' => self::DEFAULT_MODEL,
-				'verbosity' => $default_verbosity,
-				'reasoning' => $default_reasoning,
-				'max_output_tokens' => $default_max_output_tokens,
-			),
-			'concise_thinker' => array(
-				'label' => __( 'Concise Thinker', 'echo-knowledge-base' ) . ' 🤔',
-				'description' => __( 'Short answers but with a bit more thought for accuracy.', 'echo-knowledge-base' ),
-				'model' => self::DEFAULT_MODEL,
-				'verbosity' => 'low',
-				'reasoning' => $default_reasoning,
-				'max_output_tokens' => $default_max_output_tokens,
-			),
-			'sharp_short' => array(
-				'label' => __( 'Sharp & Short', 'echo-knowledge-base' ) . ' 🎯',
-				'description' => __( 'Short answers with maximum precision and deep reasoning.', 'echo-knowledge-base' ),
-				'model' => self::DEFAULT_MODEL,
-				'verbosity' => 'low',
-				'reasoning' => 'high',
-				'max_output_tokens' => $default_max_output_tokens,
-			),
-			'analyst' => array(
-				'label' => __( 'Analyst', 'echo-knowledge-base' ) . ' 📊',
-				'description' => __( 'Detailed reasoning but keeps the answer at a moderate length.', 'echo-knowledge-base' ),
-				'model' => self::DEFAULT_MODEL,
-				'verbosity' => $default_verbosity,
-				'reasoning' => 'high',
-				'max_output_tokens' => $default_max_output_tokens,
+				'label' => __( 'Balanced', 'echo-knowledge-base' ),
+				'description' => __( 'GPT-4.1 Mini', 'echo-knowledge-base' ),
+				'model' => 'gpt-4.1-mini',
+				'temperature' => 0.2,
+				'top_p' => 1.0,
+				'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS,
 			),
 			'custom' => array(
 				'label' => __( 'Custom', 'echo-knowledge-base' ),
-				'description' => __( 'Custom model parameters are used and can be further configured in AI Advanced Tuning.', 'echo-knowledge-base' ),
+				'description' => __( 'Model parameters can be further customized.', 'echo-knowledge-base' ),
 				'model' => null,
 				'temperature' => null,
 				'max_output_tokens' => null,

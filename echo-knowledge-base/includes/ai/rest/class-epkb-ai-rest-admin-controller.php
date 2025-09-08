@@ -51,10 +51,10 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		$widget_settings = $request->get_param( 'widget_settings' );
 		$widget_id = $request->get_param( 'widget_id' );
 
-		// Validate and sanitize settings
-		$validated_settings = array();
+		// Prepare and sanitize settings based on specifications
 		$specs = EPKB_AI_Config_Specs::get_ai_config_fields_specifications();
-		
+
+		$new_config = array();
 		foreach ( $settings as $field_name => $field_value ) {
 			// Check if field exists in specs
 			if ( ! isset( $specs[$field_name] ) ) {
@@ -68,17 +68,17 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			}
 
 			// Validate and sanitize based on field type
-			$validated_settings[$field_name] = EPKB_AI_Config_Base::sanitize_field_value( $field_value, $field_spec );
+			$new_config[$field_name] = EPKB_AI_Config_Base::sanitize_field_value( $field_value, $field_spec );
 		}
 
 		// 'ai_key' needs to be encrypted before saving, but skip if it's the placeholder
-		if ( ! empty( $validated_settings['ai_key'] ) ) {
+		if ( ! empty( $new_config['ai_key'] ) ) {
 			// If the value is our placeholder, remove it from the update (keep existing value)
-			if ( $validated_settings['ai_key'] == '********' ) {
-				unset( $validated_settings['ai_key'] );
+			if ( $new_config['ai_key'] == '********' ) {
+				unset( $new_config['ai_key'] );
             } else {
 				// First validate the format
-				if ( ! EPKB_AI_Validation::validate_api_key_format( $validated_settings['ai_key'] ) ) {
+				if ( ! EPKB_AI_Validation::validate_api_key_format( $new_config['ai_key'] ) ) {
 					return $this->create_rest_response( array( 
 						'error' => 'invalid_api_key_format', 
 						'message' => __( 'Invalid API key format. OpenAI API keys should start with "sk-" and contain alphanumeric characters.', 'echo-knowledge-base' ) 
@@ -86,7 +86,7 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 				}
 				
 				// Test the API key with OpenAI before saving
-				$encrypted_test_key = EPKB_Utilities::encrypt_data( $validated_settings['ai_key'] );
+				$encrypted_test_key = EPKB_Utilities::encrypt_data( $new_config['ai_key'] );
 				$old_key = EPKB_AI_Config_Specs::get_unmasked_api_key();
 				
 				// Temporarily set the new key to test it
@@ -103,7 +103,7 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 				
 				// Test passed, keep the encrypted key for saving
 				EPKB_AI_Config_Specs::update_ai_config_value( 'ai_key', $old_key ); // Restore for now, will be saved properly below
-				$validated_settings['ai_key'] = $encrypted_test_key;
+				$new_config['ai_key'] = $encrypted_test_key;
 			}
 		}
 
@@ -111,9 +111,10 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
 		
 		// Update only the provided fields (partial update)
-		$result = EPKB_AI_Config_Specs::update_ai_config( $orig_config, $validated_settings );
+		$result = EPKB_AI_Config_Specs::update_ai_config( $orig_config, $new_config );
 		if ( is_wp_error( $result ) ) {
-			return $this->create_rest_response([], 500, $result );
+			$status_code = $result->get_error_code() == 'validation_failed' ? 400 : 500;
+			return $this->create_rest_response( [], $status_code, $result );
 		}
 
 		// Check if user switched AI features from off to on
@@ -135,10 +136,10 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			// Update widget configuration
 			$widget_result = EPKB_AI_Chat_Widget_Config_Specs::update_widget_config( $widget_id, $widget_settings );
 			if ( is_wp_error( $widget_result ) ) {
-				return $this->create_rest_response( array( 
-					'error' => $widget_result->get_error_code(), 
-					'message' => $widget_result->get_error_message() 
-				), 400 );
+				$error_code = $widget_result->get_error_code();
+				$status_code = $error_code == 'validation_failed' ? 400 : 500;
+
+				return $this->create_rest_response( array( 'error' => $error_code, 'message' => $widget_result->get_error_message() ), $status_code );
 			}
 			
 			$widget_config = EPKB_AI_Chat_Widget_Config_Specs::get_widget_config( $widget_id );
@@ -147,7 +148,7 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		$response_data = array( 
 			'success' => true, 
 			'message' => __( 'Settings saved successfully.', 'echo-knowledge-base' ), 
-			'settings' => $validated_settings 
+			'settings' => $new_config
 		);
 		
 		if ( $widget_config !== null ) {

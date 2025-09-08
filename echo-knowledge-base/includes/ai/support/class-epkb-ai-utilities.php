@@ -219,6 +219,11 @@ class EPKB_AI_Utilities {
 		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs();
 		$show_all_kbs = EPKB_Utilities::is_multiple_kbs_enabled();
 		foreach ( $all_kb_configs as $kb_config ) {
+			// Skip archived KBs
+			if ( isset( $kb_config['status'] ) && $kb_config['status'] === EPKB_KB_Config_Specs::ARCHIVED ) {
+				continue;
+			}
+			
 			$kb_id = $kb_config['id'];
 			$kb_post_type = EPKB_KB_Handler::get_post_type( $kb_id );
 			$kb_name = isset( $kb_config['kb_name'] ) ? $kb_config['kb_name'] : sprintf( __( 'Knowledge Base %d', 'echo-knowledge-base' ), $kb_id );

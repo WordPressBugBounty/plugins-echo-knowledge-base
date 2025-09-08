@@ -41,6 +41,9 @@ class EPKB_Layouts_Setup {
 		// initialize KB config to be accessible to templates
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
 
+		// let FE apply layout changes for preview without saving the changes
+		$kb_config = EPKB_Frontend_Editor::fe_preview_config( $kb_config );
+
 		$is_kb_template = ! empty( $kb_config['templates_for_kb'] ) && $kb_config['templates_for_kb'] == 'kb_templates';
 
 		// ignore the_content hook for our KB template as we call this directly
@@ -206,6 +209,13 @@ class EPKB_Layouts_Setup {
 		// a hook for user modifications
 		if ( has_filter( 'epkb_output_main_page' ) ) {
 			$layout_output = apply_filters( 'epkb_output_main_page', $layout_output, $kb_config, $article_seq, $categories_seq );
+		}
+
+		if ( ! $is_ordering_wizard_on ) {
+			ob_start();
+			$frontend_editor = new EPKB_Frontend_Editor();
+			$frontend_editor->generate_page_content( $kb_config, 'main-page' );
+			$layout_output .= ob_get_clean();
 		}
 
 		return $layout_output;

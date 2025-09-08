@@ -83,10 +83,6 @@ class EPKB_AI_Admin_Help_Chat {
 				'welcome' => __( 'Welcome to AI Tools!', 'echo-knowledge-base' ),
 				'helper' => __( 'I can help you run diagnostic tests, validate AI responses, or debug configuration issues.', 'echo-knowledge-base' )
 			),
-			'ai-tuning-tab' => array(
-				'welcome' => __( 'Welcome to AI Fine-tuning!', 'echo-knowledge-base' ),
-				'helper' => __( 'I can help you adjust response length, set creativity levels, or optimize accuracy settings for better results.', 'echo-knowledge-base' )
-			),
 			'ai-general-settings-tab' => array(
 				'welcome' => __( 'Welcome to AI General Settings!', 'echo-knowledge-base' ),
 				'helper' => __( 'I can guide you through API setup, help you choose the right AI model, or configure connection settings.', 'echo-knowledge-base' )

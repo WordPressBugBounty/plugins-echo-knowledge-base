@@ -83,6 +83,11 @@ class EPKB_AI_Log {
 				$friendly_message = __( 'Your session has expired. Please refresh the page to continue.', 'echo-knowledge-base' );
 				break;
 				
+			case 'validation_failed':
+				// For validation errors, use the original error message as-is
+				$friendly_message = $error_message;
+				break;
+				
 			default:
 				// For unknown errors, provide a generic message
 				if ( strpos( $error_message, 'Invalid API key' ) !== false ) {
@@ -94,8 +99,8 @@ class EPKB_AI_Log {
 				}
 		}
 		
-		// Add technical details for admins
-		if ( current_user_can( 'manage_options' ) ) {
+		// Add technical details for admins (except for validation errors which already have clear messages)
+		if ( current_user_can( 'manage_options' ) && $error_code !== 'validation_failed' ) {
 			$technical_details = '';
 			
 			// Add error code if available
@@ -291,6 +296,7 @@ class EPKB_AI_Log {
 	public static function get_error_status_code( $error_code ) {
 		$status_map = array(
 			'invalid_input'       => 400,
+			'validation_failed'   => 400,
 			'message_too_long'    => 400,
 			'invalid_idempotency_key' => 400,
 			'empty_message'       => 400,

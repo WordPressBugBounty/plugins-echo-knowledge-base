@@ -118,7 +118,7 @@ class EPKB_Dashboard_Page {
 								<?php esc_html_e( 'Frontend Editor', 'echo-knowledge-base' ); ?>
 							</a>						<?php 
 						} else { ?>
-							<a href="<?php echo esc_url( $kb_main_page_url ) . '?action=epkb_load_editor'; ?>" class="epkb-btn epkb-btn-frontend-editor" target="_blank">
+							<a href="<?php echo esc_url( $kb_main_page_url ) . '?action=epkb_load_editor&epkb_kb_id=' . $kb_config['id']; ?>" class="epkb-btn epkb-btn-frontend-editor" target="_blank">
 								<?php esc_html_e( 'Frontend Editor', 'echo-knowledge-base' ); ?>
 							</a>						<?php 
 						} ?>						<?php 
@@ -419,7 +419,7 @@ class EPKB_Dashboard_Page {
 							<p><?php esc_html_e( 'Help us prioritize new features! Tell us what you\'d like to see next.', 'echo-knowledge-base' ); ?></p>
 							<button id="epkb-open-vote-dialog" class="epkb-btn epkb-btn-vote-open">
 								<span class="epkbfa epkbfa-bullhorn"></span>
-								<?php esc_html_e( 'Vote for Features', 'echo-knowledge-base' ); ?>
+								<?php esc_html_e( 'Vote for Top 3 Features', 'echo-knowledge-base' ); ?>
 							</button>
 						</div>
 					</aside>
@@ -553,14 +553,13 @@ class EPKB_Dashboard_Page {
 							
 							<div class="epkb-vote-user-info">
 								<div class="epkb-vote-field">
-									<label><?php esc_html_e( 'First Name', 'echo-knowledge-base' ); ?> <span class="required">*</span></label>
-									<input type="text" name="first_name" value="<?php echo esc_attr( wp_get_current_user()->first_name ?: wp_get_current_user()->display_name ); ?>" required>
+									<label><?php esc_html_e( 'First Name', 'echo-knowledge-base' ); ?> <span class="epkb-optional" style="font-weight: bold;"><?php esc_html_e( '(optional)', 'echo-knowledge-base' ); ?></span></label>
+									<input type="text" name="first_name" value="<?php echo esc_attr( wp_get_current_user()->first_name ?: wp_get_current_user()->display_name ); ?>">
 								</div>
 								<div class="epkb-vote-field">
-									<label><?php esc_html_e( 'Email', 'echo-knowledge-base' ); ?> <span class="required">*</span></label>
-									<input type="email" name="email" value="<?php echo esc_attr( wp_get_current_user()->user_email ); ?>" required>
+									<label><?php esc_html_e( 'Email', 'echo-knowledge-base' ); ?> <span class="epkb-optional" style="font-weight: bold;"><?php esc_html_e( '(optional)', 'echo-knowledge-base' ); ?></span></label>
+									<input type="email" name="email" value="<?php echo esc_attr( wp_get_current_user()->user_email ); ?>">
 								</div>
-								<input type="hidden" name="site_url" value="<?php echo esc_attr( get_site_url() ); ?>">
 							</div>
 							
 							<div class="epkb-vote-message" style="display: none;"></div>
@@ -765,18 +764,28 @@ class EPKB_Dashboard_Page {
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/?utm_source=plugin&utm_medium=dashboard&utm_content=carousel&utm_campaign=ai-features',
 			),
 			array(
-				'title'             => esc_html__( 'Unlimited Knowledge Bases', 'echo-knowledge-base' ),
-				'special_note'      => esc_html__( 'Expand your documentation', 'echo-knowledge-base' ),
-				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-MKB-1.jpg',
-				'desc'              => sprintf( esc_html__( 'Create a separate Knowledge Base for each %sproduct, service or team%s.', 'echo-knowledge-base' ), '<strong>', '</strong>' ),
-				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/multiple-knowledge-bases/?utm_source=plugin&utm_medium=dashboard&utm_content=carousel&utm_campaign=multiple-kbs'
-			),
+				'title'          => esc_html__( 'Unlimited Knowledge Bases', 'echo-knowledge-base' ),
+				'special_note'   => esc_html__( 'Expand your documentation', 'echo-knowledge-base' ),
+				'img'            => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-MKB-1.jpg',
+				'desc'           =>
+					esc_html__( 'Create multiple fully independent knowledge bases to organize content for different needs. Key features include:', 'echo-knowledge-base' )
+					. '<br>' . esc_html__( '1. One plugin, unlimited Knowledge Bases.', 'echo-knowledge-base' )
+					. '<br>' . esc_html__( '2. Divide knowledge bases by department or audience.', 'echo-knowledge-base' )
+					. '<br>' . esc_html__( '3. Search stays in its lane, results only from the selected KB.', 'echo-knowledge-base' )
+					. '<br>' . esc_html__( "4. Switch KBs with one click.", 'echo-knowledge-base' ),
+				'learn_more_url' => 'https://www.echoknowledgebase.com/wordpress-plugin/multiple-knowledge-bases/?utm_source=plugin&utm_medium=dashboard&utm_content=carousel&utm_campaign=multiple-kbs',
+			),	
 			array(
-				'title'             => esc_html__( 'Advanced Search', 'echo-knowledge-base' ),
-				'special_note'      => esc_html__( 'Enhance and analyze user searches', 'echo-knowledge-base' ),
-				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-ASEA-1.jpg',
-				'desc'              => esc_html__( "Enhance users' search experience and view search analytics, including popular searches and no results searches.", 'echo-knowledge-base' ),
-				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/advanced-search/?utm_source=plugin&utm_medium=dashboard&utm_content=carousel&utm_campaign=advanced-search'
+				'title'          => esc_html__( 'Advanced Search', 'echo-knowledge-base' ),
+				'special_note'   => esc_html__( 'Enhance and analyze user searches', 'echo-knowledge-base' ),
+				'img'            => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-ASEA-1.jpg',
+				'desc'           =>
+					esc_html__( "Enhance users' search experience and view search analytics, including popular searches and no results searches. Key features include:", 'echo-knowledge-base' )
+					. '<br>' . esc_html__( '1. Background images, color gradients', 'echo-knowledge-base' )
+					. '<br>' . esc_html__( '2. Search Analytics', 'echo-knowledge-base' )
+					. '<br>' . esc_html__( '3. Search filters', 'echo-knowledge-base' )
+					. '<br>' . esc_html__( '4. Search results page', 'echo-knowledge-base' ),
+				'learn_more_url' => 'https://www.echoknowledgebase.com/wordpress-plugin/advanced-search/?utm_source=plugin&utm_medium=dashboard&utm_content=carousel&utm_campaign=advanced-search',
 			),
 			array(
 				'title'             => esc_html__( 'Elegant Layouts', 'echo-knowledge-base' ),
@@ -823,17 +832,17 @@ class EPKB_Dashboard_Page {
 		// Get the submitted data
 		$first_name = isset( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : '';
 		$email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
-		$site_url = get_site_url();
+		$site_url = get_site_url(); // Always use the actual site URL
 		$features = isset( $_POST['features'] ) ? array_map( 'sanitize_text_field', $_POST['features'] ) : array();
 		$other_feature_text = isset( $_POST['other_feature_text'] ) ? sanitize_textarea_field( $_POST['other_feature_text'] ) : '';
 
-		// Validate required fields
-		if ( empty( $first_name ) || empty( $email ) || empty( $features ) ) {
-			wp_send_json_error( __( 'Please fill in all required fields and select at least one feature.', 'echo-knowledge-base' ) );
+		// Validate required fields - only features are required now
+		if ( empty( $features ) ) {
+			wp_send_json_error( __( 'Please select at least one feature.', 'echo-knowledge-base' ) );
 		}
 
-		// Validate email
-		if ( ! is_email( $email ) ) {
+		// Validate email only if provided
+		if ( ! empty( $email ) && ! is_email( $email ) ) {
 			wp_send_json_error( __( 'Please provide a valid email address.', 'echo-knowledge-base' ) );
 		}
 

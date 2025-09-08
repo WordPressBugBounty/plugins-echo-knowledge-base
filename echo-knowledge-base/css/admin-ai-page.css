@@ -1721,13 +1721,26 @@ button .epkb-ai-spinner {
 }
 .epkb-ai-admin-app .epkb-ai-custom-tabs .epkb-ai-tabs-nav {
   display: flex;
+  gap: 100px;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+.epkb-ai-admin-app .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tabs-regular {
+  display: flex;
   gap: 0;
   border: 1px solid #E5E6E7;
   background-color: #FFFFFF;
   border-radius: 8px;
-  margin-bottom: 20px;
-  margin-right: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.epkb-ai-admin-app .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tabs-pro {
+  display: flex;
+  gap: 0;
+  border: 1px solid #10B981;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
 }
 .epkb-ai-admin-app .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button {
   background: none;
@@ -1752,6 +1765,22 @@ button .epkb-ai-spinner {
   border-bottom-color: #0073AA;
   font-weight: 600;
   background-color: aliceblue;
+}
+.epkb-ai-admin-app .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button.epkb-ai-tab-button-pro {
+  color: #10B981;
+  font-weight: 600;
+}
+.epkb-ai-admin-app .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button.epkb-ai-tab-button-pro span[class*=epkbfa] {
+  color: #10B981;
+}
+.epkb-ai-admin-app .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button.epkb-ai-tab-button-pro:hover {
+  color: #059669;
+  background-color: #D1FAE5;
+}
+.epkb-ai-admin-app .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button.epkb-ai-tab-button-pro.active {
+  color: #059669;
+  border-bottom-color: #10B981;
+  background-color: #D1FAE5;
 }
 .epkb-ai-admin-app .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-issue-indicator {
   display: inline-block;
@@ -1908,7 +1937,7 @@ button .epkb-ai-spinner {
   color: #0073AA;
 }
 .epkb-ai-notice p {
-  margin: 0;
+  margin: 17px 0px;
 }
 
 .epkb-ai-welcome-setup {
@@ -3381,8 +3410,19 @@ button .epkb-ai-spinner {
 }
 .epkb-ai-training-data-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav {
   display: flex;
+  gap: 100px;
+  align-items: center;
   border-bottom: 1px solid #E5E5E5;
   background-color: #F9F9F9;
+}
+.epkb-ai-training-data-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tabs-regular {
+  display: flex;
+  gap: 0;
+  flex: 1;
+}
+.epkb-ai-training-data-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tabs-pro {
+  display: flex;
+  gap: 0;
 }
 .epkb-ai-training-data-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button {
   background: none;
@@ -3403,6 +3443,22 @@ button .epkb-ai-spinner {
   border-bottom-color: #0073AA;
   color: #0073AA;
   font-weight: 600;
+}
+.epkb-ai-training-data-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button.epkb-ai-tab-button-pro {
+  color: #10B981;
+  font-weight: 600;
+}
+.epkb-ai-training-data-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button.epkb-ai-tab-button-pro span[class*=epkbfa] {
+  color: #10B981;
+}
+.epkb-ai-training-data-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button.epkb-ai-tab-button-pro:hover {
+  color: #059669;
+  background-color: #D1FAE5;
+}
+.epkb-ai-training-data-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button.epkb-ai-tab-button-pro.active {
+  color: #059669;
+  border-bottom-color: #10B981;
+  background-color: #D1FAE5;
 }
 .epkb-ai-training-data-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button.epkb-ai-tab-add {
   padding: 8px 12px;
@@ -3797,8 +3853,19 @@ button .epkb-ai-spinner {
 }
 .epkb-ai-chat-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav {
   display: flex;
+  gap: 100px;
+  align-items: center;
   border-bottom: 1px solid #E5E5E5;
   background-color: #F9F9F9;
+}
+.epkb-ai-chat-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tabs-regular {
+  display: flex;
+  gap: 0;
+  flex: 1;
+}
+.epkb-ai-chat-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tabs-pro {
+  display: flex;
+  gap: 0;
 }
 .epkb-ai-chat-container .epkb-ai-custom-tabs .epkb-ai-tabs-nav .epkb-ai-tab-button {
   background: none;
@@ -6924,6 +6991,204 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   padding: 0;
   background: linear-gradient(135deg, #F8FAFC 0%, #F3F4F6 100%);
   min-height: calc(100vh - 200px);
+  /* .epkb-ai-discount-coupon {
+  	background: linear-gradient(135deg, #fff 0%, #fafafa 100%);
+  	border: 2px solid #fbbf24;
+  	border-radius: 16px;
+  	padding: 30px;
+  	margin: 30px 20px;
+  	position: relative;
+  	overflow: hidden;
+  	box-shadow: 0 10px 40px rgba(251, 191, 36, 0.15);
+
+  	&::before {
+  		content: '';
+  		position: absolute;
+  		top: -50%;
+  		right: -50%;
+  		width: 200%;
+  		height: 200%;
+  		background: radial-gradient(circle, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
+  		animation: pulse 3s ease-in-out infinite;
+  	}
+
+  	@keyframes pulse {
+  		0%, 100% { transform: scale(1); opacity: 0.8; }
+  		50% { transform: scale(1.1); opacity: 0.5; }
+  	}
+
+  	.epkb-ai-coupon-badge {
+  		position: absolute;
+  		top: 20px;
+  		right: 20px;
+  		display: flex;
+  		flex-direction: column;
+  		align-items: center;
+  		z-index: 2;
+
+  		.discount-percentage {
+  			background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  			color: #fff;
+  			font-size: 24px;
+  			font-weight: 800;
+  			padding: 8px 16px;
+  			border-radius: 8px;
+  			margin-bottom: 5px;
+  			box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
+  		}
+
+  		.badge-text {
+  			background: #fef3c7;
+  			color: #92400e;
+  			font-size: 10px;
+  			font-weight: 700;
+  			text-transform: uppercase;
+  			letter-spacing: 0.5px;
+  			padding: 4px 8px;
+  			border-radius: 4px;
+  		}
+  	}
+
+  	.epkb-ai-coupon-content {
+  		position: relative;
+  		z-index: 1;
+
+  		.coupon-title {
+  			font-size: 28px;
+  			font-weight: 700;
+  			color: #111827;
+  			margin: 0 0 10px 0;
+  			max-width: 70%;
+  		}
+
+  		.coupon-subtitle {
+  			font-size: 16px;
+  			color: #6b7280;
+  			margin: 0 0 25px 0;
+  			max-width: 70%;
+  		}
+
+  		.epkb-ai-coupon-code-wrapper {
+  			display: inline-flex;
+  			align-items: center;
+  			gap: 15px;
+  			background: #f9fafb;
+  			padding: 15px 20px;
+  			border-radius: 12px;
+  			border: 2px dashed #d1d5db;
+
+  			.coupon-label {
+  				font-size: 14px;
+  				color: #6b7280;
+  				font-weight: 600;
+  			}
+
+  			.epkb-ai-coupon-code {
+  				display: flex;
+  				align-items: center;
+  				gap: 10px;
+
+  				code {
+  					font-size: 20px;
+  					font-weight: 700;
+  					color: #111827;
+  					background: #fff;
+  					padding: 8px 16px;
+  					border-radius: 8px;
+  					letter-spacing: 1px;
+  					border: 1px solid #e5e7eb;
+  					font-family: 'SF Mono', Monaco, monospace;
+  				}
+
+  				.epkb-ai-copy-code {
+  					background: #3b82f6;
+  					color: #fff;
+  					border: none;
+  					padding: 8px 16px;
+  					border-radius: 6px;
+  					font-size: 14px;
+  					font-weight: 600;
+  					cursor: pointer;
+  					transition: all 0.2s ease;
+
+  					&:hover {
+  						background: #2563eb;
+  						transform: translateY(-1px);
+  						box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+  					}
+
+  					&.copied {
+  						background: #10b981;
+
+  						&:hover {
+  							background: #10b981;
+  						}
+  					}
+  				}
+  			}
+  		}
+  	}
+
+  	.epkb-ai-coupon-footer {
+  		display: flex;
+  		align-items: center;
+  		gap: 8px;
+  		margin-top: 20px;
+  		font-size: 14px;
+  		color: #dc2626;
+  		font-weight: 600;
+
+  		i {
+  			font-size: 16px;
+  		}
+  	}
+
+  	// Mobile responsiveness
+  	@media (max-width: 768px) {
+  		padding: 20px;
+  		margin: 20px 10px;
+
+  		.epkb-ai-coupon-badge {
+  			position: static;
+  			margin-bottom: 20px;
+  			flex-direction: row;
+  			gap: 10px;
+
+  			.discount-percentage {
+  				font-size: 20px;
+  				margin-bottom: 0;
+  			}
+  		}
+
+  		.epkb-ai-coupon-content {
+  			.coupon-title {
+  				font-size: 22px;
+  				max-width: 100%;
+  			}
+
+  			.coupon-subtitle {
+  				font-size: 14px;
+  				max-width: 100%;
+  			}
+
+  			.epkb-ai-coupon-code-wrapper {
+  				flex-direction: column;
+  				align-items: stretch;
+  				width: 100%;
+
+  				.epkb-ai-coupon-code {
+  					justify-content: space-between;
+  					width: 100%;
+
+  					code {
+  						font-size: 16px;
+  						flex: 1;
+  					}
+  				}
+  			}
+  		}
+  	}
+  } */
 }
 .epkb-ai-pro-features-tab .epkb-ai-pro-header {
   text-align: center;
@@ -7364,183 +7629,6 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   font-size: 14px;
   color: #6B7280;
 }
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FAFAFA 100%);
-  border: 2px solid #FBBF24;
-  border-radius: 16px;
-  padding: 30px;
-  margin: 30px 20px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(251, 191, 36, 0.15);
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
-  animation: pulse 3s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 0.5;
-  }
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-badge {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 2;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-badge .discount-percentage {
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-  color: #FFFFFF;
-  font-size: 24px;
-  font-weight: 800;
-  padding: 8px 16px;
-  border-radius: 8px;
-  margin-bottom: 5px;
-  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-badge .badge-text {
-  background: #FEF3C7;
-  color: #92400E;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content {
-  position: relative;
-  z-index: 1;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .coupon-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 10px 0;
-  max-width: 70%;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .coupon-subtitle {
-  font-size: 16px;
-  color: #6B7280;
-  margin: 0 0 25px 0;
-  max-width: 70%;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper {
-  display: inline-flex;
-  align-items: center;
-  gap: 15px;
-  background: #F9FAFB;
-  padding: 15px 20px;
-  border-radius: 12px;
-  border: 2px dashed #D1D5DB;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper .coupon-label {
-  font-size: 14px;
-  color: #6B7280;
-  font-weight: 600;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper .epkb-ai-coupon-code {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper .epkb-ai-coupon-code code {
-  font-size: 20px;
-  font-weight: 700;
-  color: #111827;
-  background: #FFFFFF;
-  padding: 8px 16px;
-  border-radius: 8px;
-  letter-spacing: 1px;
-  border: 1px solid #E5E7EB;
-  font-family: "SF Mono", Monaco, monospace;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper .epkb-ai-coupon-code .epkb-ai-copy-code {
-  background: #3B82F6;
-  color: #FFFFFF;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper .epkb-ai-coupon-code .epkb-ai-copy-code:hover {
-  background: #2563EB;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper .epkb-ai-coupon-code .epkb-ai-copy-code.copied {
-  background: #10B981;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper .epkb-ai-coupon-code .epkb-ai-copy-code.copied:hover {
-  background: #10B981;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-footer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 20px;
-  font-size: 14px;
-  color: #DC2626;
-  font-weight: 600;
-}
-.epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-footer i {
-  font-size: 16px;
-}
-@media (max-width: 768px) {
-  .epkb-ai-pro-features-tab .epkb-ai-discount-coupon {
-    padding: 20px;
-    margin: 20px 10px;
-  }
-  .epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-badge {
-    position: static;
-    margin-bottom: 20px;
-    flex-direction: row;
-    gap: 10px;
-  }
-  .epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-badge .discount-percentage {
-    font-size: 20px;
-    margin-bottom: 0;
-  }
-  .epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .coupon-title {
-    font-size: 22px;
-    max-width: 100%;
-  }
-  .epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .coupon-subtitle {
-    font-size: 14px;
-    max-width: 100%;
-  }
-  .epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-  }
-  .epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper .epkb-ai-coupon-code {
-    justify-content: space-between;
-    width: 100%;
-  }
-  .epkb-ai-pro-features-tab .epkb-ai-discount-coupon .epkb-ai-coupon-content .epkb-ai-coupon-code-wrapper .epkb-ai-coupon-code code {
-    font-size: 16px;
-    flex: 1;
-  }
-}
 .epkb-ai-pro-features-tab .epkb-ai-pro-cta {
   background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
   padding: 80px 40px;
@@ -7587,21 +7675,22 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
 }
 .epkb-ai-pro-features-tab .epkb-ai-pro-cta .epkb-ai-pro-cta-buttons .epkb-ai-pro-cta-button {
   display: inline-block;
-  padding: 16px 40px;
+  padding: 20px 60px;
   border-radius: 50px;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
 }
 .epkb-ai-pro-features-tab .epkb-ai-pro-cta .epkb-ai-pro-cta-buttons .epkb-ai-pro-cta-button.primary {
-  background: #FFFFFF;
-  color: #667EEA;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background: #27AE60;
+  color: #FFFFFF;
+  box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
 }
 .epkb-ai-pro-features-tab .epkb-ai-pro-cta .epkb-ai-pro-cta-buttons .epkb-ai-pro-cta-button.primary:hover {
+  background: #219A52;
   transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 40px rgba(39, 174, 96, 0.4);
 }
 .epkb-ai-pro-features-tab .epkb-ai-pro-cta .epkb-ai-pro-cta-buttons .epkb-ai-pro-cta-button.secondary {
   background: transparent;
@@ -7634,6 +7723,7 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   font-size: 14px;
   position: relative;
   z-index: 1;
+  margin-bottom: 20px;
 }
 .epkb-ai-pro-features-tab .epkb-ai-pro-cta .epkb-ai-pro-guarantee .epkbfa {
   font-size: 18px;
@@ -8567,6 +8657,54 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   100% {
     transform: translateX(100%);
   }
+}
+.epkb-ai-dashboard-beta .epkb-ai-tools-link-section {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-top: 20px;
+}
+.epkb-ai-dashboard-beta .epkb-ai-tools-link-section .epkb-ai-tools-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  background: #FAFAFA;
+}
+.epkb-ai-dashboard-beta .epkb-ai-tools-link-section .epkb-ai-tools-link:hover {
+  background: #F3F4F6;
+  border-color: #D1D5DB;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+}
+.epkb-ai-dashboard-beta .epkb-ai-tools-link-section .epkb-ai-tools-link span {
+  font-size: 20px;
+  color: #6B7280;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.epkb-ai-dashboard-beta .epkb-ai-tools-link-section .epkb-ai-tools-link h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+  color: #1F2937;
+}
+.epkb-ai-dashboard-beta .epkb-ai-tools-link-section .epkb-ai-tools-link p {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
+  line-height: 1.4;
 }
 
 #ai_chat_model.epkb-ai-select,

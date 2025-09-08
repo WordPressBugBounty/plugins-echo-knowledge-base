@@ -2,6 +2,16 @@ jQuery( document ).ready( function( $ ) {
 
 	let frontendEditor = $( '#epkb-fe__editor' );
 
+	/* 
+	* Move #epkb-fe__editor directly under <body> as the last element.
+	* This ensures the editor always displays on top of the page.
+	* If it stays inside other containers, those containers can block it
+	* and cause parts of the editor to be hidden behind other elements.
+	*/
+	if ( frontendEditor.length && document.body.contains( frontendEditor[0] ) ) {
+		document.body.appendChild( frontendEditor[0]); // now last child of <body>
+	}
+
 	// show the frontend editor if one of KB pages is found in the page
 	if ( frontendEditor.length > 0 ) {
 		if ( frontendEditor.data( 'display-frontend-editor-closed' ) ) {
@@ -9,8 +19,6 @@ jQuery( document ).ready( function( $ ) {
 		} else {
 			open_frontend_editor(null );
 		}
-	} else {
-		$('#wp-admin-bar-epkb-edit-mode-button').hide();
 	}
 
 	let admin_report_error_form = $( '#epkb-fe__error-form-wrap .epkb-admin__error-form__container' );
@@ -70,9 +78,13 @@ jQuery( document ).ready( function( $ ) {
 			const goToSettings = window.confirm( message );
 
 			if ( goToSettings ) {
-				const adminBase = document.getElementById( 'epkb-fe__admin-url' )?.dataset.adminUrl || '/wp-admin/';
-				const adminUrl = adminBase + 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-configuration#settings';
-				window.open( adminUrl, '_blank' );
+				// Get admin URL from localized script variables
+				const adminBase = epkb_fe_vars?.admin_url;
+				
+				if ( adminBase ) {
+					const adminUrl = adminBase + 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-configuration#settings';
+					window.open( adminUrl, '_blank' );
+				}
 			}
 
 			return;
@@ -373,6 +385,7 @@ jQuery( document ).ready( function( $ ) {
 				kb_id: frontendEditor.data( 'kbid' ),
 				new_kb_config: kb_config,
 				kb_page_type: kb_page_type,
+				is_article_page: kb_page_type === 'article-page' ? 1 : 0,
 				feature_name: feature_name,
 				setting_name: $(event.target).attr('name'),
 				prev_link_css_id: $( '[id^="epkb-mp-frontend-modular-"][id$="-layout-css"]' ).attr( 'id' ),
@@ -748,6 +761,7 @@ jQuery( document ).ready( function( $ ) {
 		let $preview_form = $( '<form method="post" action="' + action_url + '" style="display: none !important;">' +
 			'<input type="hidden" name="epkb_fe_reload_mode" value="on">' +
 			'<input type="hidden" name="kb_id" value="' + frontendEditor.data( 'kbid' ) + '">' +
+			'<input type="hidden" name="is_article_page" value="' + (kb_page_type === 'article-page' ? 1 : 0) + '">' +
 			'<input type="text" name="new_kb_config" value="">' +
 			'</form>' );
 
@@ -1193,11 +1207,6 @@ jQuery( document ).ready( function( $ ) {
 			return;
 		}
 
-		// Color-picker handles its update through 'iris' library
-		if ( $field.hasClass( 'wp-color-picker' ) ) {
-			return;
-		}
-
 		// Module position handles its change itself
 		if ( $field.closest( '.epkb-row-module-position' ).length ) {
 			return;
@@ -1214,8 +1223,19 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// For some settings need to reload the entire page
-		if ( field_name === 'templates_for_kb' || field_name === 'template_main_page_display_title' || field_name === 'general_typography_font_family' || field_name === 'modular_main_page_toggle' ) {
+		// Also reload if page builder is enabled on article page
+		const $feature_settings = $( event.target ).closest( '.epkb-fe__feature-settings' );
+		const kb_page_type = $feature_settings.data( 'kb-page-type' );
+		const has_page_builder = frontendEditor.data( 'has-page-builder' ) === true;
+		
+		if ( field_name === 'templates_for_kb' || field_name === 'template_main_page_display_title' || field_name === 'general_typography_font_family' || field_name === 'modular_main_page_toggle' || 
+			 ( kb_page_type === 'article-page' && has_page_builder ) ) {
 			update_preview_via_page_reload( event );
+			return;
+		}
+
+		// Color-picker handles its update through 'iris' library
+		if ( $field.hasClass( 'wp-color-picker' ) ) {
 			return;
 		}
 
@@ -1269,7 +1289,16 @@ jQuery( document ).ready( function( $ ) {
 
 		// Set current timeout handler
 		colorpicker_update_timeout = setTimeout( function () {
-			updatePreview( event, ui );
+			// Check if we need to reload for page builder on article page
+			const $feature_settings = $( event.target ).closest( '.epkb-fe__feature-settings' );
+			const kb_page_type = $feature_settings.data( 'kb-page-type' );
+			const has_page_builder = frontendEditor.data( 'has-page-builder' ) === true;
+			
+			if ( kb_page_type === 'article-page' && has_page_builder ) {
+				update_preview_via_page_reload( event, ui );
+			} else {
+				updatePreview( event, ui );
+			}
 			colorpicker_update_timeout
 		}, 200 );
 	}
@@ -1309,6 +1338,7 @@ jQuery( document ).ready( function( $ ) {
 				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
 				kb_id: frontendEditor.data( 'kbid' ),
 				new_kb_config: kb_config,
+				is_article_page: kb_page_type === 'article-page' ? 1 : 0,
 				selected_search_preset: selected_search_preset
 			},
 			success: function( response ) {
@@ -1963,8 +1993,9 @@ jQuery( document ).ready( function( $ ) {
 
 			open_frontend_editor( null );
 
-			// Prevent re-opening FE on page reload
+			// Prevent re-opening FE on page reload - remove both action and KB ID parameters
 			current_url.searchParams.delete( 'action' );
+			current_url.searchParams.delete( 'epkb_kb_id' );
 
 			// Clear history to avoid resending reopening the FE on manual page reloading
 			history.replaceState( null, '', current_url.pathname + current_url.search + current_url.hash );

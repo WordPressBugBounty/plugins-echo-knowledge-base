@@ -62,11 +62,11 @@ class EPKB_AI_Search_Tab {
 		$search_presets = EPKB_OpenAI_Client::get_model_presets( 'search' );
 		$preset_options = array();
 		foreach ( $search_presets as $key => $preset ) {
-			// Add (recommended) to the balanced preset
-			if ( $key === 'balanced' ) {
-				$preset_options[$key] = $preset['label'] . ' ' . __( '(recommended)', 'echo-knowledge-base' ) . ' - ' . $preset['description'];
+			// Add (default) to the fastest preset
+			if ( $key === 'fastest' ) {
+				$preset_options[$key] = $preset['label'] . ': ' . $preset['description'] . ' ' . __( '(default)', 'echo-knowledge-base' );
 			} else {
-				$preset_options[$key] = $preset['label'] . ' - ' . $preset['description'];
+				$preset_options[$key] = $preset['label'] . ': ' . $preset['description'];
 			}
 		}
 		
@@ -87,17 +87,17 @@ class EPKB_AI_Search_Tab {
 				$matches = false;
 			}
 
-			// Check verbosity if present in preset
+			// Check verbosity if present in preset (GPT-5 models)
 			if ( $matches && isset( $preset['verbosity'] ) && $preset['verbosity'] != $ai_config['ai_search_verbosity'] ) {
 				$matches = false;
 			}
 
-			// Check reasoning if present in preset
+			// Check reasoning if present in preset (GPT-5 models)
 			if ( $matches && isset( $preset['reasoning'] ) && $preset['reasoning'] != $ai_config['ai_search_reasoning'] ) {
 				$matches = false;
 			}
 
-			// Check temperature ONLY if it's defined in the preset (non-GPT-5 models)
+			// Check temperature ONLY if it's defined in the preset (GPT-4 models)
 			if ( $matches && isset( $preset['temperature'] ) ) {
 				if ( abs( floatval( $preset['temperature'] ) - floatval( $ai_config['ai_search_temperature'] ) ) >= 0.01 ) {
 					$matches = false;
@@ -109,7 +109,7 @@ class EPKB_AI_Search_Tab {
 				$matches = false;
 			}
 
-			// Check top_p ONLY if it's defined in the preset (non-GPT-5 models)
+			// Check top_p ONLY if it's defined in the preset (GPT-4 models)
 			if ( $matches && isset( $preset['top_p'] ) ) {
 				if ( abs( floatval( $preset['top_p'] ) - floatval( $ai_config['ai_search_top_p'] ) ) >= 0.01 ) {
 					$matches = false;
@@ -122,6 +122,85 @@ class EPKB_AI_Search_Tab {
 			}
 		}
 		
+		// Default to fastest preset if settings match the default configuration
+		if ( $current_preset == 'custom' ) {
+			if ( $ai_config['ai_search_model'] == 'gpt-5-nano' && 
+				 $ai_config['ai_search_verbosity'] == 'low' && 
+				 $ai_config['ai_search_reasoning'] == 'low' ) {
+				$current_preset = 'fastest';
+			}
+		}
+		
+		// Build Custom Model Parameters fields (shown when preset = custom)
+		// Send ALL parameters to JavaScript for dynamic switching
+		$search_model = isset( $ai_config['ai_search_model'] ) ? $ai_config['ai_search_model'] : EPKB_OpenAI_Client::DEFAULT_MODEL;
+		$model_spec = EPKB_OpenAI_Client::get_models_and_default_params( $search_model );
+		$custom_param_fields = array();
+		
+		// Model selection
+		$custom_param_fields['ai_search_model'] = array(
+			'type' => 'select',
+			'label' => __( 'Search Model', 'echo-knowledge-base' ),
+			'value' => $ai_config['ai_search_model'],
+			'options' => EPKB_AI_Config_Specs::get_field_options( 'ai_search_model' )
+		);
+		
+		// Include BOTH GPT-5 and GPT-4 parameters for dynamic JavaScript switching
+		// GPT-5 parameters
+		$custom_param_fields['ai_search_verbosity'] = array(
+			'type' => 'select',
+			'label' => __( 'Verbosity', 'echo-knowledge-base' ),
+			'value' => $ai_config['ai_search_verbosity'],
+			'options' => array(
+				'low' => __( 'Low', 'echo-knowledge-base' ),
+				'medium' => __( 'Medium', 'echo-knowledge-base' ),
+				'high' => __( 'High', 'echo-knowledge-base' ),
+			),
+			'description' => __( 'Controls search result verbosity', 'echo-knowledge-base' ),
+		);
+		$custom_param_fields['ai_search_reasoning'] = array(
+			'type' => 'select',
+			'label' => __( 'Reasoning', 'echo-knowledge-base' ),
+			'value' => $ai_config['ai_search_reasoning'],
+			'options' => array(
+				'low' => __( 'Low', 'echo-knowledge-base' ),
+				'medium' => __( 'Medium', 'echo-knowledge-base' ),
+				'high' => __( 'High', 'echo-knowledge-base' ),
+			),
+			'description' => __( 'Controls search reasoning depth', 'echo-knowledge-base' ),
+		);
+		
+		// GPT-4 parameters
+		$custom_param_fields['ai_search_temperature'] = array(
+			'type' => 'number',
+			'label' => __( 'Temperature', 'echo-knowledge-base' ),
+			'value' => $ai_config['ai_search_temperature'],
+			'min' => 0,
+			'max' => 1,
+			'step' => 0.1,
+			'description' => __( 'Lower values for more accurate search results', 'echo-knowledge-base' )
+		);
+		$custom_param_fields['ai_search_top_p'] = array(
+			'type' => 'number',
+			'label' => __( 'Top P', 'echo-knowledge-base' ),
+			'value' => $ai_config['ai_search_top_p'],
+			'min' => 0,
+			'max' => 1,
+			'step' => 0.1,
+			'description' => __( 'Controls result diversity', 'echo-knowledge-base' )
+		);
+		
+		// Max tokens for all models
+		$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : EPKB_OpenAI_Client::DEFAULT_MAX_OUTPUT_TOKENS;
+		$custom_param_fields['ai_search_max_output_tokens'] = array(
+			'type' => 'number',
+			'label' => __( 'Max Tokens', 'echo-knowledge-base' ),
+			'value' => $ai_config['ai_search_max_output_tokens'],
+			'min' => 50,
+			'max' => $max_limit,
+			'description' => __( 'Maximum search result length in tokens', 'echo-knowledge-base' )
+		);
+
 		return array(
 			'search_settings' => array(
 				'id' => 'search_settings',
@@ -138,17 +217,7 @@ class EPKB_AI_Search_Tab {
 							'on'      => __( 'On (Public)', 'echo-knowledge-base' )
 						),
 						'description' => __( 'Control AI Search visibility: Off (disabled), Preview (admins only for testing), or On (public access)', 'echo-knowledge-base' ),
-						'field_class' => 'epkb-ai-search-mode' // add epkb-ai-radio-vertical if you want vertical radio buttons
-					),
-					'ai_search_preset' => array(
-						'type' => 'select',
-						'label' => __( 'Choose AI Behavior', 'echo-knowledge-base' ),
-						'value' => $current_preset,
-						'options' => $preset_options,
-						'description' => $current_preset === 'custom' ? 
-							__( 'Custom model parameters are used and can be further configured in AI Advanced Tuning.', 'echo-knowledge-base' ) :
-							__( 'Select an AI behavior preset that best fits your needs. All presets use the default model.', 'echo-knowledge-base' ),
-						'field_class' => 'epkb-ai-behavior-preset-select'
+						'field_class' => 'epkb-ai-search-mode'
 					),
 					'ai_search_instructions' => array(
 						'type' => 'textarea',
@@ -161,6 +230,24 @@ class EPKB_AI_Search_Tab {
 					)
 				)
 			),
+			'search_behavior' => array(
+				'id' => 'search_behavior',
+				'title' => __( 'AI Behavior', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-sliders',
+				'fields' => array_merge( array(
+					'ai_search_preset' => array(
+						'type' => 'select',
+						'label' => __( 'Choose AI Behavior', 'echo-knowledge-base' ),
+						'value' => $current_preset,
+						'options' => $preset_options,
+						'description' => $current_preset === 'custom' ?
+							__( 'Custom model parameters are active. Adjust them below.', 'echo-knowledge-base' ) :
+							__( 'Select an AI behavior preset that best fits your needs. To customize parameters, choose "Custom".', 'echo-knowledge-base' ),
+						'field_class' => 'epkb-ai-behavior-preset-select'
+					)
+				), $custom_param_fields)
+			),
+			
 		);
 	}
 
@@ -181,9 +268,8 @@ class EPKB_AI_Search_Tab {
 		
 		// Handle custom preset - no changes needed
 		if ( $preset_key === 'custom' ) {
-			wp_send_json_success( array( 
-				'message' => __( 'Custom preset selected. Configure parameters in Advanced AI Tuning.', 'echo-knowledge-base' ),
-				'redirect_to_tuning' => true
+			wp_send_json_success( array(
+				'message' => __( 'Custom preset selected. Adjust model parameters below in Search Settings.', 'echo-knowledge-base' )
 			) );
 			return;
 		}

@@ -232,11 +232,6 @@
   width: 100%;
 }
 #eckb-article-page-container-v2 #eckb-article-body #eckb-article-content #eckb-article-content-footer .epkb-article-navigation-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin: 40px 0;
   margin: 0;
   padding: 0;
   border: 0;
@@ -253,11 +248,14 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 40px 0;
 }
 @media only screen and (max-width: 768px) {
   #eckb-article-page-container-v2 #eckb-article-body #eckb-article-content #eckb-article-content-footer .epkb-article-navigation-container {
@@ -354,7 +352,7 @@
   justify-content: flex-end;
 }
 #eckb-article-page-container-v2 #eckb-article-body #eckb-article-content #eckb-article-content-footer .eckb-article-content-footer__article-meta {
-  float: left;
+  display: flex;
   width: 100%;
   padding: 10px 0;
 }
@@ -464,8 +462,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -487,8 +483,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -637,8 +631,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -660,8 +652,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -2266,8 +2256,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -2289,8 +2277,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -2776,8 +2762,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -2804,8 +2788,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -2828,8 +2810,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -2855,8 +2835,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -2914,8 +2892,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -3789,5 +3765,16 @@
   }
   #eckb-article-page-container-v2, body #eckb-article-page-container-v2 #eckb-article-body {
     width: 100% !important;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .eckb-article-page--sticky-nav #epkb-sidebar-container-v2,
+  .eckb-article-page--sticky-nav #elay-sidebar-container-v2,
+  .eckb-article-page--sticky-nav .eckb-article-cat-layout-list {
+    position: sticky !important;
+    top: 100px !important;
+    z-index: 9 !important;
+    max-height: 80vh;
+    overflow-y: auto !important;
   }
 }

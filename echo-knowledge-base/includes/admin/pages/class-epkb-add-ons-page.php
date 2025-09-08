@@ -107,7 +107,8 @@ class EPKB_Add_Ons_Page {
 				'title'             => esc_html__( 'AI Features', 'echo-knowledge-base' ),
 				'special_note'      => esc_html__( 'Smart AI-powered support', 'echo-knowledge-base' ),
 				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/08/ai-features-banner.jpg',
-				'desc'              => sprintf( esc_html__( '%sAI Chat%s with instant answers, %sSmart Search%s with AI-generated responses, and %sAdvanced Training%s on posts, pages & custom content.', 'echo-knowledge-base' ), '<strong>', '</strong>', '<strong>', '</strong>', '<strong>', '</strong>' ),
+				'desc'              => sprintf( esc_html__( 'Enhance your site with AI training from posts, pages, custom post types, and private notes, ' .
+															'plus smart daily email notifications summarizing AI Chat and Search activity.', 'echo-knowledge-base' ) ),
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=ai-features',
 			) );
 

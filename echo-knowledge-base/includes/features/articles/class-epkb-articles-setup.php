@@ -127,6 +127,9 @@ class EPKB_Articles_Setup {
 
 		<style id="eckb-article-styles" type="text/css"><?php echo EPKB_Utilities::minify_css( self::$styles ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?></style>   <?php
 
+		$frontend_editor = new EPKB_Frontend_Editor();
+		$frontend_editor->generate_page_content( $kb_config, 'article-page' );
+
 		$article_content = ob_get_clean();
 
 		return str_replace( ']]>', ']]&gt;', $article_content );

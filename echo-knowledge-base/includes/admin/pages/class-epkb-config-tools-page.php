@@ -996,7 +996,7 @@ class EPKB_Config_Tools_Page {
 		);
 
 		// Sidebar Introduction Text - only show if using Sidebar Layout (shortcode or block)
-		if ( EPKB_Utilities::is_elegant_layouts_enabled() && $kb_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ) {
+		if ( EPKB_Utilities::is_elegant_layouts_enabled() ) {
 			$boxes_config[] = array(
 				'title' => esc_html__( 'Sidebar Layout - Introduction Text', 'echo-knowledge-base' ),
 				'html'  => self::get_sidebar_intro_text_html( $kb_config ),
@@ -1871,6 +1871,7 @@ class EPKB_Config_Tools_Page {
 			<p class="epkb-sidebar-intro-text__form-title">    <?php
 				esc_html_e( 'Enter the introduction text for the Sidebar Layout main page. This text appears at the top of the sidebar navigation.', 'echo-knowledge-base' ); ?>
 			</p>
+			<br>
 			<!-- Hidden field to debug value -->
 			<input type="hidden" id="epkb_sidebar_intro_text_debug" value="<?php echo esc_attr( $sidebar_intro_text ); ?>" />
 			<div class="epkb-input-group epkb-admin__wp-editor-field">

@@ -65,9 +65,9 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'name'        => 'ai_search_enabled',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'off'     => __( 'Off', 'echo-knowledge-base' ),
-					'preview' => __( 'Preview (Admins only)', 'echo-knowledge-base' ),
-					'on'      => __( 'On (Public)', 'echo-knowledge-base' )
+					'off'     => 'Off', // do not translate - avoid early loading errors
+					'preview' => 'Preview (Admins only)',
+					'on'      => 'On (Public)'
 				),
 				'default'     => 'off'
 			),
@@ -103,7 +103,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'name'        => 'ai_search_max_output_tokens',
 				'type'        => EPKB_Input_Filter::NUMBER,
 				'default'     => isset( $default_params['max_output_tokens'] ) ? $default_params['max_output_tokens'] : EPKB_OpenAI_Client::DEFAULT_MAX_OUTPUT_TOKENS,
-				'min'         => 50,
+				'min'         => 500,
 				'max'         => 16384
 			),
 			'ai_search_verbosity' => array(
@@ -114,7 +114,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 					'medium' => 'Medium',
 					'high'   => 'High',
 				),
-				'default'     => isset( $default_params['verbosity'] ) ? $default_params['verbosity'] : 'medium'
+				'default'     => 'low'
 			),
 			'ai_search_reasoning' => array(
 				'name'        => 'ai_search_reasoning',
@@ -124,7 +124,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 					'medium' => 'Medium',
 					'high'   => 'High',
 				),
-				'default'     => isset( $default_params['reasoning'] ) ? $default_params['reasoning'] : 'medium'
+				'default'     => 'low'
 			),
 			/* 'ai_search_location' => array(
 				'name'        => 'ai_search_location',
@@ -151,9 +151,9 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'name'        => 'ai_chat_enabled',
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
-					'off'     => __( 'Off', 'echo-knowledge-base' ),
-					'preview' => __( 'Preview (Admins only)', 'echo-knowledge-base' ),
-					'on'      => __( 'On (Public)', 'echo-knowledge-base' )
+					'off'     => 'Off', // do not translate - avoid early loading errors
+					'preview' => 'Preview (Admins only)',
+					'on'      => 'On (Public)'
 				),
 				'default'     => 'off'
 			),
@@ -194,7 +194,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'name'        => 'ai_chat_max_output_tokens',
 				'type'        => EPKB_Input_Filter::NUMBER,
 				'default'     => isset( $default_params['max_output_tokens'] ) ? $default_params['max_output_tokens'] : EPKB_OpenAI_Client::DEFAULT_MAX_OUTPUT_TOKENS,
-				'min'         => 50,
+				'min'         => 500,
 				'max'         => 16384
 			),
 			'ai_chat_verbosity' => array(
@@ -205,7 +205,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 					'medium' => 'Medium',
 					'high'   => 'High',
 				),
-				'default'     => isset( $default_params['verbosity'] ) ? $default_params['verbosity'] : 'medium'
+				'default'     => 'low'
 			),
 			'ai_chat_reasoning' => array(
 				'name'        => 'ai_chat_reasoning',
@@ -215,7 +215,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 					'medium' => 'Medium',
 					'high'   => 'High',
 				),
-				'default'     => isset( $default_params['reasoning'] ) ? $default_params['reasoning'] : 'medium'
+				'default'     => 'low'
 			),
 
 			/***  AI Sync Custom Settings ***/
@@ -357,15 +357,16 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			new EPKB_AI_Messages_DB();
 		}
 
-		do_action( 'eckb_ai_config_updated', $original_config, $new_config );
-
 		$result = parent::update_config( $new_config );
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		do_action( 'eckb_ai_config_updated', $original_config, $new_config );
 		
 		// Clear the dashboard status cache when AI config is updated
-		if ( ! is_wp_error( $result ) ) {
-			delete_transient( 'epkb_ai_dashboard_status' );
-		}
-		
+		delete_transient( 'epkb_ai_dashboard_status' );
+
 		return $result;
 	}
 	

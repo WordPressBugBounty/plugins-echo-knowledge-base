@@ -159,11 +159,22 @@ jQuery(document).ready(function($) {
 		
 		let form = $( this );
 		
-		// Get content from TinyMCE editor
+		// Get content from TinyMCE editor or textarea depending on active tab
 		let intro_text = '';
+		
+		// Check if we're in visual mode (TinyMCE active) or text/code mode
+		let isVisualMode = false;
 		if ( typeof tinymce !== 'undefined' && tinymce.get( 'epkb_sidebar_main_page_intro_text' ) ) {
+			// Check if TinyMCE is currently hidden (text mode) or visible (visual mode)
+			let editor = tinymce.get( 'epkb_sidebar_main_page_intro_text' );
+			isVisualMode = !editor.isHidden();
+		}
+		
+		if ( isVisualMode && typeof tinymce !== 'undefined' && tinymce.get( 'epkb_sidebar_main_page_intro_text' ) ) {
+			// Visual mode: get content from TinyMCE
 			intro_text = tinymce.get( 'epkb_sidebar_main_page_intro_text' ).getContent();
 		} else {
+			// Text/Code mode or no TinyMCE: get content directly from textarea
 			intro_text = form.find( '#epkb_sidebar_main_page_intro_text' ).val();
 		}
 		
@@ -873,6 +884,53 @@ jQuery(document).ready(function($) {
 	 *
 	 ************************************************************************************************/
 	let epkb_editor_update_timer = false;
+
+	// Search functionality for available questions
+	$( document ).on( 'input keyup', '#epkb-available-questions-search-input', function() {
+		let searchTerm = $( this ).val().toLowerCase().trim();
+		let visibleCount = 0;
+		
+		// Search through all FAQ questions in the available questions container
+		$( '#epkb-available-questions-container .epkb-faq-question' ).each( function() {
+			let $question = $( this );
+			let questionTitle = $question.find( '.epkb-faq-question__title' ).text().toLowerCase();
+			
+			// Check if question is already hidden because it's in the current group
+			let isInGroup = $question.hasClass( 'epkb-faq-question--hide' );
+			
+			if ( isInGroup ) {
+				// Keep it hidden if it's already in the group
+				return;
+			}
+			
+			// Show/hide based on search term
+			if ( searchTerm === '' || questionTitle.indexOf( searchTerm ) !== -1 ) {
+				$question.removeClass( 'epkb-faq-question--search-hide' );
+				visibleCount++;
+			} else {
+				$question.addClass( 'epkb-faq-question--search-hide' );
+			}
+		});
+		
+		// Show/hide the "No available Questions" message
+		if ( visibleCount === 0 ) {
+			$( '#epkb-available-questions-container .epkb-faq-questions-list-empty' ).addClass( 'epkb-faq-questions-list-empty--active' );
+		} else {
+			$( '#epkb-available-questions-container .epkb-faq-questions-list-empty' ).removeClass( 'epkb-faq-questions-list-empty--active' );
+		}
+	});
+
+	// Clear search when opening a group for editing
+	$( document ).on( 'click', '#epkb-kb-faqs-page-container .epkb-faq-group-container .epkb-faq-group-head__edit, #epkb-faq-create-group', function() {
+		$( '#epkb-available-questions-search-input' ).val( '' ).trigger( 'input' );
+	});
+
+	// Handle sort toggle (unchecked = Recent/date, checked = ABC/alphabetical)
+	$( document ).on( 'change', '#epkb-faq-sort-toggle', function() {
+		let isAlphabetical = $( this ).is( ':checked' );
+		$( this ).attr( 'data-sort', isAlphabetical ? 'alphabetical' : 'date' );
+		sort_faqs_in_all_lists();
+	});
 
 	let faq_question_form = {
 		faq_id: 0,
@@ -1795,18 +1853,36 @@ jQuery(document).ready(function($) {
 
 	// Sort FAQs in all lists
 	function sort_faqs_in_all_lists() {
-
+		// Get current sort mode
+		let sortMode = $( '#epkb-faq-sort-toggle' ).attr( 'data-sort' ) || 'date';
+		
 		// Sort FAQs in available FAQs list
 		if ( $( '#epkb-available-questions-container .epkb-faq-question' ).length > 1 ) {
 			$( '#epkb-available-questions-container .epkb-faq-question' ).sort( function( a, b ) {
-				return $( a ).find( '.epkb-faq-question__title' ).text() > $( b ).find( '.epkb-faq-question__title' ).text() ? 1 : -1;
+				if ( sortMode === 'alphabetical' ) {
+					// Sort alphabetically by title
+					return $( a ).find( '.epkb-faq-question__title' ).text() > $( b ).find( '.epkb-faq-question__title' ).text() ? 1 : -1;
+				} else {
+					// Sort by date (newest first)
+					let dateA = $( a ).attr( 'data-date' ) || '1970-01-01';
+					let dateB = $( b ).attr( 'data-date' ) || '1970-01-01';
+					return dateB.localeCompare( dateA );
+				}
 			} ).appendTo( '#epkb-available-questions-container .epkb-available-questions-body' );
 		}
 
 		// Sort FAQs in all FAQs list (call sort() even if there is one FAQ is available to update columns properly)
 		if ( $( '#epkb-all-faqs-container .epkb-faq-question' ).length > 0 ) {
 			$( '#epkb-all-faqs-container .epkb-faq-question' ).sort( function( a, b ) {
-				return $( a ).find( '.epkb-faq-question__title' ).text() > $( b ).find( '.epkb-faq-question__title' ).text() ? 1 : -1;
+				if ( sortMode === 'alphabetical' ) {
+					// Sort alphabetically by title
+					return $( a ).find( '.epkb-faq-question__title' ).text() > $( b ).find( '.epkb-faq-question__title' ).text() ? 1 : -1;
+				} else {
+					// Sort by date (newest first)
+					let dateA = $( a ).attr( 'data-date' ) || '1970-01-01';
+					let dateB = $( b ).attr( 'data-date' ) || '1970-01-01';
+					return dateB.localeCompare( dateA );
+				}
 			} ).appendTo( '#epkb-all-faqs-container .epkb-body-col--right' );
 			while ( $( '#epkb-all-faqs-container .epkb-body-col--left .epkb-faq-question' ).length < $( '#epkb-all-faqs-container .epkb-body-col--right .epkb-faq-question' ).length ) {
 				$( $( '#epkb-all-faqs-container .epkb-body-col--right .epkb-faq-question' )[0] ).appendTo( $( '#epkb-all-faqs-container .epkb-body-col--left' ) );

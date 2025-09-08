@@ -254,8 +254,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;
@@ -1806,6 +1804,13 @@
   border: 2px solid #F6FF00;
   padding: 10px;
 }
+#epkb-fe__editor #section_head_category_icon_size_group .input_container {
+  display: flex;
+  align-items: center;
+}
+#epkb-fe__editor #section_head_category_icon_size_group .epkb-input-desc br {
+  display: none;
+}
 #epkb-fe__editor .epkb-admin-pro-feature-ad-container {
   display: flex;
   flex-direction: column;
@@ -2081,8 +2086,6 @@
   list-style-type: none;
   list-style-image: none;
   float: none;
-  border: 0;
-  border: none;
   text-transform: none;
   letter-spacing: 0;
   height: auto;

@@ -700,6 +700,7 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
+  margin-bottom: 10px;
 }
 #eckb-article-page-container-v2 #eckb-article-body #eckb-article-content #eckb-article-content-header-v2 #eckb-article-content-title-container {
   display: flex;

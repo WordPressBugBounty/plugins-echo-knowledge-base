@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 15.210.0
+ * Version: 15.220.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '15.210.0';
+	public static $version = '15.220.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -157,7 +157,6 @@ final class Echo_Knowledge_Base {
 		new EPKB_Articles_Setup();
 		new EPKB_Templates();
 		new EPKB_Shortcodes();
-		new EPKB_Frontend_Editor();
 		new EPKB_AI_Chat_Frontend();
 
 		// REST API controllers
@@ -231,9 +230,6 @@ final class Echo_Knowledge_Base {
 			return;
 		} else if ( in_array( $action, array( 'epkb_get_ai_status', 'epkb_vote_for_features' ) ) ) {
 			new EPKB_AI_Dashboard_Tab();
-			return;
-		} else if ( in_array( $action, array( 'epkb_ai_save_tuning_settings', 'epkb_ai_reset_tuning_defaults' ) )) {
-			new EPKB_AI_Tools_Tuning_Tab();
 			return;
 		} else if ( $action == 'epkb_kb_vote_for_features' ) {
 			new EPKB_Dashboard_Page();

@@ -41,6 +41,7 @@ class EPKB_AI_Dashboard_Tab {
 		$config['news'] = self::get_news_items();
 		$config['upcoming_features'] = self::get_upcoming_features();
 		$config['quick_links'] = self::get_setup_steps();
+		$config['tools_link'] = self::get_tools_link();
 		
 		return $config;
 	}
@@ -97,17 +98,17 @@ class EPKB_AI_Dashboard_Tab {
 		// Get the submitted data
 		$first_name = isset( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : '';
 		$email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
-		$site_url = isset( $_POST['site_url'] ) ? esc_url_raw( $_POST['site_url'] ) : '';
+		$site_url = get_site_url(); // Always use the actual site URL
 		$features = isset( $_POST['features'] ) ? array_map( 'sanitize_text_field', $_POST['features'] ) : array();
 		$other_feature_text = isset( $_POST['other_feature_text'] ) ? sanitize_textarea_field( $_POST['other_feature_text'] ) : '';
 
-		// Validate required fields
-		if ( empty( $first_name ) || empty( $email ) || empty( $features ) ) {
-			wp_send_json_error( __( 'Please fill in all required fields and select at least one feature.', 'echo-knowledge-base' ) );
+		// Validate required fields - only features are required now
+		if ( empty( $features ) ) {
+			wp_send_json_error( __( 'Please select at least one feature.', 'echo-knowledge-base' ) );
 		}
 
-		// Validate email
-		if ( ! is_email( $email ) ) {
+		// Validate email only if provided
+		if ( ! empty( $email ) && ! is_email( $email ) ) {
 			wp_send_json_error( __( 'Please provide a valid email address.', 'echo-knowledge-base' ) );
 		}
 
@@ -931,24 +932,24 @@ class EPKB_AI_Dashboard_Tab {
 	private static function get_news_items() {
 		return array(
 			array(
-				'date' => '2025-01-15',
+				'date' => '2025-09-08',
 				'type' => 'feature',
-				'title' => __( 'AI Search Enhancements', 'echo-knowledge-base' ),
-				'description' => __( 'Improved semantic search with better context understanding, faster response times, and more relevant article suggestions.', 'echo-knowledge-base' ),
+				'title' => __( 'New AI Chat Behavior Presets', 'echo-knowledge-base' ),
+				'description' => __( 'Choose between Fastest (quick answers), Smartest (best quality), or Balanced modes to match your needs.', 'echo-knowledge-base' ),
 				'link' => null
 			),
 			array(
-				'date' => '2025-01-10',
+				'date' => '2025-09-07',
+				'type' => 'feature',
+				'title' => __( 'AI Search Gets Behavior Presets Too', 'echo-knowledge-base' ),
+				'description' => __( 'Same great options: Fastest for speed, Smartest for accuracy, or Balanced for both.', 'echo-knowledge-base' ),
+				'link' => null
+			),
+			array(
+				'date' => '2025-09-06',
 				'type' => 'improvement',
-				'title' => __( 'AI Chat Upgrades', 'echo-knowledge-base' ),
-				'description' => __( 'Enhanced conversation flow with better context retention, multi-turn conversations, and improved answer accuracy.', 'echo-knowledge-base' ),
-				'link' => null
-			),
-			array(
-				'date' => '2025-01-05',
-				'type' => 'update',
-				'title' => __( 'Training Data Improvements', 'echo-knowledge-base' ),
-				'description' => __( 'Faster sync process, better handling of large datasets, automatic content updates, and improved vector storage management.', 'echo-knowledge-base' ),
+				'title' => __( 'UI Improvements', 'echo-knowledge-base' ),
+				'description' => __( 'Cleaner layouts, smoother navigation, and better visual feedback throughout.', 'echo-knowledge-base' ),
 				'link' => null
 			)
 		);
@@ -1004,18 +1005,6 @@ class EPKB_AI_Dashboard_Tab {
 				'description' => __( 'Enhanced search bar with AI-powered auto-suggestions offering completions and popular queries for faster searching.', 'echo-knowledge-base' ),
 			),
 			array(
-				'id' => 'gemini-ai-support',
-				'icon' => 'epkbfa epkbfa-robot',
-				'title' => __( 'Google Gemini AI Integration', 'echo-knowledge-base' ),
-				'description' => __( 'Add support for Google Gemini AI as an alternative to OpenAI, providing advanced language capabilities and multi-modal understanding.', 'echo-knowledge-base' ),
-			),
-			array(
-				'id' => 'deepseek-ai-support',
-				'icon' => 'epkbfa epkbfa-brain',
-				'title' => __( 'DeepSeek AI Integration', 'echo-knowledge-base' ),
-				'description' => __( 'Integrate DeepSeek AI for enhanced reasoning capabilities and cost-effective AI solutions with strong performance on complex tasks.', 'echo-knowledge-base' ),
-			),
-			array(
 				'id' => 'other-feature',
 				'icon' => 'epkbfa epkbfa-lightbulb-o',
 				'title' => __( 'Other Feature Not Listed', 'echo-knowledge-base' ),
@@ -1047,34 +1036,40 @@ class EPKB_AI_Dashboard_Tab {
 			$has_synced_data = EPKB_AI_Training_Data_DB::count_synced_data() > 0;
 		}
 		
+		// Check if all steps are completed
+		$all_steps_complete = $step1_complete && $features_enabled && $has_synced_data;
+		
 		$links = array(
-			array(
-				'icon' => 'epkbfa epkbfa-key',
-				'title' => __( 'Step 1: Configure API Key & Privacy', 'echo-knowledge-base' ),
-				'description' => __( 'Add your OpenAI API key and accept the data privacy agreement.', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' ),
-				'external' => false,
-				'completed' => $step1_complete
-			),
-			array(
-				'icon' => 'epkbfa epkbfa-rocket',
-				'title' => __( 'Step 2: Enable AI Chat and/or AI Search', 'echo-knowledge-base' ),
-				'description' => __( 'Enable AI Search or Chat features for your website.', 'echo-knowledge-base' ),
-				'link' => $features_enabled ? 
-					admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=chat' ) :
-					admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=search&sub_tab=settings' ),
-				'external' => false,
-				'disabled' => ! $step1_complete,
-				'completed' => $features_enabled
-			),
-			array(
-				'icon' => 'epkbfa epkbfa-database',
-				'title' => __( 'Step 3: Add Training Data & Sync', 'echo-knowledge-base' ),
-				'description' => __( 'Select content and sync it to OpenAI for AI processing.', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' ),
-				'external' => false,
-				'disabled' => ! $features_enabled,
-				'completed' => $has_synced_data
+			'all_completed' => $all_steps_complete,
+			'steps' => array(
+				array(
+					'icon' => 'epkbfa epkbfa-key',
+					'title' => __( 'Step 1: Configure API Key & Privacy', 'echo-knowledge-base' ),
+					'description' => __( 'Add your OpenAI API key and accept the data privacy agreement.', 'echo-knowledge-base' ),
+					'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' ),
+					'external' => false,
+					'completed' => $step1_complete
+				),
+				array(
+					'icon' => 'epkbfa epkbfa-rocket',
+					'title' => __( 'Step 2: Enable AI Chat and/or AI Search', 'echo-knowledge-base' ),
+					'description' => __( 'Enable AI Search or Chat features for your website.', 'echo-knowledge-base' ),
+					'link' => $features_enabled ? 
+						admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=chat' ) :
+						admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=search&sub_tab=settings' ),
+					'external' => false,
+					'disabled' => ! $step1_complete,
+					'completed' => $features_enabled
+				),
+				array(
+					'icon' => 'epkbfa epkbfa-database',
+					'title' => __( 'Step 3: Add Training Data & Sync', 'echo-knowledge-base' ),
+					'description' => __( 'Select content and sync it to OpenAI for AI processing.', 'echo-knowledge-base' ),
+					'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' ),
+					'external' => false,
+					'disabled' => ! $features_enabled,
+					'completed' => $has_synced_data
+				)
 			)
 		);
 		
@@ -1091,5 +1086,21 @@ class EPKB_AI_Dashboard_Tab {
 		*/
 		
 		return $links;
+	}
+	
+	/**
+	 * Get tools link for dashboard
+	 *
+	 * @return array
+	 */
+	private static function get_tools_link() {
+		return array(
+			'icon' => 'epkbfa epkbfa-wrench',
+			'title' => __( 'Advanced Tools & Debug', 'echo-knowledge-base' ),
+			'description' => __( 'Access debug information, sync status, and advanced AI management tools.', 'echo-knowledge-base' ),
+			'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=tools' ),
+			'external' => false,
+			'is_tools_link' => true
+		);
 	}
 }

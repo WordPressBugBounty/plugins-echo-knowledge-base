@@ -8,7 +8,6 @@
 class EPKB_Frontend_Editor {
 
 	private static $modules = [ 'search', 'categories_articles', 'articles_list', 'faqs', 'resource_links' ];
-	private static $editor_rendered = false;
 
     /**
      * Constructor
@@ -38,63 +37,20 @@ class EPKB_Frontend_Editor {
 		// report uncaught AJAX error
 	    add_action( 'wp_ajax_epkb_editor_error', array( 'EPKB_Controller', 'handle_report_admin_error' ) );
 	    add_action( 'wp_ajax_nopriv_epkb_editor_error', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
-
-		$this->init_page_content_hook();
     }
-
-	private function init_page_content_hook() {
-
-		add_action( 'wp_footer', array( $this, 'generate_page_content' ), 1 );
-
-		// Add wp_body_open as a safety net for themes that might not have wp_footer
-		add_action( 'wp_body_open', array( $this, 'generate_page_content' ), 99 );
-
-		// Additional fallbacks for themes that remove wp_footer and wp_body_open
-		add_action( 'wp_print_footer_scripts', array( $this, 'generate_page_content' ), 99 );
-		add_action( 'get_footer', array( $this, 'generate_page_content' ), 99 );
-
-	}
 
     /**
      * Display Frontend Editor
      * Uses multiple hooks as fallbacks for themes that may remove standard hooks
      */
-    public function generate_page_content() {
-        
-        // Prevent duplicate rendering - important since multiple hooks may trigger this method
-        if ( self::$editor_rendered ) {
-            return;
-        }
+    public function generate_page_content( $kb_config, $kb_page_type ) {
 
-		// 'shutdown' fallback hook may be called during AJAX on some pages
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			return;
-		}
-        
-        // Store which hook was used for potential debugging
-        $triggered_hook = current_action();
+	    // we don't want to render FE when we are applying FE setting changes
+	    if ( EPKB_Utilities::get( 'action' ) == 'eckb_apply_fe_settings' ) {
+		    return;
+	    }
 
-		$kb_id = EPKB_Utilities::get_eckb_kb_id( '' );
-		if ( empty( $kb_id ) ) {
-			return;
-		}
-
-	    // Mark as rendered to prevent duplicate output
-	    self::$editor_rendered = true;
-
-		// continue only if we are on one of the following page: KB main page, KB article page, KB archive page
-		$kb_page_type = EPKB_Editor_Utilities::epkb_front_end_editor_type();
-		if ( empty( $kb_page_type ) ) {
-			return;
-		}
-
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
-			return;
-		}
-
-		// get KB configuration with defaults - do nothing on fail
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
-		if ( is_wp_error( $kb_config ) ) {
+		if ( empty( $kb_config['frontend_editor_switch_visibility_toggle'] ) ) {
 			return;
 		}
 
@@ -107,6 +63,10 @@ class EPKB_Frontend_Editor {
 				return;
 			}
 		}
+
+	    if ( ! is_user_logged_in() || ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
+		    return;
+	    }
 
 		// do not enable FE on Archive Pages for old category archive page v2
 		if ( $kb_page_type == 'archive-page' && ( $kb_config['archive_page_v3_toggle'] != 'on' || $kb_config['template_for_archive_page'] == 'current_theme_templates' ) ) {
@@ -123,44 +83,33 @@ class EPKB_Frontend_Editor {
 	    $kb_config = self::fe_preview_config( $kb_config );
 
 		// render settings
-		self::render_editor( $kb_config, $triggered_hook );
+		self::render_editor( $kb_config, $kb_page_type );
 
-		// Enqueue assets - if called late (like via get_footer), output them directly
-		if ( $triggered_hook == 'wp_footer' || $triggered_hook == 'wp_body_open' ) {
-			// For early hooks, use normal WordPress enqueuing
-			wp_enqueue_style( 'epkb-frontend-editor' );
-			if ( is_rtl() ) {
-				wp_enqueue_style( 'epkb-frontend-editor-rtl' );
-			}
-
-			wp_enqueue_script( 'epkb-admin-form-controls-scripts' );
-			wp_enqueue_script( 'epkb-frontend-editor' );
-
-		} else {
-			// For late hooks like get_footer, output assets directly
-			wp_print_styles( 'epkb-frontend-editor' );
-			if ( is_rtl() ) {
-				wp_print_styles( 'epkb-frontend-editor-rtl' );
-			}
-
-			wp_print_scripts( 'epkb-admin-form-controls-scripts' );
-			wp_print_scripts( 'epkb-frontend-editor' );
+		// Enqueue assets
+		wp_enqueue_style( 'epkb-frontend-editor' );
+		if ( is_rtl() ) {
+			wp_enqueue_style( 'epkb-frontend-editor-rtl' );
 		}
+
+		wp_enqueue_script( 'epkb-admin-form-controls-scripts' );
+		wp_enqueue_script( 'epkb-frontend-editor' );
+		
+		// Pass admin URL to JavaScript
+		wp_localize_script( 'epkb-frontend-editor', 'epkb_fe_vars', array(
+			'admin_url' => admin_url()
+		) );
     }
 
     /**
      * Renders the HTML content for the settings sidebar.
      * Retrieves configuration settings and generates the form fields.
      */
-    private static function render_editor( $kb_config, $triggered_hook = '' ) {
+    private static function render_editor( $kb_config, $kb_page_type ) {
 		global $post;
 
-		$frontend_editor_type = $kb_config['modular_main_page_toggle'] == 'on' ? EPKB_Editor_Utilities::epkb_front_end_editor_type() : 'non-modular-page';
-		$display_frontend_editor_closed = EPKB_Core_Utilities::is_kb_flag_set( 'epkb_fe_editor_closed' );   ?>
-
-		<div id="epkb-fe__admin-url" data-admin-url="<?php echo esc_url( admin_url() ); ?>" style="display: none;"></div>
-		
-		<!-- EPKB Frontend Editor loaded via hook: <?php echo esc_html( $triggered_hook ); ?> -->
+		$frontend_editor_type = $kb_config['modular_main_page_toggle'] == 'on' ? $kb_page_type : 'non-modular-page';
+		$display_frontend_editor_closed = EPKB_Core_Utilities::is_kb_flag_set( 'epkb_fe_editor_closed' );
+		$has_page_builder = ( $kb_page_type != 'block-main-page' && ! empty( $post ) && EPKB_Site_Builders::has_page_builder_content( $post->post_content ) ) ? 'true' : 'false'; ?>
 		
 		<!-- Frontend Editor Toggle --><?php
 		 if ( $kb_config['frontend_editor_button_shown'] == 'on' ) { ?>
@@ -182,7 +131,8 @@ class EPKB_Frontend_Editor {
 	    <!-- Frontend Editor Sidebar -->
 		<div id="epkb-fe__editor" class="epkb-admin__form epkb-fe__editor--home" data-kbid="<?php echo esc_attr( $kb_config['id'] ); ?>"
 		                    data-post-id="<?php echo empty( $post ) ? 0 : esc_attr( $post->ID ); ?>" style="display: none;"
-		 					data-display-frontend-editor-closed="<?php echo $display_frontend_editor_closed ? 'true' : 'false'; ?>">
+		 					data-display-frontend-editor-closed="<?php echo $display_frontend_editor_closed ? 'true' : 'false'; ?>"
+		 					data-has-page-builder="<?php echo $has_page_builder; ?>">
 
 			<!-- Frontend Editor Header -->
 			<div id="epkb-fe__header-container">
@@ -312,41 +262,43 @@ class EPKB_Frontend_Editor {
 					default:
 						break;
 				}	?>
-			</div>
+			</div>  <?php
 
-			<!-- Help tab -->
-			<div class='epkb-fe__help-container'>	<?php
-				self::display_help_tab( $kb_config, $frontend_editor_type );	?>
-			</div> 
+			if ( ! in_array( $frontend_editor_type, ['block-main-page', 'non-modular-page'] ) ) {	?>
+				<!-- Help tab -->
+				<div class='epkb-fe__help-container'>	<?php
+					self::display_help_tab( $kb_config, $frontend_editor_type );	?>
+				</div>
 
-			<!-- Frontend Editor Footer -->
-			<div id="epkb-fe__footer-container">  
-				<!-- text is available to screen readers but not visible on screen -->
-				<span id="epkb-tab-instructions" class="epkb-sr-only"><?php esc_html_e( 'Use arrow keys to move between features', 'echo-knowledge-base' ); ?></span>
+				<!-- Frontend Editor Footer -->
+				<div id="epkb-fe__footer-container">
+					<!-- text is available to screen readers but not visible on screen -->
+					<span id="epkb-tab-instructions" class="epkb-sr-only"><?php esc_html_e( 'Use arrow keys to move between features', 'echo-knowledge-base' ); ?></span>
 
-				<!-- FEATURES CONTAINER -->
-				<div id="epkb-fe__tab-container" role="tablist" aria-label="Help Dialog Top Tabs" aria-describedby="epkb-tab-instructions">	<?php
+					<!-- FEATURES CONTAINER -->
+					<div id="epkb-fe__tab-container" role="tablist" aria-label="Help Dialog Top Tabs" aria-describedby="epkb-tab-instructions">
 
-					if ( ! in_array( $frontend_editor_type, ['block-main-page', 'non-modular-page'] ) ) {	?>
 						<div id="epkb-fe__help-tab" role="tab" aria-selected="true" tabindex="0" class="epkb-fe__tab epkb-fe__tab__help-btn epkb-fe__tab--active" data-epkb-target-tab="help">
 							<span class="epkb-fe__tab__icon epkbfa epkbfa-book"></span>
 							<span class="epkb-fe__tab__text"><?php esc_html_e( 'Help', 'echo-knowledge-base' ); ?></span>
-						</div>	<?php
-					}	?>
+						</div>
 
-					<a id="epkb-fe__contact-tab" href="<?php echo esc_url( 'https://www.echoknowledgebase.com/contact-us/' ); ?>" target="_blank" rel="noopener noreferrer" aria-selected="false" tabindex="-1" class="epkb-fe__tab epkb-fe__tab__contact-btn" data-epkb-target-tab="contact">
-						<span class="epkb-fe__tab__icon epkbfa epkbfa-envelope-o"></span>
-						<span class="epkb-fe__tab__text"><?php esc_html_e( 'Contact Us', 'echo-knowledge-base' ); ?></span>
-					</a>  		
+						<a id="epkb-fe__contact-tab" href="<?php echo esc_url( 'https://www.echoknowledgebase.com/contact-us/' ); ?>" target="_blank" rel="noopener noreferrer" aria-selected="false" tabindex="-1" class="epkb-fe__tab epkb-fe__tab__contact-btn" data-epkb-target-tab="contact">
+							<span class="epkb-fe__tab__icon epkbfa epkbfa-envelope-o"></span>
+							<span class="epkb-fe__tab__text"><?php esc_html_e( 'Contact Us', 'echo-knowledge-base' ); ?></span>
+						</a>
+					</div>
+				</div>  <?php
+			}			?>
 
-				</div>				
-			</div>
-		</div>
+		</div><?php
 
-		<!-- Error Form -->
-		<div id="epkb-fe__error-form-wrap" style="display: none !important;">	<?php
-			EPKB_HTML_Admin::display_report_admin_error_form();	?>
-		</div>	<?php
+	    if ( ! in_array( $frontend_editor_type, ['block-main-page', 'non-modular-page'] ) ) {	?>
+			<!-- Error Form -->
+			<div id="epkb-fe__error-form-wrap" style="display: none !important;">	<?php
+				EPKB_HTML_Admin::display_report_admin_error_form();	?>
+			</div>	<?php
+	    }
     }
 
 	private static function display_help_tab( $kb_config, $frontend_editor_type ) {
@@ -1176,6 +1128,18 @@ class EPKB_Frontend_Editor {
 
 		if ( $merge_module_position ) {
 			$new_config = self::update_module_position( $new_config );
+		}
+
+		// Check if we're dealing with an article page
+		if ( EPKB_Utilities::post( 'epkb_fe_reload_mode' ) == 'on' && EPKB_Utilities::post( 'is_article_page', 0 ) ) {
+			// Sidebar
+			// recalculate width
+			$new_config = EPKB_Core_Utilities::reset_article_sidebar_widths( $new_config );
+
+			// TOC
+			// Process sidebar priority for TOC location
+			$new_config['article_sidebar_component_priority'] = EPKB_KB_Config_Controller::convert_ui_data_to_article_sidebar_component_priority( $new_config );
+			$new_config = EPKB_Core_Utilities::update_article_sidebar_priority( $orig_config, $new_config );
 		}
 
 		$unmerged_new_config = $new_config;

@@ -386,24 +386,20 @@ class EPKB_KB_Config_Controller {
 
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
 
+		if ( ! EPKB_Utilities::is_elegant_layouts_enabled() ) {
+			EPKB_Utilities::ajax_show_error_die( esc_html__( 'This option is available only when Elegant Layouts is enabled.', 'echo-knowledge-base' ) );
+		}
+
 		$kb_id = (int)EPKB_Utilities::post( 'epkb_kb_id', 0 );
 		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 410 ) );
 		}
 
-		// get the intro text - allow HTML content
 		$sidebar_intro_text = EPKB_Utilities::post( 'sidebar_main_page_intro_text', '', 'wp_editor' );
-		
-		// Check if we need to handle Elegant Layouts
-		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
-		$is_sidebar_layout = $kb_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT;
-		
-		// For Sidebar Layout (Elegant Layouts), use specific filter
-		if ( $is_sidebar_layout && EPKB_Utilities::is_elegant_layouts_enabled() ) {
-			$result = apply_filters( 'eckb_kb_config_save_input_v3', false, $kb_id, array( 'sidebar_main_page_intro_text' => $sidebar_intro_text ) );
-			if ( is_wp_error( $result ) ) {
-				EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 412, $result ) );
-			}
+
+		$result = apply_filters( 'eckb_kb_config_save_input_v3', false, $kb_id, array( 'sidebar_main_page_intro_text' => $sidebar_intro_text ) );
+		if ( is_wp_error( $result ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 412, $result ) );
 		}
 
 		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Introduction text saved', 'echo-knowledge-base' ) );

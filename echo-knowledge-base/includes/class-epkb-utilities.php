@@ -1275,11 +1275,6 @@ class EPKB_Utilities {
 		return function_exists( 'mb_strtolower' ) ? mb_strtolower( $string ) : strtolower( $string );
 	}
 
-	public static function is_logged_on() {
-		$user = self::get_current_user();
-		return ! empty( $user );
-	}
-
 	/**
 	 * Determine if current user is WP administrator WITHOUT calling current_user_can()
 	 *
