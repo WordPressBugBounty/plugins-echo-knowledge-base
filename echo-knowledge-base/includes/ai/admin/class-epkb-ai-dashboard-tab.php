@@ -932,24 +932,24 @@ class EPKB_AI_Dashboard_Tab {
 	private static function get_news_items() {
 		return array(
 			array(
-				'date' => '2025-09-08',
+				'date' => '2025-09-21',
 				'type' => 'feature',
-				'title' => __( 'New AI Chat Behavior Presets', 'echo-knowledge-base' ),
-				'description' => __( 'Choose between Fastest (quick answers), Smartest (best quality), or Balanced modes to match your needs.', 'echo-knowledge-base' ),
+				'title' => __( 'AI Chat Page Selection', 'echo-knowledge-base' ),
+				'description' => __( 'Control where AI Chat appears - choose specific pages to display the chat widget for targeted user assistance.', 'echo-knowledge-base' ),
 				'link' => null
 			),
 			array(
-				'date' => '2025-09-07',
+				'date' => '2025-09-20',
 				'type' => 'feature',
-				'title' => __( 'AI Search Gets Behavior Presets Too', 'echo-knowledge-base' ),
-				'description' => __( 'Same great options: Fastest for speed, Smartest for accuracy, or Balanced for both.', 'echo-knowledge-base' ),
+				'title' => __( 'AI Search - Ask AI Settings', 'echo-knowledge-base' ),
+				'description' => __( 'New configuration options for the Ask AI feature, allowing customized search behavior and response settings.', 'echo-knowledge-base' ),
 				'link' => null
 			),
 			array(
-				'date' => '2025-09-06',
+				'date' => '2025-09-19',
 				'type' => 'improvement',
-				'title' => __( 'UI Improvements', 'echo-knowledge-base' ),
-				'description' => __( 'Cleaner layouts, smoother navigation, and better visual feedback throughout.', 'echo-knowledge-base' ),
+				'title' => __( 'AI Search UI Improvements', 'echo-knowledge-base' ),
+				'description' => __( 'Enhanced search interface with better visual feedback, improved result display, and smoother interactions.', 'echo-knowledge-base' ),
 				'link' => null
 			)
 		);

@@ -86,8 +86,6 @@ function epkb_load_admin_plugin_pages_resources() {
 		'on_current_theme_templates'    => esc_html__( 'First, the Current Theme Template will be enabled.', 'echo-knowledge-base' ) .
 			' ' . esc_html__( 'Then the page will reload after which you can see the layout change on the KB frontend.', 'echo-knowledge-base' ) .
 			' ' . esc_html__( 'If you have issues using the Current Theme Template, switch back to the KB Template or contact us for help.', 'echo-knowledge-base' ),
-		'on_modular_main_page_toggle'   => esc_html__( 'First, the Modular Main Page settings will be saved.', 'echo-knowledge-base' ) .
-			' ' . esc_html__( 'Then, the page will reload and you can see the page structure change on the KB frontend.', 'echo-knowledge-base' ),
 		'on_article_search_sync_toggle' => esc_html__( 'First, the current settings will be saved.', 'echo-knowledge-base' ) .
 			' ' . esc_html__( 'Then, the page will reload.', 'echo-knowledge-base' ),
 		'on_article_search_toggle'      => esc_html__( 'First, the current settings will be saved.', 'echo-knowledge-base' ) .
@@ -186,14 +184,37 @@ function epkb_load_admin_plugin_pages_resources() {
 		// Sync component (must load before training data files)
 		wp_enqueue_script( 'epkb-admin-ai-sync', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-sync' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-ai-chat-util'), Echo_Knowledge_Base::$version );
-		
+
+		// Register marked library for markdown parsing (if not already registered)
+		if ( ! wp_script_is( 'epkb-marked', 'registered' ) ) {
+			wp_register_script( 'epkb-marked', Echo_Knowledge_Base::$plugin_url . 'js/lib/marked' . $suffix . '.js', array(), Echo_Knowledge_Base::$version );
+		}
+
 		// Training data table component (must load before main training data file)
 		wp_enqueue_script( 'epkb-admin-ai-training-data-table', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-training-data-table' . $ai_suffix . '.js',
-			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
-		
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-marked'), Echo_Knowledge_Base::$version );
+
 		wp_enqueue_script( 'epkb-admin-ai-training-data', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-training-data' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-admin-ai-training-data-table', 'epkb-admin-ai-sync', 'epkb-ai-chat-util'), Echo_Knowledge_Base::$version );
-		
+
+		/* Temporarily disabled for release - Content Analysis scripts
+		// Content analysis table component (must load before main content analysis file)
+		wp_enqueue_script( 'epkb-admin-ai-content-analysis-table', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-content-analysis-table' . $ai_suffix . '.js',
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
+
+		// Content analysis sync component (handles batch processing and progress tracking)
+		wp_enqueue_script( 'epkb-admin-ai-content-analysis-sync', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-content-analysis-sync' . $ai_suffix . '.js',
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-ai-chat-util'), Echo_Knowledge_Base::$version );
+
+		// Content analysis details component (displays detailed analysis when Improve button is clicked)
+		wp_enqueue_script( 'epkb-admin-ai-content-analysis-details', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-content-analysis-details' . $ai_suffix . '.js',
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch'), Echo_Knowledge_Base::$version );
+
+		// Load Content Analysis tab component
+		wp_enqueue_script( 'epkb-admin-ai-content-analysis', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-content-analysis' . $ai_suffix . '.js',
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-admin-ai-content-analysis-table', 'epkb-admin-ai-content-analysis-sync', 'epkb-admin-ai-content-analysis-details'), Echo_Knowledge_Base::$version );
+		*/
+
 		// Load Tools tab component
 		wp_enqueue_script( 'epkb-admin-ai-tools', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-tools' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );

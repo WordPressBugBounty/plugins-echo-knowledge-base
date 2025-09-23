@@ -30,7 +30,6 @@ class EPKB_Config_Settings_Page {
 	private $is_archive_kb_templates;
 	private $kb_main_pages;
 	private $kb_main_page_has_kb_blocks;
-	private $is_modular_main_page_off;
 
 	public function __construct( $kb_config, $is_frontend_editor = false ) {
 		
@@ -40,9 +39,6 @@ class EPKB_Config_Settings_Page {
 		$this->kb_config = apply_filters( 'eckb_kb_config', $kb_config );
 
 		$this->kb_config_specs = EPKB_Core_Utilities::retrieve_all_kb_specs( $this->kb_config['id'] );
-
-		// TODO FUTURE remove
-		$this->is_modular_main_page_off = $this->kb_config['modular_main_page_toggle'] != 'on';
 
 		$this->kb_main_pages = EPKB_KB_Handler::get_kb_main_pages( $this->kb_config );
 		$this->kb_main_page_has_kb_blocks = EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $this->kb_config );
@@ -87,30 +83,8 @@ class EPKB_Config_Settings_Page {
 		$contents_configs = $this->get_contents_configs();
 		$sub_contents_configs = $this->get_sub_contents_configs();
 		$helpful_info_box_configs = $this->get_helpful_info_box_config();
-		$access_to_get_started = false; // we do not need it any more -> ! $this->is_modular_main_page_off &&
-			( EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_need_help_read' ) || EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) );
 
 		$tabs_config = [];
-
-		// Get Started
-		if ( $access_to_get_started ) {
-			$tabs_config['get-started'] = array(
-				'title'     => esc_html__( 'Get Started', 'echo-knowledge-base' ),
-				'icon'      => 'epkbfa epkbfa-rocket',
-				'key'       => 'about-kb',
-				'active'    => true,
-				'contents'  => array(
-					array(
-						'title'             => esc_html__( 'Quick Links', 'echo-knowledge-base' ),
-						'body_html'         => $this->get_quick_links_box(),
-					),
-					array(
-						'title'             => esc_html__( 'Helpful Information', 'echo-knowledge-base' ),
-						'body_html'         => $this->get_helpful_info_box( $helpful_info_box_configs ),
-					),
-				),
-			);
-		}
 
 		// Main Page
 		$no_module_label = esc_html__( 'Unused', 'echo-knowledge-base' );
@@ -120,17 +94,7 @@ class EPKB_Config_Settings_Page {
 		$row_4_module = $this->kb_config['ml_row_4_module'];
 		$row_5_module = $this->kb_config['ml_row_5_module'];
 
-		// Non-Modular KB Main Page TODO FUTURE: remove
-		if ( $this->is_modular_main_page_off ) {
-			$main_page_contents = array(
-				array(
-					'title_before_icon' => false,
-					'title' => esc_html__( 'Switch to Modular KB Main Page', 'echo-knowledge-base' ),
-					'body_html' => EPKB_HTML_Admin::display_modular_main_page_toggle( $this->kb_config, $this->kb_config_specs ),
-				),
-			);
-
-		} else if ( $this->is_frontend_editor ) {
+		if ( $this->is_frontend_editor ) {
 			$main_page_contents = array();
 
 		} else if ( empty( $this->kb_main_pages ) ) {	// CASE: Missing Main Page
@@ -225,19 +189,16 @@ class EPKB_Config_Settings_Page {
 			'title'     => esc_html__( 'KB Main Page', 'echo-knowledge-base' ),
 			'icon'      => 'epkb-main-page-icon',
 			'key'       => 'main-page',
-			'active'    => ! $access_to_get_started,
+			'active'    => true,
 			'contents'  => $main_page_contents,
-			'top_html'	=> $this->is_frontend_editor || $this->kb_main_page_has_kb_blocks || $this->is_modular_main_page_off || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_button_above_main_page_settings( $this->kb_config ),
-			'sub_tabs'  => ! $this->is_frontend_editor && ( empty( $this->kb_main_pages ) || $this->kb_main_page_has_kb_blocks || $this->is_modular_main_page_off )
+			'top_html'	=> $this->is_frontend_editor || $this->kb_main_page_has_kb_blocks || empty( $this->kb_main_pages ) ? '' : EPKB_HTML_Admin::display_fe_button_above_main_page_settings( $this->kb_config ),
+			'sub_tabs'  => ! $this->is_frontend_editor && ( empty( $this->kb_main_pages ) || $this->kb_main_page_has_kb_blocks )
 				// CASE: not already inside FE and Missing Main Page, or Block Main Page or Legacy KB Main Page
 				? array()
 				// CASE: Shortcode Main Page
 				: $shortcode_main_page_sub_tabs,
 		);
 
-		if ( $this->is_modular_main_page_off ) {
-			return $tabs_config;
-		}
 
 		// Articles Page
 		$tabs_config['article-page'] = array(
@@ -2479,6 +2440,7 @@ class EPKB_Config_Settings_Page {
 
 			'categories_articles' => [
 				'module-settings' => [
+					'categories_articles_preset'                            => '',
 					'grid_nof_columns'                                      => [ 'elay', 'only_grid' ],
 					'nof_columns'                                           => [ 'not_grid', 'not_sidebar' ],
 					'background_color'                                      => 'not_sidebar',
@@ -2766,10 +2728,6 @@ class EPKB_Config_Settings_Page {
 				'data' => [ 'target' => 'module-settings' ],
 			),
 		);
-		if ( $this->is_frontend_editor && EPKB_Core_Utilities::is_module_present( $this->kb_config, 'categories_articles' ) ) {
-			$temp_row_id = EPKB_Core_Utilities::get_module_row_number( $this->kb_config, 'categories_articles' );
-			$sub_contents_configs['main-page-ml-row-' . $temp_row_id]['module-settings']['fields']['categories_articles_preset'] = '';
-		}
 
 		// 3rd Row
 		$sub_contents_configs['main-page-ml-row-3'] = array(

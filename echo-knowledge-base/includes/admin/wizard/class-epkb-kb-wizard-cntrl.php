@@ -258,8 +258,6 @@ class EPKB_KB_Wizard_Cntrl {
 
 		$new_kb_config['search_layout'] = 'epkb-search-form-0';
 
-		$new_kb_config['modular_main_page_toggle'] = 'off';
-
 		// plain Colors
 		$new_kb_config['section_head_category_icon_color'] = '#000000';
 		$new_kb_config['section_head_font_color'] = '#000000';

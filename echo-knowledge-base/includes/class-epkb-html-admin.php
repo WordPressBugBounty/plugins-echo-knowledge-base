@@ -57,7 +57,7 @@ class EPKB_HTML_Admin {
 
 		if ( ! empty( $kb_config ) ) {
 			$link_output = EPKB_Core_Utilities::get_current_kb_main_page_link( $kb_config, esc_html__( 'View KB', 'echo-knowledge-base' ), 'epkb-admin__header__view-kb__link' );
-			if ( empty( $link_output ) && $kb_config['modular_main_page_toggle'] == 'on' && EPKB_Admin_UI_Access::is_user_access_to_context_allowed('admin_eckb_access_frontend_editor_write')) {
+			if ( empty( $link_output ) && EPKB_Admin_UI_Access::is_user_access_to_context_allowed('admin_eckb_access_frontend_editor_write')) {
 				$link_output = '<a href="' . esc_url( admin_url( '/edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) . '&page=epkb-kb-configuration&setup-wizard-on' ) ) .
 					'" class="epkb-admin__header__view-kb__link" target="_blank">' . esc_html__( "Setup KB", "echo-knowledge-base" ) . '</a>';
 			}
@@ -953,28 +953,6 @@ class EPKB_HTML_Admin {
 		) );
 	}
 
-	/**
-	 * Display message for users with legacy KB Main Page to switch to modular KB Main Page TODO FUTURE: remove
-	 * @param $kb_config
-	 * @param $kb_config_specs
-	 * @return false|string
-	 */
-	public static function display_modular_main_page_toggle( $kb_config, $kb_config_specs ) {
-		ob_start();	?>
-		<p>	<?php
-			esc_html_e( 'You are using the legacy main page. Please upgrade to the Modular Main Page before accessing Settings.', 'echo-knowledge-base' );	?>
-			<a href="https://www.echoknowledgebase.com/documentation/modular-layout/" target="_blank"><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></a>
-		</p>
-		<div class="epkb-admin__kb__form">	<?php
-			EPKB_HTML_Elements::checkbox_toggle( array(
-				'id'        => 'modular_main_page_toggle',
-				'text'      => $kb_config_specs['modular_main_page_toggle']['label'],
-				'checked'   => $kb_config['modular_main_page_toggle'] == 'on',
-				'name'      => 'modular_main_page_toggle',
-			) );	?>
-		</div>	<?php
-		return ob_get_clean();
-	}
 
 	/**
 	 * Display boxes in single row

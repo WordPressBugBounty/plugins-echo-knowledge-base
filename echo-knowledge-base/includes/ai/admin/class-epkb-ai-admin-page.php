@@ -19,6 +19,13 @@ class EPKB_AI_Admin_Page {
 			'class' => 'EPKB_AI_Dashboard_Tab',
 			'requires_ai' => false
 		),
+		/* Temporarily disabled for release
+		'content-analysis' => array(
+			'title' => 'Content Analysis',
+			'icon' => 'epkbfa epkbfa-bar-chart',
+			'class' => 'EPKB_AI_Content_Analysis_Tab',
+			'requires_ai' => true
+		), */
 		'chat' => array(
 			'title' => 'Chat',
 			'icon' => 'epkbfa epkbfa-comments',

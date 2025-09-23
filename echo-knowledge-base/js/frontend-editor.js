@@ -498,8 +498,8 @@ jQuery( document ).ready( function( $ ) {
 
 						// Apply preset settings for UI controls
 						for ( const [ key, value ] of Object.entries( response.data.categories_articles_design_settings ) ) {
-							const $target_field = frontendEditor.find( '[name="' + key + '"]' );
-							apply_preset_setting( frontendEditor, $target_field, key, value );
+							const $target_field = $feature_settings_container.find( '[name="' + key + '"]' );
+							apply_preset_setting( $feature_settings_container, $target_field, key, value );
 						}
 
 						// Re-apply current settings for the buttons, radio buttons, and other controls of the module
@@ -511,8 +511,8 @@ jQuery( document ).ready( function( $ ) {
 
 						// Apply preset settings for UI controls
 						for ( const [ key, value ] of Object.entries( response.data.search_design_settings ) ) {
-							const $target_field = frontendEditor.find( '[name="' + key + '"]' );
-							apply_preset_setting( frontendEditor, $target_field, key, value );
+							const $target_field = $feature_settings_container.find( '[name="' + key + '"]' );
+							apply_preset_setting( $feature_settings_container, $target_field, key, value );
 						}
 
 						// Unselect preset name to prevent continuing preset applying on further settings changes
@@ -566,8 +566,8 @@ jQuery( document ).ready( function( $ ) {
 
 						// Apply preset settings for UI controls
 						for ( const [ key, value ] of Object.entries( response.data.search_design_settings ) ) {
-							const $target_field = frontendEditor.find( '[name="' + key + '"]' );
-							apply_preset_setting( frontendEditor, $target_field, key, value );
+							const $target_field = $feature_settings_container.find( '[name="' + key + '"]' );
+							apply_preset_setting( $feature_settings_container, $target_field, key, value );
 						}
 
 						// Unselect preset name to prevent continuing preset applying on further settings changes
@@ -1228,7 +1228,7 @@ jQuery( document ).ready( function( $ ) {
 		const kb_page_type = $feature_settings.data( 'kb-page-type' );
 		const has_page_builder = frontendEditor.data( 'has-page-builder' ) === true;
 		
-		if ( field_name === 'templates_for_kb' || field_name === 'template_main_page_display_title' || field_name === 'general_typography_font_family' || field_name === 'modular_main_page_toggle' || 
+		if ( field_name === 'templates_for_kb' || field_name === 'template_main_page_display_title' || field_name === 'general_typography_font_family' || 
 			 ( kb_page_type === 'article-page' && has_page_builder ) ) {
 			update_preview_via_page_reload( event );
 			return;

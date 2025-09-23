@@ -28,8 +28,6 @@ class EPKB_Articles_Setup {
 
 		global $epkb_password_checked, $eckb_is_kb_main_page;
 
-		$is_modular = $kb_config['modular_main_page_toggle'] == 'on';
-
 		if ( empty( $epkb_password_checked ) && post_password_required() ) {
 			return get_the_password_form();
 		}
@@ -95,7 +93,7 @@ class EPKB_Articles_Setup {
 		 * For Modular page, the Article Page width is not required since sidebar layout is nested inside the module row.
 		 */
 		$article_container_structure_version = 'eckb-article-page-container-v2';
-		if ( $is_modular && $eckb_is_kb_main_page ) {
+		if ( $eckb_is_kb_main_page ) {
 			$article_container_structure_version = 'epkb-ml-sidebar-layout-inner';
 		} ?>
 
@@ -212,9 +210,8 @@ class EPKB_Articles_Setup {
 	 */
 	public static function search_box( $args ) {
 
-		$is_modular_page = $args['config']['modular_main_page_toggle'] == 'on';
 		$is_sidebar_layout = $args['config']['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT;
-		$is_kb_main_page_search_off = $is_modular_page ? ! EPKB_Core_Utilities::is_module_present( $args['config'], 'search' ) : $args['config']['search_layout'] == 'epkb-search-form-0';
+		$is_kb_main_page_search_off = ! EPKB_Core_Utilities::is_module_present( $args['config'], 'search' );
 		$is_article_search_settings_off = $args['config']['article_search_toggle'] == 'off';
 
 		// SEARCH BOX OFF: no search box if Article Page search is off except Sidebar Layout that behaves like the Main Page
@@ -223,8 +220,8 @@ class EPKB_Articles_Setup {
 			return;
 		}
 
-		// The Sidebar layout on Modular KB Main Page will not output search box as Modular Search will be shown instead
-		if ( EPKB_Utilities::is_kb_main_page() && $is_sidebar_layout && $is_modular_page ) {
+		// The Sidebar layout will not output search box as Modular Search will be shown instead
+		if ( EPKB_Utilities::is_kb_main_page() && $is_sidebar_layout ) {
 			return;
 		}
 

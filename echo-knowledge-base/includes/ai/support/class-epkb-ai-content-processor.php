@@ -2,7 +2,7 @@
 
 /**
  * Content Processor Service
- * 
+ *
  * Processes and cleans content for AI consumption.
  */
 class EPKB_AI_Content_Processor {
@@ -59,33 +59,27 @@ class EPKB_AI_Content_Processor {
 	 * @return string|WP_Error Cleaned content or WP_Error on failure
 	 */
 	public function clean_content( $content, $post_id = 0 ) {
-		
+
 		// Allow customization before processing
 		if ( $post_id ) {
 			$content = apply_filters( 'epkb_pre_clean_post_content', $content, $post_id );
 		}
-		
-		// Apply initial length limit to prevent regex timeouts on very large content
+
+		// Apply initial length limit to prevent processing timeouts on very large content
 		$content = $this->apply_length_limit( $content, $post_id );
-		
-		// Remove WordPress block comments
+
+		// Remove WordPress block comments first
 		$content = preg_replace( '/<!--\s*\/?wp:[^\>]+-->/s', '', $content );
 		if ( $content === null ) {
 			return new WP_Error( 'regex_failed', __( 'Failed to process WordPress block comments', 'echo-knowledge-base' ) );
 		}
-		
-		// Remove HTML comments
-		$content = preg_replace( '/<!--.*?-->/s', '', $content );
-		if ( $content === null ) {
-			return new WP_Error( 'regex_failed', __( 'Failed to process HTML comments', 'echo-knowledge-base' ) );
-		}
-		
+
 		// Remove Echo KB specific shortcodes
 		$content = preg_replace( '/\[epkb[-_].*?\]/s', '', $content );
 		if ( $content === null ) {
 			return new WP_Error( 'regex_failed', __( 'Failed to process shortcodes', 'echo-knowledge-base' ) );
 		}
-		
+
 		// Process shortcodes based on filter
 		$process_shortcodes = apply_filters( 'epkb_process_shortcodes_in_ai', false );
 		if ( $process_shortcodes ) {
@@ -94,38 +88,79 @@ class EPKB_AI_Content_Processor {
 			// Remove shortcodes but keep content
 			$content = $this->strip_shortcodes_keep_content( $content );
 		}
-		
-		// Decode HTML entities
-		$content = html_entity_decode( $content, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-		
-		// Convert to plain text
-		$content = wp_strip_all_tags( $content, true );
-		
-		// Fix missing spaces after sentence-ending punctuation that may occur after stripping tags
-		// Matches period, exclamation, or question mark followed immediately by a capital letter
-		$content = preg_replace( '/([.!?])([A-Z])/u', '$1 $2', $content );
-		if ( $content === null ) {
+
+		// Load the HTML to Markdown library
+		self::load_html_to_markdown_library();
+
+		// Configure the converter with optimized settings for AI consumption
+		$converter_options = array(
+			// Strip tags that don't have Markdown equivalents
+			'strip_tags' => true,
+
+			// Remove these tags and their content entirely (not needed for AI)
+			'remove_nodes' => 'script style iframe object embed noscript svg canvas audio video form input button select textarea',
+
+			// Don't preserve HTML comments
+			'preserve_comments' => false,
+
+			// Strip placeholder links (links without href)
+			'strip_placeholder_links' => true,
+
+			// Use ATX-style headers (### Header) instead of Setext (underlined) for consistency
+			'header_style' => 'atx',
+
+			// Use hard breaks (single newline) instead of two spaces + newline
+			'hard_break' => true,
+
+			// Use full link syntax instead of autolinks for better clarity
+			'use_autolinks' => false,
+
+			// Bold and italic styles
+			'bold_style' => '**',
+			'italic_style' => '*'
+		);
+
+		try {
+			// Create the converter
+			$converter = new \League\HTMLToMarkdown\HtmlConverter( $converter_options );
+
+			// Add table support
+			$converter->getEnvironment()->addConverter( new \League\HTMLToMarkdown\Converter\TableConverter() );
+
+			// Convert HTML to Markdown
+			$markdown = $converter->convert( $content );
+
+		} catch ( Exception $e ) {
+			// Fall back to basic stripping if conversion fails
+			return new WP_Error( 'conversion_failed', sprintf( __( 'HTML to Markdown conversion failed: %s', 'echo-knowledge-base' ), $e->getMessage() ) );
+		}
+
+		// Ensure the library produced valid output
+		if ( empty( $markdown ) ) {
+			return new WP_Error( 'empty_markdown', __( 'Markdown conversion produced empty content', 'echo-knowledge-base' ) );
+		}
+
+		// Post-process the Markdown content
+		// Fix missing spaces after punctuation (e.g., "end.Start" → "end. Start")
+		$markdown = preg_replace( '/([.!?])([A-Z])/u', '$1 $2', $markdown );
+		if ( $markdown === null ) {
 			return new WP_Error( 'regex_failed', __( 'Failed to normalize punctuation spacing', 'echo-knowledge-base' ) );
 		}
-		
-		// Normalize whitespace
-		$content = $this->normalize_whitespace( $content );
-		
-		// Remove control characters
-		$content = preg_replace( '/[\x00-\x1F\x7F]/u', '', $content );
-		if ( $content === null ) {
+
+		// Normalize whitespace - this handles multiple spaces, excessive newlines, and line trimming
+		$markdown = $this->normalize_whitespace( $markdown );
+
+		// Remove control characters that might interfere with processing
+		// But preserve important whitespace: tab (\x09), newline (\x0A), carriage return (\x0D)
+		$markdown = preg_replace( '/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/u', '', $markdown );
+		if ( $markdown === null ) {
 			return new WP_Error( 'regex_failed', __( 'Failed to remove control characters', 'echo-knowledge-base' ) );
 		}
-		
-		// Apply final length limit in case content expanded during processing
-		$content = $this->apply_length_limit( $content, $post_id );
-		
-		// Allow customization after processing
-		if ( $post_id ) {
-			$content = apply_filters( 'epkb_post_clean_content', $content, $post_id );
-		}
-		
-		return $content;
+
+		// Apply final length limit to prevent token overflow in AI processing
+		$markdown = $this->apply_length_limit( $markdown, $post_id );
+
+		return $markdown;
 	}
 
 	/**
@@ -136,7 +171,11 @@ class EPKB_AI_Content_Processor {
 	 * @return string Generated title
 	 */
 	public static function generate_title_from_content( $content, $max_length = 100 ) {
-		// Remove HTML tags
+		// Replace block-level HTML tags with spaces to preserve word separation
+		$content = preg_replace( '/<(br|p|div|h[1-6])[^>]*>/i', ' ', $content );
+		$content = preg_replace( '/<\/(p|div|h[1-6])>/i', ' ', $content );
+		
+		// Strip all HTML tags
 		$title = wp_strip_all_tags( $content );
 
 		// Decode HTML entities
@@ -204,21 +243,25 @@ class EPKB_AI_Content_Processor {
 	private function normalize_whitespace( $content ) {
 		// Replace tabs with spaces
 		$content = str_replace( "\t", ' ', $content );
-		
-		// Replace multiple spaces with single space
+
+		// Replace multiple consecutive spaces with single space (but preserve newlines)
 		$content = preg_replace( '/[ ]+/', ' ', $content );
-		
-		// Normalize line breaks
+
+		// Normalize line breaks to Unix-style
 		$content = preg_replace( '/\r\n|\r/', "\n", $content );
-		
-		// Convert multiple line breaks to double line break
-		$content = preg_replace( '/\n{3,}/', "\n\n", $content );
-		
-		// Trim each line
-		$lines = explode( "\n", $content );
-		$lines = array_map( 'trim', $lines );
-		$content = implode( "\n", $lines );
-		
+
+		// Remove spaces at the beginning and end of each line
+		$content = preg_replace( '/^[ ]+|[ ]+$/m', '', $content );
+
+		// Remove completely empty lines that are just whitespace
+		$content = preg_replace( '/^[ \t]+$/m', '', $content );
+
+		// Reduce excessive newlines (4+ to 2) while preserving document structure
+		$content = preg_replace( '/\n{4,}/', "\n\n", $content );
+
+		// Final cleanup - reduce any remaining triple newlines to double
+		$content = preg_replace( '/\n{3}/', "\n\n", $content );
+
 		// Final trim
 		return trim( $content );
 	}
@@ -314,10 +357,10 @@ class EPKB_AI_Content_Processor {
 		// Decode HTML entities
 		$title = html_entity_decode( $title, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 		
-		// Strip tags
+		// Strip all HTML tags - titles shouldn't have formatting
 		$title = wp_strip_all_tags( $title );
 		
-		// Normalize whitespace
+		// Normalize whitespace - collapse multiple spaces to single
 		$title = preg_replace( '/\s+/', ' ', $title );
 		
 		// Trim to reasonable length
@@ -477,12 +520,7 @@ class EPKB_AI_Content_Processor {
 		$content = '';
 		
 		// Allow third-party document extraction via filter
-		$content = apply_filters( 'epkb_ai_extract_doc_content', $content, $file_path, $mime_type );
-		
-		// Log that document extraction is not available
-		if ( empty( $content ) ) {
-			error_log( "AI-Sync: No extractor for $mime_type – skipped {$file_path}" );
-		}
+		// TODO PRO $content = apply_filters( 'epkb_ai_extract_doc_content', $content, $file_path, $mime_type );
 		
 		return $content;
 	}
@@ -633,5 +671,53 @@ class EPKB_AI_Content_Processor {
 		
 		// Allow customization
 		return apply_filters( 'epkb_ai_max_attachment_size', $max_size, $mime_type );
+	}
+
+	/**
+	 * Load the HTML to Markdown library
+	 *
+	 * @return void
+	 */
+	private static function load_html_to_markdown_library() {
+		static $loaded = false;
+
+		if ( $loaded ) {
+			return;
+		}
+
+		$base_path = Echo_Knowledge_Base::$plugin_dir . 'includes/vendor/html-to-markdown/src/';
+
+		// Load core files first
+		require_once $base_path . 'ConfigurationAwareInterface.php';
+		require_once $base_path . 'Configuration.php';
+		require_once $base_path . 'ElementInterface.php';
+		require_once $base_path . 'Element.php';
+		require_once $base_path . 'PreConverterInterface.php';
+		require_once $base_path . 'Coerce.php';
+		require_once $base_path . 'Environment.php';
+		require_once $base_path . 'HtmlConverterInterface.php';
+		require_once $base_path . 'HtmlConverter.php';
+
+		// Load converter interface and implementations
+		require_once $base_path . 'Converter/ConverterInterface.php';
+		require_once $base_path . 'Converter/DefaultConverter.php';
+		require_once $base_path . 'Converter/BlockquoteConverter.php';
+		require_once $base_path . 'Converter/CodeConverter.php';
+		require_once $base_path . 'Converter/CommentConverter.php';
+		require_once $base_path . 'Converter/DivConverter.php';
+		require_once $base_path . 'Converter/EmphasisConverter.php';
+		require_once $base_path . 'Converter/HardBreakConverter.php';
+		require_once $base_path . 'Converter/HeaderConverter.php';
+		require_once $base_path . 'Converter/HorizontalRuleConverter.php';
+		require_once $base_path . 'Converter/ImageConverter.php';
+		require_once $base_path . 'Converter/LinkConverter.php';
+		require_once $base_path . 'Converter/ListBlockConverter.php';
+		require_once $base_path . 'Converter/ListItemConverter.php';
+		require_once $base_path . 'Converter/ParagraphConverter.php';
+		require_once $base_path . 'Converter/PreformattedConverter.php';
+		require_once $base_path . 'Converter/TableConverter.php';
+		require_once $base_path . 'Converter/TextConverter.php';
+
+		$loaded = true;
 	}
 }

@@ -5,7 +5,6 @@ jQuery(document).ready(function($) {
 	 *           Search ( Block and Shortcode )
 	 ********************************************************************/
 
-
 	let moduleSearchBox = $( '#epkb-ml__module-search' );
 
 	// If Search Box exits
@@ -236,6 +235,7 @@ jQuery(document).ready(function($) {
 			}
 		}
 
+
 		// Categories ----------------------------------------------------------------/
 
 		//Detect if a div is inside a list item then it's a sub category
@@ -352,6 +352,7 @@ jQuery(document).ready(function($) {
 				}
 			});
 		});
+
 
 		// Classic Layout --------------------------------------------------------------/
 
@@ -583,16 +584,6 @@ jQuery(document).ready(function($) {
 			parentCatButton.addClass( $catButton_ActiveClass );
 			$( '.epkb-ml-' + parentCatLevel + '-lvl__cat-content[data-cat-id="' + parentCatId + '"]' ).addClass( $catContent_ShowClass );
 		});
-
-
-
-		
-
-
-
-
-
-
 
 	} // if( categoriesAndArticles.length > 0 )
 
@@ -1165,9 +1156,6 @@ jQuery(document).ready(function($) {
 	} // if( articlePage.length > 0 )
 
 
-	
-
-
 	/********************************************************************
 	 *                      Category Archive Page
 	 ********************************************************************/
@@ -1503,7 +1491,6 @@ jQuery(document).ready(function($) {
 	} // if( $( '#elay-sidebar-container-v2' ).length === 0 && $( '#epkb-sidebar-container-v2' ).length > 0 )
 
 	
-
 	/********************************************************************
 	 *                      Focus Debug
 	 ********************************************************************/
@@ -1544,6 +1531,7 @@ jQuery(document).ready(function($) {
 	}
 
 	//enableFocusDebug();
+
 
 	/********************************************************************
 	 *                   None Module Mode legacy layout
@@ -1619,7 +1607,6 @@ jQuery(document).ready(function($) {
 			$('#epkb_search_results').css( 'display','none' );
 		}
 	});
-
 
 });
 

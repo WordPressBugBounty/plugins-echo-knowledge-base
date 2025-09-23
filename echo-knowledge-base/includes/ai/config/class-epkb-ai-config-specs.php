@@ -126,6 +126,18 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				),
 				'default'     => 'low'
 			),
+			'ai_search_immediate_query' => array(
+				'name'        => 'ai_search_immediate_query',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'off'
+			),
+			'ai_search_ask_button_text' => array(
+				'name'        => 'ai_search_ask_button_text',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => 'Ask AI?',
+				'min'         => 1,
+				'max'         => 50
+			),
 			/* 'ai_search_location' => array(
 				'name'        => 'ai_search_location',
 				'type'        => EPKB_Input_Filter::SELECTION,
@@ -216,6 +228,39 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 					'high'   => 'High',
 				),
 				'default'     => 'low'
+			),
+
+			/***  AI Chat Display Settings ***/
+			'ai_chat_display_mode' => array(
+				'name'        => 'ai_chat_display_mode',
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'all_pages'      => 'Show Everywhere',
+					'selected_only'  => 'Only Show On',
+					'all_except'     => "Don't Show On"
+				),
+				'default'     => 'all_pages'
+			),
+			'ai_chat_display_page_rules' => array(
+				'name'        => 'ai_chat_display_page_rules',
+				'type'        => EPKB_Input_Filter::CHECKBOXES_MULTI_SELECT,
+				'options'     => array(
+					'posts'       => 'Posts',
+					'pages'       => 'Pages'
+				),
+				'default'     => array()
+			),
+			'ai_chat_display_other_post_types' => array(
+				'name'        => 'ai_chat_display_other_post_types',
+				'type'        => EPKB_Input_Filter::INTERNAL_ARRAY,
+				'default'     => array()
+			),
+			'ai_chat_display_url_patterns' => array(
+				'name'        => 'ai_chat_display_url_patterns',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => '',
+				'min'         => 0,
+				'max'         => 1000
 			),
 
 			/***  AI Sync Custom Settings ***/

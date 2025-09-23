@@ -433,21 +433,21 @@ class EPKB_Dashboard_Page {
 							<li class="epkb-whatsnew-item epkb-whatsnew-item--new">
 								<span class="epkb-whatsnew-badge"><?php esc_html_e( 'NEW', 'echo-knowledge-base' ); ?></span>
 								<div class="epkb-whatsnew-content">
-									<strong><?php esc_html_e( 'AI Chat Beta', 'echo-knowledge-base' ); ?></strong>
-									<span><?php esc_html_e( 'Intelligent conversational assistant', 'echo-knowledge-base' ); ?></span>
+									<strong><?php esc_html_e( 'AI Chat - Page Selection', 'echo-knowledge-base' ); ?></strong>
+									<span><?php esc_html_e( 'Control where AI Chat appears on specific pages', 'echo-knowledge-base' ); ?></span>
 								</div>
 							</li>
 							<li class="epkb-whatsnew-item epkb-whatsnew-item--new">
 								<span class="epkb-whatsnew-badge"><?php esc_html_e( 'NEW', 'echo-knowledge-base' ); ?></span>
 								<div class="epkb-whatsnew-content">
-									<strong><?php esc_html_e( 'AI Search Beta', 'echo-knowledge-base' ); ?></strong>
-									<span><?php esc_html_e( 'Smart semantic search capabilities', 'echo-knowledge-base' ); ?></span>
+									<strong><?php esc_html_e( 'AI Search Options', 'echo-knowledge-base' ); ?></strong>
+									<span><?php esc_html_e( 'New Ask AI settings and configuration options', 'echo-knowledge-base' ); ?></span>
 								</div>
 							</li>
 							<li class="epkb-whatsnew-item">
 								<div class="epkb-whatsnew-content">
-									<strong><?php esc_html_e( 'AI Dashboard', 'echo-knowledge-base' ); ?></strong>
-									<span><?php esc_html_e( 'Centralized AI management', 'echo-knowledge-base' ); ?></span>
+									<strong><?php esc_html_e( 'AI Features PRO Discount', 'echo-knowledge-base' ); ?></strong>
+									<span><?php esc_html_e( 'Special discount codes available', 'echo-knowledge-base' ); ?></span>
 								</div>
 							</li>
 							<?php /* Temporarily hidden - backend help chat
@@ -667,7 +667,6 @@ class EPKB_Dashboard_Page {
 			'on_kb_main_page_layout' => esc_html__( 'First, the selected layout will be saved. Then, the page will reload and you can see the layout change on the KB frontend.', 'echo-knowledge-base' ),
 			'on_kb_templates' => esc_html__( 'First, the KB Base Template will be enabled. Then the page will reload after which you can see the layout change on the KB frontend.', 'echo-knowledge-base' ),
 			'on_current_theme_templates' => esc_html__( 'First, the Current Theme Template will be enabled. Then the page will reload after which you can see the layout change on the KB frontend. If you have issues using the Current Theme Template, switch back to the KB Template or contact us for help.', 'echo-knowledge-base' ),
-			'on_modular_main_page_toggle' => esc_html__( 'First, the Modular Main Page settings will be saved. Then, the page will reload and you can see the page structure change on the KB frontend.', 'echo-knowledge-base' ),
 			'on_article_search_sync_toggle' => esc_html__( 'First, the current settings will be saved. Then, the page will reload.', 'echo-knowledge-base' ),
 			'on_article_search_toggle' => esc_html__( 'First, the current settings will be saved. Then, the page will reload.', 'echo-knowledge-base' ),
 			'on_asea_presets_selection' => esc_html__( 'First, the current settings will be saved. Then, the page will reload.', 'echo-knowledge-base' ),

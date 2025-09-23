@@ -82,7 +82,7 @@ abstract class EPKB_DB {
 		/** @var $wpdb Wpdb */
 		global $wpdb;
 
-		if ( empty($this->primary_key) ) {
+		if ( empty( $this->primary_key ) ) {
 			return null;
 		}
 

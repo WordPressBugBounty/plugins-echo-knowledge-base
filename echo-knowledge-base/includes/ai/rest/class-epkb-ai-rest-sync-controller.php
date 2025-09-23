@@ -90,7 +90,7 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Start direct sync
 	 * 
@@ -124,7 +124,6 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 		
 		// Initialize sync job
 		$result = EPKB_AI_Sync_Job_Manager::initialize_sync_job( $selected_post_ids, 'cron', $collection_id );
-		
 		if ( is_wp_error( $result ) ) {
 			return $this->create_rest_response( array( 'success' => false, 'error' => $result->get_error_code(), 'message' => $result->get_error_message() ), 400 );
 		}
@@ -168,9 +167,9 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function process_next_post( $request ) {
-		
+
 		$job = EPKB_AI_Sync_Job_Manager::get_sync_job();
-		
+
 		// Only process if direct sync is running
 		if ( $job['type'] !== 'direct' || $job['status'] !== 'running' ) {
 			return $this->create_rest_response( array(
@@ -178,13 +177,13 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 				'message' => __( 'No active direct sync job', 'echo-knowledge-base' )
 			) );
 		}
-		
+
 		// Process one post
 		$batch_result = EPKB_AI_Sync_Job_Manager::process_next_sync_item();
-		
+
 		// Get updated job status
 		$job = EPKB_AI_Sync_Job_Manager::get_sync_job();
-		
+
 		return $this->create_rest_response( array(
 			'success' => true,
 			'status' => $batch_result['status'],
@@ -200,7 +199,7 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 			)
 		) );
 	}
-	
+
 	/**
 	 * Cancel all sync operations
 	 * 
@@ -208,9 +207,9 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function cancel_all_sync( $request ) {
-		
+
 		$result = EPKB_AI_Sync_Job_Manager::cancel_all_sync();
-		
+
 		return $this->create_rest_response( array( 'success' => $result,  'message' => __( 'Sync canceled successfully', 'echo-knowledge-base' )) );
 	}
 }

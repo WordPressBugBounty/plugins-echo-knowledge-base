@@ -7,8 +7,6 @@
  */
 class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller {
 
-	const MAX_BATCH_SIZE = 50;           // Maximum batch size
-
 	public function __construct() {
 		parent::__construct();
 	}

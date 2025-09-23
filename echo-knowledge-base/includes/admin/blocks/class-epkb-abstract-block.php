@@ -100,10 +100,6 @@ abstract class EPKB_Abstract_Block {
 		// empty 'kb_id' in stored block attributes means the block has default value
 		$block_kb_id = empty( $block_attributes['kb_id'] ) ? EPKB_KB_Config_DB::DEFAULT_KB_ID : $block_attributes['kb_id'];
 
-		// blocks are available only if modular is enabled
-		if ( epkb_get_instance()->kb_config_obj->get_value( $block_kb_id, 'modular_main_page_toggle', 'off' ) == 'off' ) {
-			return esc_html__( 'Please switch to Modular mode to use this block. Contact us for help.', 'echo-knowledge-base' );
-		}
 
 		// Check if we're rendering a block preview in the Gutenberg editor - this flag is set in js/blocks/components.js
 		$is_editor_preview = EPKB_Utilities::get( 'is_editor_preview', null );
@@ -510,7 +506,6 @@ abstract class EPKB_Abstract_Block {
 		$block_attributes['kb_main_pages'] = $kb_config['kb_main_pages'];
 		$block_attributes['first_plugin_version'] = $kb_config['first_plugin_version'];
 		$block_attributes['upgrade_plugin_version'] = $kb_config['upgrade_plugin_version'];
-		$block_attributes['modular_main_page_toggle'] = $kb_config['modular_main_page_toggle'];
 		$block_attributes['show_articles_before_categories'] = $this->block_name == 'sidebar-layout' ? $kb_config['sidebar_show_articles_before_categories'] : $kb_config['show_articles_before_categories'];
 		$block_attributes['wpml_is_enabled'] = $kb_config['wpml_is_enabled'];
 		$block_attributes['frontend_editor_switch_visibility_toggle'] = $kb_config['frontend_editor_switch_visibility_toggle'];

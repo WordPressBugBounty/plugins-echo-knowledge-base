@@ -315,13 +315,28 @@ class EPKB_ML_Search {
 	 * @param string $position
 	 */
 	public static function display_ai_search_section( $kb_config, $position ) {
+		// Get AI config to check immediate query setting
+		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
+		$immediate_query = $ai_config['ai_search_immediate_query'] === 'on';
+		$display_mode = $immediate_query ? 'auto' : 'button';
+		$button_text = empty( $ai_config['ai_search_ask_button_text'] ) ?  __( 'Ask AI?', 'echo-knowledge-base' ) : $ai_config['ai_search_ask_button_text'];
+
 		$section_class = 'epkb-ml-ai-search-section epkb-ml-ai-search-section--' . esc_attr( $position ); ?>
 
-		<div class="<?php echo esc_attr( $section_class ); ?>" data-display-mode="<?php echo esc_attr( 'below' ); ?>" data-kb-id="<?php echo esc_attr( $kb_config['id'] ); ?>" data-is-admin="<?php echo esc_attr( current_user_can( 'manage_options' ) ? 'true' : 'false' ); ?>">
-			<button type="button" class="epkb-ml-ai-search-button">
-				<span class="epkb-ml-ai-search-button__icon epkbfa epkbfa-comments-o" aria-hidden="true"></span>
-				<span class="epkb-ml-ai-search-button__text"><?php esc_html_e( 'Ask AI?', 'echo-knowledge-base' ); ?></span>
-			</button>
+		<div class="<?php echo esc_attr( $section_class ); ?>" data-display-mode="<?php echo esc_attr( $display_mode ); ?>"
+		     data-kb-id="<?php echo esc_attr( $kb_config['id'] ); ?>" data-is-admin="<?php echo esc_attr( current_user_can( 'manage_options' ) ? 'true' : 'false' ); ?>">			<?php
+			if ( $immediate_query ) { ?>
+				<div class='epkb-ml-ai-search-answer'>
+					<div class='epkb-ml-ai-search-answer__loading'><?php esc_html_e( 'Retrieving AI answer...', 'echo-knowledge-base' ); ?></div>
+					<div class="epkb-ml-ai-search-answer__content" style="display:none;"></div>
+					<div class="epkb-ml-ai-search-answer__error" style="display:none;"></div>
+				</div>            <?php
+			} else { ?>
+				<button type='button' class='epkb-ml-ai-search-button'>
+					<span class='epkb-ml-ai-search-button__icon epkbfa epkbfa-comments-o' aria-hidden='true'></span>
+					<span class='epkb-ml-ai-search-button__text'><?php echo esc_html( $button_text ); ?></span>
+				</button>			<?php
+			} ?>
 		</div>		<?php
 	}
 }

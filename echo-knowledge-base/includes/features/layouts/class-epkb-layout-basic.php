@@ -28,33 +28,6 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 		</div>   <?php
 	}
 
-    /**
-	 * Generate content of the KB main page
-	 */
-	public function generate_non_modular_kb_main_page() {
-
-		$class2_escaped = $this->get_css_class( '::width' );		    ?>
-
-		<div id="epkb-main-page-container" role="main" aria-labelledby="<?php esc_html_e( 'Knowledge Base', 'echo-knowledge-base' ); ?>" class="epkb-css-full-reset epkb-basic-template <?php echo  esc_attr( EPKB_Utilities::get_active_theme_classes( 'mp' ) ); ?>">
-			<div <?php echo $class2_escaped; ?>>  <?php
-
-				//  KB Search form
-				$this->get_search_form();
-
-				//  Knowledge Base Layout
-				$style1_escaped = $this->get_inline_style( 'background-color:: background_color' );				?>
-				<div id="epkb-content-container" <?php echo $style1_escaped; ?> >
-
-					<!--  Main Page Content -->
-					<div class="epkb-section-container">	<?php
-						$this->display_main_page_content(); ?>
-					</div>
-
-				</div>
-			</div>
-		</div>   <?php
-	}
-
 	/**
 	 * Display KB Main Page content
 	 */
@@ -137,7 +110,6 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 			$category_number = 0;
 			$column_index = 1;
 			$loop_index = 1;
-			$is_modular = $this->kb_config['modular_main_page_toggle'] == 'on';
 			foreach ( $this->category_seq_data as $box_category_id => $box_sub_categories ) {
 				$category_number++;
 
@@ -150,7 +122,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 				$category_desc = isset( $this->articles_seq_data[$box_category_id][1] ) && $this->kb_config['section_desc_text_on'] == 'on' ? $this->articles_seq_data[$box_category_id][1] : '';
 				$box_sub_categories = is_array( $box_sub_categories ) ? $box_sub_categories : array();
 
-				if ( $is_modular && $column_index == 1 ) { ?>
+				if ( $column_index == 1 ) { ?>
 					<div class="epkb-ml__module-categories-articles__row">  <?php
 				}   ?>
 
@@ -227,7 +199,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 
 				</section><!-- Section End -->  <?php
 
-				if ( $is_modular && ( $column_index == $categories_per_row || $loop_index == count( $this->category_seq_data ) ) ) {     ?>
+				if ( $column_index == $categories_per_row || $loop_index == count( $this->category_seq_data ) ) {     ?>
 					</div>  <?php
 					$column_index = 0;
 				}

@@ -115,6 +115,7 @@ class EPKB_Autoloader {
 				'epkb_kb_handler'                   =>  'includes/features/kbs/class-epkb-kb-handler.php',
 				'epkb_kb_demo_data'                 =>  'includes/features/kbs/class-epkb-kb-demo-data.php',
 				'epkb_kb_search'                    =>  'includes/features/kbs/class-epkb-kb-search.php',
+				'epkb_template_sync'                =>  'includes/features/kbs/class-epkb-template-sync.php',
 
 				// FEATURES - CATEGORIES
 				'epkb_categories_db'                =>  'includes/features/categories/class-epkb-categories-db.php',
@@ -153,6 +154,7 @@ class EPKB_Autoloader {
 				// AI Admin
 				'epkb_ai_admin_page'          		=>  'includes/ai/admin/class-epkb-ai-admin-page.php',
 				'epkb_ai_chat_tab'         			=>  'includes/ai/admin/class-epkb-ai-chat-tab.php',
+				'epkb_ai_content_analysis_tab'		=>  'includes/ai/admin/class-epkb-ai-content-analysis-tab.php',
 				'epkb_ai_dashboard_tab'        		=>  'includes/ai/admin/class-epkb-ai-dashboard-tab.php',
 				'epkb_ai_general_settings_tab'     	=>  'includes/ai/admin/class-epkb-ai-general-settings-tab.php',
 				'epkb_ai_search_tab'          		=>  'includes/ai/admin/class-epkb-ai-search-tab.php',
@@ -180,6 +182,7 @@ class EPKB_Autoloader {
 				'epkb_ai_rest_admin_controller'         =>  'includes/ai/rest/class-epkb-ai-rest-admin-controller.php',
 				'epkb_ai_rest_base_controller'          =>  'includes/ai/rest/class-epkb-ai-rest-base-controller.php',
 				'epkb_ai_rest_chat_controller'          =>  'includes/ai/rest/class-epkb-ai-rest-chat-controller.php',
+				'epkb_ai_rest_content_analysis_controller' =>  'includes/ai/rest/class-epkb-ai-rest-content-analysis-controller.php',
 				'epkb_ai_rest_search_controller'        =>  'includes/ai/rest/class-epkb-ai-rest-search-controller.php',
 				'epkb_ai_rest_training_data_controller' =>  'includes/ai/rest/class-epkb-ai-rest-training-data-controller.php',
 				'epkb_ai_rest_sync_controller'          =>  'includes/ai/rest/class-epkb-ai-rest-sync-controller.php',
@@ -191,18 +194,25 @@ class EPKB_Autoloader {
 				'epkb_ai_search_handler'            	=>  'includes/ai/services/class-epkb-ai-search-handler.php',
 
 				// AI Support
-				'epkb_ai_content_processor'         =>  'includes/ai/support/class-epkb-ai-content-processor.php',
-				'epkb_ai_utilities' 				=>  'includes/ai/support/class-epkb-ai-utilities.php',
-				'epkb_ai_validation'                =>  'includes/ai/support/class-epkb-ai-validation.php',
-				'epkb_ai_security'                  =>  'includes/ai/support/class-epkb-ai-security.php',
-				'epkb_ai_table_operations'          =>  'includes/ai/support/class-epkb-ai-table-operations.php',
-				'epkb_ai_log'                       =>  'includes/ai/support/class-epkb-ai-log.php',
+				'epkb_ai_content_processor'             =>  'includes/ai/support/class-epkb-ai-content-processor.php',
+				'epkb_ai_utilities' 				    =>  'includes/ai/support/class-epkb-ai-utilities.php',
+				'epkb_ai_validation'                    =>  'includes/ai/support/class-epkb-ai-validation.php',
+				'epkb_ai_security'                      =>  'includes/ai/support/class-epkb-ai-security.php',
+				'epkb_ai_table_operations'              =>  'includes/ai/support/class-epkb-ai-table-operations.php',
+				'epkb_ai_log'                           =>  'includes/ai/support/class-epkb-ai-log.php',
 
 				// AI Sync
-				'epkb_ai_sync_manager'              =>  'includes/ai/sync/class-epkb-ai-sync-manager.php',
-				'epkb_ai_sync_hooks'                =>  'includes/ai/sync/class-epkb-ai-sync-hooks.php',
-				'epkb_ai_sync_job_manager'          =>  'includes/ai/sync/class-epkb-ai-sync-job-manager.php',
-				'epkb_ai_sync_cron_handler'         =>  'includes/ai/sync/class-epkb-ai-sync-cron-handler.php',
+				'epkb_ai_sync_manager'                  =>  'includes/ai/sync/class-epkb-ai-sync-manager.php',
+				'epkb_ai_sync_hooks'                    =>  'includes/ai/sync/class-epkb-ai-sync-hooks.php',
+				'epkb_ai_sync_job_manager'              =>  'includes/ai/sync/class-epkb-ai-sync-job-manager.php',
+				'epkb_ai_sync_cron_handler'             =>  'includes/ai/sync/class-epkb-ai-sync-cron-handler.php',
+
+				// AI Analysis
+				'epkb_ai_gap_analysis'                  =>  'includes/ai/analysis/class-epkb-ai-gap-analysis.php',
+				'epkb_ai_tags_usage'                    =>  'includes/ai/analysis/class-epkb-ai-tags-usage.php',
+				'epkb_ai_readability'                   =>  'includes/ai/analysis/class-epkb-ai-readability.php',
+				'epkb_ai_content_analysis_utilities'    =>  'includes/ai/analysis/class-epkb-ai-content-analysis-utilities.php',
+				'epkb_ai_content_analysis_job_manager'  =>  'includes/ai/analysis/class-epkb-ai-content-analysis-job-manager.php',
 
 				// BLOCKS
 				'epkb_block_utilities'              =>  'includes/class-epkb-block-utilities.php',

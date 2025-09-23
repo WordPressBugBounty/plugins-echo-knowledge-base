@@ -1332,11 +1332,20 @@ class EPKB_Config_Tools_Page {
 					// Show selection value with label if available
 					$formatted_value = ! empty( $value ) ? $value : 'Not set';
 					if ( isset( $field_spec['options'][$value] ) ) {
-						$formatted_value = $field_spec['options'][$value];
+						$option_value = $field_spec['options'][$value];
+						// Handle array option values (convert to string)
+						$formatted_value = is_array( $option_value ) ? wp_json_encode( $option_value ) : $option_value;
 					}
 				} else {
 					// Default formatting
 					$formatted_value = ! empty( $value ) ? $value : ( isset( $field_spec['default'] ) ? $field_spec['default'] : 'Not set' );
+				}
+				
+				// Ensure formatted_value is a string before concatenation
+				if ( is_array( $formatted_value ) ) {
+					$formatted_value = wp_json_encode( $formatted_value );
+				} elseif ( ! is_string( $formatted_value ) && ! is_numeric( $formatted_value ) ) {
+					$formatted_value = strval( $formatted_value );
 				}
 				
 				$output .= '- ' . $field_name . ' = ' . $formatted_value . "\n";
@@ -1432,16 +1441,6 @@ class EPKB_Config_Tools_Page {
 				}
 				$output .= "\n";
 			}
-		}
-		
-		// OpenAI Rate Limit Status
-		$output .= "\n\nOpenAI Rate Limit Status:\n";
-		$output .= "==================\n";
-		$rate_limit = get_transient( 'epkb_openai_rate_limit' );
-		if ( $rate_limit !== false ) {
-			$output .= "Rate Limited: Yes (expires in " . ( $rate_limit - time() ) . " seconds)\n";
-		} else {
-			$output .= "Rate Limited: No\n";
 		}
 		
 		// Error notification count

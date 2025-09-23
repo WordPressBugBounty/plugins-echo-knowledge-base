@@ -670,7 +670,7 @@ class EPKB_AI_OpenAI_Handler {
 	 * @return string|WP_Error Rewritten content or error
 	 */
 	public static function call_openai_for_rewrite( $instructions, $original_content ) {
-		
+
 		// Calculate max tokens based on input length
 		$input_length = strlen( $original_content );
 		if ( $input_length > 5000 ) {
@@ -680,41 +680,101 @@ class EPKB_AI_OpenAI_Handler {
 		} else {
 			$max_output_tokens = 300;
 		}
-		
-		// Prepare the request
+
+		// Prepare the request for Responses API
 		$request = array(
 			'model' => EPKB_OpenAI_Client::DEFAULT_MODEL,
-			'messages' => array(
-				array(
-					'role' => 'system',
-					'content' => $instructions
-				),
+			'instructions' => $instructions,
+			'input' => array(
 				array(
 					'role' => 'user',
 					'content' => $original_content
 				)
-			),
+			)
 		);
-		
+
 		// Apply model-specific parameters using the generic method
 		$params = array(
 			'temperature' => 0.3, // Low temperature for consistency
-			//'max_output_tokens' => $max_output_tokens
+			'max_output_tokens' => $max_output_tokens
 		);
 		$request = EPKB_OpenAI_Client::apply_model_parameters( $request, EPKB_OpenAI_Client::DEFAULT_MODEL, $params );
-		
+
 		// Make the API call
 		$client = new EPKB_OpenAI_Client();
-		$response = $client->request( '/chat/completions', $request );
+		$response = $client->request( '/responses', $request );
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
-		
-		// Extract the content from response
-		if ( ! isset( $response['choices'][0]['message']['content'] ) ) {
+
+		// Extract the content from response (Responses API structure)
+		if ( empty( $response['output'] ) || ! is_array( $response['output'] ) ) {
 			return new WP_Error( 'invalid_response', __( 'Invalid response from AI service', 'echo-knowledge-base' ) );
 		}
-		
-		return trim( $response['choices'][0]['message']['content'] );
+
+		// Get the last output item
+		$last_output = end( $response['output'] );
+		if ( empty( $last_output['content'] ) || ! is_array( $last_output['content'] ) ) {
+			return new WP_Error( 'invalid_response', __( 'Invalid response content from AI service', 'echo-knowledge-base' ) );
+		}
+
+		// Get the first content item
+		$content = $last_output['content'][0];
+
+		// If content is an object with a 'text' property, extract it
+		if ( is_array( $content ) && isset( $content['text'] ) ) {
+			$content = $content['text'];
+		}
+
+		return trim( $content );
+	}
+
+	/**
+	 * Convert kb_article file references to markdown links with article titles
+	 * This converts the file names we generate when uploading to OpenAI back to readable links
+	 *
+	 * @param string $content Content that may contain kb_article references
+	 * @return string Content with references converted to links
+	 */
+	public static function convert_kb_article_references_to_links( $content ) {
+
+		// Remove the †turn0file2 pattern and similar artifacts only when kb_article_ is found
+		// Pattern matches optional † followed by turn, number, file, number
+		$content = preg_replace('/†?turn\d+file\d+/u', '', $content);
+
+		// Quick check - if content doesn't contain kb_article_, no need to process
+		if ( strpos( $content, 'kb_article_' ) === false ) {
+			return $content;
+		}
+
+		// Pattern: kb_article_[postId]_[timestamp].txt
+		// This matches the format we use in upload_file() method
+		$pattern = '/kb_article_(\d+)_\d+\.txt/';
+
+		// Find all matches
+		if ( preg_match_all( $pattern, $content, $matches, PREG_SET_ORDER ) ) {
+			foreach ( $matches as $match ) {
+				$file_reference = $match[0];
+				$post_id = $match[1];
+
+				// Get the post to retrieve its title
+				$post = get_post( $post_id );
+				if ( $post ) {
+					// Get the article URL
+					$article_url = get_permalink( $post_id );
+					// Get the article title
+					$article_title = get_the_title( $post );
+
+					// Create HTML link that opens in new tab
+					// Using HTML directly since marked.js passes through HTML
+					$link = '<a href="' . esc_url( $article_url ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $article_title ) . '</a>';
+
+					// Replace the file reference with the link
+					$content = str_replace( $file_reference, $link, $content );
+				}
+			}
+		}
+
+		return $content;
 	}
 }

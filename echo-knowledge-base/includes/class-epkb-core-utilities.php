@@ -287,8 +287,8 @@ class EPKB_Core_Utilities {
 			$new_config = self::get_category_archive_page_design( $new_config );
 		}
 
-		// switch off Article Page search sync if the Main Page search is off (modular_main_page_toggle is present only in full config)
-		$is_kb_main_page_search_off = $orig_config['modular_main_page_toggle'] == 'on' ? ! ( self::is_module_present( $new_config, 'search' ) ) : $orig_config['search_layout'] == 'epkb-search-form-0';
+		// switch off Article Page search sync if the Main Page search is off
+		$is_kb_main_page_search_off = ! ( self::is_module_present( $new_config, 'search' ) );
 		if ( $is_kb_main_page_search_off ) {
 
 			// do not switch the toggle 'off' for missing KB Main Page (in this case the $new_config does not contain 'ml_row_*_module' settings to detect if the KB Main Page has Search module enabled)

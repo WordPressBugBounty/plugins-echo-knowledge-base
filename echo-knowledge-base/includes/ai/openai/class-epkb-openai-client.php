@@ -91,7 +91,7 @@ class EPKB_OpenAI_Client {
 			return $parsed;
 		}
 		
-		return new WP_Error( 'max_retries_exceeded', 'Maximum retries exceeded', $data );
+		return new WP_Error( 'max_retries_exceeded', 'OPENAI ERROR: Maximum retries exceeded', $data );
 	}
 
 	/**
@@ -118,7 +118,7 @@ class EPKB_OpenAI_Client {
 			} else {
 				$json_body = json_encode( $data );
 				if ( $json_body === false ) {
-					return new WP_Error( 'json_encode_error', 'Failed to encode request data: ' . json_last_error_msg(), $data );
+					return new WP_Error( 'json_encode_error', 'OPENAI ERROR: Failed to encode request data: ' . json_last_error_msg(), $data );
 				}
 				$args['body'] = $json_body;
 			}
@@ -194,13 +194,13 @@ class EPKB_OpenAI_Client {
 		// Try to decode JSON response
 		$data = json_decode( $body, true );
 		if ( json_last_error() !== JSON_ERROR_NONE ) {
-			return new WP_Error( 'invalid_response', 'Invalid JSON response: ' . json_last_error_msg() );
+			return new WP_Error( 'invalid_response', 'OPENAI ERROR: Invalid JSON response: ' . json_last_error_msg() );
 		}
 		
 		// Check for incomplete_details - treat as error
 		if ( isset( $data['incomplete_details'] ) && ! empty( $data['incomplete_details']['reason'] ) ) {
 			$reason = $data['incomplete_details']['reason'];
-			$error = new WP_Error( 'response_incomplete', sprintf( 'Response incomplete: %s', $reason )	);
+			$error = new WP_Error( 'response_incomplete', sprintf( 'OPENAI ERROR: Response incomplete: %s', $reason )	);
 			$error->add_data( array( 'incomplete_reason' => $reason, 'response_data' => $data ) );
 			return $error;
 		}
@@ -292,14 +292,14 @@ class EPKB_OpenAI_Client {
 	private function extract_error_message( $data ) {
 
 		if ( isset( $data['error']['message'] ) ) {
-			return $data['error']['message'];
+			return 'OPENAI ERROR: ' . $data['error']['message'];
 		}
 
 		if ( isset( $data['error'] ) && is_string( $data['error'] ) ) {
-			return $data['error'];
+			return 'OPENAI ERROR: ' . $data['error'];
 		}
 
-		return 'Unknown API error';
+		return 'OPENAI ERROR: Unknown API error';
 	}
 
 	/**
@@ -378,7 +378,7 @@ class EPKB_OpenAI_Client {
 		if ( empty( $api_key ) ) {
 			return new WP_Error(
 				'missing_api_key',
-				__( 'OpenAI API key is not configured. Please configure your API key in the AI settings.', 'echo-knowledge-base' )
+				__( 'OPENAI ERROR: OpenAI API key is not configured. Please configure your API key in the AI settings.', 'echo-knowledge-base' )
 			);
 		}
 		return true;
@@ -458,7 +458,7 @@ class EPKB_OpenAI_Client {
 
 		$response = wp_remote_post( $url, $args );
 		if ( is_wp_error( $response ) ) {
-			return new WP_Error( 'upload_error', 'File upload failed: ' . $response->get_error_message() );
+			return new WP_Error( 'upload_error', 'OPENAI ERROR: File upload failed: ' . $response->get_error_message() );
 		}
 
 		return $this->parse_response( $response );
@@ -496,7 +496,7 @@ class EPKB_OpenAI_Client {
 
 		// Check if we got a valid response structure
 		if ( ! isset( $response['data'] ) || ! is_array( $response['data'] ) ) {
-			return new WP_Error( 'invalid_response', __( 'Invalid response from OpenAI API', 'echo-knowledge-base' ) );
+			return new WP_Error( 'invalid_response', __( 'OPENAI ERROR: Invalid response from OpenAI API', 'echo-knowledge-base' ) );
 		}
 
 		return true;
@@ -631,15 +631,16 @@ class EPKB_OpenAI_Client {
 	}
 
 	/**
-	 * Apply model-specific parameters to a request
-	 * 
+	 * Apply model-specific parameters to a request (Responses API only)
+	 *
 	 * This method adds applicable parameters based on the model being used:
 	 * - Non-GPT-5 models: temperature OR top_p (mutually exclusive)
 	 * - GPT-5 models: verbosity and reasoning (no temperature/top_p)
+	 * - All models: max_output_tokens for output length control
 	 *
 	 * @param array $request The request array to modify
 	 * @param string $model The model name
-	 * @param array $params Optional parameters to apply (can include temperature, top_p, verbosity, reasoning)
+	 * @param array $params Optional parameters to apply (can include temperature, top_p, verbosity, reasoning, max_output_tokens)
 	 * @return array Modified request with model-specific parameters
 	 */
 	public static function apply_model_parameters( $request, $model, $params = array() ) {
@@ -700,6 +701,7 @@ class EPKB_OpenAI_Client {
 			$max_output_tokens = intval( $params['max_output_tokens'] );
 			$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : 16384;
 			if ( $max_output_tokens > 0 && $max_output_tokens <= $max_limit ) {
+				// Responses API uses max_output_tokens
 				$request['max_output_tokens'] = $max_output_tokens;
 			}
 		}

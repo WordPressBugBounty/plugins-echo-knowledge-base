@@ -2465,6 +2465,9 @@ class EPKB_Icons {
 		$theme_icons['creative_categories'] = $theme_icons['creative'];
 		$theme_icons['formal_tabs'] = $theme_icons['formal'];
 		$theme_icons['formal_categories'] = $theme_icons['formal'];
+		$theme_icons['organized_classic'] = $theme_icons['organized'];
+		$theme_icons['organized_tabs'] = $theme_icons['organized'];
+		$theme_icons['organized_drill_down'] = $theme_icons['organized'];	
 
 		return isset( $theme_icons[$theme_name] ) ? $theme_icons[$theme_name] : $theme_icons['default'];
 	}

@@ -25,6 +25,7 @@ class EPKB_AI_PRO_Features_Tab {
 				),
 				'status' => self::get_pro_status()
 			),
+			'discount_coupon' => self::get_discount_coupon(),
 			'features' => self::get_pro_features(),
 			'cta' => array(
 				//'title' => __( 'Ready to Unlock All PRO Features?', 'echo-knowledge-base' ),
@@ -33,9 +34,91 @@ class EPKB_AI_PRO_Features_Tab {
 				'button_url' => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/',
 				'button_secondary_text' => __( 'View Pricing', 'echo-knowledge-base' ),
 				'button_secondary_url' => 'https://www.echoknowledgebase.com/ai-features-pricing/#pricing',
+				'discount_text' => __( '🎉 Save 20% with annual billing', 'echo-knowledge-base' ),
 				'guarantee' => __( '30-day money-back guarantee', 'echo-knowledge-base' )
 			)
 		);
+	}
+
+	/**
+	 * Get the number of installed Echo KB add-ons
+	 *
+	 * @return int
+	 */
+	private static function get_addon_count() {
+		$addon_count = 0;
+		
+		// Check for each known Echo KB add-on
+		$addons = array(
+			'Echo_Advanced_Search',
+			'Echo_Elegant_Layouts',
+			'Echo_Article_Rating_And_Feedback',
+			'Echo_KB_Articles_Setup',
+			'Echo_Knowledge_Base_CPT',
+			'Echo_Widgets_KB',
+			'Echo_Access_Manager',
+			'Echo_Links_Editor',
+			'Echo_KB_Export_Import',
+			'Echo_Advanced_Config',
+			'EPKB_AI_FEATURES_VERSION'
+		);
+		
+		foreach ( $addons as $addon_class ) {
+			if ( class_exists( $addon_class ) || defined( $addon_class ) ) {
+				$addon_count++;
+			}
+		}
+		
+		return $addon_count;
+	}
+
+	/**
+	 * Get discount coupon based on number of add-ons
+	 *
+	 * @return array
+	 */
+	private static function get_discount_coupon() {
+		$addon_count = self::get_addon_count();
+		$current_date = date('Y-m-d');
+		$expiry_date = date('Y-m-d', strtotime('September 15'));
+		
+		if ( $addon_count == 0 ) {
+			return array(
+				'discount_percentage' => 15,
+				'coupon_code' => 'AIPRO15',
+				'title' => __( '🎉 Limited Time: 15% OFF for New Users!', 'echo-knowledge-base' ),
+				'subtitle' => __( 'Start your AI journey with our special promotional discount', 'echo-knowledge-base' ),
+				'badge_text' => __( 'NEW USER DISCOUNT', 'echo-knowledge-base' ),
+				'addon_count' => $addon_count
+			);
+		} elseif ( $addon_count == 1 ) {
+			return array(
+				'discount_percentage' => 20,
+				'coupon_code' => 'LOYAL20',
+				'title' => __( '🎉 Exclusive: 20% OFF for Valued Customers!', 'echo-knowledge-base' ),
+				'subtitle' => __( 'Thank you for being our customer! Enjoy this special discount', 'echo-knowledge-base' ),
+				'badge_text' => __( 'CUSTOMER APPRECIATION', 'echo-knowledge-base' ),
+				'addon_count' => $addon_count
+			);
+		} elseif ( $addon_count >= 2 && $addon_count <= 3 ) {
+			return array(
+				'discount_percentage' => 30,
+				'coupon_code' => 'VIP30',
+				'title' => __( '🎉 VIP Offer: 30% OFF for Premium Members!', 'echo-knowledge-base' ),
+				'subtitle' => __( 'As a premium member, you deserve our best discount', 'echo-knowledge-base' ),
+				'badge_text' => __( 'VIP MEMBER DISCOUNT', 'echo-knowledge-base' ),
+				'addon_count' => $addon_count
+			);
+		} else {
+			return array(
+				'discount_percentage' => 40,
+				'coupon_code' => 'ELITE40',
+				'title' => __( '🎉 Elite Special: 40% OFF for Power Users!', 'echo-knowledge-base' ),
+				'subtitle' => __( 'Our most exclusive discount for our most valued partners', 'echo-knowledge-base' ),
+				'badge_text' => __( 'ELITE PARTNER DISCOUNT', 'echo-knowledge-base' ),
+				'addon_count' => $addon_count
+			);
+		}
 	}
 
 	/**

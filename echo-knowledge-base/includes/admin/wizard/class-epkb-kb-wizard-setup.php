@@ -207,17 +207,9 @@ class EPKB_KB_Wizard_Setup {
 					<!------- Wizard Content ---------->
 					<div class="epkb-wizard-content">   <?php
 
-						if ( $this->kb_config['modular_main_page_toggle'] == 'off' ) {
-							$notification_escaped = EPKB_HTML_Forms::notification_box_middle( array(
-								'type' => 'error',
-								'desc' => esc_html__( 'Please switch to Modules in Settings UI before proceeding with Setup Wizard', 'echo-knowledge-base' ),
-							), true );
-							echo $notification_escaped;
-						} else {
-							foreach ( $setup_steps_config as $step_index => $step_config ) {
-								//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								echo $step_config['content_escaped'];
-							}
+						foreach ( $setup_steps_config as $step_index => $step_config ) {
+							//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							echo $step_config['content_escaped'];
 						}		  ?>
 
 					</div>

@@ -107,7 +107,6 @@ class EPKB_Frontend_Editor {
     private static function render_editor( $kb_config, $kb_page_type ) {
 		global $post;
 
-		$frontend_editor_type = $kb_config['modular_main_page_toggle'] == 'on' ? $kb_page_type : 'non-modular-page';
 		$display_frontend_editor_closed = EPKB_Core_Utilities::is_kb_flag_set( 'epkb_fe_editor_closed' );
 		$has_page_builder = ( $kb_page_type != 'block-main-page' && ! empty( $post ) && EPKB_Site_Builders::has_page_builder_content( $post->post_content ) ) ? 'true' : 'false'; ?>
 		
@@ -141,7 +140,7 @@ class EPKB_Frontend_Editor {
 				<h1 data-title="home" class="epkb-fe__header-title"><?php esc_html_e( 'Frontend Editor', 'echo-knowledge-base' ); ?></h1>
 				<h1 data-title="help" class="epkb-fe__header-title"><?php esc_html_e( 'Help', 'echo-knowledge-base' ); ?></h1>	<?php
 
-				switch ( $frontend_editor_type ) {
+				switch ( $kb_page_type ) {
 
 					case 'main-page':	?>
 						<!-- Main Page Titles -->
@@ -193,7 +192,7 @@ class EPKB_Frontend_Editor {
 				</div>	<?php
 
 				// display settings for each feature
-				switch ( $frontend_editor_type ) {
+				switch ( $kb_page_type ) {
 
 					case 'main-page':
 						// we need to retrieve settings for all modules - hardcode all modules assigned to rows in $settings_kb_config to have their settings rendered by EPKB_Config_Settings_Page(),
@@ -247,27 +246,15 @@ class EPKB_Frontend_Editor {
 						self::display_block_main_page_settings( $kb_config );
 						break;
 
-					case 'non-modular-page':	?>
-						<div class="epkb-fe__settings-list">
-							<div class="epkb-fe__sub-content">
-								<div class="epkb-admin__settings-sub">
-									<div class="epkb-admin__settings-sub-header">	<?php
-										echo wp_kses( EPKB_HTML_Admin::display_modular_main_page_toggle( $kb_config, EPKB_Core_Utilities::retrieve_all_kb_specs( $kb_config['id'] ) ), EPKB_Utilities::get_admin_ui_extended_html_tags() );	?>
-									</div>
-								</div>
-							</div>
-						</div>	<?php
-						break;
-
 					default:
 						break;
 				}	?>
 			</div>  <?php
 
-			if ( ! in_array( $frontend_editor_type, ['block-main-page', 'non-modular-page'] ) ) {	?>
+			if ( $kb_page_type != 'block-main-page' ) {	?>
 				<!-- Help tab -->
 				<div class='epkb-fe__help-container'>	<?php
-					self::display_help_tab( $kb_config, $frontend_editor_type );	?>
+					self::display_help_tab( $kb_config, $kb_page_type );	?>
 				</div>
 
 				<!-- Frontend Editor Footer -->
@@ -293,7 +280,7 @@ class EPKB_Frontend_Editor {
 
 		</div><?php
 
-	    if ( ! in_array( $frontend_editor_type, ['block-main-page', 'non-modular-page'] ) ) {	?>
+	    if ( $kb_page_type != 'block-main-page' ) {	?>
 			<!-- Error Form -->
 			<div id="epkb-fe__error-form-wrap" style="display: none !important;">	<?php
 				EPKB_HTML_Admin::display_report_admin_error_form();	?>
@@ -301,10 +288,10 @@ class EPKB_Frontend_Editor {
 	    }
     }
 
-	private static function display_help_tab( $kb_config, $frontend_editor_type ) {
+	private static function display_help_tab( $kb_config, $kb_page_type ) {
 
 		// TODO: it looks like for each FE type need to show dedicated Help content
-		if ( $frontend_editor_type == 'block-main-page' ) {
+		if ( $kb_page_type == 'block-main-page' ) {
 			return;
 		}
 
@@ -1121,10 +1108,6 @@ class EPKB_Frontend_Editor {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 149 ) );
 		}
 
-		// let non-modular KB to try modular version if toggle was switched to 'on' without saving its value
-		if ( $orig_config['modular_main_page_toggle'] != 'on' ) {
-			$new_config['modular_main_page_toggle'] = 'on';
-		}
 
 		if ( $merge_module_position ) {
 			$new_config = self::update_module_position( $new_config );

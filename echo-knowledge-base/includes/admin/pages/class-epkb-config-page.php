@@ -61,7 +61,7 @@ class EPKB_Config_Page {
 		//-------------------------------- SETUP WIZARD --------------------------------
 
 		// should we display Setup Wizard or KB Configuration?
-		if ( isset( $_GET['setup-wizard-on'] ) && $this->kb_config['modular_main_page_toggle'] == 'on' && EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
+		if ( isset( $_GET['setup-wizard-on'] ) && EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
 
 			$add_ons_kb_config = EPKB_Core_Utilities::get_add_ons_config( $kb_id, $this->kb_config );
 			if ( empty( $add_ons_kb_config ) ) {
@@ -86,7 +86,7 @@ class EPKB_Config_Page {
 		if ( isset( $_GET['archived-kbs'] ) ) {
 			$admin_page_views = self::get_archived_kbs_views_config();
 
-		} else if ( EPKB_Core_Utilities::run_setup_wizard_first_time() && $this->kb_config['modular_main_page_toggle'] == 'on' ) {
+		} else if ( EPKB_Core_Utilities::run_setup_wizard_first_time() ) {
 			$admin_page_views = self::get_run_setup_first_views_config();
 
 		} else {

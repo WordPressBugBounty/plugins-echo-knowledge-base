@@ -487,14 +487,9 @@ class EPKB_Upgrades {
 			$kb_config['ml_categories_articles_sidebar_location'] = 'right';
 		}
 
-		// starting from version 11.30.0 the Main Page is Modular by default (the toggle is 'on' in specs); ensure it is 'off' if the user did not use Modular before the upgrade
-		if ( $kb_config['kb_main_page_layout'] != 'Modular' ) {
-			$kb_config['modular_main_page_toggle'] = 'off';
-		}
 
 		// transfer storing values of Modular config to corresponding refactored settings only if the Modular Main Page Layout is enabled, otherwise the default values will be used from specs
 		if ( $kb_config['kb_main_page_layout'] == 'Modular' ) {
-			$kb_config['modular_main_page_toggle'] = 'on';
 
 			// do not add Popular Articles to Featured Articles module after upgrade
 			$kb_config['ml_articles_list_column_1'] = 'none';

@@ -242,17 +242,21 @@ abstract class EPKB_AI_Base_Handler {
 		}
 
 		$content = empty( $last_output['content'][0] ) ? '' : $last_output['content'][0];
-		
+
 		// If content is an object with a 'text' property (from newer OpenAI API), extract it
 		if ( is_array( $content ) && isset( $content['text'] ) ) {
-			return $content['text'];
+			$content = $content['text'];
 		}
-		
+
 		// If content is an object/array, convert to string
 		if ( is_array( $content ) || is_object( $content ) ) {
-			return json_encode( $content );
+			$content = json_encode( $content );
 		}
-		
+
+		// Convert kb_article patterns to links with article names
+		// This is done in the OpenAI handler since it created these file names
+		$content = EPKB_AI_OpenAI_Handler::convert_kb_article_references_to_links( $content );
+
 		return $content;
 	}
 

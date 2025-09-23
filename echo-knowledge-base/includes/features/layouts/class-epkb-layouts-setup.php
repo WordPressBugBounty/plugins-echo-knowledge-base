@@ -138,33 +138,9 @@ class EPKB_Layouts_Setup {
 		// let layout class display the KB main page
 		$layout = empty( $kb_config['kb_main_page_layout'] ) ? EPKB_Layout::BASIC_LAYOUT : $kb_config['kb_main_page_layout'];
 		$layout =  self::is_elay_layout( $layout ) && ! EPKB_Utilities::is_elegant_layouts_enabled() ? EPKB_Layout::BASIC_LAYOUT : $layout;
-		$is_modular = $kb_config['modular_main_page_toggle'] == 'on';
-
-		// select core layout or default
-		$handler = new EPKB_Layout_Basic();
-		switch ( $layout ) {
-			case EPKB_Layout::BASIC_LAYOUT:
-			default:
-				$handler = new EPKB_Layout_Basic();
-				$layout = EPKB_Layout::BASIC_LAYOUT;    // default
-				break;
-			case EPKB_Layout::TABS_LAYOUT:
-				$handler = new EPKB_Layout_Tabs();
-				break;
-			case EPKB_Layout::CATEGORIES_LAYOUT:
-				$handler = new EPKB_Layout_Categories();
-				break;
-			case EPKB_Layout::CLASSIC_LAYOUT:           // the Modular-only layout cannot handle page itself - use default if Modular is 'off'
-			case EPKB_Layout::DRILL_DOWN_LAYOUT:        // the Modular-only layout cannot handle page itself - use default if Modular is 'off'
-				break;
-			case EPKB_Layout::GRID_LAYOUT:              // Elegant Layouts layout - use default if the add-on is 'off'
-			case EPKB_Layout::SIDEBAR_LAYOUT:           // Elegant Layouts layout - use default if the add-on is 'off'
-				break;
-		}
 
 		// generate layout
-		$layout_output = '';
-		$handler = $is_modular ? new EPKB_Modular_Main_Page() : $handler;
+		$handler = new EPKB_Modular_Main_Page();
 
 		// handle Elegant layouts
 		if ( self::is_elay_layout( $layout ) ) {
@@ -185,26 +161,15 @@ class EPKB_Layouts_Setup {
 				$kb_config['prev_next_navigation_enable'] = 'off';
 				$kb_config['article_content_enable_rows'] = 'off';
 				$layout_output = EPKB_Articles_Setup::get_article_content_and_features( $temp_article, $temp_article->post_content, $kb_config );
-
-				if ( $handler instanceof EPKB_Modular_Main_Page ) {
-					$handler->set_sidebar_layout_content( $layout_output );
-					$layout_output = '';
-				}
-
-			} else if ( ! $is_modular ) {  // non-modular non-Sidebar Layout e.g. Grid Layout
-
-				ob_start();
-				apply_filters( 'epkb_' . strtolower( $layout ) . '_layout_output', $kb_config, $is_ordering_wizard_on, $article_seq, $categories_seq );
-				$layout_output = ob_get_clean();
+				$handler->set_sidebar_layout_content( $layout_output );
 			}
 		}
 
-		// handle all non/modular core layouts and modular Grid/Sidebar layouts; excludes non-modular Grid and Sidebar layouts
-		if ( empty( $layout_output ) ) {
-			ob_start();
-			$handler->display_non_modular_kb_main_page( $kb_config, $is_ordering_wizard_on, $article_seq, $categories_seq );
-			$layout_output = ob_get_clean();
-		}
+		// handle all core layouts and modular Grid/Sidebar layouts
+		ob_start();
+		$handler->setup_kb_main_page( $kb_config, $is_ordering_wizard_on, $article_seq, $categories_seq );
+		$handler->generate_kb_main_page();
+		$layout_output = ob_get_clean();
 
 		// a hook for user modifications
 		if ( has_filter( 'epkb_output_main_page' ) ) {

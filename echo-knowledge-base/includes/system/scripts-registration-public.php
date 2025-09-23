@@ -40,6 +40,15 @@ function epkb_load_public_resources() {
 	wp_register_style( 'epkb-shortcodes', Echo_Knowledge_Base::$plugin_url . 'css/shortcodes' . $suffix . '.css', array( 'epkb-icon-fonts' ), Echo_Knowledge_Base::$version );
 	wp_register_style( 'epkb-frontend-editor', Echo_Knowledge_Base::$plugin_url . 'css/frontend-editor' . $suffix . '.css', array('wp-color-picker'), Echo_Knowledge_Base::$version );
 	
+	// Register mp-frontend-sidebar-layout for ELAY versions 3.2.0 or less
+	if ( EPKB_Utilities::is_elegant_layouts_enabled() && class_exists( 'Echo_Elegant_Layouts' ) && 
+	     version_compare( Echo_Elegant_Layouts::$version, '3.2.0', '<=' ) ) {
+		wp_register_style( 'epkb-mp-frontend-sidebar-layout-legacy', Echo_Knowledge_Base::$plugin_url . 'css/mp-frontend-sidebar-layout-legacy' . $suffix . '.css', array( 'epkb-icon-fonts' ), Echo_Knowledge_Base::$version );
+		if ( is_rtl() ) {
+			wp_register_style( 'epkb-mp-frontend-sidebar-layout-legacy-rtl', Echo_Knowledge_Base::$plugin_url . 'css/mp-frontend-sidebar-layout-legacy-rtl' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
+		}
+	}
+	
 	if ( is_rtl() ) {
 		wp_register_style( 'epkb-frontend-editor-rtl', Echo_Knowledge_Base::$plugin_url . 'css/frontend-editor-rtl' . $suffix . '.css', array('wp-color-picker'), Echo_Knowledge_Base::$version );
 	}
@@ -56,17 +65,19 @@ function epkb_load_public_resources() {
 	
 	// Register modular AI chat components
 	wp_register_script( 'epkb-ai-chat-util', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-util' . $ai_suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
+	wp_register_script( 'epkb-ai-chat-cache', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-cache' . $ai_suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
 	wp_register_script( 'epkb-ai-chat-session', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-session' . $ai_suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
 	wp_register_script( 'epkb-ai-chat-api', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-api' . $ai_suffix . '.js', array( 'epkb-ai-chat-util' ), Echo_Knowledge_Base::$version, true );
-		
+	wp_register_script( 'epkb-ai-chat-display', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat-display' . $ai_suffix . '.js', array( 'epkb-ai-chat-util' ), Echo_Knowledge_Base::$version, true );
+
 	// Register AI search script
 	wp_register_script( 'epkb-ai-search', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-search' . $ai_suffix . '.js', array( 'jquery', 'epkb-public-scripts', 'epkb-ai-chat-util', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
 
 	// Check if wp-element is available, otherwise use react/react-dom directly
 	if ( wp_script_is( 'wp-element', 'registered' ) ) {
-		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat' . $ai_suffix . '.js', array( 'wp-element', 'epkb-ai-chat-util', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
+		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat' . $ai_suffix . '.js', array( 'wp-element', 'epkb-ai-chat-util', 'epkb-ai-chat-cache', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-ai-chat-display', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
 	} else {
-		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat' . $ai_suffix . '.js', array( 'react', 'react-dom', 'epkb-ai-chat-util', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
+		wp_register_script( 'epkb-ai-chat', Echo_Knowledge_Base::$plugin_url . 'js/ai/ai-chat' . $ai_suffix . '.js', array( 'react', 'react-dom', 'epkb-ai-chat-util', 'epkb-ai-chat-cache', 'epkb-ai-chat-session', 'epkb-ai-chat-api', 'epkb-ai-chat-display', 'epkb-marked' ), Echo_Knowledge_Base::$version, true );
 	}
 
 	// Register marked library for markdown parsing
@@ -120,6 +131,7 @@ function epkb_load_public_resources() {
 
 		wp_enqueue_style( 'epkb-ai-chat-widget' );
 		wp_enqueue_script( 'epkb-ai-chat-util' );
+		wp_enqueue_script( 'epkb-ai-chat-cache' );
 		wp_enqueue_script( 'epkb-ai-chat-session' );
 		wp_enqueue_script( 'epkb-ai-chat-api' );
 		wp_enqueue_script( 'epkb-ai-chat' );
@@ -204,17 +216,15 @@ function epkb_load_public_resources() {
 		if ( isset( $_GET[$search_query_param] ) ) {
 			$current_css_file_slug = 'sp-frontend-layout';
 		} else {
-			$is_modular_main_page = $kb_config['modular_main_page_toggle'] == 'on';
-			$modular_css_file_slug = $is_modular_main_page ? '-modular' : '';
 			switch ( $kb_config['kb_main_page_layout'] ) {
-				case 'Tabs': $current_css_file_slug = 'mp-frontend' . $modular_css_file_slug . '-tab-layout'; break;
-				case 'Categories': $current_css_file_slug = 'mp-frontend' . $modular_css_file_slug . '-category-layout'; break;
-				case 'Grid': $current_css_file_slug = EPKB_Utilities::is_elegant_layouts_enabled() ? 'mp-frontend' . $modular_css_file_slug . '-grid-layout' : 'mp-frontend' . $modular_css_file_slug . '-basic-layout'; break;
-				case 'Sidebar': $current_css_file_slug = EPKB_Utilities::is_elegant_layouts_enabled() ? 'mp-frontend' . $modular_css_file_slug . '-sidebar-layout' : 'mp-frontend' . $modular_css_file_slug . '-basic-layout'; break;
-				case 'Classic': $current_css_file_slug = $is_modular_main_page ? 'mp-frontend-modular-classic-layout' : 'mp-frontend-basic-layout'; break;
-				case 'Drill-Down': $current_css_file_slug = $is_modular_main_page ? 'mp-frontend-modular-drill-down-layout' : 'mp-frontend-basic-layout'; break;
+				case 'Tabs': $current_css_file_slug = 'mp-frontend-modular-tab-layout'; break;
+				case 'Categories': $current_css_file_slug = 'mp-frontend-modular-category-layout'; break;
+				case 'Grid': $current_css_file_slug = EPKB_Utilities::is_elegant_layouts_enabled() ? 'mp-frontend-modular-grid-layout' : 'mp-frontend-modular-basic-layout'; break;
+				case 'Sidebar': $current_css_file_slug = EPKB_Utilities::is_elegant_layouts_enabled() ? 'mp-frontend-modular-sidebar-layout' : 'mp-frontend-modular-basic-layout'; break;
+				case 'Classic': $current_css_file_slug = 'mp-frontend-modular-classic-layout'; break;
+				case 'Drill-Down': $current_css_file_slug = 'mp-frontend-modular-drill-down-layout'; break;
 				case 'Basic':
-				default: $current_css_file_slug = 'mp-frontend' . $modular_css_file_slug . '-basic-layout'; break;
+				default: $current_css_file_slug = 'mp-frontend-modular-basic-layout'; break;
 			}
 		}
 
@@ -293,6 +303,12 @@ function epkb_enqueue_public_resources( $kb_id=0 ) {
 		'mp-frontend-sidebar-layout',
 		'ap-frontend-layout',
 	];
+
+	// Only enqueue mp-frontend-sidebar-layout-legacy if ELAY is version 3.2.0 or less
+	if ( EPKB_Utilities::is_elegant_layouts_enabled() && class_exists( 'Echo_Elegant_Layouts' ) && 
+	     version_compare( Echo_Elegant_Layouts::$version, '3.2.0', '<=' ) ) {
+		$css_slugs[] = 'mp-frontend-sidebar-layout-legacy';
+	}
 
 	// enqueue once only slug that was registered earlier
 	foreach ( $css_slugs as $one_slug ) {
@@ -462,7 +478,7 @@ function epkb_frontend_kb_theme_styles_now( $kb_config, $css_file_slug ) {
 		';
 	}
 
-	if ( $is_kb_main_page && $kb_config['modular_main_page_toggle'] == 'on' ) {
+	if ( $is_kb_main_page ) {
 		$output .= EPKB_Modular_Main_Page::get_all_inline_styles( $kb_config );
 	}
 
@@ -491,11 +507,10 @@ function epkb_frontend_kb_theme_styles_now( $kb_config, $css_file_slug ) {
 		}';
 
 		// include inline styles for Search Module for Articles page only if it is used:
-		// - is Article CSS slug and Modular toggle is 'on' (only Modular Search has inline CSS)
+		// - is Article CSS slug (only Modular Search has inline CSS)
 		// - is not Advanced search (Advanced Search uses its own Search box and styles)
 		// - is first KB version 7.3.0 or higher
-		if ( $css_file_slug == 'ap-frontend-layout' && $kb_config['modular_main_page_toggle'] == 'on'
-			&& ! EPKB_Utilities::is_advanced_search_enabled( $kb_config ) ) {
+		if ( $css_file_slug == 'ap-frontend-layout' && ! EPKB_Utilities::is_advanced_search_enabled( $kb_config ) ) {
 			$output .= EPKB_ML_Search::get_inline_styles( $kb_config, true );
 		}
 	}

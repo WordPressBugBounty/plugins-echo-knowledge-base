@@ -302,6 +302,7 @@ abstract class EPKB_AI_Config_Base {
 				
 			case EPKB_Input_Filter::CHECKBOXES_MULTI_SELECT:
 			case EPKB_Input_Filter::CHECKBOXES_MULTI_SELECT_NOT:
+			case EPKB_Input_Filter::INTERNAL_ARRAY:
 				// Ensure value is an array
 				if ( ! is_array( $value ) ) {
 					return array();

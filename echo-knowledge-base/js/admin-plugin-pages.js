@@ -2668,10 +2668,9 @@ jQuery(document).ready(function($) {
 		kb_config.epkb_kb_id = $( '#epkb-list-of-kbs' ).val();
 
 		// Force reload page if:
-		// - is modular Main Page
-		// - AND Main Page search module is not present
+		// - Main Page search module is not present
 		// - AND Article Page search in sync with Main Page search
-		if ( ! $( '#modular_main_page_toggle' ).length && ! $( '.epkb-admin__form-tab-content--module-selection [data-value="search"].epkb-input-custom-dropdown__option--selected' ).length && $( '[name="article_search_sync_toggle"]:checked' ).length ) {
+		if ( ! $( '.epkb-admin__form-tab-content--module-selection [data-value="search"].epkb-input-custom-dropdown__option--selected' ).length && $( '[name="article_search_sync_toggle"]:checked' ).length ) {
 			reload_page = true;
 		}
 
@@ -3062,28 +3061,6 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	/*************************************************************************************************
-	 *
-	 *          Change Modular Main Page
-	 *
-	 ************************************************************************************************/
-	$( document ).on( 'click', '#modular_main_page_toggle .epkb-settings-control-toggle', function() {
-		$confirmation_dialog.addClass( 'epkb-dialog-box-form--active epkb-kb-modular-main-page--active' );
-		$( '#epkb-admin-page-reload-confirmation .epkb-dbf__body' ).html( epkb_vars.on_modular_main_page_toggle );
-		return false;
-	});
-
-	// Initialize confirmation button for Modular Main Page toggle
-	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-modular-main-page--active .epkb-dbf__footer__accept__btn', function() {
-
-		// Apply changes for Modular Main Page
-		let modular_main_page_toggle = $( 'input[name="modular_main_page_toggle"]' );
-		modular_main_page_toggle.prop( 'checked', ! modular_main_page_toggle.prop( 'checked' ) );
-
-		// Hide confirmation dialog and save settings with page reload
-		$confirmation_dialog.removeClass( 'epkb-dialog-box-form--active epkb-kb-modular-main-page--active' );
-		save_config_tab_settings( false, true );
-	} );
 
 	// Deactivate confirmation box for Main Page layout
 	$( document ).on( 'click', '#epkb-admin-page-reload-confirmation.epkb-kb-modular-main-page--active .epkb-dbf__footer__cancel__btn', function() {

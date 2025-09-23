@@ -219,6 +219,21 @@ class EPKB_AI_Search_Tab {
 						'description' => __( 'Control AI Search visibility: Off (disabled), Preview (admins only for testing), or On (public access)', 'echo-knowledge-base' ),
 						'field_class' => 'epkb-ai-search-mode'
 					),
+					'ai_search_immediate_query' => array(
+						'type' => 'checkbox',
+						'label' => __( 'Immediate AI Query', 'echo-knowledge-base' ),
+						'value' => $ai_config['ai_search_immediate_query'],
+						'description' => __( 'When enabled, AI will automatically query when a search is submitted instead of showing "Ask AI?" button', 'echo-knowledge-base' ),
+						'field_class' => 'epkb-ai-immediate-query'
+					),
+					'ai_search_ask_button_text' => array(
+						'type' => 'text',
+						'label' => __( 'AI Search Button Text', 'echo-knowledge-base' ),
+						'value' => $ai_config['ai_search_ask_button_text'],
+						'description' => __( 'Text displayed on the AI search button', 'echo-knowledge-base' ),
+						'placeholder' => __( 'Ask AI?', 'echo-knowledge-base' ),
+						'field_class' => 'epkb-ai-button-text'
+					),
 					'ai_search_instructions' => array(
 						'type' => 'textarea',
 						'label' => __( 'AI Search Instructions', 'echo-knowledge-base' ),

@@ -212,6 +212,7 @@ class EPKB_AI_Chat_Tab {
 				'id' => 'chat_settings',
 				'title' => __( 'AI Chat Settings', 'echo-knowledge-base' ),
 				'icon' => 'epkbfa epkbfa-comments',
+				'sub_tab' => 'chat-settings',
 				'fields' => array(
 					'ai_chat_enabled' => array(
 						'type' => 'radio',
@@ -236,10 +237,12 @@ class EPKB_AI_Chat_Tab {
 					)
 				)
 			),
+			'display_settings' => self::get_display_settings_section( $ai_config ),
 			'chat_behavior' => array(
 				'id' => 'chat_behavior',
 				'title' => __( 'AI Behavior', 'echo-knowledge-base' ),
 				'icon' => 'epkbfa epkbfa-sliders',
+				'sub_tab' => 'chat-settings',
 				'fields' => array_merge(array(
 					'ai_chat_preset' => array(
 						'type' => 'select',
@@ -271,6 +274,7 @@ class EPKB_AI_Chat_Tab {
 			'id' => 'default_chat_widget',
 			'title' => __( 'Chat Widget Appearance', 'echo-knowledge-base' ),
 			'icon' => 'epkbfa epkbfa-paint-brush',
+			'sub_tab' => 'chat-settings',
 			'fields' => array(
 				/* 'widget_enabled' => array(
 					'type' => 'toggle',
@@ -362,6 +366,89 @@ class EPKB_AI_Chat_Tab {
 					'description' => __( 'Reset all chat widget appearance and text settings to default values', 'echo-knowledge-base' )
 				)
 			)
+		);
+	}
+
+	/**
+	 * Get display settings section configuration
+	 *
+	 * @param array $ai_config
+	 * @return array
+	 */
+	private static function get_display_settings_section( $ai_config ) {
+		
+		// Build the fields array
+		$fields = array(
+			'ai_chat_display_mode' => array(
+				'type' => 'radio',
+				'label' => __( 'Display Mode', 'echo-knowledge-base' ),
+				'value' => isset( $ai_config['ai_chat_display_mode'] ) ? $ai_config['ai_chat_display_mode'] : 'all_pages',
+				'options' => array(
+					'all_pages'      => __( 'Show Everywhere', 'echo-knowledge-base' ),
+					'selected_only'  => __( 'Only Show On', 'echo-knowledge-base' ),
+					'all_except'     => __( "Don't Show On", 'echo-knowledge-base' )
+				),
+				'description' => __( 'Choose one mode to control where the AI chat widget appears on your site.', 'echo-knowledge-base' ),
+				'field_class' => 'epkb-ai-chat-display-mode epkb-horizontal-radio'
+			),
+			
+			// Basic WordPress content types - only Posts and Pages
+			'ai_chat_display_page_rules' => array(
+				'type' => 'checkboxes',
+				'label' => __( 'Page Types', 'echo-knowledge-base' ),
+				'value' => isset( $ai_config['ai_chat_display_page_rules'] ) ? $ai_config['ai_chat_display_page_rules'] : array(),
+				'options' => array(
+					'posts'       => __( 'All Posts', 'echo-knowledge-base' ),
+					'pages'       => __( 'All Pages', 'echo-knowledge-base' )
+				),
+				'field_class' => 'epkb-ai-chat-page-rules epkb-two-column-checkboxes'
+			)
+		);
+		
+		// Get Knowledge Base post types only
+		$kb_post_types = array();
+		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs();
+		
+		foreach ( $all_kb_configs as $kb_config ) {
+			// Skip archived KBs
+			if ( isset( $kb_config['status'] ) && $kb_config['status'] === EPKB_KB_Config_Specs::ARCHIVED ) {
+				continue;
+			}
+			
+			$kb_id = $kb_config['id'];
+			$kb_post_type = EPKB_KB_Handler::get_post_type( $kb_id );
+			$kb_name = isset( $kb_config['kb_name'] ) ? $kb_config['kb_name'] : sprintf( __( 'Knowledge Base %d', 'echo-knowledge-base' ), $kb_id );
+			$kb_post_types[ $kb_post_type ] = $kb_name;
+		}
+		
+		// Add Knowledge Bases if any exist
+		if ( ! empty( $kb_post_types ) ) {
+			$fields['ai_chat_display_other_post_types'] = array(
+				'type' => 'checkboxes',
+				'label' => __( 'Knowledge Bases', 'echo-knowledge-base' ),
+				'value' => isset( $ai_config['ai_chat_display_other_post_types'] ) ? $ai_config['ai_chat_display_other_post_types'] : array(),
+				'options' => $kb_post_types,
+				'field_class' => 'epkb-ai-chat-other-post-types epkb-two-column-checkboxes'
+			);
+		}
+		
+		// Add URL patterns field as textarea
+		$fields['ai_chat_display_url_patterns'] = array(
+			'type' => 'textarea',
+			'label' => __( 'URL Patterns', 'echo-knowledge-base' ),
+			'value' => isset( $ai_config['ai_chat_display_url_patterns'] ) ? str_replace( ',', "\n", $ai_config['ai_chat_display_url_patterns'] ) : '',
+			'placeholder' => __( "/support/*\n/docs/*\n/help/*", 'echo-knowledge-base' ),
+			'description' => __( 'Enter one URL pattern per line. Use * as wildcard', 'echo-knowledge-base' ),
+			'rows' => 3,
+			'field_class' => 'epkb-ai-chat-url-patterns'
+		);
+		
+		return array(
+			'id' => 'display_settings',
+			'title' => __( 'Display Settings', 'echo-knowledge-base' ),
+			'icon' => 'epkbfa epkbfa-eye',
+			'sub_tab' => 'chat-settings',
+			'fields' => $fields
 		);
 	}
 

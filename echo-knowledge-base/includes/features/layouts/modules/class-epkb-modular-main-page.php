@@ -13,7 +13,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	/**
 	 * Generate content of the KB main page
 	 */
-	public function generate_non_modular_kb_main_page() { ?>
+	public function generate_kb_main_page() { ?>
 		<div id="epkb-modular-main-page-container" role="main" aria-labelledby="epkb-modular-main-page-container" class="epkb-css-full-reset <?php echo esc_attr( EPKB_Utilities::get_active_theme_classes() ); ?>">			<?php
 			$this->display_modular_container(); ?>
 		</div>   <?php

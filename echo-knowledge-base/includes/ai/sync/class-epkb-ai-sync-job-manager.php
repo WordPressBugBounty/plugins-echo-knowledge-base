@@ -24,14 +24,14 @@ class EPKB_AI_Sync_Job_Manager {
 
 		return wp_parse_args( $job, $default );
 	}
-	
+
 	/**
 	 * Update sync job status
 	 * 
 	 * @param array $data Data to update
 	 * @return bool Success
 	 */
-	public static function update_sync_job( $data ) {
+	public static function update_sync_job( $data=array() ) {
 
 		$job = self::get_sync_job();
 		if ( self::is_job_canceled( $job ) ) {
@@ -97,12 +97,12 @@ class EPKB_AI_Sync_Job_Manager {
 		} else {
 			return new WP_Error( 'invalid_post_ids', __( 'Invalid post IDs provided', 'echo-knowledge-base' ) );
 		}
-		
+
 		// Check if we have posts to sync
 		if ( empty( $items ) ) {
 			return new WP_Error( 'no_posts', __( 'No posts found to sync', 'echo-knowledge-base' ) );
 		}
-		
+
 		// Create job data
 		$job_data = array_merge( self::get_default_job_data(), array(
 			'status' => $mode === 'cron' ? 'scheduled' : 'running',
@@ -111,34 +111,34 @@ class EPKB_AI_Sync_Job_Manager {
 			'items' => $items,
 			'total' => count( $items )
 		) );
-		
+
 		// Save job
 		if ( ! self::update_sync_job( $job_data ) ) {
 			return new WP_Error( 'save_failed', __( 'Failed to save sync job', 'echo-knowledge-base' ) );
 		}
-		
+
 		return $job_data;
 	}
-	
+
 	/**
 	 * Process next post in the sync queue
 	 * 
 	 * @return array Result with processed count and status
 	 */
 	public static function process_next_sync_item() {
-		
+
 		$job = self::get_sync_job();
-		
+
 		// Skip if canceled
 		if ( self::is_job_canceled( $job ) ) {
 			return array( 'status' => 'idle' );
 		}
-		
+
 		// Skip if not running
 		if ( $job['status'] !== 'running' ) {
 			return array( 'status' => $job['status'] );
 		}
-		
+
 		// Get next unprocessed item (always process one at a time)
 		$remaining_item = array_slice( $job['items'], $job['processed'], 1 );
 		$remaining_item = empty( $remaining_item[0] ) ? null : $remaining_item[0];
@@ -209,8 +209,7 @@ class EPKB_AI_Sync_Job_Manager {
 				'message' => $result->get_error_message()
 			);
 
-			$job['failed_post_ids'][] = $post_id;
-			self::update_sync_job( array( 'failed_post_ids' => $job['failed_post_ids'] ) );
+			self::update_sync_job();
 
 			// Check if we've hit 5 consecutive errors
 			if ( $consecutive_errors >= 5 ) {
@@ -248,11 +247,6 @@ class EPKB_AI_Sync_Job_Manager {
 				'id' => $post_id, 
 				'status' => empty( $result['skipped'] ) ? 'synced' : 'skipped'
 			);
-
-			// Include summarized_content if it was returned - Disabled for now
-			// if ( ! empty( $result['summarized_content'] ) ) {
-			// 	$post_update_data['summarized_content'] = $result['summarized_content'];
-			// }
 
 			$updated_posts[] = $post_update_data;
 		}
@@ -298,7 +292,6 @@ class EPKB_AI_Sync_Job_Manager {
 			'type' => '',
 			'collection_id' => 0,
 			'items' => array(),
-			'failed_post_ids' => array(),
 			'retry_post_ids' => array(),
 			'retrying' => false,
 			'cancel_requested' => false,
@@ -313,8 +306,8 @@ class EPKB_AI_Sync_Job_Manager {
 	}
 
 	/**
-	 * Check if a sync job is currently active
-	 * 
+	 * Check if a job is active
+	 *
 	 * @return bool
 	 */
 	public static function is_job_active() {
@@ -328,20 +321,20 @@ class EPKB_AI_Sync_Job_Manager {
 			$job = self::get_sync_job();
 		}
 
-		return $job['cancel_requested'];
+		return ! empty( $job['cancel_requested'] );
 	}
-	
+
 	/**
 	 * Cancel all sync operations
-	 * 
+	 *
 	 * @return bool Success
 	 */
 	public static function cancel_all_sync() {
 
+		// Mark cancel requested and set to idle (align with sync semantics)
 		self::update_sync_job( array(
 			'status' => 'idle',
 			'cancel_requested' => true,
-			//'items' => array(), can conflict with currently running job
 		) );
 		
 		// Clear scheduled cron event if exists

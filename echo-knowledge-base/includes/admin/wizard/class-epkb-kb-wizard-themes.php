@@ -83,7 +83,7 @@ class EPKB_KB_Wizard_Themes {
 			'section_head_padding_right' => [ 2 => 4, 3 => 0, 4 => 0, 9 => 4, 7 => 0, 10 => 4, 11 => 4, 14 => 20, 16 => 20, 17 => 20, 21 => 0 ],
 			'section_head_padding_top' => [ 2 => 20, 3 => 20, 4 => 0, 7 => 0, 9 => 20, 10 => 20, 11 => 20, 14 => 20, 15 => 10, 16 => 20, 17 => 20, 21 => 0 ],
 			'section_divider' => [ 3 => 'on', 4 => 'off', 7 => 'off', 10 => 'on', 15 => 'off', 21 => 'off'],
-			'section_desc_text_on' => [10 => 'on', 12 => 'on'],
+			'section_desc_text_on' => [10 => 'on', 12 => 'off'],
 			'section_divider_color' => [1 => '#edf2f6', 2 => '#edf2f6', 3 => '#afa7a7', 5 => '#43596e', 6 => '#edf2f6', 7 => '#edf2f6', 8 => '#528ffe', 9 => '#edf2f6', 10 => '#777777', 11 => '#edf2f6', 12 => '#6ac7cb',
 										13 => '#888888', 14 => '#1e73be', 15 => '#CDCDCD', 16 => '#FFFFFF', 17 => '#FFFFFF', 18 => '#ce6bcb'],
 			'section_divider_thickness' => [ 2 => 5, 3 => 1, 4 => 0, 5 => 0, 6 => 2, 7 => 2, 8 => 2, 9 => 5, 10 => 2, 11 => 5, 12 => 3, 13 => 2, 14 => 2, 15 => 1, 16 => 1, 17 => 1, 18 => 5],
@@ -343,6 +343,8 @@ class EPKB_KB_Wizard_Themes {
 		$all_themes['office_tabs']['kb_main_page_layout'] = 'Tabs';
 		$all_themes['organized_tabs'] = $all_themes['organized'];
 		$all_themes['organized_tabs']['kb_main_page_layout'] = 'Tabs';
+		$all_themes['organized_tabs']['section_desc_text_on'] = 'off';
+
 		$all_themes['elegant_tabs'] = $all_themes['elegant'];
 		$all_themes['elegant_tabs']['kb_main_page_layout'] = 'Tabs';
 		$all_themes['modern_tabs'] = $all_themes['modern'];
@@ -355,8 +357,19 @@ class EPKB_KB_Wizard_Themes {
 		$all_themes['formal_tabs']['kb_main_page_layout'] = 'Tabs';
 		$all_themes['compact_tabs'] = $all_themes['compact'];
 		$all_themes['compact_tabs']['kb_main_page_layout'] = 'Tabs';
+
 		$all_themes['sharp_tabs'] = $all_themes['sharp'];
 		$all_themes['sharp_tabs']['kb_main_page_layout'] = 'Tabs';
+		$all_themes['sharp_tabs']['section_head_font_color'] = '#6C3CBA';
+		$all_themes['sharp_tabs']['section_head_category_icon_location'] = 'no_icons';
+		$all_themes['sharp_tabs']['section_border_color'] = '#6C3CBA';
+		$all_themes['sharp_tabs']['section_head_background_color'] = '#FFFFFF';
+		$all_themes['sharp_tabs']['section_head_alignment'] = 'center';
+		$all_themes['sharp_tabs']['section_head_padding_top'] = 20;
+		$all_themes['sharp_tabs']['section_head_padding_bottom'] = 20;
+		$all_themes['sharp_tabs']['section_divider_thickness'] = 1;
+		
+
 		$all_themes['simple_tabs'] = $all_themes['simple'];
 		$all_themes['simple_tabs']['kb_main_page_layout'] = 'Tabs';
 		$all_themes['creative_tabs'] = $all_themes['creative'];
@@ -364,9 +377,27 @@ class EPKB_KB_Wizard_Themes {
 		$all_themes['icon_focused_tabs'] = $all_themes['icon_focused'];
 		$all_themes['icon_focused_tabs']['kb_main_page_layout'] = 'Tabs';
 
+		// Basic Layout
+		$all_themes['sharp_basic'] = $all_themes['sharp'];
+		$all_themes['sharp_basic']['kb_main_page_layout'] = 'Basic';
+		$all_themes['sharp_basic']['section_head_font_color'] = '#6C3CBA';
+		$all_themes['sharp_basic']['section_head_category_icon_location'] = 'top';
+		$all_themes['sharp_basic']['section_head_background_color'] = '#FF0000';
+
+		$all_themes['organized_basic'] = $all_themes['organized'];
+		$all_themes['organized_basic']['kb_main_page_layout'] = 'Basic';
+
 		// Categories Layout
 		$all_themes['sharp_categories'] = $all_themes['sharp'];
 		$all_themes['sharp_categories']['kb_main_page_layout'] = 'Categories';
+		$all_themes['sharp_categories']['kb_main_page_layout'] = 'Tabs';
+		$all_themes['sharp_categories']['section_head_font_color'] = '#6C3CBA';
+		$all_themes['sharp_categories']['section_head_category_icon_location'] = 'no_icons';
+		$all_themes['sharp_categories']['section_border_color'] = '#6C3CBA';
+		$all_themes['sharp_categories']['section_head_background_color'] = '#FFFFFF';
+		$all_themes['sharp_categories']['section_head_alignment'] = 'center';
+		$all_themes['sharp_categories']['section_divider_thickness'] = 1;
+
 		$all_themes['office_categories'] = $all_themes['office'];
 		$all_themes['office_categories']['kb_main_page_layout'] = 'Categories';
 		$all_themes['compact_categories'] = $all_themes['compact'];
@@ -383,7 +414,10 @@ class EPKB_KB_Wizard_Themes {
 		// Classic Layout
 		$all_themes['sharp_classic'] = $all_themes['sharp'];
 		$all_themes['sharp_classic']['kb_main_page_layout'] = 'Classic';
-
+		$all_themes['sharp_classic']['section_head_font_color'] = '#6C3CBA';
+		$all_themes['sharp_classic']['section_head_category_icon_location'] = 'no_icons';
+		$all_themes['sharp_classic']['section_border_color'] = '#6C3CBA';
+		
 		$all_themes['organized_classic'] = $all_themes['organized'];
 		$all_themes['organized_classic']['kb_main_page_layout'] = 'Classic';
 		$all_themes['organized_classic']['section_head_category_icon_size'] = 80;
@@ -403,6 +437,9 @@ class EPKB_KB_Wizard_Themes {
 		// Drill Down Layout
 		$all_themes['sharp_drill_down'] = $all_themes['sharp'];
 		$all_themes['sharp_drill_down']['kb_main_page_layout'] = 'Drill-Down';
+		$all_themes['sharp_drill_down']['section_head_font_color'] = '#6C3CBA';
+		$all_themes['sharp_drill_down']['section_head_category_icon_location'] = 'no_icons';
+		$all_themes['sharp_drill_down']['section_border_color'] = '#6C3CBA';
 
 		$all_themes['organized_drill_down'] = $all_themes['organized'];
 		$all_themes['organized_drill_down']['kb_main_page_layout'] = 'Drill-Down';
