@@ -17434,24 +17434,44 @@ input[type=radio]:checked:before {
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list {
   display: flex;
-  gap: 20px;
-  justify-content: space-around;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0 20px;
+}
+.epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choices-title {
+  width: 100%;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0 0 40px 0;
+  color: #2C3E50;
+  letter-spacing: -0.5px;
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  flex: 0 1 calc(50% - 15px);
+  max-width: 500px;
   align-items: center;
   text-align: center;
-  border-radius: 7px;
-  padding: 20px;
-  border: 3px solid #C5C5C5;
-  background-color: #F9F9F9;
-  min-height: 634px;
-  width: 50%;
+  border-radius: 12px;
+  padding: 30px 25px;
+  border: 2px solid #E0E6ED;
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8F9FA 100%);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  min-height: auto;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice.epkb-setup-wizard-features-choice--active {
-  border: 3px solid #36AEDA;
+  border: 2px solid #3B74E0;
+  box-shadow: 0 8px 25px rgba(59, 116, 224, 0.15);
+  background: linear-gradient(145deg, #FFFFFF 0%, #F0F5FF 100%);
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice img {
   cursor: zoom-in;
@@ -17461,82 +17481,88 @@ input[type=radio]:checked:before {
   position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  margin: 10px auto;
-  padding: 13px 70px 12px 5px;
+  justify-content: center;
+  margin: 20px auto 10px;
+  padding: 0;
   font-size: 16px;
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice .epkb-setup-wizard-features-choice__option__label input[name=epkb-main-page-type] {
   position: relative;
   line-height: 1.1;
   float: initial;
+  cursor: pointer;
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice .epkb-setup-wizard-features-choice__option__label input[name=epkb-main-page-type]:before {
   content: "";
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   position: absolute;
-  top: 4px;
+  top: 9px;
   left: 0;
   z-index: 7;
-  background-color: #DDDDDD;
-  border-radius: 20px;
-  border: 2px solid #ECECEC;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  border: 2px solid #CBD5E0;
+  transition: all 0.3s ease;
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice .epkb-setup-wizard-features-choice__option__label input[name=epkb-main-page-type]:after {
-  content: "Choose";
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  top: -8px;
-  bottom: -10px;
-  left: -14px;
-  z-index: 5;
-  min-width: 170px;
+  content: "Select This Option";
   display: inline-block;
-  height: fit-content;
-  background-color: #3BB3E0;
+  min-width: 180px;
+  height: auto;
+  background: linear-gradient(135deg, #E0E0E0 0%, #BDBDBD 100%);
   position: relative;
-  font-family: "Open Sans", sans-serif;
-  font-size: 21px;
-  line-height: 23px;
+  top: 0;
+  left: -10px;
+  z-index: 5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
   text-align: center;
   text-decoration: none;
-  color: #FFFFFF;
-  border: solid 1px #186F8F;
-  background-image: linear-gradient(bottom, #2CA0CA, #3EB8E5);
-  background-image: -o-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-  background-image: -moz-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-  background-image: -webkit-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-  background-image: -ms-linear-gradient(bottom, #2CA0CA, #3EB8E5);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #2CA0CA), color-stop(1, #3EB8E5));
-  border-radius: 5px;
-  box-shadow: inset 0 1px 0 #7FD2F1, 0 1px 0 #FFFFFF;
-  padding: 10px 0 10px 15px;
+  color: #181818;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  padding: 14px 30px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice .epkb-setup-wizard-features-choice__option__label input[name=epkb-main-page-type]:hover:after {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #7C8FF7 0%, #8459B3 100%);
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice .epkb-setup-wizard-features-choice__option__label input[name=epkb-main-page-type]:checked:before {
-  width: 14px;
-  height: 14px;
-  background-color: #86D700;
-  border: 3px solid #DDDDDD;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  border-color: #667EEA;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice .epkb-setup-wizard-features-choice__option__label input[name=epkb-main-page-type]:checked:after {
-  content: "Selected";
-  background-color: #86D700;
+  content: "✓ Selected";
+  background: linear-gradient(135deg, #56AB2F 0%, #A8E063 100%);
   color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(86, 171, 47, 0.3);
+}
+.epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice .epkb-setup-wizard-features-choice__option__label input[name=epkb-main-page-type]:focus {
+  border-color: transparent;
+  box-shadow: none;
+  outline: none;
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__header {
-  font-size: 30px;
-  color: #000000;
-  font-weight: 700;
+  font-size: 24px;
+  color: #2C3E50;
+  font-weight: 600;
   align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 0 10px;
+  margin-bottom: 20px;
   position: relative;
+  min-height: 45px;
 }
 @media (max-width: 1400px) {
   .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__header {
@@ -17549,14 +17575,20 @@ input[type=radio]:checked:before {
   line-height: 1.5;
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__header .epkb-setup-wizard-features-choice__header-label {
-  font-size: 13px;
-  color: #FFFFFF;
-  font-weight: 400;
+  font-size: 12px;
+  color: #000000;
+  font-weight: 600;
   display: inline-block;
-  padding: 10px 15px;
-  background-color: #3BB3E0;
-  border-radius: 7px;
-  margin-left: 15px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #FFD700 0%, #FFEB3B 100%);
+  border-radius: 20px;
+  margin-left: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(255, 215, 0, 0.3);
+  position: absolute;
+  top: -27px;
+  right: -76px;
 }
 @media (max-width: 1400px) {
   .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__header .epkb-setup-wizard-features-choice__header-label {
@@ -17568,18 +17600,62 @@ input[type=radio]:checked:before {
   }
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__body {
-  box-shadow: 0 4px 10px 0 rgba(16, 16, 16, 0.368627451);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__body img {
-  max-width: 550px;
+  width: 100%;
+  height: auto;
+  display: block;
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__footer {
-  max-width: 94%;
-  margin-top: 20px;
-  padding: 10px;
-  margin-bottom: 0;
-  font-size: 17px !important;
-  line-height: 1.2;
+  max-width: 100%;
+  margin-top: 0;
+  padding: 0 10px;
+  margin-bottom: 0px;
+  font-size: 15px !important;
+  line-height: 1.6;
+  color: #5A6C7D;
+  flex-grow: 1;
+}
+.epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__learn-more {
+  color: #3B74E0;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 10px 0 20px;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+.epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__learn-more:hover {
+  text-decoration: underline;
+  color: #2D5AB8;
+  transform: translateX(3px);
+}
+.epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice__learn-more:after {
+  content: " →";
+}
+@media (max-width: 1024px) {
+  .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice {
+    flex: 0 1 100%;
+    max-width: 100%;
+    margin: 10px 0;
+  }
+}
+@media (max-width: 768px) {
+  .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list {
+    gap: 20px;
+    padding: 0 10px;
+  }
+  .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choices-title {
+    font-size: 22px;
+    margin: 0 0 25px 0;
+  }
+  .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice {
+    padding: 20px 15px;
+  }
 }
 .epkb-config-setup-wizard-modular .epkb-setup-wizard-features-choices-list .epkb-setup-wizard-features-choice-info {
   display: flex;

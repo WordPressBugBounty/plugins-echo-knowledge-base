@@ -835,20 +835,9 @@ class EPKB_KB_Wizard_Setup {
 		<div id="epkb-wsb-step-<?php echo esc_attr( $step_number ); ?>-panel" class="epkb-wc-step-panel eckb-wizard-step-<?php echo esc_attr( $step_number ); ?>">
 			<div class="epkb-setup-wizard-features-choices-list">
 
-				<!-- Need Help -->
-				<div class="epkb-setup-wizard-features-choice-info">
-					<p><?php if ( $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
-								esc_html_e( 'Knowledge Base - lists all categories and articles. Display it with blocks or the shortcode — both include visual editors.', 'echo-knowledge-base' );
-								} ?></p>
-					<p><?php if ( $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
-								esc_html_e( 'Need help deciding between Blocks and Shortcodes?', 'echo-knowledge-base' );
-					 		 } else if ( $main_page_has_blocks ) {
-								esc_html_e( 'First Knowledge Base uses Blocks.', 'echo-knowledge-base' );
-					 		 } else {
-								esc_html_e( 'First Knowledge Base uses Shortcode.', 'echo-knowledge-base' );
-							 } ?></p>
-					<p><a class="epkb-setup-wizard-features-choice-info-link" href="https://www.echoknowledgebase.com/documentation/kb-blocks/" target="_blank"><?php esc_html_e( 'Learn More', 'echo-knowledge-base' );  ?></a></p>
-				</div>  <?php
+				<h2 class="epkb-setup-wizard-features-choices-title"><?php esc_html_e( 'Two Ways to Display Your Knowledge Base', 'echo-knowledge-base' ); ?></h2>
+
+				<?php
 
 				if (  $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID || $main_page_has_blocks  ) {
 					$this->get_blocks_option( true );
@@ -867,12 +856,13 @@ class EPKB_KB_Wizard_Setup {
 	private function get_blocks_option( $is_preselected ) {	?>
 		<!-- Use Blocks -->
 		<div class="epkb-setup-wizard-features-choice <?php echo $is_preselected ? 'epkb-setup-wizard-features-choice--active' : ''; ?>">
-				<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use WordPress Blocks', 'echo-knowledge-base' ); ?></span><span class="epkb-setup-wizard-features-choice__header-label"><?php esc_html_e( 'Recommended', 'echo-knowledge-base' ); ?></span></div>
+				<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'b) Using WordPress Blocks', 'echo-knowledge-base' ); ?></span><span class="epkb-setup-wizard-features-choice__header-label"><?php esc_html_e( 'Recommended', 'echo-knowledge-base' ); ?></span></div>
 				<div class="epkb-setup-wizard-features-choice__body">
 					<img alt="Blocks" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-2/blocks-choice.jpg' ); ?>">
 				</div>
-				<p class="epkb-setup-wizard-features-choice__footer"><?php echo esc_html__( 'Use KB blocks to display your Knowledge Base and use Gutenberg block editor to customize it.', 'echo-knowledge-base' ) . ' ' .
-																					esc_html__( 'Choose this option if you use WordPress blocks for your pages.', 'echo-knowledge-base' ); ?></p>
+				<p class="epkb-setup-wizard-features-choice__footer"><?php echo esc_html__( 'Choose this option if you use WordPress blocks for your pages.', 'echo-knowledge-base' ) . '<br>' .
+																					esc_html__( 'The KB is configured with our Knowledge Base Blocks.', 'echo-knowledge-base' ); ?></p>
+				<p><a class="epkb-setup-wizard-features-choice__learn-more" href="https://www.echoknowledgebase.com/documentation/kb-blocks/#Introduction-to-WordPress-Blocks" target="_blank"><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></a></p>
 				<label class="epkb-setup-wizard-features-choice__option__label">
 				<input type="radio" name="epkb-main-page-type" value="kb-blocks"<?php checked( $is_preselected ); ?>>
 			</label>
@@ -883,12 +873,13 @@ class EPKB_KB_Wizard_Setup {
 	private function get_shortcode_option( $is_preselected ) {	?>
 		<!-- Use Shortcode -->
 		<div class="epkb-setup-wizard-features-choice <?php echo $is_preselected ? 'epkb-setup-wizard-features-choice--active' : ''; ?>">
-			<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'Use Shortcode', 'echo-knowledge-base' ); ?></span></div>
+			<div class="epkb-setup-wizard-features-choice__header"><span><?php esc_html_e( 'a) Using Shortcodes', 'echo-knowledge-base' ); ?></span></div>
 			<div class="epkb-setup-wizard-features-choice__body">
 				<img alt="Shortcode" src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/' . 'setup-wizard/step-2/shortcode-choice.jpg' ); ?>">
 			</div>
-			<p class="epkb-setup-wizard-features-choice__footer"><?php echo esc_html__( 'Use the KB Shortcode to display your Knowledge Base, and customize it using the KB Configuration admin page.', 'echo-knowledge-base' ) .
-																				esc_html__( 'Choose this option if you use page builders such as Elementor and Divi.', 'echo-knowledge-base' );; ?></p>
+			<p class="epkb-setup-wizard-features-choice__footer"><?php echo esc_html__( 'Choose this option if you use page builders such as Elementor or Divi.', 'echo-knowledge-base' ) . '<br>' .
+																				esc_html__( 'The KB is configured using our Frontend Editor.', 'echo-knowledge-base' ); ?></p>
+			<p><a class="epkb-setup-wizard-features-choice__learn-more" href="https://www.echoknowledgebase.com/documentation/knowledge-base-shortcode/#crel-597" target="_blank"><?php esc_html_e( 'Learn More', 'echo-knowledge-base' ); ?></a></p>
 			<label class="epkb-setup-wizard-features-choice__option__label">
 			<input type="radio" name="epkb-main-page-type" value="kb-shortcode"<?php checked( $is_preselected ); ?>>
 			</label>

@@ -129,7 +129,7 @@ function epkb_load_admin_plugin_pages_resources() {
 	// add frontend styles for order settings
 	$page = EPKB_Utilities::get( 'page' );
 	if ( $page == 'epkb-kb-configuration' ) {
-		wp_enqueue_style( 'epkb-mp-frontend-basic-layout', Echo_Knowledge_Base::$plugin_url . 'css/mp-frontend-basic-layout' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
+		wp_enqueue_style( 'epkb-mp-frontend-basic-layout', Echo_Knowledge_Base::$plugin_url . 'css/mp-frontend-modular-basic-layout' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
 	}
 
 	$page = EPKB_Utilities::get( 'page' );

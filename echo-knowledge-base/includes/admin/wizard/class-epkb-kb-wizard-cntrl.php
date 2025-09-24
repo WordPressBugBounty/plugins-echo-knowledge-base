@@ -269,6 +269,12 @@ class EPKB_KB_Wizard_Cntrl {
 		$new_kb_config['section_head_background_color'] = '#f5f5f5';
 		$new_kb_config['background_color'] = '';
 
+		$new_kb_config['ml_row_1_module'] = 'categories_articles';
+		$new_kb_config['ml_row_2_module'] = 'none';
+		$new_kb_config['ml_row_3_module'] = 'none';
+		$new_kb_config['ml_row_4_module'] = 'none';
+		$new_kb_config['ml_row_5_module'] = 'none';
+
 		$eckb_is_kb_main_page = true;   // pretend this is Main Page
 		$main_page_output = EPKB_Layouts_Setup::output_main_page( $new_kb_config, true, $article_seq, $category_seq );
 		

@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chatbot, faq
 Requires at least: 5.3
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 15.311.0
+Stable tag: 15.312.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -434,6 +434,10 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 
 
 == Changelog ==
+
+= 15.312.0 =
+Release Date: Sept 23, 2025
+* Fix: Ordering Wizard
 
 = 15.311.0 =
 Release Date: Sept 22, 2025

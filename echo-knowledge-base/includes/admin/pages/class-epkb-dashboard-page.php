@@ -195,7 +195,44 @@ class EPKB_Dashboard_Page {
 				<section class="epkb-marketing-row">
 					
 					<!-- Main Content (70%) -->
-					<div class="epkb-main-content">
+					<div class="epkb-main-content"><?php
+
+						// Show KB Frontend setup section for KB #1 when Setup Wizard is available
+						if ( $kb_id == 1 && $show_setup_wizard ) { ?>
+							<!-- New KB Frontend Section -->
+							<article class="epkb-card epkb-card--kb-frontend-setup" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 20px;">
+								<div class="epkb-kb-frontend-content" style="padding: 40px; text-align: center;">
+									<div class="epkb-kb-frontend-text">
+										<div class="epkb-kb-frontend-heading">
+											<h2 style="color: white; font-size: 28px; margin-bottom: 20px;">
+												<i class="epkbfa epkbfa-rocket" style="color: #FFD700; margin-right: 10px;"></i>
+												<?php esc_html_e( 'View Your Knowledge Base Frontend', 'echo-knowledge-base' ); ?>
+											</h2>
+										</div>
+										<div class="epkb-kb-frontend-description">
+											<p style="color: rgba(255,255,255,0.95); font-size: 16px; line-height: 1.6; max-width: 600px; margin: 0 auto 30px;">
+												<?php esc_html_e( 'Your Knowledge Base is ready! View it on the frontend using the button below or the link in the top right corner.', 'echo-knowledge-base' ); ?>
+											</p>
+										</div>
+										<div class="epkb-kb-frontend-buttons" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+											<?php
+											$kb_main_page_url = EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config );
+											if ( ! empty( $kb_main_page_url ) ) { ?>
+												<a href="<?php echo esc_url( $kb_main_page_url ); ?>" target="_blank" class="epkb-btn" style="background: white; color: #667eea; padding: 12px 30px; font-size: 16px; font-weight: 600; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s;">
+													<i class="epkbfa epkbfa-external-link"></i>
+													<?php esc_html_e( 'View KB Frontend', 'echo-knowledge-base' ); ?>
+												</a>
+											<?php } else { ?>
+												<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&setup-wizard-on=true' ) ); ?>" class="epkb-btn" style="background: white; color: #667eea; padding: 12px 30px; font-size: 16px; font-weight: 600; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s;">
+													<i class="epkbfa epkbfa-play-circle"></i>
+													<?php esc_html_e( 'Create KB Main Page', 'echo-knowledge-base' ); ?>
+												</a>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+							</article>						<?php
+						} ?>
 
 						<!-- Welcome -->
 						<div class="epkb-card epkb-card--welcome">
@@ -709,7 +746,7 @@ class EPKB_Dashboard_Page {
 		$two_weeks_in_seconds = 14 * 24 * 60 * 60;
 		$time_since_install = current_time( 'timestamp' ) - $install_timestamp;
 		
-		return $time_since_install <= $two_weeks_in_seconds;
+		return true; //$time_since_install <= $two_weeks_in_seconds;
 	}
 
 	/**
