@@ -1,0 +1,84 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "pl_PL",
+                "plural-forms": "nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"
+            },
+            "Cancel": [
+                "Anuluj"
+            ],
+            "Vote for Top 3 Features": [
+                "Głosuj na trzy najlepsze funkcje"
+            ],
+            "First Name": [
+                "Imię"
+            ],
+            "(optional)": [
+                "(opcjonalnie)"
+            ],
+            "Email": [
+                "E-mail"
+            ],
+            "Failed to submit vote. Please try again.": [
+                "Nie udało się oddać głosu. Spróbuj ponownie."
+            ],
+            "Please enter a valid email address.": [
+                "Wprowadź poprawny adres e-mail."
+            ],
+            "Warnings": [
+                "Ostrzeżenia"
+            ],
+            "Help us prioritize features by providing your information:": [
+                "Pomóż nam ustalić priorytety funkcji, podając informacje:"
+            ],
+            "Describe Your Feature Request": [
+                "Opisz żądaną funkcję"
+            ],
+            "Please describe the feature you would like to see...": [
+                "Proszę opisz funkcję, którą chciałbyś zobaczyć..."
+            ],
+            "Submit Vote": [
+                "Wyślij głos"
+            ],
+            "Please describe the feature you would like to see.": [
+                "Proszę opisz funkcję, którą chciałbyś zobaczyć."
+            ],
+            "Please select at least one feature to vote for.": [
+                "Wybierz co najmniej jedną funkcję, na którą chcesz oddać swój głos."
+            ],
+            "Submitting your vote...": [
+                "Wysyłanie głosu..."
+            ],
+            "Thank you for voting!": [
+                "Dziękujemy za oddanie głosu!"
+            ],
+            "An error occurred. Please try again.": [
+                "Wystąpił błąd. Spróbuj ponownie."
+            ],
+            "Latest AI Updates": [
+                "Najświeższe aktualizacje sztucznej inteligencji"
+            ],
+            "Learn more": [
+                "Dowiedz się więcej"
+            ],
+            "Select the features you would like to see implemented:": [
+                "Wybierz funkcje, które chciałbyś zobaczyć wdrożone:"
+            ],
+            "Released": [
+                "Wydano"
+            ],
+            "feature selected": [
+                "Wybrano funkcję"
+            ],
+            "features selected": [
+                "Wybrano funkcje"
+            ],
+            "Note: Your feedback helps us prioritize development. Features are subject to change.": [
+                "Uwaga: Twoja opinia pomaga nam priorytetyzować rozwój. Funkcje mogą ulec zmianie."
+            ]
+        }
+    }
+}

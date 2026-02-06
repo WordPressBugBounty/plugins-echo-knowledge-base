@@ -220,7 +220,7 @@ class EPKB_AI_Conversation_Model {
 	 * @return string
 	 */
 	protected function validate_mode( $mode ) {
-		$valid_modes = array( 'search', 'chat' );
+		$valid_modes = array( 'search', 'chat', 'smart_search', 'advanced_search' ); // TODO: remove 'advanced_search' after v16
 		return in_array( $mode, $valid_modes ) ? $mode : 'search';
 	}
 
@@ -305,7 +305,7 @@ class EPKB_AI_Conversation_Model {
 			return true;
 		}
 		// Check if conversation is older than x days based on last update
-		return ( time() - strtotime( $this->updated ) ) > ( EPKB_OpenAI_Client::DEFAULT_CONVERSATION_EXPIRY_DAYS * DAY_IN_SECONDS );
+		return ( time() - strtotime( $this->updated ) ) > ( EPKB_ChatGPT_Client::DEFAULT_CONVERSATION_EXPIRY_DAYS * DAY_IN_SECONDS );
 	}
 
 	public function get_mode() {

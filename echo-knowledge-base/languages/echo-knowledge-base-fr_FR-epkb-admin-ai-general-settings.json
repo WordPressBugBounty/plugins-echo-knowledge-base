@@ -1,0 +1,63 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "fr_FR",
+                "plural-forms": "nplurals=2; plural=(n > 1);"
+            },
+            "Settings saved successfully": [
+                "Paramètres enregistrés avec succès"
+            ],
+            "Close": [
+                "Fermer"
+            ],
+            "Cancel": [
+                "Annuler"
+            ],
+            "Saving...": [
+                "Sauvegarde en cours..."
+            ],
+            "Save Settings": [
+                "Enregistrer les paramètres"
+            ],
+            "Failed to save settings": [
+                "Échec de l'enregistrement des paramètres"
+            ],
+            "Sending...": [
+                "Envoi..."
+            ],
+            "Test email sent successfully": [
+                "E-mail de test envoyé avec succès"
+            ],
+            "Failed to send test email": [
+                "Échec de l'envoi de l'e-mail de test"
+            ],
+            "Failed to send test email. Please check your connection.": [
+                "Échec de l'envoi de l'e-mail de test. Veuillez vérifier votre connexion."
+            ],
+            "Change AI Provider?": [
+                "Changer de fournisseur d'IA ?"
+            ],
+            "Switching AI providers will affect your AI Search and AI Chat settings:": [
+                "Le changement de fournisseurs d'IA affectera vos paramètres IA Recherche et IA Chat :"
+            ],
+            "Training Data Collections are provider-specific and do not transfer between providers.": [
+                "Les collections de données d'apprentissage sont spécifiques au fournisseur et ne se transfèrent pas entre les fournisseurs."
+            ],
+            "You will need to create and train new collections for the new provider.": [
+                "Vous devrez créer et entraîner de nouvelles collections pour le nouveau fournisseur."
+            ],
+            "AI Search and AI Chat will only show collections for the selected provider.": [
+                "IA Recherche et IA Chat n'afficheront que les collections du fournisseur sélectionné."
+            ],
+            "Your existing collections will be preserved and available if you switch back.": [
+                "Vos collections existantes seront préservées et disponibles si vous revenez."
+            ],
+            "Change Provider": [
+                "Changer de fournisseur"
+            ]
+        }
+    }
+}

@@ -289,6 +289,11 @@
   font-size: 23px;
 }
 
+.epkb-faqs-container .epkb-faqs__item__question:focus-visible {
+  outline: 2px solid var(--eckb-focus-color, #0073AA);
+  outline-offset: 2px;
+}
+
 @media only screen and (max-width: 981px) {
   .epkb-faqs-container {
     flex-direction: column;

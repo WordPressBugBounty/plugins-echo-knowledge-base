@@ -79,13 +79,13 @@ class EPKB_AI_PRO_Features_Tab {
 	 */
 	private static function get_discount_coupon() {
 		$addon_count = self::get_addon_count();
-		$current_date = date('Y-m-d');
-		$expiry_date = date('Y-m-d', strtotime('September 15'));
+		$current_date = gmdate('Y-m-d');
+		$expiry_date = gmdate('Y-m-d', strtotime('September 15'));
 		
 		if ( $addon_count == 0 ) {
 			return array(
 				'discount_percentage' => 15,
-				'coupon_code' => 'AIPRO15',
+				'coupon_code' => 'AI_PRO_BASIC_15',
 				'title' => __( '🎉 Limited Time: 15% OFF for New Users!', 'echo-knowledge-base' ),
 				'subtitle' => __( 'Start your AI journey with our special promotional discount', 'echo-knowledge-base' ),
 				'badge_text' => __( 'NEW USER DISCOUNT', 'echo-knowledge-base' ),
@@ -94,7 +94,7 @@ class EPKB_AI_PRO_Features_Tab {
 		} elseif ( $addon_count == 1 ) {
 			return array(
 				'discount_percentage' => 20,
-				'coupon_code' => 'LOYAL20',
+				'coupon_code' => 'AI_PRO_ADV_20',
 				'title' => __( '🎉 Exclusive: 20% OFF for Valued Customers!', 'echo-knowledge-base' ),
 				'subtitle' => __( 'Thank you for being our customer! Enjoy this special discount', 'echo-knowledge-base' ),
 				'badge_text' => __( 'CUSTOMER APPRECIATION', 'echo-knowledge-base' ),
@@ -103,7 +103,7 @@ class EPKB_AI_PRO_Features_Tab {
 		} elseif ( $addon_count >= 2 && $addon_count <= 3 ) {
 			return array(
 				'discount_percentage' => 30,
-				'coupon_code' => 'VIP30',
+				'coupon_code' => 'AI_PRO_VIP_30',
 				'title' => __( '🎉 VIP Offer: 30% OFF for Premium Members!', 'echo-knowledge-base' ),
 				'subtitle' => __( 'As a premium member, you deserve our best discount', 'echo-knowledge-base' ),
 				'badge_text' => __( 'VIP MEMBER DISCOUNT', 'echo-knowledge-base' ),
@@ -112,7 +112,7 @@ class EPKB_AI_PRO_Features_Tab {
 		} else {
 			return array(
 				'discount_percentage' => 40,
-				'coupon_code' => 'ELITE40',
+				'coupon_code' => 'AI_PRO_ELITE_40',
 				'title' => __( '🎉 Elite Special: 40% OFF for Power Users!', 'echo-knowledge-base' ),
 				'subtitle' => __( 'Our most exclusive discount for our most valued partners', 'echo-knowledge-base' ),
 				'badge_text' => __( 'ELITE PARTNER DISCOUNT', 'echo-knowledge-base' ),
@@ -140,7 +140,61 @@ class EPKB_AI_PRO_Features_Tab {
 				__( 'Internal notes created for reference, available to AI without being published publicly.', 'echo-knowledge-base' ),
                ),
 
-				'image' => esc_url( Echo_Knowledge_Base::$plugin_url . 'img/ai-pro-features-training-data.png' )
+				'image' => esc_url( Echo_Knowledge_Base::$plugin_url . 'img/ad/ai-pro-features-training-data.png' )
+			),
+			array(
+				'id' => 'agent-handoff',
+				'title' => __( 'AI Chat Feedback and Agent Handoff', 'echo-knowledge-base' ),
+				'description' => __( 'Collect user feedback on AI responses and seamlessly route conversations to human agents when customers need personal support.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-handshake-o',
+				'icon_color' => '#2C8C99',
+				'benefits' => array(
+					__( 'Gather thumbs up/down feedback on AI responses to improve quality.', 'echo-knowledge-base' ),
+					__( 'Escalate to live support with one click or automation rules.', 'echo-knowledge-base' ),
+					__( 'Share full chat context so agents can help without repeat questions.', 'echo-knowledge-base' ),
+					__( 'Collect contact details and preferred channel during handoff.', 'echo-knowledge-base' )
+				),
+				'image' => esc_url( Echo_Knowledge_Base::$plugin_url . 'img/ad/ai-pro-features-agent-handoff.jpg' )
+			),
+			array(
+				'id' => 'content-gaps-analysis',
+				'title' => __( 'Content Gaps Analysis', 'echo-knowledge-base' ),
+				'description' => __( 'AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage and what questions your users might ask that aren\'t addressed.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-puzzle-piece',
+				'icon_color' => '#F39C12',
+				'benefits' => array(
+					__( 'Identifies unanswered user questions', 'echo-knowledge-base' ),
+					__( 'Detects missing or underdeveloped topics', 'echo-knowledge-base' ),
+					__( 'Provides actionable recommendations for improvement', 'echo-knowledge-base' )
+				),
+				'image' => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/10/Content-Gaps-Analysis.jpg'
+			),
+			array(
+				'id' => 'tag-suggestions',
+				'title' => __( 'AI-Powered Tag Suggestions', 'echo-knowledge-base' ),
+				'description' => __( 'AI analyzes your articles and intelligently suggests both broad and specific tags, helping you organize content more effectively and improve discoverability.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-tags',
+				'icon_color' => '#9B59B6',
+				'benefits' => array(
+					__( 'Automatic tag analysis for each article', 'echo-knowledge-base' ),
+					__( 'Broad category tags for general topics', 'echo-knowledge-base' ),
+					__( 'Specific tags for detailed content areas', 'echo-knowledge-base' )
+				),
+				'image' => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/10/AI-Powered-Tag-Suggestions.jpg'
+			),
+			array(
+				'id' => 'ai-smart-search',
+				'title' => __( 'AI Smart Search', 'echo-knowledge-base' ),
+				'description' => __( 'Display comprehensive AI search results in an organized, multi-section layout that can be embedded anywhere via shortcode.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-search',
+				'icon_color' => '#16A085',
+				'benefits' => array(
+					__( 'AI-generated answer with relevant source citations', 'echo-knowledge-base' ),
+					__( 'Recommended articles organized in column layouts', 'echo-knowledge-base' ),
+					__( 'Related topics and categories for deeper exploration', 'echo-knowledge-base' ),
+					__( 'Flexible shortcode to embed the search results page anywhere', 'echo-knowledge-base' )
+				),
+				'image' => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/10/Feature-Advanced-Search-Results.png' 
 			),
 			array(
 				'id' => 'email-notifications',
@@ -153,7 +207,7 @@ class EPKB_AI_PRO_Features_Tab {
 					__( 'Customizable recipient and subject line', 'echo-knowledge-base' ),
 					__( 'Includes AI Chat and Search query titles', 'echo-knowledge-base' )
 				),
-				'image' => esc_url( Echo_Knowledge_Base::$plugin_url . 'img/ai-pro-features-email-notifications.png' )
+				'image' => esc_url( Echo_Knowledge_Base::$plugin_url . 'img/ad/ai-pro-features-email-notifications.png' )
 				//'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
 				//'badge_type' => 'coming-soon'
 			),
@@ -239,8 +293,8 @@ class EPKB_AI_PRO_Features_Tab {
 			'has_pro' => true,
 			'status_text' => __( 'PRO Active', 'echo-knowledge-base' ),
 			'status_class' => 'status-active',
-			'features_available' => 6,
-			'features_total' => 6
+			'features_available' => 4,
+			'features_total' => 4
 		);
 	}
 

@@ -201,7 +201,7 @@ class EPKB_Config_Page {
 
 				array(
 					'class' => 'epkb-admin__boxes-list__box__ordering',
-					'description' => '',
+					'description' => esc_html__( 'I want organize Categories and Articles', 'echo-knowledge-base' ),
 					'html' => $wizard_ordering->show_article_ordering( $wizard_kb_config ),
 				),
 			),
@@ -237,7 +237,7 @@ class EPKB_Config_Page {
 			'kb_config_id' => $this->kb_config['id'],
 
 			// Top Panel Item
-			'label_text' => esc_html__( 'Blocks' ) . ' / ' . esc_html__( 'Shortcodes' ) . ' / ' . esc_html__( 'Widgets', 'echo-knowledge-base' ),
+			'label_text' => esc_html__( 'Blocks', 'echo-knowledge-base' ) . ' / ' . esc_html__( 'Shortcodes', 'echo-knowledge-base' ) . ' / ' . esc_html__( 'Widgets', 'echo-knowledge-base' ),
 			'icon_class' => 'epkbfa epkbfa-list-alt',
 
 			// Secondary Panel Items
@@ -358,6 +358,7 @@ class EPKB_Config_Page {
 
 			// Box: KB Location
 			$kb_url_boxes[] = array(
+				'id' => 'epkb-kb-location-box',
 				'class' => 'epkb-admin__boxes-list__box__kb-location',
 				'title' => esc_html__( 'Knowledge Base Location', 'echo-knowledge-base' ),
 				'description' => '',
@@ -432,7 +433,8 @@ class EPKB_Config_Page {
 
 			// If user has multiple pages with KB Shortcode or KB layout block then let them know this is normal for WPML users
 			if ( count( $this->kb_main_pages ) > 1 && ! EPKB_Utilities::is_wpml_enabled( $this->kb_config ) ) {        ?>
-				<div class="epkb-admin__chapter"><?php echo sprintf( esc_html__( 'Note: You have other pages with KB shortcode or KB layout block that are currently %snot used%s', 'echo-knowledge-base' ) . ': ', '<strong>', '</strong>' ); ?></div>
+				<?php // translators: %1$s and %2$s are HTML strong tags ?>
+				<div class="epkb-admin__chapter"><?php echo sprintf( esc_html__( 'Note: You have other pages with KB shortcode or KB layout block that are currently %1$snot used%2$s', 'echo-knowledge-base' ) . ': ', '<strong>', '</strong>' ); ?></div>
 				<ul class="epkb-admin__items-list">    <?php
 
 					foreach ( $this->kb_main_pages as $page_id => $page_info ) {
@@ -468,10 +470,10 @@ class EPKB_Config_Page {
 		$boxes = [];
 		foreach ( $boxes_content as $box ) {
 
-            // Hide install button for all Widgets / Shortcode boxes
-			$box['hide_install_btn'] = true;
-
 			$box['active_status'] = EPKB_Utilities::is_plugin_enabled( $box['plugin'] );
+
+			// Hide install button for core features and active plugins, but show for inactive add-ons
+			$box['hide_install_btn'] = $box['plugin'] === 'core' || ! empty( $box['active_status'] );
 
             // Add box separator heading
             if ( isset( $box['box-heading'] ) ) {
@@ -716,6 +718,15 @@ class EPKB_Config_Page {
 				'docs'         => 'https://www.echoknowledgebase.com/documentation/faqs-shortcode/',
 			],
 			[
+				'plugin'       => 'ai'.'fp',
+				'icon'         => 'epkbfa epkbfa-search',
+				'title'        => esc_html__( 'AI Smart Search', 'echo-knowledge-base' ),
+				'desc'         => esc_html__( 'Display AI-powered smart search with customizable results columns and sections.', 'echo-knowledge-base' ),
+				'desc_escaped' => EPKB_Shortcodes::get_copy_box( 'ai-smart-search', $kb_id, esc_html__( 'Shortcode:', 'echo-knowledge-base' ) ),
+				'demo'         => 'https://contentdisplay.wpengine.com/contact-us/',
+				'docs'         => 'https://www.echoknowledgebase.com/documentation/ai-smart-search-shortcode/',
+			],
+			[
 				'plugin'       => 'core',
 				'icon'         => 'epkbfa epkbfa-list-alt',
 				'title'        => esc_html__( 'Articles Index Directory', 'echo-knowledge-base' ),
@@ -876,9 +887,10 @@ class EPKB_Config_Page {
 			);
 		}
 
-		// License issue messages from add-ons
+		// License issue messages from add-ons (hide in staging environment)
+		$is_staging = defined( 'WP_ENVIRONMENT_TYPE' ) && WP_ENVIRONMENT_TYPE === 'staging';
 		$add_on_messages = apply_filters( 'epkb_add_on_license_message', array() );
-		if ( ( ! empty( $add_on_messages ) && is_array( $add_on_messages ) ) || did_action( 'kb_overview_add_on_errors' ) ) {
+		if ( ! $is_staging && ( ( ! empty( $add_on_messages ) && is_array( $add_on_messages ) ) || did_action( 'kb_overview_add_on_errors' ) ) ) {
 
 			$licenses_tab_url = admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( EPKB_KB_Handler::get_current_kb_id() ) . '&page=epkb-add-ons#licenses' );
 			$licenses_tab_button = '<a href="' . esc_url( $licenses_tab_url ) . '" class="epkb-fix-btn epkb-primary-btn"> ' . esc_html__( 'Fix the Issue', 'echo-knowledge-base' ) . '</a>';
@@ -1027,7 +1039,7 @@ class EPKB_Config_Page {
 			'title' => __( 'Category Page', 'echo-knowledge-base' ),
 			'icon' => Echo_Knowledge_Base::$plugin_url . 'img/setting-icons/config-page-icon-category-page.png',
 			'button_url' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : esc_url( $first_kb_archive_url ) . '?action=epkb_load_editor&epkb_kb_id=' . $this->kb_config['id'],
-			'button_text' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : __( 'Open Frontend Editor	', 'echo-knowledge-base' ),
+			'button_text' => $is_theme_archive_page_template || empty( $first_kb_archive_url ) ? '' : __( 'Open Frontend Editor', 'echo-knowledge-base' ),
 			'message' => empty( $first_kb_archive_url ) && empty( $theme_template_message ) ? esc_html__( 'Add an article with a category to configure the Archive Page', 'echo-knowledge-base' ) : '',
 			'message_html' => ! empty( $theme_template_message ) ? $theme_template_message : '',
 			'message_link_text' => empty( $first_kb_archive_url ) ? '' : esc_html__( 'Learn More', 'echo-knowledge-base' ),

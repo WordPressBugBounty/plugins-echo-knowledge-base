@@ -14,12 +14,6 @@ class EPKB_AI_Training_Data_Tab {
 	 */
 	public static function get_tab_config() {
 
-		if ( ! EPKB_AI_Utilities::is_ai_enabled() ) {
-			return array(
-				'error' => __( 'AI features are not enabled. Please enable any AI feature to access the Training Data tab.', 'echo-knowledge-base' )
-			);
-		}
-
 		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
 		
 		// Sync collections from database first to ensure we have all collections
@@ -39,21 +33,23 @@ class EPKB_AI_Training_Data_Tab {
 		
 		// Build sub_tabs array from collections
 		$sub_tabs = array();
-		
-		// Add each collection as a sub-tab
+
+		// Add each collection as a sub-tab (only active provider collections)
 		foreach ( $data_collections as $collection ) {
 			$sub_tabs['collection-' . $collection['id']] = array(
 				'id' => 'collection-' . $collection['id'],
 				'title' => $collection['name'],
 				'icon' => 'epkbfa epkbfa-database',
-				'collection_id' => $collection['id']
+				'collection_id' => $collection['id'],
+				'provider' => $collection['provider'],
+				'is_active_provider' => $collection['is_active_provider']
 			);
 		}
 		
 		// Add "Add New" button as the last sub-tab
 		$sub_tabs['add-new'] = array(
 			'id' => 'add-new',
-			'title' => __( 'Add New', 'echo-knowledge-base' ),
+			'title' => __( 'Add New Collection', 'echo-knowledge-base' ),
 			'icon' => 'epkbfa epkbfa-plus',
 			'is_add_new' => true
 		);
@@ -68,10 +64,12 @@ class EPKB_AI_Training_Data_Tab {
 			'next_collection_id' => $next_collection_id,
 			'vector_store_files' => self::get_vector_store_files(),
 			'available_post_types' => EPKB_AI_Utilities::get_available_post_types_for_ai(),
-			'collection_defaults' => EPKB_AI_Training_Data_Config_Specs::get_default_collection_config(),
             'is_wp_cron_disabled' => ( defined( 'DISABLE_WP_CRON' ) && constant( 'DISABLE_WP_CRON' ) ),
 			'is_ai_features_pro_enabled' => EPKB_Utilities::is_ai_features_pro_enabled(),
-			'is_access_manager_active' => EPKB_Utilities::is_amag_on()
+			'is_access_manager_active' => EPKB_Utilities::is_amag_on(),
+			'active_provider' => EPKB_AI_Provider::get_active_provider(),
+			'active_provider_label' => EPKB_AI_Provider::get_provider_label(),
+			'setup_steps' => EPKB_AI_Admin_Page::get_setup_steps_for_tab( 'training-data' )
 		);
 		
 		// Add error information if collections couldn't be retrieved
@@ -84,21 +82,25 @@ class EPKB_AI_Training_Data_Tab {
 
 	/**
 	 * Get data collections to display in the Training Data tab (optimized version without expensive post stats)
+	 * Only shows collections from the active provider
 	 * @return array
 	 */
 	private static function get_data_collections_post_stats() {
 
-		$collections = EPKB_AI_Training_Data_Config_Specs::get_training_data_collections();
+		// Get collections from active provider only
+		$collections = EPKB_AI_Training_Data_Config_Specs::get_training_data_collections( false, true );
 		$has_error = false;
 		if ( is_wp_error( $collections ) ) {
 			// Return empty array if there's an error retrieving collections
 			$collections = array();
 			$has_error = true;
 		}
+
+		$active_provider = EPKB_AI_Provider::get_active_provider();
 		
 		$formatted_collections = array();
 		$training_data_db = new EPKB_AI_Training_Data_DB();
-		
+
 		foreach ( $collections as $collection_id => $collection_config ) {
 
 			$db_stats = $training_data_db->get_status_statistics( $collection_id );
@@ -112,6 +114,12 @@ class EPKB_AI_Training_Data_Tab {
 			// Pre-load first page of training data for this collection
 			$preloaded_data = self::get_preloaded_training_data( $collection_id );
 
+			// Determine provider info for this collection
+			$collection_provider = isset( $collection_config['ai_training_data_provider'] )
+				? $collection_config['ai_training_data_provider'] : '';
+			$is_active_provider = ( $collection_provider === $active_provider );
+			$provider_label = EPKB_AI_Provider::get_provider_label( $collection_provider );
+
 			$formatted_collections[] = array(
 				'id' => $collection_id,
 				'name' => empty( $collection_config['ai_training_data_store_name'] ) ? EPKB_AI_Training_Data_Config_Specs::get_default_collection_name( $collection_id ) : $collection_config['ai_training_data_store_name'],
@@ -121,7 +129,10 @@ class EPKB_AI_Training_Data_Tab {
 				'post_types' => $collection_config['ai_training_data_store_post_types'],
 				'config' => $collection_config,
 				'stats' => $db_stats, // Include full stats for immediate display
-				'preloaded_data' => $preloaded_data // Include pre-loaded first page data
+				'preloaded_data' => $preloaded_data, // Include pre-loaded first page data
+				'provider' => $collection_provider,
+				'provider_label' => $provider_label,
+				'is_active_provider' => $is_active_provider
 			);
 		}
 		

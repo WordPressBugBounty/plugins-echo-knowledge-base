@@ -1,0 +1,75 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "da_DK",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Close": [
+                "Luk"
+            ],
+            "Cancel": [
+                "Annuller"
+            ],
+            "Next": [
+                "Næste"
+            ],
+            "AI Features": [
+                "AI-funktioner"
+            ],
+            "Documentation": [
+                "Dokumentation"
+            ],
+            "Got it!": [
+                "Forstået!"
+            ],
+            "Show Me": [
+                "Vis mig"
+            ],
+            "Loading...": [
+                "Indlæser..."
+            ],
+            "General Settings": [
+                "Generelle indstillinger"
+            ],
+            "Go to Settings": [
+                "Gå til Indstillinger"
+            ],
+            "Your session has expired. Please refresh the page.": [
+                "Din session er udløbet. Opdater venligst siden."
+            ],
+            "Too many requests. Please wait a moment and try again.": [
+                "For mange forespørgsler. Vent venligst et øjeblik og prøv igen."
+            ],
+            "An unexpected error occurred. Please try again.": [
+                "Der opstod en uventet fejl. Prøv venligst igen."
+            ],
+            "Confirm Action": [
+                "Bekræft handling"
+            ],
+            "Are you sure you want to proceed?": [
+                "Er du sikker på, at du vil fortsætte?"
+            ],
+            "Confirm": [
+                "Bekræft"
+            ],
+            "Setup Steps": [
+                "Opsætningstrin"
+            ],
+            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
+                "For at bruge AI-funktioner, konfigurer venligst din API-nøgle og accepter databeskyttelsesaftalen i"
+            ],
+            "Session Expired": [
+                "Sessionen er udløbet"
+            ],
+            "Refresh Page": [
+                "Opdater siden"
+            ],
+            "No results found": [
+                "Ingen resultater fundet"
+            ]
+        }
+    }
+}

@@ -71,6 +71,13 @@ class EPKB_Config_Tools_Page {
 			'boxes_list' => self::get_other_boxes( $kb_config )
 		);
 
+		// SECONDARY VIEW: ADD-ONS (redirects to Add-ons page)
+		$secondary_tabs[] = array(
+			'list_key'   => 'add-ons',
+			'label_text' => '<span style="color:#5cb85c;">' . esc_html__( 'Add-ons', 'echo-knowledge-base' ) . '</span>',
+			'url'        => admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) . '&page=epkb-add-ons#add-ons' ),
+		);
+
 		// SECONDARY VIEW: MENU ACCESS CONTROL
 		$secondary_tabs[] = array(
 
@@ -498,13 +505,13 @@ class EPKB_Config_Tools_Page {
 		<form class="convert-main-form">
 			<div class="epkb-form-field-instruction-wrap">
 				<div class="epkb-form-field-instruction-column">
-					<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Features', 'echo-kb-import-export' ); ?></div>
+					<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Features', 'echo-knowledge-base' ); ?></div>
 					<div class="epkb-form-field-instruction-item">
 						<div class="epkb-form-field-instruction-icon">
 							<i class="epkbfa epkbfa-check"></i>
 						</div>
 						<div class="epkb-form-field-instruction-text">
-							<?php esc_html_e( 'Convert Posts', 'echo-kb-import-export' ); ?>
+							<?php esc_html_e( 'Convert Posts', 'echo-knowledge-base' ); ?>
 						</div>
 					</div>
 					<div class="epkb-form-field-instruction-item">
@@ -512,19 +519,19 @@ class EPKB_Config_Tools_Page {
 							<i class="epkbfa epkbfa-check"></i>
 						</div>
 						<div class="epkb-form-field-instruction-text">
-							<?php esc_html_e( 'Copy or Move Categories', 'echo-kb-import-export' ); ?>
+							<?php esc_html_e( 'Copy or Move Categories', 'echo-knowledge-base' ); ?>
 						</div>
 					</div>
 				</div>
 
 				<div class="epkb-form-field-instruction-column">
-					<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Not Supported', 'echo-kb-import-export' ); ?></div>
+					<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Not Supported', 'echo-knowledge-base' ); ?></div>
 					<div class="epkb-form-field-instruction-item">
 						<div class="epkb-form-field-instruction-icon">
 							<i class="epkbfa epkbfa-close"></i>
 						</div>
 						<div class="epkb-form-field-instruction-text">
-							<?php esc_html_e( 'Categories hierarchy', 'echo-kb-import-export' ); ?>
+							<?php esc_html_e( 'Categories hierarchy', 'echo-knowledge-base' ); ?>
 						</div>
 					</div>
 				</div>
@@ -548,7 +555,7 @@ class EPKB_Config_Tools_Page {
 				<label class="epkb-form-label">
 				<input class="epkb-form-label__input epkb-form-label__input--checkbox import-kb-name-checkbox"
 				       type="checkbox" name="epkb_convert_post" required>
-				<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I want to convert posts into this KB:', 'echo-kb-import-export' ); ?>
+				<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I want to convert posts into this KB:', 'echo-knowledge-base' ); ?>
 	                <span class="epkb-admin__distinct-box epkb-admin__distinct-box--middle"><?php echo esc_html( $kb_config['kb_name'] ); ?></span></span>
 				</label><?php
 			} ?>
@@ -556,7 +563,7 @@ class EPKB_Config_Tools_Page {
 			<label class="epkb-form-label">
 				<input class="epkb-form-label__input epkb-form-label__input--checkbox import-backup-checkbox"
 				       type="checkbox" name="epkb_convert_backup" required>
-				<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I have backed up my database and read all import instructions above.', 'echo-kb-import-export' ); ?></span>
+				<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I have backed up my database and read all import instructions above.', 'echo-knowledge-base' ); ?></span>
 			</label>
 		</form><?php
 	}
@@ -637,13 +644,13 @@ class EPKB_Config_Tools_Page {
 		<form class="convert-main-form">
 		<div class="epkb-form-field-instruction-wrap">
 			<div class="epkb-form-field-instruction-column">
-				<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Features', 'echo-kb-import-export' ); ?></div>
+				<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Features', 'echo-knowledge-base' ); ?></div>
 				<div class="epkb-form-field-instruction-item">
 					<div class="epkb-form-field-instruction-icon">
 						<i class="epkbfa epkbfa-check"></i>
 					</div>
 					<div class="epkb-form-field-instruction-text">							<?php
-						esc_html_e( 'Convert CPT', 'echo-kb-import-export' ); ?>
+						esc_html_e( 'Convert CPT', 'echo-knowledge-base' ); ?>
 					</div>
 				</div>
 				<div class="epkb-form-field-instruction-item">
@@ -651,19 +658,19 @@ class EPKB_Config_Tools_Page {
 						<i class="epkbfa epkbfa-check"></i>
 					</div>
 					<div class="epkb-form-field-instruction-text">							<?php
-						esc_html_e( 'Copy or Move Categories', 'echo-kb-import-export' ); ?>
+						esc_html_e( 'Copy or Move Categories', 'echo-knowledge-base' ); ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="epkb-form-field-instruction-column">
-				<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Not Supported', 'echo-kb-import-export' ); ?></div>
+				<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Not Supported', 'echo-knowledge-base' ); ?></div>
 				<div class="epkb-form-field-instruction-item">
 					<div class="epkb-form-field-instruction-icon">
 						<i class="epkbfa epkbfa-close"></i>
 					</div>
 					<div class="epkb-form-field-instruction-text">							<?php
-						esc_html_e( 'Categories hierarchy', 'echo-kb-import-export' ); ?>
+						esc_html_e( 'Categories hierarchy', 'echo-knowledge-base' ); ?>
 					</div>
 				</div>
 			</div>
@@ -683,9 +690,9 @@ class EPKB_Config_Tools_Page {
 		</div>
 
 		<label class="epkb-form-label">
-			<span class="epkb-form-label__select"><?php esc_html_e( 'Convert CPT:', 'echo-kb-import-export' ); ?></span>
+			<span class="epkb-form-label__select"><?php esc_html_e( 'Convert CPT:', 'echo-knowledge-base' ); ?></span>
 			<select name="epkb_convert_post_type">
-				<option value="" selected><?php esc_html_e( 'Select Post Type', 'echo-kb-import-export' ); ?></option><?php
+				<option value="" selected><?php esc_html_e( 'Select Post Type', 'echo-knowledge-base' ); ?></option><?php
 				foreach ( $custom_post_types as $post_type => $post_label ) { ?>
 					<option value="<?php echo esc_attr( $post_type ); ?>"><?php echo esc_html( $post_label ); ?></option><?php
 				} ?>
@@ -696,7 +703,7 @@ class EPKB_Config_Tools_Page {
 			<label class="epkb-form-label">
 			<input class="epkb-form-label__input epkb-form-label__input--checkbox import-kb-name-checkbox"
 			       type="checkbox" name="epkb_convert_post" required>
-			<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I want to convert articles into this KB:', 'echo-kb-import-export' ); ?> <strong
+			<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I want to convert articles into this KB:', 'echo-knowledge-base' ); ?> <strong
 						class="epkb-admin__distinct-box epkb-admin__distinct-box--middle"><?php echo esc_html( $kb_config['kb_name'] ); ?></strong></span>
 			</label><?php
 		} ?>
@@ -704,7 +711,7 @@ class EPKB_Config_Tools_Page {
 		<label class="epkb-form-label">
 			<input class="epkb-form-label__input epkb-form-label__input--checkbox import-backup-checkbox"
 			       type="checkbox" name="epkb_convert_backup" required>
-			<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I have backed up my database and read all import instructions above.', 'echo-kb-import-export' ); ?></span>
+			<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I have backed up my database and read all import instructions above.', 'echo-knowledge-base' ); ?></span>
 		</label>
 		</form><?php
 	}
@@ -751,13 +758,13 @@ class EPKB_Config_Tools_Page {
 		<form class="convert-main-form">
 		<div class="epkb-form-field-instruction-wrap">
 			<div class="epkb-form-field-instruction-column">
-				<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Features', 'echo-kb-import-export' ); ?></div>
+				<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Features', 'echo-knowledge-base' ); ?></div>
 				<div class="epkb-form-field-instruction-item">
 					<div class="epkb-form-field-instruction-icon">
 						<i class="epkbfa epkbfa-check"></i>
 					</div>
 					<div class="epkb-form-field-instruction-text">
-						<?php esc_html_e( 'Convert Articles', 'echo-kb-import-export' ); ?>
+						<?php esc_html_e( 'Convert Articles', 'echo-knowledge-base' ); ?>
 					</div>
 				</div>
 				<div class="epkb-form-field-instruction-item">
@@ -765,19 +772,19 @@ class EPKB_Config_Tools_Page {
 						<i class="epkbfa epkbfa-check"></i>
 					</div>
 					<div class="epkb-form-field-instruction-text">
-						<?php esc_html_e( 'Copy or Move Categories', 'echo-kb-import-export' ); ?>
+						<?php esc_html_e( 'Copy or Move Categories', 'echo-knowledge-base' ); ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="epkb-form-field-instruction-column">
-				<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Not Supported', 'echo-kb-import-export' ); ?></div>
+				<div class="epkb-form-field-instruction-title"><?php esc_html_e( 'Not Supported', 'echo-knowledge-base' ); ?></div>
 				<div class="epkb-form-field-instruction-item">
 					<div class="epkb-form-field-instruction-icon">
 						<i class="epkbfa epkbfa-close"></i>
 					</div>
 					<div class="epkb-form-field-instruction-text">
-						<?php esc_html_e( 'Categories hierarchy', 'echo-kb-import-export' ); ?>
+						<?php esc_html_e( 'Categories hierarchy', 'echo-knowledge-base' ); ?>
 					</div>
 				</div>
 			</div>
@@ -795,7 +802,7 @@ class EPKB_Config_Tools_Page {
 		<label class="epkb-form-label">
 			<input class="epkb-form-label__input epkb-form-label__input--checkbox import-backup-checkbox"
 			       type="checkbox" name="epkb_convert_backup" required>
-			<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I have backed up my database and read all import instructions above.', 'echo-kb-import-export' ); ?></span>
+			<span class="epkb-form-label__checkbox"><?php esc_html_e( 'I have backed up my database and read all import instructions above.', 'echo-knowledge-base' ); ?></span>
 		</label>
 		</form><?php
 	}
@@ -855,7 +862,7 @@ class EPKB_Config_Tools_Page {
 			</div>
 			<div class="epkb-import-step-label epkb-import-step--2" data-step="2">
 				<i class="epkbfa epkbfa-check"></i>
-				<span><?php esc_html_e( $step_4_text ); ?></span>
+				<span><?php echo esc_html( $step_4_text ); ?></span>
 			</div>
 			<div class="epkb-import-step-label epkb-import-step--3" data-step="3">
 				<i class="epkbfa epkbfa-check"></i>
@@ -863,7 +870,7 @@ class EPKB_Config_Tools_Page {
 			</div>
 			<div class="epkb-import-step-label epkb-import-step--4 " data-step="4">
 				<i class="epkbfa epkbfa-check"></i>
-				<span><?php esc_html_e( $step_4_title ); ?></span>
+				<span><?php echo esc_html( $step_4_title ); ?></span>
 			</div>
 		</div><?php
 
@@ -884,8 +891,7 @@ class EPKB_Config_Tools_Page {
 			'title'  => esc_html__( 'Old version of WordPress detected', 'echo-knowledge-base' ),
 			'type'   => 'error',
 			'static' => true,
-			'desc'   => esc_html__( 'This website is using an old version of WordPress. Unpredictable behaviour and errors during conversion can occur for this old WordPress version. Please update to the latest version of WordPress. ' .
-							'Support is very limited for old versions of WordPress.', 'echo-knowledge-base' ),
+			'desc'   => esc_html__( 'This website is using an old version of WordPress. Unpredictable behaviour and errors during conversion can occur for this old WordPress version. Please update to the latest version of WordPress. Support is very limited for old versions of WordPress.', 'echo-knowledge-base' ),
 		] );
 	}
 
@@ -987,7 +993,7 @@ class EPKB_Config_Tools_Page {
 	private static function get_other_boxes( $kb_config ) {
 
 		$delete_kb_handler = new EPKB_Delete_KB();
-		$specification = EPKB_Core_Utilities::retrieve_all_kb_specs( $kb_config['id'] );
+		$specification = EPKB_Core_Utilities::retrieve_all_kb_specs_with_labels( $kb_config['id'] );
 
 		// KB Nickname
 		$boxes_config[] = array(
@@ -1010,7 +1016,7 @@ class EPKB_Config_Tools_Page {
 				'html'  => EPKB_HTML_Elements::checkbox_toggle( [
 					'id'            => 'wpml_is_enabled',
 					'name'          => 'wpml_is_enabled',
-					'text'          => $specification['wpml_is_enabled']['label'],
+					'text'          => EPKB_KB_Config_Specs::get_field_label( 'wpml_is_enabled' ),
 					'textLoc'       => 'left',
 					'checked'       => ( ! empty( $kb_config['wpml_is_enabled'] ) && $kb_config['wpml_is_enabled'] == 'on' ),
 					'topDesc'       => '<a class="epkb-admin__input-field-desc" href="https://www.echoknowledgebase.com/documentation/translate-text/" target="_blank">' . esc_html__( 'Follow Polyland and WPML setup instructions here.', 'echo-knowledge-base' ) . '</a>',
@@ -1059,8 +1065,7 @@ class EPKB_Config_Tools_Page {
 				'text'          => esc_html__( 'Preload Fonts', 'echo-knowledge-base' ),
 				'textLoc'       => 'left',
 				'checked'       => EPKB_Core_Utilities::is_kb_flag_set( 'preload_fonts' ),
-				'topDesc'       => esc_html__( 'KB can preload its fonts for better performance. Some cache plugins preload fonts themselves, which can result in KB fonts being preloaded twice. ' .
-										'Disable this option to avoid a conflict with your cache plugin.', 'echo-knowledge-base' ),
+				'topDesc'       => esc_html__( 'KB can preload its fonts for better performance. Some cache plugins preload fonts themselves, which can result in KB fonts being preloaded twice. Disable this option to avoid a conflict with your cache plugin.', 'echo-knowledge-base' ),
 				'return_html'   => true,
 			] ),
 		);
@@ -1238,6 +1243,187 @@ class EPKB_Config_Tools_Page {
 		// display PHP and WP settings
 		$output .= self::get_system_info();
 
+		// retrieve AI Configuration
+		$output .= "\n\nAI Configuration:\n";
+		$output .= "==================\n";
+
+		// Get AI configuration
+		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
+		$ai_specs = EPKB_AI_Config_Specs::get_config_fields_specifications();
+
+		if ( ! empty( $ai_config ) ) {
+			// Loop through all AI configuration fields
+			foreach ( $ai_specs as $field_name => $field_spec ) {
+				$value = isset( $ai_config[$field_name] ) ? $ai_config[$field_name] : $field_spec['default'];
+
+				// Format the value based on field type and name
+				if ( $field_name === 'ai_chatgpt_key' || $field_name === 'ai_gemini_key' ) {
+					// Mask API key for security
+					$formatted_value = ! empty( $value ) && $value !== '' ? 'Yes (configured)' : 'No (not configured)';
+				} elseif ( $field_name === 'ai_organization_id' ) {
+					// Partially mask organization ID
+					$formatted_value = ! empty( $value ) ? substr( $value, 0, 10 ) . '...' : 'Not set';
+				} elseif ( strpos( $field_name, '_instructions' ) !== false ) {
+					// For instruction fields, show full content and length
+					if ( ! empty( $value ) ) {
+						$formatted_value = "\n" . str_repeat( ' ', 4 ) . $value . "\n" . str_repeat( ' ', 4 ) . '(' . strlen( $value ) . ' chars)';
+					} else {
+						$formatted_value = 'Not set (0 chars)';
+					}
+				} elseif ( $field_spec['type'] === EPKB_Input_Filter::CHECKBOX ) {
+					// Format checkbox values
+					$formatted_value = ( ! empty( $value ) && $value === 'on' ) ? 'Yes' : 'No';
+				} elseif ( $field_spec['type'] === EPKB_Input_Filter::SELECTION && ! empty( $field_spec['options'] ) ) {
+					// Show selection value with label if available
+					$formatted_value = ! empty( $value ) ? $value : 'Not set';
+					if ( isset( $field_spec['options'][$value] ) ) {
+						$option_value = $field_spec['options'][$value];
+						// Handle array option values (convert to string)
+						$formatted_value = is_array( $option_value ) ? wp_json_encode( $option_value ) : $option_value;
+					}
+				} else {
+					// Default formatting
+					$formatted_value = ! empty( $value ) ? $value : ( isset( $field_spec['default'] ) ? $field_spec['default'] : 'Not set' );
+				}
+
+				// Ensure formatted_value is a string before concatenation
+				if ( is_array( $formatted_value ) ) {
+					$formatted_value = wp_json_encode( $formatted_value );
+				} elseif ( ! is_string( $formatted_value ) && ! is_numeric( $formatted_value ) ) {
+					$formatted_value = strval( $formatted_value );
+				}
+
+				$output .= '- ' . $field_name . ' = ' . $formatted_value . "\n";
+			}
+		} else {
+			$output .= "No AI configuration found.\n";
+		}
+
+		// Vector Store Debug Info
+		$output .= "\n\nVector Store Debug:\n";
+		$output .= "==================\n";
+		$output .= "Active Provider: " . EPKB_AI_Provider::get_provider_label() . " (" . EPKB_AI_Provider::get_active_provider() . ")\n";
+
+		// Gather data from both sources
+		$options_data = array();
+		$db_data = array();
+		$training_data_db = new EPKB_AI_Training_Data_DB( true );
+
+		// Get collections from options table
+		$options_collections = EPKB_AI_Training_Data_Config_Specs::get_training_data_collections( false, false );
+		if ( ! is_wp_error( $options_collections ) && ! empty( $options_collections ) ) {
+			foreach ( $options_collections as $collection_id => $config ) {
+				$options_data[ $collection_id ] = array(
+					'name' => ! empty( $config['ai_training_data_store_name'] ) ? $config['ai_training_data_store_name'] : EPKB_AI_Training_Data_Config_Specs::get_default_collection_name( $collection_id ),
+					'provider' => isset( $config['ai_training_data_provider'] ) ? $config['ai_training_data_provider'] : 'unknown',
+					'vector_store_id' => isset( $config['ai_training_data_store_id'] ) ? $config['ai_training_data_store_id'] : '',
+				);
+			}
+		}
+
+		// Get collections from training data DB table
+		$db_collections = $training_data_db->get_all_collection_ids_from_db();
+		if ( ! is_wp_error( $db_collections ) && ! empty( $db_collections ) ) {
+			foreach ( $db_collections as $collection_id => $provider ) {
+				$stats = $training_data_db->get_status_statistics( $collection_id );
+				$db_data[ $collection_id ] = array(
+					'provider' => $provider,
+					'vector_store_id' => $training_data_db->get_store_id_by_collection( $collection_id, $provider ) ?: '',
+					'record_count' => $stats['total'] ?? 0,
+					'synced_count' => $stats['synced'] ?? 0,
+					'pending_count' => $stats['pending'] ?? 0,
+					'error_count' => $stats['error'] ?? 0,
+				);
+			}
+		}
+
+		// Merge and output collections
+		$all_collection_ids = array_unique( array_merge( array_keys( $options_data ), array_keys( $db_data ) ) );
+		sort( $all_collection_ids );
+
+		if ( empty( $all_collection_ids ) ) {
+			$output .= "\nNo collections found.\n";
+		} else {
+			$output .= "\nCollections:\n";
+			foreach ( $all_collection_ids as $collection_id ) {
+				$in_options = isset( $options_data[ $collection_id ] );
+				$in_db = isset( $db_data[ $collection_id ] );
+				$options_store_id = $in_options ? $options_data[ $collection_id ]['vector_store_id'] : '';
+				$db_store_id = $in_db ? $db_data[ $collection_id ]['vector_store_id'] : '';
+
+				// Determine source label
+				if ( $in_options && $in_db && $options_store_id === $db_store_id ) {
+					$source = 'Options & DB';
+				} else if ( $in_options && $in_db ) {
+					$source = 'MISMATCH';
+				} else if ( $in_options ) {
+					$source = 'Options only';
+				} else {
+					$source = 'DB only';
+				}
+
+				$provider = $in_options ? $options_data[ $collection_id ]['provider'] : $db_data[ $collection_id ]['provider'];
+				$name = $in_options ? $options_data[ $collection_id ]['name'] : EPKB_AI_Training_Data_Config_Specs::get_default_collection_name( $collection_id );
+				$store_id = $in_options ? $options_store_id : $db_store_id;
+
+				$output .= "\n- Collection ID: " . $collection_id . " [" . $source . "]\n";
+				$output .= "  Name: " . $name . "\n";
+				$output .= "  Provider: " . $provider . "\n";
+				$output .= "  Store ID: " . ( ! empty( $store_id ) ? $store_id : 'Not created' ) . "\n";
+
+				// Show mismatch details
+				if ( $source === 'MISMATCH' ) {
+					$output .= "  Options Store ID: " . ( $options_store_id ?: 'Not set' ) . "\n";
+					$output .= "  DB Store ID: " . ( $db_store_id ?: 'Not set' ) . "\n";
+				}
+
+				// Show DB stats if available
+				if ( $in_db ) {
+					$output .= "  Records - Total: " . $db_data[ $collection_id ]['record_count'];
+					$output .= ", Synced: " . $db_data[ $collection_id ]['synced_count'];
+					$output .= ", Pending: " . $db_data[ $collection_id ]['pending_count'];
+					$output .= ", Error: " . $db_data[ $collection_id ]['error_count'] . "\n";
+					$collection_last_sync = $training_data_db->get_last_sync_date( $collection_id );
+					$output .= "  Last Sync: " . ( ! empty( $collection_last_sync ) ? $collection_last_sync : 'Never' ) . "\n";
+				}
+			}
+		}
+
+		// KB to Collection Mapping
+		$output .= "\nKB-Collection Mapping:\n";
+		$kb_config_db = new EPKB_KB_Config_DB();
+		$all_kb_configs = $kb_config_db->get_kb_configs();
+		foreach ( $all_kb_configs as $kb_id => $kb_config ) {
+			$kb_collection_id = isset( $kb_config['kb_ai_collection_id'] ) ? absint( $kb_config['kb_ai_collection_id'] ) : 0;
+			$kb_name = isset( $kb_config['kb_name'] ) ? $kb_config['kb_name'] : 'KB ' . $kb_id;
+			$output .= "- KB " . $kb_id . " (" . $kb_name . "): Collection " . ( $kb_collection_id > 0 ? $kb_collection_id : 'Not set' ) . "\n";
+		}
+
+		// AI Activity Logs
+		$output .= "\n\nAI Activity Logs (Last 50):\n";
+		$output .= "==================\n";
+		$ai_logs = EPKB_AI_Log::get_logs_for_display();
+		if ( empty( $ai_logs ) ) {
+			$output .= "No AI logs found.\n";
+		} else {
+			// Show last 50 logs instead of 100 for better readability
+			$recent_logs = array_slice( $ai_logs, -50 );
+			foreach ( $recent_logs as $log ) {
+				$output .= "\n[" . ( isset( $log['timestamp'] ) ? $log['timestamp'] : 'N/A' ) . "] ";
+				$output .= "[" . ( isset( $log['level'] ) ? strtoupper( $log['level'] ) : 'INFO' ) . "] ";
+				$output .= isset( $log['message'] ) ? $log['message'] : 'No message';
+				if ( ! empty( $log['context'] ) && is_array( $log['context'] ) ) {
+					$output .= " | Context: " . wp_json_encode( $log['context'] );
+				}
+				$output .= "\n";
+			}
+		}
+
+		// Error notification count
+		$current_date = gmdate( 'Y-m-d' );
+		$error_count = get_transient( 'epkb_ai_error_notification_count_' . $current_date );
+		$output .= "Error Notifications Today: " . ( $error_count !== false ? $error_count : '0' ) . "\n";
+
 		// retrieve KB config directly from the database
 		$all_kb_ids = epkb_get_instance()->kb_config_obj->get_kb_ids();
 		foreach ( $all_kb_ids as $kb_id ) {
@@ -1281,7 +1467,7 @@ class EPKB_Config_Tools_Page {
 					$value = EPKB_Utilities::get_variable_string( $value );
 					$value = str_replace( "=>", "=", $value );
 				}
-				$label = empty($specs[$name]['label']) ? 'unknown' : $specs[$name]['label'];
+				$label = EPKB_KB_Config_Specs::get_field_label( $name ) ?: 'unknown';
 				$output .= '- ' . $label . ' [' . $name . ']' . ' = ' . $value . "\n";
 			}
 
@@ -1294,159 +1480,12 @@ class EPKB_Config_Tools_Page {
 			}
 		}
 
+		// retrieve Setup Steps debug data
+		$output .= EPKB_Setup_Steps::get_debug_data( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+
 		// retrieve add-on data
 		$add_on_output = apply_filters( 'eckb_add_on_debug_data', '' );
 		$output .= is_string( $add_on_output ) ? $add_on_output : '';
-
-		// retrieve AI Configuration
-		$output .= "\n\nAI Configuration:\n";
-		$output .= "==================\n";
-		
-		// Get AI configuration
-		$ai_config = EPKB_AI_Config_Specs::get_config();
-		$ai_specs = EPKB_AI_Config_Specs::get_config_fields_specifications();
-		
-		if ( ! empty( $ai_config ) ) {
-			// Loop through all AI configuration fields
-			foreach ( $ai_specs as $field_name => $field_spec ) {
-				$value = isset( $ai_config[$field_name] ) ? $ai_config[$field_name] : $field_spec['default'];
-				
-				// Format the value based on field type and name
-				if ( $field_name === 'ai_key' ) {
-					// Mask API key for security
-					$formatted_value = ! empty( $value ) && $value !== '' ? 'Yes (configured)' : 'No (not configured)';
-				} elseif ( $field_name === 'ai_organization_id' ) {
-					// Partially mask organization ID
-					$formatted_value = ! empty( $value ) ? substr( $value, 0, 10 ) . '...' : 'Not set';
-				} elseif ( strpos( $field_name, '_instructions' ) !== false ) {
-					// For instruction fields, show full content and length
-					if ( ! empty( $value ) ) {
-						$formatted_value = "\n" . str_repeat( ' ', 4 ) . $value . "\n" . str_repeat( ' ', 4 ) . '(' . strlen( $value ) . ' chars)';
-					} else {
-						$formatted_value = 'Not set (0 chars)';
-					}
-				} elseif ( $field_spec['type'] === EPKB_Input_Filter::CHECKBOX ) {
-					// Format checkbox values
-					$formatted_value = ( ! empty( $value ) && $value === 'on' ) ? 'Yes' : 'No';
-				} elseif ( $field_spec['type'] === EPKB_Input_Filter::SELECTION && ! empty( $field_spec['options'] ) ) {
-					// Show selection value with label if available
-					$formatted_value = ! empty( $value ) ? $value : 'Not set';
-					if ( isset( $field_spec['options'][$value] ) ) {
-						$option_value = $field_spec['options'][$value];
-						// Handle array option values (convert to string)
-						$formatted_value = is_array( $option_value ) ? wp_json_encode( $option_value ) : $option_value;
-					}
-				} else {
-					// Default formatting
-					$formatted_value = ! empty( $value ) ? $value : ( isset( $field_spec['default'] ) ? $field_spec['default'] : 'Not set' );
-				}
-				
-				// Ensure formatted_value is a string before concatenation
-				if ( is_array( $formatted_value ) ) {
-					$formatted_value = wp_json_encode( $formatted_value );
-				} elseif ( ! is_string( $formatted_value ) && ! is_numeric( $formatted_value ) ) {
-					$formatted_value = strval( $formatted_value );
-				}
-				
-				$output .= '- ' . $field_name . ' = ' . $formatted_value . "\n";
-			}
-		} else {
-			$output .= "No AI configuration found.\n";
-		}
-		
-		// AI Sync Status
-		$output .= "\n\nAI Sync Status:\n";
-		$output .= "==================\n";
-		
-		// Check sync lock
-		$sync_lock = get_transient( 'epkb_ai_sync_lock' );
-		$output .= "Sync Lock: " . ( $sync_lock !== false ? 'Active (locked at ' . date( 'Y-m-d H:i:s', $sync_lock ) . ')' : 'Not active' ) . "\n";
-		
-		// Check sync status
-		$sync_status = get_transient( 'epkb_ai_sync_status' );
-		if ( ! empty( $sync_status ) && is_array( $sync_status ) ) {
-			$output .= "Sync Type: " . ( ! empty( $sync_status['type'] ) ? $sync_status['type'] : 'N/A' ) . "\n";
-			$output .= "Sync Start Time: " . ( ! empty( $sync_status['start_time'] ) ? $sync_status['start_time'] : 'N/A' ) . "\n";
-			$output .= "Current Step: " . ( ! empty( $sync_status['current_step'] ) ? $sync_status['current_step'] : 'N/A' ) . "\n";
-			$output .= "Progress: " . ( ! empty( $sync_status['current'] ) ? $sync_status['current'] : '0' ) . " / " . ( ! empty( $sync_status['total'] ) ? $sync_status['total'] : '0' ) . "\n";
-		} else {
-			$output .= "No active sync status.\n";
-		}
-		
-		// Last sync info
-		$last_sync_completed = get_option( 'epkb_ai_last_sync_completed', 0 );
-		if ( $last_sync_completed > 0 ) {
-			$output .= "Last Sync Completed: " . date( 'Y-m-d H:i:s', $last_sync_completed ) . " (" . human_time_diff( $last_sync_completed ) . " ago)\n";
-		} else {
-			$output .= "Last Sync Completed: Never\n";
-		}
-		
-		// Check for sync errors
-		$sync_error = get_transient( 'epkb_ai_sync_error' );
-		if ( ! empty( $sync_error ) ) {
-			$output .= "Sync Error: " . ( is_string( $sync_error ) ? $sync_error : wp_json_encode( $sync_error ) ) . "\n";
-		}
-		
-		// AI Training Data Collections
-		$output .= "\n\nAI Training Data Collections:\n";
-		$output .= "==================\n";
-		
-		$collections = get_option( 'epkb_ai_training_data_collections', array() );
-		if ( ! empty( $collections ) && is_array( $collections ) ) {
-			foreach ( $collections as $collection ) {
-				$output .= "\nCollection ID: " . ( ! empty( $collection['id'] ) ? $collection['id'] : 'N/A' ) . "\n";
-				$output .= "Name: " . ( ! empty( $collection['name'] ) ? $collection['name'] : 'N/A' ) . "\n";
-				$output .= "Vector Store ID: " . ( ! empty( $collection['vector_store_id'] ) ? $collection['vector_store_id'] : 'Not created' ) . "\n";
-				$output .= "Vector Store Status: " . ( ! empty( $collection['vector_store_status'] ) ? $collection['vector_store_status'] : 'N/A' ) . "\n";
-				$output .= "Status: " . ( ! empty( $collection['status'] ) ? $collection['status'] : 'N/A' ) . "\n";
-				$output .= "Created: " . ( ! empty( $collection['created_at'] ) ? $collection['created_at'] : 'N/A' ) . "\n";
-				$output .= "Last Modified: " . ( ! empty( $collection['last_modified'] ) ? $collection['last_modified'] : 'N/A' ) . "\n";
-				
-				// Get record counts from database if available
-				if ( ! empty( $collection['id'] ) && class_exists( 'EPKB_AI_Training_Data_DB' ) ) {
-					$db = new EPKB_AI_Training_Data_DB();
-					$counts = $db->get_status_counts( $collection['id'] );
-					if ( ! empty( $counts ) ) {
-						$output .= "Records - Total: " . array_sum( $counts ) . " (";
-						$status_parts = array();
-						foreach ( $counts as $status => $count ) {
-							if ( $count > 0 ) {
-								$status_parts[] = ucfirst( $status ) . ": " . $count;
-							}
-						}
-						$output .= implode( ', ', $status_parts ) . ")\n";
-					}
-				}
-			}
-		} else {
-			$output .= "No training data collections found.\n";
-		}
-		
-		
-		// AI Activity Logs
-		$output .= "\n\nAI Activity Logs (Last 50):\n";
-		$output .= "==================\n";
-		$ai_logs = get_option( 'epkb_ai_logs', array() );
-		if ( empty( $ai_logs ) ) {
-			$output .= "No AI logs found.\n";
-		} else {
-			// Show last 50 logs instead of 100 for better readability
-			$recent_logs = array_slice( $ai_logs, -50 );
-			foreach ( $recent_logs as $log ) {
-				$output .= "\n[" . ( isset( $log['timestamp'] ) ? $log['timestamp'] : 'N/A' ) . "] ";
-				$output .= "[" . ( isset( $log['level'] ) ? strtoupper( $log['level'] ) : 'INFO' ) . "] ";
-				$output .= isset( $log['message'] ) ? $log['message'] : 'No message';
-				if ( ! empty( $log['context'] ) && is_array( $log['context'] ) ) {
-					$output .= " | Context: " . wp_json_encode( $log['context'] );
-				}
-				$output .= "\n";
-			}
-		}
-		
-		// Error notification count
-		$current_date = date( 'Y-m-d' );
-		$error_count = get_transient( 'epkb_ai_error_notification_count_' . $current_date );
-		$output .= "Error Notifications Today: " . ( $error_count !== false ? $error_count : '0' ) . "\n";
 
 		$output .= '</textarea>';
 

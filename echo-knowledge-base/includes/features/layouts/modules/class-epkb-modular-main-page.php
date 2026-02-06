@@ -38,7 +38,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 				continue;
 			}   ?>
 
-			<div id="epkb-ml__row-<?php echo esc_attr( $row_number ); ?>" data-feature="<?php echo $row_module; ?>" class="epkb-ml__row">                <?php
+			<div id="epkb-ml__row-<?php echo esc_attr( $row_number ); ?>" data-feature="<?php echo esc_attr( $row_module ); ?>" class="epkb-ml__row">                <?php
 				switch ( $row_module ) {
 
 					// core modules
@@ -121,15 +121,17 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 			$this->kb_config = $kb_config;
 		}
 
+		$is_sidebar_toggle_on = $this->kb_config['ml_categories_articles_sidebar_toggle'] == 'on' && EPKB_Utilities::post( 'action' ) != 'epkb_get_wizard_preset_preview';
+
 		$categories_articles_sidebar_class = '';
-		if ( $this->kb_config['ml_categories_articles_sidebar_toggle'] == 'on' ) {
+		if ( $is_sidebar_toggle_on ) {
 			$categories_articles_sidebar_class = 'epkb-ml-cat-article-sidebar--active';
 		} ?>
 
 		<div id="epkb-ml__module-categories-articles" class="epkb-ml__module <?php echo esc_attr( $categories_articles_sidebar_class ); ?>">  <?php
 
 			// Display Left Sidebar
-			if ( $this->kb_config['ml_categories_articles_sidebar_toggle'] == 'on' && $this->kb_config['ml_categories_articles_sidebar_location'] == 'left' ) {
+			if ( $is_sidebar_toggle_on && $this->kb_config['ml_categories_articles_sidebar_location'] == 'left' ) {
 				$this->display_categories_articles_sidebar();
 			}
 
@@ -167,11 +169,18 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 
 			// handle Elegant layouts
 			if ( EPKB_Layouts_Setup::is_elay_layout( $layout ) ) {
+
+				// pass wizard demo icons to Elegant Layouts via articles_seq_data
+				$articles_seq_data_with_icons = $this->articles_seq_data;
+				if ( ! empty( $this->wizard_demo_icons ) ) {
+					$articles_seq_data_with_icons['__wizard_demo_icons'] = $this->wizard_demo_icons;
+				}
+
 				ob_start();
 				if ( $layout == EPKB_Layout::SIDEBAR_LAYOUT ) {
-					apply_filters( 'sidebar_display_categories_and_articles', $this->kb_config, $this->category_seq_data, $this->articles_seq_data, $this->sidebar_layout_content );
+					apply_filters( 'sidebar_display_categories_and_articles', $this->kb_config, $this->category_seq_data, $articles_seq_data_with_icons, $this->sidebar_layout_content );
 				} else {
-					apply_filters( strtolower( $layout ) . '_display_categories_and_articles', $this->kb_config, $this->category_seq_data, $this->articles_seq_data );
+					apply_filters( strtolower( $layout ) . '_display_categories_and_articles', $this->kb_config, $this->category_seq_data, $articles_seq_data_with_icons );
 				}
 				$layout_output = ob_get_clean();
 				if ( ! empty( $layout_output ) ) {
@@ -182,11 +191,15 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 
 			// handle Core layouts and default
 			if ( empty( $layout_output ) ) {
+				// pass wizard demo icons to the layout handler
+				if ( ! empty( $this->wizard_demo_icons ) ) {
+					$handler->wizard_demo_icons = $this->wizard_demo_icons;
+				}
 				$handler->display_categories_and_articles( $this->kb_config, $this->category_seq_data, $this->articles_seq_data );
 			}
 
 			// Display Right Sidebar
-			if ( $this->kb_config['ml_categories_articles_sidebar_toggle'] == 'on' && $this->kb_config['ml_categories_articles_sidebar_location'] == 'right' ) {
+			if ( $is_sidebar_toggle_on && $this->kb_config['ml_categories_articles_sidebar_location'] == 'right' ) {
 				$this->display_categories_articles_sidebar();
 			} ?>
 
@@ -251,7 +264,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 
 		<!-- Popular Articles -->
 		<section id="epkb-ml-sidebar-popular-articles" class="epkb-ml-article-section">
-			<div class="epkb-ml-article-section__head"><?php echo esc_html( $this->kb_config['ml_articles_list_popular_articles_msg'] ); ?></div>
+			<div class="epkb-ml-article-section__head" role="heading" aria-level="3"><?php echo esc_html( $this->kb_config['ml_articles_list_popular_articles_msg'] ); ?></div>
 			<div class="epkb-ml-article-section__body">
 				<ul class="epkb-ml-articles-list">  <?php
 					if ( empty( $popular_articles) ) {   ?>
@@ -275,7 +288,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 
 		<!-- Newest Articles -->
 		<section id="epkb-ml-sidebar-newest-articles" class="epkb-ml-article-section">
-			<div class="epkb-ml-article-section__head"><?php echo esc_html( $this->kb_config['ml_articles_list_newest_articles_msg'] ); ?></div>
+			<div class="epkb-ml-article-section__head" role="heading" aria-level="3"><?php echo esc_html( $this->kb_config['ml_articles_list_newest_articles_msg'] ); ?></div>
 			<div class="epkb-ml-article-section__body">
 				<ul class="epkb-ml-articles-list">  <?php
 					if ( empty( $newest_articles) ) {   ?>
@@ -299,7 +312,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 
 		<!-- Recent Articles -->
 		<section id="epkb-ml-sidebar-recent-articles" class="epkb-ml-article-section">
-			<div class="epkb-ml-article-section__head"><?php echo esc_html( $this->kb_config['ml_articles_list_recent_articles_msg'] ); ?></div>
+			<div class="epkb-ml-article-section__head" role="heading" aria-level="3"><?php echo esc_html( $this->kb_config['ml_articles_list_recent_articles_msg'] ); ?></div>
 			<div class="epkb-ml-article-section__body">
 				<ul class="epkb-ml-articles-list">  <?php
 					if ( empty( $recent_articles) ) {   ?>
@@ -366,6 +379,15 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 			}';
 		}
 
+		// KB Container Spacing (ONLY for Current Theme Template) ---------/
+		if ( ! empty( $kb_config['templates_for_kb'] ) && $kb_config['templates_for_kb'] == 'current_theme_templates' ) {
+			$output .= '
+				#epkb-modular-main-page-container {
+					padding-top: ' . $kb_config['template_main_page_padding_top'] . 'px;
+					margin-top: ' . $kb_config['template_main_page_margin_top'] . 'px;
+				}';
+		}
+
 		$output .= self::get_layout_sidebar_inline_styles( $kb_config );
 
 		for ( $row_number = 1; $row_number <= self::MAX_ROWS; $row_number ++ ) {
@@ -400,9 +422,9 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 						case 'Categories':
 							$output .= EPKB_Layout_Categories::get_inline_styles( $kb_config );
 							break;
-						case 'Classic':
-							$output .= EPKB_Layout_Classic::get_inline_styles( $kb_config );
-							break;
+					case 'Classic':
+						$output .= EPKB_Layout_Classic::get_inline_styles( $kb_config );
+						break;
 						case 'Drill-Down':
 							$output .= EPKB_Layout_Drill_Down::get_inline_styles( $kb_config );
 							break;
@@ -441,9 +463,10 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 	public static function get_layout_sidebar_inline_styles( $kb_config ) {
 
 		$output = '';
+		$is_sidebar_toggle_on = $kb_config['ml_categories_articles_sidebar_toggle'] == 'on' && EPKB_Utilities::post( 'action' ) != 'epkb_get_wizard_preset_preview';
 
 		// Sidebar ---------------------------------------------------------/
-		if ( $kb_config['ml_categories_articles_sidebar_toggle'] == 'on' ) {
+		if ( $is_sidebar_toggle_on) {
 
 			/*
 			 * Legacy Layouts that have specific settings
@@ -607,6 +630,10 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 		} else {
 			$this->category_seq_data = $seq_meta['categories_seq_meta'];
 			$this->articles_seq_data = $seq_meta['articles_seq_meta'];
+			// store wizard demo icons if provided
+			if ( ! empty( $seq_meta['category_icons'] ) ) {
+				$this->wizard_demo_icons = $seq_meta['category_icons'];
+			}
 		}
 
 		// for WPML filter categories and articles given active language

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Control for KB Configuration admin page
@@ -18,9 +18,6 @@ class EPKB_KB_Config_Controller {
 
 		add_action( 'wp_ajax_epkb_preload_fonts', array( $this, 'preload_fonts' ) );
 		add_action( 'wp_ajax_nopriv_epkb_preload_fonts', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
-
-		add_action( 'wp_ajax_epkb_enable_legacy_open_ai', array( $this, 'enable_legacy_open_ai' ) );
-		add_action( 'wp_ajax_nopriv_epkb_enable_legacy_open_ai', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
 		add_action( 'wp_ajax_epkb_load_resource_links_icons', array( $this, 'load_resource_links_icons' ) );
 		add_action( 'wp_ajax_nopriv_epkb_load_resource_links_icons', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
@@ -141,23 +138,6 @@ class EPKB_KB_Config_Controller {
 		$result = EPKB_Core_Utilities::update_kb_flag( 'preload_fonts', $preload_fonts );
 		if ( is_wp_error( $result ) ) {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 415, $result ) );
-		}
-
-		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );
-	}
-
-	/**
-	 * Triggered when user clicks to toggle OpenAI setting.
-	 */
-	public function enable_legacy_open_ai() {
-
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
-
-		$enable_legacy_open_ai = EPKB_Utilities::post( 'enable_legacy_open_ai', 'off' ) == 'on';
-
-		$result = EPKB_Core_Utilities::update_kb_flag( 'enable_legacy_open_ai', $enable_legacy_open_ai );
-		if ( is_wp_error( $result ) ) {
-			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 418, $result ) );
 		}
 
 		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );

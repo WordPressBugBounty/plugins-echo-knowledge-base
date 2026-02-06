@@ -1,8 +1,8 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * AI Sync Hooks
- * 
+ *
  * Handles WordPress hooks for automatic sync operations.
  * Monitors content changes and triggers appropriate sync actions.
  */
@@ -93,19 +93,63 @@ class EPKB_AI_Sync_Hooks {
 			return;
 		}
 		
-		$sync_manager = new EPKB_AI_Sync_Manager();
-		$training_data_db = new EPKB_AI_Training_Data_DB( false );
+		$training_data_db = new EPKB_AI_Training_Data_DB();
 
 		// Remove from each collection that contains this post
 		foreach ( $collections as $collection_id => $collection_config ) {
-			$training_data = $training_data_db->get_training_data_by_item( $collection_id, $post_id );
+			$training_data = $training_data_db->get_training_data_record_by_item_id( $collection_id, $post_id );
 			if ( $training_data ) {
 				// Remove directly instead of scheduling
-				$sync_manager->remove_post( $post_id, $collection_id );
+				$this->remove_post( $post_id, $collection_id, $training_data_db );
 			}
 		}
 	}
-	
+
+	/**
+	 * Remove post from sync
+	 *
+	 * @param int $post_id Post ID
+	 * @param int $collection_id Collection ID
+	 * @return bool|WP_Error
+	 */
+	private function remove_post( $post_id, $collection_id, $training_data_db ) {
+
+		$collection_id = EPKB_AI_Validation::validate_collection_id( $collection_id );
+		if ( is_wp_error( $collection_id ) ) {
+			return $collection_id;
+		}
+
+		// Get existing training data
+		$existing = $training_data_db->get_training_data_record_by_item_id( $collection_id, $post_id );
+		if ( is_wp_error( $existing ) ) {
+			return $existing;
+		}
+		if ( ! $existing ) {
+			return true; // Already removed
+		}
+
+		$vector_store = EPKB_AI_Provider::get_vector_store_handler();
+
+		// Remove from vector store
+		if ( ! empty( $existing->store_id ) && ! empty( $existing->file_id ) ) {
+			$result = $vector_store->remove_file_from_vector_store( $existing->store_id, $existing->file_id );
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
+		}
+
+		// Delete file from file storage (for OpenAI, separate from vector store; for Gemini, same as remove_file_from_vector_store)
+		if ( ! empty( $existing->file_id ) ) {
+			$result = $vector_store->delete_file_from_file_storage( $existing->file_id, $existing->store_id );
+			if ( is_wp_error( $result ) ) {
+				EPKB_AI_Log::add_log( $result, array( 'training_data_id' => $existing->id, 'file_id' => $existing->file_id, 'message' => 'Failed to delete file from AI provider' ) );
+			}
+		}
+
+		// Delete from database
+		return $training_data_db->delete_training_data_record( $existing->id );
+	}
+
 	/**
 	 * Handle post status change
 	 *
@@ -126,13 +170,20 @@ class EPKB_AI_Sync_Hooks {
 			return;
 		}
 		
-		// Post unpublished - remove from sync
-		if ( $old_status === 'publish' && $new_status !== 'publish' ) {
+		// Determine allowed statuses for this post type (AI Notes allow 'private')
+		$allowed_statuses = array( 'publish' );
+		if ( $post->post_type === EPKB_AI_Utilities::AI_PRO_NOTES_POST_TYPE ) {
+			$allowed_statuses[] = 'private';
+		}
+		$was_eligible = in_array( $old_status, $allowed_statuses, true );
+		$is_eligible = in_array( $new_status, $allowed_statuses, true );
+
+		// Post became ineligible - remove from sync
+		if ( $was_eligible && ! $is_eligible ) {
 			$this->handle_post_delete( $post->ID );
 		}
-		
-		// Post published - add to sync (check eligibility)
-		elseif ( $old_status !== 'publish' && $new_status === 'publish' ) {
+		// Post became eligible - add to sync (check full eligibility)
+		elseif ( ! $was_eligible && $is_eligible ) {
 			$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
 			if ( ! is_wp_error( $eligibility_check ) && $this->is_auto_sync_enabled() ) {
 				$this->sync_one_post( $post );
@@ -240,7 +291,7 @@ class EPKB_AI_Sync_Hooks {
 	 * @return void
 	 */
 	private function mark_post_outdated( $post_id, $post_type ) {
-		$training_data_db = new EPKB_AI_Training_Data_DB( false );
+		$training_data_db = new EPKB_AI_Training_Data_DB();
 		$training_data_db->mark_source_as_outdated( $post_type, (string) $post_id );
 	}
 	
@@ -251,7 +302,7 @@ class EPKB_AI_Sync_Hooks {
 	 * @return void
 	 */
 	private function mark_attachment_outdated( $attachment_id ) {
-		$training_data_db = new EPKB_AI_Training_Data_DB( false );
+		$training_data_db = new EPKB_AI_Training_Data_DB();
 		$training_data_db->mark_source_as_outdated( 'attachment', $attachment_id );
 	}
 	
@@ -262,46 +313,46 @@ class EPKB_AI_Sync_Hooks {
 	 * @return void
 	 */
 	private function sync_one_post( $post ) {
-		
+
 		// Validate post object
 		if ( ! $post || ! is_object( $post ) || ! isset( $post->post_type ) || ! isset( $post->ID ) ) {
 			return;
 		}
-		
+
 		// Skip linked articles (from echo-links-editor plugin)
 		if ( $post->post_mime_type === 'kb_link' ) {
 			return;
 		}
-		
+
 		// Check if sync is already running
 		if ( EPKB_AI_Sync_Job_Manager::is_job_active() ) {
 			// Don't interfere with running sync, mark post as outdated instead
 			$this->mark_post_outdated( $post->ID, $post->post_type );
 			return;
 		}
-		
+
 		// Get collections that include this post type
 		$collection_ids = $this->get_collections_for_post_type( $post->post_type );
-		
+
 		if ( empty( $collection_ids ) ) {
 			return;
 		}
 
-		// Use the first collection that contains this post type
-		$collection_id = $collection_ids[0];
-		
-		// Start a direct sync for just this post
-		$result = EPKB_AI_Sync_Job_Manager::initialize_sync_job( array( $post->ID ), 'direct', $collection_id );
-		
-		if ( is_wp_error( $result ) ) {
-			// If sync can't start, mark as outdated for later sync
-			$this->mark_post_outdated( $post->ID, $post->post_type );
-			EPKB_AI_Log::add_log( $result, array( 'post_id' => $post->ID, 'message' => 'Failed to start auto-sync for post' ) );
-			return;
+		// Add post to ALL collections that include this post type
+		foreach ( $collection_ids as $collection_id ) {
+			// Start a direct sync for just this post in this collection
+			$result = EPKB_AI_Sync_Job_Manager::initialize_sync_job( array( $post->ID ), 'direct', $collection_id );
+
+			if ( is_wp_error( $result ) ) {
+				// If sync can't start, mark as outdated for later sync
+				$this->mark_post_outdated( $post->ID, $post->post_type );
+				EPKB_AI_Log::add_log( $result, array( 'post_id' => $post->ID, 'collection_id' => $collection_id, 'message' => 'Failed to start auto-sync for post' ) );
+				continue;
+			}
+
+			// Process the sync immediately since it's just one post
+			EPKB_AI_Sync_Job_Manager::process_next_sync_item();
 		}
-		
-		// Process the sync immediately since it's just one post
-		EPKB_AI_Sync_Job_Manager::process_next_sync_item();
 	}
 	
 	/**
@@ -311,36 +362,36 @@ class EPKB_AI_Sync_Hooks {
 	 * @return void
 	 */
 	private function sync_one_attachment( $attachment_id ) {
-		
+
 		// Check if sync is already running
 		if ( EPKB_AI_Sync_Job_Manager::is_job_active() ) {
 			// Don't interfere with running sync, mark attachment as outdated instead
 			$this->mark_attachment_outdated( $attachment_id );
 			return;
 		}
-		
+
 		// Get collections that include attachments
 		$collection_ids = $this->get_collections_for_post_type( 'attachment' );
-		
+
 		if ( empty( $collection_ids ) ) {
 			return;
 		}
-		
-		// Use the first collection that contains attachments
-		$collection_id = $collection_ids[0];
-		
-		// Start a direct sync for just this attachment
-		$result = EPKB_AI_Sync_Job_Manager::initialize_sync_job( array( $attachment_id ), 'direct', $collection_id );
-		
-		if ( is_wp_error( $result ) ) {
-			// If sync can't start, mark as outdated for later sync
-			$this->mark_attachment_outdated( $attachment_id );
-			EPKB_AI_Log::add_log( $result, array( 'attachment_id' => $attachment_id, 'message' => 'Failed to start auto-sync for attachment' ) );
-			return;
+
+		// Add attachment to ALL collections that include attachments
+		foreach ( $collection_ids as $collection_id ) {
+			// Start a direct sync for just this attachment in this collection
+			$result = EPKB_AI_Sync_Job_Manager::initialize_sync_job( array( $attachment_id ), 'direct', $collection_id );
+
+			if ( is_wp_error( $result ) ) {
+				// If sync can't start, mark as outdated for later sync
+				$this->mark_attachment_outdated( $attachment_id );
+				EPKB_AI_Log::add_log( $result, array( 'attachment_id' => $attachment_id, 'collection_id' => $collection_id, 'message' => 'Failed to start auto-sync for attachment' ) );
+				continue;
+			}
+
+			// Process the sync immediately since it's just one attachment
+			EPKB_AI_Sync_Job_Manager::process_next_sync_item();
 		}
-		
-		// Process the sync immediately since it's just one attachment
-		EPKB_AI_Sync_Job_Manager::process_next_sync_item();
 	}
 	
 	/**

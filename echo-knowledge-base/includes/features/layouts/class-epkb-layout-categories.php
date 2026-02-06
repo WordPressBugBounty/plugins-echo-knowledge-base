@@ -121,7 +121,14 @@ class EPKB_Layout_Categories extends EPKB_Layout {
 				$category_icon = EPKB_KB_Config_Category::get_category_icon( $box_category_id, $categories_icons );
 				$category_desc = isset($this->articles_seq_data[$box_category_id][1]) && $this->kb_config['section_desc_text_on'] == 'on' ? $this->articles_seq_data[$box_category_id][1] : '';
 				$box_sub_categories = is_array($box_sub_categories) ? $box_sub_categories : array();
-				$category_count = EPKB_Categories_DB::get_category_count( $this->kb_config['id'] , $box_category_id );
+			
+				// For wizard preview: calculate count from demo data; for real frontend: get from database
+				if ( ! empty( $this->wizard_demo_icons ) && isset( $this->articles_seq_data[$box_category_id] ) ) {
+					// Wizard preview: count articles in demo data (all keys except 0=name and 1=description)
+					$category_count = count( $this->articles_seq_data[$box_category_id] ) - 2;
+				} else {
+					$category_count = EPKB_Categories_DB::get_category_count( $this->kb_config['id'] , $box_category_id );
+				}
 
 				if ( $column_index == 1 ) { ?>
 					<div class="epkb-ml__module-categories-articles__row">  <?php
@@ -239,7 +246,7 @@ class EPKB_Layout_Categories extends EPKB_Layout {
 				$category_count = EPKB_Categories_DB::get_category_count( $this->kb_config['id'], $box_sub_category_id );
 
 				$category_name = isset( $this->articles_seq_data[$box_sub_category_id][0] ) ?
-											$this->articles_seq_data[$box_sub_category_id][0] : _x( 'Category', 'taxonomy singular name' );
+											$this->articles_seq_data[$box_sub_category_id][0] : _x( 'Category', 'taxonomy singular name', 'echo-knowledge-base' );
 
 				$category_icon = EPKB_KB_Config_Category::get_category_icon( $box_sub_category_id, $categories_icons );
 				$style1_escaped = $this->get_inline_style( 'color:: section_category_icon_color' );

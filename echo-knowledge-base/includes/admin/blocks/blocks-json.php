@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 function epkb_get_block_attributes( $block_name ) {
 	$blocks = [
@@ -1673,6 +1673,12 @@ function epkb_get_block_attributes( $block_name ) {
 			'advanced_search_text_highlight_enabled' => [
 				'type' => 'string'
 			],
+			'advanced_search_faqs_toggle' => [
+				'type' => 'string'
+			],
+			'faq_group_ids' => [
+				'type' => 'array'
+			],
 			'advanced_search_mp_auto_complete_wait' => [
 				'type' => 'number'
 			],
@@ -1841,10 +1847,22 @@ function epkb_get_block_attributes( $block_name ) {
 			'advanced_search_mp_text_input_background_color' => [
 				'type' => 'string'
 			],
-			'advanced_search_mp_text_input_border_color' => [
-				'type' => 'string'
-			],
-			'advanced_search_mp_filter_category_level' => [
+		'advanced_search_mp_text_input_border_color' => [
+			'type' => 'string'
+		],
+		'advanced_search_mp_ai_search_button_background_color' => [
+			'type' => 'string'
+		],
+		'advanced_search_mp_ai_search_button_text_color' => [
+			'type' => 'string'
+		],
+		'advanced_search_mp_ai_search_button_background_hover_color' => [
+			'type' => 'string'
+		],
+		'advanced_search_mp_ai_search_button_text_hover_color' => [
+			'type' => 'string'
+		],
+		'advanced_search_mp_filter_category_level' => [
 				'type' => 'string'
 			],
 			'advanced_search_mp_filter_toggle' => [
@@ -1954,8 +1972,29 @@ function epkb_get_block_attributes( $block_name ) {
 			'custom_css_class' => [
 				'type' => 'string'
 			]
+		],
+		'articles-index-directory' => [
+			'kb_id' => [
+				'type' => 'number'
+			],
+			'title' => [
+				'type' => 'string'
+			],
+			'block_full_width_toggle' => [
+				'type' => 'string'
+			],
+			'block_max_width' => [
+				'type' => 'number'
+			],
+			'custom_css_class' => [
+				'type' => 'string'
+			]
 		]
 	];
+
+	if ( ! isset( $blocks[ $block_name ] ) ) {
+		return array();
+	}
 
 	return $blocks[$block_name];
 }

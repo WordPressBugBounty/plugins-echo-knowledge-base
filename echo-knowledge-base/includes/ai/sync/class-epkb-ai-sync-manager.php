@@ -2,15 +2,10 @@
 
 /**
  * AI Sync Manager
- * 
+ *
  * Simplified sync manager that handles individual post syncing.
  * Batch processing and job management is handled by EPKB_AI_Sync_Job_Manager.
- * 
- * Summary Mode:
- * When ai_training_data_use_summary is enabled, content is rewritten using OpenAI
- * before being uploaded to the vector store. The summarization status is tracked
- * by appending '_summarized' or '_full' to the content hash, ensuring content
- * is re-synced when the summary setting changes.
+ * Supports multiple AI providers (ChatGPT, Gemini) via provider factory.
  */
 class EPKB_AI_Sync_Manager {
 
@@ -21,14 +16,14 @@ class EPKB_AI_Sync_Manager {
 	private $training_data_db;
 
 	/**
-	 * OpenAI handler
-	 * @var EPKB_AI_OpenAI_Handler
+	 * Vector store handler
+	 * @var EPKB_AI_ChatGPT_Vector_Store|EPKB_AI_Gemini_Vector_Store
 	 */
-	private $openai_handler;
+	private $vector_store;
 
 	public function __construct() {
-		$this->training_data_db = new EPKB_AI_Training_Data_DB( false );
-		$this->openai_handler = new EPKB_AI_OpenAI_Handler();
+		$this->training_data_db = new EPKB_AI_Training_Data_DB();
+		$this->vector_store = EPKB_AI_Provider::get_vector_store_handler();
 	}
 
 	/**
@@ -37,17 +32,213 @@ class EPKB_AI_Sync_Manager {
 	 * @param int $post_id Post ID
 	 * @param string $item_type typically 'post'
 	 * @param int $collection_id Collection ID
-	 * @param string $vector_store_id Vector store ID
 	 * @return array|WP_Error Result
 	 */
-	public function sync_post( $post_id, $item_type, $collection_id, $vector_store_id = null ) {
-		
+	public function sync_post( $post_id, $item_type, $collection_id ) {
+
 		$collection_id = EPKB_AI_Validation::validate_collection_id( $collection_id );
 		if ( is_wp_error( $collection_id ) ) {
 			return $collection_id;
 		}
-		
-		// Check if this is a KB files type - content comes from filter
+
+		// Get or create vector store (use $this->vector_store to ensure current_store_id is set for Gemini)
+		$vector_store_id = $this->vector_store->get_or_create_vector_store( $collection_id );
+		if ( is_wp_error( $vector_store_id ) ) {
+			return $vector_store_id;
+		}
+
+		// 1. Get file content
+		$content_data = $this->get_content( $post_id, $item_type );
+		if ( is_wp_error( $content_data ) ) {
+			return $content_data;
+		}
+
+		// 2. Calculate content hash
+		$file_content = $content_data['content'];
+		$content_title = $content_data['title'];
+		$content_hash = md5( $file_content );
+
+		$content_size = strlen( $file_content );
+		if ( $content_size > EPKB_AI_Provider::get_max_file_size() ) {
+			// translators: %1$s is the content size, %2$s is the maximum allowed size
+			return new WP_Error( 'content_too_large', sprintf( __( 'Content size (%1$s) > allowed size (%2$s)', 'echo-knowledge-base' ), size_format( $content_size ), size_format( EPKB_AI_Provider::get_max_file_size() ) ) );
+		}
+
+		// 3. Get existing or create a new training data record in DB
+		$training_data_result = $this->get_training_data_record_for_sync( $collection_id, $post_id, $content_title, $content_hash, $item_type, $vector_store_id );
+		if ( is_wp_error( $training_data_result ) ) {
+			return $training_data_result;
+		}
+
+		$training_data_id = $training_data_result['training_data_id'];
+		$training_record = $training_data_result['training_record'];
+		$add_to_file_system = ! empty( $training_data_result['add_to_file_system'] );
+		$add_to_vector_store = ! empty( $training_data_result['add_to_vector_store'] );
+		$remove_from_file_system = ! empty( $training_data_result['remove_from_file_system'] );
+		$remove_from_vector_store = ! empty( $training_data_result['remove_from_vector_store'] );
+
+		// a) remove the file from the file system
+		if ( $remove_from_file_system ) {
+			$file_result = $this->vector_store->delete_file_from_file_storage( $training_record->file_id, $vector_store_id );
+			if ( is_wp_error( $file_result ) ) {
+				return $file_result;
+			}
+			$file_id = '';
+			$add_to_file_system = true;
+		}
+
+		// b) add the file content to the file system
+		if ( $add_to_file_system ) {
+			$file_result = $this->vector_store->upload_file_to_file_storage( $post_id, $file_content, $item_type, $vector_store_id );
+			if ( is_wp_error( $file_result ) ) {
+				return $file_result;
+			}
+
+			$file_id = $file_result['id'];
+
+			// update the training data record with the file id
+			$result = $this->training_data_db->update_training_data( $training_data_id, array( 'file_id' => $file_id ) );
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
+
+		} else {
+			$file_id = $training_record->file_id;
+		}
+
+
+		// c) remove the file from the vector store
+		if ( $remove_from_vector_store ) {
+			$file_result = $this->vector_store->remove_file_from_vector_store( $vector_store_id, $training_record->file_id );
+			if ( is_wp_error( $file_result ) ) {
+				return $file_result;
+			}
+		}
+
+		// d) add the file content to the vector store
+		if ( $add_to_vector_store ) {
+			$file_result = $this->vector_store->add_file_to_vector_store( $vector_store_id, $file_id, true );	// checks file is in vector store
+			if ( is_wp_error( $file_result ) ) {
+				return $file_result;
+			}
+		}
+
+		// Mark as synced
+		$sync_data = array(
+			'file_id' => $file_id,
+			'store_id' => $vector_store_id,
+			'content_hash' => $content_hash
+		);
+
+		// Update title and URL for regular WordPress posts (KB articles, pages, etc.)
+		// Note: 'epkb_kb_files' is an extensibility feature for non-post content sources:
+		//   - Backend support: Load plugin source files/documentation for AI training
+		//   - Future use: External file uploads (PDFs, docs, etc.)
+		// These files use the 'epkb_process_kb_file' filter for content and don't have a $post object
+		if ( $item_type !== 'epkb_kb_files' ) {
+			$sync_data['title'] = $content_title;
+			$sync_data['url'] = get_permalink( $post_id );
+		}
+
+		$return_data = array(
+			'success' => true,
+			'training_data_id' => $training_data_id,
+			'sync_data' => $sync_data
+		);
+
+		return $return_data;
+	}
+
+
+	/**********************************************************************************
+	 * Helper functions
+	 **********************************************************************************/
+
+	private function get_training_data_record_for_sync( $collection_id, $post_id, $content_title, $content_hash, $item_type, $vector_store_id ) {
+
+		$existing_record = $this->training_data_db->get_training_data_record_by_item_id( $collection_id, $post_id );
+		if ( is_wp_error( $existing_record ) ) {
+			return $existing_record;
+		}
+
+		$is_new_record = empty( $existing_record );
+		$file_id = $is_new_record ? '' : ( $existing_record->file_id ?? '' );
+
+		// 1. new record - no file id: i.e. not in file system and not in vector store -> add file to file system and vector store
+		if ( $is_new_record ) {
+			// Insert new record
+			$training_data = array(
+				'collection_id' => $collection_id,
+				'item_id'       => $post_id,
+				'store_id' 		=> $vector_store_id,
+				'title'         => $content_title,
+				'type'          => $item_type,
+				'status'        => 'adding',
+				'content_hash'  => $content_hash,
+				'url'           => $item_type === 'epkb_kb_files' ? '' : get_permalink( $post_id )
+			);
+
+			$training_data_id = $this->training_data_db->insert_training_data( $training_data );
+			if ( is_wp_error( $training_data_id ) ) {
+				return $training_data_id;
+			}
+
+			$training_record = $this->training_data_db->get_training_data_row_by_id( $training_data_id );
+			if ( is_wp_error( $training_record ) ) {
+				return $training_record;
+			}
+
+			return array( 'training_record' => $training_record, 'training_data_id' => $training_data_id, 'add_to_file_system' => true, 'add_to_vector_store' => true );
+		}
+
+		// 2. update record - no file id: i.e. not in file system and not in vector store -> add file to file system and vector store
+		if ( empty( $file_id ) ) {
+			return array( 'training_record' => $existing_record, 'training_data_id' => $existing_record->id, 'add_to_file_system' => true, 'add_to_vector_store' => true );
+		}
+
+		$is_in_file_system = $this->vector_store->verify_file_exists_in_file_storage( $file_id, $vector_store_id );
+		if ( is_wp_error( $is_in_file_system ) ) {
+			return $is_in_file_system;
+		}
+
+		// 3. update record - file id, not in file system and in vector store -> remove file id and remove from vector store then add file to file system and vector store
+		if ( ! $is_in_file_system ) {
+			$result = $this->training_data_db->update_training_data( $existing_record->id, array( 'file_id' => '' ) );
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
+
+			// remove from vector store in case it was added previously
+			$result = $this->vector_store->remove_file_from_vector_store( $existing_record->store_id, $file_id );
+			if ( is_wp_error( $result ) ) {
+				//ignore error
+			}
+			
+			return array( 'training_record' => $existing_record, 'training_data_id' => $existing_record->id, 'remove_from_file_system' => true, 'add_to_file_system' => true, 'add_to_vector_store' => true );
+		}
+
+		$is_in_vector_store = $this->vector_store->get_file_details_from_vector_store( $existing_record->store_id, $file_id );
+		if ( is_wp_error( $is_in_vector_store ) ) {
+			return $is_in_vector_store;
+		}
+
+		// 4. update record - file id, in file system and not in vector store -> add file to vector store
+		if ( ! $is_in_vector_store ) {
+			return array( 'training_record' => $existing_record, 'training_data_id' => $existing_record->id, 'file_id' => $file_id, 'add_to_vector_store' => true );
+		}
+
+		// 5. update record - file id, in file system, in vector store BUT content changed -> remove old file from vector store and add new file to vector store
+		if ( $existing_record->content_hash !== $content_hash ) {
+			return array( 'training_record' => $existing_record, 'training_data_id' => $existing_record->id, 'remove_from_vector_store' => true, 'add_to_vector_store' => true );
+		}
+
+		// 6. update record - file id, in file system and in vector store and content hash matches -> no action needed
+		return array( 'training_record' => $existing_record, 'training_data_id' => $existing_record->id );
+	}
+
+	private function get_content( $post_id, $item_type ) {
+		$post_title = '';
+
 		if ( $item_type === 'epkb_kb_files' ) {
 			// For KB files, get content from filter
 			$content = '';
@@ -62,7 +253,7 @@ class EPKB_AI_Sync_Manager {
 				$this->training_data_db->mark_as_error( $post_id, 404, __( 'Content not found', 'echo-knowledge-base' ) );
 				return new WP_Error( 'invalid_content', __( 'Content not found', 'echo-knowledge-base' ), array( 'post_id' => $post_id ) );
 			}
-			
+
 			$prepared = array(
 				'content' => $content,
 				'size' => strlen( $content )
@@ -94,300 +285,15 @@ class EPKB_AI_Sync_Manager {
 			if ( is_wp_error( $prepared ) ) {
 				$error_code = $prepared->get_error_code() === 'post_not_published' ? 404 : 500;
 				$this->training_data_db->mark_as_error( $post_id, $error_code, $prepared->get_error_message() );
-				return $prepared; 
+				return $prepared;
 			}
-			
+
 			// Check for empty content (shouldn't happen if prepare_post is working correctly)
 			if ( empty( $prepared['content'] ) ) {
 				return new WP_Error( 'empty_content', __( 'Content is empty', 'echo-knowledge-base' ), array( 'post_id' => $post_id ) );
 			}
 		}
-		
-		// Calculate content hash - include summary status in hash to track changes
-		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
-		if ( is_wp_error( $collection_config ) ) {
-			return $collection_config;
-		}
 
-		// Summarization disabled for now - always use full content
-		$is_summarized = false; // $collection_config['ai_training_data_use_summary'] === 'on';
-		$content_hash = md5( $prepared['content'] . '_full' ); // ($is_summarized ? '_summarized' : '_full') );
-		
-		// Check if already exists in training data
-		$existing = $this->training_data_db->get_training_data_by_item( $collection_id, $post_id );
-		
-		if ( $existing ) {
-
-			// if user selected force update before: Skip if content hasn't changed - check both 'added' and 'updated' statuses
-			/* if ( $existing->content_hash === $content_hash && in_array( $existing->status, array( 'added', 'updated' ), true ) ) {
-				// Update last_synced timestamp even though content unchanged
-				$this->training_data_db->update_training_data( $existing->id, array( 'last_synced' => gmdate( 'Y-m-d H:i:s' ) ) );
-				return array( 'skipped' => true, 'reason' => 'unchanged' );
-			} */
-			
-			// Mark as updating and clear any previous error message
-			$this->training_data_db->update_training_data( $existing->id, array( 'status' => 'updating', 'error_message' => '' ) );
-			
-			$training_data_id = $existing->id;
-			$is_update = true;
-
-		} else {
-
-			// Insert new record
-			$training_data = array(
-				'collection_id' => $collection_id,
-				'item_id' => $post_id,
-				'store_id' => $vector_store_id,
-				'title' => $item_type === 'epkb_kb_files' ? '' : $post->post_title,	// TODO: get title from filter
-				'type' => $item_type,
-				'status' => 'adding',
-				'content_hash' => $content_hash,
-				'url' => $item_type === 'epkb_kb_files' ? '' : get_permalink( $post_id )
-			);
-			
-			$training_data_id = $this->training_data_db->insert_training_data( $training_data );
-			if ( is_wp_error( $training_data_id ) ) {
-				$training_data_id->add_data( array( 'retry' => true ) );
-				return $training_data_id;
-			}
-			
-			$is_update = false;
-		}
-
-		// add the file content and attach to AI store
-		try {
-			
-			// Check if summary mode is enabled for this collection
-			/* if ( $collection_config && $is_summarized ) {
-				// Apply content rewriting if summary mode is enabled
-				$rewritten_content = $this->apply_content_rewrite( $post, $prepared, $collection_config );
-				if ( is_wp_error( $rewritten_content ) ) {
-					$this->handle_sync_error( $training_data_id, $rewritten_content );
-					return $rewritten_content;
-				}
-				$prepared['content'] = $rewritten_content;
-			} */
-
-			$file_content = $this->openai_handler->create_file_content( $prepared );
-			if ( is_wp_error( $file_content ) ) {
-				$this->handle_sync_error( $training_data_id, $file_content );
-				$file_content->add_data( array( 'retry' => true ) );
-				return $file_content;
-			}
-			
-			// Upload file to OpenAI
-			$file_result = $this->openai_handler->upload_file( $post_id, $file_content, $item_type );
-			if ( is_wp_error( $file_result ) ) {
-				$this->handle_sync_error( $training_data_id, $file_result );
-				$file_result->add_data( array( 'retry' => true ) );
-				return $file_result;
-			}
-			
-			$file_id = $file_result['id'];
-			
-			// Remove old file from vector store if updating
-			if ( $is_update && ! empty( $existing->file_id ) ) {
-				$result = $this->openai_handler->remove_file_from_vector_store( $vector_store_id, $existing->file_id );
-				if ( is_wp_error( $result ) ) {
-					// Clean up the newly uploaded file before returning error
-					$this->openai_handler->delete_file( $file_id );
-					$this->handle_sync_error( $training_data_id, $result );
-					$result->add_data( array( 'retry' => true ) );
-					return $result;
-				}
-			}
-			
-			// Add file to vector store
-			$store_result = $this->openai_handler->add_file_to_vector_store( $vector_store_id, $file_id );
-			if ( is_wp_error( $store_result ) ) {
-				// Clean up uploaded file
-				$this->openai_handler->delete_file( $file_id );
-				$this->handle_sync_error( $training_data_id, $store_result );
-				return $store_result;
-			}
-			
-			// Delete old file if updating
-			if ( $is_update && ! empty( $existing->file_id ) ) {
-				$result = $this->openai_handler->delete_file( $existing->file_id );
-				if ( is_wp_error( $result ) ) {
-					$this->handle_sync_error( $training_data_id, $result );
-					$result->add_data( array( 'retry' => true ) );
-					return $result;
-				}
-			}
-			
-			// Mark as synced - content_hash includes summary status for change tracking
-			$result = $this->training_data_db->mark_as_synced( $training_data_id, array(
-				'file_id' => $file_id,
-				'store_id' => $vector_store_id,
-				'content_hash' => $content_hash // Hash includes '_summarized' or '_full' suffix
-			) );
-			if ( is_wp_error( $result ) ) {
-				$this->handle_sync_error( $training_data_id, $result );
-				$result->add_data( array( 'retry' => true ) );
-				return $result;
-			}
-			
-			$return_data = array(
-				'success' => true,
-				'file_id' => $file_id
-			);
-
-			// If summarization is enabled, include the summarized content for single row sync - Disabled for now
-			// if ( $is_summarized && ! empty( $prepared['content'] ) ) {
-			// 	$return_data['summarized_content'] = $prepared['content']; // This is the summarized content
-			// }
-
-			return $return_data;
-			
-		} catch ( Exception $e ) {
-			$this->handle_sync_error( $training_data_id, new WP_Error( 'sync_exception', $e->getMessage() ) );
-			$error = new WP_Error( 'sync_exception', $e->getMessage() );
-			$error->add_data( array( 'retry' => true ) );
-			return $error;
-		}
-	}
-
-	/**
-	 * Remove post from sync
-	 *
-	 * @param int $post_id Post ID
-	 * @param int $collection_id Collection ID
-	 * @return bool|WP_Error
-	 */
-	public function remove_post( $post_id, $collection_id ) {
-
-		$collection_id = EPKB_AI_Validation::validate_collection_id( $collection_id );
-		if ( is_wp_error( $collection_id ) ) {
-			return $collection_id;
-		}
-
-		// Get existing training data
-		$existing = $this->training_data_db->get_training_data_by_item( $collection_id, $post_id );
-		if ( ! $existing ) {
-			return true; // Already removed
-		}
-
-		// Remove from vector store
-		if ( ! empty( $existing->store_id ) && ! empty( $existing->file_id ) ) {
-			$result = $this->openai_handler->remove_file_from_vector_store( $existing->store_id, $existing->file_id );
-			if ( is_wp_error( $result ) ) {
-				return $result;
-			}
-		}
-
-		// Delete file from OpenAI
-		if ( ! empty( $existing->file_id ) ) {
-			$result = $this->openai_handler->delete_file( $existing->file_id );
-			if ( is_wp_error( $result ) ) {
-				EPKB_AI_Log::add_log( $result, array( 'training_data_id' => $existing->id, 'file_id' => $existing->file_id, 'message' => 'Failed to delete file from OpenAI' ) );
-			}
-		}
-
-		// Delete from database
-		return $this->training_data_db->delete_training_data_record( $existing->id );
-	}
-
-	/**
-	 * Handle sync error
-	 *
-	 * @param int $training_data_id Training data ID
-	 * @param WP_Error $wp_error Error object
-	 * @return void
-	 */
-	private function handle_sync_error( $training_data_id, $wp_error ) {
-
-		// Log the full error for debugging
-		EPKB_AI_Log::add_log( $wp_error, array( 'training_data_id' => $training_data_id ) );
-
-		// Use centralized error mapping
-		$mapped = EPKB_AI_Log::map_error_to_internal_code( $wp_error );
-		$error_code = isset( $mapped['code'] ) ? $mapped['code'] : 500;
-		$error_message = isset( $mapped['message'] ) ? $mapped['message'] : $wp_error->get_error_message();
-		$this->training_data_db->mark_as_error( $training_data_id, $error_code, $error_message );
-	}
-
-	/**
-	 * Apply content rewriting based on collection configuration
-	 *
-	 * Uses OpenAI to rewrite content based on the configured prompt template.
-	 *
-	 * @param $post
-	 * @param array $prepared Prepared content data
-	 * @param array $collection_config Collection configuration
-	 * @return string|WP_Error Rewritten content or error
-	 */
-	private function apply_content_rewrite( $post, $prepared, $collection_config ) {
-
-		$instructions = 'TODO';
-
-		// Call OpenAI to rewrite the content
-		$rewritten_content = EPKB_AI_OpenAI_Handler::call_openai_for_rewrite( $instructions, $prepared['content'] );
-		if ( is_wp_error( $rewritten_content ) ) {
-			// Log error but return original content to continue sync
-			EPKB_AI_Log::add_log( $rewritten_content, array( 'post_id' => $post->ID, 'action' => 'content_rewrite' ) );
-			return $prepared['content'];
-		}
-		
-		// Validate the rewritten content
-		if ( ! $this->validate_rewritten_content( $rewritten_content ) ) {
-			// Log validation failure and return original content
-			EPKB_AI_Log::add_log( new WP_Error( 'validation_failed', 'Rewritten content failed validation' ), array( 
-				'post_id' => $post->ID, 
-				'action' => 'content_rewrite',
-				'rewritten_content' => substr( $rewritten_content, 0, 200 ) . '...'
-			) );
-			return $prepared['content'];
-		}
-		
-		return $rewritten_content;
-	}
-
-	/**
-	 * Validate rewritten content
-	 * 
-	 * @param string $content Rewritten content to validate
-	 * @return bool True if valid, false otherwise
-	 */
-	private function validate_rewritten_content( $content ) {
-		
-		// Ensure content is meaningful (at least 50 characters)
-		if ( strlen( $content ) < 50 ) {
-			return false;
-		}
-		
-		// Check for common AI failure patterns
-		$failure_patterns = array(
-			'I cannot',
-			'I can\'t',
-			'As an AI',
-			'I\'m sorry',
-			'I don\'t have access',
-			'I\'m unable to',
-			// TODO 'The document'
-		);
-		
-		foreach ( $failure_patterns as $pattern ) {
-			if ( stripos( $content, $pattern ) !== false ) {
-				return false;
-			}
-		}
-		
-		// Ensure it's not just the prompt repeated (check for common prompt markers)
-		$prompt_markers = array(
-			'Title:',
-			'Content:',
-			'Summary:',
-			'Rewrite the following',
-			'Summarize the following'
-		);
-		
-		foreach ( $prompt_markers as $marker ) {
-			if ( stripos( $content, $marker ) !== false ) {
-				return false;
-			}
-		}
-		
-		return true;
+		return [ 'content' => $prepared['content'], 'title' => isset( $post ) ? $post->post_title : $post_title ];
 	}
 }

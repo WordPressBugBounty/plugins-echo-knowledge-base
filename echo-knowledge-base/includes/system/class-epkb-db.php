@@ -29,16 +29,25 @@ abstract class EPKB_DB {
 	 * Check if database table needs to be created or updated
 	 */
 	protected function check_db() {
-		static $already_checked = false;
-		
-		if ( $already_checked || ! EPKB_AI_Utilities::is_ai_enabled() ) {
+		static $already_checked = [];
+
+		if ( in_array( $this->table_name, $already_checked ) || ! EPKB_AI_Utilities::is_ai_configured() ) {
 			return;
 		}
 
 		// Check if we need to create/update table
-		$already_checked = true;
+		$already_checked = array_merge( $already_checked, [ $this->table_name ] );
+
+		// First, verify table actually exists (more reliable than version check alone)
+		$table_exists = $this->table_exists( $this->table_name );
+
+		// Get stored version
 		$stored_version = get_option( $this->get_version_option_name(), '0' );
-		if ( version_compare( $stored_version, $this->get_table_version(), '<' ) ) {
+
+		// Create/update table if:
+		// 1. Table doesn't exist (even if version is stored), OR
+		// 2. Table exists but version is outdated
+		if ( ! $table_exists || version_compare( $stored_version, $this->get_table_version(), '<' ) ) {
 			$this->create_table();
 		}
 	}
@@ -66,7 +75,14 @@ abstract class EPKB_DB {
 		global $wpdb;
 
 		$format = $this->get_column_format()[ $column ];
-		return $wpdb->prepare( "`$column` = $format", $value );
+
+		if ( is_array( $value ) ) {
+			$placeholders = array_fill( 0, count( $value ), $format );
+			$query        = '`' . $column . '` IN (' . implode( ',', $placeholders ) . ')';
+			return $wpdb->prepare( $query, $value );
+		}
+
+		return $wpdb->prepare( '`' . $column . '` = ' . $format, $value );
 	}
 
 	/**
@@ -255,7 +271,7 @@ abstract class EPKB_DB {
 			}
 		}
 
-		$result = $wpdb->get_var( "SELECT SUM({$select_column}) AS total FROM {$this->table_name} WHERE {$where_clause}" );
+		$result = $wpdb->get_var( "SELECT SUM(" . esc_sql( $select_column ) . ") AS total FROM {$this->table_name} WHERE {$where_clause}" );
 		if ( $result === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // store it first
 			return new WP_Error( 'DB failure', $wpdb_last_error, array( 'table' => $this->table_name, 'column' => $select_column ) );
@@ -412,7 +428,7 @@ abstract class EPKB_DB {
 		/** @var $wpdb Wpdb */
 		global $wpdb;
 
-		$where_between = $wpdb->prepare(" {$date_column_name} between %s and %s {$where_condition}", $date_from, $date_to );
+		$where_between = $wpdb->prepare( " " . esc_sql( $date_column_name ) . " between %s and %s {$where_condition}", $date_from, $date_to );
 		$result = $wpdb->get_var( "SELECT count(*) FROM $this->table_name WHERE {$where_between};" );
 		if ( $result === null && ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // store it first
@@ -441,8 +457,8 @@ abstract class EPKB_DB {
 		/** @var $wpdb Wpdb */
 		global $wpdb;
 
-		$where_between = $wpdb->prepare( " {$date_column_name} between %s and %s {$where_condition} ", $date_from, $date_to );
-		$result = $wpdb->get_results( "SELECT *, count(*) as times FROM $this->table_name WHERE {$where_between}  GROUP BY {$group_by} ORDER BY {$order_by} LIMIT {$limit};" );
+		$where_between = $wpdb->prepare( " " . esc_sql( $date_column_name ) . " between %s and %s {$where_condition} ", $date_from, $date_to );
+		$result = $wpdb->get_results( "SELECT *, count(*) as times FROM $this->table_name WHERE {$where_between}  GROUP BY " . esc_sql( $group_by ) . " ORDER BY " . esc_sql( $order_by ) . " LIMIT " . absint( $limit ) . ";" );
 		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // store it first
 			return new WP_Error( 'DB failure', $wpdb_last_error, array( 'date_from' => $date_from, 'date_to' => $date_to, 'table' => $this->table_name ) );
@@ -460,7 +476,7 @@ abstract class EPKB_DB {
 		/** @var $wpdb Wpdb */
 		global $wpdb;
 
-		$result = $wpdb->get_results( "SELECT DISTINCT {$column_name} FROM $this->table_name WHERE {$column_name} != '' " );
+		$result = $wpdb->get_results( "SELECT DISTINCT " . esc_sql( $column_name ) . " FROM $this->table_name WHERE " . esc_sql( $column_name ) . " != '' " );
 		if ( ! empty( $wpdb->last_error ) ) {
 			$wpdb_last_error = $wpdb->last_error;   // store it first
 			return new WP_Error( 'DB failure', $wpdb_last_error, array( 'column' => $column_name, 'table' => $this->table_name ) );
@@ -708,7 +724,6 @@ abstract class EPKB_DB {
 		/** @var $wpdb Wpdb */
 		global $wpdb;
 
-		$table = sanitize_text_field( $table );
 		return $wpdb->get_var( "SHOW TABLES LIKE '{$table}'" );
 	}
 
@@ -813,19 +828,18 @@ abstract class EPKB_DB {
 		if ( $table_updated || empty( $last_db_error ) ) {
 			return $result;
 		}
-		
-		// Check if error is related to missing table or column
-		$error = strtolower( $last_db_error );
-		$last_query = empty( $wpdb->last_query ) ? '' : strtolower( $wpdb->last_query );
-		if ( strpos( $last_query, $this->table_name ) !== false &&
-			( strpos( $error, "doesn't exist" ) !== false || strpos( $error, "does not exist" ) !== false ||
-		     strpos( $error, "table" ) !== false && strpos( $error, "exist" ) !== false ||
-		     strpos( $error, "unknown column" ) !== false || strpos( $error, "field list" ) !== false ) ) {
-			
+
+		// Check if error is related to missing table or column (case-insensitive)
+		$last_query = empty( $wpdb->last_query ) ? '' : $wpdb->last_query;
+		if ( stripos( $last_query, $this->table_name ) !== false &&
+			( stripos( $last_db_error, "doesn't exist" ) !== false || stripos( $last_db_error, "does not exist" ) !== false ||
+		     stripos( $last_db_error, "table" ) !== false && stripos( $last_db_error, "exist" ) !== false ||
+		     stripos( $last_db_error, "unknown column" ) !== false || stripos( $last_db_error, "field list" ) !== false ) ) {
+
 			// Try to create/update the table
 			$this->create_table();
 			$table_updated = true;
-			
+
 			// Return indication that retry is needed
 			return 'retry_operation';
 		}
@@ -844,5 +858,4 @@ abstract class EPKB_DB {
 	 * Create the table - must be implemented by child classes
 	 */
 	abstract protected function create_table();
-
 }

@@ -11,6 +11,228 @@ class EPKB_AI_Log {
 	const EPKB_AI_LOGS_OPTION_NAME = 'epkb_ai_logs';
 
 	/**
+	 * Add a log entry
+	 *
+	 * @param WP_Error|string $message The log message or WP_Error object
+	 * @param array $context The log context - key-value pairs: message, error_code, error_data, request_endpoint, model, elapsed_seconds, timeout_seconds, attempt
+	 */
+	 public static function add_log( $message, $context = array() ) {
+
+		// Security: Only log if user has appropriate permissions or it's a system event
+		if ( !self::should_log() ) {
+			return;
+		}
+
+		$max_logs = 50; // FIFO - when limit reached, oldest log is removed
+		$max_message_length = 800;
+		$max_context_size = 2000; // Increased to capture full AI error responses
+
+		// Handle WP_Error objects
+		if ( is_wp_error( $message ) ) {
+			// If context is not an array, make it an array
+			if ( !is_array( $context ) ) {
+				$context = array();
+			}
+
+			// Extract error details
+			$error_message = $message->get_error_message();
+			$error_code = $message->get_error_code();
+			$error_data = $message->get_error_data();
+
+			// Add error details to context
+			$context['error_code'] = $error_code;
+			if ( !empty( $error_data ) ) {
+				$context['error_data'] = $error_data;
+			}
+
+			// Use error message as the main message
+			$message = $error_message;
+		}
+
+		// Strip tags but keep raw characters for logging (escaping happens on display)
+		$message = wp_strip_all_tags( $message );
+
+		// Truncate message if too long
+		if ( strlen( $message ) > $max_message_length ) {
+			$message = substr( $message, 0, $max_message_length - 3 ) . '...';
+		}
+
+		// Sanitize and limit context
+		$context = self::sanitize_log_context( $context, $max_context_size );
+
+		// Get existing logs
+		$logs = get_option( self::EPKB_AI_LOGS_OPTION_NAME, array() );
+
+		// Create log entry with minimal information
+		$log_entry = array(
+			'timestamp' => gmdate( 'Y-m-d H:i:s' ),
+			'date' => current_time( 'Y-m-d' ),
+			'message' => $message,
+			'context' => $context,
+			'hash' => substr( md5( $message . serialize( $context ) ), 0, 8 ) // For deduplication
+		);
+
+		// Check for sequential duplicate (same hash as the last log entry)
+		if ( !empty( $logs ) ) {
+			$last_log = end( $logs );
+			if ( isset( $last_log['hash'] ) && $last_log['hash'] === $log_entry['hash'] ) {
+				array_pop( $logs ); // Remove the older duplicate
+			}
+		}
+
+		// Add new log entry
+		$logs[] = $log_entry;
+
+		// Enforce FIFO: keep only the most recent logs
+		if ( count( $logs ) > $max_logs ) {
+			$logs = array_slice( $logs, -$max_logs );
+		}
+
+		// Update option with autoload disabled for performance
+		update_option( self::EPKB_AI_LOGS_OPTION_NAME, $logs, false );
+	}
+
+	/**
+	 * Get logs formatted for display in admin interface
+	 *
+	 * IMPORTANT: This method returns sanitized but NOT escaped data.
+	 * Callers MUST escape log messages and context values using esc_html()
+	 * or appropriate escaping functions before outputting to HTML.
+	 *
+	 * @return array Array of log entries with sanitized data
+	 */
+	public static function get_logs_for_display() {
+
+		if ( !current_user_can( 'manage_options' ) ) {
+			return array();
+		}
+
+		$logs = get_option( self::EPKB_AI_LOGS_OPTION_NAME, array() );
+
+		// Additional filtering for display
+		return array_map( function ( $log ) {
+			// Ensure no sensitive data is exposed
+			if ( isset( $log['context'] ) && is_array( $log['context'] ) ) {
+				$log['context'] = self::sanitize_log_context( $log['context'], 2000 );
+			}
+			return $log;
+		}, $logs );
+	}
+
+	private static function should_log() {
+
+		// Check if AI debug mode is enabled
+		$ai_debug_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_tools_debug_enabled', 'off' );
+		if ( $ai_debug_enabled === 'on' ) {
+			return true;
+		}
+
+		// Only log if debugging is enabled or user is admin
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			return true;
+		}
+
+		// Check if user has admin capabilities
+		if ( current_user_can( 'manage_options' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sanitize log context to remove sensitive information
+	 *
+	 * @param array $context
+	 * @param int $max_size
+	 * @return array
+	 */
+	private static function sanitize_log_context( $context, $max_size ) {
+		if ( !is_array( $context ) ) {
+			return array();
+		}
+
+		// Remove sensitive keys
+		$sensitive_keys = array(
+			'password', 'pass', 'pwd', 'secret', 'token', 'key', 'api_key',
+			'auth', 'authorization', 'cookie', 'session', 'nonce', 'salt'
+		);
+
+		// Special keys that should preserve more data for debugging
+		$debug_keys = array( 'raw_response_body', 'raw_body' );
+
+		// Keys that should preserve array data instead of converting to string
+		$preserve_array_keys = array( 'error_data' );
+
+		$sanitized = array();
+		foreach ( $context as $key => $value ) {
+			// Skip sensitive keys
+			$lower_key = strtolower( $key );
+			$skip = false;
+			foreach ( $sensitive_keys as $sensitive ) {
+				if ( strpos( $lower_key, $sensitive ) !== false ) {
+					$sanitized[ $key ] = '[REDACTED]';
+					$skip = true;
+					break;
+				}
+			}
+
+			if ( $skip ) {
+				continue;
+			}
+
+			// Sanitize values
+			if ( is_string( $value ) ) {
+				// Allow debug keys to have more data (up to 1000 chars for full error responses)
+				$max_length = in_array( $key, $debug_keys, true ) ? 1000 : 100;
+				$sanitized[ $key ] = wp_strip_all_tags( substr( $value, 0, $max_length ) );
+			} elseif ( is_numeric( $value ) ) {
+				$sanitized[ $key ] = $value;
+			} elseif ( is_bool( $value ) ) {
+				$sanitized[ $key ] = $value;
+			} elseif ( is_array( $value ) ) {
+				// Preserve array data for specific keys
+				if ( in_array( $key, $preserve_array_keys, true ) ) {
+					$sanitized[ $key ] = self::sanitize_array_recursive( $value, 3 ); // Max depth of 3
+				} else {
+					$sanitized[ $key ] = '[Array with ' . count( $value ) . ' items]';
+				}
+			} else {
+				$sanitized[ $key ] = '[' . gettype( $value ) . ']';
+			}
+		}
+
+		// Check serialized size
+		$serialized = serialize( $sanitized );
+		if ( strlen( $serialized ) > $max_size ) {
+			// Truncate to most important keys, including debug keys for AI errors
+			$important_keys = array( 'error_code', 'status', 'user_id', 'action', 'raw_response_body', 'response_code', 'request_endpoint' );
+			$truncated = array();
+			foreach ( $important_keys as $key ) {
+				if ( isset( $sanitized[ $key ] ) ) {
+					$truncated[ $key ] = $sanitized[ $key ];
+				}
+			}
+			$truncated['truncated'] = true;
+			return $truncated;
+		}
+
+		return $sanitized;
+	}
+
+	public static function reset_logs() {
+
+		if ( !current_user_can( 'manage_options' ) ) {
+			return false;
+		}
+
+		// Delete log option
+		delete_option( self::EPKB_AI_LOGS_OPTION_NAME );
+
+		return true;
+	}
+
+	/**
 	 * Get user-friendly error message with optional details for admins
 	 * 
 	 * @param string|WP_Error $error Error code or WP_Error object
@@ -30,13 +252,14 @@ class EPKB_AI_Log {
 		
 		switch ( $error_code ) {
 			case 'authentication_failed':
-				$friendly_message = __( 'Authentication failed. Please check your OpenAI API key in the General Settings.', 'echo-knowledge-base' );
+				$friendly_message = __( 'Authentication failed. Please check your API key in the General Settings.', 'echo-knowledge-base' );
 				break;
 				
 			case 'rate_limit_exceeded':
 				$retry_after = isset( $error_data['retry_after'] ) ? $error_data['retry_after'] : null;
 				if ( $retry_after ) {
-					$friendly_message = sprintf( 
+					// translators: %s is the number of seconds to wait
+					$friendly_message = sprintf(
 						__( 'Rate limit exceeded. Please try again in %s seconds.', 'echo-knowledge-base' ),
 						$retry_after
 					);
@@ -60,15 +283,29 @@ class EPKB_AI_Log {
 				break;
 				
 			case 'vector_store_not_found':
+			case 'vector_store_not_configured':
 				$friendly_message = __( 'The training data store was not found. Please check your Training Data settings.', 'echo-knowledge-base' );
 				break;
-				
+
+			case 'provider_mismatch':
+				$friendly_message = __( 'The AI provider configuration needs attention. Please check your settings.', 'echo-knowledge-base' );
+				break;
+
+			case 'collection_not_found':
+			case 'no_vector_store':
+				$friendly_message = __( 'The selected data collection is not available. Please check your Training Data settings.', 'echo-knowledge-base' );
+				break;
+
+			case 'missing_api_key':
+				$friendly_message = __( 'API key is not configured. Please configure your API key in the AI General Settings.', 'echo-knowledge-base' );
+				break;
+
 			case 'invalid_api_key':
-				$friendly_message = __( 'Invalid OpenAI API key. Please check your API key in the General Settings.', 'echo-knowledge-base' );
+				$friendly_message = __( 'Invalid API key. Please check your API key in the AI General Settings.', 'echo-knowledge-base' );
 				break;
 				
 			case 'insufficient_quota':
-				$friendly_message = __( 'Your OpenAI account has insufficient credits. Please check your OpenAI account billing.', 'echo-knowledge-base' );
+				$friendly_message = __( 'Your AI account has insufficient credits. Please check your AI account billing.', 'echo-knowledge-base' );
 				break;
 				
 			case 'user_state_changed':
@@ -91,9 +328,9 @@ class EPKB_AI_Log {
 			default:
 				// For unknown errors, provide a generic message
 				if ( strpos( $error_message, 'Invalid API key' ) !== false ) {
-					$friendly_message = __( 'Invalid OpenAI API key. Please check your API key in the General Settings.', 'echo-knowledge-base' );
+					$friendly_message = __( 'Invalid API key. Please check your API key in the General Settings.', 'echo-knowledge-base' );
 				} elseif ( strpos( $error_message, 'quota' ) !== false || strpos( $error_message, 'billing' ) !== false ) {
-					$friendly_message = __( 'OpenAI account issue. Please check your OpenAI account status and billing.', 'echo-knowledge-base' );
+					$friendly_message = __( 'AI account issue. Please check your account status and billing.', 'echo-knowledge-base' );
 				} else {
 					$friendly_message = __( 'An error occurred while processing your request. Please try again.', 'echo-knowledge-base' );
 				}
@@ -121,13 +358,52 @@ class EPKB_AI_Log {
 		return $friendly_message;
 	}
 
+
+	/*******************************************************************
+	 * Utility functions
+	 *******************************************************************/
+	/**
+	 * Recursively sanitize array values
+	 *
+	 * @param array $array Array to sanitize
+	 * @param int $max_depth Maximum recursion depth
+	 * @param int $current_depth Current recursion depth
+	 * @return array|string Sanitized array or placeholder string if max depth exceeded
+	 */
+	private static function sanitize_array_recursive( $array, $max_depth = 3, $current_depth = 0 ) {
+		if ( $current_depth >= $max_depth ) {
+			return '[Array depth limit reached]';
+		}
+
+		if ( !is_array( $array ) ) {
+			return $array;
+		}
+
+		$sanitized = array();
+		foreach ( $array as $key => $value ) {
+			if ( is_string( $value ) ) {
+				$sanitized[ $key ] = wp_strip_all_tags( substr( $value, 0, 200 ) );
+			} elseif ( is_numeric( $value ) || is_bool( $value ) ) {
+				$sanitized[ $key ] = $value;
+			} elseif ( is_array( $value ) ) {
+				$sanitized[ $key ] = self::sanitize_array_recursive( $value, $max_depth, $current_depth + 1 );
+			} elseif ( is_null( $value ) ) {
+				$sanitized[ $key ] = null;
+			} else {
+				$sanitized[ $key ] = '[' . gettype( $value ) . ']';
+			}
+		}
+
+		return $sanitized;
+	}
+
 	/**
 	 * Map error to internal code and message
-	 * 
+	 *
 	 * Centralizes error mapping logic for consistent error handling.
 	 * Takes a WP_Error or string error and returns the appropriate internal
 	 * error code and message for storage.
-	 * 
+	 *
 	 * @param WP_Error $wp_error Error object or message
 	 * @return array Array with 'code' and 'message' keys
 	 */
@@ -140,10 +416,16 @@ class EPKB_AI_Log {
 		// Try to map to internal error code
 		$internal_code = $wp_error->get_error_code();
 
-		// If we have a valid internal code, use it instead of the full message
+		// If we have a valid internal code, use it instead of the full message except for validation errors where details are important
 		if ( $internal_code && strpos( $internal_code, '_' ) !== false ) {
-			$error_message = $internal_code;
-		} if ( empty( $error_message ) ) {
+			if ( $internal_code === 'validation_failed' ) {
+				// keep the detailed message
+				$error_message = $error_message ?: $internal_code;
+			} else {
+				$error_message = $internal_code;
+			}
+		}
+		if ( empty( $error_message ) ) {
 			// Check if we have an internal error code for this HTTP status
 			$status_code = self::get_code_for_http_status( $error_code );
 			if ( $status_code ) {
@@ -177,11 +459,6 @@ class EPKB_AI_Log {
 
 		return $message;
 	}
-
-	/*******************************************************************
-	 * Utility functions
-	 *******************************************************************/
-
 
 	/**
 	 * Process a WP_Error object and extract error data
@@ -227,13 +504,21 @@ class EPKB_AI_Log {
 		// Get user-friendly message
 		$friendly_message = EPKB_AI_Log::get_user_friendly_message( $wp_error );
 
+		// For certain errors, provide different messages for admins vs regular users
+		$user_message = $friendly_message;
+		$config_errors = array( 'missing_api_key', 'invalid_api_key', 'provider_mismatch', 'collection_not_found', 'no_vector_store', 'vector_store_not_configured', 'vector_store_not_found', 'insufficient_quota' );
+		if ( in_array( $error_code, $config_errors ) && ! current_user_can( 'manage_options' ) ) {
+			// Show generic message to regular users/guests for configuration and quota errors
+			$user_message = __( 'The service is temporarily unavailable. Please try again later.', 'echo-knowledge-base' );
+		}
+
 		// Build error response data with comprehensive error information
 		$error_response = array(
 			'success' => false,
 			'status' => 'error',
 			'error' => $error_code,
-			'message' => $friendly_message,
-			'user_message' => $friendly_message,  // Explicit user message
+			'message' => $user_message,  // Use the appropriate user message
+			'user_message' => $user_message,  // Explicit user message
 			'admin_message' => '',                // Will be set below for admins
 			'is_retryable' => self::is_retryable_error( $error_code, $http_status_code ),
 			'error_type' => self::get_error_type( $error_code, $http_status_code )
@@ -243,23 +528,28 @@ class EPKB_AI_Log {
 		if ( current_user_can( 'manage_options' ) ) {
 			// Build admin message with all technical details
 			$admin_message_parts = array();
-			
+
+			// For quota errors, start with the friendly message for clarity
+			if ( $error_code === 'insufficient_quota' ) {
+				$admin_message_parts[] = $friendly_message;
+			}
+
 			// Add error type and status code
 			if ( $http_status_code !== 200 ) {
 				$admin_message_parts[] = sprintf( 'HTTP %d', $http_status_code );
 			}
-			
+
 			// Add error code
 			if ( $error_code && $error_code !== 'unknown_error' ) {
 				$admin_message_parts[] = sprintf( 'Code: %s', $error_code );
 			}
-			
-			// Add original error message
+
+			// Add original error message (if different from friendly message and not already added for quota)
 			$original_message = $error_messages ?: $wp_error->get_error_message();
-			if ( $original_message && $original_message !== $friendly_message ) {
+			if ( $original_message && $original_message !== $friendly_message && $error_code !== 'insufficient_quota' ) {
 				$admin_message_parts[] = $original_message;
 			}
-			
+
 			$error_response['admin_message'] = implode( ' | ', $admin_message_parts );
 		}
 
@@ -302,6 +592,11 @@ class EPKB_AI_Log {
 			'empty_message'       => 400,
 			'invalid_content'     => 400,
 			'conversation_limit_reached' => 400,
+			'provider_mismatch'   => 400,
+			'collection_not_found' => 400,
+			'no_vector_store'     => 400,
+			'vector_store_not_configured' => 400,
+			'vector_store_not_found' => 400,
 			'authentication_failed' => 401,
 			'invalid_session'     => 401,
 			'no_session'          => 401,
@@ -453,8 +748,16 @@ class EPKB_AI_Log {
 			'invalid_content' => 'content_error',
 			'empty_message' => 'content_error',
 			
-			// Other errors
+			// Configuration errors - shown with yellow background for non-admin users
+			'missing_api_key' => 'configuration',
 			'invalid_api_key' => 'configuration',
+			'provider_mismatch' => 'configuration',
+			'collection_not_found' => 'configuration',
+			'no_vector_store' => 'configuration',
+			'vector_store_not_configured' => 'configuration',
+			'vector_store_not_found' => 'configuration',
+
+			// Other errors
 			'insufficient_quota' => 'quota',
 			'version_conflict' => 'conflict',
 			'expired' => 'expired',
@@ -487,229 +790,5 @@ class EPKB_AI_Log {
 		return 'unknown';
 	}
 
-	/*******************************************************************
-	 * Logging
-	 *******************************************************************/
 
-	public static function add_log( $message, $context = array() ) {
-
-		// Security: Only log if user has appropriate permissions or it's a system event
-		if ( !self::should_log() ) {
-			return;
-		}
-
-		$max_logs = 50;
-		$max_logs_per_day = 30; // Maximum logs per day
-		$max_message_length = 800;
-		$max_context_size = 200;
-		$keep_logs_for_days = 5;
-
-		// Handle WP_Error objects
-		if ( is_wp_error( $message ) ) {
-			// If context is not an array, make it an array
-			if ( !is_array( $context ) ) {
-				$context = array();
-			}
-
-			// Extract error details
-			$error_message = $message->get_error_message();
-			$error_code = $message->get_error_code();
-			$error_data = $message->get_error_data();
-
-			// Add error details to context
-			$context['error_code'] = $error_code;
-			if ( !empty( $error_data ) ) {
-				$context['error_data'] = $error_data;
-			}
-
-			// Use error message as the main message
-			$message = $error_message;
-		}
-
-		// Sanitize message to prevent any potential security issues
-		$message = sanitize_text_field( $message );
-
-		// Truncate message if too long
-		if ( strlen( $message ) > $max_message_length ) {
-			$message = substr( $message, 0, $max_message_length - 3 ) . '...';
-		}
-
-		// Sanitize and limit context
-		$context = self::sanitize_log_context( $context, $max_context_size );
-
-		// Get existing logs
-		$logs = get_option( self::EPKB_AI_LOGS_OPTION_NAME, array() );
-		$current_date = current_time( 'Y-m-d' );
-
-		// Count today's logs
-		$daily_count = 0;
-		foreach ( $logs as $log ) {
-			if ( isset( $log['date'] ) && $log['date'] === $current_date ) {
-				$daily_count++;
-			}
-		}
-
-		if ( $daily_count >= $max_logs_per_day ) {
-			return; // Daily limit reached
-		}
-
-		// Create log entry with minimal information
-		$log_entry = array(
-			'timestamp' => gmdate( 'Y-m-d H:i:s' ),
-			'date' => $current_date,
-			'message' => $message,
-			'context' => $context,
-			'hash' => substr( md5( $message . serialize( $context ) ), 0, 8 ) // For deduplication
-		);
-
-		// Check for duplicate entries (same hash within last hour)
-		$one_hour_ago = strtotime( '-1 hour' );
-		foreach ( array_reverse( $logs ) as $log ) {
-			if ( isset( $log['hash'] ) && $log['hash'] === $log_entry['hash'] &&
-				strtotime( $log['timestamp'] ) > $one_hour_ago ) {
-				return; // Skip duplicate
-			}
-		}
-
-		// Add new log entry
-		$logs[] = $log_entry;
-
-		// Remove old logs
-		$cutoff_date = date( 'Y-m-d', strtotime( '-' . $keep_logs_for_days . ' days' ) );
-		$logs = array_filter( $logs, function ( $log ) use ( $cutoff_date ) {
-			return isset( $log['date'] ) && $log['date'] >= $cutoff_date;
-		} );
-
-		// Keep only the most recent logs
-		if ( count( $logs ) > $max_logs ) {
-			$logs = array_slice( $logs, -$max_logs );
-		}
-
-		// Update option with autoload disabled for performance
-		update_option( self::EPKB_AI_LOGS_OPTION_NAME, $logs, false );
-	}
-
-	public static function get_logs() {
-
-		if ( !current_user_can( 'manage_options' ) ) {
-			return array();
-		}
-
-		$logs = get_option( self::EPKB_AI_LOGS_OPTION_NAME, array() );
-
-		// Additional filtering for display
-		return array_map( function ( $log ) {
-			// Ensure no sensitive data is exposed
-			if ( isset( $log['context'] ) && is_array( $log['context'] ) ) {
-				$log['context'] = self::sanitize_log_context( $log['context'], 200 );
-			}
-			return $log;
-		}, $logs );
-	}
-
-	private static function should_log() {
-
-		// Check if AI debug mode is enabled
-		$ai_debug_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_tools_debug_enabled', 'off' );
-		if ( $ai_debug_enabled === 'on' ) {
-			return true;
-		}
-
-		// Only log if debugging is enabled or user is admin
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			return true;
-		}
-
-		// Check if user has admin capabilities
-		if ( current_user_can( 'manage_options' ) ) {
-			return true;
-		}
-
-		// Check if it's a cron job or system event
-		/** @disregard P1011 */
-		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
-			return false;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Sanitize log context to remove sensitive information
-	 *
-	 * @param array $context
-	 * @param int $max_size
-	 * @return array
-	 */
-	private static function sanitize_log_context( $context, $max_size ) {
-		if ( !is_array( $context ) ) {
-			return array();
-		}
-
-		// Remove sensitive keys
-		$sensitive_keys = array(
-			'password', 'pass', 'pwd', 'secret', 'token', 'key', 'api_key',
-			'auth', 'authorization', 'cookie', 'session', 'nonce', 'salt'
-		);
-
-		$sanitized = array();
-		foreach ( $context as $key => $value ) {
-			// Skip sensitive keys
-			$lower_key = strtolower( $key );
-			$skip = false;
-			foreach ( $sensitive_keys as $sensitive ) {
-				if ( strpos( $lower_key, $sensitive ) !== false ) {
-					$sanitized[ $key ] = '[REDACTED]';
-					$skip = true;
-					break;
-				}
-			}
-
-			if ( $skip ) {
-				continue;
-			}
-
-			// Sanitize values
-			if ( is_string( $value ) ) {
-				$sanitized[ $key ] = sanitize_text_field( substr( $value, 0, 100 ) );
-			} elseif ( is_numeric( $value ) ) {
-				$sanitized[ $key ] = $value;
-			} elseif ( is_bool( $value ) ) {
-				$sanitized[ $key ] = $value;
-			} elseif ( is_array( $value ) ) {
-				$sanitized[ $key ] = '[Array with ' . count( $value ) . ' items]';
-			} else {
-				$sanitized[ $key ] = '[' . gettype( $value ) . ']';
-			}
-		}
-
-		// Check serialized size
-		$serialized = serialize( $sanitized );
-		if ( strlen( $serialized ) > $max_size ) {
-			// Truncate to most important keys
-			$important_keys = array('error_code', 'status', 'user_id', 'action');
-			$truncated = array();
-			foreach ( $important_keys as $key ) {
-				if ( isset( $sanitized[ $key ] ) ) {
-					$truncated[ $key ] = $sanitized[ $key ];
-				}
-			}
-			$truncated['truncated'] = true;
-			return $truncated;
-		}
-
-		return $sanitized;
-	}
-
-	public static function reset_logs() {
-
-		if ( !current_user_can( 'manage_options' ) ) {
-			return false;
-		}
-
-		// Delete log option
-		delete_option( self::EPKB_AI_LOGS_OPTION_NAME );
-
-		return true;
-	}
 }

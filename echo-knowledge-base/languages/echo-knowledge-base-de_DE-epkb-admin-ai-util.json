@@ -1,0 +1,75 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "de_DE",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Close": [
+                "Schließen"
+            ],
+            "Cancel": [
+                "Abbrechen"
+            ],
+            "Next": [
+                "Weiter"
+            ],
+            "AI Features": [
+                "KI-Funktionen"
+            ],
+            "Documentation": [
+                "Dokumentation"
+            ],
+            "Got it!": [
+                "Verstanden!"
+            ],
+            "Show Me": [
+                "Zeigen Sie mir"
+            ],
+            "Loading...": [
+                "Wird geladen..."
+            ],
+            "General Settings": [
+                "Allgemeine Einstellungen"
+            ],
+            "Go to Settings": [
+                "Zu den Einstellungen"
+            ],
+            "Your session has expired. Please refresh the page.": [
+                "Ihre Sitzung ist abgelaufen. Bitte aktualisieren Sie die Seite."
+            ],
+            "Too many requests. Please wait a moment and try again.": [
+                "Zu viele Anfragen. Bitte warten Sie einen Moment und versuchen Sie es erneut."
+            ],
+            "An unexpected error occurred. Please try again.": [
+                "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+            ],
+            "Confirm Action": [
+                "Aktion bestätigen"
+            ],
+            "Are you sure you want to proceed?": [
+                "Sind Sie sicher, dass Sie fortfahren möchten?"
+            ],
+            "Confirm": [
+                "Bestätigen"
+            ],
+            "Setup Steps": [
+                "Einrichtungsschritte"
+            ],
+            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
+                "Um KI-Funktionen zu verwenden, konfigurieren Sie bitte Ihren API-Schlüssel und akzeptieren Sie die Datenschutzvereinbarung in"
+            ],
+            "Session Expired": [
+                "Sitzung abgelaufen"
+            ],
+            "Refresh Page": [
+                "Seite neu laden"
+            ],
+            "No results found": [
+                "Keine Ergebnisse gefunden"
+            ]
+        }
+    }
+}

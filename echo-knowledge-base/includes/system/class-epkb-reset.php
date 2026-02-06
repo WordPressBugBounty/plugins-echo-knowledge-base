@@ -152,7 +152,7 @@ class EPKB_Reset {
 		<div class="epkb-show-sequence-header"><?php esc_html_e( 'Article Sequence', 'echo-knowledge-base' ); ?></div>
 		<div class="epkb-show-sequence-list">
 			<div class="epkb-show-sequence-item epkb-show-sequence-item--title">
-				<div class="epkb-show-sequence-category_name"><?php esc_html( _x( 'Category', 'taxonomy singular name' ) ); ?></div>
+				<div class="epkb-show-sequence-category_name"><?php esc_html( _x( 'Category', 'taxonomy singular name', 'echo-knowledge-base' ) ); ?></div>
 				<div class="epkb-show-sequence-category_articles"><?php esc_html_e( 'Articles', 'echo-knowledge-base' ); ?></div>
 			</div>
 			<?php self::show_categories_sequence_tree( $category_seq_data, $article_sequence ); ?>

@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 15.312.0
+ * Version: 16.011.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '15.312.0';
+	public static $version = '16.011.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -112,10 +112,15 @@ final class Echo_Knowledge_Base {
 
 		new EPKB_Categories_Admin();
 		new EPKB_Template_Sync();
+		new EPKB_KB_Demo_Data();
 
 		$this->security_obj = new EPKB_AI_Security();
 		new EPKB_AI_REST_Search_Controller();
 		new EPKB_AI_REST_Chat_Controller();
+
+		// Setup Steps and Pointers for Help Resources page
+		new EPKB_Setup_Steps();
+		new EPKB_Setup_Pointers();
 	}
 
 	/**
@@ -164,10 +169,11 @@ final class Echo_Knowledge_Base {
 		new EPKB_AI_REST_Admin_Controller();
 		new EPKB_AI_REST_Training_Data_Controller();
 		new EPKB_AI_REST_Sync_Controller();
-		// new EPKB_AI_REST_Content_Analysis_Controller();  // Temporarily disabled for release
+		new EPKB_AI_REST_Content_Analysis_Controller();
+		new EPKB_AI_REST_Search_Results_Controller();
 
-		// Initialize sync handlers
 		EPKB_AI_Sync_Cron_Handler::init();
+		EPKB_AI_Search_Results_Display::init();
 	}
 
 	/**
@@ -198,10 +204,10 @@ final class Echo_Knowledge_Base {
 		} else if ( in_array( $action, array( 'epkb_toggle_debug', 'epkb_enable_advanced_search_debug', 'epkb_show_logs', 'epkb_reset_logs' ) ) ) {
 			new EPKB_Debug_Controller();
 			return;
-		} else if ( in_array( $action, array( 'epkb_get_wizard_template', 'epkb_apply_wizard_changes', 'epkb_wizard_update_order_view', 'epkb_apply_setup_wizard_changes', 'epkb_report_admin_error' ) ) ) {
+		} else if ( in_array( $action, array( 'epkb_get_wizard_template', 'epkb_apply_wizard_changes', 'epkb_wizard_update_order_view', 'epkb_apply_setup_wizard_changes', 'epkb_get_wizard_preset_preview' ) ) ) {
 			new EPKB_KB_Wizard_Cntrl();
 			return;
-		} else if ( in_array( $action, array( 'epkb_wpml_enable', 'eckb_update_category_slug_parameter', 'eckb_update_tag_slug_parameter', 'epkb_preload_fonts','epkb_enable_legacy_open_ai',
+		} else if ( in_array( $action, array( 'epkb_wpml_enable', 'eckb_update_category_slug_parameter', 'eckb_update_tag_slug_parameter', 'epkb_preload_fonts',
 												'epkb_load_resource_links_icons', 'epkb_load_general_typography', 'epkb_save_access_control', 'epkb_apply_settings_changes', 'epkb_save_kb_name',
 												'epkb_save_sidebar_intro_text', 'epkb_switch_kb_template' ) ) ) {
 			new EPKB_KB_Config_Controller();
@@ -276,8 +282,19 @@ final class Echo_Knowledge_Base {
 			return;
 		}
 
+		if ( in_array( $action, array( 'epkb_toggle_article_views_counter', 'epkb_get_filtered_analytics' ) ) ) {
+			new EPKB_Analytics_Page();
+			return;
+		}
+
 		if ( in_array( $action, array( 'eckb_apply_fe_settings', 'eckb_save_fe_settings', 'eckb_save_fe_article_settings', 'eckb_save_fe_archive_settings', 'eckb_closed_fe_editor' ) ) ) {
 			new EPKB_Frontend_Editor();
+			return;
+		}
+
+		// Elementor AJAX save - register hooks to convert text-editor widgets with KB shortcode to shortcode widgets
+		if ( $action == 'elementor_ajax' ) {
+			new EPKB_Site_Builders();
 			return;
 		}
 	}
@@ -296,9 +313,6 @@ final class Echo_Knowledge_Base {
 		if ( $is_kb_request && in_array( $pagenow, $admin_pages ) ) {
 			new EPKB_Admin_Notices();
 		}
-
-		// Initialize admin help chat
-		new EPKB_AI_Admin_Help_Chat();
 
 		// article new page
 		if ( $is_kb_request && $pagenow == 'post-new.php' ) {
@@ -352,11 +366,8 @@ final class Echo_Knowledge_Base {
 		new EPKB_AI_Admin_Page();
 		// TODO new EPKB_AI_Sync_Hooks();
 
-
-		// Load test system in development environments
-		/* if ( file_exists( self::$plugin_dir . 'tests/test-init.php' ) ) {
-			require_once self::$plugin_dir . 'tests/test-init.php';
-		} */
+		// Initialize Analytics Page to register AJAX handlers
+		new EPKB_Analytics_Page();
 	}
 
 	public function load_text_domain() {
@@ -402,3 +413,4 @@ function epkb_get_instance() {
 epkb_get_instance();
 
 endif; // end class_exists() check
+

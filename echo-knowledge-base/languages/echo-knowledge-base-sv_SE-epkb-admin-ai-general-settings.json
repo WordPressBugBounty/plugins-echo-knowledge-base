@@ -1,0 +1,63 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "sv_SE",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Settings saved successfully": [
+                "Inställningar sparades"
+            ],
+            "Close": [
+                "Stäng"
+            ],
+            "Cancel": [
+                "Avbryt"
+            ],
+            "Saving...": [
+                "Sparar …"
+            ],
+            "Save Settings": [
+                "Spara inställningar"
+            ],
+            "Failed to save settings": [
+                "Misslyckades med att spara inställningar"
+            ],
+            "Sending...": [
+                "Skickar..."
+            ],
+            "Test email sent successfully": [
+                "Test-e-post skickades framgångsrikt"
+            ],
+            "Failed to send test email": [
+                "Misslyckades med att skicka test-e-post"
+            ],
+            "Failed to send test email. Please check your connection.": [
+                "Misslyckades med att skicka test-e-post. Kontrollera din uppkoppling."
+            ],
+            "Change AI Provider?": [
+                "Byt AI-leverantör?"
+            ],
+            "Switching AI providers will affect your AI Search and AI Chat settings:": [
+                "Byte av AI-leverantörer kommer att påverka dina AI-sök- och AI-chattinställningar:"
+            ],
+            "Training Data Collections are provider-specific and do not transfer between providers.": [
+                "Maskininlärningsdatasamlingar är leverantörsspecifika och överförs inte mellan leverantörer."
+            ],
+            "You will need to create and train new collections for the new provider.": [
+                "Du måste skapa och träna nya samlingar för den nya leverantören."
+            ],
+            "AI Search and AI Chat will only show collections for the selected provider.": [
+                "AI Sök och AI Chatt kommer endast att visa samlingar för den valda leverantören."
+            ],
+            "Your existing collections will be preserved and available if you switch back.": [
+                "Dina befintliga samlingar kommer att behållas och vara tillgängliga om du byter tillbaka."
+            ],
+            "Change Provider": [
+                "Ändra leverantör"
+            ]
+        }
+    }
+}

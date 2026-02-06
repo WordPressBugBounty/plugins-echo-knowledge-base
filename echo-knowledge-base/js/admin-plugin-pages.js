@@ -137,7 +137,7 @@ jQuery(document).ready(function($) {
 				action: 'epkb_save_access_control',
 				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
 				epkb_kb_id: $( '#epkb-list-of-kbs' ).val(),
-				admin_eckb_access_need_help_read: $( '#admin_eckb_access_need_help_read input[type="radio"]:checked' ).val(),
+				admin_eckb_access_content_analysis: $( '#admin_eckb_access_content_analysis input[type="radio"]:checked' ).val(),
 				admin_eckb_access_search_analytics_read: $( '#admin_eckb_access_search_analytics_read input[type="radio"]:checked' ).val(),
 				admin_eckb_access_addons_news_read: $( '#admin_eckb_access_addons_news_read input[type="radio"]:checked' ).val(),
 				admin_eckb_access_order_articles_write: $( '#admin_eckb_access_order_articles_write input[type="radio"]:checked' ).val(),
@@ -384,6 +384,13 @@ jQuery(document).ready(function($) {
 		let active_secondary_panel_item_class = 'epkb-admin__secondary-panel__item--active';
 		let active_secondary_boxes_list_class = 'epkb-setting-box__list--active';
 
+		// If the tab has a URL, redirect to it
+		let redirect_url = $( this ).attr( 'data-url' );
+		if ( redirect_url ) {
+			window.location.href = redirect_url;
+			return;
+		}
+
 		// Do nothing for already active item, only make sure we have correct hash in URL
 		if ( $( this ).hasClass( active_secondary_panel_item_class ) ) {
 			window.location.hash = '#' + $( this ).attr( 'data-target' );
@@ -543,6 +550,8 @@ jQuery(document).ready(function($) {
 			epkb_send_ajax( postData, function() {
 				location.reload();
 			} );
+
+			return false;
 		});
 
 		// SHOW LOGS
@@ -559,6 +568,8 @@ jQuery(document).ready(function($) {
 			epkb_send_ajax( postData, function() {
 				location.reload();
 			} );
+
+			return false;
 		});
 
 		// RESET LOGS
@@ -575,6 +586,8 @@ jQuery(document).ready(function($) {
 			epkb_send_ajax( postData, function() {
 				location.reload();
 			} );
+
+			return false;
 		});
 
 		// TOGGLE ADVANCED SEARCH DEBUG
@@ -591,6 +604,8 @@ jQuery(document).ready(function($) {
 			epkb_send_ajax( postData, function() {
 				location.reload();
 			} );
+
+			return false;
 		});
 
 		// RESET SEQUENCE
@@ -611,6 +626,8 @@ jQuery(document).ready(function($) {
 					$( 'body' ).append( response.message );
 				}
 			} );
+
+			return false;
 		} );
 
 		// SHOW SEQUENCE
@@ -2809,29 +2826,6 @@ jQuery(document).ready(function($) {
 		} );
 	} );
 
-	// Enable or Disable OpenAI setting
-	$( document ).on( 'change', 'input[name="enable_legacy_open_ai"]', function() {
-
-		// Remove old messages
-		$('.eckb-top-notice-message').remove();
-
-		let postData = {
-			action: 'epkb_enable_legacy_open_ai',
-			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
-			enable_legacy_open_ai: $(this).prop('checked') ? 'on' : 'off'
-		};
-
-		epkb_send_ajax( postData, function( response ) {
-			$( '.eckb-top-notice-message' ).remove();
-			if ( typeof response.message !== 'undefined' ) {
-				$( 'body' ).append( response.message );
-			}
-
-			if ( typeof response.html !== 'undefined' ) {
-				$('.epkb-show-sequence-wrap').html( response.html );
-			}
-		} );
-	});
 
 	// Open editor tab when user want to change theme compatibility mode
 	$('[data-open-editor-link]').on('click', function(){
@@ -3486,6 +3480,12 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	// Cancel button in PRO feature ad dialog - closes the dialog
+	$( document ).on( 'click', '.epkb-dialog-pro-feature-ad__cancel-btn', function(e) {
+		e.preventDefault();
+		$( this ).closest( '.epkb-dialog-pro-feature-ad, .epkb-dialog-pro-feature-ad2' ).removeClass( 'epkb-dialog-pro-feature-ad--active' );
+	});
+
 	// If user clicks on the next or previous icon for php function: pro_feature_ad_box_with_images
 	let featureContainers = $( '.epkb-feature-container' );
 	let currentIndex = 0;
@@ -3702,81 +3702,269 @@ jQuery(document).ready(function($) {
 	});
 
 	/*********************************************************************************************
-	 * 
-	 * Dashboard Page - Add-ons Carousel
-	 * 
+	 *
+	 * AI Search Results - Column Sections Manager
+	 *
 	 *********************************************************************************************/
-	
-	// Add-ons Carousel functionality
-	let currentIndex = 0;
-	const $track = $(".epkb-addons-carousel-track");
-	const $items = $(".epkb-carousel-item");
-	const itemCount = $items.length;
-	
-	function updateCarousel() {
-		// Calculate translateX accounting for 20px gap between items
-		const gapPercentage = 5.5; // Approximate percentage for 20px gap
-		const translateX = -currentIndex * (100 + gapPercentage);
-		$track.css("transform", "translateX(" + translateX + "%)");
-		
+
+	// Add section to column
+	$( document ).on( 'click', '.epkb-btn-add-section', function() {
+		const $manager = $( this ).closest( '.epkb-search-results-column-manager' );
+		const $select = $manager.find( '.epkb-section-select' );
+		const sectionId = $select.val();
+
+		if ( ! sectionId ) {
+			return;
+		}
+
+		const sectionName = $select.find( 'option:selected' ).text();
+		const $list = $manager.find( '.epkb-sections-list' );
+
+		// Remove "no sections" message if present
+		$list.find( '.epkb-no-sections' ).remove();
+
+		// Add new section item
+		const $newItem = $( '<li class="epkb-section-item" data-section-id="' + sectionId + '">' +
+			'<span class="epkb-section-name">' + sectionName + '</span>' +
+			'<div class="epkb-section-actions">' +
+				'<button type="button" class="epkb-btn-move-up"><i class="epkbfa epkbfa-arrow-up"></i></button>' +
+				'<button type="button" class="epkb-btn-move-down"><i class="epkbfa epkbfa-arrow-down"></i></button>' +
+				'<button type="button" class="epkb-btn-remove"><i class="epkbfa epkbfa-times"></i></button>' +
+			'</div>' +
+		'</li>' );
+
+		$list.append( $newItem );
+
+		// Reset select
+		$select.val( '' );
+
+		// Update hidden input
+		updateColumnSectionsInput( $manager );
+
 		// Update button states
-		$(".epkb-carousel-prev").prop("disabled", currentIndex === 0);
-		$(".epkb-carousel-next").prop("disabled", currentIndex === itemCount - 1);
+		updateMoveButtonStates( $manager );
+	});
+
+	// Remove section from column
+	$( document ).on( 'click', '.epkb-btn-remove', function() {
+		const $item = $( this ).closest( '.epkb-section-item' );
+		const $manager = $item.closest( '.epkb-search-results-column-manager' );
+		const $list = $manager.find( '.epkb-sections-list' );
+
+		$item.remove();
+
+		// Add "no sections" message if list is empty
+		if ( $list.find( '.epkb-section-item' ).length === 0 ) {
+			$list.append( '<li class="epkb-no-sections">No sections added yet</li>' );
+		}
+
+		// Update hidden input
+		updateColumnSectionsInput( $manager );
+
+		// Update button states
+		updateMoveButtonStates( $manager );
+	});
+
+	// Move section up
+	$( document ).on( 'click', '.epkb-btn-move-up', function() {
+		const $item = $( this ).closest( '.epkb-section-item' );
+		const $prev = $item.prev( '.epkb-section-item' );
+
+		if ( $prev.length ) {
+			$item.insertBefore( $prev );
+
+			const $manager = $item.closest( '.epkb-search-results-column-manager' );
+			updateColumnSectionsInput( $manager );
+			updateMoveButtonStates( $manager );
+		}
+	});
+
+	// Move section down
+	$( document ).on( 'click', '.epkb-btn-move-down', function() {
+		const $item = $( this ).closest( '.epkb-section-item' );
+		const $next = $item.next( '.epkb-section-item' );
+
+		if ( $next.length ) {
+			$item.insertAfter( $next );
+
+			const $manager = $item.closest( '.epkb-search-results-column-manager' );
+			updateColumnSectionsInput( $manager );
+			updateMoveButtonStates( $manager );
+		}
+	});
+
+	// Update hidden input with current sections order
+	function updateColumnSectionsInput( $manager ) {
+		const sections = [];
+		$manager.find( '.epkb-section-item' ).each( function() {
+			sections.push( $( this ).data( 'section-id' ) );
+		});
+
+		$manager.find( '.epkb-column-sections-input' ).val( JSON.stringify( sections ) );
 	}
-	
-	$(".epkb-carousel-prev").on("click", function() {
-		if (currentIndex > 0) {
-			currentIndex--;
-			updateCarousel();
-		}
+
+	// Update move button states based on position
+	function updateMoveButtonStates( $manager ) {
+		const $items = $manager.find( '.epkb-section-item' );
+		const totalItems = $items.length;
+
+		$items.each( function( index ) {
+			const $item = $( this );
+			$item.find( '.epkb-btn-move-up' ).prop( 'disabled', index === 0 );
+			$item.find( '.epkb-btn-move-down' ).prop( 'disabled', index === totalItems - 1 );
+		});
+	}
+
+	// Update column width options when number of columns changes
+	$( document ).on( 'change', '.epkb-ai-search-results-num-columns select', function() {
+		const numColumns = $( this ).val();
+		const $widthsSelect = $( '.epkb-ai-search-results-column-widths select' );
+
+		// Define width options for each column configuration
+		const widthOptions = {
+			'1': { '100': 'Full Width' },
+			'2': {
+				'25-75': '25% / 75%',
+				'30-70': '30% / 70%',
+				'35-65': '35% / 65%',
+				'50-50': '50% / 50%'
+			},
+			'3': {
+				'25-50-25': '25% / 50% / 25%',
+				'30-40-30': '30% / 40% / 30%',
+				'35-30-35': '35% / 30% / 35%'
+			}
+		};
+
+		// Update width select options
+		const options = widthOptions[numColumns] || {};
+		$widthsSelect.empty();
+
+		$.each( options, function( value, label ) {
+			$widthsSelect.append( $( '<option>', {
+				value: value,
+				text: label
+			}));
+		});
+
+		// Show/hide column configuration fields
+		$( '.epkb-ai-search-results-column-2' ).toggle( numColumns >= 2 );
+		$( '.epkb-ai-search-results-column-3' ).toggle( numColumns >= 3 );
 	});
-	
-	$(".epkb-carousel-next").on("click", function() {
-		if (currentIndex < itemCount - 1) {
-			currentIndex++;
-			updateCarousel();
+
+	/*************************************************************************************************
+	 *
+	 *          DASHBOARD FEATURES CAROUSEL & IMAGE ZOOM
+	 *
+	 ************************************************************************************************/
+
+	// Only initialize if carousel exists
+	if ( $( '.epkb-features-carousel' ).length ) {
+		var currentSlide = 0;
+		var totalSlides = $( '.epkb-feature-slide' ).length;
+		var carouselInterval = null;
+
+		// Function to show specific slide
+		function showSlide( slideIndex ) {
+			// Wrap around if needed
+			if ( slideIndex >= totalSlides ) {
+				currentSlide = 0;
+			} else if ( slideIndex < 0 ) {
+				currentSlide = totalSlides - 1;
+			} else {
+				currentSlide = slideIndex;
+			}
+
+			// Hide all slides
+			$( '.epkb-feature-slide' ).removeClass( 'epkb-feature-slide--active' );
+			$( '.epkb-carousel-dot' ).removeClass( 'epkb-carousel-dot--active' );
+
+			// Show current slide
+			$( '.epkb-feature-slide[data-slide="' + currentSlide + '"]' ).addClass( 'epkb-feature-slide--active' );
+			$( '.epkb-carousel-dot[data-slide="' + currentSlide + '"]' ).addClass( 'epkb-carousel-dot--active' );
 		}
-	});
-	
-	// Initialize carousel
-	updateCarousel();
-	
-	// Add click handler for carousel items
-	$(".epkb-carousel-item img, .epkb-carousel-item h4").on("click", function() {
-		const $item = $(this).closest(".epkb-carousel-item");
-		const addonData = $item.data("addon");
-		
-		if (addonData) {
-			// Create and show modal dialog
-			const dialogContent = "<div class=\"epkb-addon-dialog-content\">" +
-				"<div class=\"epkb-addon-dialog-image\">" +
-					"<img src=\"" + addonData.img + "\" alt=\"" + addonData.title + "\">" +
-				"</div>" +
-				"<div class=\"epkb-addon-dialog-text\">" +
-					"<h3>" + addonData.title + "</h3>" +
-					(addonData.special_note ? "<p class=\"epkb-addon-note\"><i>" + addonData.special_note + "</i></p>" : "") +
-					"<p class=\"epkb-addon-desc\">" + addonData.desc + "</p>" +
-					"<a href=\"" + addonData.learn_more_url + "\" target=\"_blank\" class=\"epkb-primary-btn\">Learn More</a>" +
-				"</div>" +
-			"</div>";
-			
-			const $dialog = $("<div>").html(dialogContent).dialog({
-				modal: true,
-				width: 750,
-				maxWidth: "90%",
-				height: "auto",
-				maxHeight: "80vh",
-				resizable: false,
-				dialogClass: "epkb-addon-dialog",
-				close: function() {
-					$(this).dialog("destroy").remove();
+
+		// Previous button click
+		$( document ).on( 'click', '.epkb-carousel-btn--prev', function() {
+			showSlide( currentSlide - 1 );
+		});
+
+		// Next button click
+		$( document ).on( 'click', '.epkb-carousel-btn--next', function() {
+			showSlide( currentSlide + 1 );
+		});
+
+		// Dot click
+		$( document ).on( 'click', '.epkb-carousel-dot', function() {
+			var slideIndex = parseInt( $( this ).data( 'slide' ) );
+			showSlide( slideIndex );
+		});
+
+		// Keyboard navigation
+		$( document ).on( 'keydown', function(e) {
+			if ( $( '.epkb-features-carousel' ).length ) {
+				if ( e.key === 'ArrowLeft' || e.keyCode === 37 ) {
+					showSlide( currentSlide - 1 );
+				} else if ( e.key === 'ArrowRight' || e.keyCode === 39 ) {
+					showSlide( currentSlide + 1 );
 				}
-			});
-			
-			// Close dialog when clicking outside (on overlay)
-			$(".ui-widget-overlay").on("click", function() {
-				$dialog.dialog("close");
-			});
+			}
+		});
+
+		// Auto-advance carousel every 7.5 seconds (optional - remove if not wanted)
+		carouselInterval = setInterval( function() {
+			showSlide( currentSlide + 1 );
+		}, 7500 );
+
+		// Pause auto-advance on hover
+		$( document ).on( 'mouseenter', '.epkb-features-carousel-wrapper', function() {
+			if ( carouselInterval ) {
+				clearInterval( carouselInterval );
+				carouselInterval = null;
+			}
+		});
+
+		// Resume auto-advance on mouse leave
+		$( document ).on( 'mouseleave', '.epkb-features-carousel-wrapper', function() {
+			if ( ! carouselInterval ) {
+				carouselInterval = setInterval( function() {
+					showSlide( currentSlide + 1 );
+				}, 7500 );
+			}
+		});
+	}
+
+	// Handle zoomable image clicks (including zoom icon and image itself)
+	$( document ).on( 'click', '.epkb-zoomable-image, .epkb-zoom-icon', function(e) {
+		e.stopPropagation();
+		var $container = $( this ).closest( '.epkb-feature-image-container' );
+		var $img = $container.find( '.epkb-zoomable-image' );
+		var modal = $( '#epkb-image-zoom-modal' );
+		var modalImg = $( '#epkb-zoomed-image' );
+		var zoomSrc = $img.data( 'zoom-src' );
+
+		modal.addClass( 'epkb-modal-active' );
+		modalImg.attr( 'src', zoomSrc );
+	});
+
+	// Close modal when clicking on the X button
+	$( document ).on( 'click', '.epkb-image-zoom-close', function() {
+		$( '#epkb-image-zoom-modal' ).removeClass( 'epkb-modal-active' );
+	});
+
+	// Close modal when clicking outside the image
+	$( document ).on( 'click', '#epkb-image-zoom-modal', function(e) {
+		if ( $( e.target ).is( '#epkb-image-zoom-modal' ) ) {
+			$( this ).removeClass( 'epkb-modal-active' );
+		}
+	});
+
+	// Close modal with ESC key (updated to not interfere with carousel)
+	$( document ).on( 'keydown', function(e) {
+		if ( e.key === 'Escape' || e.keyCode === 27 ) {
+			if ( $( '#epkb-image-zoom-modal' ).hasClass( 'epkb-modal-active' ) ) {
+				$( '#epkb-image-zoom-modal' ).removeClass( 'epkb-modal-active' );
+			}
 		}
 	});
 

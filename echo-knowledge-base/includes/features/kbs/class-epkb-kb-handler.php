@@ -454,7 +454,7 @@ class EPKB_KB_Handler {
 		if ( is_wp_error( $kb_id ) ) {
 			$kb_id = self::get_kb_id_from_tag_taxonomy_name( $taxonomy );
 			if ( is_wp_error( $kb_id ) ) {
-				return new WP_Error('49', "kb_id not found");
+				return new WP_Error('49', 'KB ID not found' );  // no translation needed
 			}
 		}
 
@@ -472,17 +472,17 @@ class EPKB_KB_Handler {
 
 		if ( empty( $category_name ) || ! is_string( $category_name )
 			|| strpos( $category_name, self::KB_POST_TYPE_PREFIX ) === false || strpos( $category_name, self::KB_CATEGORY_TAXONOMY_SUFFIX ) === false ) {
-			return new WP_Error('40', "kb_id not found");
+			return new WP_Error('40', 'KB ID not found' );  // no translation needed
 		}
 
 		$kb_id = str_replace( array( self::KB_POST_TYPE_PREFIX, self::KB_CATEGORY_TAXONOMY_SUFFIX ), '', $category_name );
 
 		if ( empty( $kb_id ) ) {
-			return new WP_Error('41', "kb_id not found");
+			return new WP_Error('41', 'KB ID not found' );  // no translation needed
 		}
 
 		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
-			return new WP_Error('42', "kb_id not valid");
+			return new WP_Error('42', 'KB ID not valid' );   // no translation needed
 		}
 
 		return $kb_id;
@@ -499,17 +499,17 @@ class EPKB_KB_Handler {
 
 		if ( empty($tag_name) || ! is_string($tag_name)
 			|| strpos( $tag_name, self::KB_POST_TYPE_PREFIX ) === false || strpos( $tag_name, self::KB_TAG_TAXONOMY_SUFFIX ) === false ) {
-			return new WP_Error('50', "kb_id not found");
+			return new WP_Error('50', 'KB ID not found' );  // no translation needed
 		}
 
 		$kb_id = str_replace( array( self::KB_POST_TYPE_PREFIX, self::KB_TAG_TAXONOMY_SUFFIX ), '', $tag_name );
 
 		if ( empty($kb_id) ) {
-			return new WP_Error( '51', "kb_id not found" );
+			return new WP_Error( '51', 'KB ID not found' );  // no translation needed
 		}
 
 		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
-			return new WP_Error( '52', "kb_id not valid" );
+			return new WP_Error( '52', 'KB ID not valid' );   // no translation needed
 		}
 
 		return $kb_id;
@@ -525,12 +525,12 @@ class EPKB_KB_Handler {
 	public static function get_kb_id_from_post_type( $post_type ) {
 
 		if ( empty( $post_type ) || ! is_string( $post_type ) || strpos( $post_type, self::KB_POST_TYPE_PREFIX ) === false ) {
-			return new WP_Error('35', "kb_id not found");
+			return new WP_Error( '35', 'KB ID not found' );  // no translation needed
 		}
 
 		$kb_id = str_replace( self::KB_POST_TYPE_PREFIX, '', $post_type );
 		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
-			return new WP_Error('36', "kb_id not valid");
+			return new WP_Error( '36', 'KB ID not valid' );   // no translation needed
 		}
 
 		return $kb_id;
@@ -545,15 +545,15 @@ class EPKB_KB_Handler {
 
 		$parts = explode('?', $endpoint);
 		if ( empty($parts) ) {
-			return new WP_Error('37', "kb_id not valid");
+			return new WP_Error( '37', 'KB ID not valid' );  // no translation needed
 		}
 
 		$parts = explode('/', $parts[0]);
 		if ( empty($parts) ) {
-			return new WP_Error('37', "kb_id not valid");
+			return new WP_Error( '37', 'KB ID not valid' );  // no translation needed
 		}
 
-		$kb_id = new WP_Error('38', "kb_id not valid");
+		$kb_id = new WP_Error( '38', 'KB ID not valid' );  // no translation needed
 		foreach( $parts as $part ) {
 			if ( ! self::is_kb_post_type( $part ) ) {
 				continue;
@@ -771,6 +771,11 @@ class EPKB_KB_Handler {
 	public static function get_first_kb_main_page_url( $kb_config ) {
 
 		$first_page_url = '';
+
+		if ( ! is_array( $kb_config ) || empty( $kb_config['kb_main_pages'] ) || ! is_array( $kb_config['kb_main_pages'] ) ) {
+			return $first_page_url;
+		}
+
 		$kb_main_pages = $kb_config['kb_main_pages'];
 
 		foreach ( $kb_main_pages as $post_id => $post_title ) {

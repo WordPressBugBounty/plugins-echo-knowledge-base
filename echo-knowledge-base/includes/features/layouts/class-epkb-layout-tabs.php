@@ -66,7 +66,7 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 				$category_chunks = array_chunk( $this->category_seq_data, $max_tabs_per_row_escaped, true );
 				$ix = 0;  ?>
 
-				<ul class="epkb-nav-tabs epkb-top-categories-list epkb-nav-tabs-multirow epkb-nav-tabs-multirow--max-<?php echo $max_tabs_per_row_escaped; ?>"<?php echo $ul_style_escaped; ?> > <?php
+				<ul class="epkb-nav-tabs epkb-top-categories-list epkb-nav-tabs-multirow epkb-nav-tabs-multirow--max-<?php echo $max_tabs_per_row_escaped; ?>" role="tablist"<?php echo $ul_style_escaped; ?> > <?php
 
 					// Loop over each array of tabs
 					foreach ( $category_chunks as $category_chunk ) {
@@ -92,7 +92,7 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 							$class1_li_escaped = $this->get_css_class( $active . ', epkb_top_categories' );
 							$style2_li_escaped = $this->get_inline_style( 'color:: tab_nav_font_color' ); ?>
 
-							<li id="epkb_tab_<?php echo esc_attr( ++$ix ); ?>" tabindex="0"	<?php echo $class1_li_escaped; ?> data-cat-name="<?php echo esc_attr( $tab_cat_name ); ?>" >
+							<li id="epkb_tab_<?php echo esc_attr( ++$ix ); ?>" tabindex="0" role="tab" aria-selected="<?php echo $active ? 'true' : 'false'; ?>" <?php echo $class1_li_escaped; ?> data-cat-name="<?php echo esc_attr( $tab_cat_name ); ?>" >
 
 								<div class="epkb-category-level-1" data-kb-category-id="<?php echo esc_attr( $category_id ); ?>" <?php echo $style2_li_escaped; ?> >
 									<h2 class="epkb-cat-name"><?php echo esc_html( $category_name ); ?></h2>
@@ -122,7 +122,7 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 				$style2_escaped = $this->get_inline_style( 'background-color:: tab_nav_background_color, border-bottom-color:: tab_nav_border_color, border-bottom-style: solid, border-bottom-width: 1px' ); ?>
 
 				<section <?php echo $class1_escaped . ' ' . $style1_escaped; ?> >
-					<ul	class="epkb-nav-tabs epkb-top-categories-list" <?php echo $style2_escaped; ?> >					<?php
+					<ul	class="epkb-nav-tabs epkb-top-categories-list" role="tablist" <?php echo $style2_escaped; ?> >					<?php
 
 						$ix = 0;
 						foreach ( $this->category_seq_data as $category_id => $subcategories ) {
@@ -139,7 +139,7 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 							$class1_escaped = $this->get_css_class( $active . ', col-' . $nof_top_categories . ', epkb_top_categories');
 							$style2_escaped = $this->get_inline_style( 'color:: tab_nav_font_color' );  ?>
 
-							<li id="epkb_tab_<?php echo esc_attr( ++$ix ); ?>" tabindex="0" <?php echo $class1_escaped; ?> data-cat-name="<?php echo esc_attr( $tab_cat_name ); ?>">
+							<li id="epkb_tab_<?php echo esc_attr( ++$ix ); ?>" tabindex="0" role="tab" aria-selected="<?php echo $active ? 'true' : 'false'; ?>" <?php echo $class1_escaped; ?> data-cat-name="<?php echo esc_attr( $tab_cat_name ); ?>">
 								<div  class="epkb-category-level-1" data-kb-category-id="<?php echo esc_attr( $category_id ); ?>" <?php echo $style2_escaped; ?> >
 									<h2 class="epkb-cat-name"><?php echo esc_html( $category_name ); ?></h2>
 								</div>							<?php
@@ -450,7 +450,7 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 			/** DISPLAY SUB-SUB-CATEGORIES */
 			foreach ( $box_sub_category_list as $box_sub_category_id => $box_sub_sub_category_list ) {
 				$category_name = isset( $this->articles_seq_data[$box_sub_category_id][0] ) ?
-											$this->articles_seq_data[$box_sub_category_id][0] : _x( 'Category', 'taxonomy singular name' );
+											$this->articles_seq_data[$box_sub_category_id][0] : _x( 'Category', 'taxonomy singular name', 'echo-knowledge-base' );
 
 				$class1_escaped = $this->get_css_class( '::expand_articles_icon, epkb-category-level-2-3__cat-icon' );
 				$style1_escaped = $this->get_inline_style( 'color:: section_category_icon_color' );

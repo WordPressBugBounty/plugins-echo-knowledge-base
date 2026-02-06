@@ -8,192 +8,150 @@
  */
 class EPKB_AI_Content_Analysis_Utilities {
 
-	// Metadata keys
+	// Legacy metadata keys (no longer used - data now stored in database table)
 	const META_SCORES_DATA = '_epkb_content_scores_data';
 	const META_ANALYSIS_STATUS = '_epkb_content_analysis_status';
 	const META_ANALYSIS_ERROR = '_epkb_content_analysis_error';
 	const META_ANALYSIS_ERROR_CODE = '_epkb_content_analysis_error_code';
 
-	// Date metadata keys
-	const META_DATE_ANALYZED = '_epkb_content_date_analyzed';
-	const META_DATE_IMPROVED = '_epkb_content_date_improved';
-	const META_DATE_IGNORED = '_epkb_content_date_ignored';
-	const META_DATE_DONE = '_epkb_content_date_done';
-
 	/**
 	 * Save article analysis scores
+	 * Now uses database table instead of post meta
 	 *
 	 * @param int $article_id Article ID
 	 * @param array $scores Array with 'overall' and 'components' keys
-	 * @param int $importance Importance score
 	 * @return bool Success
 	 */
-	public static function save_article_scores( $article_id, $scores, $importance = 0 ) {
+	public static function save_article_scores( $article_id, $scores ) {
 
 		if ( ! is_array( $scores ) || ! isset( $scores['overall'] ) || ! isset( $scores['components'] ) ) {
 			return false;
 		}
 
-		$scores_data = array(
-			'overall' => (int) $scores['overall'],
-			'components' => $scores['components'],
-			'importance' => (int) $importance
+		$db = new EPKB_AI_Content_Analysis_DB();
+		$data = array(
+			'overall_score' => (int) $scores['overall'],
+			'analyzed_at' => gmdate( 'Y-m-d H:i:s' ),
+			'status' => 'analyzed'
 		);
 
-		return update_post_meta( $article_id, self::META_SCORES_DATA, $scores_data );
+		$result = $db->save_article_analysis( $article_id, $data );
+
+		return ! is_wp_error( $result );
 	}
 
 	/**
-	 * Get article scores
+	 * Get article scores from database
 	 *
 	 * @param int $article_id Article ID
 	 * @return array|null Array of scores or null if not analyzed
 	 */
-	public static function get_article_scores( $article_id ) {
+	public static function get_article_scores( $article_id, $analysis=null ) {
 
-		$scores_data = get_post_meta( $article_id, self::META_SCORES_DATA, true );
+		if ( ! $analysis ) {
+			$db = new EPKB_AI_Content_Analysis_DB();
+			$analysis = $db->get_article_analysis( $article_id );
+		}
 
-		if ( empty( $scores_data ) || ! is_array( $scores_data ) ) {
+		if ( ! $analysis || is_wp_error( $analysis ) ) {
 			return null;
 		}
 
-		// Ensure all expected keys exist
-		return wp_parse_args( $scores_data, array(
-			'overall' => 0,
-			'components' => array(),
-			'importance' => 0
-		) );
-	}
+		// Build components array from individual score fields
+		$components = array(
+			'tags_usage' => (int) $analysis->tags_usage_score,
+			'readability' => (int) $analysis->readability_score,
+			'gap_analysis' => (int) $analysis->gap_analysis_score
+		);
 
-	/**
-	 * Add or update a score component
-	 *
-	 * @param int $article_id Article ID
-	 * @param string $component_name Name of the score component
-	 * @param int $score Score value (0-100)
-	 * @param bool $recalculate_overall Whether to recalculate the overall score
-	 * @return bool Success
-	 */
-	public static function add_score_component( $article_id, $component_name, $score, $recalculate_overall = true ) {
-
-		$scores_data = self::get_article_scores( $article_id );
-
-		if ( ! $scores_data ) {
-			return false;
-		}
-
-		// Add or update the component
-		$scores_data['components'][$component_name] = (int) $score;
-
-		// Recalculate overall score if requested
-		if ( $recalculate_overall && ! empty( $scores_data['components'] ) ) {
-			$total = array_sum( $scores_data['components'] );
-			$count = count( $scores_data['components'] );
-			$scores_data['overall'] = round( $total / $count );
-		}
-
-		return update_post_meta( $article_id, self::META_SCORES_DATA, $scores_data );
-	}
-
-	/**
-	 * Remove a score component
-	 *
-	 * @param int $article_id Article ID
-	 * @param string $component_name Name of the score component to remove
-	 * @param bool $recalculate_overall Whether to recalculate the overall score
-	 * @return bool Success
-	 */
-	public static function remove_score_component( $article_id, $component_name, $recalculate_overall = true ) {
-
-		$scores_data = self::get_article_scores( $article_id );
-
-		if ( ! $scores_data || ! isset( $scores_data['components'][$component_name] ) ) {
-			return false;
-		}
-
-		unset( $scores_data['components'][$component_name] );
-
-		// Recalculate overall score if requested and components remain
-		if ( $recalculate_overall && ! empty( $scores_data['components'] ) ) {
-			$total = array_sum( $scores_data['components'] );
-			$count = count( $scores_data['components'] );
-			$scores_data['overall'] = round( $total / $count );
-		} elseif ( empty( $scores_data['components'] ) ) {
-			$scores_data['overall'] = 0;
-		}
-
-		return update_post_meta( $article_id, self::META_SCORES_DATA, $scores_data );
+		return array(
+			'overall' => (int) $analysis->overall_score,
+			'components' => $components,
+			'importance' => (int) $analysis->importance
+		);
 	}
 
 	/**
 	 * Set article analysis status
 	 *
 	 * @param int $article_id Article ID
-	 * @param string $status Status: 'analyzed', 'error', 'pending'
+	 * @param string $status
 	 * @return bool Success
 	 */
 	public static function set_analysis_status( $article_id, $status ) {
-		return update_post_meta( $article_id, self::META_ANALYSIS_STATUS, $status );
+		$db = new EPKB_AI_Content_Analysis_DB();
+		$result = $db->save_article_analysis( $article_id, array( 'status' => $status ) );
+		return ! is_wp_error( $result );
 	}
 
 	/**
-	 * Get article analysis status
+	 * Get article analysis status from database
 	 *
 	 * @param int $article_id Article ID
 	 * @return string Status or empty string if not set
 	 */
-	public static function get_analysis_status( $article_id ) {
-		return get_post_meta( $article_id, self::META_ANALYSIS_STATUS, true ) ?: '';
+	public static function get_analysis_status( $article_id, $analysis=null ) {
+
+		if ( ! $analysis ) {
+			$db = new EPKB_AI_Content_Analysis_DB();
+			$analysis = $db->get_article_analysis( $article_id );
+		}
+
+		return $analysis && ! is_wp_error( $analysis ) ? $analysis->status : '';
 	}
 
 	/**
-	 * Set analysis error
+	 * Set analysis error - uses database now
 	 *
-	 * @param int $article_id Article ID
+	 * @param $post
 	 * @param string $error_message Error message (max 200 characters)
 	 * @param int $error_code Error code
 	 * @return bool Success
 	 */
-	public static function set_analysis_error( $article_id, $error_message, $error_code = 500 ) {
+	public static function set_analysis_error( $post, $error_message, $error_code = 500 ) {
+
+		// Log error to AI error log
+		$article_title = $post ? $post->post_title : "Article #{$post->ID}";
+
+		EPKB_AI_Log::add_log( $error_message, array(
+			'context' => 'Content Analysis',
+			'article_id' => $post->ID,
+			'article_title' => $article_title,
+			'error_code' => $error_code
+		) );
 
 		// Limit error message length
 		if ( strlen( $error_message ) > 200 ) {
 			$error_message = substr( $error_message, 0, 197 ) . '...';
 		}
 
-		update_post_meta( $article_id, self::META_ANALYSIS_ERROR, $error_message );
-		update_post_meta( $article_id, self::META_ANALYSIS_ERROR_CODE, $error_code );
+		$db = new EPKB_AI_Content_Analysis_DB();
+		$result = $db->save_article_analysis( $post->ID, array( 'error_message' => $error_message, 'status' => 'error' ) );
 
-		return self::set_analysis_status( $article_id, 'error' );
+		return ! is_wp_error( $result );
 	}
 
 	/**
-	 * Clear analysis error
-	 *
-	 * @param int $article_id Article ID
-	 * @return bool Success
-	 */
-	public static function clear_analysis_error( $article_id ) {
-		delete_post_meta( $article_id, self::META_ANALYSIS_ERROR );
-		delete_post_meta( $article_id, self::META_ANALYSIS_ERROR_CODE );
-		return true;
-	}
-
-	/**
-	 * Get analysis error
+	 * Get analysis error from database
 	 *
 	 * @param int $article_id Article ID
 	 * @return array Array with 'message' and 'code' keys
 	 */
-	public static function get_analysis_error( $article_id ) {
+	public static function get_analysis_error( $article_id, $analysis=null ) {
+
+		if ( ! $analysis ) {
+			$db = new EPKB_AI_Content_Analysis_DB();
+			$analysis = $db->get_article_analysis( $article_id );
+		}
+
 		return array(
-			'message' => get_post_meta( $article_id, self::META_ANALYSIS_ERROR, true ) ?: '',
-			'code' => get_post_meta( $article_id, self::META_ANALYSIS_ERROR_CODE, true ) ?: 0
+			'message' => $analysis && ! is_wp_error( $analysis ) && $analysis->error_message ? $analysis->error_message : '',
+			'code' => 0 // No longer storing error codes separately
 		);
 	}
 
 	/**
-	 * Update article date for specific action
+	 * Update article date for specific action - uses database now
 	 *
 	 * @param int $article_id Article ID
 	 * @param string $action Action type: 'analyzed', 'improved', 'ignored', 'done'
@@ -208,10 +166,21 @@ class EPKB_AI_Content_Analysis_Utilities {
 			return false;
 		}
 
-		$meta_key = constant( 'self::META_DATE_' . strtoupper( $action ) );
-		$date_value = $date ?: current_time( 'mysql' );
+		$db = new EPKB_AI_Content_Analysis_DB();
+		$date_value = $date ?: gmdate( 'Y-m-d H:i:s' );
 
-		return update_post_meta( $article_id, $meta_key, $date_value );
+		// Map action to database field
+		$field_map = array(
+			'analyzed' => 'analyzed_at',
+			'improved' => 'date_improved',
+			'ignored' => 'date_ignored',
+			'done' => 'date_done'
+		);
+
+		$field = $field_map[$action];
+		$result = $db->save_article_analysis( $article_id, array( $field => $date_value ) );
+
+		return ! is_wp_error( $result );
 	}
 
 	/**
@@ -229,93 +198,73 @@ class EPKB_AI_Content_Analysis_Utilities {
 			return false;
 		}
 
-		$meta_key = constant( 'self::META_DATE_' . strtoupper( $action ) );
+		$db = new EPKB_AI_Content_Analysis_DB();
 
-		return delete_post_meta( $article_id, $meta_key );
+		// Map action to database field
+		$field_map = array(
+			'analyzed' => 'analyzed_at',
+			'improved' => 'date_improved',
+			'ignored' => 'date_ignored',
+			'done' => 'date_done'
+		);
+
+		$field = $field_map[$action];
+		$result = $db->save_article_analysis( $article_id, array( $field => null ) );
+
+		return ! is_wp_error( $result );
 	}
 
 	/**
-	 * Get all article dates
+	 * Get all article dates from database
 	 *
 	 * @param int $article_id Article ID
 	 * @return array Array of dates
 	 */
-	public static function get_article_dates( $article_id ) {
+	public static function get_article_dates( $article_id, $analysis=null ) {
+
+		if ( ! $analysis ) {
+			$db = new EPKB_AI_Content_Analysis_DB();
+			$analysis = $db->get_article_analysis( $article_id );
+		}
+
+		if ( ! $analysis || is_wp_error( $analysis ) ) {
+			return array(
+				'analyzed' => '',
+				'improved' => '',
+				'ignored' => '',
+				'done' => ''
+			);
+		}
+
 		return array(
-			'analyzed' => get_post_meta( $article_id, self::META_DATE_ANALYZED, true ) ?: '',
-			'improved' => get_post_meta( $article_id, self::META_DATE_IMPROVED, true ) ?: '',
-			'ignored' => get_post_meta( $article_id, self::META_DATE_IGNORED, true ) ?: '',
-			'done' => get_post_meta( $article_id, self::META_DATE_DONE, true ) ?: ''
+			'analyzed' => $analysis->analyzed_at ?: '',
+			'improved' => $analysis->date_improved ?: '',
+			'ignored' => $analysis->date_ignored ?: '',
+			'done' => $analysis->date_done ?: ''
 		);
 	}
 
 	/**
-	 * Get a specific article date
+	 * Get a specific article date from database
 	 *
 	 * @param int $article_id Article ID
 	 * @param string $action Action type: 'analyzed', 'improved', 'ignored', 'done'
 	 * @return string Date string or empty string
 	 */
 	public static function get_article_date( $article_id, $action ) {
-
-		$valid_actions = array( 'analyzed', 'improved', 'ignored', 'done' );
-
-		if ( ! in_array( $action, $valid_actions ) ) {
-			return '';
-		}
-
-		$meta_key = constant( 'self::META_DATE_' . strtoupper( $action ) );
-
-		return get_post_meta( $article_id, $meta_key, true ) ?: '';
+		$dates = self::get_article_dates( $article_id );
+		return isset( $dates[$action] ) ? $dates[$action] : '';
 	}
 
 	/**
-	 * Initialize all date fields for an article
-	 *
-	 * @param int $article_id Article ID
-	 * @return bool Success
-	 */
-	public static function initialize_date_fields( $article_id ) {
-
-		$date_fields = array(
-			self::META_DATE_IMPROVED,
-			self::META_DATE_IGNORED,
-			self::META_DATE_DONE
-		);
-
-		foreach ( $date_fields as $meta_key ) {
-			if ( ! metadata_exists( 'post', $article_id, $meta_key ) ) {
-				update_post_meta( $article_id, $meta_key, '' );
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * Clear all analysis metadata for an article
+	 * Clear all analysis data for an article
 	 *
 	 * @param int $article_id Article ID
 	 * @return bool Success
 	 */
 	public static function clear_all_analysis_metadata( $article_id ) {
-
-		$meta_keys = array(
-			self::META_SCORES_DATA,
-			self::META_ANALYSIS_STATUS,
-			self::META_ANALYSIS_ERROR,
-			self::META_ANALYSIS_ERROR_CODE,
-			self::META_DATE_ANALYZED,
-			self::META_DATE_IMPROVED,
-			self::META_DATE_IGNORED,
-			self::META_DATE_DONE
-		);
-
-		foreach ( $meta_keys as $meta_key ) {
-			delete_post_meta( $article_id, $meta_key );
-		}
-
-		return true;
+		$db = new EPKB_AI_Content_Analysis_DB();
+		return $db->delete_article_analysis( $article_id );
 	}
 
 	/**
@@ -326,10 +275,13 @@ class EPKB_AI_Content_Analysis_Utilities {
 	 */
 	public static function get_article_analysis_data( $article_id ) {
 
-		$scores = self::get_article_scores( $article_id );
-		$dates = self::get_article_dates( $article_id );
-		$status = self::get_analysis_status( $article_id );
-		$error = self::get_analysis_error( $article_id );
+		$db = new EPKB_AI_Content_Analysis_DB();
+		$analysis = $db->get_article_analysis( $article_id );
+
+		$scores = self::get_article_scores( $article_id, $analysis );
+		$dates = self::get_article_dates( $article_id, $analysis );
+		$status = self::get_analysis_status( $article_id, $analysis );
+		$error = self::get_analysis_error( $article_id, $analysis );
 
 		return array(
 			'status' => $status ?: 'not_analyzed',
@@ -412,35 +364,6 @@ class EPKB_AI_Content_Analysis_Utilities {
 	}
 
 	/**
-	 * Check if article needs improvement
-	 *
-	 * @param int $article_id Article ID
-	 * @param int $score_threshold Minimum acceptable score
-	 * @return bool
-	 */
-	public static function needs_improvement( $article_id, $score_threshold = 70 ) {
-
-		$data = self::get_article_analysis_data( $article_id );
-
-		// Not analyzed or has error
-		if ( ! $data['is_analyzed'] ) {
-			return false;
-		}
-
-		// Already improved, ignored, or done
-		if ( $data['is_improved'] || $data['is_ignored'] || $data['is_done'] ) {
-			return false;
-		}
-
-		// Check score threshold
-		if ( $data['scores'] && $data['scores']['overall'] < $score_threshold ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Format score components for display
 	 *
 	 * @param array $components Score components array
@@ -450,7 +373,6 @@ class EPKB_AI_Content_Analysis_Utilities {
 
 		$formatted = array();
 
-		// Always show Tags Usage first, then placeholder scores for future features
 		// Tags Usage
 		if ( isset( $components['tags_usage'] ) ) {
 			$formatted[] = array(
@@ -464,18 +386,151 @@ class EPKB_AI_Content_Analysis_Utilities {
 			);
 		}
 
-		// Future Score 2 (will be Gap Analysis but hidden for now)
-		$formatted[] = array(
-			'name' => 'Score 2',
-			'value' => '-'
-		);
+		// Gap Analysis
+		if ( isset( $components['gap_analysis'] ) ) {
+			$formatted[] = array(
+				'name' => __( 'Gap Analysis', 'echo-knowledge-base' ),
+				'value' => $components['gap_analysis']
+			);
+		} else {
+			$formatted[] = array(
+				'name' => __( 'Gap Analysis', 'echo-knowledge-base' ),
+				'value' => '-'
+			);
+		}
 
-		// Future Score 3 (will be Readability but hidden for now)
-		$formatted[] = array(
-			'name' => 'Score 3',
-			'value' => '-'
-		);
+		// Readability
+		if ( isset( $components['readability'] ) ) {
+			$formatted[] = array(
+				'name' => __( 'Readability', 'echo-knowledge-base' ),
+				'value' => $components['readability']
+			);
+		} else {
+			$formatted[] = array(
+				'name' => __( 'Readability', 'echo-knowledge-base' ),
+				'value' => '-'
+			);
+		}
 
 		return $formatted;
+	}
+
+	/**
+	 * Calculate article importance based on view count
+	 *
+	 * Uses a logarithmic scale to convert article views into an importance score (0-100).
+	 * The logarithmic approach means that early views have more impact than later views,
+	 * which makes sense because the difference between 0 and 10 views is more significant
+	 * than the difference between 990 and 1000 views.
+	 *
+	 * Scale examples:
+	 * - 0 views = 0 importance
+	 * - 10 views = 30 importance
+	 * - 100 views = 60 importance
+	 * - 1000 views = 90 importance
+	 * - 10000+ views = 100 importance
+	 *
+	 * @param int $article_id Article ID
+	 * @return int Importance score (0-100)
+	 */
+	public static function calculate_article_importance( $article_id ) {
+
+		// Get article view count from post meta
+		$views = (int) EPKB_Utilities::get_postmeta( $article_id, 'epkb-article-views', 0 );
+		if ( $views <= 0 ) {
+			return 0;
+		}
+
+		// Use logarithmic scale: importance = 30 * log10(views + 1)
+		// This gives a nice curve where early views matter more
+		$importance = round( 30 * log10( $views + 1 ) );
+
+		// Cap at 100 and ensure non-negative
+		$importance = max( 0, min( 100, $importance ) );
+
+		return $importance;
+	}
+
+	// ===== AI ANALYSIS HELPER METHODS =====
+
+	/**
+	 * Remove markdown code fences from text
+	 *
+	 * @param string $text Text that may contain markdown code blocks
+	 * @return string Cleaned text
+	 */
+	public static function remove_markdown_code_fences( $text ) {
+		$text = trim( $text );
+
+		// Remove markdown code blocks if present (e.g., ```json ... ``` or ``` ... ```)
+		if ( preg_match( '/^```(?:json)?\s*\n?(.*?)\n?```$/s', $text, $matches ) ) {
+			return trim( $matches[1] );
+		}
+
+		return $text;
+	}
+
+	/**
+	 * Parse JSON response from AI with error handling
+	 *
+	 * @param string $json_text JSON text to parse
+	 * @param string $context Context for logging (e.g., 'readability', 'gap_analysis')
+	 * @return array|WP_Error Parsed data or error
+	 */
+	public static function parse_json_response( $json_text, $context = 'ai_analysis' ) {
+
+		// Remove markdown code fences if present
+		$json_text = self::remove_markdown_code_fences( $json_text );
+
+		// Parse JSON response
+		$parsed_response = json_decode( $json_text, true );
+		if ( json_last_error() !== JSON_ERROR_NONE ) {
+			// Check if response appears to be truncated
+			$is_truncated = false;
+			$error_message = __( 'Failed to parse AI response as JSON', 'echo-knowledge-base' );
+			
+			// Detect truncation: valid JSON should end with } or ]
+			$trimmed = rtrim( $json_text );
+			if ( ! empty( $trimmed ) ) {
+				$last_char = substr( $trimmed, -1 );
+				// If JSON doesn't end with closing brace or bracket, it's likely truncated
+				// Also check if it looks like it was cut off mid-word or mid-string
+				if ( ! in_array( $last_char, array( '}', ']' ) ) && 
+				     ( strpos( $trimmed, '{' ) !== false || strpos( $trimmed, '[' ) !== false ) ) {
+					$is_truncated = true;
+					$error_message = __( 'AI response appears to be truncated. The response may have exceeded the maximum output length. Please try again.', 'echo-knowledge-base' );
+				}
+			}
+			
+			// Log the raw response for debugging (truncate if very long to avoid log bloat)
+			$log_text = strlen( $json_text ) > 5000 ? substr( $json_text, 0, 5000 ) . '...[truncated for logging]' : $json_text;
+			EPKB_AI_Log::add_log( 'Failed to parse AI response' . ( $is_truncated ? ' (truncated)' : '' ), $log_text );
+			
+			return new WP_Error( 'json_parse_error', $error_message, $json_text );
+		}
+
+		return $parsed_response;
+	}
+
+	/**
+	 * Process article content for AI analysis
+	 * Uses EPKB_AI_Content_Processor for consistent content cleaning
+	 *
+	 * @param string $content Raw article content
+	 * @param int $post_id Article ID
+	 * @param int $max_length Maximum length for AI analysis (default: 10000)
+	 * @return string|WP_Error Processed content or error
+	 */
+	public static function process_article_content_for_ai( $content, $post_id = 0, $max_length = 10000 ) {
+
+		// Use the same content processing that we use for Training Data sync
+		$content_processor = new EPKB_AI_Content_Processor();
+		$processed_content = $content_processor->clean_content( $content, $post_id );
+		if ( is_wp_error( $processed_content ) ) {
+			return $processed_content;
+		}
+
+		// Apply length limit for AI analysis
+		return mb_substr( $processed_content, 0, $max_length, 'UTF-8' );
 	}
 }

@@ -1,0 +1,234 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "it_IT",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Search Results": [
+                "Risultati della ricerca"
+            ],
+            "Page": [
+                "Pagina"
+            ],
+            "Settings saved successfully": [
+                "Impostazioni salvate con successo"
+            ],
+            "Cancel": [
+                "Annulla"
+            ],
+            "Next": [
+                "Avanti"
+            ],
+            "Previous": [
+                "Precedente"
+            ],
+            "Reset": [
+                "Ripristina"
+            ],
+            "Saving...": [
+                "Salvataggio..."
+            ],
+            "Save Settings": [
+                "Salva impostazioni"
+            ],
+            "Search History": [
+                "Storico delle ricerche"
+            ],
+            "Search Settings": [
+                "Impostazioni di ricerca"
+            ],
+            "Single Column": [
+                "Colonna singola"
+            ],
+            "Left Column": [
+                "Colonna sinistra"
+            ],
+            "Right Column": [
+                "Colonna destra"
+            ],
+            "Middle Column": [
+                "Colonna centrale"
+            ],
+            "Feedback": [
+                "Feedback"
+            ],
+            "AI Assistant": [
+                "Assistente IA"
+            ],
+            "Delete": [
+                "Elimina"
+            ],
+            "Delete Selected": [
+                "Elimina selezionati"
+            ],
+            "of": [
+                "di"
+            ],
+            "Refreshing...": [
+                "Aggiornamento in corso..."
+            ],
+            "Refresh": [
+                "Aggiorna"
+            ],
+            "Time": [
+                "Tempo"
+            ],
+            "User": [
+                "Utente"
+            ],
+            "Searching server for more results...": [
+                "Ricerca sul server di ulteriori risultati..."
+            ],
+            "Are you sure you want to reset to default instructions?": [
+                "Sei sicuro di voler ripristinare le istruzioni predefinite?"
+            ],
+            "Reset Instructions": [
+                "Ripristina le istruzioni"
+            ],
+            "Are you sure you want to reset to default instructions? Your custom instructions will be lost.": [
+                "Sei sicuro di voler ripristinare le istruzioni predefinite? Le tue istruzioni personalizzate verranno perse."
+            ],
+            "Reset to Default": [
+                "Ripristina impostazioni predefinite"
+            ],
+            "Training data issues detected": [
+                "Problemi nei Dati di apprendimento automatico rilevati"
+            ],
+            "Failed to save settings": [
+                "Impossibile salvare le impostazioni"
+            ],
+            "Go to Settings": [
+                "Vai alle Impostazioni"
+            ],
+            "Deleting search...": [
+                "Eliminazione della ricerca..."
+            ],
+            "Are you sure you want to delete the selected searches?": [
+                "Sei sicuro di voler eliminare le ricerche selezionate?"
+            ],
+            "Delete Search History": [
+                "Elimina cronologia delle ricerche"
+            ],
+            "Deleting searches...": [
+                "Eliminazione delle ricerche in corso..."
+            ],
+            "Search history refreshed successfully": [
+                "Cronologia delle ricerche aggiornata con successo"
+            ],
+            "Search queries...": [
+                "Query di ricerca..."
+            ],
+            "Loading search history...": [
+                "Caricamento della cronologia delle ricerche..."
+            ],
+            "No searches found": [
+                "Nessuna ricerca trovata"
+            ],
+            "Search Query": [
+                "Query di ricerca"
+            ],
+            "Info": [
+                "Informazioni"
+            ],
+            "Contact request submitted": [
+                "Richiesta di contatto inviata"
+            ],
+            "User Needs Help": [
+                "L'utente necessita assistenza"
+            ],
+            "Positive feedback": [
+                "Feedback positivo"
+            ],
+            "Negative feedback": [
+                "Feedback negativo"
+            ],
+            "Search Details": [
+                "Dettagli della ricerca"
+            ],
+            "Select a search to view details": [
+                "Seleziona una ricerca per visualizzare i dettagli"
+            ],
+            "Contact Request": [
+                "Richiesta di contatto"
+            ],
+            "Name:": [
+                "Nome:"
+            ],
+            "Email:": [
+                "Email:"
+            ],
+            "Vote:": [
+                "Voto:"
+            ],
+            "Positive": [
+                "Positivo"
+            ],
+            "Negative": [
+                "Negativo"
+            ],
+            "Search Interaction": [
+                "Interazione di ricerca"
+            ],
+            "AI Response": [
+                "Risposta AI"
+            ],
+            "✓ Clicked": [
+                "✓ Cliccato"
+            ],
+            "Relevance:": [
+                "Rilevanza:"
+            ],
+            "No sections added yet": [
+                "Nessuna sezione ancora aggiunta"
+            ],
+            "-- Select Section --": [
+                "-- Sezione --"
+            ],
+            "Add Section": [
+                "Aggiungi sezione"
+            ],
+            "Are you sure you want to reset to the default prompt?": [
+                "Sei sicuro di voler ripristinare il prompt predefinito?"
+            ],
+            "Reset Prompt": [
+                "Ripristina prompt predefinito"
+            ],
+            "Are you sure you want to reset to the default prompt? Your custom prompt will be lost.": [
+                "Sei sicuro di voler ripristinare il prompt predefinito? Il tuo prompt personalizzato verrà perso."
+            ],
+            "Select Section:": [
+                "Seleziona sezione:"
+            ],
+            "Prompt:": [
+                "Prompt:"
+            ],
+            "Using custom prompt": [
+                "Utilizzando prompt personalizzato"
+            ],
+            "Using default prompt": [
+                "Utilizzando prompt predefinito"
+            ],
+            "AI Search needs a valid Training Data collection. Resolve the issues below in Training Data or KB Configuration.": [
+                "IA Ricerca ha bisogno di una collezione di Dati di addestramento valida. Risolvi i problemi di seguito in Dati di addestramento o Configurazione KB."
+            ],
+            "Failed to load search history": [
+                "Impossibile caricare la cronologia delle ricerche"
+            ],
+            "Searches deleted successfully": [
+                "Le ricerche sono state eliminate con successo"
+            ],
+            "Failed to delete searches": [
+                "Impossibile eliminare le ricerche"
+            ],
+            "AI Search is Disabled": [
+                "AI Ricerca è disabilitata"
+            ],
+            "To view search history, please enable AI Search in the Settings tab.": [
+                "Per visualizzare la cronologia della ricerca, abilita AI Ricerca nella scheda Impostazioni."
+            ]
+        }
+    }
+}

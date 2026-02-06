@@ -1,0 +1,84 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "ja",
+                "plural-forms": "nplurals=1; plural=0;"
+            },
+            "Cancel": [
+                "キャンセル"
+            ],
+            "Vote for Top 3 Features": [
+                "トップ3機能に投票"
+            ],
+            "First Name": [
+                "名"
+            ],
+            "(optional)": [
+                "（任意）"
+            ],
+            "Email": [
+                "メール"
+            ],
+            "Failed to submit vote. Please try again.": [
+                "投票の送信に失敗しました。もう一度お試しください。."
+            ],
+            "Please enter a valid email address.": [
+                "有効なメールアドレスを入力してください。."
+            ],
+            "Warnings": [
+                "警告"
+            ],
+            "Help us prioritize features by providing your information:": [
+                "情報を提供して、機能の優先順位を決定するのをお手伝いください："
+            ],
+            "Describe Your Feature Request": [
+                "機能リクエストの内容を説明してください"
+            ],
+            "Please describe the feature you would like to see...": [
+                "見てみたい機能を説明してください..."
+            ],
+            "Submit Vote": [
+                "投票を送信"
+            ],
+            "Please describe the feature you would like to see.": [
+                "見てみたい機能について説明してください。."
+            ],
+            "Please select at least one feature to vote for.": [
+                "投票する機能を少なくとも1つ選択してください。."
+            ],
+            "Submitting your vote...": [
+                "投票を送信しています..."
+            ],
+            "Thank you for voting!": [
+                "投票ありがとうございます！"
+            ],
+            "An error occurred. Please try again.": [
+                "エラーが発生しました。もう一度お試しください。."
+            ],
+            "Latest AI Updates": [
+                "最新のAIアップデート"
+            ],
+            "Learn more": [
+                "詳しく見る"
+            ],
+            "Select the features you would like to see implemented:": [
+                "実装してほしい機能を選択してください："
+            ],
+            "Released": [
+                "公開済み"
+            ],
+            "feature selected": [
+                "機能が選択されました"
+            ],
+            "features selected": [
+                "機能が選択されました"
+            ],
+            "Note: Your feedback helps us prioritize development. Features are subject to change.": [
+                "注: フィードバックは開発の優先順位付けに役立ちます。機能は変更される場合があります。."
+            ]
+        }
+    }
+}

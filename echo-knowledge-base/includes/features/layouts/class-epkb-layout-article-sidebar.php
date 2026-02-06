@@ -108,7 +108,7 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 			'typography:: sidebar_section_category_typography_desc'
 		); ?>
 
-		<div class="epkb-sidebar__cat__top-cat__heading-container <?php echo esc_attr( $topClassCollapse . ' ' . $section_divider ); ?>">
+		<div class="epkb-sidebar__cat__top-cat__heading-container <?php echo esc_attr( $topClassCollapse . ' ' . $section_divider ); ?>" tabindex="0" role="button" aria-expanded="false">
 			<div class="epkb-sidebar__heading__inner">
 
 				<!-- CATEGORY ICON -->
@@ -150,7 +150,7 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 					/** DISPLAY SUB-CATEGORIES */
 					foreach ( $sub_category_list as $sub_category_id => $sub_sub_categories ) {
 						$sub_category_name = isset( $this->articles_seq_data[ $sub_category_id ][0] ) ?
-							$this->articles_seq_data[ $sub_category_id ][0] : _x( 'Category', 'taxonomy singular name' );
+							$this->articles_seq_data[ $sub_category_id ][0] : _x( 'Category', 'taxonomy singular name', 'echo-knowledge-base' );
 
 						$class1_escaped = $this->get_css_class( '::sidebar_expand_articles_icon, epkb_sidebar_expand_category_icon' );
 						$style1_escaped = $this->get_inline_style( 'color:: sidebar_section_category_icon_color' );
@@ -158,7 +158,7 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 
 						<li>
 							<div class="epkb-category-level-2-3<?php echo ( $current_category_id == $sub_category_id ? ' ' . 'epkb-sidebar__cat__current-cat' : '' ); ?>" <?php
-								echo $style2_escaped; ?>>
+								echo $style2_escaped; ?> tabindex="0" role="button" aria-expanded="false">
 								<span <?php echo $class1_escaped . ' ' . $style1_escaped; ?> ></span>
 								<a class="epkb-category-level-2-3__cat-name">
 									<h3><?php echo esc_html( $sub_category_name ); ?></h3>
@@ -211,7 +211,7 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 
 					<li>
 						<div class="epkb-category-level-2-3<?php echo ( $current_category_id == $sub_sub_category_id ? ' ' . 'epkb-sidebar__cat__current-cat' : '' ); ?>" <?php
-								echo $this->get_inline_style( 'padding-bottom:: article_list_spacing, padding-top::article_list_spacing' ); ?>>
+								echo $this->get_inline_style( 'padding-bottom:: article_list_spacing, padding-top::article_list_spacing' ); ?> tabindex="0" role="button" aria-expanded="false">
 							<span <?php echo $class1_escaped . ' ' . $style1_escaped; ?> ></span>
 							<a class="epkb-category-level-2-3__cat-name" <?php echo $style2_escaped; ?> >
 								<h<?php echo esc_attr( $levelNum ); ?>><?php echo esc_html( $sub_category_name ); ?></h<?php echo esc_attr( $levelNum ); ?> >
@@ -304,7 +304,7 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 
 			// if article list is longer than initial article list size then show expand/collapse message
 			if ( $article_num > $nof_articles_displayed ) { ?>
-				<li class="epkb-show-all-articles" aria-expanded="false">
+				<li class="epkb-show-all-articles" tabindex="0" role="button" aria-expanded="false">
 					<span class="epkb-show-text">						<?php
 						echo esc_html( $this->kb_config['sidebar_show_all_articles_msg'] ). ' (' . esc_html( $article_num - $nof_articles_displayed ) . ')' ; ?>
 					</span>

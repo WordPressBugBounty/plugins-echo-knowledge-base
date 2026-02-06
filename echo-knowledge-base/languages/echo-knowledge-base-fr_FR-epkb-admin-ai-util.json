@@ -1,0 +1,75 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "fr_FR",
+                "plural-forms": "nplurals=2; plural=(n > 1);"
+            },
+            "Close": [
+                "Fermer"
+            ],
+            "Cancel": [
+                "Annuler"
+            ],
+            "Next": [
+                "Suivant"
+            ],
+            "AI Features": [
+                "Fonctionnalités d'IA"
+            ],
+            "Documentation": [
+                "Documentation"
+            ],
+            "Got it!": [
+                "Compris !"
+            ],
+            "Show Me": [
+                "Montrez-moi"
+            ],
+            "Loading...": [
+                "Chargement..."
+            ],
+            "General Settings": [
+                "Paramètres généraux"
+            ],
+            "Go to Settings": [
+                "Aller dans les Paramètres"
+            ],
+            "Your session has expired. Please refresh the page.": [
+                "Votre session a expiré. Veuillez actualiser la page."
+            ],
+            "Too many requests. Please wait a moment and try again.": [
+                "Trop de requêtes. Veuillez patienter un moment et réessayer."
+            ],
+            "An unexpected error occurred. Please try again.": [
+                "Une erreur inattendue est survenue. Veuillez réessayer."
+            ],
+            "Confirm Action": [
+                "Confirmer l'action"
+            ],
+            "Are you sure you want to proceed?": [
+                "Êtes-vous sûr de vouloir continuer ?"
+            ],
+            "Confirm": [
+                "Confirmer"
+            ],
+            "Setup Steps": [
+                "Étapes de configuration"
+            ],
+            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
+                "Pour utiliser les fonctionnalités d’IA, configurez votre clé API et acceptez l’accord de confidentialité des données dans"
+            ],
+            "Session Expired": [
+                "Session expirée"
+            ],
+            "Refresh Page": [
+                "Actualiser la page"
+            ],
+            "No results found": [
+                "Aucun résultat trouvé"
+            ]
+        }
+    }
+}

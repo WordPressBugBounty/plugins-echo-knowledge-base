@@ -1,0 +1,84 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "hi_IN",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Cancel": [
+                "रद्द करें"
+            ],
+            "Vote for Top 3 Features": [
+                "शीर्ष 3 सुविधाओं के लिए वोट दें"
+            ],
+            "First Name": [
+                "पहला नाम"
+            ],
+            "(optional)": [
+                "(वैकल्पिक)"
+            ],
+            "Email": [
+                "ईमेल"
+            ],
+            "Failed to submit vote. Please try again.": [
+                "मतदान जमा करने में विफल रहा। कृपया पुनः प्रयास करें।."
+            ],
+            "Please enter a valid email address.": [
+                "कृपया एक मान्य ईमेल पता दर्ज करें।."
+            ],
+            "Warnings": [
+                "चेतावनाएं"
+            ],
+            "Help us prioritize features by providing your information:": [
+                "अपनी जानकारी देकर सुविधाओं को प्राथमिकता निर्धारित करने में हमारी मदद करें:"
+            ],
+            "Describe Your Feature Request": [
+                "अपना फीचर अनुरोध विवरण दें"
+            ],
+            "Please describe the feature you would like to see...": [
+                "कृपया वह फीचर बताएं जिसे आप देखना चाहेंगे..."
+            ],
+            "Submit Vote": [
+                "वोट जमा करें"
+            ],
+            "Please describe the feature you would like to see.": [
+                "कृपया वह फीचर बताएं जिसे आप देखना चाहेंगे।."
+            ],
+            "Please select at least one feature to vote for.": [
+                "कम से कम एक फीचर चुनें ताकि आप वोट दे सकें।."
+            ],
+            "Submitting your vote...": [
+                "आपका वोट भेजा जा रहा है..."
+            ],
+            "Thank you for voting!": [
+                "वोट करने के लिए धन्यवाद!"
+            ],
+            "An error occurred. Please try again.": [
+                "एक त्रुटि हुई है। कृपया पुनः प्रयास करें।."
+            ],
+            "Latest AI Updates": [
+                "ताज़ा एआई अपडेट्स"
+            ],
+            "Learn more": [
+                "अधिक जानें"
+            ],
+            "Select the features you would like to see implemented:": [
+                "वे फीचर्स चुनें जिन्हें आप लागू होते देखना चाहते हैं:"
+            ],
+            "Released": [
+                "रिलीज़ किया गया"
+            ],
+            "feature selected": [
+                "चयनित फीचर"
+            ],
+            "features selected": [
+                "चयनित फीचर्स"
+            ],
+            "Note: Your feedback helps us prioritize development. Features are subject to change.": [
+                "नोट: आपकी प्रतिक्रिया विकास को प्राथमिकता बनाने में हमारी मदद करती है। फीचर्स बदले जा सकते हैं।."
+            ]
+        }
+    }
+}

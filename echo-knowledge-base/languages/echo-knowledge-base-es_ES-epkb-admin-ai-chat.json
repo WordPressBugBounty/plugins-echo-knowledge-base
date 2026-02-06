@@ -1,0 +1,198 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "es_ES",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Settings": [
+                "Ajustes"
+            ],
+            "Page": [
+                "Página"
+            ],
+            "Settings saved successfully": [
+                "Ajustes guardados correctamente"
+            ],
+            "Cancel": [
+                "Cancelar"
+            ],
+            "Next": [
+                "Siguiente"
+            ],
+            "Previous": [
+                "Anterior"
+            ],
+            "Reset": [
+                "Restablecer"
+            ],
+            "Saving...": [
+                "Guardando..."
+            ],
+            "Go to General Settings": [
+                "Ir a la Configuración General"
+            ],
+            "Save Settings": [
+                "Guardar ajustes"
+            ],
+            "Chat History": [
+                "Historial de Chat"
+            ],
+            "API Configuration": [
+                "Configuración de API"
+            ],
+            "Feedback": [
+                "Retroalimentación"
+            ],
+            "AI Assistant": [
+                "Asistente de IA"
+            ],
+            "Delete": [
+                "Eliminar"
+            ],
+            "Delete Selected": [
+                "Eliminar seleccionados"
+            ],
+            "of": [
+                "de"
+            ],
+            "Thumbs up (%d)": [
+                "Me gusta (%d)"
+            ],
+            "Thumbs up": [
+                "Me gusta"
+            ],
+            "Thumbs down (%d)": [
+                "No me gusta (%d)"
+            ],
+            "Thumbs down": [
+                "No me gusta"
+            ],
+            "Contact an Agent clicked": [
+                "Contacto con un agente pulsado"
+            ],
+            "Agent handover request submitted": [
+                "Solicitud de derivación a un agente enviada"
+            ],
+            "Are you sure you want to delete the selected conversations?": [
+                "¿Seguro que desea eliminar las conversaciones seleccionadas?"
+            ],
+            "Delete Conversations": [
+                "Eliminar conversaciones"
+            ],
+            "Deleting conversations...": [
+                "Eliminando conversaciones..."
+            ],
+            "Conversations refreshed successfully": [
+                "Las conversaciones se han actualizado correctamente"
+            ],
+            "Agent handover request": [
+                "Solicitud de derivación a un agente"
+            ],
+            "Search conversations...": [
+                "Buscar conversaciones..."
+            ],
+            "Refreshing...": [
+                "Actualizando..."
+            ],
+            "Refresh": [
+                "Actualizar"
+            ],
+            "Loading conversations...": [
+                "Cargando conversaciones..."
+            ],
+            "No conversations found": [
+                "No se encontraron conversaciones"
+            ],
+            "Time": [
+                "Hora"
+            ],
+            "User": [
+                "Usuario"
+            ],
+            "Conversation": [
+                "Conversación"
+            ],
+            "Message Count": [
+                "Conteo de mensajes"
+            ],
+            "Agent Handover": [
+                "Transferencia al agente"
+            ],
+            "Number of messages": [
+                "Número de mensajes"
+            ],
+            "Searching server for more results...": [
+                "Buscando más resultados en el servidor..."
+            ],
+            "Deleting conversation...": [
+                "Eliminando conversación..."
+            ],
+            "Conversation Details": [
+                "Detalles de la conversación"
+            ],
+            "Select a conversation to view details": [
+                "Selecciona una conversación para ver los detalles"
+            ],
+            "Conversation Summary": [
+                "Resumen de la conversación"
+            ],
+            "Full Conversation": [
+                "Conversación completa"
+            ],
+            "No messages in this conversation.": [
+                "No hay mensajes en esta conversación."
+            ],
+            "Collection": [
+                "Colección"
+            ],
+            "Are you sure you want to reset to default instructions?": [
+                "¿Está seguro de que desea restablecer las instrucciones predeterminadas?"
+            ],
+            "Reset Instructions": [
+                "Restablecer instrucciones"
+            ],
+            "Are you sure you want to reset to default instructions? Your custom instructions will be lost.": [
+                "¿Está seguro de que desea restablecer las instrucciones predeterminadas? Sus instrucciones personalizadas se perderán."
+            ],
+            "Reset to Default": [
+                "Restablecer a valores predeterminados"
+            ],
+            "Training data issues detected": [
+                "Se detectaron problemas en los datos de aprendizaje automático"
+            ],
+            "AI Chat cannot use the selected collection until these issues are fixed in Training Data.": [
+                "IA Chat no puede usar la colección seleccionada hasta que estos problemas sean corregidos en Datos de aprendizaje automático."
+            ],
+            "Failed to load conversations": [
+                "Error al cargar las conversaciones"
+            ],
+            "Failed to save settings": [
+                "Error al guardar la configuración"
+            ],
+            "Conversations deleted successfully": [
+                "Conversaciones eliminadas correctamente"
+            ],
+            "Failed to delete conversations": [
+                "Error al eliminar las conversaciones"
+            ],
+            "AI Chat is Disabled": [
+                "IA Chat está desactivado"
+            ],
+            "To view chat history, please enable AI Chat in the Settings tab.": [
+                "Para ver el historial de chat, habilite IA Chat en la pestaña Ajustes."
+            ],
+            "Go to Settings": [
+                "Ir a Ajustes"
+            ],
+            "API key is not configured. Please configure it in General Settings to use AI Chat features.": [
+                "La clave API no está configurada. Por favor, configúrela en Configuración General para usar las funciones de IA Chat."
+            ],
+            "Please accept the data privacy agreement in General Settings to use AI Chat features.": [
+                "Por favor, acepte el acuerdo de privacidad de datos en Ajustes Generales para usar las funciones de IA Chat."
+            ]
+        }
+    }
+}

@@ -54,7 +54,7 @@ class EPKB_KB_Wizard_Themes {
 			'search_text_input_border_color' => [1 => '#CCCCCC', 2 => '#CCCCCC', 3 => '#CCCCCC', 4 => '#CCCCCC', 5 => '#3b4e60', 6 => '#FFFFFF', 7 => '#FFFFFF', 8 => '#bf25ff', 9 => '#636567', 10 => '#FFFFFF', 11 => '#CCCCCC', 12 => '#3cadb2',
 												13 => '#000000', 14 => '#000000', 15 => '#000000', 16 => '#CCCCCC', 17 => '#6fb24c', 18 => '#ce6bcb', 21 => '#d34d04'],
 			'search_title_font_color' => [1 => '#FFFFFF', 2 => '#103244', 3 => '#FFFFFF', 4 => '#ffffff', 5 => '#ffffff', 6 => '#FFFFFF', 7 => '#FFFFFF', 8 => '#528ffe', 9 => '#FFFFFF', 10 => '#5b5b5b', 11 => '#e69e4a',
-											13 => '#000000', 14 => '#FFFFFF', 15 => '#FFFFFF', 16 => '#000000', 17 => '#6fb24c', 20 => '#1E4C5E', 12 => '#3cadb2' ],
+											13 => '#000000', 14 => '#FFFFFF', 15 => '#FFFFFF', 16 => '#000000', 17 => '#6fb24c', 18 => '#FFFFFF', 19 => '#FFFFFF', 20 => '#1E4C5E', 21 => '#FFFFFF', 12 => '#3cadb2' ],
 
 			// Category Box
 			'section_border_color' => [1 => '#F7F7F7', 2 => '#f7f7f7', 3 => '#DBDBDB', 4 => '#DBDBDB', 5 => '#DBDBDB', 6 => '#DBDBDB', 7 => '#DBDBDB', 8 => '#528ffe', 9 => '#e0e0e0', 10 => '#DBDBDB', 11 => '#f7f7f7', 12 => '#97dfd7',
@@ -83,7 +83,7 @@ class EPKB_KB_Wizard_Themes {
 			'section_head_padding_right' => [ 2 => 4, 3 => 0, 4 => 0, 9 => 4, 7 => 0, 10 => 4, 11 => 4, 14 => 20, 16 => 20, 17 => 20, 21 => 0 ],
 			'section_head_padding_top' => [ 2 => 20, 3 => 20, 4 => 0, 7 => 0, 9 => 20, 10 => 20, 11 => 20, 14 => 20, 15 => 10, 16 => 20, 17 => 20, 21 => 0 ],
 			'section_divider' => [ 3 => 'on', 4 => 'off', 7 => 'off', 10 => 'on', 15 => 'off', 21 => 'off'],
-			'section_desc_text_on' => [10 => 'on', 12 => 'off'],
+			'section_desc_text_on' => [1 => 'off', 2 => 'off', 3 => 'off', 4 => 'off', 5 => 'off', 6 => 'off', 7 => 'off', 8 => 'off', 9 => 'off', 10 => 'on', 11 => 'off', 12 => 'on', 13 => 'off', 14 => 'off', 15 => 'off', 16 => 'off', 17 => 'off', 18 => 'off', 19 => 'off', 20 => 'off', 21 => 'off'],
 			'section_divider_color' => [1 => '#edf2f6', 2 => '#edf2f6', 3 => '#afa7a7', 5 => '#43596e', 6 => '#edf2f6', 7 => '#edf2f6', 8 => '#528ffe', 9 => '#edf2f6', 10 => '#777777', 11 => '#edf2f6', 12 => '#6ac7cb',
 										13 => '#888888', 14 => '#1e73be', 15 => '#CDCDCD', 16 => '#FFFFFF', 17 => '#FFFFFF', 18 => '#ce6bcb'],
 			'section_divider_thickness' => [ 2 => 5, 3 => 1, 4 => 0, 5 => 0, 6 => 2, 7 => 2, 8 => 2, 9 => 5, 10 => 2, 11 => 5, 12 => 3, 13 => 2, 14 => 2, 15 => 1, 16 => 1, 17 => 1, 18 => 5],
@@ -115,16 +115,16 @@ class EPKB_KB_Wizard_Themes {
 			// Articles
 			'article_font_color' => [1 => '#000000', 2 => '#000000', 3 => '#000000', 4 => '#000000', 5 => '#000000', 6 => '#000000', 7 => '#14104b', 8 => '#566e8b', 9 => '#000000', 10 => '#000000', 11 => '#000000', 12 => '#000000',
 									13 => '#000000', 14 => '#1e73be', 15 => '#8c1515', 16 => '#666666', 17 => '#666666', 18 => '#000000', 20 => '#1E4C5E', 21 => '#1e73be'],
-			'article_icon_color' => [1 => '#b3b3b3', 2 => '#b3b3b3', 3 => '#525252', 4 => '#525252', 5 => '#43596e', 6 => '#e3474b', 7 => '#ffa401', 8 => '#566e8b', 9 => '#dd9933', 10 => '#636363', 11 => '#00b4b3', 12 => '#3daeb2',
-									13 => '#adadad', 14 => '#000000', 15 => '#000000', 16 => '#e8a298', 17 => '#6fb24c', 18 => '#3daeb2'],
+	'article_icon_color' => [1 => '#f7941d', 2 => '#ca428f', 3 => '#904e95', 4 => '#904e95', 5 => '#43596e', 6 => '#e3474b', 7 => '#ffa401', 8 => '#bf25ff', 9 => '#6aa6a2', 10 => '#040138', 11 => '#00b4b3', 12 => '#6ac7cb',
+							13 => '#adadad', 14 => '#000000', 15 => '#8c1515', 16 => '#e8a298', 17 => '#6fb24c', 18 => '#ce6bcb', 21 => '#000000'],
 			'article_list_spacing' => [1 => 6, 2 => 6, 3 => 8, 4 => 6, 5 => 6, 6 => 6, 7 => 8, 8 => 4, 9 => 6, 10 => 10, 11 => 6, 12 => 10, 13 => 6, 14 => 6, 15 => 6, 16 => 6, 17 => 6],
 
 			'breadcrumb_icon_separator' => [ 5 => 'ep_font_icon_right_arrow'],
-			'breadcrumb_text_color' => [ 2 => '#1e73be', 3 => '#b1d5e1', 4 => '#b1d5e1', 5 => '#43596e', 6 => '#eb5a46', 8 => '#566e8b', 9 => '#dd9933', 10 => '#040138', 11 => '#00b4b3', 12 => '#3cadb2',
-										13 => '#1e73be', 15 => '#000000', 16 => '#1e73be', 17 => '#1e73be'],
+	'breadcrumb_text_color' => [ 1 => '#40474f', 2 => '#40474f', 3 => '#827a74', 4 => '#827a74', 5 => '#000000', 6 => '#e3474b', 7 => '#ffa401', 8 => '#528ffe', 9 => '#000000', 10 => '#040138', 11 => '#00b4b3', 12 => '#3cadb2',
+								13 => '#1e73be', 14 => '#1e73be', 15 => '#000000', 16 => '#666666', 17 => '#666666', 18 => '#000000', 19 => '#000000', 21 => '#000000'],
 
-			'back_navigation_text_color' => [ 2 => '#1e73be', 3 => '#b1d5e1', 4 => '#b1d5e1', 5 => '#ffffff', 6 => '#ffffff', 8 => '#566e8b', 9 => '#dd9933', 10 => '#040138', 11 => '#00b4b3', 12 => '#3cadb2',
-												13 => '#1e73be', 15 => '#000000', 16 => '#1e73be', 17 => '#1e73be'],
+	'back_navigation_text_color' => [ 1 => '#40474f', 2 => '#40474f', 3 => '#827a74', 4 => '#827a74', 5 => '#ffffff', 6 => '#ffffff', 7 => '#ffa401', 8 => '#528ffe', 9 => '#000000', 10 => '#040138', 11 => '#00b4b3', 12 => '#3cadb2',
+										13 => '#1e73be', 14 => '#1e73be', 15 => '#000000', 16 => '#666666', 17 => '#666666', 18 => '#000000', 19 => '#000000', 20 => '#1E4C5E', 21 => '#000000'],
 			'back_navigation_bg_color' => [ 5 => '#43596e', 6 => '#eb5a46', 10 => '#ffffff', 12 => '#ffffff'],
 			'back_navigation_padding_top' => [ 5 => 10, 6 => 10, 10 => 5],
 			'back_navigation_padding_right' => [ 5 => 15, 6 => 10, 10 => 10],
@@ -134,27 +134,27 @@ class EPKB_KB_Wizard_Themes {
 			'back_navigation_border_color' => [ 5 => '#43596e', 6 => '#eb5a46', 10 => '#b5b5b5' ],
 			'back_navigation_border' => [ 3 => 'none', 4 => 'none', 10 => 'solid'],
 
-			'article-meta-color' => [ 3 => '#b1d5e1', 4 => '#b1d5e1', 5 => '#43596e', 8 => '#566e8b', 9 => '#dd9933', 10 => '#040138', 15 => '#000000', 12 => '#3cadb2' ],
+	'article-meta-color' => [ 1 => '#40474f', 2 => '#40474f', 3 => '#827a74', 4 => '#827a74', 5 => '#000000', 7 => '#ffa401', 8 => '#528ffe', 9 => '#000000', 10 => '#040138', 12 => '#3cadb2', 15 => '#000000', 18 => '#ffffff', 21 => '#000000' ],
 
-			'article_content_toolbar_icon_color' => [ 5 => '#ffffff', 6 => '#ffffff', 10 => '#000000', 12 => '#3cadb2'],
-			'article_content_toolbar_text_color' => [ 5 => '#ffffff', 6 => '#ffffff', 8 => '#566e8b', 9 => '#dd9933', 10 => '#040138', 15 => '#000000', 12 => '#3cadb2' ],
-			'article_content_toolbar_text_hover_color' => [ 5 => '#ffffff', 6 => '#ffffff', 8 => '#566e8b', 9 => '#dd9933', 10 => '#040138', 15 => '#000000', 12 => '#3cadb2' ],
+	'article_content_toolbar_icon_color' => [ 5 => '#ffffff', 6 => '#ffffff', 10 => '#000000', 12 => '#3cadb2'],
+	'article_content_toolbar_text_color' => [ 1 => '#40474f', 2 => '#40474f', 3 => '#827a74', 4 => '#827a74', 5 => '#ffffff', 6 => '#ffffff', 7 => '#ffa401', 8 => '#528ffe', 9 => '#000000', 10 => '#040138', 12 => '#3cadb2', 15 => '#000000', 18 => '#ffffff', 21 => '#000000' ],
+	'article_content_toolbar_text_hover_color' => [ 1 => '#40474f', 2 => '#40474f', 3 => '#827a74', 4 => '#827a74', 5 => '#ffffff', 6 => '#ffffff', 7 => '#ffa401', 8 => '#528ffe', 9 => '#000000', 10 => '#040138', 12 => '#3cadb2', 15 => '#000000', 18 => '#ffffff', 21 => '#000000' ],
 			'article_content_toolbar_button_background' => [ 5 => '#43596e', 6 => '#eb5a46', 10 => '#ffffff', 12 => '#ffffff'],
 			'article_content_toolbar_button_background_hover' => [ 5 => '#bc68c9', 6 => '#ea8577', 10 => '#ffffff', 12 => '#ffffff' ],
 			'article_content_toolbar_border_color' => [ 5 => '#43596e', 6 => '#eb5a46', 10 => '#ffffff', 12 => '#ffffff' ],
 
-			'article_toc_text_color' => [ 3 => '#b1d5e1', 4 => '#b1d5e1', 5 => '#43596e', 6 => '#eb5a46', 8 => '#566e8b', 9 => '#dd9933', 10 => '#040138', 15 => '#000000', 12 => '#3cadb2', 18 => '#ce6bcb' ],
-			'article_toc_active_bg_color' => [ 3 => '#b1d5e1', 4 => '#b1d5e1', 5 => '#43596e', 6 => '#eb5a46', 8 => '#566e8b', 9 => '#dd9933', 10 => '#040138', 15 => '#000000', 12 => '#3cadb2', 18 => '#3cadb2' ],
-			'article_toc_title_color' => [ 3 => '#000000', 4 => '#000000', 5 => '#000000', 6 => '#000000', 8 => '#000000', 9 => '#000000', 10 => '#000000', 12 => '#3cadb2', 18 => '#ce6bcb'],
-			'article_toc_border_color' => [ 3 => '#b1d5e1', 4 => '#b1d5e1', 5 => '#43596e', 6 => '#eb5a46', 8 => '#566e8b', 9 => '#dd9933', 10 => '#040138', 11 => '#000000', 12 => '#3cadb2', 18 => '#ce6bcb'],
+	'article_toc_text_color' =>  [ 1 => '#000000', 2 => '#000000', 3 => '#000000', 4 => '#000000', 5 => '#000000', 6 => '#000000', 7 => '#14104b', 8 => '#566e8b', 9 => '#000000', 10 => '#000000', 11 => '#000000', 12 => '#000000', 13 => '#000000', 14 => '#1e73be', 15 => '#8c1515', 16 => '#666666', 17 => '#666666', 18 => '#000000', 19 => '#000000', 20 => '#1E4C5E', 21 => '#1e73be' ],
+	'article_toc_active_bg_color' => [ 1 => '#40474f', 2 => '#40474f', 3 => '#6aa6a2', 4 => '#686868', 5 => '#43596e', 6 => '#921612', 7 => '#ffa401', 8 => '#bf25ff', 9 => '#6aa6a2', 10 => '#6d6d6d', 12 => '#3cadb2', 14 => '#757069', 15 => '#878787', 16 => '#40474f', 17 => '#6fb24c', 18 => '#ce6bcb', 19 => '#43596E', 20 => '#1E4C5E', 21 => '#d34d04' ],
+	'article_toc_title_color' =>  [ 1 => '#40474f', 2 => '#40474f', 3 => '#6aa6a2', 4 => '#686868', 5 => '#43596e', 6 => '#921612', 7 => '#ffa401', 8 => '#bf25ff', 9 => '#6aa6a2', 10 => '#6d6d6d', 12 => '#3cadb2', 14 => '#757069', 15 => '#878787', 16 => '#40474f', 17 => '#6fb24c', 18 => '#ce6bcb', 19 => '#43596E', 20 => '#1E4C5E', 21 => '#d34d04' ],
+	'article_toc_border_color' => [ 1 => '#40474f', 2 => '#40474f', 3 => '#6aa6a2', 4 => '#686868', 5 => '#43596e', 6 => '#921612', 7 => '#ffa401', 8 => '#bf25ff', 9 => '#6aa6a2', 10 => '#6d6d6d', 11 => '#000000', 12 => '#3cadb2', 14 => '#757069', 15 => '#878787', 16 => '#40474f', 17 => '#6fb24c', 18 => '#ce6bcb', 19 => '#43596E', 20 => '#1E4C5E', 21 => '#d34d04'],
 			'article_toc_background_color' => [ 10 => '#fcfcfc', 12 => '#fcfcfc', 18 => '#fcfcfc' ],
 			'article_toc_cursor_hover_bg_color' => [ 10 => '#e1ecf7', 12 => '#e1ecf7', 18 => '#e1ecf7' ],
 			'article_toc_cursor_hover_text_color' => [ 10 => '#000000', 12 => '#000000', 18 => '#000000' ],
 			'article_toc_active_text_color' => [ 10 => '#ffffff', 12 => '#ffffff', 18 => '#ffffff' ],
 
-			'sidebar_article_icon_color' => [1 => '#b3b3b3', 2 => '#b3b3b3', 3 => '#525252', 4 => '#525252', 5 => '#43596e', 6 => '#e3474b', 7 => '#1e1e1e', 8 => '#566e8b', 9 => '#dd9933', 10 => '#040138', 11 => '#00b4b3', 12 => '#00d1ca',
-											13 => '#adadad', 14 => '#000000', 15 => '#000000', 16 => '#e8a298', 17 => '#6fb24c', 18 => '#00d1ca'],
-			'sidebar_section_head_font_color' => [ 2 => '#1e73be', 3 => '#ffffff', 4 => '#ffffff', 5 => '#ffffff', 6 => '#ffffff', 8 => '#000000', 9 => '#dd9933', 10 => '#040138', 12 => '#3cadb2', 18 => '#ce6bcb', 21 => '#000000' ],
+	'sidebar_article_icon_color' => [1 => '#f7941d', 2 => '#ca428f', 3 => '#904e95', 4 => '#904e95', 5 => '#43596e', 6 => '#e3474b', 7 => '#ffa401', 8 => '#bf25ff', 9 => '#6aa6a2', 10 => '#040138', 11 => '#00b4b3', 12 => '#6ac7cb',
+									13 => '#adadad', 14 => '#000000', 15 => '#8c1515', 16 => '#e8a298', 17 => '#6fb24c', 18 => '#ce6bcb', 21 => '#000000'],
+		'sidebar_section_head_font_color' => [ 1 => '#40474f', 2 => '#40474f', 3 => '#ffffff', 4 => '#ffffff', 5 => '#ffffff', 6 => '#ffffff', 7 => '#ffa401', 8 => '#528ffe', 9 => '#000000', 10 => '#040138', 12 => '#3cadb2', 15 => '#000000', 18 => '#ce6bcb', 21 => '#000000' ],
 			'sidebar_section_head_background_color' => [ 3 => '#90b4c4', 4 => '#90b4c4', 5 => '#5a748d', 6 => '#f96e5a', 10 => '#f1f1f1', 12 => '#f9f9f9', 18 => '#f9f9f9'],
 			'sidebar_section_divider_color' => [ 5 => '#5a748d', 6 => '#f96e5a', 10 => '#CDCDCD', 12 => '#97dfd7', 18 => '#ce6bcb'],
 			'sidebar_section_category_font_color' => [ 5 => '#000000', 10 => '#868686', 12 => '#66c5c9', 18 => '#66c5c9'],
@@ -316,7 +316,9 @@ class EPKB_KB_Wizard_Themes {
 				}
 
 				// set or append the value, including 0 values
-				$all_themes[$theme_names[$theme_id]][$config_name] = $new_value;
+				if ( isset( $theme_names[$theme_id] ) ) {
+					$all_themes[$theme_names[$theme_id]][$config_name] = $new_value;
+				}
 			}
 		}
 
@@ -368,6 +370,12 @@ class EPKB_KB_Wizard_Themes {
 		$all_themes['sharp_tabs']['section_head_padding_top'] = 20;
 		$all_themes['sharp_tabs']['section_head_padding_bottom'] = 20;
 		$all_themes['sharp_tabs']['section_divider_thickness'] = 1;
+		$all_themes['sharp_tabs']['sidebar_section_head_font_color'] = '#6C3CBA';
+		$all_themes['sharp_tabs']['sidebar_section_border_color'] = '#6C3CBA';
+		$all_themes['sharp_tabs']['sidebar_section_divider_color'] = '#6C3CBA';
+		$all_themes['sharp_tabs']['sidebar_section_category_font_color'] = '#6C3CBA';
+		$all_themes['sharp_tabs']['sidebar_article_font_color'] = '#000000';
+		$all_themes['sharp_tabs']['sidebar_article_active_background_color'] = '#ce6bcb';
 		
 
 		$all_themes['simple_tabs'] = $all_themes['simple'];
@@ -390,13 +398,18 @@ class EPKB_KB_Wizard_Themes {
 		// Categories Layout
 		$all_themes['sharp_categories'] = $all_themes['sharp'];
 		$all_themes['sharp_categories']['kb_main_page_layout'] = 'Categories';
-		$all_themes['sharp_categories']['kb_main_page_layout'] = 'Tabs';
 		$all_themes['sharp_categories']['section_head_font_color'] = '#6C3CBA';
 		$all_themes['sharp_categories']['section_head_category_icon_location'] = 'no_icons';
 		$all_themes['sharp_categories']['section_border_color'] = '#6C3CBA';
 		$all_themes['sharp_categories']['section_head_background_color'] = '#FFFFFF';
 		$all_themes['sharp_categories']['section_head_alignment'] = 'center';
 		$all_themes['sharp_categories']['section_divider_thickness'] = 1;
+		$all_themes['sharp_categories']['sidebar_section_head_font_color'] = '#6C3CBA';
+		$all_themes['sharp_categories']['sidebar_section_border_color'] = '#6C3CBA';
+		$all_themes['sharp_categories']['sidebar_section_divider_color'] = '#6C3CBA';
+		$all_themes['sharp_categories']['sidebar_section_category_font_color'] = '#6C3CBA';
+		$all_themes['sharp_categories']['sidebar_article_font_color'] = '#000000';
+		$all_themes['sharp_categories']['sidebar_article_active_background_color'] = '#ce6bcb';
 
 		$all_themes['office_categories'] = $all_themes['office'];
 		$all_themes['office_categories']['kb_main_page_layout'] = 'Categories';
@@ -420,6 +433,7 @@ class EPKB_KB_Wizard_Themes {
 		
 		$all_themes['organized_classic'] = $all_themes['organized'];
 		$all_themes['organized_classic']['kb_main_page_layout'] = 'Classic';
+		$all_themes['organized_classic']['section_desc_text_on'] = 'off';
 		$all_themes['organized_classic']['section_head_category_icon_size'] = 80;
 		$all_themes['organized_classic']['ml_categories_articles_top_category_icon_bg_color'] = '#eeeeee';
 
@@ -443,6 +457,7 @@ class EPKB_KB_Wizard_Themes {
 
 		$all_themes['organized_drill_down'] = $all_themes['organized'];
 		$all_themes['organized_drill_down']['kb_main_page_layout'] = 'Drill-Down';
+		$all_themes['organized_drill_down']['section_desc_text_on'] = 'off';
 		$all_themes['organized_drill_down']['ml_categories_articles_top_category_icon_bg_color'] = '#EEEEEE';
 
 		$all_themes['simple_drill_down'] = $all_themes['simple'];
@@ -459,6 +474,29 @@ class EPKB_KB_Wizard_Themes {
 
 		$all_themes['icon_focused_drill_down'] = $all_themes['icon_focused'];
 		$all_themes['icon_focused_drill_down']['kb_main_page_layout'] = 'Drill-Down';
+
+		// Sidebar Layout
+		$all_themes['sidebar_basic'] = $all_themes['office'];
+		$all_themes['sidebar_basic']['kb_main_page_layout'] = 'Sidebar';
+
+		$all_themes['sidebar_colapsed'] = $all_themes['office'];
+		$all_themes['sidebar_colapsed']['kb_main_page_layout'] = 'Sidebar';
+		$all_themes['sidebar_colapsed']['sidebar_top_categories_collapsed'] = 'on';
+
+		$all_themes['sidebar_formal'] = $all_themes['formal'];
+		$all_themes['sidebar_formal']['kb_main_page_layout'] = 'Sidebar';
+
+		$all_themes['sidebar_compact'] = $all_themes['compact'];
+		$all_themes['sidebar_compact']['kb_main_page_layout'] = 'Sidebar';
+		$all_themes['sidebar_compact']['sidebar_section_head_padding_top'] = 4;
+		$all_themes['sidebar_compact']['sidebar_section_head_padding_bottom'] = 4;
+		$all_themes['sidebar_compact']['sidebar_section_body_padding_top'] = 4;
+		$all_themes['sidebar_compact']['sidebar_section_body_padding_bottom'] = 4;
+
+		$all_themes['sidebar_plain'] = $all_themes['simple'];
+		$all_themes['sidebar_plain']['kb_main_page_layout'] = 'Sidebar';
+		$all_themes['sidebar_plain']['sidebar_section_box_shadow'] = 'no_shadow';
+		$all_themes['sidebar_plain']['sidebar_section_border_width'] = 0;
 
 		return $all_themes;
 	}

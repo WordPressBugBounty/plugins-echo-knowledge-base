@@ -40,9 +40,12 @@ abstract class EPKB_AI_REST_Base_Controller extends WP_REST_Controller {
 			$http_status_code = $error_result['status'];
 
 		} elseif ( isset( $data['error'] ) && ! isset( $data['status'] ) ) {
+
 			// If error is provided in data but status is not, add it
 			$data['status'] = 'error';
 			
+			EPKB_AI_Log::add_log( __( 'Error is provided in data but status is not, adding it', 'echo-knowledge-base' ), $data );
+
 			// Use status mapping if status is still 200
 			if ( $http_status_code === 200 ) {
 				$http_status_code = EPKB_AI_Log::get_error_status_code( $data['error'] );

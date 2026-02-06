@@ -1,0 +1,75 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "sv_SE",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Close": [
+                "Stäng"
+            ],
+            "Cancel": [
+                "Avbryt"
+            ],
+            "Next": [
+                "Nästa"
+            ],
+            "AI Features": [
+                "AI-funktioner"
+            ],
+            "Documentation": [
+                "Dokumentation"
+            ],
+            "Got it!": [
+                "Klart!"
+            ],
+            "Show Me": [
+                "Visa mig"
+            ],
+            "Loading...": [
+                "Laddar in …"
+            ],
+            "General Settings": [
+                "Allmänna inställningar"
+            ],
+            "Go to Settings": [
+                "Gå till Inställningar"
+            ],
+            "Your session has expired. Please refresh the page.": [
+                "Din session har gått ut. Uppdatera sidan."
+            ],
+            "Too many requests. Please wait a moment and try again.": [
+                "För många förfrågningar. Vänta en stund och försök igen."
+            ],
+            "An unexpected error occurred. Please try again.": [
+                "Ett oväntat fel uppstod. Försök igen."
+            ],
+            "Confirm Action": [
+                "Bekräfta åtgärd"
+            ],
+            "Are you sure you want to proceed?": [
+                "Är du säker på att du vill fortsätta?"
+            ],
+            "Confirm": [
+                "Bekräfta"
+            ],
+            "Setup Steps": [
+                "Installationssteg"
+            ],
+            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
+                "För att använda AI-funktioner, vänligen konfigurera din API-nyckel och acceptera dataskyddsavtalet i"
+            ],
+            "Session Expired": [
+                "Sessionen har gått ut"
+            ],
+            "Refresh Page": [
+                "Uppdatera sidan"
+            ],
+            "No results found": [
+                "Inga resultat hittades"
+            ]
+        }
+    }
+}

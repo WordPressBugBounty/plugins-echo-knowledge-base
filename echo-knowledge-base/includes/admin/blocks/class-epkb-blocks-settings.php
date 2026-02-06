@@ -462,4 +462,44 @@ class EPKB_Blocks_Settings {
 			),
 		);
 	}
+
+	/**
+	 * Return configuration array for Help Resources link
+	 * @return array
+	 */
+	public static function get_help_resources_link() {
+
+		if ( EPKB_Utilities::is_frontend() ) {
+			return array(
+				'setting_type' => '',
+			);
+		}
+
+		return array(
+			'setting_type' => 'section_description',
+			'description' => esc_html__( 'Need help configuring your Knowledge Base?', 'echo-knowledge-base' ),
+			'link_text' => esc_html__( 'Help Resources', 'echo-knowledge-base' ),
+			'link_url' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-help-resources' ),
+		);
+	}
+
+	/**
+	 * Return configuration array for Setup Wizard link
+	 * @return array
+	 */
+	public static function get_setup_wizard_link() {
+
+		if ( EPKB_Utilities::is_frontend() ) {
+			return array(
+				'setting_type' => '',
+			);
+		}
+
+		return array(
+			'setting_type' => 'section_description',
+			'description' => esc_html__( 'Use our Setup Wizard to quickly configure your KB.', 'echo-knowledge-base' ),
+			'link_text' => esc_html__( 'Setup Wizard', 'echo-knowledge-base' ),
+			'link_url' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-configuration&setup-wizard-on=true' ),
+		);
+	}
 }

@@ -18,6 +18,22 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 				'permission_callback' => array( $this, 'check_admin_permission' ),
 			)
 		) );
+
+		// Load AI tab data on demand (currently used for dashboard)
+		register_rest_route( $this->admin_namespace, '/ai/(?P<tab>[a-z0-9\\-]+)', array(
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_tab_data' ),
+				'permission_callback' => array( $this, 'check_admin_permission' ),
+				'args'                => array(
+					'tab' => array(
+						'description'       => __( 'AI admin tab key.', 'echo-knowledge-base' ),
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_key',
+					),
+				),
+			)
+		) );
 	}
 
 	/**
@@ -26,12 +42,38 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 	 * @param WP_REST_Request $request
 	 * @return bool|WP_Error
 	 */
-	public function check_admin_permission( $request ) {    // TODO
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return new WP_Error( 'rest_forbidden', __( 'You do not have permission to perform this action.', 'echo-knowledge-base' ), array( 'status' => 403 ) );
+	public function check_admin_permission( $request ) {
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' ) ) {
+			return new WP_Error( 'rest_forbidden', __( 'You do not have permission.', 'echo-knowledge-base' ), array( 'status' => 403 ) );
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get AI tab data
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function get_tab_data( $request ) {
+
+		$tab_key = sanitize_key( $request->get_param( 'tab' ) );
+
+		if ( $tab_key !== 'dashboard' ) {
+			return $this->create_rest_response( array(
+				'success' => false,
+				'error' => 'invalid_tab',
+				'message' => __( 'This tab is not available.', 'echo-knowledge-base' )
+			), 400 );
+		}
+
+		$tab_data = EPKB_AI_Dashboard_Tab::get_tab_config();
+
+		return $this->create_rest_response( array(
+			'success' => true,
+			'data' => $tab_data,
+		) );
 	}
 
 	/**
@@ -46,13 +88,16 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		if ( empty( $settings ) || ! is_array( $settings ) ) {
 			return $this->create_rest_response( array( 'error' => 'invalid_input', 'message' => __( 'Invalid settings data provided.', 'echo-knowledge-base' ) ), 400 );
 		}
-		
+
 		// Extract widget settings if present
 		$widget_settings = $request->get_param( 'widget_settings' );
 		$widget_id = $request->get_param( 'widget_id' );
 
+		// Get tab context for validation (optional parameter: 'chat', 'search', etc.)
+		$tab_context = $request->get_param( 'tab_context' );
+
 		// Prepare and sanitize settings based on specifications
-		$specs = EPKB_AI_Config_Specs::get_ai_config_fields_specifications();
+		$specs = EPKB_AI_Config_Specs::get_config_fields_specifications();
 
 		$new_config = array();
 		foreach ( $settings as $field_name => $field_value ) {
@@ -71,83 +116,143 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			$new_config[$field_name] = EPKB_AI_Config_Base::sanitize_field_value( $field_value, $field_spec );
 		}
 
-		// 'ai_key' needs to be encrypted before saving, but skip if it's the placeholder
-		if ( ! empty( $new_config['ai_key'] ) ) {
-			// If the value is our placeholder, remove it from the update (keep existing value)
-			if ( $new_config['ai_key'] == '********' ) {
-				unset( $new_config['ai_key'] );
-            } else {
-				// First validate the format
-				if ( ! EPKB_AI_Validation::validate_api_key_format( $new_config['ai_key'] ) ) {
-					return $this->create_rest_response( array( 
-						'error' => 'invalid_api_key_format', 
-						'message' => __( 'Invalid API key format. OpenAI API keys should start with "sk-" and contain alphanumeric characters.', 'echo-knowledge-base' ) 
-					), 400 );
+		$provider = isset( $new_config['ai_provider'] ) ? $new_config['ai_provider'] : EPKB_AI_Provider::get_active_provider();
+		$selected_provider = EPKB_AI_Provider::normalize_provider( $provider );
+
+		// Handle provider-specific API keys - process both fields
+		$api_key_fields = array(
+			'ai_chatgpt_key' => EPKB_AI_Provider::PROVIDER_CHATGPT,
+			'ai_gemini_key' => EPKB_AI_Provider::PROVIDER_GEMINI
+		);
+
+		foreach ( $api_key_fields as $key_field => $key_provider ) {
+			if ( ! empty( $new_config[$key_field] ) ) {
+				// If the value is our placeholder, preserve the existing encrypted key from database
+				if ( $new_config[$key_field] == '********' ) {
+					$new_config[$key_field] = EPKB_AI_Config_Specs::get_unmasked_api_key_for_provider( $key_provider );
+				} else {
+					// First validate the format for this provider
+					if ( ! EPKB_AI_Validation::validate_api_key_format( $new_config[$key_field], $key_provider ) ) {
+						return $this->create_rest_response( array(
+							'error' => 'invalid_api_key_format',
+							'message' => __( 'Invalid API key format for', 'echo-knowledge-base' ) . ' ' . EPKB_AI_Provider::get_provider_label( $key_provider )
+						), 400 );
+					}
+
+					// Test the API key against the AI provider before saving
+					$encrypted_test_key = EPKB_Utilities::encrypt_data( $new_config[$key_field] );
+					$old_key = EPKB_AI_Config_Specs::get_unmasked_api_key_for_provider( $key_provider );
+
+					// Temporarily set the new key to test it
+					EPKB_AI_Config_Specs::update_ai_config_value( $key_field, $encrypted_test_key );
+
+					$client = EPKB_AI_Provider::get_client( $key_provider );
+					$test_result = $client->test_connection();
+
+					// Restore old key if test fails
+					if ( is_wp_error( $test_result ) ) {
+						EPKB_AI_Config_Specs::update_ai_config_value( $key_field, $old_key );
+						return $this->create_rest_response( array( 'error' => $test_result->get_error_code(), 'message' => $test_result->get_error_message() ), 400 );
+					}
+
+					$new_config[$key_field] = $encrypted_test_key;
 				}
-				
-				// Test the API key with OpenAI before saving
-				$encrypted_test_key = EPKB_Utilities::encrypt_data( $new_config['ai_key'] );
-				$old_key = EPKB_AI_Config_Specs::get_unmasked_api_key();
-				
-				// Temporarily set the new key to test it
-				EPKB_AI_Config_Specs::update_ai_config_value( 'ai_key', $encrypted_test_key );
-				
-				$client = new EPKB_OpenAI_Client();
-				$test_result = $client->test_connection();
-				
-				// Restore old key if test fails
-				if ( is_wp_error( $test_result ) ) {
-					EPKB_AI_Config_Specs::update_ai_config_value( 'ai_key', $old_key );
-					return $this->create_rest_response( array( 'error' => $test_result->get_error_code(),  'message' => $test_result->get_error_message() ), 400 );
-				}
-				
-				// Test passed, keep the encrypted key for saving
-				EPKB_AI_Config_Specs::update_ai_config_value( 'ai_key', $old_key ); // Restore for now, will be saved properly below
-				$new_config['ai_key'] = $encrypted_test_key;
 			}
 		}
 
-		// Get current config before update to check if we're enabling features
-		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
-		
+		// Validate AI Chat collection IDs if saving from AI Chat tab
+		// Note: AI Search collection validation is handled in KB settings controller
+		if ( $tab_context === 'chat' ) {
+			$chat_collection_fields = array(
+				'ai_chat_display_collection',
+				'ai_chat_display_collection_2',
+				'ai_chat_display_collection_3',
+				'ai_chat_display_collection_4',
+				'ai_chat_display_collection_5'
+			);
+
+			foreach ( $chat_collection_fields as $field ) {
+				if ( ! empty( $new_config[$field] ) ) {
+					$collection_id = absint( $new_config[$field] );
+					$validation_error = EPKB_AI_Validation::validate_collection_has_vector_store( $collection_id, 'chat' );
+					if ( is_wp_error( $validation_error ) ) {
+						return $this->create_rest_response( array(
+							'success' => false,
+							'error' => $validation_error->get_error_code(),
+							'message' => $validation_error->get_error_message()
+						), 400 );
+					}
+				}
+			}
+		}
+
 		// Update only the provided fields (partial update)
+		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
+
 		$result = EPKB_AI_Config_Specs::update_ai_config( $orig_config, $new_config );
 		if ( is_wp_error( $result ) ) {
 			$status_code = $result->get_error_code() == 'validation_failed' ? 400 : 500;
-			return $this->create_rest_response( [], $status_code, $result );
+			// For settings save errors, use simple error message format without technical details
+			return $this->create_rest_response( array(
+				'success' => false,
+				'error' => $result->get_error_code(),
+				// translators: %s is the error message
+				'message' => sprintf( __( 'Error saving settings: %s', 'echo-knowledge-base' ), $result->get_error_message() )
+			), $status_code );
 		}
 
-		// Check if user switched AI features from off to on
-		$old_search_off = $orig_config['ai_search_enabled'] == 'off';
-		$old_chat_off = $orig_config['ai_chat_enabled'] == 'off';
-		$both_were_off = $old_search_off && $old_chat_off;
-		
-		// If both were off and now at least one is on, create tables
-		if ( $both_were_off && EPKB_AI_Utilities::is_ai_enabled() ) {
-			new EPKB_AI_Messages_DB();
-			new EPKB_AI_Training_Data_DB();
-		}
-		
+
 		// Handle widget settings if provided
 		$widget_config = null;
 		if ( ! empty( $widget_settings ) && is_array( $widget_settings ) ) {
 			$widget_id = empty( $widget_id ) ? EPKB_AI_Chat_Widget_Config_Specs::DEFAULT_WIDGET_ID : absint( $widget_id );
-			
+
 			// Update widget configuration
 			$widget_result = EPKB_AI_Chat_Widget_Config_Specs::update_widget_config( $widget_id, $widget_settings );
 			if ( is_wp_error( $widget_result ) ) {
 				$error_code = $widget_result->get_error_code();
 				$status_code = $error_code == 'validation_failed' ? 400 : 500;
 
-				return $this->create_rest_response( array( 'error' => $error_code, 'message' => $widget_result->get_error_message() ), $status_code );
+				return $this->create_rest_response( array(
+					'success' => false,
+					'error' => $error_code,
+					// translators: %s is the error message
+					'message' => sprintf( __( 'Error saving settings: %s', 'echo-knowledge-base' ), $widget_result->get_error_message() )
+				), $status_code );
 			}
-			
+
 			$widget_config = EPKB_AI_Chat_Widget_Config_Specs::get_widget_config( $widget_id );
 		}
-		
-		$response_data = array( 
-			'success' => true, 
-			'message' => __( 'Settings saved successfully.', 'echo-knowledge-base' ), 
+
+		// Handle KB collection mappings if provided
+		if ( ! empty( $settings['kb_collection_mappings'] ) && is_array( $settings['kb_collection_mappings'] ) ) {
+			$kb_config_db = new EPKB_KB_Config_DB();
+
+			foreach ( $settings['kb_collection_mappings'] as $kb_id => $collection_id ) {
+				$kb_id = absint( $kb_id );
+				$collection_id = absint( $collection_id );
+
+				if ( $kb_id === 0 ) {
+					continue;
+				}
+
+				// Get current KB config
+				$kb_config = $kb_config_db->get_kb_config( $kb_id );
+				if ( is_wp_error( $kb_config ) ) {
+					continue;
+				}
+
+				// Only update if the collection ID has changed
+				$current_collection_id = isset( $kb_config['kb_ai_collection_id'] ) ? absint( $kb_config['kb_ai_collection_id'] ) : 0;
+				if ( $current_collection_id !== $collection_id ) {
+					$kb_config_db->set_value( $kb_id, 'kb_ai_collection_id', $collection_id );
+				}
+			}
+		}
+
+		$response_data = array(
+			'success' => true,
+			'message' => __( 'Settings saved successfully.', 'echo-knowledge-base' ),
 			'settings' => $new_config
 		);
 		

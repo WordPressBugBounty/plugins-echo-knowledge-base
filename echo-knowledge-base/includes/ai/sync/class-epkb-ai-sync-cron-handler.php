@@ -29,7 +29,7 @@ class EPKB_AI_Sync_Cron_Handler {
 	public static function process_sync_cron() {
 		
 		// Check if AI is enabled
-		if ( ! EPKB_AI_Utilities::is_ai_enabled() ) {
+		if ( ! EPKB_AI_Utilities::is_ai_chat_or_search_enabled() ) {
 			EPKB_AI_Log::add_log( 'Cron sync skipped: AI is not enabled' );
 			return;
 		}

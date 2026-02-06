@@ -175,7 +175,7 @@ class EPKB_AI_Security {
 		if ( $bytes === false ) {
 			// Combine multiple sources of entropy
 			$entropy = uniqid( '', true );                    // Microsecond precision
-			$entropy .= mt_rand();                            // Mersenne Twister
+			$entropy .= wp_rand();                            // WordPress random
 			$entropy .= microtime( true );                    // Current time with microseconds
 			$entropy .= serialize( $_SERVER );                // Server variables
 			if ( function_exists( 'wp_salt' ) ) {

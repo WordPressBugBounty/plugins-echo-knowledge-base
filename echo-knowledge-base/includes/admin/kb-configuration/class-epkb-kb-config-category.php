@@ -42,9 +42,9 @@ class EPKB_KB_Config_Category {
 		
 		<tr class="form-field epkb-term-options-wrap">
 			<th scope="row"><label><?php esc_html_e( 'Draft', 'echo-knowledge-base' ); ?></label></th>
-			<td><label><input type="checkbox" name="epkb_category_is_draft" <?php checked( $is_draft ); ?>> <span><?php echo esc_html__( 'Do not list categories on the KB Main Page or sidebars. It\'s important to note that categories ' .
-                                                                'and their articles will still be accessible through direct URLs and other means. This feature is not a security measure, but rather a convenience feature that helps to ' .
-	                                                            'prepare content for publication.', 'echo-knowledge-base' ); echo ' <strong>' . esc_html__( 'It is not intended to control access to KB content like our Access Manager plugin.', 'echo-knowledge-base' ) .
+			<td><label><input type="checkbox" name="epkb_category_is_draft" <?php checked( $is_draft ); ?>> <span><?php
+				echo esc_html__( 'Do not list categories on the KB Main Page or sidebars. It\'s important to note that categories and their articles will still be accessible through direct URLs and other means. This feature is not a security measure, but rather a convenience feature that helps to prepare content for publication.', 'echo-knowledge-base' );
+				echo ' <strong>' . esc_html__( 'It is not intended to control access to KB content like our Access Manager plugin.', 'echo-knowledge-base' ) .
                      ' <a href="https://www.echoknowledgebase.com/documentation/hiding-categories/" target="_blank">' . esc_html__( 'Learn More', 'echo-knowledge-base' ) . '</a>' .
            '</strong>'; ?></span></label></td>
 		</tr><?php
@@ -79,36 +79,7 @@ class EPKB_KB_Config_Category {
 
 		$category_level = $this->get_level( $category );
 
-		// display icon on/off information but only for layouts that can have icons turned off
-		if ( $main_page_layout == EPKB_Layout::GRID_LAYOUT ) {
-			$location = $this->get_grid_icon_location( $this->kb_id );
-		} else if ( $main_page_layout == EPKB_Layout::CATEGORIES_LAYOUT && $category_level > 1 ) {
-			$location = '';
-		} else {
-			$location = epkb_get_instance()->kb_config_obj->get_value( $this->kb_id, 'section_head_category_icon_location' );
-		}
-
 		$is_new_category = ! is_object( $category );
-
-		// if icons disabled just show turn on/off link
-		/* if ( $location == 'no_icons' ) {
-
-			$message = esc_html__( 'Category Icons are disabled', 'echo-knowledge-base' );
-
-		    if ( $is_new_category ) {
-			    self::category_icon_message( 'epkb-icons-are-disabled', $message , '',
-				                                'Turn Category Icons ON. See Categories & Articles settings.' );
-			} else {    ?>
-				<tr class="form-field epkb-term-options-wrap">
-				<th scope="row">
-					<label><?php esc_html_e( 'Category Icon', 'echo-knowledge-base' ); ?></label>
-				</th>
-				<td><?php self::category_icon_message( 'epkb-icons-are-disabled', $message , '',
-												'Turn Category Icons ON. See Categories & Articles settings.' ); ?></td>
-			    </tr><?php
-			}
-			return;
-		} */
 
 		// not all categories have icons
 		switch( $main_page_layout ) {
@@ -182,7 +153,7 @@ class EPKB_KB_Config_Category {
 			<p>				<?php
 				echo esc_html( $message );
 				if ( ! empty( $url ) ) {   ?>
-					<a href="<?php echo esc_url( $url ); ?>" target="_blank"><?php esc_html_e( $urlText, 'echo-knowledge-base' ); ?></a>				<?php
+					<a href="<?php echo esc_url( $url ); ?>" target="_blank"><?php echo esc_html( $urlText ); ?></a>				<?php
 				}   ?>
 			</p>
 		</div>	<?php
@@ -212,7 +183,7 @@ class EPKB_KB_Config_Category {
 								} else {
 									$dimension = $width . $height;
 								}
-								echo '<option value="' . esc_attr( $key ) . '" ' . selected( $key, $image_size ) . '>' . esc_html( ucwords( esc_html__( $key, 'echo-knowledge-base' ) ) ) . ' (' . esc_html( $dimension ) . 'px)</option>';
+								echo '<option value="' . esc_attr( $key ) . '" ' . selected( $key, $image_size ) . '>' . esc_html( ucwords( $key ) ) . ' (' . esc_html( $dimension ) . 'px)</option>';
 							}
 						} ?>
 					</select>
@@ -228,8 +199,7 @@ class EPKB_KB_Config_Category {
 					<li><?php
 						esc_html_e( 'The size of all image icons on the front-end is controlled in the visual Editor', 'echo-knowledge-base' );					?>
 					</li>
-					<li><?php esc_html_e( 'This image should match the given setting for image icon size. If you choose a larger image, the image will be compressed to the icon size. This may cause unnecessary ' .
-					              'load time on the front-end.', 'echo-knowledge-base' ); ?></li>
+					<li><?php esc_html_e( 'This image should match the given setting for image icon size. If you choose a larger image, the image will be compressed to the icon size. This may cause unnecessary load time on the front-end.', 'echo-knowledge-base' ); ?></li>
 					<li><?php esc_html_e( 'For example, if you set the icon size to 50px, an image size of 50x50 will work the best.', 'echo-knowledge-base' ); ?></li>
 				</ul>
 			</div>

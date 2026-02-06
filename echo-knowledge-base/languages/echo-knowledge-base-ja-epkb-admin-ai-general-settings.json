@@ -1,0 +1,63 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "ja",
+                "plural-forms": "nplurals=1; plural=0;"
+            },
+            "Settings saved successfully": [
+                "設定が正常に保存されました"
+            ],
+            "Close": [
+                "閉じる"
+            ],
+            "Cancel": [
+                "キャンセル"
+            ],
+            "Saving...": [
+                "保存中..."
+            ],
+            "Save Settings": [
+                "設定を保存"
+            ],
+            "Failed to save settings": [
+                "設定の保存に失敗しました"
+            ],
+            "Sending...": [
+                "送信中..."
+            ],
+            "Test email sent successfully": [
+                "テストメールの送信に成功しました。"
+            ],
+            "Failed to send test email": [
+                "テストメールの送信に失敗しました。"
+            ],
+            "Failed to send test email. Please check your connection.": [
+                "テストメールの送信に失敗しました。接続を確認してください。."
+            ],
+            "Change AI Provider?": [
+                "AIプロバイダを変更しますか？"
+            ],
+            "Switching AI providers will affect your AI Search and AI Chat settings:": [
+                "AIプロバイダを切り替えると、AI検索とAIチャットの設定に影響します："
+            ],
+            "Training Data Collections are provider-specific and do not transfer between providers.": [
+                "機械学習データのコレクションは提供元固有で、提供元間で転送されません。."
+            ],
+            "You will need to create and train new collections for the new provider.": [
+                "新しいプロバイダ用に新しいコレクションを作成してトレーニングする必要があります。."
+            ],
+            "AI Search and AI Chat will only show collections for the selected provider.": [
+                "AI検索とAIチャットは、選択された提供元のコレクションのみを表示します。."
+            ],
+            "Your existing collections will be preserved and available if you switch back.": [
+                "元の提供元に戻すと、既存のコレクションは保持され、利用可能になります。."
+            ],
+            "Change Provider": [
+                "プロバイダを変更"
+            ]
+        }
+    }
+}

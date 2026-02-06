@@ -61,7 +61,7 @@ abstract class EPKB_Abstract_Block {
 			[
 				'api_version' => 3,
 				'name' => 'echo-knowledge-base/' . $name,
-				'title' => esc_html__( $block_title, 'echo-knowledge-base' ),
+				'title' => $block_title,
 				'category' => 'echo-knowledge-base',
 				'icon' => $this->icon,
 				'description' => '',
@@ -154,7 +154,7 @@ abstract class EPKB_Abstract_Block {
 		global $post;
 
 		// allow to register block assets only for 'page' post type
-		if ( empty( $post ) || $post->post_type != 'page' ) {
+		if ( empty( $post ) || ! ( $post instanceof WP_Post ) || $post->post_type != 'page' ) {
 			return;
 		}
 
@@ -213,7 +213,7 @@ abstract class EPKB_Abstract_Block {
 		global $post;
 
 		// allow to register block assets only for 'page' post type
-		if ( empty( $post->post_type ) || $post->post_type !== 'page' ) {
+		if ( empty( $post ) || ! ( $post instanceof WP_Post ) || $post->post_type !== 'page' ) {
 			return;
 		}
 
@@ -440,6 +440,11 @@ abstract class EPKB_Abstract_Block {
 			return;
 		}
 
+		// Skip processing when Setup Wizard is updating blocks to preserve template settings
+		if ( EPKB_Utilities::post( 'action' ) == 'epkb_apply_setup_wizard_changes' ) {
+			return;
+		}
+
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
 		}
@@ -452,10 +457,15 @@ abstract class EPKB_Abstract_Block {
 
 		$kb_id = isset( $block_attributes['kb_id'] ) ? $block_attributes['kb_id'] : EPKB_KB_Config_DB::DEFAULT_KB_ID;
 
-		// update search highlight for Advanced Search
+		// update Advanced Search settings in ASEA config when block is saved
 		if ( $this->block_name == 'advanced-search' && EPKB_Utilities::is_advanced_search_enabled() ) {
 			$text_highlight_enabled = isset( $block_attributes['advanced_search_text_highlight_enabled'] ) ? $block_attributes['advanced_search_text_highlight_enabled'] : 'on';
 			do_action( 'eckb_kb_config_save_value', $kb_id, 'advanced_search_text_highlight_enabled', $text_highlight_enabled );
+
+			// Update FAQ toggle only if user explicitly set it in the block
+			if ( isset( $block_attributes['advanced_search_faqs_toggle'] ) ) {
+				do_action( 'eckb_kb_config_save_value', $kb_id, 'advanced_search_faqs_toggle', $block_attributes['advanced_search_faqs_toggle'] );
+			}
 			return;
 		}
 
@@ -476,13 +486,6 @@ abstract class EPKB_Abstract_Block {
 		}
 
 		$updated_kb_config = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'templates_for_kb', $templates_for_kb );
-
-		// update icons if user chose another theme design
-		if ( isset( $block_attributes['theme_name'] ) && $block_attributes['theme_name'] != 'current' && is_array( $updated_kb_config ) ) {
-			$block_attributes = array_merge( $updated_kb_config, $block_attributes );
-			// if user selects Image theme then change font icons to image icons
-			EPKB_Core_Utilities::get_or_update_new_category_icons( $block_attributes, $block_attributes['theme_name'], true );
-		}
 	}
 
 	/**
@@ -504,12 +507,14 @@ abstract class EPKB_Abstract_Block {
 		$block_attributes['id'] = $kb_config['id'];
 		$block_attributes['status'] = $kb_config['status'];
 		$block_attributes['kb_main_pages'] = $kb_config['kb_main_pages'];
+		$block_attributes['kb_articles_common_path'] = $kb_config['kb_articles_common_path'];
 		$block_attributes['first_plugin_version'] = $kb_config['first_plugin_version'];
 		$block_attributes['upgrade_plugin_version'] = $kb_config['upgrade_plugin_version'];
 		$block_attributes['show_articles_before_categories'] = $this->block_name == 'sidebar-layout' ? $kb_config['sidebar_show_articles_before_categories'] : $kb_config['show_articles_before_categories'];
 		$block_attributes['wpml_is_enabled'] = $kb_config['wpml_is_enabled'];
 		$block_attributes['frontend_editor_switch_visibility_toggle'] = $kb_config['frontend_editor_switch_visibility_toggle'];
 		$block_attributes['frontend_editor_button_shown'] = $kb_config['frontend_editor_button_shown'];
+		$block_attributes['kb_ai_collection_id'] = $kb_config['kb_ai_collection_id'];
 
 		// let blocks to hard-code value of certain KB settings regardless of actual KB config value
 		$block_attributes = $this->add_this_block_required_kb_attributes( $block_attributes );
@@ -550,7 +555,7 @@ abstract class EPKB_Abstract_Block {
 	private function get_block_ui_config() {
 
 		$block_ui_config = $this->get_this_block_ui_config();
-		$kb_config_specs = EPKB_Core_Utilities::retrieve_all_kb_specs( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+		$kb_config_specs = EPKB_Core_Utilities::retrieve_all_kb_specs_with_labels( EPKB_KB_Config_DB::DEFAULT_KB_ID );
 
 		foreach ( $block_ui_config as $tab_name => $tab_config ) {
 			foreach ( $tab_config['groups'] as $group_name => $group_config ) {
@@ -676,7 +681,7 @@ abstract class EPKB_Abstract_Block {
 	 * - If not registered yet, register it here (so block works standalone)
 	 * - Always register the block handle as a shim depending on the canonical
 	 */
-protected function register_block_public_scripts( $suffix ) {
+	protected function register_block_public_scripts( $suffix ) {
 	$canonical    = 'epkb-public-scripts';
 	$block_handle = $this->get_block_public_scripts_handle(); // typically 'epkb-blocks-public-scripts'
 
@@ -715,7 +720,6 @@ protected function register_block_public_scripts( $suffix ) {
 		);
 	}
 }
-
 
 	/**
 	 * Sanitize attributes before pass to KB legacy code (unlike to KB config, the block attributes can be modified in the post content and thus become unsafe)

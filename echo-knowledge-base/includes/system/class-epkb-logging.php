@@ -64,7 +64,7 @@ class EPKB_Logging {
 		$kb_id = EPKB_Utilities::is_multiple_kbs_enabled() ? $kb_id : EPKB_KB_Config_DB::DEFAULT_KB_ID;
 
 		// add new error log entry but remove oldest one if more than max
-		$error_log[] = array( 'plugin' => 'EPKB', 'kb' => $kb_id, 'date' => date("Y-m-d H:i:s"), 'message' => $error_message, 'trace' => $stack_trace );
+		$error_log[] = array( 'plugin' => 'EPKB', 'kb' => $kb_id, 'date' => wp_date( 'Y-m-d H:i:s' ), 'message' => $error_message, 'trace' => $stack_trace );
 
 		if ( count($error_log) > self::MAX_NOF_LOGS_STORED ) {
 			array_shift($error_log);

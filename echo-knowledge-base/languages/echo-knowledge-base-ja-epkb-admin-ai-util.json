@@ -1,0 +1,75 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "ja",
+                "plural-forms": "nplurals=1; plural=0;"
+            },
+            "Close": [
+                "閉じる"
+            ],
+            "Cancel": [
+                "キャンセル"
+            ],
+            "Next": [
+                "次"
+            ],
+            "AI Features": [
+                "AI機能"
+            ],
+            "Documentation": [
+                "ドキュメント"
+            ],
+            "Got it!": [
+                "了解しました！"
+            ],
+            "Show Me": [
+                "表示する"
+            ],
+            "Loading...": [
+                "読み込み中…"
+            ],
+            "General Settings": [
+                "一般設定"
+            ],
+            "Go to Settings": [
+                "設定へ移動"
+            ],
+            "Your session has expired. Please refresh the page.": [
+                "セッションの有効期限が切れました。ページを更新してください。."
+            ],
+            "Too many requests. Please wait a moment and try again.": [
+                "リクエストが多すぎます。しばらく待ってからもう一度お試しください。."
+            ],
+            "An unexpected error occurred. Please try again.": [
+                "予期しないエラーが発生しました。もう一度お試しください。."
+            ],
+            "Confirm Action": [
+                "操作を確認"
+            ],
+            "Are you sure you want to proceed?": [
+                "この操作を続行してもよろしいですか？"
+            ],
+            "Confirm": [
+                "確認"
+            ],
+            "Setup Steps": [
+                "セットアップ手順"
+            ],
+            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
+                "AI機能を使用するには、APIキーを設定し、データプライバシー規約に同意してください。"
+            ],
+            "Session Expired": [
+                "セッションが期限切れです。"
+            ],
+            "Refresh Page": [
+                "ページを更新"
+            ],
+            "No results found": [
+                "結果が見つかりませんでした。"
+            ]
+        }
+    }
+}

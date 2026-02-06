@@ -3,7 +3,7 @@
 /**
  * AI Training Data Repository DB
  * 
- * Manages training data sync state between WordPress content and OpenAI vector stores.
+ * Manages training data sync state between WordPress content and AI vector stores.
  * Tracks sync status, errors, and metadata for posts, attachments, and other content.
  */
 class EPKB_AI_Training_Data_DB extends EPKB_DB {
@@ -11,15 +11,17 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	/**
 	 * Version History:
 	 * 1.0 - Initial table structure
+	 * 1.1 - Fixed index key length issue: Reduced item_id, store_id, file_id from VARCHAR(255) to VARCHAR(100)
+	 * 1.3 - Added provider column to track which AI provider owns the training data row
 	 */
-	const TABLE_VERSION = '1.0';    /** update when table schema changes **/
+	const TABLE_VERSION = '1.3';    /** update when table schema changes **/
 	const PER_PAGE = 50;
 	const PRIMARY_KEY = 'id';
 
 	/**
 	 * Get things started
 	 */
-	public function __construct( $db_check=true ) {
+	public function __construct( $db_check=false ) {
 		parent::__construct();
 		
 		global $wpdb;
@@ -40,9 +42,10 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	public function get_column_format() {
 		return array(
 			'collection_id' => '%d',
+			'provider'             => '%s',
 			'item_id'               => '%s',  // Can be post ID or UUID
 			'store_id'              => '%s',
-			'file_id'               => '%s',  // OpenAI file ID
+			'file_id'               => '%s',  //  file ID - used for all vector store operations
 			'last_synced'           => '%s',
 			'title'                 => '%s',
 			'type'                  => '%s',
@@ -68,6 +71,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		return array(
 			'id'                    => 0,
 			'collection_id'=> 0,
+			'provider'             => '',
 			'item_id'               => '',
 			'store_id'              => '',
 			'file_id'               => '',
@@ -90,24 +94,68 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	/**
 	 * Get all unique collection IDs from the database
 	 *
+	 * @param string|null $provider Provider to filter by (optional)
 	 * @return array|WP_Error Array of collection IDs or error
 	 */
-	public function get_all_collection_ids_from_db() {
+	public function get_all_collection_ids_from_db( $provider = null ) {
 		global $wpdb;
-		
-		$sql = "SELECT DISTINCT collection_id 
-				FROM {$this->table_name} 
-				WHERE collection_id IS NOT NULL 
-				AND collection_id > 0 
-				ORDER BY collection_id ASC";
 
-		$collection_ids = $wpdb->get_col( $sql );
-		$this->handle_db_error( $collection_ids, 'insert_training_data' );
-		
-		// Convert to integers
-		return array_map( 'intval', $collection_ids );
+		// If provider is provided, filter by it; otherwise return all providers
+		if ( ! empty( $provider ) ) {
+			$provider = EPKB_AI_Provider::normalize_provider( $provider );
+			$sql = $wpdb->prepare( "SELECT DISTINCT collection_id, provider 
+					FROM {$this->table_name} 
+					WHERE collection_id IS NOT NULL 
+					AND collection_id > 0
+					AND provider = %s
+					ORDER BY collection_id ASC", $provider );
+		} else {
+			$sql = "SELECT DISTINCT collection_id, provider 
+					FROM {$this->table_name} 
+					WHERE collection_id IS NOT NULL 
+					AND collection_id > 0
+					ORDER BY collection_id ASC";
+		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is a static query with no user input
+		$results = $wpdb->get_results( $sql );
+		$this->handle_db_error( $results, 'get_all_collection_ids_from_db' );
+		if ( is_wp_error( $results ) ) {
+			return $results;
+		}
+
+		$collection_ids = array();
+		if ( is_array( $results ) ) {
+			foreach ( $results as $row ) {
+				$collection_ids[ intval( $row->collection_id ) ] = $row->provider;
+			}
+		}
+
+		return $collection_ids;
 	}
-	
+
+	/**
+	 * Get the store_id for a specific collection and provider from the database
+	 *
+	 * @param int $collection_id Collection ID
+	 * @param string|null $provider Provider to filter by (defaults to active provider)
+	 * @return string|null Store ID or null if not found
+	 */
+	public function get_store_id_by_collection( $collection_id, $provider = null ) {
+		global $wpdb;
+
+		$provider = $provider ? EPKB_AI_Provider::normalize_provider( $provider ) : EPKB_AI_Provider::get_active_provider();
+
+		$sql = $wpdb->prepare(
+			"SELECT store_id FROM {$this->table_name} WHERE collection_id = %d AND provider = %s AND store_id IS NOT NULL AND store_id != '' LIMIT 1",
+			$collection_id,
+			$provider
+		);
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is prepared above
+		return $wpdb->get_var( $sql );
+	}
+
 	/**
 	 * Insert training data record
 	 *
@@ -159,9 +207,9 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 * Get training data by ID
 	 *
 	 * @param int $id
-	 * @return object|null|WP_Error
+	 * @return object|null|WP_Error - Training data record or null if not found or WP_Error on failure
 	 */
-	public function get_training_data( $id ) {
+	public function get_training_data_row_by_id( $id ) {
 
 		$row = $this->get_by_primary_key( $id );
 		$this->handle_db_error( $row, 'get_training_data' );
@@ -174,22 +222,21 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 *
 	 * @param int $collection_id
 	 * @param string $item_id
-	 * @return array|object|stdClass|null
+	 * @return object|null|WP_Error - Training data record or null if not found or WP_Error on failure
 	 */
-	public function get_training_data_by_item( $collection_id, $item_id ) {
-		global $wpdb;
+	public function get_training_data_record_by_item_id( $collection_id, $item_id ) {
 
 		$item_id = (string) $item_id; // Ensure item_id is a string
 
-		$sql = $wpdb->prepare( 
-			"SELECT * FROM {$this->table_name} 
-			WHERE collection_id = %d AND item_id = %s",
-			$collection_id, $item_id
-		);
-		
-		$row = $wpdb->get_row( $sql );
+		$row = $this->get_a_row_by_where_clause( array( 'collection_id' => $collection_id, 'item_id' => $item_id ) );
 		$this->handle_db_error( $row, 'get_training_data_by_item' );
-		
+		if ( is_wp_error( $row ) ) {
+			return $row;
+		}
+		if ( empty( $row ) ) {
+			return null;
+		}
+
 		return $row;
 	}
 	
@@ -214,46 +261,17 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			$where[] = $wpdb->prepare( "type = %s", $filters['type'] );
 		}
 		
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where contains prepared values
 		$sql = "SELECT * FROM {$this->table_name} WHERE " . implode( ' AND ', $where );
 		$sql .= " ORDER BY created ASC";
-		
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains prepared values from $where
 		$rows = $wpdb->get_results( $sql );
 		$this->handle_db_error( $rows, 'get_training_data_by_collection' );
 		
 		return $rows ?: array();
 	}
-	
-	/**
-	 * Get items needing sync (outdated or error with retry_count < 3)
-	 *
-	 * @param int $limit
-	 * @return array
-	 */
-	public function get_items_needing_sync( $limit = 100 ) {
-		global $wpdb;
-		
-		$sql = $wpdb->prepare( 
-			"SELECT * FROM {$this->table_name} 
-			WHERE status IN ('outdated', 'error', 'adding', 'updating') 
-			AND retry_count < 3
-			ORDER BY 
-				CASE status 
-					WHEN 'adding' THEN 1
-					WHEN 'updating' THEN 2
-					WHEN 'outdated' THEN 3
-					WHEN 'error' THEN 4
-				END,
-				created ASC 
-			LIMIT %d",
-			$limit
-		);
-		
-		$rows = $wpdb->get_results( $sql );
-		$this->handle_db_error( $rows, 'get_items_needing_sync' );
-		
-		return $rows ?: array();
-	}
-	
+
 	/**
 	 * Get training data with pagination and filters
 	 *
@@ -311,10 +329,12 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		if ( ! empty( $args['search'] ) ) {
 			// Build custom query when search is active
 			$where_clause = ! empty( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '';
-			$order_by = in_array( $args['orderby'], array( 'created', 'updated', 'title', 'type', 'status' ) ) ? $args['orderby'] : 'created';
-			$order = in_array( strtoupper( $args['order'] ), array( 'ASC', 'DESC' ) ) ? strtoupper( $args['order'] ) : 'DESC';
-			
-			$sql = "SELECT * FROM {$this->table_name} {$where_clause} ORDER BY {$order_by} {$order} LIMIT %d OFFSET %d";
+			$order_by = in_array( $args['orderby'], array( 'created', 'updated', 'title', 'type', 'status' ), true ) ? $args['orderby'] : 'created';
+			$order_by = esc_sql( $order_by );
+			$order = in_array( strtoupper( $args['order'] ), array( 'ASC', 'DESC' ), true ) ? strtoupper( $args['order'] ) : 'DESC';
+
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $order_by validated against allowed list, $where_clause contains prepared values
+			$sql = "SELECT * FROM {$this->table_name} {$where_clause} ORDER BY `{$order_by}` {$order} LIMIT %d OFFSET %d";
 			$rows = $wpdb->get_results( $wpdb->prepare( $sql, $per_page, $offset ) );
 		} else {
 			// Use existing method when no search
@@ -374,7 +394,9 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		if ( ! empty( $args['search'] ) ) {
 			// Build custom query when search is active
 			$where_clause = ! empty( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '';
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_clause contains prepared values
 			$sql = "SELECT COUNT(*) FROM {$this->table_name} {$where_clause}";
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains prepared values
 			$count = $wpdb->get_var( $sql );
 		} else {
 			// Use existing method when no search
@@ -395,17 +417,12 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 */
 	public function mark_as_synced( $id, $sync_data ) {
 
-		$current_data = $this->get_training_data( $id );
+		$current_data = $this->get_training_data_row_by_id( $id );
 		if ( ! $current_data ) {
-			return new WP_Error( 'training_data_not_found', 'Training data not found for ID ' . $id );
+			return new WP_Error( 'training_data_not_found', __( 'Training data not found', 'echo-knowledge-base' ) . 'ID: ' . $id );
 		}
-		
-		// Determine new status based on current status
-		$new_status = 'added';
-		if ( in_array( $current_data->status, array( 'updating', 'updated', 'outdated' ) ) ) {
-			$new_status = 'updated';
-		}
-		
+
+		$new_status = $current_data->status === 'adding' ? 'added' : 'updated';
 		$data = array(
 			'status'        => $new_status,
 			'last_synced'   => gmdate( 'Y-m-d H:i:s' ),
@@ -413,7 +430,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			'error_message' => null,
 			'retry_count'   => 0
 		);
-		
+
 		// Update sync IDs if provided
 		if ( isset( $sync_data['file_id'] ) ) {
 			$data['file_id'] = $sync_data['file_id'];
@@ -424,8 +441,16 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		if ( isset( $sync_data['content_hash'] ) ) {
 			$data['content_hash'] = $sync_data['content_hash'];
 		}
-		
-		return $this->update_training_data( $id, $data );
+		if ( isset( $sync_data['title'] ) ) {
+			$data['title'] = $sync_data['title'];
+		}
+		if ( isset( $sync_data['url'] ) ) {
+			$data['url'] = $sync_data['url'];
+		}
+
+		$result = $this->update_training_data( $id, $data );
+
+		return is_wp_error( $result ) ? $result : $new_status;
 	}
 	
 	/**
@@ -438,30 +463,16 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 */
 	public function mark_as_error( $id, $error_code, $error_message ) {
 
-		$current_data = $this->get_training_data( $id );
+		$current_data = $this->get_training_data_row_by_id( $id );
 		if ( ! $current_data ) {
-			return new WP_Error( 'training_data_not_found', 'Training data not found for ID ' . $id );
+			return new WP_Error( 'training_data_not_found', __( 'Training data not found', 'echo-knowledge-base' ) . 'ID: ' . $id );
 		}
-		
+
 		$data = array(
 			'status'        => 'error',
 			'error_code'    => $error_code,
 			'error_message' => $error_message,
 			'retry_count'   => $current_data->retry_count + 1
-		);
-		
-		return $this->update_training_data( $id, $data );
-	}
-	
-	/**
-	 * Mark item as outdated (needs re-sync)
-	 *
-	 * @param int $id
-	 * @return bool|WP_Error
-	 */
-	public function mark_as_outdated( $id ) {
-		$data = array(
-			'status' => 'outdated'
 		);
 		
 		return $this->update_training_data( $id, $data );
@@ -492,11 +503,11 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		);
 		
 		$this->handle_db_error( $result, 'mark_source_as_outdated' );
-		
+
 		if ( $result === false ) {
 			return new WP_Error( 'db_error', $wpdb->last_error );
 		}
-		
+
 		return true;
 	}
 	
@@ -520,11 +531,11 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		);
 		
 		$this->handle_db_error( $result, 'delete_by_source' );
-		
+
 		if ( $result === false ) {
 			return new WP_Error( 'db_error', $wpdb->last_error );
 		}
-		
+
 		return true;
 	}
 	
@@ -556,8 +567,10 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			$where = $wpdb->prepare( ' WHERE collection_id = %d', $collection_id );
 		}
 		
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is prepared above
 		$sql = "SELECT status, COUNT(*) as count FROM {$this->table_name} {$where} GROUP BY status";
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains prepared values
 		$results = $wpdb->get_results( $sql );
 		$this->handle_db_error( $results, 'get_status_statistics' );
 		
@@ -607,68 +620,16 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			$where = ' WHERE last_synced IS NOT NULL';
 		}
 		
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is prepared above
 		$sql = "SELECT MAX(last_synced) as last_sync_date FROM {$this->table_name} {$where}";
-		
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains prepared values
 		$result = $wpdb->get_var( $sql );
 		$this->handle_db_error( $result, 'get_last_sync_date' );
 		
 		return $result;
 	}
 	
-	/**
-	 * Clean up stale records (e.g., stuck in 'adding' or 'updating' for too long)
-	 *
-	 * @param int $hours Hours to consider a record stale
-	 * @return int Number of records cleaned
-	 */
-	public function clean_stale_records( $hours = 24 ) {
-		global $wpdb;
-		
-		$cutoff = gmdate( 'Y-m-d H:i:s', strtotime( "-{$hours} hours" ) );
-		
-		$sql = $wpdb->prepare(
-			"UPDATE {$this->table_name} 
-			SET status = 'error', 
-				error_code = 408,
-				error_message = %s,
-				updated = %s
-			WHERE status IN ('adding', 'updating') 
-			AND updated < %s",
-			'', // TODO localized error message
-			gmdate( 'Y-m-d H:i:s' ),
-			$cutoff
-		);
-		
-		$result = $wpdb->query( $sql );
-		$this->handle_db_error( $result, 'clean_stale_records' );
-		
-		return $result === false ? 0 : $result;
-	}
-	
-	/**
-	 * Clear all training data for a collection
-	 *
-	 * @param int $collection_id Collection ID
-	 * @return bool|WP_Error
-	 */
-	public function clear_kb_data( $collection_id ) {
-		global $wpdb;
-		
-		$result = $wpdb->delete(
-			$this->table_name,
-			array( 'collection_id' => $collection_id ),
-			array( '%d' )
-		);
-		
-		$this->handle_db_error( $result, 'clear_kb_data' );
-		if ( $result === false ) {
-			return new WP_Error( 'db_error', $wpdb->last_error );
-		}
-		
-		// Return the number of rows deleted so caller can verify
-		return $result;
-	}
-
 	/**
 	 * Get rows with WHERE conditions
 	 *
@@ -703,17 +664,19 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		$orderby = '`' . $orderby . '`';
 		$limit = absint( $limit );
 		$offset = absint( $offset );
-		
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $orderby validated against allowed list above
 		$sql .= " ORDER BY $orderby $order";
 		$sql .= $wpdb->prepare( " LIMIT %d OFFSET %d", $limit, $offset );
-		
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains prepared values
 		$results = $wpdb->get_results( $sql );
 		$this->handle_db_error( $results, 'mark_source_as_outdated' );
 
 		if ( $results === null && ! empty( $wpdb->last_error ) ) {
 			return new WP_Error( 'db_error', $wpdb->last_error );
 		}
-		
+
 		return $results ?: array();
 	}
 	
@@ -731,7 +694,8 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		if ( ! empty( $where ) ) {
 			$sql .= " WHERE " . implode( ' AND ', $where );
 		}
-		
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $where contains prepared values from calling methods
 		$count = $wpdb->get_var( $sql );
 		$this->handle_db_error( $count, 'mark_source_as_outdated' );
 
@@ -768,16 +732,27 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	/**
 	 * Check if there is any synced data
 	 *
+	 * @param array $collection_ids Optional collection IDs to scope the count
 	 * @return int
 	 */
-	public static function count_synced_data() {
+	public static function count_synced_data( $collection_ids = array() ) {
 		global $wpdb;
 
 		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->prefix . 'epkb_ai_training_data' ) ) !== $wpdb->prefix . 'epkb_ai_training_data' ) {
 			return 0;
 		}
 
-		return intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}epkb_ai_training_data WHERE status = 'updated'" ) );
+		$collection_ids = array_filter( array_map( 'absint', (array) $collection_ids ) );
+
+		if ( empty( $collection_ids ) ) {
+			$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}epkb_ai_training_data WHERE status IN ('added', 'updated')";
+			return intval( $wpdb->get_var( $sql ) );
+		}
+
+		$placeholders = implode( ', ', array_fill( 0, count( $collection_ids ), '%d' ) );
+		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}epkb_ai_training_data WHERE status IN ('added', 'updated') AND collection_id IN ( {$placeholders} )";
+
+		return intval( $wpdb->get_var( $wpdb->prepare( $sql, $collection_ids ) ) );
 	}
 
 	/**
@@ -852,37 +827,6 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	}
 
 	/**
-	 * Mark all records in a collection as pending
-	 *
-	 * @param int $collection_id Collection ID
-	 * @param bool $use_summary Whether summary mode is enabled
-	 * @return int|false Number of rows updated or false on error
-	 */
-	public function mark_all_as_pending( $collection_id, $use_summary = false ) {
-		global $wpdb;
-		
-		$collection_id = absint( $collection_id );
-		if ( empty( $collection_id ) ) {
-			return false;
-		}
-		
-		// Mark all records in this collection as pending
-		$sql = $wpdb->prepare(
-			"UPDATE {$this->table_name} 
-			SET status = 'pending', updated = %s, retry_count = 0, error_code = NULL, error_message = NULL
-			WHERE collection_id = %d", gmdate( 'Y-m-d H:i:s' ), $collection_id
-		);
-		
-		$result = $wpdb->query( $sql );
-		if ( $result === false ) {
-			$this->handle_db_error( false, 'mark_all_as_pending' );
-			return false;
-		}
-		
-		return $result;
-	}
-
-	/**
 	 * Create the table
 	 * 
 	 * Table stores sync state for AI training data items.
@@ -890,9 +834,10 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 * Table columns:
 	 * - id: Primary key
 	 * - collection_id: Collection of posts and other documents stored in a single unique store
+	 * - provider: AI provider that owns the vector store/file records
 	 * - item_id: Post ID, attachment ID, or generated UUID for uploads/AI-generated content
 	 * - store_id: ID of the Vector Store or other storage
-	 * - file_id: OpenAI file id
+	 * - file_id: file ID (file-xxx) - used for all AI file and vector store operations
 	 * - last_synced: Timestamp of last successful sync
 	 * - title: Post/page/attachment/note title; file name
 	 * - type: Post, page, CPT, attachment, file, note, PDF, CSV, XML, AI-generated, URL
@@ -919,9 +864,10 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		$sql = "CREATE TABLE {$this->table_name} (
 				    id                      BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 				    collection_id  			INT UNSIGNED        NOT NULL DEFAULT 1,
-				    item_id                 VARCHAR(255)        NOT NULL,
-				    store_id                VARCHAR(255)        NULL,
-				    file_id                 VARCHAR(255)        NULL,
+				    provider                VARCHAR(20)         NOT NULL DEFAULT '',
+				    item_id                 VARCHAR(100)        NOT NULL,
+				    store_id                VARCHAR(100)        NULL,
+				    file_id                 VARCHAR(100)        NULL,
 				    last_synced             DATETIME            NULL,
 				    title                   VARCHAR(255)        NOT NULL,
 				    type                    VARCHAR(50)         NOT NULL,
@@ -933,10 +879,11 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 				    url                     TEXT                NULL,
 				    content_hash            VARCHAR(32)         NULL,
 				    user_id                 BIGINT(20) UNSIGNED NULL,
-				    created	                DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP,
-					updated                 DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				    created                 DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				    updated                 DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				    PRIMARY KEY (id),
 				    KEY         idx_collection_item         (collection_id, item_id),
+				    KEY         idx_provider_collection     (provider, collection_id),
 				    KEY         idx_status                  (status),
 				    KEY         idx_type                    (type),
 				    KEY         idx_file_id                 (file_id),
@@ -945,7 +892,9 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 
 		dbDelta( $sql );
 
-		// Store version with autoload enabled
-		update_option( $this->get_version_option_name(), self::TABLE_VERSION, true );
+		// Only store version if table was actually created successfully
+		if ( $this->table_exists( $this->table_name ) ) {
+			update_option( $this->get_version_option_name(), self::TABLE_VERSION, true );
+		}
 	}
 }

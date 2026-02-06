@@ -225,7 +225,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 			/** DISPLAY SUB-CATEGORIES */
 			foreach ( $box_sub_category_list as $box_sub_category_id => $box_sub_sub_category_list ) {
 				$category_name = isset( $this->articles_seq_data[$box_sub_category_id][0] ) ?
-											$this->articles_seq_data[$box_sub_category_id][0] : _x( 'Category', 'taxonomy singular name' );
+											$this->articles_seq_data[$box_sub_category_id][0] : _x( 'Category', 'taxonomy singular name', 'echo-knowledge-base' );
 
 				$class1_escaped = $this->get_css_class( '::expand_articles_icon, epkb-category-level-2-3__cat-icon' );
 				$style1_escaped = $this->get_inline_style( 'color:: section_category_icon_color' );
@@ -273,7 +273,7 @@ class EPKB_Layout_Basic extends EPKB_Layout {
 			/** DISPLAY SUB-SUB-CATEGORIES */
 			foreach ( $box_sub_sub_category_list as $box_sub_sub_category_id => $box_sub_sub_sub_category_list ) {
 				$category_name = isset( $this->articles_seq_data[$box_sub_sub_category_id][0] ) ?
-				$this->articles_seq_data[$box_sub_sub_category_id][0] : _x( 'Category', 'taxonomy singular name' );
+				$this->articles_seq_data[$box_sub_sub_category_id][0] : _x( 'Category', 'taxonomy singular name', 'echo-knowledge-base' );
 
 				$class1_escaped = $this->get_css_class( '::expand_articles_icon, epkb-category-level-2-3__cat-icon' );
 				$style1_escaped = $this->get_inline_style( 'color:: section_category_icon_color' );

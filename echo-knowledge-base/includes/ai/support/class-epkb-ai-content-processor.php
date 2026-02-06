@@ -132,6 +132,7 @@ class EPKB_AI_Content_Processor {
 
 		} catch ( Exception $e ) {
 			// Fall back to basic stripping if conversion fails
+			// translators: %s is the error message
 			return new WP_Error( 'conversion_failed', sprintf( __( 'HTML to Markdown conversion failed: %s', 'echo-knowledge-base' ), $e->getMessage() ) );
 		}
 
@@ -141,6 +142,18 @@ class EPKB_AI_Content_Processor {
 		}
 
 		// Post-process the Markdown content
+		// Ensure markdown headings are on separate lines (before and after)
+		$markdown = preg_replace( '/([^\n#])(#{1,6}\s+)/', "$1\n\n$2", $markdown );
+		if ( $markdown === null ) {
+			return new WP_Error( 'regex_failed', __( 'Failed to normalize heading line breaks', 'echo-knowledge-base' ) );
+		}
+
+		// Ensure there's a blank line after heading lines
+		$markdown = preg_replace( '/^(#{1,6}\s+.*)$/m', "$1\n", $markdown );
+		if ( $markdown === null ) {
+			return new WP_Error( 'regex_failed', __( 'Failed to add newlines after headings', 'echo-knowledge-base' ) );
+		}
+
 		// Fix missing spaces after punctuation (e.g., "end.Start" → "end. Start")
 		$markdown = preg_replace( '/([.!?])([A-Z])/u', '$1 $2', $markdown );
 		if ( $markdown === null ) {
@@ -393,6 +406,7 @@ class EPKB_AI_Content_Processor {
 		$max_size = $this->get_max_attachment_size( $mime_type );
 		if ( $file_size > $max_size ) {
 			EPKB_AI_Log::add_log( 'Attachment exceeds size limit', array( 'attachment_id' => $attachment_id, 'mime_type' => $mime_type, 'file_size' => $file_size, 'max_size' => $max_size ) );
+			// translators: %s is the maximum file size
 			return new WP_Error( 'attachment_too_large', sprintf( __( 'Attachment exceeds size limit (%s)', 'echo-knowledge-base' ), size_format( $max_size ) ) );
 		}
 		
@@ -537,21 +551,25 @@ class EPKB_AI_Content_Processor {
 		// Get alt text
 		$alt_text = get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true );
 		if ( ! empty( $alt_text ) ) {
+			// translators: %s is the image alt text
 			$content_parts[] = sprintf( __( 'Alt text: %s', 'echo-knowledge-base' ), $alt_text );
 		}
-		
+
 		// Get caption
 		if ( ! empty( $attachment->post_excerpt ) ) {
+			// translators: %s is the image caption
 			$content_parts[] = sprintf( __( 'Caption: %s', 'echo-knowledge-base' ), $attachment->post_excerpt );
 		}
-		
+
 		// Get description
 		if ( ! empty( $attachment->post_content ) ) {
+			// translators: %s is the image description
 			$content_parts[] = sprintf( __( 'Description: %s', 'echo-knowledge-base' ), $attachment->post_content );
 		}
-		
+
 		// Get title
 		if ( ! empty( $attachment->post_title ) ) {
+			// translators: %s is the image title
 			$content_parts[] = sprintf( __( 'Title: %s', 'echo-knowledge-base' ), $attachment->post_title );
 		}
 		

@@ -995,26 +995,26 @@ class EPKB_HTML_Elements {
 	 */
 	public static function get_copy_to_clipboard_box( $copy_text, $label='', $return_html=true ) {
 
+		$label_html = empty( $label ) ? '' : "<span>" . esc_html( $label ) . "</span> ";
+
+		$html = $label_html .
+				"<span class='epkb-copy-to-clipboard-box-container'>" .
+					"<span class='epkb-ctc__embed-content'>" .
+						"<span class='epkb-ctc__embed-notification'>" . esc_html__( 'Copied to clipboard', 'echo-knowledge-base' ) . "</span>" .
+						"<span class='epkb-ctc__embed-code'>" . esc_html( $copy_text ) . "</span>" .
+					"</span>" .
+					"<a class='epkb-ctc__copy-button' href='#'>" .
+						"<span>" . esc_html__( 'Copy', 'echo-knowledge-base' ) . "</span>" .
+					"</a>" .
+				"</span>";
+
 		if ( ! empty( $return_html ) ) {
-			ob_start();
-		}
-        if ( ! empty( $label ) ) {  ?>
-            <span class=""><?php echo esc_html( $label ); ?></span> <?php
-		}   ?>
-        <span class="epkb-copy-to-clipboard-box-container">
-            <span class="epkb-ctc__embed-content">
-                <span class="epkb-ctc__embed-notification"><?php echo esc_html__( 'Copied to clipboard', 'echo-knowledge-base' ); ?></span>
-                <span class="epkb-ctc__embed-code"><?php echo esc_html( $copy_text ); ?></span>
-            </span>
-			<a class="epkb-ctc__copy-button" href="#">
-                <span><?php echo esc_html__( 'Copy', 'echo-knowledge-base' ); ?></span>
-            </a>
-        </span>  <?php
-		if ( ! empty( $return_html ) ) {
-			return ob_get_clean();
+			return $html;
 		}
 
-        return '';
+		echo $html;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above
+
+		return '';
 	}
 
 	/**
@@ -1314,8 +1314,7 @@ class EPKB_HTML_Elements {
 		}
 
 		$specs_name = $args['specs'];
-		$field_specs = EPKB_Core_Utilities::retrieve_all_kb_specs( EPKB_KB_Config_DB::DEFAULT_KB_ID );
-
+		$field_specs = EPKB_Core_Utilities::retrieve_all_kb_specs_with_labels( EPKB_KB_Config_DB::DEFAULT_KB_ID );
 		if ( empty( $field_specs[$specs_name] ) ) {
 			return $args;
 		}

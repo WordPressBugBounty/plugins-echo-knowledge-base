@@ -202,10 +202,6 @@ class EPKB_Upgrades {
 			self::upgrade_to_v13_11_0( $kb_config );
 		}
 
-		if ( version_compare( $last_version, '13.51.0', '<' ) ) {
-			self::upgrade_to_v13_51_0( $kb_config );
-		}
-
 		if ( version_compare( $last_version, '13.60.0', '<' ) ) {	
 			self::upgrade_to_v13_60_0( $kb_config );
 		}
@@ -213,37 +209,164 @@ class EPKB_Upgrades {
 		if ( version_compare( $last_version, '15.210.0', '<' ) ) {
 			self::upgrade_to_v15_210_0( $kb_config );
 		}
+
+		if ( version_compare( $last_version, '15.700.0', '<' ) ) {
+			self::upgrade_to_v15_700_0( $kb_config );
+		}
+
+		if ( version_compare( $last_version, '15.900.0', '<' ) ) {
+			self::upgrade_to_v15_900_0( $kb_config );
+		}
+	}
+
+	/**
+	 * Run AI migration if legacy ai_key exists (for users who bypassed upgrade)
+	 */
+	public static function maybe_run_ai_migration() {
+		$raw_config = get_option( 'epkb_ai_configuration', array() );
+		if ( ! empty( $raw_config['ai_key'] ) ) {
+			$dummy = array();
+			self::upgrade_to_v15_700_0( $dummy );
+		}
+	}
+
+	/**
+	 * Migrate ai_search_mode from 'advanced_search' to 'smart_search'
+	 */
+	private static function upgrade_to_v15_900_0( &$kb_config ) {
+		$raw_config = get_option( 'epkb_ai_configuration', array() );
+		if ( ! empty( $raw_config['ai_search_mode'] ) && $raw_config['ai_search_mode'] === 'advanced_search' ) {
+			$raw_config['ai_search_mode'] = 'smart_search';
+			update_option( 'epkb_ai_configuration', $raw_config );
+		}
+	}
+
+	/**
+	 * Migrate AI settings to provider-specific fields (existing users are OpenAI)
+	 */
+	private static function upgrade_to_v15_700_0( &$kb_config ) {
+
+		// Only run once (first KB triggers it)
+		static $ai_migration_done = false;
+		if ( $ai_migration_done ) {
+			return;
+		}
+		$ai_migration_done = true;
+
+		// Set chatgpt as default provider for existing users who don't have it set
+		// New users will get 'gemini' from the default config spec
+		$raw_config = get_option( 'epkb_ai_configuration', array() );
+		if ( empty( $raw_config['ai_provider'] ) ) {
+			$raw_config['ai_provider'] = 'chatgpt';
+		}
+
+		$updates = array();
+
+		// Migrate ai_key to ai_chatgpt_key (all existing users are ChatGPT/OpenAI)
+		if ( ! empty( $raw_config['ai_key'] ) && empty( $raw_config['ai_chatgpt_key'] ) ) {
+			$updates['ai_chatgpt_key'] = $raw_config['ai_key'];
+		}
+
+		// Migrate ai_chat_model to ai_chatgpt_chat_model (use raw_config because ai_chatgpt_chat_model has a non-empty default)
+		if ( ! empty( $raw_config['ai_chat_model'] ) && ! isset( $raw_config['ai_chatgpt_chat_model'] ) ) {
+			$updates['ai_chatgpt_chat_model'] = $raw_config['ai_chat_model'];
+		}
+
+		// Migrate ai_search_model to ai_chatgpt_search_model (use raw_config because ai_chatgpt_search_model has a non-empty default)
+		if ( ! empty( $raw_config['ai_search_model'] ) && ! isset( $raw_config['ai_chatgpt_search_model'] ) ) {
+			$updates['ai_chatgpt_search_model'] = $raw_config['ai_search_model'];
+		}
+
+		// Set ai_chat_preset from existing model if not already set
+		if ( empty( $raw_config['ai_chat_preset'] ) ) {
+			$chat_model = ! empty( $raw_config['ai_chatgpt_chat_model'] ) ? $raw_config['ai_chatgpt_chat_model'] : ( ! empty( $raw_config['ai_chat_model'] ) ? $raw_config['ai_chat_model'] : '' );
+			if ( ! empty( $chat_model ) ) {
+				$updates['ai_chat_preset'] = EPKB_AI_Provider::get_preset_key_for_model( $chat_model, 'chatgpt' );
+			}
+		}
+
+		// Set ai_search_preset from existing model if not already set
+		if ( empty( $raw_config['ai_search_preset'] ) ) {
+			$search_model = ! empty( $raw_config['ai_chatgpt_search_model'] ) ? $raw_config['ai_chatgpt_search_model'] : ( ! empty( $raw_config['ai_search_model'] ) ? $raw_config['ai_search_model'] : '' );
+			if ( ! empty( $search_model ) ) {
+				$updates['ai_search_preset'] = EPKB_AI_Provider::get_preset_key_for_model( $search_model, 'chatgpt' );
+			}
+		}
+
+		// Clear legacy ai_key to mark migration as done
+		$updates['ai_key'] = '';
+
+		// Apply updates
+		if ( ! empty( $updates ) ) {
+			$new_config = array_merge( $raw_config, $updates );
+			update_option( 'epkb_ai_configuration', $new_config, true );
+		}
+
+		// Migrate training data collections: set provider to 'chatgpt' for existing collections
+		$collections = get_option( 'epkb_ai_training_data_configuration', array() );
+		if ( ! empty( $collections ) && is_array( $collections ) ) {
+			$needs_update = false;
+			foreach ( $collections as $collection_id => &$collection_config ) {
+				// For collections without provider set, use 'chatgpt' (existing users were using OpenAI)
+				if ( empty( $collection_config['ai_training_data_provider'] ) ) {
+					$collection_config['ai_training_data_provider'] = 'chatgpt';
+					$needs_update = true;
+				// Rename 'openai' to 'chatgpt'
+				} else if ( $collection_config['ai_training_data_provider'] === 'openai' ) {
+					$collection_config['ai_training_data_provider'] = 'chatgpt';
+					$needs_update = true;
+				}
+			}
+			unset( $collection_config );
+
+			if ( $needs_update ) {
+				update_option( 'epkb_ai_training_data_configuration', $collections, true );
+			}
+		}
+
+		// Update training data table: ensure 'provider' column exists and set empty values to 'chatgpt'
+		global $wpdb;
+		$training_data_table = $wpdb->prefix . 'epkb_ai_training_data';
+		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $training_data_table ) ) === $training_data_table ) {
+			// Add 'provider' column if it doesn't exist (dbDelta may be skipped if AI not configured)
+			$column_exists = $wpdb->get_results( "SHOW COLUMNS FROM {$training_data_table} LIKE 'provider'" );
+			if ( empty( $column_exists ) ) {
+				$wpdb->query( "ALTER TABLE {$training_data_table} ADD COLUMN provider VARCHAR(20) NOT NULL DEFAULT '' AFTER collection_id" );
+			}
+			$wpdb->query( $wpdb->prepare( "UPDATE {$training_data_table} SET provider = %s WHERE provider = '' OR provider IS NULL", 'chatgpt' ) );
+		}
 	}
 
 	private static function upgrade_to_v15_210_0( &$kb_config ) {
-		global $wpdb;
 
 		/*** Update AI instructions if user hasn't changed them from old default **/
 
-		$old_instructions = 'Avoid answering questions unrelated to your knowledge. DO NOT mention, reference, or describe documents, files, files you uploaded, or sources. ' .
-			'Do not guess, speculate, or use outside knowledge. ONLY use the provided content. If no relevant information is found, ' .
-			'reply exactly with: "That is not something I can help with. Please try a different question"';
+		// translators: %s is the AI refusal prompt text
+		$old_instructions = sprintf(
+			__( 'Avoid answering questions unrelated to your knowledge. DO NOT mention, reference, or describe documents, files, files you uploaded, or sources. Do not guess, speculate, or use outside knowledge. ONLY use the provided content. If no relevant information is found, reply exactly with: "%s"', 'echo-knowledge-base' ),
+			EPKB_AI_Config_Specs::get_ai_refusal_prompt()
+		);
 
-
-		$default_instructions = 'You may ONLY answer using information from the vector store. Do not mention references, documents, files, or sources. ' .
-			'Do not reveal retrieval, guess, speculate, or use outside knowledge. If no relevant information is found, reply exactly: "That is not something I can help with. Please try a different question". ' .
-			'If relevant information is found, you may give structured explanations, including comparisons, pros and cons, or decision factors, but only if they are in the data. ' .
-			'Answer only what the data supports; when unsure, leave it out.';
+		// translators: %s is the AI refusal prompt text
+		$default_instructions = sprintf(
+			__( 'You may ONLY answer using information from the vector store. Do not mention references, documents, files, or sources. Do not reveal retrieval, guess, speculate, or use outside knowledge. If no relevant information is found, reply exactly: "%s". If relevant information is found, you may give structured explanations, including comparisons, pros and cons, or decision factors, but only if they are in the data. Answer only what the data supports; when unsure, leave it out.', 'echo-knowledge-base' ),
+			EPKB_AI_Config_Specs::get_ai_refusal_prompt()
+		);
 
 		// Get current AI search instructions
-		$current_search_instructions = EPKB_AI_Config_Specs::get_config_value( 'ai_search_instructions' );
+		$current_search_instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_instructions' );
 
 		// If the current instructions match the old default, update to new default
 		if ( $current_search_instructions === $old_instructions ) {
-			EPKB_AI_Config_Specs::update_config_value( 'ai_search_instructions', $default_instructions );
+			EPKB_AI_Config_Specs::update_ai_config_value( 'ai_search_instructions', $default_instructions );
 		}
 
 		// Get current AI chat instructions
-		$current_chat_instructions = EPKB_AI_Config_Specs::get_config_value( 'ai_chat_instructions' );
+		$current_chat_instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_instructions' );
 
 		// If the current instructions match the old default, update to new default
 		if ( $current_chat_instructions === $old_instructions ) {
-			EPKB_AI_Config_Specs::update_config_value( 'ai_chat_instructions', $default_instructions );
+			EPKB_AI_Config_Specs::update_ai_config_value( 'ai_chat_instructions', $default_instructions );
 		}
 	}
 
@@ -251,14 +374,6 @@ class EPKB_Upgrades {
 		if ( $kb_config['kb_main_page_layout'] == EPKB_Layout::CLASSIC_LAYOUT ) {
 			$kb_config['sub_article_list_margin'] = 20;
 			$kb_config['nof_articles_displayed'] = 0;
-		}
-	}
-
-	private static function upgrade_to_v13_51_0( &$kb_config ) {
-		// Check if disable_openai flag exists and is false or missing
-		$disable_openai = EPKB_Core_Utilities::is_kb_flag_set( 'disable_openai' );
-		if ( ! $disable_openai ) {
-			EPKB_Core_Utilities::add_kb_flag( 'enable_legacy_open_ai' );
 		}
 	}
 

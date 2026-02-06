@@ -83,7 +83,7 @@ class EPKB_AI_Tools_Debug_Tab {
 		}
 		
 		// Clear logs
-		update_option( 'epkb_ai_logs', array(), false );
+		EPKB_AI_Log::reset_logs();
 		
 		wp_send_json_success( array( 'message' => __( 'AI logs cleared successfully', 'echo-knowledge-base' ) ) );
 	}
@@ -96,10 +96,10 @@ class EPKB_AI_Tools_Debug_Tab {
 	 */
 	private static function get_php_error_logs( $filter = '' ) {
 		$logs = array();
-		
+
 		// Get the error log path from PHP configuration
 		$error_log_path = ini_get( 'error_log' );
-		
+
 		// If no error_log is configured or it's syslog, we can't read it
 		if ( empty( $error_log_path ) || $error_log_path === 'syslog' ) {
 			return array( array(
@@ -108,12 +108,13 @@ class EPKB_AI_Tools_Debug_Tab {
 				'message' => __( 'PHP error log is not configured or is set to syslog. Check your PHP configuration.', 'echo-knowledge-base' )
 			) );
 		}
-		
+
 		// Check if the log file exists
 		if ( ! file_exists( $error_log_path ) ) {
 			$configured_path = ini_get( 'error_log' );
+			// translators: %1$s is the expected error log path, %2$s is the configured PHP error_log path
 			$message = sprintf(
-				__( 'Error log file not found at: %s. PHP error_log is configured as: %s. Enable WP_DEBUG and WP_DEBUG_LOG in wp-config.php or check your PHP error_log configuration.', 'echo-knowledge-base' ),
+				__( 'Error log file not found at: %1$s. PHP error_log is configured as: %2$s. Enable WP_DEBUG and WP_DEBUG_LOG in wp-config.php or check your PHP error_log configuration.', 'echo-knowledge-base' ),
 				$error_log_path,
 				! empty( $configured_path ) ? $configured_path : __( 'Not configured', 'echo-knowledge-base' )
 			);
@@ -123,7 +124,7 @@ class EPKB_AI_Tools_Debug_Tab {
 				'message' => $message
 			) );
 		}
-		
+
 		if ( ! is_readable( $error_log_path ) ) {
 			return array( array(
 				'timestamp' => current_time( 'mysql' ),
@@ -131,7 +132,7 @@ class EPKB_AI_Tools_Debug_Tab {
 				'message' => __( 'Error log file exists but is not readable. Check file permissions.', 'echo-knowledge-base' )
 			) );
 		}
-		
+
 		// Check if file is empty
 		$file_size = filesize( $error_log_path );
 		if ( $file_size === 0 ) {
@@ -141,22 +142,22 @@ class EPKB_AI_Tools_Debug_Tab {
 				'message' => __( 'Error log file is empty. No PHP errors have been logged.', 'echo-knowledge-base' )
 			) );
 		}
-		
+
 		// Read last 100 lines of error log
 		$lines = self::tail( $error_log_path, 100 );
-		
+
 		foreach ( $lines as $line ) {
 			$line = trim( $line );
 			if ( empty( $line ) ) {
 				continue;
 			}
-			
+
 			// Parse log line
 			$parsed = self::parse_php_log_line( $line );
 			if ( ! $parsed ) {
 				continue;
 			}
-			
+
 			// Apply filter
 			if ( $filter ) {
 				if ( $filter === 'ai-related' && stripos( $line, 'epkb' ) === false && stripos( $line, 'ai' ) === false ) {
@@ -165,10 +166,15 @@ class EPKB_AI_Tools_Debug_Tab {
 					continue;
 				}
 			}
-			
+
+			// Escape log data for display
+			$parsed['timestamp'] = esc_html( $parsed['timestamp'] );
+			$parsed['level'] = esc_html( $parsed['level'] );
+			$parsed['message'] = esc_html( $parsed['message'] );
+
 			$logs[] = $parsed;
 		}
-		
+
 		// Return most recent first
 		return array_reverse( $logs );
 	}
@@ -181,7 +187,7 @@ class EPKB_AI_Tools_Debug_Tab {
 	 */
 	private static function get_wp_error_logs( $filter = '' ) {
 		$logs = array();
-		
+
 		// Check if WP_DEBUG_LOG is enabled
 		if ( ! defined( 'WP_DEBUG_LOG' ) || ! WP_DEBUG_LOG ) {
 			return array( array(
@@ -190,22 +196,23 @@ class EPKB_AI_Tools_Debug_Tab {
 				'message' => __( 'WordPress debug logging is disabled. Enable WP_DEBUG and WP_DEBUG_LOG in wp-config.php to see WordPress errors.', 'echo-knowledge-base' )
 			) );
 		}
-		
+
 		// Get WordPress debug.log path
 		$wp_error_log_path = WP_CONTENT_DIR . '/debug.log';
-		
+
 		// Check if the log file exists
 		if ( ! file_exists( $wp_error_log_path ) ) {
 			return array( array(
 				'timestamp' => current_time( 'mysql' ),
 				'level' => 'info',
+				// translators: %s is the path to the WordPress debug log file
 				'message' => sprintf(
 					__( 'WordPress debug log file not found at: %s. The file will be created when WordPress encounters errors.', 'echo-knowledge-base' ),
 					$wp_error_log_path
 				)
 			) );
 		}
-		
+
 		if ( ! is_readable( $wp_error_log_path ) ) {
 			return array( array(
 				'timestamp' => current_time( 'mysql' ),
@@ -213,7 +220,7 @@ class EPKB_AI_Tools_Debug_Tab {
 				'message' => __( 'WordPress debug log file exists but is not readable. Check file permissions.', 'echo-knowledge-base' )
 			) );
 		}
-		
+
 		// Check if file is empty
 		$file_size = filesize( $wp_error_log_path );
 		if ( $file_size === 0 ) {
@@ -223,10 +230,10 @@ class EPKB_AI_Tools_Debug_Tab {
 				'message' => __( 'WordPress debug log file is empty. No WordPress errors have been logged.', 'echo-knowledge-base' )
 			) );
 		}
-		
+
 		// Read last 100 lines of WordPress debug log
 		$lines = self::tail( $wp_error_log_path, 100 );
-		
+
 		// If no lines were read, return message
 		if ( empty( $lines ) ) {
 			return array( array(
@@ -235,27 +242,27 @@ class EPKB_AI_Tools_Debug_Tab {
 				'message' => __( 'Could not read any lines from the WordPress debug log file.', 'echo-knowledge-base' )
 			) );
 		}
-		
+
 		$unparsed_lines = array(); // Track lines that couldn't be parsed
-		
+
 		foreach ( $lines as $line ) {
 			$line = trim( $line );
 			if ( empty( $line ) ) {
 				continue;
 			}
-			
+
 			// Parse log line
 			$parsed = self::parse_php_log_line( $line );
 			if ( ! $parsed ) {
-				// If we can't parse it, add it as raw log entry
+				// If we can't parse it, add it as raw log entry with escaping
 				$logs[] = array(
 					'timestamp' => current_time( 'mysql' ),
 					'level' => 'info',
-					'message' => $line
+					'message' => esc_html( $line )
 				);
 				continue;
 			}
-			
+
 			// Apply filter
 			if ( $filter ) {
 				if ( $filter === 'ai-related' && stripos( $line, 'epkb' ) === false && stripos( $line, 'ai' ) === false ) {
@@ -264,10 +271,15 @@ class EPKB_AI_Tools_Debug_Tab {
 					continue;
 				}
 			}
-			
+
+			// Escape log data for display
+			$parsed['timestamp'] = esc_html( $parsed['timestamp'] );
+			$parsed['level'] = esc_html( $parsed['level'] );
+			$parsed['message'] = esc_html( $parsed['message'] );
+
 			$logs[] = $parsed;
 		}
-		
+
 		// Return most recent first
 		return array_reverse( $logs );
 	}
@@ -279,16 +291,9 @@ class EPKB_AI_Tools_Debug_Tab {
 	 * @return array
 	 */
 	private static function get_ai_logs( $filter = '' ) {
-		$logs = get_option( 'epkb_ai_logs', array() );
+		$logs = EPKB_AI_Log::get_logs_for_display();
 		$formatted_logs = array();
-		
-		// If no logs exist, add a sample log entry to help users understand the feature
-		if ( empty( $logs ) ) {
-			EPKB_AI_Log::add_log( 'AI Debug page accessed - No previous logs found', array( 'user_id' => get_current_user_id(), 'action' => 'view_debug_logs' ) );
-			// Re-fetch logs after adding the sample entry
-			$logs = get_option( 'epkb_ai_logs', array() );
-		}
-		
+
 		foreach ( $logs as $log ) {
 			// Determine log level
 			$level = 'info';
@@ -297,20 +302,26 @@ class EPKB_AI_Tools_Debug_Tab {
 			} elseif ( stripos( $log['message'], 'warning' ) !== false || stripos( $log['message'], 'retry' ) !== false ) {
 				$level = 'warning';
 			}
-			
+
 			// Apply filter
 			if ( $filter && $filter !== $level ) {
 				continue;
 			}
-			
+
+			// Escape message for display
+			$escaped_message = isset( $log['message'] ) ? esc_html( $log['message'] ) : '';
+
+			// Context values are not escaped here because they're already sanitized
+			// by EPKB_AI_Log and will be safely rendered by React in the frontend
+
 			$formatted_logs[] = array(
-				'timestamp' => $log['timestamp'] ?? current_time( 'mysql' ),
-				'level' => $level,
-				'message' => $log['message'] ?? '',
-				'context' => $log['context'] ?? array()
+				'timestamp' => isset( $log['timestamp'] ) ? esc_html( $log['timestamp'] ) : current_time( 'mysql' ),
+				'level' => esc_html( $level ),
+				'message' => $escaped_message,
+				'context' => isset( $log['context'] ) && is_array( $log['context'] ) ? $log['context'] : array()
 			);
 		}
-		
+
 		// Return most recent first
 		return array_reverse( $formatted_logs );
 	}
@@ -381,6 +392,7 @@ class EPKB_AI_Tools_Debug_Tab {
 	 * @return array
 	 */
 	private static function tail( $filepath, $lines = 100 ) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Reading log file for debugging, requires seek operations
 		$handle = @fopen( $filepath, "r" );
 		if ( ! $handle ) {
 			return array();
@@ -392,7 +404,7 @@ class EPKB_AI_Tools_Debug_Tab {
 		// If file is small, just read all lines
 		if ( $file_size < 8192 ) { // 8KB
 			$all_lines = file( $filepath, FILE_IGNORE_NEW_LINES );
-			fclose( $handle );
+			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 			// Remove completely empty lines but keep lines with whitespace
 			$all_lines = array_filter( $all_lines, function( $line ) {
 				return $line !== '';
@@ -434,7 +446,7 @@ class EPKB_AI_Tools_Debug_Tab {
 				break;
 			}
 		}
-		fclose( $handle );
+		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		
 		// Filter out only completely empty lines (not lines with just whitespace) and reverse
 		$text = array_filter( $text, function( $line ) {

@@ -23,6 +23,7 @@ abstract class EPKB_Layout {
 	protected $has_kb_categories = true;
 	protected $active_theme = 'unknown';
 	protected $displayed_article_ids = array();
+	protected $wizard_demo_icons = array();
 
 	/**
 	 * Show the KB Main page with list of categories and articles
@@ -107,7 +108,12 @@ abstract class EPKB_Layout {
 	 */
 	protected function get_category_icons() {
 
-		// handle block Editor or Visual Editor with theme preset selection
+		// handle Setup Wizard preview with demo category icons
+		if ( ! empty( $this->wizard_demo_icons ) ) {
+			return $this->wizard_demo_icons;
+		}
+
+		// handle block Editor or Frontend Editor with theme preset selection
 		if ( ( EPKB_Utilities::get( 'is_editor_preview', null ) || EPKB_Utilities::get( 'epkb-editor-page-loaded' ) == '1' ) && ! empty( $this->kb_config['theme_presets'] ) && $this->kb_config['theme_presets'] !== 'current' ) {
 			$category_icons = EPKB_Core_Utilities::get_or_update_new_category_icons( $this->kb_config, $this->kb_config['theme_presets'] );
 			if ( ! empty( $category_icons ) ) {
@@ -168,8 +174,7 @@ abstract class EPKB_Layout {
 
 				EPKB_HTML_Forms::notification_box_middle( array(
 					'type'      => 'error',
-					'desc'      => esc_html__( 'No KB categories found. This ordering action must be performed for each language separately. ' .
-						'Only one language can be selected for this page in the top admin menu.', 'echo-knowledge-base' ),
+					'desc'      => esc_html__( 'No KB categories found. This ordering action must be performed for each language separately. Only one language can be selected for this page in the top admin menu.', 'echo-knowledge-base' ),
 				) );
 				
 			// for users with at least Author access
@@ -178,7 +183,8 @@ abstract class EPKB_Layout {
 				$is_block_main_page = EPKB_Block_Utilities::current_post_has_kb_blocks();
 				$is_editor_on = EPKB_Utilities::get( 'action' ) == 'edit' || EPKB_Utilities::get( 'context' ) == 'edit';     ?>
 				<h2 class="eckb-kb-no-content-title"><?php $is_block_main_page ?
-						printf( esc_html__( 'KB %s Layout Block', 'echo-knowledge-base' ) . '<br>' . esc_html__( 'You do not have any KB categories.', 'echo-knowledge-base' ), $this->kb_config['kb_main_page_layout'] )
+						// translators: %s is the layout name
+						printf( esc_html__( 'KB %s Layout Block', 'echo-knowledge-base' ) . '<br>' . esc_html__( 'You do not have any KB categories.', 'echo-knowledge-base' ), esc_html( $this->kb_config['kb_main_page_layout'] ) )
 						: esc_html_e( 'You do not have any KB categories. What would you like to do?', 'echo-knowledge-base' ); ?></h2>  <?php
 
 				// for users with at least Editor access - if WPML enabled, then show action buttons only for original KB Main Page

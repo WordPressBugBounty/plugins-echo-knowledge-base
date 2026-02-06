@@ -321,7 +321,7 @@ class EPKB_Layout_Classic extends EPKB_Layout {
 				<!-- Section Footer -->
 				<div class="epkb-category-section__footer">
 					<div class="epkb-ml-article-count"><span><?php echo esc_html( $category_articles_number ); ?></span> <span><?php echo esc_html( $articles_text ); ?></span></div>
-					<div class="epkb-ml-articles-show-more">
+					<div class="epkb-ml-articles-show-more" tabindex="0" role="button" aria-expanded="false">
 						<span class="epkbfa epkbfa-plus epkb-ml-articles-show-more__show-more__icon"></span>
 					</div>
 				</div>          <?php
@@ -365,7 +365,7 @@ class EPKB_Layout_Classic extends EPKB_Layout {
 
 		$sub_cat_icon = EPKB_KB_Config_Category::get_category_icon( $sub_cat_id, $categories_icons );   ?>
 
-		<div class="epkb-ml-<?php echo esc_attr( $cat_level ); ?>-lvl-category__name">
+		<div class="epkb-ml-<?php echo esc_attr( $cat_level ); ?>-lvl-category__name" tabindex="0" role="button" aria-expanded="false">
             <span class="epkb-ml-<?php echo esc_attr( $cat_level ); ?>-lvl-category__icon">   <?php
 	            if ( $sub_cat_icon['type'] == 'image' ) { ?>
 		            <img class="epkb-cat-icon epkb-cat-icon--image" src="<?php echo esc_url( $sub_cat_icon['image_thumbnail_url'] ); ?>" alt="<?php echo esc_attr( $sub_cat_icon['image_alt'] ); ?>"> <?php

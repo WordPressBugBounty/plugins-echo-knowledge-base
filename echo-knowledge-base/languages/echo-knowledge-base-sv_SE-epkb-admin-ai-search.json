@@ -1,0 +1,234 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "sv_SE",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Search Results": [
+                "Sökresultat"
+            ],
+            "Page": [
+                "Sida"
+            ],
+            "Settings saved successfully": [
+                "Inställningar sparades"
+            ],
+            "Cancel": [
+                "Avbryt"
+            ],
+            "Next": [
+                "Nästa"
+            ],
+            "Previous": [
+                "Föregående"
+            ],
+            "Reset": [
+                "Återställ"
+            ],
+            "Saving...": [
+                "Sparar …"
+            ],
+            "Save Settings": [
+                "Spara inställningar"
+            ],
+            "Search History": [
+                "Sökhistorik"
+            ],
+            "Search Settings": [
+                "Sökinställningar"
+            ],
+            "Single Column": [
+                "En kolumn"
+            ],
+            "Left Column": [
+                "Vänster kolumn"
+            ],
+            "Right Column": [
+                "Höger kolumn"
+            ],
+            "Middle Column": [
+                "Mittenkolumn"
+            ],
+            "Feedback": [
+                "Återkoppling"
+            ],
+            "AI Assistant": [
+                "AI-assistent"
+            ],
+            "Delete": [
+                "Ta bort"
+            ],
+            "Delete Selected": [
+                "Ta bort valda"
+            ],
+            "of": [
+                "av"
+            ],
+            "Refreshing...": [
+                "Uppdaterar..."
+            ],
+            "Refresh": [
+                "Uppdatera"
+            ],
+            "Time": [
+                "Tid"
+            ],
+            "User": [
+                "Användare"
+            ],
+            "Searching server for more results...": [
+                "Söker efter fler resultat från servern..."
+            ],
+            "Are you sure you want to reset to default instructions?": [
+                "Är du säker på att du vill återställa till standardinstruktioner؟"
+            ],
+            "Reset Instructions": [
+                "Återställ instruktioner"
+            ],
+            "Are you sure you want to reset to default instructions? Your custom instructions will be lost.": [
+                "Är du säker på att du vill återställa till standardinstruktioner? Dina anpassade instruktioner kommer att gå förlorade."
+            ],
+            "Reset to Default": [
+                "Återställ till standard"
+            ],
+            "Training data issues detected": [
+                "Problem med maskininlärningsdata har upptäckts"
+            ],
+            "Failed to save settings": [
+                "Misslyckades med att spara inställningar"
+            ],
+            "Go to Settings": [
+                "Gå till Inställningar"
+            ],
+            "Deleting search...": [
+                "Raderar sökningen..."
+            ],
+            "Are you sure you want to delete the selected searches?": [
+                "Är du säker på att du vill radera de markerade sökningarna?"
+            ],
+            "Delete Search History": [
+                "Radera sökhistorik"
+            ],
+            "Deleting searches...": [
+                "Raderar sökningar..."
+            ],
+            "Search history refreshed successfully": [
+                "Sökhistoriken uppdaterades framgångsrikt"
+            ],
+            "Search queries...": [
+                "Sökfrågor..."
+            ],
+            "Loading search history...": [
+                "Laddar sökhistoriken..."
+            ],
+            "No searches found": [
+                "Inga sökningar hittades"
+            ],
+            "Search Query": [
+                "Sökfråga"
+            ],
+            "Info": [
+                "Info"
+            ],
+            "Contact request submitted": [
+                "Kontaktförfrågan skickad"
+            ],
+            "User Needs Help": [
+                "Användaren behöver hjälp"
+            ],
+            "Positive feedback": [
+                "Positiv feedback"
+            ],
+            "Negative feedback": [
+                "Negativ feedback"
+            ],
+            "Search Details": [
+                "Sökdetaljer"
+            ],
+            "Select a search to view details": [
+                "Välj en sökning för att visa detaljer"
+            ],
+            "Contact Request": [
+                "Kontaktförfrågan"
+            ],
+            "Name:": [
+                "Namn:"
+            ],
+            "Email:": [
+                "E-post:"
+            ],
+            "Vote:": [
+                "Rösta:"
+            ],
+            "Positive": [
+                "Positiv"
+            ],
+            "Negative": [
+                "Negativ"
+            ],
+            "Search Interaction": [
+                "Sökinteraktion"
+            ],
+            "AI Response": [
+                "AI-svar"
+            ],
+            "✓ Clicked": [
+                "✓ Klickat"
+            ],
+            "Relevance:": [
+                "Relevans:"
+            ],
+            "No sections added yet": [
+                "Inga avsnitt har lagts till än"
+            ],
+            "-- Select Section --": [
+                "-- Välj avsnitt --"
+            ],
+            "Add Section": [
+                "Lägg till avsnitt"
+            ],
+            "Are you sure you want to reset to the default prompt?": [
+                "Är du säker på att återställa till standardprompten?"
+            ],
+            "Reset Prompt": [
+                "Återställ prompt"
+            ],
+            "Are you sure you want to reset to the default prompt? Your custom prompt will be lost.": [
+                "Är du säker på att återställa till standardprompten? Din anpassade prompt kommer att gå förlorad."
+            ],
+            "Select Section:": [
+                "Välj sektion:"
+            ],
+            "Prompt:": [
+                "Prompt:"
+            ],
+            "Using custom prompt": [
+                "Använder anpassad prompt"
+            ],
+            "Using default prompt": [
+                "Använder standardprompt"
+            ],
+            "AI Search needs a valid Training Data collection. Resolve the issues below in Training Data or KB Configuration.": [
+                "AI Sök behöver en giltig samling för maskininlärningsdata. Lös problemen nedan i maskininlärningsdata-samlingen eller KB-konfigurationen."
+            ],
+            "Failed to load search history": [
+                "Misslyckades med att ladda sökhistoriken"
+            ],
+            "Searches deleted successfully": [
+                "Sökningar raderades framgångsrikt"
+            ],
+            "Failed to delete searches": [
+                "Misslyckades med att radera sökningar"
+            ],
+            "AI Search is Disabled": [
+                "AI Sök är inaktiverat"
+            ],
+            "To view search history, please enable AI Search in the Settings tab.": [
+                "För att visa sökhistoriken, vänligen aktivera AI Sök i Inställningar-fliken."
+            ]
+        }
+    }
+}

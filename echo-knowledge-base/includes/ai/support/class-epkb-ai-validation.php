@@ -28,14 +28,15 @@ class EPKB_AI_Validation {
 		// Check message length
 		$max_length = apply_filters( 'epkb_ai_chat_max_message_length', 5000 );
 		if ( strlen( $message ) > $max_length ) {
-			return new WP_Error( 
-				'message_too_long', 
+			return new WP_Error(
+				'message_too_long',
+				// translators: %d is the maximum allowed character count
 				sprintf( __( 'Message is too long. Please keep it under %d characters.', 'echo-knowledge-base' ), $max_length )
 			);
 		}
 		
-		// Basic XSS prevention - strip all HTML
-		$message = wp_kses( $message, array() );
+		// Basic XSS prevention - strip all HTML tags without encoding entities
+		$message = wp_strip_all_tags( $message );
 		
 		// Check for malicious patterns
 		$blocked_patterns = apply_filters( 'epkb_ai_chat_blocked_patterns', array(
@@ -71,6 +72,7 @@ class EPKB_AI_Validation {
 		// Regular expression to validate UUID v4 format
 		$pattern = '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i';
 		if ( preg_match( $pattern, $uuid ) !== 1 ) {
+			// translators: %s is the invalid UUID string
 			return new WP_Error( 'invalid_uuid', sprintf( __( 'Invalid UUID format: %s', 'echo-knowledge-base' ), $uuid ) );
 		}
 
@@ -198,7 +200,7 @@ class EPKB_AI_Validation {
 	}
 	
 	/**
-	 * Validate metadata according to OpenAI limits
+	 * Validate metadata according to AI limits
 	 *
 	 * @param array $metadata
 	 * @return array
@@ -275,24 +277,25 @@ class EPKB_AI_Validation {
 	 * @param string $api_key
 	 * @return bool
 	 */
-	public static function validate_api_key_format( $api_key ) {
+	public static function validate_api_key_format( $api_key, $provider = null ) {
 
 		if ( empty( $api_key ) || ! is_string( $api_key ) ) {
 			return false;
 		}
-		
-		// Basic format validation
+
+		$provider = $provider ?: EPKB_AI_Provider::get_active_provider();
+		if ( $provider === EPKB_AI_Provider::PROVIDER_GEMINI ) {
+			// Gemini API keys can start with AIza and are alphanumeric with length similar to Google API keys
+			return preg_match( '/^[A-Za-z0-9_\-]{20,500}$/', $api_key );
+		}
+
+		// OpenAI format
 		if ( ! preg_match( '/^sk-[\w\-]+$/i', $api_key ) ) {
 			return false;
 		}
-		
-		// Check reasonable length (OpenAI keys are typically 40-60 chars)
+
 		$key_length = strlen( $api_key );
-		if ( $key_length < 20 || $key_length > 500 ) {
-			return false;
-		}
-		
-		return true;
+		return $key_length >= 20 && $key_length <= 500;
 	}
 
 	/**
@@ -320,5 +323,75 @@ class EPKB_AI_Validation {
 		}
 
 		return $collection_id;
+	}
+
+	/**
+	 * Validate that a collection exists and has a vector store with valid content
+	 * Consolidated method used by both AI Chat and KB Config validation
+	 *
+	 * @param int $collection_id Collection ID to check
+	 * @param string $context Optional context for custom error messages: 'chat', 'kb_config', or empty for generic
+	 * @return true|WP_Error True if valid, WP_Error otherwise
+	 */
+	public static function validate_collection_has_vector_store( $collection_id, $context = '' ) {
+
+		// Check if collection exists and has vector store
+		$vector_store_id = EPKB_AI_Training_Data_Config_Specs::get_vector_store_id_by_collection( $collection_id );
+		if ( is_wp_error( $vector_store_id ) ) {
+			$error_code = $vector_store_id->get_error_code();
+
+			// Provider mismatch - collection belongs to a different AI provider
+			if ( $error_code === 'provider_mismatch' ) {
+				$message = $context === 'chat'
+					? __( 'The selected collection belongs to a different AI provider. Please switch to the correct provider or select a different collection.', 'echo-knowledge-base' )
+					: $vector_store_id->get_error_message();
+				return new WP_Error( 'provider_mismatch', $message );
+			}
+
+			// Collection not found
+			if ( $error_code === 'collection_not_found' ) {
+				// translators: %d is the collection ID
+				$message = $context === 'chat'
+					? __( 'The selected collection does not exist. Please go to the Training Data tab to create it first.', 'echo-knowledge-base' )
+					: sprintf( __( 'Collection %d does not exist. Please create the collection first in Training Data.', 'echo-knowledge-base' ), $collection_id );
+				return new WP_Error( 'collection_not_found', $message );
+			}
+
+			// No vector store (collection exists but not synced)
+			if ( $error_code === 'no_vector_store' ) {
+				// translators: %d is the collection ID
+				$message = $context === 'chat'
+					? __( 'The selected collection has not been synced yet. Please go to the Training Data tab and sync the collection before using it for chat.', 'echo-knowledge-base' )
+					: sprintf( __( 'Collection %d does not have a vector store configured. Please sync content in Training Data first.', 'echo-knowledge-base' ), $collection_id );
+				return new WP_Error( 'vector_store_not_configured', $message );
+			}
+
+			// Invalid collection ID or other error
+			return $vector_store_id;
+		}
+
+		// Get vector store info to check if it has content
+		$vector_store = EPKB_AI_Provider::get_vector_store_handler();
+		$store_info = $vector_store->get_vector_store_info_by_id( $vector_store_id );
+
+		if ( is_wp_error( $store_info ) ) {
+			// translators: %s is the AI provider name, or %d is the collection ID
+			$message = $context === 'chat'
+				? sprintf( __( 'The selected collection could not be found in %s. Please re-sync the collection in the Training Data tab.', 'echo-knowledge-base' ), EPKB_AI_Provider::get_provider_label() )
+				: sprintf( __( 'Collection %d vector store does not exist for the configured AI provider. Please sync content in Training Data.', 'echo-knowledge-base' ), $collection_id );
+			return new WP_Error( 'vector_store_not_found', $message );
+		}
+
+		// Check if vector store has any files
+		$file_count = isset( $store_info['file_counts']['total'] ) ? $store_info['file_counts']['total'] : 0;
+		if ( $file_count === 0 ) {
+			// translators: %d is the collection ID
+			$message = $context === 'chat'
+				? __( 'The selected collection is empty. Please add content to the collection in the Training Data tab before using it for chat.', 'echo-knowledge-base' )
+				: sprintf( __( 'Collection %d vector store is empty. Please sync content in Training Data first.', 'echo-knowledge-base' ), $collection_id );
+			return new WP_Error( 'vector_store_empty', $message );
+		}
+
+		return true;
 	}
 }

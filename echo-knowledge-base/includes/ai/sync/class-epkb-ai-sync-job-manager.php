@@ -11,42 +11,11 @@ class EPKB_AI_Sync_Job_Manager {
 
 	const SYNC_OPTION_NAME = 'epkb_ai_sync_job_status';
 	const CRON_HOOK = 'epkb_do_sync_cron_event';
-	
-	/**
-	 * Get current sync job status
-	 * 
-	 * @return array Sync job data or default values
-	 */
-	public static function get_sync_job() {
-
-		$default = self::get_default_job_data();
-		$job = get_option( self::SYNC_OPTION_NAME, $default );
-
-		return wp_parse_args( $job, $default );
-	}
-
-	/**
-	 * Update sync job status
-	 * 
-	 * @param array $data Data to update
-	 * @return bool Success
-	 */
-	public static function update_sync_job( $data=array() ) {
-
-		$job = self::get_sync_job();
-		if ( self::is_job_canceled( $job ) ) {
-			return false;
-		}
-
-		$updated_job = array_merge( $job, $data );
-		$updated_job['last_update'] = gmdate( 'Y-m-d H:i:s' );
-
-		return update_option( self::SYNC_OPTION_NAME, $updated_job, false );
-	}
+	const OLD_JOB_THRESHOLD_HOURS = 24; // Jobs older than 1 day are auto-canceled
 
 	/**
 	 * Initialize a new sync job
-	 * 
+	 *
 	 * @param array|string $selected_post_ids Post IDs or 'ALL'
 	 * @param string $mode 'direct' or 'cron'
 	 * @param int $collection_id Collection ID
@@ -54,9 +23,16 @@ class EPKB_AI_Sync_Job_Manager {
 	 */
 	public static function initialize_sync_job( $selected_post_ids, $mode, $collection_id ) {
 
-		// Validate no active job exists
+		// Check if there's an active job
 		if ( self::is_job_active() ) {
-			return new WP_Error( 'job_active', __( 'A sync job is already running', 'echo-knowledge-base' ) );
+			// If job is older, auto-cancel and proceed
+			if ( self::is_job_old() ) {
+				self::cancel_all_sync();
+				// Continue to start new job below
+			} else {
+				// Job is recent, ask user to confirm
+				return new WP_Error( 'job_active', __( 'A sync job is already running. Do you want to cancel it and start a new sync?', 'echo-knowledge-base' ) );
+			}
 		}
 
 		// Clear any existing sync job data to ensure we start fresh
@@ -81,9 +57,9 @@ class EPKB_AI_Sync_Job_Manager {
 			$status_filter = strtolower( substr( $selected_post_ids, 4 ) ); // Extract status after "ALL_"
 			
 			// Filter items by status
-			$training_data_db = new EPKB_AI_Training_Data_DB( false );
+			$training_data_db = new EPKB_AI_Training_Data_DB();
 			foreach ( $all_items as $item ) {
-				$record = $training_data_db->get_training_data_by_item( $collection_id, $item['id'] );
+				$record = $training_data_db->get_training_data_record_by_item_id( $collection_id, $item['id'] );
 				if ( $record && isset( $record->status ) && $record->status === $status_filter ) {
 					$items[] = $item;
 				}
@@ -107,14 +83,16 @@ class EPKB_AI_Sync_Job_Manager {
 		$job_data = array_merge( self::get_default_job_data(), array(
 			'status' => $mode === 'cron' ? 'scheduled' : 'running',
 			'type' => $mode,
-			'collection_id' => $collection_id,	
+			'collection_id' => $collection_id,
 			'items' => $items,
 			'total' => count( $items )
 		) );
 
 		// Save job
-		if ( ! self::update_sync_job( $job_data ) ) {
-			return new WP_Error( 'save_failed', __( 'Failed to save sync job', 'echo-knowledge-base' ) );
+		$update_result = self::update_sync_job( $job_data );
+		if ( ! $update_result['success'] ) {
+			// translators: %s is the failure reason
+			return new WP_Error( 'save_failed', sprintf( __( 'Failed to save sync job: %s', 'echo-knowledge-base' ), $update_result['reason'] ) );
 		}
 
 		return $job_data;
@@ -123,7 +101,7 @@ class EPKB_AI_Sync_Job_Manager {
 	/**
 	 * Process next post in the sync queue
 	 * 
-	 * @return array Result with processed count and status
+	 * @return array|WP_Error Result with processed count and status
 	 */
 	public static function process_next_sync_item() {
 
@@ -143,35 +121,7 @@ class EPKB_AI_Sync_Job_Manager {
 		$remaining_item = array_slice( $job['items'], $job['processed'], 1 );
 		$remaining_item = empty( $remaining_item[0] ) ? null : $remaining_item[0];
 		$remaining_post_ids = $remaining_item ? array( $remaining_item['id'] ) : array();
-		
-		// Check if we need to retry failed posts
-		if ( empty( $remaining_post_ids ) && ! empty( $job['retry_post_ids'] ) && empty( $job['retrying'] ) ) {
 
-			// Start retrying failed posts one by one
-			$failed_items = array();
-			foreach ( $job['retry_post_ids'] as $failed_id ) {
-				// Find the original item type from the items array
-				$item_type = 'post';
-				foreach ( $job['items'] as $item ) {
-					if ( $item['id'] == $failed_id ) {
-						$item_type = $item['type'];
-						break;
-					}
-				}
-				$failed_items[] = array( 'id' => $failed_id, 'type' => $item_type );
-			}
-			
-			$result = self::update_sync_job( array( 'retrying' => true, 'items' => $failed_items, 'processed' => 0, 'total' => count( $failed_items ) ) );
-			if ( ! $result ) {
-				return array( 'status' => 'failed', 'message' => __( 'Stopping retrying failed posts', 'echo-knowledge-base' ) );
-			}
-			
-			$job = self::get_sync_job();
-			$remaining_item = array_slice( $job['items'], 0, 1 );
-			$remaining_item = empty( $remaining_item[0] ) ? null : $remaining_item[0];
-			$remaining_post_ids = $remaining_item ? array( $remaining_item['id'] ) : array();
-		}
-		
 		// check if all done including retries
 		if ( empty( $remaining_post_ids ) ) {
 			self::update_sync_job( array( 'status' => 'completed', 'percent' => 100 ) );
@@ -183,31 +133,48 @@ class EPKB_AI_Sync_Job_Manager {
 		
 		// Process the single post
 		$post_id = $remaining_post_ids[0];
-			
-		// Get or create vector store
-		$openai_handler = new EPKB_AI_OpenAI_Handler();
-		$vector_store_id = $openai_handler->get_or_create_vector_store( $job['collection_id'] );
-		if ( is_wp_error( $vector_store_id ) ) {
-			self::update_sync_job( array( 'status' => 'failed', 'error_message' => $vector_store_id->get_error_message() ) );
-			return array( 'status' => 'failed', 'error' => $vector_store_id );
-		}
 
 		// Sync the post
+		$training_data_db = new EPKB_AI_Training_Data_DB();
 		$sync_manager = new EPKB_AI_Sync_Manager();
 		$job['processed']++;
-		$result = $sync_manager->sync_post( $post_id, $remaining_item['type'], $job['collection_id'], $vector_store_id );
-		if ( is_wp_error( $result ) ) {
 
-			$is_retry = $result->get_error_data( 'retry' ) === true;
+		try {
+			$sync_data = $sync_manager->sync_post( $post_id, $remaining_item['type'], $job['collection_id'] );
+		} catch ( Exception $e ) {	
+			$error = new WP_Error( 'sync_exception', $e->getMessage() );
+			self::handle_sync_error( $training_data_db, $post_id, $error );
+			return array( 'status' => 'failed', 'processed' => 0, 'errors' => 1, 'message' => $error->get_error_message(), 'updated_posts' => $updated_posts );
+		}
 
-			$consecutive_errors = $is_retry ? $consecutive_errors + 1 : 0;
-			$job['errors']++;
-			
-			$updated_posts[] = array( 
-				'id' => $post_id, 
-				'status' => 'error', 
-				'message' => $result->get_error_message()
+		if ( is_wp_error( $sync_data ) ) {
+			self::handle_sync_error( $training_data_db, $post_id, $sync_data );
+
+			$updated_posts[] = array(
+				'id' => $post_id,
+				'status' => 'error',
+				'message' => $sync_data->get_error_message()
 			);
+
+			// Check for fatal errors that should stop sync immediately (e.g., invalid API key, billing issues)
+			$error_code = $sync_data->get_error_code();
+			if ( in_array( $error_code, array( 'authentication_failed', 'invalid_api_key', 'missing_api_key', 'insufficient_quota' ), true ) ) {
+				self::update_sync_job( array(
+					'status' => 'failed',
+					'processed' => $job['processed'],
+					'errors' => $job['errors'] + 1,
+					'percent' => round( ( $job['processed'] / $job['total'] ) * 100 ),
+					'error_message' => $sync_data->get_error_message()
+				) );
+
+				return array(
+					'status' => 'failed',
+					'processed' => 0,
+					'errors' => 1,
+					'message' => $sync_data->get_error_message(),
+					'updated_posts' => $updated_posts
+				);
+			}
 
 			self::update_sync_job();
 
@@ -232,20 +199,20 @@ class EPKB_AI_Sync_Job_Manager {
 				);
 			}
 
-			// Track failed post for retry (only if not already retrying)
-			if ( empty( $job['retrying'] ) && ! in_array( $post_id, $job['retry_post_ids'] ) && $is_retry ) {
-				$job['retry_post_ids'][] = $post_id;
-				self::update_sync_job( array( 'retry_post_ids' => $job['retry_post_ids'] ) );
+		} else {
+
+			$new_status = $training_data_db->mark_as_synced( $sync_data['training_data_id'], $sync_data['sync_data'] );
+			if ( is_wp_error( $new_status ) ) {
+				return $new_status;
 			}
 
-		} else {
 			// Reset consecutive errors on success
 			$consecutive_errors = 0;
 
 			// Only send minimal data - JavaScript already has title and type from the table
 			$post_update_data = array( 
 				'id' => $post_id, 
-				'status' => empty( $result['skipped'] ) ? 'synced' : 'skipped'
+				'status' => 'synced'
 			);
 
 			$updated_posts[] = $post_update_data;
@@ -253,29 +220,17 @@ class EPKB_AI_Sync_Job_Manager {
 
 		// Update job progress
 		$new_processed = $job['processed'];
-		$percent = $job['retrying'] ? 100 : round( ( $new_processed / $job['total'] ) * 100 );
+		$percent = round( ( $new_processed / $job['total'] ) * 100 );
 		
 		self::update_sync_job( array( 'processed' => $new_processed, 'errors' => $job['errors'], 'percent' => $percent, 'consecutive_errors' => $consecutive_errors ) );
 		
 		// Check if complete
 		if ( $new_processed >= $job['total'] ) {
 
-			// Verify vector store has all expected files before marking as complete
-			$expected_files = $job['total'] - $job['errors'];
-			
-			// Allow 1.5 minutes per file for processing
-			if ( $expected_files > 0 ) {
-				$timeout = $expected_files * 90;
-				$verify_result = $openai_handler->verify_vector_store_ready( $vector_store_id, $expected_files, $timeout );
-				if ( is_wp_error( $verify_result ) ) {
-					self::update_sync_job( array( 'status' => 'failed', 'error_message' => sprintf( __( 'Vector store verification failed: %s', 'echo-knowledge-base' ), $verify_result->get_error_message() ) ) );
-					return array( 'status' => 'failed',	'error' => $verify_result, 'updated_posts' => $updated_posts );
-				}
-			}
-			
-			$result = self::update_sync_job( array( 'status' => 'completed', 'percent' => 100, 'processed' => $new_processed ) );
+			self::update_sync_job( array( 'status' => 'completed', 'percent' => 100, 'processed' => $new_processed ) );
 
-			return array( 'status' => $result ? 'completed' : 'failed', 'updated_posts' => $updated_posts );
+			// Sync completed successfully - return completed status regardless of DB update result
+			return array( 'status' => 'completed', 'updated_posts' => $updated_posts );
 		}
 		
 		return array(
@@ -285,6 +240,26 @@ class EPKB_AI_Sync_Job_Manager {
 			'updated_posts' => $updated_posts
 		);
 	}
+
+	/**
+	 * Handle sync error
+	 *
+	 * @param EPKB_AI_Training_Data_DB $training_data_db Training data database object
+	 * @param int $training_data_id Training data ID
+	 * @param WP_Error $wp_error Error object
+	 * @return void
+	 */
+	private static function handle_sync_error( $training_data_db, $training_data_id, $wp_error ) {
+		$mapped = EPKB_AI_Log::map_error_to_internal_code( $wp_error );
+		$error_code = isset( $mapped['code'] ) ? $mapped['code'] : 500;
+		$error_message = isset( $mapped['message'] ) ? $mapped['message'] : $wp_error->get_error_message();
+		$training_data_db->mark_as_error( $training_data_id, $error_code, $error_message );
+	}
+
+
+	/***********************************************************************************************
+	 *      Sync Job Data Management
+	 * *********************************************************************************************/
 
 	private static function get_default_job_data() {
 		return array(
@@ -306,6 +281,51 @@ class EPKB_AI_Sync_Job_Manager {
 	}
 
 	/**
+	 * Get current sync job status
+	 *
+	 * @return array Sync job data or default values
+	 */
+	public static function get_sync_job() {
+
+		$default = self::get_default_job_data();
+		$job = get_option( self::SYNC_OPTION_NAME, $default );
+
+		return wp_parse_args( $job, $default );
+	}
+
+	/**
+	 * Update sync job status
+	 *
+	 * @param array $data Data to update
+	 * @return array Array with 'success' (bool) and 'reason' (string: 'job_canceled', 'no_change', 'updated', 'update_failed')
+	 */
+	public static function update_sync_job( $data=array() ) {
+
+		$job = self::get_sync_job();
+		if ( self::is_job_canceled( $job ) ) {
+			return array( 'success' => false, 'reason' => 'job_canceled' );
+		}
+
+		$updated_job = array_merge( $job, $data );
+		$updated_job['last_update'] = gmdate( 'Y-m-d H:i:s' );
+
+		// Get current option value to detect if it's the same
+		$current_option = get_option( self::SYNC_OPTION_NAME );
+
+		// If values are identical, treat as success (no change needed)
+		if ( $current_option !== false && $current_option === $updated_job ) {
+			return array( 'success' => true, 'reason' => 'no_change' );
+		}
+
+		$result = update_option( self::SYNC_OPTION_NAME, $updated_job, false );
+		if ( $result === false ) {
+			return array( 'success' => false, 'reason' => 'update_failed' );
+		}
+
+		return array( 'success' => true, 'reason' => 'updated' );
+	}
+
+	/**
 	 * Check if a job is active
 	 *
 	 * @return bool
@@ -313,6 +333,31 @@ class EPKB_AI_Sync_Job_Manager {
 	public static function is_job_active() {
 		$job = self::get_sync_job();
 		return in_array( $job['status'], array( 'scheduled', 'running' ) );
+	}
+
+	/**
+	 * Check if an active job is older than 1 day
+	 *
+	 * @return bool
+	 */
+	private static function is_job_old() {
+		$job = self::get_sync_job();
+
+		// Only check for active jobs
+		if ( ! in_array( $job['status'], array( 'scheduled', 'running' ) ) ) {
+			return false;
+		}
+
+		// Check if last_update is older than 1 day
+		if ( empty( $job['last_update'] ) ) {
+			return false;
+		}
+
+		// Parse timestamp as UTC since gmdate stores in UTC
+		$last_update = strtotime( $job['last_update'] . ' UTC' );
+		$threshold_seconds = self::OLD_JOB_THRESHOLD_HOURS * 3600;
+
+		return ( time() - $last_update ) > $threshold_seconds;
 	}
 
 	private static function is_job_canceled( $job = null ) {
@@ -356,7 +401,7 @@ class EPKB_AI_Sync_Job_Manager {
 		
 		// Get all items from the training data database for this collection
 		// This includes posts, KB files, and any other item types
-		$training_data_db = new EPKB_AI_Training_Data_DB( false );
+		$training_data_db = new EPKB_AI_Training_Data_DB();
 		$training_items = $training_data_db->get_training_data_by_collection( $collection_id );
 
 		// Extract item IDs and types from the training data

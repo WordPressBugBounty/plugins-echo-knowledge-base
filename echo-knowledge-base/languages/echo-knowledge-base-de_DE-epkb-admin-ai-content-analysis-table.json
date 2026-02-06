@@ -1,0 +1,153 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "de_DE",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Title": [
+                "Titel"
+            ],
+            "Status": [
+                "Status"
+            ],
+            "All": [
+                "Alle"
+            ],
+            "Page": [
+                "Seite"
+            ],
+            "Close": [
+                "Schließen"
+            ],
+            "Recent": [
+                "Neueste"
+            ],
+            "Cancel": [
+                "Abbrechen"
+            ],
+            "selected": [
+                "ausgewählt"
+            ],
+            "Next": [
+                "Weiter"
+            ],
+            "Previous": [
+                "Zurück"
+            ],
+            "Today": [
+                "Heute"
+            ],
+            "Yesterday": [
+                "Gestern"
+            ],
+            "Loading...": [
+                "Wird geladen..."
+            ],
+            "Delete": [
+                "Löschen"
+            ],
+            "of": [
+                "von"
+            ],
+            "Searching...": [
+                "Suche..."
+            ],
+            "Refreshing...": [
+                "Aktualisiere..."
+            ],
+            "Refresh": [
+                "Aktualisieren"
+            ],
+            "Failed to fetch analysis data": [
+                "Fehler beim Abrufen der Analysedaten"
+            ],
+            "Data refreshed successfully": [
+                "Daten erfolgreich aktualisiert"
+            ],
+            "Delete Selected Items": [
+                "Ausgewählte Elemente löschen"
+            ],
+            "Are you sure you want to delete the selected items?": [
+                "Möchten Sie die ausgewählten Elemente wirklich löschen?"
+            ],
+            "Items deleted successfully": [
+                "Ausgewählte Elemente wurden erfolgreich gelöscht"
+            ],
+            "Unknown error occurred": [
+                "Unbekannter Fehler ist aufgetreten"
+            ],
+            "All Knowledge Bases": [
+                "Alle Wissensdatenbanken"
+            ],
+            "To Analyze": [
+                "Analysieren"
+            ],
+            "To Improve": [
+                "Verbessern"
+            ],
+            "Search by title...": [
+                "Nach Titel suchen..."
+            ],
+            "Loading content analysis data...": [
+                "Inhaltsanalyse-Daten werden geladen..."
+            ],
+            "Score": [
+                "Punktzahl"
+            ],
+            "Sort": [
+                "Sortieren"
+            ],
+            "Importance": [
+                "Wichtigkeit"
+            ],
+            "Last Modified": [
+                "Zuletzt geändert"
+            ],
+            "No articles match your search": [
+                "Keine Dokumentationsseite entspricht Ihrer Suche"
+            ],
+            "No articles need analysis": [
+                "Es sind keine Dokumentationsseiten zur Analyse erforderlich"
+            ],
+            "No articles need improvement": [
+                "Keine Dokumentationsseiten müssen verbessert werden"
+            ],
+            "No recent articles": [
+                "Keine aktuellen Dokumentationsseiten"
+            ],
+            "No articles found": [
+                "Keine Dokumentationsseiten gefunden"
+            ],
+            "View detailed analysis": [
+                "Detaillierte Analyse anzeigen"
+            ],
+            "days ago": [
+                "Vor Tagen"
+            ],
+            "week ago": [
+                "Vor einer Woche"
+            ],
+            "weeks ago": [
+                "Vor Wochen"
+            ],
+            "Content Analysis Error": [
+                "Fehler bei der Inhaltsanalyse"
+            ],
+            "ERROR": [
+                "FEHLER"
+            ],
+            "Article ID:": [
+                "Dokumentationsseite-ID:"
+            ],
+            "Error Processing Content Analysis": [
+                "Fehler bei der Verarbeitung der Inhaltsanalyse"
+            ],
+            "This article could not be analyzed. Please try again or check the article content for issues.": [
+                "Diese Dokumentationsseite konnte nicht analysiert werden. Bitte versuchen Sie es erneut oder überprüfen Sie den Inhalt der Dokumentationsseite auf Probleme."
+            ]
+        }
+    }
+}

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Message Repository DB
@@ -69,7 +69,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 			'title'           => '',
 			'messages'        => '[]',
 			'mode'            => 'search',
-			'model'           => EPKB_OpenAI_Client::DEFAULT_MODEL,
+			'model'           => EPKB_AI_Provider::get_default_model(),
 			'session_id'      => '',
 			'chat_id'         => '',
 			'conversation_id' => '',
@@ -77,7 +77,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 			'last_idemp_key'  => '',
 			'widget_id'       => 1,
 			'language'        => '',
-			'metadata'        => null,
+			'metadata'        => '[]',
 			'created'      => gmdate( 'Y-m-d H:i:s' ),
 			'updated'      => gmdate( 'Y-m-d H:i:s' )
 		);
@@ -98,9 +98,9 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		if ( $conversation->get_id() > 0 ) {
 			$result = $this->update_record( $conversation->get_id(), $data );
 			$this->handle_db_error( $result, 'update_conversation' );
-			
+
 			if ( ! $result ) {
-				return new WP_Error( 'save_failed', 'Failed to update conversation' );
+				return new WP_Error( 'save_failed', __( 'Failed to update conversation', 'echo-knowledge-base' ) );
 			}
 
 			return $conversation->get_id();
@@ -108,7 +108,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		} else {
 
 			// Insert new - set model based on mode
-			$data['model'] = $data['mode'] === 'chat' ? EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_model' ) : EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_model' );
+			$data['model'] = $data['mode'] === 'chat' ? EPKB_AI_Provider::get_chat_model() : EPKB_AI_Provider::get_search_model();
 			
 			$record_id = $this->insert_record( $data );
 			$this->handle_db_error( $record_id, 'insert_conversation' );
@@ -121,16 +121,21 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 * Get conversation by ID
 	 *
 	 * @param int $row_id
-	 * @return EPKB_AI_Conversation_Model|null
+	 * @return EPKB_AI_Conversation_Model|null|WP_Error
 	 */
 	public function get_conversation( $row_id ) {
 
 		$row = $this->get_by_primary_key( $row_id );
 		$this->handle_db_error( $row, 'get_conversation' );
-		
+		if ( is_wp_error( $row ) ) {
+			return $row;
+		}
 		if ( empty( $row ) ) {
 			return null;
 		}
+
+		
+
 		
 		return EPKB_AI_Conversation_Model::from_db_row( $row );
 	}
@@ -165,21 +170,18 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 * @return EPKB_AI_Conversation_Model|null - null if no active conversation found
 	 */
 	public function get_latest_active_chat_for_session( $session_id ) {
-		global $wpdb;
 		
 		// Define active conversation criteria - only time-based
 		$max_age_hours = apply_filters( 'epkb_ai_chat_max_age_hours', 24 );
 		$cutoff_time = gmdate( 'Y-m-d H:i:s', strtotime( "-{$max_age_hours} hours" ) );
 		
 		// Get the latest CHAT conversation for this session within the time window
-		// Must filter by mode='chat' to avoid returning search conversations
-		$sql = $wpdb->prepare( "SELECT * FROM {$this->table_name} 
-								WHERE session_id = %s AND mode = 'chat' AND updated > %s
-								ORDER BY updated DESC LIMIT 1",
-								$session_id, $cutoff_time );
-		
-		$row = $wpdb->get_row( $sql );
-		$this->handle_db_error( $row, 'get_latest_active_conversation' );
+		// Must filter by mode='chat' to avoid returning search conversations		
+		$row = $this->get_a_row_by_where_clause( array( 'session_id' => $session_id, 'mode' => 'chat', 'updated' => array( 'value' => $cutoff_time, 'operator' => '>' ) ) );
+		$this->handle_db_error( $row, 'get_latest_active_chat_for_session' );
+		if ( is_wp_error( $row ) ) {
+			return $row;
+		}
 		if ( empty( $row ) ) {
 			return null;
 		}
@@ -195,17 +197,18 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 * @return EPKB_AI_Conversation_Model|null - null if no conversation found
 	 */
 	public function get_conversation_by_chat_and_session( $chat_id, $session_id ) {
-		global $wpdb;
 		
 		if ( empty( $chat_id ) || empty( $session_id ) ) {
 			return null;
 		}
 		
-		$sql = $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE chat_id = %s AND session_id = %s LIMIT 1", $chat_id, $session_id );
-		$row = $wpdb->get_row( $sql );
-		$this->handle_db_error( $row, 'get_conversation_by_chat_and_session' );
+		$row = $this->get_a_row_by_where_clause( array( 'chat_id' => $chat_id, 'session_id' => $session_id ) );
+		$this->handle_db_error( $row, 'get_conversation_by_chat_and_session' );		
 		if ( empty( $row ) ) {
 			return null;
+		}
+		if ( is_wp_error( $row ) ) {
+			return $row;
 		}
 		
 		return EPKB_AI_Conversation_Model::from_db_row( $row );
@@ -219,15 +222,16 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 * @return array|null Returns conversation data if idempotent request found
 	 */
 	public function check_idempotent_request( $chat_id, $idempotency_key ) {
-		global $wpdb;
 		
 		if ( empty( $chat_id ) || empty( $idempotency_key ) ) {
 			return null;
 		}
 		
-		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE chat_id = %s AND last_idemp_key = %s", $chat_id, $idempotency_key ) );
+		$row = $this->get_a_row_by_where_clause( array( 'chat_id' => $chat_id, 'last_idemp_key' => $idempotency_key ) );
 		$this->handle_db_error( $row, 'check_idempotent_request' );
-
+		if ( is_wp_error( $row ) ) {
+			return $row;
+		}
 		if ( empty( $row ) ) {
 			return null;
 		}
@@ -271,10 +275,10 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		if ( $result === false ) {
 			return new WP_Error( 'db_error', $wpdb->last_error );
 		}
-		
+
 		if ( $result === 0 ) {
 			// No rows updated - version conflict
-			return new WP_Error( 'version_conflict', 'Conversation was modified by another request' );
+			return new WP_Error( 'version_conflict', __( 'Conversation was modified by another request', 'echo-knowledge-base' ) );
 		}
 		
 		return true;
@@ -292,7 +296,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		$data['created'] = gmdate( 'Y-m-d H:i:s' );
 		$data['updated'] = gmdate( 'Y-m-d H:i:s' );
 		// Set model based on mode
-		$data['model'] = $data['mode'] === 'chat' ? EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_model' ) : EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_model' );
+		$data['model'] = $data['mode'] === 'chat' ? EPKB_AI_Provider::get_chat_model() : EPKB_AI_Provider::get_search_model();
 		
 		// Ensure messages is JSON encoded
 		if ( isset( $data['messages'] ) && is_array( $data['messages'] ) ) {
@@ -302,7 +306,12 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 			}
 			$data['messages'] = $messages_json;
 		}
-		
+
+		// Ensure metadata is JSON encoded
+		if ( isset( $data['metadata'] ) && is_array( $data['metadata'] ) ) {
+			$data['metadata'] = wp_json_encode( $data['metadata'] );
+		}
+
 		$result = $this->insert_record( $data );
 
 		$this->handle_db_error( $result, 'insert_conversation' );
@@ -323,6 +332,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		$defaults = array(
 			'page'      => 1,
 			'per_page'  => self::PER_PAGE,
+			'offset'    => null,
 			'mode'      => '',
 			'user_id'   => 0,
 			'widget_id' => '',
@@ -331,7 +341,8 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 			'order'     => 'DESC',
 			'search'    => '',
 			'date_from' => '', // Format: 'Y-m-d H:i:s'
-			'date_to'   => ''  // Format: 'Y-m-d H:i:s'
+			'date_to'   => '', // Format: 'Y-m-d H:i:s'
+			'archived'  => false // false = active only, true = archived only, 'all' = both
 		);
 		
 		$args = wp_parse_args( $args, $defaults );
@@ -343,6 +354,8 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 			// Special handling for chat mode - include both 'chat' and 'support'
 			if ( $args['mode'] === 'chat' ) {
 				$where[] = "mode IN ('chat', 'support')";
+			} elseif ( $args['mode'] === 'search' ) {
+				$where[] = "mode IN ('search', 'smart_search', 'advanced_search')"; // TODO: remove 'advanced_search' after v16
 			} else {
 				$where[] = $this->prepare_column_value( 'mode', $args['mode'] );
 			}
@@ -377,17 +390,27 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 			global $wpdb;
 			$search_term = '%' . $wpdb->esc_like( $args['search'] ) . '%';
 			// Search in messages JSON column and user display name
-			$where[] = $wpdb->prepare( 
-				"(messages LIKE %s OR user_id IN (SELECT ID FROM {$wpdb->users} WHERE display_name LIKE %s))", 
-				$search_term, 
-				$search_term 
+			$where[] = $wpdb->prepare(
+				"(messages LIKE %s OR user_id IN (SELECT ID FROM {$wpdb->users} WHERE display_name LIKE %s))",
+				$search_term,
+				$search_term
 			);
 		}
-		
+
+		// Filter by archived status (stored in metadata JSON)
+		if ( $args['archived'] === false ) {
+			// Only show non-archived (archived key is missing, null, or false)
+			$where[] = "(metadata IS NULL OR metadata NOT LIKE '%\"archived\":true%')";
+		} elseif ( $args['archived'] === true ) {
+			// Only show archived
+			$where[] = "metadata LIKE '%\"archived\":true%'";
+		}
+		// If 'all', don't add any filter
+
 		// Calculate offset with overflow protection
 		$page = max( 1, absint( $args['page'] ) );
 		$per_page = max( 1, min( 100, absint( $args['per_page'] ) ) ); // Limit to 100 per page
-		$offset = ( $page - 1 ) * $per_page;
+		$offset = ( $args['offset'] !== null && $args['offset'] !== '' ) ? absint( $args['offset'] ) : ( $page - 1 ) * $per_page;
 		
 		// Get rows
 		$rows = $this->get_rows_with_conditions( 
@@ -420,12 +443,19 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 * @return int
 	 */
 	public function get_conversations_count( $args = array() ) {
+		$defaults = array(
+			'archived' => false // false = active only, true = archived only, 'all' = both
+		);
+		$args = wp_parse_args( $args, $defaults );
+
 		$where = array();
-		
+
 		if ( ! empty( $args['mode'] ) ) {
 			// Special handling for chat mode - include both 'chat' and 'support'
 			if ( $args['mode'] === 'chat' ) {
 				$where[] = "mode IN ('chat', 'support')";
+			} elseif ( $args['mode'] === 'search' ) {
+				$where[] = "mode IN ('search', 'smart_search', 'advanced_search')"; // TODO: remove 'advanced_search' after v16
 			} else {
 				$where[] = $this->prepare_column_value( 'mode', $args['mode'] );
 			}
@@ -455,18 +485,25 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 			global $wpdb;
 			$search_term = '%' . $wpdb->esc_like( $args['search'] ) . '%';
 			// Search in messages JSON column and user display name
-			$where[] = $wpdb->prepare( 
-				"(messages LIKE %s OR user_id IN (SELECT ID FROM {$wpdb->users} WHERE display_name LIKE %s))", 
-				$search_term, 
-				$search_term 
+			$where[] = $wpdb->prepare(
+				"(messages LIKE %s OR user_id IN (SELECT ID FROM {$wpdb->users} WHERE display_name LIKE %s))",
+				$search_term,
+				$search_term
 			);
 		}
-		
+
+		// Filter by archived status (stored in metadata JSON)
+		if ( $args['archived'] === false ) {
+			$where[] = "(metadata IS NULL OR metadata NOT LIKE '%\"archived\":true%')";
+		} elseif ( $args['archived'] === true ) {
+			$where[] = "metadata LIKE '%\"archived\":true%'";
+		}
+
 		$count = $this->get_count_with_conditions( $where );
 
 		return $count;
 	}
-	
+
 	/**
 	 * Get conversations from the last N hours
 	 *
@@ -529,38 +566,69 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	}
 	
 	/**
-	 * Delete conversation
+	 * Delete conversation and any potential duplicates
+	 * Deletes all records with the same chat_id to ensure consistency
 	 *
-	 * @param int $id
-	 * @return bool
+	 * @param int $id Primary key of the conversation to delete
+	 * @return bool True on success, false on failure
 	 */
 	public function delete_conversation( $id ) {
+		global $wpdb;
 
-		$result = $this->delete_record( $id );
-		
-		// Check if we need to create table and retry
-		if ( $this->handle_db_error( $result, 'delete_conversation' ) === 'retry_operation' ) {
+		// First get the chat_id for this conversation
+		$conversation = $this->get_by_primary_key( $id );
+		$this->handle_db_error( $conversation, 'delete_conversation_get' );
+
+		if ( empty( $conversation ) || empty( $conversation->chat_id ) ) {
+			// If conversation not found or has no chat_id, just delete by ID
 			$result = $this->delete_record( $id );
+			if ( $this->handle_db_error( $result, 'delete_conversation' ) === 'retry_operation' ) {
+				$result = $this->delete_record( $id );
+			}
+			return $result;
 		}
-		
-		return $result;
+
+		// Delete all records with this chat_id (handles any potential duplicates)
+		$chat_id = $conversation->chat_id;
+		$result = $wpdb->query( $wpdb->prepare(
+			"DELETE FROM {$this->table_name} WHERE chat_id = %s",
+			$chat_id
+		) );
+
+		$this->handle_db_error( $result, 'delete_conversation_by_chat_id' );
+
+		if ( $result === false ) {
+			return false;
+		}
+
+		return true;
 	}
 	
 	/**
-	 * Get row count by mode
+	 * Get unique conversation count by mode
+	 * Counts distinct chat_ids to ensure each conversation is counted once
 	 *
 	 * @param string $mode The mode to filter by ('search' or 'chat')
-	 * @return int Number of rows with the specified mode
+	 * @return int Number of unique conversations with the specified mode
 	 */
 	public function get_row_count( $mode ) {
-		
-		// Use parent class method with where clause
-		$where_data = array( 'mode' => $mode );
-		$count = $this->get_number_of_rows_by_where_clause( $where_data );
-		
+		global $wpdb;
+
+		// Special handling for chat mode - include both 'chat' and 'support'
+		if ( $mode === 'chat' ) {
+			$where = "mode IN ('chat', 'support')";
+		} elseif ( $mode === 'search' ) {
+			$where = "mode IN ('search', 'smart_search', 'advanced_search')"; // TODO: remove 'advanced_search' after v16
+		} else {
+			$where = $wpdb->prepare( 'mode = %s', $mode );
+		}
+
+		// Count distinct chat_ids to ensure each conversation is counted once
+		$count = $wpdb->get_var( "SELECT COUNT(DISTINCT chat_id) FROM {$this->table_name} WHERE {$where}" );
+
 		$this->handle_db_error( $count, 'get_row_count' );
-		
-		return $count;
+
+		return absint( $count );
 	}
 
 	/**
@@ -575,33 +643,39 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 */
 	private function get_rows_with_conditions( $where, $orderby, $order, $limit, $offset ) {
 		global $wpdb;
-		
+
 		$sql = "SELECT * FROM $this->table_name";
-		
+
 		if ( ! empty( $where ) ) {
 			$sql .= " WHERE " . implode( ' AND ', $where );
 		}
-		
+
+		// Group by chat_id to ensure each conversation appears only once
+		// This prevents duplicates in edge cases where multiple records might exist
+		$sql .= " GROUP BY chat_id";
+
 		// Validate orderby against allowed columns to prevent SQL injection
 		$allowed_columns = array( 'id', 'created', 'updated', 'user_id', 'ip' );
 		if ( ! in_array( $orderby, $allowed_columns, true ) ) {
 			$orderby = 'created';
 		}
-		
+
 		// Validate order direction
 		$order = strtoupper( $order );
 		if ( ! in_array( $order, array( 'ASC', 'DESC' ), true ) ) {
 			$order = 'DESC';
 		}
-		
+
 		// Use backticks for column name and validate limit/offset
 		$orderby = '`' . $orderby . '`';
 		$limit = absint( $limit );
 		$offset = absint( $offset );
-		
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $orderby is validated against allowed list above
 		$sql .= " ORDER BY $orderby $order";
 		$sql .= $wpdb->prepare( " LIMIT %d OFFSET %d", $limit, $offset );
-		
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains prepared values
 		$results = $wpdb->get_results( $sql );
 
 		$this->handle_db_error( $results, 'get_rows_with_conditions' );
@@ -609,7 +683,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		if ( $results === null && ! empty( $wpdb->last_error ) ) {
 			return new WP_Error( 'db_error', $wpdb->last_error );
 		}
-		
+
 		return $results ?: array();
 	}
 	
@@ -621,13 +695,16 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 */
 	private function get_count_with_conditions( $where ) {
 		global $wpdb;
-		
-		$sql = "SELECT COUNT(*) FROM $this->table_name";
-		
+
+		// Use COUNT(DISTINCT chat_id) to ensure we count unique conversations only
+		// This matches the GROUP BY logic in get_rows_with_conditions
+		$sql = "SELECT COUNT(DISTINCT chat_id) FROM $this->table_name";
+
 		if ( ! empty( $where ) ) {
 			$sql .= " WHERE " . implode( ' AND ', $where );
 		}
-		
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $where contains prepared values from calling methods
 		$count = $wpdb->get_var( $sql );
 
 		$this->handle_db_error( $count, 'get_count_with_conditions' );
@@ -636,36 +713,36 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		if ( $count === null && ! empty( $wpdb->last_error ) ) {
 			return 0;
 		}
-		
+
 		return absint( $count );
 	}
 
 	/**
 	 * Delete old conversations based on retention period
-	 * 
+	 *
 	 * @param int $retention_days Number of days to keep conversations
 	 * @return int|WP_Error Number of conversations deleted or error
 	 */
 	public function delete_old_conversations( $retention_days = 30 ) {
 		global $wpdb;
-		
+
 		// Validate retention days
 		$retention_days = absint( $retention_days );
 		if ( $retention_days < 1 || $retention_days > 90 ) { // Max 90 days
 			$retention_days = 10; // Default to 10 days
 		}
-		
+
 		// Calculate cutoff date
 		$cutoff_date = gmdate( 'Y-m-d H:i:s', strtotime( "-{$retention_days} days" ) );
-		
+
 		// Delete conversations older than retention period based on last update time
 		$deleted = $wpdb->query( $wpdb->prepare( "DELETE FROM {$this->table_name} WHERE updated < %s", $cutoff_date ) );
 
 		$this->handle_db_error( $deleted, 'delete_old_conversations' );
 		if ( $deleted === false ) {
-			return new WP_Error( 'db_error', 'Failed to delete old conversations' );
+			return new WP_Error( 'db_error', __( 'Failed to delete old conversations', 'echo-knowledge-base' ) );
 		}
-		
+
 		if ( $deleted > 0 ) {
 			EPKB_AI_Log::add_log( "Deleted {$deleted} old conversations older than {$retention_days} days" );
 		}
@@ -694,26 +771,40 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	}
 	
 	/**
-	 * Update metadata for a conversation
+	 * Update metadata for a conversation (merges with existing metadata)
 	 *
 	 * @param int $conversation_id
-	 * @param array $metadata_array
+	 * @param array $metadata_array New metadata to merge with existing
 	 * @return bool|WP_Error
 	 */
 	public function update_metadata( $conversation_id, $metadata_array ) {
 		global $wpdb;
-		
-		if ( empty( $metadata_array ) ) {
-			$json_metadata = null;
+
+		// Get existing conversation to retrieve current metadata
+		$conversation = $this->get_conversation( $conversation_id );
+		if ( empty( $conversation ) ) {
+			return new WP_Error( 'conversation_not_found', __( 'Conversation not found', 'echo-knowledge-base' ) );
+		}
+
+		// Get existing metadata and merge with new metadata (append instead of overwrite)
+		$existing_metadata = $conversation->get_metadata();
+		if ( ! is_array( $existing_metadata ) ) {
+			$existing_metadata = array();
+		}
+		$merged_metadata = array_merge( $existing_metadata, $metadata_array );
+
+		// Encode merged metadata
+		if ( empty( $merged_metadata ) ) {
+			$json_metadata = '[]';
 		} else {
-			$json_metadata = wp_json_encode( $metadata_array );
+			$json_metadata = wp_json_encode( $merged_metadata );
 			if ( $json_metadata === false ) {
 				return new WP_Error( 'invalid_metadata', __( 'Invalid metadata format', 'echo-knowledge-base' ) );
 			}
 		}
-		
+
 		$result = $wpdb->update( $this->table_name,
-			array( 'metadata' => $json_metadata ), 
+			array( 'metadata' => $json_metadata ),
 			array( 'id' => $conversation_id ),
 			array( '%s' ),
 			array( '%d' )
@@ -723,13 +814,47 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 		if ( $result === false ) {
 			return new WP_Error( 'update_failed', $wpdb->last_error );
 		}
-		
+
+		return true;
+	}
+
+	/**
+	 * Archive a conversation by setting archived flag in metadata
+	 *
+	 * @param int $id Primary key of the conversation
+	 * @return bool|WP_Error
+	 */
+	public function archive_conversation( $id ) {
+		return $this->update_metadata( $id, array( 'archived' => true ) );
+	}
+
+	/**
+	 * Unarchive a conversation by removing archived flag from metadata
+	 *
+	 * @param int $id Primary key of the conversation
+	 * @return bool|WP_Error
+	 */
+	public function unarchive_conversation( $id ) {
+		global $wpdb;
+
+		$metadata = $this->get_metadata( $id );
+		unset( $metadata['archived'] );
+
+		$json_metadata = empty( $metadata ) ? '[]' : wp_json_encode( $metadata );
+
+		$result = $wpdb->update( $this->table_name, array( 'metadata' => $json_metadata ), array( 'id' => $id ), array( '%s' ), array( '%d' ) );
+
+		$this->handle_db_error( $result, 'unarchive_conversation' );
+		if ( $result === false ) {
+			return new WP_Error( 'update_failed', $wpdb->last_error );
+		}
+
 		return true;
 	}
 
 	/**
 	 * Get the table version
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function get_table_version() {
@@ -808,8 +933,8 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 				    widget_id        TINYINT UNSIGNED   NOT NULL DEFAULT 1,
 				    language         VARCHAR(20)        NULL,
 				    metadata         LONGTEXT           NULL,
-				    created	         DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
-					updated          DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				    created          DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				    updated          DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				    PRIMARY KEY (id),
 				    UNIQUE KEY  uniq_chat                    (chat_id),
 				    KEY         idx_session_created          (session_id, created),
@@ -823,7 +948,9 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 
 		dbDelta( $sql );
 
-		// Store version with autoload enabled
-		update_option( $this->get_version_option_name(), self::TABLE_VERSION, true );
+		// Only store version if table was actually created successfully
+		if ( $this->table_exists( $this->table_name ) ) {
+			update_option( $this->get_version_option_name(), self::TABLE_VERSION, true );
+		}
 	}
 }

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Handle saving feature settings.
@@ -122,7 +122,8 @@ class EPKB_Debug_Controller {
 			$output = EPKB_Config_Tools_Page::display_asea_debug_data();
 		}
 
-		echo esc_html( wp_strip_all_tags( $output ) );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_strip_all_tags removes all HTML/scripts
+		echo wp_strip_all_tags( wp_specialchars_decode( $output, ENT_QUOTES ) );
 
 		die();
 	}

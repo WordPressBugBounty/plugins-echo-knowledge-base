@@ -31,6 +31,7 @@ class EPKB_Blocks_Setup {
 		new EPKB_Drill_Down_Layout_Block();
 		new EPKB_FAQs_Block();
 		new EPKB_Featured_Articles_Block();
+		new EPKB_Articles_Index_Directory_Block();
 
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_filter( 'get_block_templates', array( $this, 'reassign_kb_block_page_template_with_numerical_key' ), 1, 3 );

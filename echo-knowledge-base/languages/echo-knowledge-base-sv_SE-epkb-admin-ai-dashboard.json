@@ -1,0 +1,84 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "sv_SE",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Cancel": [
+                "Avbryt"
+            ],
+            "Vote for Top 3 Features": [
+                "Rösta på de tre främsta funktionerna"
+            ],
+            "First Name": [
+                "Förnamn"
+            ],
+            "(optional)": [
+                "(valfritt)"
+            ],
+            "Email": [
+                "E-post"
+            ],
+            "Failed to submit vote. Please try again.": [
+                "Misslyckades med att skicka din röst. Försök igen."
+            ],
+            "Please enter a valid email address.": [
+                "Vänligen ange en giltig e-postadress."
+            ],
+            "Warnings": [
+                "Varningar"
+            ],
+            "Help us prioritize features by providing your information:": [
+                "Hjälp oss prioritera funktioner genom att lämna din information:"
+            ],
+            "Describe Your Feature Request": [
+                "Beskriv din begäran om en funktion"
+            ],
+            "Please describe the feature you would like to see...": [
+                "Vänligen beskriv den funktion du skulle vilja se..."
+            ],
+            "Submit Vote": [
+                "Skicka röst"
+            ],
+            "Please describe the feature you would like to see.": [
+                "Vänligen beskriv den funktion du vill se."
+            ],
+            "Please select at least one feature to vote for.": [
+                "Vänligen välj minst en funktion att rösta på."
+            ],
+            "Submitting your vote...": [
+                "Skickar din röst..."
+            ],
+            "Thank you for voting!": [
+                "Tack för din röst!"
+            ],
+            "An error occurred. Please try again.": [
+                "Ett fel uppstod. Försök igen."
+            ],
+            "Latest AI Updates": [
+                "Senaste AI-uppdateringar"
+            ],
+            "Learn more": [
+                "Lär dig mer"
+            ],
+            "Select the features you would like to see implemented:": [
+                "Välj de funktioner du vill se implementeras:"
+            ],
+            "Released": [
+                "Släpppt"
+            ],
+            "feature selected": [
+                "funktionen vald"
+            ],
+            "features selected": [
+                "funktioner valda"
+            ],
+            "Note: Your feedback helps us prioritize development. Features are subject to change.": [
+                "Obs: Din feedback hjälper oss att prioritera utvecklingen. Funktioner kan ändras."
+            ]
+        }
+    }
+}

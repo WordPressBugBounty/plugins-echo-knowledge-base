@@ -90,8 +90,7 @@ class EPKB_Add_Ons_Features {
 		$features['2023.06.01'] = array(
 			'plugin'            => esc_html__( 'KB Core', 'echo-knowledge-base'),
 			'title'             => esc_html__( 'Article Views Counter', 'echo-knowledge-base'),
-			'description'       => '<p>' . esc_html__( 'Track the number of times articles are viewed and display a view counter on article pages and in analytics. '.
-			                                           ' Show visitors the most popular articles using widgets and shortcodes (Widgets add-on required). Analyze the least popular articles for improvement or replacement..', 'echo-knowledge-base') . '</p>',
+			'description'       => '<p>' . esc_html__( 'Track the number of times articles are viewed and display a view counter on article pages and in analytics. Show visitors the most popular articles using widgets and shortcodes (Widgets add-on required). Analyze the least popular articles for improvement or replacement.', 'echo-knowledge-base' ) . '</p>',
 			'image'             => 'https://www.echoknowledgebase.com/wp-content/uploads/2023/06/featured-screenshots-article-views.jpg',
 			'learn_more_url'    => 'https://www.echoknowledgebase.com/documentation/article-views-counter/',
 			'plugin-type'       => 'core',
@@ -146,8 +145,7 @@ class EPKB_Add_Ons_Features {
 		$features['2022.08.01'] = array(
 			'plugin'            => esc_html__( 'KB Core', 'echo-knowledge-base'),
 			'title'             => esc_html__( 'Basic Settings UI', 'echo-knowledge-base'),
-			'description'       => '<p>' .esc_html__( 'We are introducing basic settings to allow users to quickly configure a subset of KB features and colors, accessible on the left sidebar on this page. '.
-			                                          'The full Visual Editor is still available under the tab called "Full Editor."', 'echo-knowledge-base' ) . '</p>',
+			'description'       => '<p>' . esc_html__( 'We are introducing basic settings to allow users to quickly configure a subset of KB features and colors, accessible on the left sidebar on this page. The full Visual Editor is still available under the tab called "Full Editor."', 'echo-knowledge-base' ) . '</p>',
 			'image'             => 'https://www.echoknowledgebase.com/wp-content/uploads/2022/08/kb-new-settings-ui.jpg',
 			//'learn_more_url'    => 'https://wordpress.org/plugins/help-dialog/',
 			'plugin-type'       => 'core',
@@ -296,17 +294,6 @@ class EPKB_Add_Ons_Features {
 			'type'              => 'new-feature'
 		);
 
-		$features['2021.03.01'] = array(
-			'plugin'            => esc_html__( 'KB Core', 'echo-knowledge-base'),
-			'title'             => esc_html__( 'Simple Search Analytics', 'echo-knowledge-base'),
-			'description'       => '<p>' . esc_html__( 'Show a basic count of searches with articles found and with no results.', 'echo-knowledge-base') . '</p>',
-			'image'             => 'https://www.echoknowledgebase.com/wp-content/uploads/2021/03/new-features-basic-search-analytics.jpg',
-			'learn_more_url'    => admin_url('edit.php?post_type=epkb_post_type_1&page=epkb-plugin-analytics'),
-			'button_name'       => esc_html__( 'Try Now!', 'echo-knowledge-base'),
-			'plugin-type'       => 'core',
-			'type'              => 'new-feature'
-		);
-
 		$features['2021.02.01'] = array(
 			'plugin'            => esc_html__( 'KB Core', 'echo-knowledge-base'),
 			'title'             => esc_html__( 'Print Article', 'echo-knowledge-base'),
@@ -400,7 +387,7 @@ class EPKB_Add_Ons_Features {
 
 		$features['2019.12.ac'] = array(
 			'plugin'            => esc_html__( 'KB Core', 'echo-knowledge-base'),
-			'title'             =>__(  'New Option to Show Articles Above Categories', 'echo-knowledge-base'),
+			'title'             => esc_html__( 'New Option to Show Articles Above Categories', 'echo-knowledge-base'),
 			'description'       => '<p>' . esc_html__( 'On the Main Page (or Sidebar if you have the Elegant Layout add-on) the article can now be configured to appear above their peer categories and sub-categories.', 'echo-knowledge-base') . '</p>',
 			'image'             => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/03/new-features-article-category-sequence-2.jpg',
 			'learn_more_url'    => '',
@@ -538,7 +525,7 @@ class EPKB_Add_Ons_Features {
 		$features_list = array();
 		foreach ( $features as $date => $feature ) {
 			$season = explode('.', $date);
-			$key =  esc_html__( 'Year' ) . ' ' . $season[0];
+			$key =  esc_html__( 'Year', 'echo-knowledge-base' ) . ' ' . $season[0];
 			$features_list[$key][$date] = $feature;
 		}
 
@@ -554,7 +541,7 @@ class EPKB_Add_Ons_Features {
 		$monthName1 = ucfirst($wp_locale->get_month_abbrev($wp_locale->get_month($month)));
 		$monthName2 = ucfirst($wp_locale->get_month_abbrev($wp_locale->get_month($month + 2)));
 
-		return $monthName1 . ' - ' . $monthName2 . ' ' . date('Y');
+		return $monthName1 . ' - ' . $monthName2 . ' ' . wp_date('Y');
 	}
 
 	/**
@@ -601,7 +588,7 @@ class EPKB_Add_Ons_Features {
 						echo '<span class="epkb-fnf__header__widget"> <i class="epkbfa epkbfa-puzzle-piece " aria-hidden="true"></i>' . esc_html__( 'Widget', 'echo-knowledge-base') . '</span>';
 						break;
 				} ?>
-				<h3 class="epkb-fnf__header__title"><?php esc_html_e( $args['title']); ?></h3>
+				<h3 class="epkb-fnf__header__title"><?php echo esc_html( $args['title'] ); ?></h3>
 			</div>		<?php
 			if ( isset( $args['image']) ) { ?>
 				<div class="featured_img epkb-fnf__img">
@@ -657,8 +644,8 @@ class EPKB_Add_Ons_Features {
 
 		$features['2020.12.15'] = array(
 			'plugin'            => esc_html__( 'Widget', 'echo-knowledge-base'),
-			'title'             => esc_html__( 'Image Guide', 'creative-addons-for-elementor'),
-			'description'       => '<p>' . esc_html__( "Add hotspots to screenshots and images, and connect each hotspot to a note.", 'creative-addons-for-elementor') . '</p>',
+			'title'             => esc_html__( 'Image Guide', 'echo-knowledge-base'),
+			'description'       => '<p>' . esc_html__( "Add hotspots to screenshots and images, and connect each hotspot to a note.", 'echo-knowledge-base') . '</p>',
 			'video'             => 'https://www.youtube.com/embed/SZEP_zxBvy4',
 			'learn_more_url'    => 'https://www.creative-addons.com/elementor-widgets/image-guide/',
 			'plugin-type'       => 'elementor',
@@ -667,8 +654,8 @@ class EPKB_Add_Ons_Features {
 
 		$features['2020.12.16'] = array(
 			'plugin'            => esc_html__( 'Widget', 'echo-knowledge-base'),
-			'title'             => esc_html__( 'Text and Image', 'creative-addons-for-elementor'),
-			'description'       => '<p>' . esc_html__( 'Easy way to add text and image combo with one widget.', 'creative-addons-for-elementor') . '</p>',
+			'title'             => esc_html__( 'Text and Image', 'echo-knowledge-base'),
+			'description'       => '<p>' . esc_html__( 'Easy way to add text and image combo with one widget.', 'echo-knowledge-base') . '</p>',
 			'video'             => 'https://www.youtube.com/embed/0Lpi-M2i32U',
 			'learn_more_url'    => 'https://www.creative-addons.com/elementor-widgets/text-image/',
 			'plugin-type'       => 'elementor',

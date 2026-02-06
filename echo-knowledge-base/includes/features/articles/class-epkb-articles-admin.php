@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Setup hookds for KB Articles
@@ -312,7 +312,8 @@ class EPKB_Articles_Admin {
 		}
 
 		wp_dropdown_categories( array(
-			'show_option_all' => esc_html__("Show All {$info_taxonomy->label}"),
+			// translators: %s is the taxonomy label (e.g., "Categories")
+			'show_option_all' => sprintf( esc_html__( 'Show All %s', 'echo-knowledge-base' ), $info_taxonomy->label ),
 			'taxonomy'        => $taxonomy,
 			'name'            => $taxonomy,
 			'orderby'         => 'name',

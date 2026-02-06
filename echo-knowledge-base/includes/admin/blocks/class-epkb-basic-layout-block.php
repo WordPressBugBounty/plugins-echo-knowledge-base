@@ -269,6 +269,15 @@ final class EPKB_Basic_Layout_Block extends EPKB_Abstract_Block {
 							'custom_css_class' => EPKB_Blocks_Settings::get_custom_css_class_setting(),
 						)
 					),
+
+					// GROUP: Help + Setup Wizard
+					'help-resources' => array(
+						'title' => esc_html__( 'Help + Setup Wizard', 'echo-knowledge-base' ),
+						'fields' => array(
+							'help_resources_link' => EPKB_Blocks_Settings::get_help_resources_link(),
+							'setup_wizard_link' => EPKB_Blocks_Settings::get_setup_wizard_link(),
+						)
+					),
 				),
 			),
 
@@ -284,12 +293,6 @@ final class EPKB_Basic_Layout_Block extends EPKB_Abstract_Block {
 						'fields' => array(
 							'block_full_width_toggle' => EPKB_Blocks_Settings::get_block_full_width_setting(),
 							'block_max_width' => EPKB_Blocks_Settings::get_block_max_width_setting(),
-							'block_presets' => array(
-								'setting_type' => 'presets_dropdown',
-								'label' => esc_html__( 'Apply Preset', 'echo-knowledge-base' ),
-								'presets' => EPKB_Blocks_Settings::get_all_preset_settings( self::EPKB_BLOCK_NAME, EPKB_Layout::BASIC_LAYOUT ),
-								'default' => 'current',
-							),
 						),
 					),
 
