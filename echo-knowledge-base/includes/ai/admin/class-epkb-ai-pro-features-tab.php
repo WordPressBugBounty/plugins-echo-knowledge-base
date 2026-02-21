@@ -211,6 +211,18 @@ class EPKB_AI_PRO_Features_Tab {
 				//'badge' => __( 'upcoming feature', 'echo-knowledge-base' ),
 				//'badge_type' => 'coming-soon'
 			),
+			array(
+				'id' => 'pdf-to-notes',
+				'title' => __( 'PDF to Notes', 'echo-knowledge-base' ),
+				'description' => __( 'Upload PDF files and convert them into AI training notes. Expand your AI knowledge beyond KB articles by importing existing documentation, manuals, and guides.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-file-pdf-o',
+				'icon_color' => '#C0392B',
+				'benefits' => array(
+					__( 'Upload PDF files directly from the Training Data tab', 'echo-knowledge-base' ),
+					__( 'Automatically extract content and create AI training notes', 'echo-knowledge-base' ),
+					__( 'Include existing documentation and manuals in AI responses', 'echo-knowledge-base' ),
+				),
+			),
 			// array(
 			// 	'id' => 'articles-analysis',
 			// 	'title' => __( 'AI-Powered Article Analysis', 'echo-knowledge-base' ),

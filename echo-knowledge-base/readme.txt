@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chatbot, faq
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 16.011.0
+Stable tag: 16.20.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,8 @@ Designed with a modern and professional appearance by default, the plugin offers
 
 * **Most Popular and Recent Articles**: Display lists of articles by popularity and recent publication to guide readers to trending and new content.
 
+* **Glossary**: Create a centralized dictionary of terms with definitions. Published terms are automatically highlighted in your articles with interactive tooltips, helping readers understand key terminology without leaving the page.
+
 * **FAQs Layout and Shortcode**: Deploy FAQs anywhere on your site with various eye-catching designs. Group questions logically and control their behavior for optimal user engagement.
 
 * **Fast Search Bar**: Enable users to find articles quickly with an AJAX-powered search bar.
@@ -59,7 +61,13 @@ Designed with a modern and professional appearance by default, the plugin offers
 
 ## PRO KB FEATURES
 
-* **AI Features**: Content Gap Analysis. Expand training to include notes, posts, pages, and custom post types. Add email notifications for AI insights. **Human Agent Handoff** lets users escalate from AI to your support team. **Feedback Buttons** collect thumbs-up/down ratings on AI responses.
+* **AI Features**:
+   * Content Gap Analysis
+   * Expand training to include notes, posts, pages, and custom post types
+   * **Email Notifications** for AI insights
+   * **Human Agent Handoff** – lets users escalate from AI to your support team
+   * **Feedback Buttons** – collect thumbs-up/down ratings on AI responses
+   * **PDF to Notes** – upload PDF files and convert them into AI training notes to expand your AI's knowledge beyond KB articles
 
 * **Advanced Search**: Highlight search keywords on article pages, filter search by category, adjust search box styling, and add helper text or links below the search bar. Use advanced search analytics to discover popular queries and identify searches with no results.
 
@@ -190,7 +198,7 @@ Echo Knowledge Base works great with popular page builders:
 >
 >
 > <strong>AI Features</strong><br>
-> [AI Features](https://www.echoknowledgebase.com/wordpress-plugin/ai-features/) enhances your WordPress site with AI Smart Search, AI training from posts, pages, custom post types, and private notes, plus smart daily email notifications summarizing AI Chat and Search activity. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/ai-features/).
+> [AI Features](https://www.echoknowledgebase.com/wordpress-plugin/ai-features/) enhances your WordPress site with AI Smart Search, AI training from posts, pages, custom post types, and private notes, PDF to Notes for converting uploaded PDFs into AI training notes, plus smart daily email notifications summarizing AI Chat and Search activity. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/ai-features/).
 >
 >
 > <strong>Unlimited Knowledge Bases</strong><br>
@@ -354,7 +362,7 @@ You can safely update via the WordPress dashboard whenever a new version is avai
 * **AI Smart Search:** Display intelligent search results in a dialog with multiple sections (AI Answer, Matching Articles, Step-by-Step Instructions, Related Keywords, You Can Also Ask, Glossary Terms, Helpful Tips, Contact Us), fully customizable layout, and embeddable via shortcode anywhere on your site.
 * **Content Protection (Access Manager):** Restrict knowledge base access to specific users, roles, or groups – ideal for private or internal documentation.
 * **Unlimited Knowledge Bases:** Create multiple knowledge bases with separate content (useful for different products or user groups).
-* **Extended AI Features:** Train the AI on additional content sources beyond your KB (like pages, posts, or custom post types), receive daily email notifications summarizing AI Chat and Search activity, and access advanced AI tools.
+* **Extended AI Features:** Train the AI on additional content sources beyond your KB (like pages, posts, or custom post types), upload PDFs and convert them into AI training notes, receive daily email notifications summarizing AI Chat and Search activity, and access advanced AI tools.
 * **Advanced Search Analytics:** Track what users search for, see top search terms, and find out when searches return no results (so you can fill the gaps).
 * **Article Rating & Feedback:** Enable users to rate articles and leave feedback, with analytics to show you the most helpful or lacking content.
 * **Custom Links (PDFs & External):** Turn articles into direct links to PDFs, external URLs, or other resources while still listing them in your KB.
@@ -403,6 +411,13 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 
 
 == Changelog ==
+
+= 16.20.0 =
+Release Date: Feb 21, 2026
+* New: Glossary - add terms with definitions that are automatically highlighted in articles with interactive tooltips
+* New: PDF to Notes - upload PDFs and convert them into AI training notes (PRO)
+* Fix: Improved access permission checks for Tools
+* Fix: Cleanup and minor fixes
 
 = 16.011.0 =
 Release Date: Feb 1, 2026

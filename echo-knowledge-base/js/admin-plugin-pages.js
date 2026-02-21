@@ -3591,6 +3591,174 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		$( '[data-target="faq-shortcodes"]' ).trigger( 'click' );
 	} );
+
+
+	/*************************************************************************************************
+	 *
+	 *          GLOSSARY
+	 *
+	 ************************************************************************************************/
+
+	// Show form for creating a new term
+	$( document ).on( 'click', '#epkb-glossary-create-term', function() {
+		$( '#epkb-glossary-term-id' ).val( 0 );
+		$( '#epkb-glossary-term-name' ).val( '' );
+		$( '#epkb-glossary-term-definition' ).val( '' );
+		$( '#epkb-glossary-term-status' ).val( 'publish' );
+		glossary_update_char_counters();
+		$( '#epkb-glossary-form' ).slideDown( 200 );
+		$( '#epkb-glossary-term-name' ).focus();
+	});
+
+	// Cancel form
+	$( document ).on( 'click', '.epkb-glossary-form__cancel', function() {
+		$( '#epkb-glossary-form' ).slideUp( 200 );
+	});
+
+	// Save term
+	$( document ).on( 'click', '.epkb-glossary-form__save', function() {
+
+		let term_name = $( '#epkb-glossary-term-name' ).val().trim();
+		if ( ! term_name.length ) {
+			epkb_show_error_notification( epkb_vars.glossary_name_required || 'Term name is required.' );
+			return;
+		}
+
+		let postData = {
+			action: 'epkb_glossary_save_term',
+			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+			term_id: $( '#epkb-glossary-term-id' ).val(),
+			term_name: term_name,
+			definition: $( '#epkb-glossary-term-definition' ).val(),
+			status: $( '#epkb-glossary-term-status' ).val()
+		};
+
+		epkb_send_ajax( postData, function( response ) {
+			if ( ! response.error && typeof response.message !== 'undefined' ) {
+				epkb_show_success_notification( response.message );
+
+				let data = response.data;
+				let status_label = data.status === 'publish' ? ( epkb_vars.glossary_published || 'Published' ) : ( epkb_vars.glossary_draft || 'Draft' );
+				let status_class = data.status === 'publish' ? 'epkb-glossary-status--publish' : 'epkb-glossary-status--draft';
+				let truncated_def = data.definition.length > 80 ? data.definition.substring( 0, 80 ) + '...' : data.definition;
+
+				let existing_row = $( '.epkb-glossary-term-row[data-term-id="' + data.term_id + '"]' );
+				if ( existing_row.length ) {
+					existing_row.find( '.epkb-glossary-term-row__name' ).text( data.name );
+					existing_row.find( '.epkb-glossary-term-row__definition' ).text( truncated_def );
+					existing_row.find( '.epkb-glossary-term-row__status span' ).attr( 'class', status_class ).text( status_label );
+				} else {
+					$( '.epkb-glossary-empty-row' ).remove();
+					let new_row = '<tr class="epkb-glossary-term-row" data-term-id="' + data.term_id + '">' +
+						'<td class="epkb-glossary-term-row__name">' + $( '<span>' ).text( data.name ).html() + '</td>' +
+						'<td class="epkb-glossary-term-row__definition">' + $( '<span>' ).text( truncated_def ).html() + '</td>' +
+						'<td class="epkb-glossary-term-row__status"><span class="' + status_class + '">' + status_label + '</span></td>' +
+						'<td class="epkb-glossary-term-row__actions">' +
+							'<button class="epkb-glossary-edit-btn epkb-primary-btn" title="Edit"><span class="epkbfa epkbfa-edit"></span></button>' +
+							'<button class="epkb-glossary-delete-btn epkb-error-btn" title="Delete"><span class="epkbfa epkbfa-trash"></span></button>' +
+						'</td></tr>';
+					$( '.epkb-glossary-terms-table tbody' ).append( new_row );
+				}
+
+				glossary_sort_table();
+				$( '#epkb-glossary-form' ).slideUp( 200 );
+			}
+		});
+	});
+
+	// Edit term
+	$( document ).on( 'click', '.epkb-glossary-edit-btn', function() {
+
+		let term_id = $( this ).closest( '.epkb-glossary-term-row' ).data( 'term-id' );
+
+		let postData = {
+			action: 'epkb_glossary_get_term',
+			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+			term_id: term_id
+		};
+
+		epkb_send_ajax( postData, function( response ) {
+			if ( ! response.error && typeof response.data !== 'undefined' ) {
+				$( '#epkb-glossary-term-id' ).val( response.data.term_id );
+				$( '#epkb-glossary-term-name' ).val( response.data.name );
+				$( '#epkb-glossary-term-definition' ).val( response.data.definition );
+				$( '#epkb-glossary-term-status' ).val( response.data.status );
+				glossary_update_char_counters();
+				$( '#epkb-glossary-form' ).slideDown( 200 );
+				$( '#epkb-glossary-term-name' ).focus();
+			}
+		});
+	});
+
+	// Delete term
+	$( document ).on( 'click', '.epkb-glossary-delete-btn', function() {
+
+		if ( ! confirm( epkb_vars.glossary_delete_confirm || 'Are you sure you want to delete this term?' ) ) {
+			return;
+		}
+
+		let row = $( this ).closest( '.epkb-glossary-term-row' );
+		let term_id = row.data( 'term-id' );
+
+		let postData = {
+			action: 'epkb_glossary_delete_term',
+			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+			term_id: term_id
+		};
+
+		epkb_send_ajax( postData, function( response ) {
+			if ( ! response.error && typeof response.message !== 'undefined' ) {
+				epkb_show_success_notification( response.message );
+				row.remove();
+
+				if ( ! $( '.epkb-glossary-term-row' ).length ) {
+					$( '.epkb-glossary-terms-table tbody' ).append(
+						'<tr class="epkb-glossary-empty-row"><td colspan="4">No glossary terms found. Click "Add Term" to create one.</td></tr>'
+					);
+				}
+
+				$( '#epkb-glossary-form' ).slideUp( 200 );
+			}
+		});
+	});
+
+	// Search/filter terms
+	$( document ).on( 'input', '#epkb-glossary-search-input', function() {
+		let search = $( this ).val().toLowerCase();
+		$( '.epkb-glossary-term-row' ).each( function() {
+			let name = $( this ).find( '.epkb-glossary-term-row__name' ).text().toLowerCase();
+			let definition = $( this ).find( '.epkb-glossary-term-row__definition' ).text().toLowerCase();
+			$( this ).toggle( name.indexOf( search ) > -1 || definition.indexOf( search ) > -1 );
+		});
+	});
+
+	// Character counters
+	$( document ).on( 'input', '#epkb-glossary-term-name', function() {
+		$( this ).closest( '.epkb-glossary-form-field' ).find( '.epkb-characters_left-counter' ).text( $( this ).val().length );
+	});
+	$( document ).on( 'input', '#epkb-glossary-term-definition', function() {
+		$( this ).closest( '.epkb-glossary-form-field' ).find( '.epkb-characters_left-counter' ).text( $( this ).val().length );
+	});
+
+	function glossary_update_char_counters() {
+		$( '#epkb-glossary-term-name' ).closest( '.epkb-glossary-form-field' ).find( '.epkb-characters_left-counter' ).text( $( '#epkb-glossary-term-name' ).val().length );
+		$( '#epkb-glossary-term-definition' ).closest( '.epkb-glossary-form-field' ).find( '.epkb-characters_left-counter' ).text( $( '#epkb-glossary-term-definition' ).val().length );
+	}
+
+	// Sort glossary table alphabetically
+	function glossary_sort_table() {
+		let tbody = $( '.epkb-glossary-terms-table tbody' );
+		let rows = tbody.find( '.epkb-glossary-term-row' ).get();
+		rows.sort( function( a, b ) {
+			let nameA = $( a ).find( '.epkb-glossary-term-row__name' ).text().toLowerCase();
+			let nameB = $( b ).find( '.epkb-glossary-term-row__name' ).text().toLowerCase();
+			return nameA.localeCompare( nameB );
+		});
+		$.each( rows, function( idx, row ) {
+			tbody.append( row );
+		});
+	}
+
 });
 
 // Dashboard Page Features - wrapped in separate jQuery ready

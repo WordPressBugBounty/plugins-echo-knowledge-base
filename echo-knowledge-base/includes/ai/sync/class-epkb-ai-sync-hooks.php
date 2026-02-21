@@ -8,6 +8,8 @@
  */
 class EPKB_AI_Sync_Hooks {
 
+	public static $skip_sync_hooks = false;
+
 	public function __construct() {
 
 		// Only enable hooks if auto-sync is enabled
@@ -35,7 +37,12 @@ class EPKB_AI_Sync_Hooks {
 	 * @return void
 	 */
 	public function handle_post_save( $post_id, $post, $update ) {
-		
+
+		// Skip when AI Notes are being created/updated programmatically (avoids redundant sync and max_allowed_packet errors on wp_options)
+		if ( self::$skip_sync_hooks ) {
+			return;
+		}
+
 		// Skip auto saves and revisions
 		if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) ) {
 			return;

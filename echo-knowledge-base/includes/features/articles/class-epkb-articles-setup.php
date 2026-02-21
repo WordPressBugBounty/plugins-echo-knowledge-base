@@ -588,8 +588,9 @@ class EPKB_Articles_Setup {
 		global $multipage;
 
 		do_action( 'eckb-article-before-content', $args );
+		$content = has_filter( 'epkb_article_content' ) ? apply_filters( 'epkb_article_content', $args['content'], $args ) : $args['content'];
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $args['content'];
+		echo $content;
 		do_action( 'eckb-article-after-content', $args );
 
 		// support for paged articles (with page break)

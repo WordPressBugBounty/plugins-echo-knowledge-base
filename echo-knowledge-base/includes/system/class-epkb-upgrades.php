@@ -217,6 +217,18 @@ class EPKB_Upgrades {
 		if ( version_compare( $last_version, '15.900.0', '<' ) ) {
 			self::upgrade_to_v15_900_0( $kb_config );
 		}
+
+		if ( version_compare( $last_version, '16.011.1', '<=' ) ) {
+			self::upgrade_to_v16_011_1( $kb_config );
+		}
+	}
+
+	/**
+	 * Set glossary_enable to 'off' for existing users (16.011.1 or less). New users get default 'on' from spec.
+	 */
+	private static function upgrade_to_v16_011_1( &$kb_config ) {
+
+		$kb_config['glossary_enable'] = 'off';
 	}
 
 	/**

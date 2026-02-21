@@ -127,7 +127,8 @@ class EPKB_Layout_Categories extends EPKB_Layout {
 					// Wizard preview: count articles in demo data (all keys except 0=name and 1=description)
 					$category_count = count( $this->articles_seq_data[$box_category_id] ) - 2;
 				} else {
-					$category_count = EPKB_Categories_DB::get_category_count( $this->kb_config['id'] , $box_category_id );
+					$include_sub_categories = $this->kb_config['section_article_count_mode'] == 'current_and_sub_categories';
+					$category_count = EPKB_Categories_DB::get_category_count( $this->kb_config['id'], $box_category_id, $include_sub_categories );
 				}
 
 				if ( $column_index == 1 ) { ?>
@@ -243,7 +244,8 @@ class EPKB_Layout_Categories extends EPKB_Layout {
 			/** DISPLAY SUB-CATEGORIES */
 			foreach ( $box_sub_category_list as $box_sub_category_id => $box_sub_sub_category_list ) {
 
-				$category_count = EPKB_Categories_DB::get_category_count( $this->kb_config['id'], $box_sub_category_id );
+				$include_sub_categories = $this->kb_config['section_article_count_mode'] == 'current_and_sub_categories';
+				$category_count = EPKB_Categories_DB::get_category_count( $this->kb_config['id'], $box_sub_category_id, $include_sub_categories );
 
 				$category_name = isset( $this->articles_seq_data[$box_sub_category_id][0] ) ?
 											$this->articles_seq_data[$box_sub_category_id][0] : _x( 'Category', 'taxonomy singular name', 'echo-knowledge-base' );

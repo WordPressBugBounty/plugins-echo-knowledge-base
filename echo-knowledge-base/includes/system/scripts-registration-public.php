@@ -54,6 +54,9 @@ function epkb_load_public_resources() {
 		wp_register_style( 'epkb-frontend-editor-rtl', Echo_Knowledge_Base::$plugin_url . 'css/frontend-editor-rtl' . $suffix . '.css', array('wp-color-picker'), Echo_Knowledge_Base::$version );
 	}
 
+	wp_register_style( 'epkb-glossary', Echo_Knowledge_Base::$plugin_url . 'css/glossary' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
+	wp_register_script( 'epkb-glossary-tooltips', Echo_Knowledge_Base::$plugin_url . 'js/glossary-tooltips' . $suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
+
 	wp_register_script( 'epkb-public-scripts', Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-faq-shortcode-scripts', Echo_Knowledge_Base::$plugin_url . 'js/faq-shortcode-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-admin-form-controls-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-form-controls' . $suffix . '.js', array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable'), Echo_Knowledge_Base::$version );
@@ -386,7 +389,7 @@ function epkb_enqueue_public_resources( $kb_id=0 ) {
 		}
 
 		wp_add_inline_style( 'epkb-' . $one_slug, epkb_frontend_kb_theme_styles_now( $kb_config, $one_slug ) );
-		wp_enqueue_style('epkb-' .  $one_slug );
+		wp_enqueue_style( 'epkb-' . $one_slug );
 		if ( is_rtl() ) {
 			wp_enqueue_style( 'epkb-' . $one_slug . '-rtl' );
 		}
@@ -395,9 +398,16 @@ function epkb_enqueue_public_resources( $kb_id=0 ) {
 		if ( $kb_config['modular_main_page_custom_css_toggle'] == 'on' ) {
 			$custom_inline_css = EPKB_Utilities::get_kb_option( $kb_id, 'epkb_ml_custom_css', '' );
 			if ( ! empty( $custom_inline_css ) ) {
-				wp_add_inline_style('epkb-' . $one_slug . '-custom', EPKB_Utilities::minify_css( $custom_inline_css ) );
+				wp_add_inline_style( 'epkb-' . $one_slug . '-custom', EPKB_Utilities::minify_css( $custom_inline_css ) );
 				wp_enqueue_style( 'epkb-' . $one_slug . '-custom' );
 			}
+		}
+
+		// Glossary: only with article page layout, when feature is on.
+		if ( $one_slug === 'ap-frontend-layout' && ! empty( $kb_config['glossary_enable'] ) && $kb_config['glossary_enable'] === 'on' ) {
+			wp_enqueue_style( 'epkb-glossary' );
+			wp_enqueue_script( 'epkb-glossary-tooltips' );
+			wp_add_inline_style( 'epkb-glossary', EPKB_Glossary_Frontend::get_glossary_color_css( $kb_config ) );
 		}
 	}
 

@@ -1697,6 +1697,13 @@ class EPKB_Config_Settings_Page {
 					'data'      => [ 'target' => 'print_button' ]
 				),
 				array(
+					'title'     => esc_html__( 'Glossary', 'echo-knowledge-base' ),
+					'fields'    => [
+						'glossary_enable' => '',
+					],
+					'data'      => [ 'target' => 'glossary' ],
+				),
+				array(
 					'title'         => esc_html__( 'Widgets/Shortcodes', 'echo-knowledge-base' ),
 					'fields'        => [
 						'widg_search_results_limit' => 'widg',
@@ -2006,6 +2013,7 @@ class EPKB_Config_Settings_Page {
 			case 'rating_mode':
 			case 'section_head_category_icon_location':
 			case 'section_desc_text_on':
+			case 'glossary_enable':
 				$field_specs['input_group_class'] = 'eckb-conditional-setting-input' . ' ';
 				break;
 
@@ -2115,6 +2123,11 @@ class EPKB_Config_Settings_Page {
 			//Article Views Counter
 			case 'article_views_counter_enable': // Count Article Views
 				$input_args['setting_help_text'] = [ [ 'link_text' => esc_html__( 'Learn More', 'echo-knowledge-base' ), 'link_url' => 'https://www.echoknowledgebase.com/documentation/article-views-counter/' ] ];
+				break;
+
+			// Glossary
+			case 'glossary_enable':
+				$input_args['tooltip_body'] = esc_html__( 'Enable or disable the Glossary feature. When enabled, glossary terms will be highlighted in articles with tooltip definitions. When disabled, the Glossary menu is hidden; turn it back on here then save and reload the page to see the Glossary in the admin menu.', 'echo-knowledge-base' );
 				break;
 
 			//Left Sidebar
@@ -2474,11 +2487,12 @@ class EPKB_Config_Settings_Page {
 					'categories_articles_preset'                            => '',
 					'grid_nof_columns'                                      => [ 'elay', 'only_grid' ],
 					'nof_columns'                                           => [ 'not_grid', 'not_sidebar' ],
-					'background_color'                                      => 'not_sidebar',
+					'background_color'                                      => [ 'not_sidebar', 'not_drill_down' ],
 					'article-content-background-color-v2'                   => [ 'elay', 'only_sidebar' ],
 
 					// Drill Down Layout
 					'ml_categories_articles_back_button_bg_color'           => 'only_drill_down',
+					'ml_categories_articles_category_box_bg_color'          => 'only_drill_down',
 
 					// Other
 					'ml_categories_articles_kblk_pro'                       => 'not_kblk',
@@ -2896,6 +2910,7 @@ class EPKB_Config_Settings_Page {
 					// core layouts
 					'section_head_alignment' => [ [ 'only_basic', 'only_tabs', 'only_categories' ] ],
 					'section_hyperlink_on' => [ [ 'only_basic', 'only_tabs', 'only_categories' ] ],     // link to category archive page
+					'section_article_count_mode' => [ 'only_categories' ],
 					'section_head_font_color' => [ 'not_sidebar' ],     // Category Name Color
 					'section_desc_text_on' => [ 'not_grid', 'not_sidebar' ],
 					'section_head_description_font_color' => [ 'not_sidebar' ],

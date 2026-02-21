@@ -26,6 +26,8 @@ function epkb_add_plugin_menus() {
 	add_submenu_page( $parent_slug, esc_html__( 'FAQs - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'FAQs', 'echo-knowledge-base' ),
 		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_faqs_write'] ), 'epkb-faqs', array( new EPKB_FAQs_Page(), 'display_faqs_page') );
 
+	do_action( 'eckb_add_kb_submenu', $parent_slug );
+
 	add_submenu_page( $parent_slug, esc_html__( 'Configuration - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'Configuration', 'echo-knowledge-base' ),
 		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_order_articles_write', 'admin_eckb_access_frontend_editor_write'] ), 'epkb-kb-configuration', array( new EPKB_Config_Page(), 'display_kb_config_page') );
 
@@ -139,7 +141,7 @@ function epkb_add_page_tabs() {
 
 	// first determine if this page belongs to Knowledge Base and return if it does not
 	$current_kb_id = EPKB_KB_Handler::get_current_kb_id();
-	if ( empty($current_kb_id) ) {
+	if ( empty( $current_kb_id ) ) {
 		return;
 	}
 
@@ -172,6 +174,7 @@ function epkb_add_page_tabs() {
 
 		case 'EKB_SCREEN_page_epkb-dashboard':          // Dashboard page
 		case 'EKB_SCREEN_page_epkb-faqs':               // FAQs page
+		case 'EKB_SCREEN_page_epkb-glossary':           // Glossary page
 		case 'EKB_SCREEN_page_epkb-kb-configuration':   // KB Configuration page
 		case 'EKB_SCREEN_page_epkb-kb-ai-features':     // AI page
 		case 'EKB_SCREEN_page_epkb-content-analysis':   // Content Analysis page

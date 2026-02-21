@@ -524,11 +524,19 @@ class EPKB_Dashboard_Page {
 					<article class="epkb-card epkb-card--chatbot">
 						<div class="epkb-chatbot-content">
 							<div class="epkb-chatbot-text">
-								<div class="epkb-chatbot-heading">
-									<h2><span class="epkb-magic-icon"><i class="epkbfa epkbfa-magic"></i></span> <span class="epkb-ai-addon-text" style="white-space:nowrap;"><?php esc_html_e( 'FREE AI Chat & Search', 'echo-knowledge-base' ); ?></span></h2>
+								<div class="epkb-chatbot-heading">		<?php
+									if ( EPKB_AI_Utilities::is_ai_configured() ) { ?>
+									<h2><span class="epkb-magic-icon"><i class="epkbfa epkbfa-magic"></i></span> <span class="epkb-ai-addon-text" style="white-space:nowrap;"><?php esc_html_e( 'FREE AI Chat & Search', 'echo-knowledge-base' ); ?></span></h2>		<?php
+									} else { ?>
+									<h2><span class="epkb-magic-icon"><i class="epkbfa epkbfa-magic"></i></span> <span class="epkb-ai-addon-text" style="white-space:nowrap;"><?php esc_html_e( 'AI Features (Optional)', 'echo-knowledge-base' ); ?></span></h2>		<?php
+									} ?>
 								</div>
-								<div class="epkb-chatbot-description">
-									<p><?php esc_html_e( 'Transform your knowledge base with AI-powered chat and search. Our intelligent chatbot answers visitor questions timely, while AI Search delivers highly relevant results by understanding user intent. Reduce support tickets, improve user satisfaction, and let AI handle queries while your team focuses on complex issues.', 'echo-knowledge-base' ); ?></p>
+								<div class="epkb-chatbot-description">	<?php
+									if ( EPKB_AI_Utilities::is_ai_configured() ) { ?>
+									<p><?php esc_html_e( 'Transform your knowledge base with AI-powered chat and search. Our intelligent chatbot answers visitor questions timely, while AI Search delivers highly relevant results by understanding user intent. Reduce support tickets, improve user satisfaction, and let AI handle queries while your team focuses on complex issues.', 'echo-knowledge-base' ); ?></p>		<?php
+									} else { ?>
+									<p><?php esc_html_e( 'This Knowledge Base AI is not enabled. AI features are optional and turned off by default. AI will only work after you manually enable it and add your own API key.', 'echo-knowledge-base' ); ?></p>		<?php
+									} ?>
 								</div>
 								<div class="epkb-chatbot-buttons">
 									<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-ai-features&active_tab=chat' ) ); ?>" class="epkb-btn epkb-btn-primary-outline">
@@ -600,27 +608,28 @@ class EPKB_Dashboard_Page {
 							<li class="epkb-whatsnew-item epkb-whatsnew-item--new">
 								<span class="epkb-whatsnew-badge"><?php esc_html_e( 'NEW', 'echo-knowledge-base' ); ?></span>
 								<div class="epkb-whatsnew-content">
+									<span class="epkb-whatsnew-date"><?php esc_html_e( 'February 21, 2026', 'echo-knowledge-base' ); ?></span>
+									<strong><?php esc_html_e( 'Glossary', 'echo-knowledge-base' ); ?></strong>
+									<span><?php esc_html_e( 'Add glossary terms with definitions that are automatically highlighted in your articles with interactive tooltips.', 'echo-knowledge-base' ); ?></span>
+								</div>
+							</li>
+							<li class="epkb-whatsnew-item epkb-whatsnew-item--new">
+								<span class="epkb-whatsnew-badge"><?php esc_html_e( 'PRO', 'echo-knowledge-base' ); ?></span>
+								<div class="epkb-whatsnew-content">
+									<span class="epkb-whatsnew-date"><?php esc_html_e( 'February 21, 2026', 'echo-knowledge-base' ); ?></span>
+									<strong><?php esc_html_e( 'PDF to Notes', 'echo-knowledge-base' ); ?></strong>
+									<span><?php esc_html_e( 'Upload PDF files and convert them into AI training notes.', 'echo-knowledge-base' ); ?></span>
+								</div>
+							</li>
+							<li class="epkb-whatsnew-item epkb-whatsnew-item--new">
+								<span class="epkb-whatsnew-badge"><?php esc_html_e( 'NEW', 'echo-knowledge-base' ); ?></span>
+								<div class="epkb-whatsnew-content">
 									<span class="epkb-whatsnew-date"><?php esc_html_e( 'February 1, 2026', 'echo-knowledge-base' ); ?></span>
 									<strong><?php esc_html_e( 'AI Chat with Sources', 'echo-knowledge-base' ); ?></strong>
 									<span><?php esc_html_e( 'AI Chat can now display source articles used to generate responses.', 'echo-knowledge-base' ); ?></span>
 								</div>
 							</li>
-							<li class="epkb-whatsnew-item epkb-whatsnew-item--new">
-								<span class="epkb-whatsnew-badge"><?php esc_html_e( 'NEW', 'echo-knowledge-base' ); ?></span>
-								<div class="epkb-whatsnew-content">
-									<span class="epkb-whatsnew-date"><?php esc_html_e( 'January 10, 2026', 'echo-knowledge-base' ); ?></span>
-									<strong><?php esc_html_e( 'Agent Handoff', 'echo-knowledge-base' ); ?></strong>
-									<span><?php esc_html_e( 'Seamless AI-to-human escalation for customer support.', 'echo-knowledge-base' ); ?></span>
-								</div>
-							</li>
-							<li class="epkb-whatsnew-item epkb-whatsnew-item--new">
-								<span class="epkb-whatsnew-badge"><?php esc_html_e( 'NEW', 'echo-knowledge-base' ); ?></span>
-								<div class="epkb-whatsnew-content">
-									<span class="epkb-whatsnew-date"><?php esc_html_e( 'December 4, 2025', 'echo-knowledge-base' ); ?></span>
-									<strong><?php esc_html_e( 'Added Google Gemini AI Models', 'echo-knowledge-base' ); ?></strong>
-									<span><?php esc_html_e( 'Gemini 2.0 Flash, Gemini 1.5 Flash, Gemini 1.5 Pro', 'echo-knowledge-base' ); ?></span>
-								</div>
-							</li>
+					
 							<?php /* Temporarily hidden - backend help chat
 							<li class="epkb-whatsnew-item">
 								<div class="epkb-whatsnew-content">
@@ -651,45 +660,23 @@ class EPKB_Dashboard_Page {
 					<div id="epkb-vote-dialog" style="display: none;" title="<?php esc_attr_e( 'Vote for Future Features', 'echo-knowledge-base' ); ?>">
 						<form id="epkb-kb-vote-features-form" class="epkb-vote-form">
 							<p class="epkb-vote-dialog-intro"><?php esc_html_e( 'Select the features you\'d like to see implemented:', 'echo-knowledge-base' ); ?></p>
+							<p class="epkb-vote-dialog-note"><?php esc_html_e( 'Vote for AI features on the AI Features page.', 'echo-knowledge-base' ); ?></p>
 							
 							<div class="epkb-vote-features-list">
-								<label class="epkb-vote-feature-item">
-									<input type="checkbox" name="features[]" value="pdf-manual">
-									<span class="epkb-vote-feature-label">
-										<span class="epkb-vote-checkbox-icon"></span>
-										<span class="epkb-vote-feature-text"><?php esc_html_e( 'Print Articles as PDF Manual', 'echo-knowledge-base' ); ?></span>
-									</span>
-								</label>
-								
 								<label class="epkb-vote-feature-item">
 									<input type="checkbox" name="features[]" value="pdf-to-article">
 									<span class="epkb-vote-feature-label">
 										<span class="epkb-vote-checkbox-icon"></span>
-										<span class="epkb-vote-feature-text"><?php esc_html_e( 'PDF to Article Conversion', 'echo-knowledge-base' ); ?></span>
+										<span class="epkb-vote-feature-text"><?php esc_html_e( 'PDF to Article (Plain Text Only)', 'echo-knowledge-base' ); ?></span>
 									</span>
 								</label>
 								
-								<label class="epkb-vote-feature-item">
-									<input type="checkbox" name="features[]" value="pdf-search">
-									<span class="epkb-vote-feature-label">
-										<span class="epkb-vote-checkbox-icon"></span>
-										<span class="epkb-vote-feature-text"><?php esc_html_e( 'PDF Search', 'echo-knowledge-base' ); ?></span>
-									</span>
-								</label>
-								
-								<label class="epkb-vote-feature-item">
-									<input type="checkbox" name="features[]" value="related-articles">
-									<span class="epkb-vote-feature-label">
-										<span class="epkb-vote-checkbox-icon"></span>
-										<span class="epkb-vote-feature-text"><?php esc_html_e( 'Related Articles', 'echo-knowledge-base' ); ?></span>
-									</span>
-								</label>
-								
-								<label class="epkb-vote-feature-item">
-									<input type="checkbox" name="features[]" value="glossary">
+								<label class="epkb-vote-feature-item epkb-vote-feature-released">
+									<input type="checkbox" name="features[]" value="glossary" disabled>
 									<span class="epkb-vote-feature-label">
 										<span class="epkb-vote-checkbox-icon"></span>
 										<span class="epkb-vote-feature-text"><?php esc_html_e( 'Glossary', 'echo-knowledge-base' ); ?></span>
+										<span class="epkb-vote-feature-released-tag"><?php esc_html_e( 'Released', 'echo-knowledge-base' ); ?></span>
 									</span>
 								</label>
 

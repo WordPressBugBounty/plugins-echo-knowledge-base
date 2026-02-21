@@ -540,6 +540,9 @@ function epkb_get_block_attributes( $block_name ) {
 			'section_hyperlink_on' => [
 				'type' => 'string'
 			],
+			'section_article_count_mode' => [
+				'type' => 'string'
+			],
 			'section_box_height_mode' => [
 				'type' => 'string'
 			],
@@ -983,6 +986,9 @@ function epkb_get_block_attributes( $block_name ) {
 				'type' => 'string'
 			],
 			'ml_categories_articles_back_button_bg_color' => [
+				'type' => 'string'
+			],
+			'ml_categories_articles_category_box_bg_color' => [
 				'type' => 'string'
 			],
 			'ml_categories_articles_category_title_html_tag' => [

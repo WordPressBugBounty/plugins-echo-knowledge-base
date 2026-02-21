@@ -8733,7 +8733,7 @@ input[type=radio]:checked:before {
   color: #DC3232;
 }
 
-#adminmenu .wp-submenu li:not(:last-child) a[href*="page=epkb-faqs"]:after,
+#adminmenu .wp-submenu li:not(:last-child) a[href*="page=epkb-glossary"]:after,
 #adminmenu .wp-submenu li:not(:last-child) a[href*="page=epkb-kb-configuration"]:after,
 #adminmenu .wp-submenu li:not(:last-child) a[href*="page=epkb-plugin-analytics"]:after {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -23468,6 +23468,26 @@ input[type=radio]:checked:before {
   font-weight: 500;
 }
 
+.epkb-vote-feature-released {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.75;
+}
+.epkb-vote-feature-released .epkb-vote-feature-label {
+  background: #F0FDF4;
+  border-color: #86EFAC;
+}
+
+.epkb-vote-feature-released-tag {
+  margin-left: auto;
+  padding: 3px 10px;
+  background: #10B981;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .epkb-vote-other-input {
   margin: 10px 0 20px 32px;
 }
@@ -30223,6 +30243,406 @@ input[type=radio]:checked:before {
 #ekb-admin-page-wrap .epkb-input-custom-dropdown .epkb-input-custom-dropdown__options-list:hover .epkb-input-custom-dropdown__option:hover {
   background-color: #2EA3F2;
   color: #FFFFFF;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin__boxes-list__box {
+  background-color: transparent;
+  border: none;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin__boxes-list__box .epkb-admin__boxes-list__box__content {
+  padding: 0;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin__form .epkb-admin__form__body {
+  flex-direction: column;
+  max-width: 700px;
+  padding: 25px;
+  background-color: #FFFFFF;
+  border: 1px solid #D6E2ED;
+  border-radius: 8px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin__form .epkb-admin__form__body .epkb-input-group {
+  display: flex;
+  align-items: center;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin__form .epkb-admin__form__body .epkb-input-group > label {
+  min-width: 200px;
+  font-size: 15px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin__form .epkb-admin__form__body .epkb-settings-control-type-toggle {
+  margin-bottom: 30px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin__form .epkb-admin__form__body .epkb-settings-control-type-toggle .epkb-settings-control__title {
+  min-width: 200px;
+  font-size: 15px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin-info-box {
+  margin-bottom: 20px;
+  border: 1px solid #D6E2ED;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin-info-box__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px;
+  background-color: #E9EFF9;
+  border-bottom: 1px solid #D6E2ED;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin-info-box__header__icon {
+  font-size: 20px;
+  color: #5C7C99;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin-info-box__header__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2C3E50;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin-info-box__body {
+  padding: 15px 20px;
+  background-color: #FFFFFF;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin-info-box__body p {
+  margin: 0;
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.6;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin-info-box__body ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 5px 0 0 0;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin-info-box__body ul li {
+  font-size: 16px;
+  color: #444444;
+  line-height: 1.8;
+  margin-bottom: 4px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-example {
+  background-color: #F8FAFB;
+  border: 1px solid #D6E2ED;
+  border-radius: 6px;
+  padding: 18px 22px;
+  margin-bottom: 15px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-example__label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8899A6;
+  margin-bottom: 10px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-example__text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #2C3E50;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-term {
+  border-bottom: 2px dotted #1E73BE;
+  cursor: help;
+  position: relative;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-term .epkb-glossary-intro-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  max-width: 300px;
+  min-width: 180px;
+  padding: 12px 16px;
+  background-color: #FFFFFF;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  display: none;
+  line-height: 1.5;
+  z-index: 10;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-term .epkb-glossary-intro-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 20px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #FFFFFF transparent transparent transparent;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-term .epkb-glossary-intro-tooltip__term {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #000000;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-term .epkb-glossary-intro-tooltip__definition {
+  display: block;
+  font-weight: 400;
+  font-size: 13px;
+  color: #333333;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-term:hover {
+  background-color: rgba(30, 115, 190, 0.08);
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-intro-term:hover .epkb-glossary-intro-tooltip {
+  display: block;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container {
+  margin: 20px 0;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-btn .epkb-btn-icon {
+  margin-right: 10px;
+  font-size: 16px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-btn.epkb-success-btn {
+  background-color: #4CAF50;
+  border-color: #43A047;
+  color: white;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-btn.epkb-success-btn:hover {
+  background-color: #43A047;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form {
+  margin-bottom: 20px;
+  border: 1px solid #D6E2ED;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background-color: #FFC52B;
+  border-bottom: 1px solid #D6E2ED;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-head__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2C3E50;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-head__actions {
+  display: flex;
+  gap: 10px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-head__actions button {
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-head__actions button.epkb-success-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-head__actions button.epkb-success-btn:hover {
+  background-color: #43A047;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-head__actions button.epkb-primary-btn {
+  background-color: #5C7C99;
+  color: white;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-head__actions button.epkb-primary-btn:hover {
+  background-color: #4A6A87;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-body {
+  padding: 20px;
+  background-color: #FFFFFF;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field {
+  margin-bottom: 15px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field:last-child {
+  margin-bottom: 0;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #2C3E50;
+  font-size: 14px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field input[type=text],
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field textarea,
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #D5DADF;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  color: #2C2C2C;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field input[type=text]:focus,
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field textarea:focus,
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field select:focus {
+  outline: none;
+  border-color: #2271B1;
+  box-shadow: 0 0 0 1px #2271B1;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field textarea {
+  resize: vertical;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field select {
+  max-width: 200px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-form .epkb-glossary-form-field .epkb-characters_left {
+  padding: 5px 0 0;
+  font-size: 12px;
+  color: #888888;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-search-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-search-container input {
+  width: 100%;
+  padding: 10px 35px 10px 14px;
+  border: 1px solid #D6E2ED;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-search-container input:focus {
+  outline: none;
+  border-color: #2271B1;
+  box-shadow: 0 0 0 1px #2271B1;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-search-container .epkbfa-search {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8C8F94;
+  pointer-events: none;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-terms-list {
+  border: 1px solid #D6E2ED;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #FFFFFF;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table thead tr {
+  background-color: #F8F9FA;
+  border-bottom: 2px solid #D6E2ED;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6C757D;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table thead th:last-child {
+  text-align: center;
+  width: 120px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table thead th:nth-child(3) {
+  width: 100px;
+  text-align: center;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table tbody tr {
+  border-bottom: 1px solid #EAECEF;
+  transition: background-color 0.15s ease;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table tbody tr:last-child {
+  border-bottom: none;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table tbody tr:hover {
+  background-color: #F0F4F8;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table tbody td {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #2C3E50;
+  vertical-align: middle;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-term-row__name {
+  font-weight: 500;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-term-row__definition {
+  color: #555555;
+  max-width: 400px;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-term-row__status {
+  text-align: center;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-term-row__actions {
+  text-align: center;
+  white-space: nowrap;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-term-row__actions button {
+  padding: 6px 10px;
+  margin: 0 3px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-term-row__actions button.epkb-primary-btn {
+  background-color: #5C7C99;
+  color: white;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-term-row__actions button.epkb-primary-btn:hover {
+  background-color: #4A6A87;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-term-row__actions button.epkb-error-btn {
+  background-color: #DC3545;
+  color: white;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-term-row__actions button.epkb-error-btn:hover {
+  background-color: #C82333;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-status--publish {
+  display: inline-block;
+  padding: 3px 10px;
+  background-color: #D4EDDA;
+  color: #155724;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-status--draft {
+  display: inline-block;
+  padding: 3px 10px;
+  background-color: #FFF3CD;
+  color: #856404;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-glossary-terms-table .epkb-glossary-empty-row td {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6C757D;
+  font-style: italic;
+  font-size: 15px;
 }
 
 .epkb-wrap {

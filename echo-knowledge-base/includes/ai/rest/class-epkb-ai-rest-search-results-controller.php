@@ -357,6 +357,7 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 
 	/**
 	 * Check REST nonce and feature enabled
+	 * TODO: Rename to check_public_permission() - this is a public endpoint that does not check admin capability
 	 *
 	 * @param WP_REST_Request $request
 	 * @return bool|WP_Error

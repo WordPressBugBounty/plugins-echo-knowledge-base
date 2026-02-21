@@ -342,6 +342,7 @@ class EPKB_Layout_Drill_Down extends EPKB_Layout {
 				border-width:' . $kb_config['section_border_width'] . 'px !important;
 				border-radius:' . $kb_config['section_border_radius'] . 'px !important;
 				border-style: ' . $border_style. ' !important;
+				background-color: ' . $kb_config['ml_categories_articles_category_box_bg_color'] . ' !important;
 			}';
 
 		$output .= '

@@ -85,6 +85,13 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 	 * @return bool|WP_Error
 	 */
 	public function check_admin_permission( $request ) {
+
+		// Check nonce
+		$nonce_check = EPKB_AI_Security::check_rest_nonce( $request );
+		if ( is_wp_error( $nonce_check ) ) {
+			return $nonce_check;
+		}
+
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return new WP_Error( 'rest_forbidden', __( 'You do not have permission to perform this action.', 'echo-knowledge-base' ), array( 'status' => 403 ) );
 		}

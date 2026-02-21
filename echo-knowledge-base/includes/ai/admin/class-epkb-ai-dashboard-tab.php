@@ -36,6 +36,8 @@ class EPKB_AI_Dashboard_Tab {
 		$quick_status = self::get_ai_status( true );
 		$config['status'] = $quick_status;
 		
+		$config['is_ai_enabled'] = EPKB_AI_Utilities::is_ai_chat_or_search_enabled();
+
 		// Show dashboard content
 		$config['dashboard_stats'] = self::get_dashboard_stats();
 		$config['news'] = self::get_news_items();
@@ -959,33 +961,26 @@ class EPKB_AI_Dashboard_Tab {
 	private static function get_news_items() {
 		return array(
 			array(
+				'date' => '2026-02-21',
+				'type' => 'feature',
+				'title' => __( 'Glossary', 'echo-knowledge-base' ),
+				'description' => __( 'Add glossary terms with definitions that are automatically highlighted in articles with interactive tooltips.', 'echo-knowledge-base' ),
+				'link' => null
+			),
+			array(
+				'date' => '2026-02-21',
+				'type' => 'feature',
+				'title' => __( 'PDF to Notes (PRO)', 'echo-knowledge-base' ),
+				'description' => __( 'Upload PDF files and convert them into AI training notes to expand your AI knowledge beyond KB articles.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' )
+			),
+			array(
 				'date' => '2026-02-01',
 				'type' => 'feature',
 				'title' => __( 'AI Chat with Sources', 'echo-knowledge-base' ),
 				'description' => __( 'AI Chat can now display source articles used to generate responses, helping users verify information.', 'echo-knowledge-base' ),
 				'link' => null
 			),
-			array(
-				'date' => '2026-02-01',
-				'type' => 'feature',
-				'title' => __( 'Archiving of AI Chat History', 'echo-knowledge-base' ),
-				'description' => __( 'Archive old chat conversations to keep your chat history organized and improve performance.', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=chat' )
-			),
-			array(
-				'date' => '2026-02-01',
-				'type' => 'feature',
-				'title' => __( 'AI Smart Search Shortcode update', 'echo-knowledge-base' ),
-				'description' => __( 'Added shortcode attributes for title, placeholder, and button text customization.', 'echo-knowledge-base' ),
-				'link' => 'https://www.echoknowledgebase.com/documentation/ai-smart-search-shortcode/'
-			),
-			array(
-				'date' => '2025-12-04',
-				'type' => 'feature',
-				'title' => __( 'Added Google Gemini AI Models', 'echo-knowledge-base' ),
-				'description' => __( 'Gemini 2.0 Flash, Gemini 1.5 Flash, Gemini 1.5 Pro', 'echo-knowledge-base' ),
-				'link' => null
-			)
 		);
 	}
 	
@@ -1015,6 +1010,7 @@ class EPKB_AI_Dashboard_Tab {
 				'icon' => 'epkbfa epkbfa-file-pdf-o',
 				'title' => __( 'PDFs - Convert to Articles or Notes', 'echo-knowledge-base' ),
 				'description' => __( 'Convert PDFs into knowledge base articles or notes and include them in AI training data.', 'echo-knowledge-base' ),
+				'released' => true,
 			),
 			array(
 				'id' => 'ai-enriched-search',
@@ -1031,10 +1027,10 @@ class EPKB_AI_Dashboard_Tab {
 				'released' => true,
 			),
 			array(
-				'id' => 'related-articles-list',
-				'icon' => 'epkbfa epkbfa-list',
-				'title' => __( 'Related Articles List', 'echo-knowledge-base' ),
-				'description' => __( 'Show articles closely connected to user\'s search or chat question for exploring relevant content without query refinement.', 'echo-knowledge-base' ),
+				'id' => 'ai-tutorials-quizzes',
+				'icon' => 'epkbfa epkbfa-graduation-cap',
+				'title' => __( 'AI-Generated Tutorials & Quizzes', 'echo-knowledge-base' ),
+				'description' => __( 'Automatically generate step-by-step tutorials and interactive quizzes from your existing KB articles to enhance learning and engagement.', 'echo-knowledge-base' ),
 			),
 			array(
 				'id' => 'ai-glossary-terms',
@@ -1043,10 +1039,10 @@ class EPKB_AI_Dashboard_Tab {
 				'description' => __( 'Automatic suggestions and creation of glossary definitions with minimal manual effort for improved clarity.', 'echo-knowledge-base' ),
 			),
 			array(
-				'id' => 'search-auto-suggest',
-				'icon' => 'epkbfa epkbfa-magic',
-				'title' => __( 'Search Auto-Suggest', 'echo-knowledge-base' ),
-				'description' => __( 'Enhanced search bar with AI-powered auto-suggestions offering completions and popular queries for faster searching.', 'echo-knowledge-base' ),
+				'id' => 'ai-category-icons',
+				'icon' => 'epkbfa epkbfa-picture-o',
+				'title' => __( 'AI-Generated Category Icons', 'echo-knowledge-base' ) . ' (PRO)',
+				'description' => __( 'Automatically generate unique icons for your KB categories using AI, giving your knowledge base a polished and consistent visual identity.', 'echo-knowledge-base' ),
 			),
 		);
 	}

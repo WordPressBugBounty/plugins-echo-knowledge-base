@@ -2634,6 +2634,34 @@ button .epkb-ai-spinner {
   margin: 17px 0px;
 }
 
+.epkb-ai-not-enabled-notice {
+  background-color: #F0FDF4;
+  border: 2px solid #BBF7D0;
+  border-radius: 8px;
+  padding: 25px 30px;
+  margin-bottom: 25px;
+}
+.epkb-ai-not-enabled-notice h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #166534;
+}
+.epkb-ai-not-enabled-notice p {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #15803D;
+}
+.epkb-ai-not-enabled-notice a {
+  color: #166534;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.epkb-ai-not-enabled-notice a:hover {
+  color: #14532D;
+}
+
 .epkb-ai-welcome-setup {
   background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
   border-radius: 12px;
@@ -8178,6 +8206,58 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
 .epkb-ai-notes-dialog .epkb-ai-dialog-footer .epkb-ai-button.epkb-ai-button-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.epkb-ai-pdf-dialog .epkb-ai-dialog-body .epkb-ai-button {
+  margin: 4px 8px 4px 0;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-body .epkb-ai-button:last-child {
+  margin-right: 0;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-body .epkb-ai-pdf-upload-section .epkb-ai-button {
+  margin-top: 10px;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-body .epkb-ai-button-secondary {
+  background-color: #F0F0F1;
+  border-color: #DCDCDE;
+  color: #2C3338;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 20px;
+  border-top: 1px solid #E0E0E0;
+  background: #F9F9F9;
+  border-radius: 0 0 12px 12px;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button {
+  margin: 0 4px;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button:first-child {
+  margin-left: 0;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button:last-child {
+  margin-right: 0;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button.epkb-ai-button-secondary {
+  background-color: #F0F0F1;
+  border-color: #DCDCDE;
+  color: #2C3338;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button.epkb-ai-button-primary {
+  opacity: 1 !important;
+  visibility: visible !important;
+  background: #0073AA !important;
+  background-color: #0073AA !important;
+  border-color: #0073AA !important;
+  color: #FFFFFF !important;
+}
+.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button.epkb-ai-button-primary:hover:not(:disabled) {
+  background: #005A87 !important;
+  background-color: #005A87 !important;
+  border-color: #005A87 !important;
+  color: #FFFFFF !important;
 }
 
 .epkb-ai-loading-spinner {

@@ -1243,6 +1243,92 @@ class EPKB_Config_Tools_Page {
 		// display PHP and WP settings
 		$output .= self::get_system_info();
 
+		// retrieve AI debug data only if AI Chat or AI Search is enabled
+		$output .= self::get_ai_debug_data();
+
+		// retrieve KB config directly from the database
+		$all_kb_ids = epkb_get_instance()->kb_config_obj->get_kb_ids();
+		foreach ( $all_kb_ids as $kb_id ) {
+
+			// retrieve specific KB configuration
+			$kb_config = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s", EPKB_KB_Config_DB::KB_CONFIG_PREFIX . $kb_id ) );
+			if ( ! empty( $kb_config ) ) {
+				$kb_config = maybe_unserialize( $kb_config );
+			}
+
+			// with WPML we need to trigger hook to have configuration names translated
+			if ( EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
+				$output .= "WPML Enabled---------- for KB ID " . $kb_id . "\n";
+				$kb_config = get_option( EPKB_KB_Config_DB::KB_CONFIG_PREFIX . $kb_id );
+			}
+
+			// if KB configuration is missing then return error
+			if ( empty( $kb_config ) || ! is_array( $kb_config ) ) {
+				$output .= "Did not find KB configuration (DB231) for KB ID " . $kb_id . "\n\n";
+				continue;
+			}
+
+			if ( count( $kb_config ) < 100 ) {
+				$output .= "Found KB configuration is incomplete with only " . count( $kb_config ) . " items.\n";
+			}
+
+			$output .= 'KB Config ' . $kb_id . "\n\n";
+
+			$output .= 'KB Main Page Has KB Blocks: ' . ( EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config ) ? 'Yes' : 'No' ) . "\n";
+			if ( EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config ) ) {
+				$kb_main_page = get_post( EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config ) );
+				$output .= 'KB Main Page Block Layout: ' . EPKB_Block_Utilities::get_kb_block_layout( $kb_main_page );
+			}
+			$output .= "\n\n";
+
+			$specs = EPKB_KB_Config_Specs::get_fields_specification( $kb_id );
+			$output .= '- KB URL  = ' . EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) . "\n";
+			foreach( $kb_config as $name => $value ) {
+
+				if ( is_array( $value ) ) {
+					$value = EPKB_Utilities::get_variable_string( $value );
+					$value = str_replace( "=>", "=", $value );
+				}
+				$label = EPKB_KB_Config_Specs::get_field_label( $name ) ?: 'unknown';
+				$output .= '- ' . $label . ' [' . $name . ']' . ' = ' . $value . "\n";
+			}
+
+			$output .= "\n\n";
+
+			// Add multilang debug info for this KB if WPML is enabled
+			if ( EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
+				$output .= self::get_polylang_debug_info( $kb_id );
+				$output .= "\n\n";
+			}
+		}
+
+		// retrieve Setup Steps debug data
+		$output .= EPKB_Setup_Steps::get_debug_data( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+
+		// retrieve add-on data
+		$add_on_output = apply_filters( 'eckb_add_on_debug_data', '' );
+		$output .= is_string( $add_on_output ) ? $add_on_output : '';
+
+		$output .= '</textarea>';
+
+		return $output;
+	}
+
+	/**
+	 * Get AI-related debug data if AI Chat or AI Search is enabled.
+	 *
+	 * @return string
+	 */
+	private static function get_ai_debug_data() {
+
+		$ai_chat_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled' ) === 'on';
+		$ai_search_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_enabled' ) === 'on';
+		if ( ! $ai_chat_enabled && ! $ai_search_enabled ) {
+			return '';
+		}
+
+		$output = '';
+
 		// retrieve AI Configuration
 		$output .= "\n\nAI Configuration:\n";
 		$output .= "==================\n";
@@ -1423,71 +1509,6 @@ class EPKB_Config_Tools_Page {
 		$current_date = gmdate( 'Y-m-d' );
 		$error_count = get_transient( 'epkb_ai_error_notification_count_' . $current_date );
 		$output .= "Error Notifications Today: " . ( $error_count !== false ? $error_count : '0' ) . "\n";
-
-		// retrieve KB config directly from the database
-		$all_kb_ids = epkb_get_instance()->kb_config_obj->get_kb_ids();
-		foreach ( $all_kb_ids as $kb_id ) {
-
-			// retrieve specific KB configuration
-			$kb_config = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s", EPKB_KB_Config_DB::KB_CONFIG_PREFIX . $kb_id ) );
-			if ( ! empty( $kb_config ) ) {
-				$kb_config = maybe_unserialize( $kb_config );
-			}
-
-			// with WPML we need to trigger hook to have configuration names translated
-			if ( EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
-				$output .= "WPML Enabled---------- for KB ID " . $kb_id . "\n";
-				$kb_config = get_option( EPKB_KB_Config_DB::KB_CONFIG_PREFIX . $kb_id );
-			}
-
-			// if KB configuration is missing then return error
-			if ( empty( $kb_config ) || ! is_array( $kb_config ) ) {
-				$output .= "Did not find KB configuration (DB231) for KB ID " . $kb_id . "\n\n";
-				continue;
-			}
-
-			if ( count( $kb_config ) < 100 ) {
-				$output .= "Found KB configuration is incomplete with only " . count( $kb_config ) . " items.\n";
-			}
-
-			$output .= 'KB Config ' . $kb_id . "\n\n";
-
-			$output .= 'KB Main Page Has KB Blocks: ' . ( EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config ) ? 'Yes' : 'No' ) . "\n";
-			if ( EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config ) ) {
-				$kb_main_page = get_post( EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config ) );
-				$output .= 'KB Main Page Block Layout: ' . EPKB_Block_Utilities::get_kb_block_layout( $kb_main_page );
-			}
-			$output .= "\n\n";
-
-			$specs = EPKB_KB_Config_Specs::get_fields_specification( $kb_id );
-			$output .= '- KB URL  = ' . EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) . "\n";
-			foreach( $kb_config as $name => $value ) {
-
-				if ( is_array( $value ) ) {
-					$value = EPKB_Utilities::get_variable_string( $value );
-					$value = str_replace( "=>", "=", $value );
-				}
-				$label = EPKB_KB_Config_Specs::get_field_label( $name ) ?: 'unknown';
-				$output .= '- ' . $label . ' [' . $name . ']' . ' = ' . $value . "\n";
-			}
-
-			$output .= "\n\n";
-
-			// Add multilang debug info for this KB if WPML is enabled
-			if ( EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
-				$output .= self::get_polylang_debug_info( $kb_id );
-				$output .= "\n\n";
-			}
-		}
-
-		// retrieve Setup Steps debug data
-		$output .= EPKB_Setup_Steps::get_debug_data( EPKB_KB_Config_DB::DEFAULT_KB_ID );
-
-		// retrieve add-on data
-		$add_on_output = apply_filters( 'eckb_add_on_debug_data', '' );
-		$output .= is_string( $add_on_output ) ? $add_on_output : '';
-
-		$output .= '</textarea>';
 
 		return $output;
 	}

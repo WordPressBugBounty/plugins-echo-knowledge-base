@@ -19,6 +19,8 @@ class EPKB_Reset {
 	 */
 	public static function reset_articles_and_categories_sequence() {
 
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+
 		// is set in request
 		$kb_id = EPKB_KB_Handler::get_current_kb_id();
 
@@ -130,6 +132,8 @@ class EPKB_Reset {
 	}
 
 	public static function show_articles_and_categories_sequence() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
 
 		// is set in request
 		$kb_id = EPKB_KB_Handler::get_current_kb_id();

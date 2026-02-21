@@ -227,6 +227,18 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 					'required' => true,
 					'type' => 'string',
 					'sanitize_callback' => 'wp_kses_post'
+				),
+				'note_type' => array(
+					'type' => 'string',
+					'enum' => array( 'text', 'pdf' ),
+					'default' => 'text'
+				),
+				'original_file_name' => array(
+					'type' => 'string',
+					'sanitize_callback' => 'sanitize_file_name'
+				),
+				'conversion_time' => array(
+					'type' => 'integer'
 				)
 			)
 		) );
@@ -1090,25 +1102,47 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 	 * @return WP_REST_Response
 	 */
 	public function create_training_note( $request ) {
-		
+
 		// Check if AI Features Pro is enabled
 		$create_callable = array( 'AIPRO_AI_Notes', 'create_ai_note' ); /* @disregard PREFIX */
 		if ( ! EPKB_Utilities::is_ai_features_pro_enabled() || ! class_exists( 'AIPRO_AI_Notes' ) || ! is_callable( $create_callable ) ) {  /* @disregard PREFIX */
 			return $this->create_rest_response( [], 400, new WP_Error( 'ai_pro_required', __( 'AI Features Pro is required for training notes', 'echo-knowledge-base' ) ) );
 		}
-		
+
 		$collection_id = (int) $request->get_param( 'collection_id' );
 		$title = $request->get_param( 'title' );
 		$content = $request->get_param( 'content' );
-		
+
+		// Optional PDF meta parameters
+		$note_type = $request->get_param( 'note_type' ) ?: 'text';
+		$original_file_name = $request->get_param( 'original_file_name' );
+		$conversion_time = $request->get_param( 'conversion_time' );
+
 		// Validate collection exists
 		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
 		if ( is_wp_error( $collection_config ) ) {
 			return $this->create_rest_response( [], 400, $collection_config );
 		}
-		
+
+		// Build meta array for note creation
+		$meta = array(
+			'_epkb_collection_id' => $collection_id,
+			'_in_training_data'   => '1'
+		);
+
+		// Add PDF-specific meta if this is a PDF note
+		if ( $note_type === 'pdf' ) {
+			$meta['_note_type'] = 'pdf';
+			if ( $original_file_name ) {
+				$meta['_pdf_original_file_name'] = sanitize_file_name( $original_file_name );
+			}
+			if ( $conversion_time ) {
+				$meta['_pdf_conversion_time'] = (int) $conversion_time;
+			}
+		}
+
 		// Use AI Features Pro to create note
-		$note_id = call_user_func( $create_callable, $title, $content, array( '_epkb_collection_id' => $collection_id, '_in_training_data' => '1' ) );
+		$note_id = call_user_func( $create_callable, $title, $content, $meta );
 		if ( is_wp_error( $note_id ) ) {
 			return $this->create_rest_response( [], 500, $note_id );
 		}

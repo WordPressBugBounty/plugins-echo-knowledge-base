@@ -2708,6 +2708,44 @@ class EPKB_KB_Config_Specs {
 				'default'     => '#dee3e5'
 			),
 
+			/******  GLOSSARY  ******/
+			'glossary_enable' => array(
+				'name'        => 'glossary_enable',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'on'
+			),
+			'glossary_tooltip_text_color' => array(
+				'name'        => 'glossary_tooltip_text_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#000000'
+			),
+			'glossary_tooltip_background_color' => array(
+				'name'        => 'glossary_tooltip_background_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#FFFFFF'
+			),
+			'glossary_highlight_style' => array(
+				'name'        => 'glossary_highlight_style',
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'style_1' => esc_html__( 'Style 1', 'echo-knowledge-base' ),
+					'style_2' => esc_html__( 'Style 2', 'echo-knowledge-base' ),
+					'style_3' => esc_html__( 'Style 3', 'echo-knowledge-base' ),
+				),
+				'default'     => 'style_1'
+			),
+			'glossary_highlight_color' => array(
+				'name'        => 'glossary_highlight_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#1e73be'
+			),
+
 			/******  ARTICLE VIEWS COUNTER  ******/
 			'article_views_counter_enable' => array(        // feature toggle
 				'name'        => 'article_views_counter_enable',
@@ -3484,6 +3522,15 @@ class EPKB_KB_Config_Specs {
 			),
 
 			// Section Head
+			'section_article_count_mode' => array(   // Categories Layout
+				'name'        => 'section_article_count_mode',
+				'type'        => EPKB_Input_Filter::SELECTION,
+				'options'     => array(
+					'current_category' => esc_html__( 'Current Category Only', 'echo-knowledge-base' ),
+					'current_and_sub_categories' => esc_html__( 'Current and Sub-categories', 'echo-knowledge-base' ),
+				),
+				'default'     => 'current_category'
+			),
 			'section_head_alignment' => array(
 				'name'        => 'section_head_alignment',
 				'type'        => EPKB_Input_Filter::SELECTION,
@@ -4292,6 +4339,11 @@ class EPKB_KB_Config_Specs {
 			'admin_eckb_access_addons_news_read' => esc_html__( 'Add-ons', 'echo-knowledge-base' ),
 			'admin_eckb_access_faqs_write' => esc_html__( 'FAQs', 'echo-knowledge-base' ),
 			'admin_eckb_access_ai_feature' => esc_html__( 'AI Features', 'echo-knowledge-base' ),
+			'glossary_enable' => esc_html__( 'Glossary', 'echo-knowledge-base' ),
+			'glossary_tooltip_text_color' => esc_html__( 'Tooltip Text', 'echo-knowledge-base' ),
+			'glossary_tooltip_background_color' => esc_html__( 'Tooltip Background', 'echo-knowledge-base' ),
+			'glossary_highlight_style' => esc_html__( 'Style', 'echo-knowledge-base' ),
+			'glossary_highlight_color' => esc_html__( 'Glossary Highlight', 'echo-knowledge-base' ),
 			'faq_shortcode_content_mode' => esc_html__( 'Content Mode', 'echo-knowledge-base' ),
 			'faq_schema_toggle' => esc_html__( 'FAQs Schema', 'echo-knowledge-base' ),
 			'faq_border_style' => esc_html__( 'Border Style', 'echo-knowledge-base' ),
@@ -4369,6 +4421,7 @@ class EPKB_KB_Config_Specs {
 			'section_desc_text_on' => esc_html__( 'Category Description', 'echo-knowledge-base' ),
 			'section_hyperlink_text_on' => esc_html__( 'Click on Category', 'echo-knowledge-base' ),
 			'section_hyperlink_on' => esc_html__( 'Category Link to Archive page', 'echo-knowledge-base' ),
+			'section_article_count_mode' => esc_html__( 'Article Count Mode', 'echo-knowledge-base' ),
 			'section_article_underline' => esc_html__( 'Article Underline Hover', 'echo-knowledge-base' ),
 			'article_list_margin' => esc_html__( 'Left offset for Articles List', 'echo-knowledge-base' ),
 			'sub_article_list_margin' => esc_html__( 'Left offset for Sub Articles List', 'echo-knowledge-base' ),
@@ -4444,6 +4497,7 @@ class EPKB_KB_Config_Specs {
 			'ml_categories_articles_top_category_icon_bg_color' => esc_html__( 'Icon Background Color', 'echo-knowledge-base' ),
 			'ml_categories_articles_article_bg_color' => esc_html__( 'Article Background Color', 'echo-knowledge-base' ),
 			'ml_categories_articles_back_button_bg_color' => esc_html__( 'Back Button Color', 'echo-knowledge-base' ),
+			'ml_categories_articles_category_box_bg_color' => esc_html__( 'Category Box Background Color', 'echo-knowledge-base' ),
 			'ml_categories_articles_category_title_html_tag' => esc_html__( 'Category Title HTML Tag', 'echo-knowledge-base' ),
 			'ml_categories_articles_collapse_categories' => esc_html__( 'Collapse Categories', 'echo-knowledge-base' ),
 			'ml_categories_articles_sidebar_toggle' => esc_html__( 'Sidebar', 'echo-knowledge-base' ),
@@ -4480,10 +4534,11 @@ class EPKB_KB_Config_Specs {
 	 * @return array contains default values for KB configuration
 	 */
 	public static function get_default_kb_config( $kb_id = EPKB_KB_Config_DB::DEFAULT_KB_ID ) {
+
 		$config_specs = self::get_fields_specification( $kb_id );
 
 		$default_configuration = array();
-		foreach( $config_specs as $key => $spec ) {
+		foreach ( $config_specs as $key => $spec ) {
 			$default = isset( $spec['default'] ) ? $spec['default'] : '';
 			$default_configuration += array( $key => $default );
 		}

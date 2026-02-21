@@ -178,6 +178,9 @@ final class EPKB_Categories_Layout_Block extends EPKB_Abstract_Block {
 							'section_hyperlink_on' => array(        // Category link to Category Archive Page
 								'setting_type' => 'toggle',
 							),
+							'section_article_count_mode' => array(
+								'setting_type' => 'select_buttons_string',
+							),
 							'category_empty_msg' => array(
 								'setting_type' => 'text',
 							),

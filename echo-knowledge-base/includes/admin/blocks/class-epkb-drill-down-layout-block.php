@@ -138,6 +138,7 @@ final class EPKB_Drill_Down_Layout_Block extends EPKB_Abstract_Block {
 				border-width:' . intval( $block_attributes['section_border_width'] ) . 'px !important;
 				border-radius:' . intval( $block_attributes['section_border_radius'] ) . 'px !important;
 				border-style: ' . $border_style_escaped. ' !important;
+				background-color: ' . EPKB_Utilities::sanitize_hex_color( $block_attributes['ml_categories_articles_category_box_bg_color'] ) . ' !important;
 			}';
 
 		$output .=
@@ -411,7 +412,10 @@ final class EPKB_Drill_Down_Layout_Block extends EPKB_Abstract_Block {
 							),
 							'section_border_color' => array(
 								'setting_type' => 'color',
-							)
+							),
+							'ml_categories_articles_category_box_bg_color' => array(
+								'setting_type' => 'color',
+							),
 						),
 					),
 
