@@ -7,8 +7,14 @@
                 "lang": "hi_IN",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Restore": [
+                "पुनर्स्थापित करें"
+            ],
             "Settings": [
                 "सेटिंग्स"
+            ],
+            "All": [
+                "सभी"
             ],
             "Page": [
                 "पृष्ठ"
@@ -18,6 +24,12 @@
             ],
             "Cancel": [
                 "रद्द करें"
+            ],
+            "Save Settings": [
+                "सेटिंग्स सहेजें"
+            ],
+            "Delete": [
+                "हटाएं"
             ],
             "Next": [
                 "अगला"
@@ -34,9 +46,6 @@
             "Go to General Settings": [
                 "सामान्य सेटिंग्स पर जाएँ"
             ],
-            "Save Settings": [
-                "सेटिंग्स सहेजें"
-            ],
             "Chat History": [
                 "चैट इतिहास"
             ],
@@ -48,9 +57,6 @@
             ],
             "AI Assistant": [
                 "एआई सहायक"
-            ],
-            "Delete": [
-                "हटाएं"
             ],
             "Delete Selected": [
                 "चयनित को हटाएं"
@@ -88,8 +94,35 @@
             "Conversations refreshed successfully": [
                 "वार्तालाप सफलतापूर्वक ताज़ा कर दिए गए।"
             ],
+            "Archive Conversations": [
+                "वार्तालाप संग्रहित करें"
+            ],
+            "Are you sure you want to archive the selected conversations?": [
+                "क्या आप चयनित वार्तालापों को संग्रहित करना चाहते हैं?"
+            ],
+            "Archive": [
+                "आर्काइव करें"
+            ],
+            "Archiving conversations...": [
+                "वार्तालापों को संग्रहित किए जा रहे हैं..."
+            ],
+            "Restore Conversations": [
+                "वार्तालाप पुनर्स्थापित करें"
+            ],
+            "Are you sure you want to restore the selected conversations?": [
+                "क्या आप चयनित वार्तालापों को पुनर्स्थापित करना चाहते हैं?"
+            ],
+            "Restoring conversations...": [
+                "वार्तालाप पुनर्स्थापित किए जा रहे हैं..."
+            ],
             "Agent handover request": [
                 "एजेंट हैंडओवर अनुरोध"
+            ],
+            "plugin\u0004Active": [
+                "क्रियाशील"
+            ],
+            "Archived": [
+                "संग्रहित"
             ],
             "Search conversations...": [
                 "वार्तालाप खोजें..."
@@ -99,6 +132,12 @@
             ],
             "Refresh": [
                 "ताज़ा करें"
+            ],
+            "Archive Selected": [
+                "चयनित वार्तालापों को संग्रहित करें"
+            ],
+            "Restore Selected": [
+                "चयनित वार्तालापों को पुनर्स्थापित करें"
             ],
             "Loading conversations...": [
                 "संवाद लोड हो रहे हैं..."
@@ -130,6 +169,12 @@
             "Deleting conversation...": [
                 "संवाद हटाया जा रहा है..."
             ],
+            "Archiving conversation...": [
+                "वार्तालाप संग्रहित किया जा रहा है..."
+            ],
+            "Restoring conversation...": [
+                "वार्तालाप पुनर्स्थापित किया जा रहा है..."
+            ],
             "Conversation Details": [
                 "संवाद विवरण"
             ],
@@ -147,6 +192,9 @@
             ],
             "Collection": [
                 "संग्रह"
+            ],
+            "Requires AI Features PRO": [
+                "एआई फीचर्स PRO आवश्यक हैं"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "क्या आप सुनिश्चित हैं कि आप डिफ़ॉल्ट निर्देशों पर रीसेट करना चाहते हैं?"
@@ -177,6 +225,18 @@
             ],
             "Failed to delete conversations": [
                 "संवाद हटाने में असफल"
+            ],
+            "Conversations archived successfully": [
+                "वार्तालाप सफलतापूर्वक संग्रहित कर दिए गए"
+            ],
+            "Failed to archive conversations": [
+                "वार्तालापों को संग्रहित करने में विफल रहा"
+            ],
+            "Conversations restored successfully": [
+                "वार्तालाप सफलतापूर्वक पुनर्स्थापित कर दिए गए"
+            ],
+            "Failed to restore conversations": [
+                "वार्तालापों को पुनर्स्थापित करने में विफल रहा"
             ],
             "AI Chat is Disabled": [
                 "AI चैट अक्षम है"

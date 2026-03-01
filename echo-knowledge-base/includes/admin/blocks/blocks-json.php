@@ -1995,6 +1995,23 @@ function epkb_get_block_attributes( $block_name ) {
 			'custom_css_class' => [
 				'type' => 'string'
 			]
+		],
+		'glossary-index' => [
+			'glossary_index_accent_color' => [
+				'type' => 'string'
+			],
+			'glossary_index_back_to_top_text' => [
+				'type' => 'string'
+			],
+			'block_full_width_toggle' => [
+				'type' => 'string'
+			],
+			'block_max_width' => [
+				'type' => 'number'
+			],
+			'custom_css_class' => [
+				'type' => 'string'
+			]
 		]
 	];
 

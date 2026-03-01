@@ -1378,8 +1378,8 @@ jQuery( document ).ready( function( $ ) {
 			return;
 		}
 
-		// AI Collection ID should never trigger preview update - just save the new value
-		if ( field_name === 'kb_ai_collection_id' ) {
+		// AI Collection ID and Glossary enable should never trigger preview update - just save the new value
+		if ( field_name === 'kb_ai_collection_id' || field_name === 'glossary_enable' ) {
 			return;
 		}
 

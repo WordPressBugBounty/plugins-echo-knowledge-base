@@ -16,11 +16,11 @@
             "Cancel": [
                 "キャンセル"
             ],
-            "Saving...": [
-                "保存中..."
-            ],
             "Save Settings": [
                 "設定を保存"
+            ],
+            "Saving...": [
+                "保存中..."
             ],
             "Failed to save settings": [
                 "設定の保存に失敗しました"

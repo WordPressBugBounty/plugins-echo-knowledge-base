@@ -31,6 +31,9 @@
             "selected": [
                 "valgt"
             ],
+            "Delete": [
+                "Slet"
+            ],
             "Article": [
                 "Artikel"
             ],
@@ -60,9 +63,6 @@
             ],
             "Pending": [
                 "Afventer"
-            ],
-            "Delete": [
-                "Slet"
             ],
             "of": [
                 "af"

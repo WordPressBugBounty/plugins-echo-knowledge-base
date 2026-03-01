@@ -548,6 +548,12 @@ class EPKB_Config_Page {
 				'demo'      => 'https://www.echoknowledgebase.com/demo-14-category-layout/',
 				'docs'      => 'https://www.echoknowledgebase.com/documentation/categories-focused-layout/',
 			],
+			[
+				'plugin'    => 'core',
+				'icon'      => 'epkbfa epkbfa-list-alt',
+				'title'     => esc_html__( 'Glossary Index', 'echo-knowledge-base' ),
+				'desc'      => esc_html__( 'Display all glossary terms alphabetically with letter navigation and back-to-top links.', 'echo-knowledge-base' ),
+			],
 		];
 	}
 
@@ -733,6 +739,13 @@ class EPKB_Config_Page {
 				'desc'         => esc_html__( 'Show alphabetical list of articles grouped by letter in a three-column format.', 'echo-knowledge-base' ),
 				'desc_escaped' => EPKB_Shortcodes::get_copy_box( 'epkb-articles-index-directory', $kb_id, esc_html__( 'Shortcode:', 'echo-knowledge-base' ) ),
 				'docs'         => 'https://www.echoknowledgebase.com/documentation/shortcode-articles-index-directory/',
+			],
+			[
+				'plugin'       => 'core',
+				'icon'         => 'epkbfa epkbfa-book',
+				'title'        => esc_html__( 'Glossary Index', 'echo-knowledge-base' ),
+				'desc'         => esc_html__( 'Display all glossary terms alphabetically with letter navigation and back-to-top links.', 'echo-knowledge-base' ),
+				'desc_escaped' => EPKB_Shortcodes::get_copy_box( 'epkb-glossary-index', $kb_id, esc_html__( 'Shortcode:', 'echo-knowledge-base' ) ),
 			],
 			[
 				'plugin'       => 'asea',

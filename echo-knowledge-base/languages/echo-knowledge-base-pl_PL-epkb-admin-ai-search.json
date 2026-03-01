@@ -19,6 +19,12 @@
             "Cancel": [
                 "Anuluj"
             ],
+            "Save Settings": [
+                "Zapisz ustawienia"
+            ],
+            "Delete": [
+                "Usuń"
+            ],
             "Next": [
                 "Następne"
             ],
@@ -30,9 +36,6 @@
             ],
             "Saving...": [
                 "Zapisywanie..."
-            ],
-            "Save Settings": [
-                "Zapisz ustawienia"
             ],
             "Search History": [
                 "Historia wyszukiwania"
@@ -57,9 +60,6 @@
             ],
             "AI Assistant": [
                 "Asystent AI"
-            ],
-            "Delete": [
-                "Usuń"
             ],
             "Delete Selected": [
                 "Usuń wybrane"

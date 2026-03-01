@@ -961,6 +961,13 @@ class EPKB_AI_Dashboard_Tab {
 	private static function get_news_items() {
 		return array(
 			array(
+				'date' => '2026-03-01',
+				'type' => 'feature',
+				'title' => __( 'AI Chat Access Control (PRO)', 'echo-knowledge-base' ),
+				'description' => __( 'Control who can use AI Chat: allow everyone, logged-in users only, or specific WordPress roles. Set different access rules for each chat location.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=chat' )
+			),
+			array(
 				'date' => '2026-02-21',
 				'type' => 'feature',
 				'title' => __( 'Glossary', 'echo-knowledge-base' ),
@@ -1037,6 +1044,7 @@ class EPKB_AI_Dashboard_Tab {
 				'icon' => 'epkbfa epkbfa-book',
 				'title' => __( 'AI-Generated Glossary Terms', 'echo-knowledge-base' ),
 				'description' => __( 'Automatic suggestions and creation of glossary definitions with minimal manual effort for improved clarity.', 'echo-knowledge-base' ),
+				'released' => true,
 			),
 			array(
 				'id' => 'ai-category-icons',

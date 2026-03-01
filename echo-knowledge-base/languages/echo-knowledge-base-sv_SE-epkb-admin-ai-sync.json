@@ -13,6 +13,9 @@
             "Error": [
                 "Fel"
             ],
+            "OK": [
+                "OK"
+            ],
             "No posts found to sync": [
                 "Inga inlägg hittades för att synkronisera"
             ],
@@ -33,6 +36,9 @@
             ],
             "Failed to cancel sync": [
                 "Misslyckades med att avbryta synkroniseringen"
+            ],
+            "Failed to start verification": [
+                "Misslyckades med att starta verifieringen"
             ],
             "A sync job is already running.": [
                 "En synkronisering pågår redan."
@@ -76,8 +82,8 @@
             "Select at least one item to sync": [
                 "Välj minst ett objekt att synkronisera"
             ],
-            "Start Sync": [
-                "Starta synkronisering"
+            "Send Data to AI for Training": [
+                "Skicka data till AI för träning"
             ],
             "Sync started successfully! ": [
                 "Synkronisering startade framgångsrikt!"
@@ -108,6 +114,45 @@
             ],
             "Sync scheduled, waiting to start...": [
                 "Synkronisering schemalagd, väntar på att starta..."
+            ],
+            "Verifying": [
+                "Verifierar"
+            ],
+            "items": [
+                "objekt"
+            ],
+            "Verification complete:": [
+                "Verifiering slutförd:"
+            ],
+            "marked outdated": [
+                "markerad som föråldrad"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Kör synkronisering för att ladda upp föråldrade objekt igen."
+            ],
+            "Upload completed, but the number of items doesn't match:": [
+                "Uppladdningen slutfördes, men antalet objekt matchar inte:"
+            ],
+            "items tracked locally vs": [
+                "objekt som spåras lokalt vs"
+            ],
+            "items in the AI provider.": [
+                "föremål i AI-leverantören."
+            ],
+            "Checking for specific mismatches...": [
+                "Kontrollerar specifika avvikelser..."
+            ],
+            "The following items were not found in the AI provider:": [
+                "Följande objekt hittades inte i AI-leverantören:"
+            ],
+            "items in the AI provider are not tracked locally.": [
+                "Objekt i AI-leverantören spåras inte lokalt."
+            ],
+            "Verify & Fix": [
+                "Verifiera och åtgärda"
+            ],
+            "Cancel Verify": [
+                "Avbryt verifiering"
             ]
         }
     }

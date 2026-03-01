@@ -19,6 +19,12 @@
             "Cancel": [
                 "キャンセル"
             ],
+            "Save Settings": [
+                "設定を保存"
+            ],
+            "Delete": [
+                "削除"
+            ],
             "Next": [
                 "次"
             ],
@@ -30,9 +36,6 @@
             ],
             "Saving...": [
                 "保存中..."
-            ],
-            "Save Settings": [
-                "設定を保存"
             ],
             "Search History": [
                 "検索履歴"
@@ -57,9 +60,6 @@
             ],
             "AI Assistant": [
                 "AIアシスタント"
-            ],
-            "Delete": [
-                "削除"
             ],
             "Delete Selected": [
                 "選択した項目を削除"

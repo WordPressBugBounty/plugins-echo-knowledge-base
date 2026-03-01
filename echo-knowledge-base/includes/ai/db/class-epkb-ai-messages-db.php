@@ -215,6 +215,26 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	}
 	
 	/**
+	 * Update the session_id for a conversation identified by chat_id
+	 *
+	 * @param string $chat_id
+	 * @param string $new_session_id
+	 * @return bool
+	 */
+	public function update_conversation_session( $chat_id, $new_session_id ) {
+
+		$conversation = $this->get_conversation_by_chat_id( $chat_id );
+		if ( ! $conversation || is_wp_error( $conversation ) ) {
+			return false;
+		}
+
+		$result = $this->update_record( $conversation->get_id(), array( 'session_id' => $new_session_id ) );
+		$this->handle_db_error( $result, 'update_conversation_session' );
+
+		return ! is_wp_error( $result ) && $result !== false;
+	}
+
+	/**
 	 * Check if idempotency key already exists for a conversation
 	 *
 	 * @param string $chat_id

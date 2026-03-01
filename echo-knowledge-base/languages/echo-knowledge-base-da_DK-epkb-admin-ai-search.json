@@ -19,6 +19,12 @@
             "Cancel": [
                 "Annuller"
             ],
+            "Save Settings": [
+                "Gem indstillinger"
+            ],
+            "Delete": [
+                "Slet"
+            ],
             "Next": [
                 "Næste"
             ],
@@ -30,9 +36,6 @@
             ],
             "Saving...": [
                 "Gemmer..."
-            ],
-            "Save Settings": [
-                "Gem indstillinger"
             ],
             "Search History": [
                 "Søgehistorik"
@@ -57,9 +60,6 @@
             ],
             "AI Assistant": [
                 "AI-assistent"
-            ],
-            "Delete": [
-                "Slet"
             ],
             "Delete Selected": [
                 "Slet valgte"

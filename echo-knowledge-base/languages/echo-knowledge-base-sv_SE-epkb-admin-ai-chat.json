@@ -7,8 +7,14 @@
                 "lang": "sv_SE",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Restore": [
+                "Återställ"
+            ],
             "Settings": [
                 "Inställningar"
+            ],
+            "All": [
+                "Alla"
             ],
             "Page": [
                 "Sida"
@@ -18,6 +24,12 @@
             ],
             "Cancel": [
                 "Avbryt"
+            ],
+            "Save Settings": [
+                "Spara inställningar"
+            ],
+            "Delete": [
+                "Ta bort"
             ],
             "Next": [
                 "Nästa"
@@ -34,9 +46,6 @@
             "Go to General Settings": [
                 "Gå till allmänna inställningar"
             ],
-            "Save Settings": [
-                "Spara inställningar"
-            ],
             "Chat History": [
                 "Chatthistorik"
             ],
@@ -48,9 +57,6 @@
             ],
             "AI Assistant": [
                 "AI-assistent"
-            ],
-            "Delete": [
-                "Ta bort"
             ],
             "Delete Selected": [
                 "Ta bort valda"
@@ -88,8 +94,35 @@
             "Conversations refreshed successfully": [
                 "Konversationer uppdaterades"
             ],
+            "Archive Conversations": [
+                "Arkivera samtal"
+            ],
+            "Are you sure you want to archive the selected conversations?": [
+                "Är du säker på att du vill arkivera de valda samtalen?"
+            ],
+            "Archive": [
+                "Arkivera"
+            ],
+            "Archiving conversations...": [
+                "Arkiverar samtal..."
+            ],
+            "Restore Conversations": [
+                "Återställ samtal"
+            ],
+            "Are you sure you want to restore the selected conversations?": [
+                "Är du säker på att du vill återställa de valda samtalen?"
+            ],
+            "Restoring conversations...": [
+                "Återställer samtal..."
+            ],
             "Agent handover request": [
                 "Överföringsförfrågan till agenten"
+            ],
+            "plugin\u0004Active": [
+                "Aktiv"
+            ],
+            "Archived": [
+                "Arkiverad"
             ],
             "Search conversations...": [
                 "Sök konversationer..."
@@ -99,6 +132,12 @@
             ],
             "Refresh": [
                 "Uppdatera"
+            ],
+            "Archive Selected": [
+                "Arkivera markerade"
+            ],
+            "Restore Selected": [
+                "Återställ markerade"
             ],
             "Loading conversations...": [
                 "Laddar konversationer..."
@@ -130,6 +169,12 @@
             "Deleting conversation...": [
                 "Raderar konversation..."
             ],
+            "Archiving conversation...": [
+                "Arkiverar samtal..."
+            ],
+            "Restoring conversation...": [
+                "Återställer samtal..."
+            ],
             "Conversation Details": [
                 "Samtalsdetaljer"
             ],
@@ -147,6 +192,9 @@
             ],
             "Collection": [
                 "Samling"
+            ],
+            "Requires AI Features PRO": [
+                "Kräver AI-funktioner PRO"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "Är du säker på att du vill återställa till standardinstruktioner؟"
@@ -177,6 +225,18 @@
             ],
             "Failed to delete conversations": [
                 "Misslyckades med att radera konversationer"
+            ],
+            "Conversations archived successfully": [
+                "Samtal arkiverades framgångsrikt"
+            ],
+            "Failed to archive conversations": [
+                "Misslyckades med att arkivera samtal"
+            ],
+            "Conversations restored successfully": [
+                "Samtal återställdes framgångsrikt"
+            ],
+            "Failed to restore conversations": [
+                "Misslyckades med att återställa samtal"
             ],
             "AI Chat is Disabled": [
                 "AI Chatt är inaktiverad"

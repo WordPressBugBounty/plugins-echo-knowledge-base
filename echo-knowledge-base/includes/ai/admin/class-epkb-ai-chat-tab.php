@@ -338,6 +338,9 @@ class EPKB_AI_Chat_Tab {
 		// Get Knowledge Base post types
 		$kb_post_types = self::get_kb_post_types_for_display();
 
+		$has_ai_features_pro = EPKB_Utilities::is_ai_features_pro_enabled();
+		$wp_roles_options = self::get_wp_roles_for_display();
+
 		// Build location tabs
 		$location_tabs = array();
 		for ( $i = 1; $i <= 5; $i++ ) {
@@ -393,6 +396,27 @@ class EPKB_AI_Chat_Tab {
 				'field_class' => 'epkb-ai-chat-url-patterns'
 			);
 
+			// Access Control
+			$tab_fields["ai_chat_access_mode{$suffix}"] = array(
+				'type' => 'radio',
+				'label' => __( 'Access Control', 'echo-knowledge-base' ),
+				'value' => isset( $ai_config["ai_chat_access_mode{$suffix}"] ) ? $ai_config["ai_chat_access_mode{$suffix}"] : 'all',
+				'options' => array(
+					'all'       => __( 'Everyone', 'echo-knowledge-base' ),
+					'logged_in' => __( 'Logged-in Users Only', 'echo-knowledge-base' ),
+					'wp_role'   => __( 'Specific WordPress Roles', 'echo-knowledge-base' )
+				),
+				'pro_feature' => ! $has_ai_features_pro,
+			);
+		$tab_fields["ai_chat_access_roles{$suffix}"] = array(
+			'type' => 'checkboxes',
+			'label' => __( 'Allowed Roles', 'echo-knowledge-base' ),
+			'value' => isset( $ai_config["ai_chat_access_roles{$suffix}"] ) ? $ai_config["ai_chat_access_roles{$suffix}"] : array(),
+			'options' => $wp_roles_options,
+			'pro_feature' => ! $has_ai_features_pro,
+			'field_class' => 'epkb-ai-chat-access-roles',
+		);
+
 			$location_tabs[$tab_id] = array(
 				'id' => $tab_id,
 				'title' => $tab_label,
@@ -426,6 +450,28 @@ class EPKB_AI_Chat_Tab {
 			'field_class' => 'epkb-ai-chat-collection-select',
 			'hidden' => $ai_config['ai_chat_display_mode'] !== 'all_pages'
 		);
+
+		$global_fields['ai_chat_access_mode'] = array(
+			'type' => 'radio',
+			'label' => __( 'Access Control', 'echo-knowledge-base' ),
+			'value' => isset( $ai_config['ai_chat_access_mode'] ) ? $ai_config['ai_chat_access_mode'] : 'all',
+			'options' => array(
+				'all'       => __( 'Everyone', 'echo-knowledge-base' ),
+				'logged_in' => __( 'Logged-in Users Only', 'echo-knowledge-base' ),
+				'wp_role'   => __( 'Specific WordPress Roles', 'echo-knowledge-base' )
+			),
+			'pro_feature' => ! $has_ai_features_pro,
+			'hidden' => $ai_config['ai_chat_display_mode'] !== 'all_pages'
+		);
+	$global_fields['ai_chat_access_roles'] = array(
+		'type' => 'checkboxes',
+		'label' => __( 'Allowed Roles', 'echo-knowledge-base' ),
+		'value' => isset( $ai_config['ai_chat_access_roles'] ) ? $ai_config['ai_chat_access_roles'] : array(),
+		'options' => $wp_roles_options,
+		'pro_feature' => ! $has_ai_features_pro,
+		'hidden' => $ai_config['ai_chat_display_mode'] !== 'all_pages',
+		'field_class' => 'epkb-ai-chat-access-roles',
+	);
 
 		$global_fields['collection_tabs_description'] = array(
 			'type' => 'html',
@@ -571,6 +617,23 @@ class EPKB_AI_Chat_Tab {
 			'btn_url_2' => 'https://www.echoknowledgebase.com/',
 			'return_html' => true
 		) );
+	}
+
+	/**
+	 * Get all WordPress roles for access control checkboxes
+	 *
+	 * @return array
+	 */
+	private static function get_wp_roles_for_display() {
+		$roles = wp_roles()->get_names();
+		$options = array();
+		foreach ( $roles as $role_key => $role_name ) {
+			if ( $role_key === 'administrator' ) {
+				continue; // Admins always have access
+			}
+			$options[ $role_key ] = translate_user_role( $role_name );
+		}
+		return $options;
 	}
 
 	/**

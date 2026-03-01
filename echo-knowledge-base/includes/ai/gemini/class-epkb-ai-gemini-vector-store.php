@@ -164,12 +164,9 @@ class EPKB_AI_Gemini_Vector_Store {
 			return $response;
 		}
 
-		// Get document count
-		$docs_response = $this->client->request( '/' . $resource_name . '/documents', array( 'pageSize' => 1 ), 'GET', 'file_search_store' );
-		$doc_count = 0;
-		if ( ! is_wp_error( $docs_response ) && isset( $docs_response['documents'] ) ) {
-			$doc_count = count( $docs_response['documents'] );
-		}
+		// Get document count by listing all document IDs
+		$doc_ids = $this->list_vector_store_file_ids( $store_id );
+		$doc_count = is_wp_error( $doc_ids ) ? 0 : count( $doc_ids );
 
 		return array(
 			'id'          => $this->extract_store_id_from_response( $response ),
@@ -394,6 +391,56 @@ class EPKB_AI_Gemini_Vector_Store {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * List all document IDs in a file search store
+	 *
+	 * @param string $store_id Store ID
+	 * @return array|WP_Error Array of document ID strings or error
+	 */
+	public function list_vector_store_file_ids( $store_id ) {
+
+		if ( empty( $store_id ) ) {
+			return new WP_Error( 'missing_id', __( 'Store ID is required', 'echo-knowledge-base' ) );
+		}
+
+		$resource_name = $this->get_resource_name( $store_id );
+		$doc_ids = array();
+		$page_token = '';
+		$max_docs = 500;
+
+		while ( count( $doc_ids ) < $max_docs ) {
+			$params = array( 'pageSize' => 20 );
+			if ( ! empty( $page_token ) ) {
+				$params['pageToken'] = $page_token;
+			}
+
+			$response = $this->client->request( '/' . $resource_name . '/documents', $params, 'GET', 'file_search_store' );
+			if ( is_wp_error( $response ) ) {
+				return $response;
+			}
+
+			if ( empty( $response['documents'] ) || ! is_array( $response['documents'] ) ) {
+				break;
+			}
+
+			foreach ( $response['documents'] as $doc ) {
+				$doc_id = $this->extract_document_id_from_response( $doc );
+				if ( ! empty( $doc_id ) ) {
+					$doc_ids[] = $doc_id;
+				}
+			}
+
+			// Check if there are more pages
+			if ( empty( $response['nextPageToken'] ) ) {
+				break;
+			}
+
+			$page_token = $response['nextPageToken'];
+		}
+
+		return $doc_ids;
 	}
 
 	/**

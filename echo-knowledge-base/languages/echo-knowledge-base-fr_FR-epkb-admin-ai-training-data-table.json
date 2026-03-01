@@ -31,6 +31,9 @@
             "selected": [
                 "sélectionné"
             ],
+            "Delete": [
+                "Supprimer"
+            ],
             "Article": [
                 "Article"
             ],
@@ -60,9 +63,6 @@
             ],
             "Pending": [
                 "En attente"
-            ],
-            "Delete": [
-                "Supprimer"
             ],
             "of": [
                 "de"

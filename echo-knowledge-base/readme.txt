@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chatbot, faq
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 16.20.0
+Stable tag: 17.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,9 @@ Echo Knowledge Base is a powerful documentation tool that helps you create and o
 Designed with a modern and professional appearance by default, the plugin offers extensive customization options to align perfectly with your brand identity.
 
 
-## FREE AI FEATURES
+## FREE AI FEATURES (Optional)
+
+All AI features are completely optional and disabled by default. You can enable them at any time if you choose to use AI-powered capabilities.
 
 * **AI Content Analysis**: Automatically analyze your knowledge base articles for quality and optimization. Get AI-powered insights including:
   * **Tags Analysis** - Optimize article tags and categories for better organization and SEO
@@ -48,7 +50,10 @@ Designed with a modern and professional appearance by default, the plugin offers
 
 * **Most Popular and Recent Articles**: Display lists of articles by popularity and recent publication to guide readers to trending and new content.
 
-* **Glossary**: Create a centralized dictionary of terms with definitions. Published terms are automatically highlighted in your articles with interactive tooltips, helping readers understand key terminology without leaving the page.
+* **Glossary**: Build a centralized dictionary of terms and definitions for your knowledge base.
+  * **Glossary Terms** - Create and manage glossary entries. Published terms are automatically highlighted in your articles with interactive tooltips, helping readers understand key terminology without leaving the page.
+  * **Glossary Index Shortcode and Block** - Display an alphabetical index of all glossary terms on any page using the `[epkb-glossary-index]` shortcode or the Glossary Index Gutenberg block, with letter navigation and customizable accent color.
+  * **AI-Generated Glossary Terms (PRO)** - Automatically generate glossary terms and definitions from your knowledge base content using AI, saving time and ensuring comprehensive coverage of key terminology.
 
 * **FAQs Layout and Shortcode**: Deploy FAQs anywhere on your site with various eye-catching designs. Group questions logically and control their behavior for optimal user engagement.
 
@@ -68,6 +73,7 @@ Designed with a modern and professional appearance by default, the plugin offers
    * **Human Agent Handoff** – lets users escalate from AI to your support team
    * **Feedback Buttons** – collect thumbs-up/down ratings on AI responses
    * **PDF to Notes** – upload PDF files and convert them into AI training notes to expand your AI's knowledge beyond KB articles
+   * **AI Chat Access Control** – restrict who can use AI Chat: everyone, logged-in users only, or specific WordPress roles. Set different access rules for each chat location
 
 * **Advanced Search**: Highlight search keywords on article pages, filter search by category, adjust search box styling, and add helper text or links below the search bar. Use advanced search analytics to discover popular queries and identify searches with no results.
 
@@ -408,13 +414,20 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 
 17. PRO version: Access Manager to restrict access to knowledge base content
 
-
+18. Glossary 
 
 == Changelog ==
+
+= 17.0.1 =
+Release Date: Mar 1, 2026
+* New: Glossary Index shortcode and block - display an alphabetical index of all glossary terms with letter navigation
+* New: AI Chat Access Control - restrict AI Chat by login status or WordPress user roles, with per-location settings (PRO)
+* Fix: Cleanup and minor fixes
 
 = 16.20.0 =
 Release Date: Feb 21, 2026
 * New: Glossary - add terms with definitions that are automatically highlighted in articles with interactive tooltips
+* New: AI-generated glossary terms - automatically generate terms and definitions from your KB content
 * New: PDF to Notes - upload PDFs and convert them into AI training notes (PRO)
 * Fix: Improved access permission checks for Tools
 * Fix: Cleanup and minor fixes

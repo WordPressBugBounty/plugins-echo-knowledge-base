@@ -13,6 +13,9 @@
             "Error": [
                 "Fehler"
             ],
+            "OK": [
+                "OK"
+            ],
             "No posts found to sync": [
                 "Es wurden keine Beiträge zum Synchronisieren gefunden"
             ],
@@ -33,6 +36,9 @@
             ],
             "Failed to cancel sync": [
                 "Fehler beim Abbrechen der Synchronisierung"
+            ],
+            "Failed to start verification": [
+                "Verifizierung konnte nicht gestartet werden"
             ],
             "A sync job is already running.": [
                 "Eine Synchronisierungsaufgabe läuft bereits."
@@ -76,8 +82,8 @@
             "Select at least one item to sync": [
                 "Wählen Sie mindestens einen Eintrag zur Synchronisierung aus"
             ],
-            "Start Sync": [
-                "Synchronisierung starten"
+            "Send Data to AI for Training": [
+                "Daten an die KI zum Training senden"
             ],
             "Sync started successfully! ": [
                 "Synchronisierung erfolgreich gestartet!"
@@ -108,6 +114,45 @@
             ],
             "Sync scheduled, waiting to start...": [
                 "Synchronisierung geplant, Start wird erwartet..."
+            ],
+            "Verifying": [
+                "Verifizierung läuft"
+            ],
+            "items": [
+                "Elemente"
+            ],
+            "Verification complete:": [
+                "Verifizierung abgeschlossen:"
+            ],
+            "marked outdated": [
+                "als veraltet markiert"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Synchronisieren Sie, um veraltete Elemente erneut hochzuladen."
+            ],
+            "Upload completed, but the number of items doesn't match:": [
+                "Upload abgeschlossen, aber die Anzahl der Elemente stimmt nicht überein:"
+            ],
+            "items tracked locally vs": [
+                "Elemente lokal verfolgt vs"
+            ],
+            "items in the AI provider.": [
+                "Elemente beim KI-Anbieter."
+            ],
+            "Checking for specific mismatches...": [
+                "Auf spezifische Abweichungen prüfen..."
+            ],
+            "The following items were not found in the AI provider:": [
+                "Die folgenden Elemente wurden beim KI-Anbieter nicht gefunden:"
+            ],
+            "items in the AI provider are not tracked locally.": [
+                "Elemente beim KI-Anbieter werden lokal nicht erfasst."
+            ],
+            "Verify & Fix": [
+                "Überprüfen und Beheben"
+            ],
+            "Cancel Verify": [
+                "Überprüfung abbrechen"
             ]
         }
     }

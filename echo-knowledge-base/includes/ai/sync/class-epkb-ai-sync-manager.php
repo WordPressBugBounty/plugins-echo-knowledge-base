@@ -150,6 +150,62 @@ class EPKB_AI_Sync_Manager {
 	}
 
 
+	/**
+	 * Verify a single synced item exists in the AI store. If missing, mark as "outdated".
+	 *
+	 * @param int $item_id Item ID
+	 * @param int $collection_id Collection ID
+	 * @return array Result with 'status' ('ok', 'outdated', 'skipped') and optional 'message'
+	 */
+	public function verify_item( $item_id, $collection_id ) {
+
+		$record = $this->training_data_db->get_training_data_record_by_item_id( $collection_id, $item_id );
+		if ( is_wp_error( $record ) || empty( $record ) ) {
+			return array( 'status' => 'skipped', 'message' => __( 'Record not found', 'echo-knowledge-base' ) );
+		}
+
+		// Only verify synced items (status 'added' or 'updated')
+		if ( ! in_array( $record->status, array( 'added', 'updated' ), true ) ) {
+			return array( 'status' => 'skipped' );
+		}
+
+		// No file_id means nothing to verify
+		if ( empty( $record->file_id ) ) {
+			$this->training_data_db->update_training_data( $record->id, array( 'status' => 'outdated' ) );
+			return array( 'status' => 'outdated', 'message' => __( 'No file ID', 'echo-knowledge-base' ) );
+		}
+
+		$vector_store_id = ! empty( $record->store_id ) ? $record->store_id : '';
+		if ( empty( $vector_store_id ) ) {
+			$this->training_data_db->update_training_data( $record->id, array( 'status' => 'outdated' ) );
+			return array( 'status' => 'outdated', 'message' => __( 'No store ID', 'echo-knowledge-base' ) );
+		}
+
+		// Check if file exists in file storage
+		$is_in_file_storage = $this->vector_store->verify_file_exists_in_file_storage( $record->file_id, $vector_store_id );
+		if ( is_wp_error( $is_in_file_storage ) ) {
+			return array( 'status' => 'error', 'message' => $is_in_file_storage->get_error_message() );
+		}
+
+		if ( ! $is_in_file_storage ) {
+			$this->training_data_db->update_training_data( $record->id, array( 'status' => 'outdated', 'file_id' => '' ) );
+			return array( 'status' => 'outdated', 'message' => __( 'File missing from file storage', 'echo-knowledge-base' ) );
+		}
+
+		// Check if file exists in vector store
+		$is_in_vector_store = $this->vector_store->get_file_details_from_vector_store( $vector_store_id, $record->file_id );
+		if ( is_wp_error( $is_in_vector_store ) ) {
+			return array( 'status' => 'error', 'message' => $is_in_vector_store->get_error_message() );
+		}
+
+		if ( ! $is_in_vector_store ) {
+			$this->training_data_db->update_training_data( $record->id, array( 'status' => 'outdated' ) );
+			return array( 'status' => 'outdated', 'message' => __( 'File missing from vector store', 'echo-knowledge-base' ) );
+		}
+
+		return array( 'status' => 'ok' );
+	}
+
 	/**********************************************************************************
 	 * Helper functions
 	 **********************************************************************************/
@@ -250,8 +306,8 @@ class EPKB_AI_Sync_Manager {
 				return $content;
 			}
 			if ( empty( $content ) ) {
-				$this->training_data_db->mark_as_error( $post_id, 404, __( 'Content not found', 'echo-knowledge-base' ) );
-				return new WP_Error( 'invalid_content', __( 'Content not found', 'echo-knowledge-base' ), array( 'post_id' => $post_id ) );
+				$this->training_data_db->mark_as_error( $post_id, 404, __( 'Content not found for KB file', 'echo-knowledge-base' ) );
+				return new WP_Error( 'invalid_content', __( 'Content not found for KB file', 'echo-knowledge-base' ), array( 'post_id' => $post_id ) );
 			}
 
 			$prepared = array(
@@ -263,8 +319,9 @@ class EPKB_AI_Sync_Manager {
 
 			$post = get_post( $post_id );
 			if ( ! $post ) {
-				$this->training_data_db->mark_as_error( $post_id, 404, __( 'Post not found', 'echo-knowledge-base' ) );
-				return new WP_Error( 'invalid_post', __( 'Post not found', 'echo-knowledge-base' ), array( 'post_id' => $post_id ) );
+				$error_msg = __( 'Post not found. It may have been deleted.', 'echo-knowledge-base' );
+				$this->training_data_db->mark_as_error( $post_id, 404, $error_msg );
+				return new WP_Error( 'invalid_post', $error_msg, array( 'post_id' => $post_id ) );
 			}
 
 			// Use centralized eligibility check
@@ -290,7 +347,7 @@ class EPKB_AI_Sync_Manager {
 
 			// Check for empty content (shouldn't happen if prepare_post is working correctly)
 			if ( empty( $prepared['content'] ) ) {
-				return new WP_Error( 'empty_content', __( 'Content is empty', 'echo-knowledge-base' ), array( 'post_id' => $post_id ) );
+				return new WP_Error( 'empty_content', __( 'Content is empty after processing', 'echo-knowledge-base' ), array( 'post_id' => $post_id ) );
 			}
 		}
 

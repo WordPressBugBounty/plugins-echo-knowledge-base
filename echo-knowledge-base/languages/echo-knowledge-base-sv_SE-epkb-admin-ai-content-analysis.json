@@ -7,6 +7,9 @@
                 "lang": "sv_SE",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Actions": [
+                "Åtgärder"
+            ],
             "Analyze Content": [
                 "Analysera innehåll"
             ],
@@ -21,9 +24,6 @@
             ],
             "Improve": [
                 "Förbättra"
-            ],
-            "Actions": [
-                "Åtgärder"
             ],
             "Analyzing": [
                 "Analyserar"

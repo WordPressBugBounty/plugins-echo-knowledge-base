@@ -10,8 +10,8 @@
             "Cancel": [
                 "Annuler"
             ],
-            "Vote for Top 3 Features": [
-                "Votez pour les 3 meilleures fonctionnalités"
+            "Released": [
+                "Publié"
             ],
             "First Name": [
                 "Prénom"
@@ -22,14 +22,29 @@
             "Email": [
                 "E-mail"
             ],
+            "Submit Vote": [
+                "Soumettre un vote"
+            ],
             "Failed to submit vote. Please try again.": [
                 "Échec de l'envoi du vote. Veuillez réessayer."
+            ],
+            "General Settings": [
+                "Paramètres généraux"
             ],
             "Please enter a valid email address.": [
                 "Veuillez saisir une adresse e-mail valide."
             ],
             "Warnings": [
                 "Avertissements"
+            ],
+            "This Knowledge Base AI Is Not Enabled": [
+                "Cette base de connaissances IA n'est pas activée"
+            ],
+            "AI features are optional and turned off by default. AI will only work after you manually enable it and add your own API key in ": [
+                "Les fonctionnalités IA sont facultatives et désactivées par défaut. L'IA ne fonctionnera que si vous l'activez manuellement et que vous ajoutez votre propre clé API dans"
+            ],
+            "Vote for Top 3 Features": [
+                "Votez pour les 3 meilleures fonctionnalités"
             ],
             "Help us prioritize features by providing your information:": [
                 "Aidez-nous à prioriser les fonctionnalités en fournissant vos informations :"
@@ -39,9 +54,6 @@
             ],
             "Please describe the feature you would like to see...": [
                 "Veuillez décrire la fonctionnalité que vous aimeriez voir..."
-            ],
-            "Submit Vote": [
-                "Soumettre un vote"
             ],
             "Please describe the feature you would like to see.": [
                 "Veuillez décrire la fonctionnalité que vous aimeriez voir."
@@ -66,9 +78,6 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Sélectionnez les fonctionnalités que vous aimeriez voir mises en œuvre :"
-            ],
-            "Released": [
-                "Publié"
             ],
             "feature selected": [
                 "fonctionnalité sélectionnée"

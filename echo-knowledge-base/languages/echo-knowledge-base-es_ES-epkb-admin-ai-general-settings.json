@@ -16,11 +16,11 @@
             "Cancel": [
                 "Cancelar"
             ],
-            "Saving...": [
-                "Guardando..."
-            ],
             "Save Settings": [
                 "Guardar ajustes"
+            ],
+            "Saving...": [
+                "Guardando..."
             ],
             "Failed to save settings": [
                 "Error al guardar la configuración"

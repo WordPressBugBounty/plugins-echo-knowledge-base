@@ -132,6 +132,13 @@ function epkb_load_admin_plugin_pages_resources() {
 		'copied_text'					=> esc_html__( 'Copied!', 'echo-knowledge-base' ),
 		'group_selected_singular'		=> esc_html__( 'group selected', 'echo-knowledge-base' ),
 		'group_selected_plural'			=> esc_html__( 'groups selected', 'echo-knowledge-base' ),
+		'glossary_published'            => esc_html__( 'Published', 'echo-knowledge-base' ),
+		'glossary_draft'                => esc_html__( 'Draft', 'echo-knowledge-base' ),
+		'glossary_name_required'        => esc_html__( 'Term name is required.', 'echo-knowledge-base' ),
+		'glossary_definition_required'  => esc_html__( 'Definition is required for published terms.', 'echo-knowledge-base' ),
+		'glossary_delete_confirm'       => esc_html__( 'Are you sure you want to delete this term?', 'echo-knowledge-base' ),
+		'glossary_terms_published'      => esc_html__( '%d term(s) published', 'echo-knowledge-base' ),
+		'glossary_sort_key_placeholder' => esc_html__( 'Sort key (reading)', 'echo-knowledge-base' ),
 	));
 
 	// used by WordPress color picker  ( wpColorPicker() )

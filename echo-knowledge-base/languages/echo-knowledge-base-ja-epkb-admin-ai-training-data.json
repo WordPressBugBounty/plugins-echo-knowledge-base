@@ -7,6 +7,9 @@
                 "lang": "ja",
                 "plural-forms": "nplurals=1; plural=0;"
             },
+            "Title": [
+                "タイトル"
+            ],
             "Learn More": [
                 "さらに詳しく"
             ],
@@ -22,8 +25,20 @@
             "Cancel": [
                 "キャンセル"
             ],
+            "Delete": [
+                "削除"
+            ],
+            "Updated": [
+                "更新済み"
+            ],
+            "View Full Documentation": [
+                "全ドキュメントを見る"
+            ],
             "Saving...": [
                 "保存中..."
+            ],
+            "Error": [
+                "エラー"
             ],
             "Add Training Data": [
                 "機械学習データを追加"
@@ -49,32 +64,29 @@
             "Additional Notes": [
                 "追加ノート"
             ],
-            "Delete": [
-                "削除"
+            "Pending": [
+                "承認待ち"
             ],
             "Delete Selected": [
                 "選択した項目を削除"
             ],
+            "of": [
+                "の"
+            ],
             "Failed to create collection": [
                 "コレクションの作成に失敗しました"
+            ],
+            "Outdated": [
+                "時代遅れ"
+            ],
+            "Added": [
+                "追加済み"
             ],
             "How to get started": [
                 "はじめ方"
             ],
-            "Pick the content types to include.": [
-                "含めるコンテンツタイプを選択してください。."
-            ],
-            "Select items in the table, then sync them.": [
-                "表の項目を選択してから同期します。."
-            ],
             "Other Actions": [
                 "その他の操作"
-            ],
-            "Rename the collection or delete items.": [
-                "コレクション名を変更するか、アイテムを削除します。."
-            ],
-            "Tip: Start with a small set to test the flow.": [
-                "ヒント: 処理の流れをテストするために、少量のセットで始めてください。."
             ],
             "Failed to load note content": [
                 "ノートの内容の読み込みに失敗しました"
@@ -127,6 +139,75 @@
             "Save Note": [
                 "ノートを保存"
             ],
+            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
+                "PDF抽出は利用できません。AI Features Proが有効になっていることを確認してください。."
+            ],
+            "No text could be extracted from this PDF. The file may be scanned images or have no selectable text.": [
+                "このPDFからテキストを抽出できませんでした。ファイルはスキャンされた画像であるか、選択可能なテキストが含まれていない可能性があります。."
+            ],
+            "Failed to extract text from PDF": [
+                "PDFからテキストを抽出できませんでした"
+            ],
+            "unknown type": [
+                "不明なタイプ"
+            ],
+            "no file": [
+                "ファイルなし"
+            ],
+            "Invalid file type": [
+                "無効なファイルタイプ"
+            ],
+            "Please drop a valid PDF file.": [
+                "有効なPDFファイルをドロップしてください。."
+            ],
+            "Please enter a title for the note.": [
+                "ノートのタイトルを入力してください。."
+            ],
+            "No content to save. Please select a PDF file that contains extractable text.": [
+                "保存する内容がありません。抽出可能なテキストを含むPDFファイルを選択してください。."
+            ],
+            "Failed to save note": [
+                "ノートの保存に失敗しました"
+            ],
+            "Upload PDF": [
+                "PDFをアップロード"
+            ],
+            "Dismiss": [
+                "閉じる"
+            ],
+            "Extracting page": [
+                "ページを抽出中"
+            ],
+            "Loading PDF...": [
+                "PDFを読み込み中..."
+            ],
+            "Drop PDF file here": [
+                "ここにPDFファイルをドロップ"
+            ],
+            "Drag and drop a PDF file here, or click the button below": [
+                "ここへPDFファイルをドラッグ＆ドロップするか、下のボタンをクリックしてください。"
+            ],
+            "Select PDF": [
+                "PDFを選択"
+            ],
+            "Enter title...": [
+                "タイトルを入力..."
+            ],
+            "Extracted Content": [
+                "抽出された内容"
+            ],
+            "characters": [
+                "文字"
+            ],
+            "Extracted text will appear here...": [
+                "抽出されたテキストはここに表示されます..."
+            ],
+            "Choose Different File": [
+                "別のファイルを選択"
+            ],
+            "Save as Note": [
+                "ノートとして保存"
+            ],
             "Collection name updated successfully": [
                 "コレクション名が正常に更新されました"
             ],
@@ -166,6 +247,39 @@
             "Cannot change actions while sync is in progress": [
                 "同期中はアクションを変更できません。"
             ],
+            "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
+                "テーブルに読み込むコンテンツタイプを選択してください（KB 記事、投稿、固定ページ）。この操作はまだ AI には送信されません。."
+            ],
+            "To exclude specific items, search for them in the table, select them, then use Other Actions > Delete Selected.": [
+                "特定のアイテムを除外するには、テーブル内で検索してそれらを選択し、その他の操作 > 選択した項目を削除します。."
+            ],
+            "Select items from the table and send them to train the AI. Use the status tabs to filter, then select all and send.": [
+                "テーブルからアイテムを選択して、AIを訓練するために送信します。ステータス タブを使って絞り込み、すべて選択して送信してください。."
+            ],
+            "Keep Content in Sync": [
+                "コンテンツを同期状態に保つ"
+            ],
+            "When you edit content on your site, its status changes to \"Outdated\". Filter by Outdated, select, and re-send to update the AI.": [
+                "サイトのコンテンツを編集すると、ステータスが「Outdated」になります。Outdated で絞り込み、選択して再送信して AI を更新してください。."
+            ],
+            "Statuses": [
+                "ステータス"
+            ],
+            "In the table but not yet sent to AI.": [
+                "テーブルにはありますが、まだ AI には送信されていません。."
+            ],
+            "Sent to AI successfully.": [
+                "AI への送信に成功しました。."
+            ],
+            "Re-sent after changes.": [
+                "変更後に再送信しました。."
+            ],
+            "Content changed since last sync. Re-send to update.": [
+                "前回の同期以降、コンテンツが変更されています。更新のために再送信してください。."
+            ],
+            "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
+                "同期に失敗しました。再送信して再試行してください。コンテンツが存在し、空でないことを確認してください。."
+            ],
             "Cannot navigate while sync is in progress": [
                 "同期中は移動できません。"
             ],
@@ -174,6 +288,9 @@
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "AIの機械学習データに含めるコンテンツタイプを選択してください。."
+            ],
+            "Only Published content is included. Drafts, Private, and Pending posts are not available for AI training.": [
+                "公開済みのコンテンツのみが含まれます。 下書き、非公開、保留中の投稿はAIの学習データ作成には利用できません。."
             ],
             "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
                 "AIが知っておくべき、記事・投稿・ページには含まれない追加のサポート情報やその他の情報を追加してください。."
@@ -199,6 +316,9 @@
             "Loading content types...": [
                 "コンテンツタイプを読み込み中..."
             ],
+            "No content types available.": [
+                "利用可能なコンテンツタイプはありません。."
+            ],
             "available": [
                 "利用可能"
             ],
@@ -217,8 +337,32 @@
             "No %s found. First create and publish %s.": [
                 "%s が見つかりません。まず %s を作成して公開してください。."
             ],
-            "No content types available.": [
-                "利用可能なコンテンツタイプはありません。."
+            "Already in Collection": [
+                "コレクションにすでに追加済み"
+            ],
+            "These content types have been added": [
+                "これらのコンテンツタイプが追加されました"
+            ],
+            "Available to Add": [
+                "追加可能"
+            ],
+            "Select items to include in training data": [
+                "機械学習データに含める項目を選択してください。"
+            ],
+            "All available content types have been added.": [
+                "すべての利用可能なコンテンツタイプが追加されました。."
+            ],
+            "No Content Available": [
+                "利用可能なコンテンツはありません"
+            ],
+            "Create and publish content first": [
+                "まずコンテンツを作成して公開してください。"
+            ],
+            "Requires AI Pro": [
+                "AI Proが必要です"
+            ],
+            "Unlock with AI Advanced Features plugin": [
+                "AI高度機能プラグインでロックを解除"
             ],
             "Adding Data...": [
                 "データを追加しています..."
@@ -256,8 +400,11 @@
             "AI Features Pro is not properly configured. Please ensure the plugin is activated.": [
                 "AI Features Pro が正しく設定されていません。プラグインを有効化してください。."
             ],
-            "Failed to save note": [
-                "ノートの保存に失敗しました"
+            "PDF note added successfully": [
+                "PDFノートを正常に追加しました。"
+            ],
+            "Failed to save PDF note": [
+                "PDFノートの保存に失敗しました。"
             ],
             "Unable to determine next collection ID": [
                 "次のコレクションIDを特定できません。"

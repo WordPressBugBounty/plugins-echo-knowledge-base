@@ -3601,11 +3601,15 @@ jQuery(document).ready(function($) {
 
 	// Show form for creating a new term
 	$( document ).on( 'click', '#epkb-glossary-create-term', function() {
+		glossary_cancel_inline_edit();
 		$( '#epkb-glossary-term-id' ).val( 0 );
 		$( '#epkb-glossary-term-name' ).val( '' );
+		$( '#epkb-glossary-term-sort-key' ).val( '' );
 		$( '#epkb-glossary-term-definition' ).val( '' );
-		$( '#epkb-glossary-term-status' ).val( 'publish' );
+		glossary_set_status_toggle( 'publish' );
 		glossary_update_char_counters();
+		$( this ).hide();
+		$( '.epkb-glossary-form-buttons' ).show();
 		$( '#epkb-glossary-form' ).slideDown( 200 );
 		$( '#epkb-glossary-term-name' ).focus();
 	});
@@ -3613,9 +3617,11 @@ jQuery(document).ready(function($) {
 	// Cancel form
 	$( document ).on( 'click', '.epkb-glossary-form__cancel', function() {
 		$( '#epkb-glossary-form' ).slideUp( 200 );
+		$( '.epkb-glossary-form-buttons' ).hide();
+		$( '#epkb-glossary-create-term' ).show();
 	});
 
-	// Save term
+	// Save term (Add Term form only)
 	$( document ).on( 'click', '.epkb-glossary-form__save', function() {
 
 		let term_name = $( '#epkb-glossary-term-name' ).val().trim();
@@ -3624,13 +3630,21 @@ jQuery(document).ready(function($) {
 			return;
 		}
 
+		let definition = $( '#epkb-glossary-term-definition' ).val().trim();
+		let status = $( '#epkb-glossary-term-status' ).data( 'value' );
+		if ( status === 'publish' && ! definition.length ) {
+			epkb_show_error_notification( epkb_vars.glossary_definition_required || 'Definition is required for published terms.' );
+			return;
+		}
+
 		let postData = {
 			action: 'epkb_glossary_save_term',
 			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
 			term_id: $( '#epkb-glossary-term-id' ).val(),
 			term_name: term_name,
-			definition: $( '#epkb-glossary-term-definition' ).val(),
-			status: $( '#epkb-glossary-term-status' ).val()
+			sort_key: $( '#epkb-glossary-term-sort-key' ).val() || '',
+			definition: definition,
+			status: status
 		};
 
 		epkb_send_ajax( postData, function( response ) {
@@ -3640,19 +3654,20 @@ jQuery(document).ready(function($) {
 				let data = response.data;
 				let status_label = data.status === 'publish' ? ( epkb_vars.glossary_published || 'Published' ) : ( epkb_vars.glossary_draft || 'Draft' );
 				let status_class = data.status === 'publish' ? 'epkb-glossary-status--publish' : 'epkb-glossary-status--draft';
-				let truncated_def = data.definition.length > 80 ? data.definition.substring( 0, 80 ) + '...' : data.definition;
 
 				let existing_row = $( '.epkb-glossary-term-row[data-term-id="' + data.term_id + '"]' );
 				if ( existing_row.length ) {
+					existing_row.attr( 'data-status', data.status ).attr( 'data-sort-key', data.sort_key || '' );
 					existing_row.find( '.epkb-glossary-term-row__name' ).text( data.name );
-					existing_row.find( '.epkb-glossary-term-row__definition' ).text( truncated_def );
-					existing_row.find( '.epkb-glossary-term-row__status span' ).attr( 'class', status_class ).text( status_label );
+					existing_row.find( '.epkb-glossary-term-row__definition' ).text( data.definition );
+					existing_row.find( '.epkb-glossary-term-row__status' ).html( '<span class="' + status_class + '" title="' + status_label + '"></span>' );
 				} else {
 					$( '.epkb-glossary-empty-row' ).remove();
-					let new_row = '<tr class="epkb-glossary-term-row" data-term-id="' + data.term_id + '">' +
+					let new_row = '<tr class="epkb-glossary-term-row" data-term-id="' + data.term_id + '" data-status="' + data.status + '" data-sort-key="' + $( '<span>' ).text( data.sort_key || '' ).html() + '">' +
+						'<td class="epkb-glossary-term-row__checkbox"><input type="checkbox" class="epkb-glossary-term-select"></td>' +
 						'<td class="epkb-glossary-term-row__name">' + $( '<span>' ).text( data.name ).html() + '</td>' +
-						'<td class="epkb-glossary-term-row__definition">' + $( '<span>' ).text( truncated_def ).html() + '</td>' +
-						'<td class="epkb-glossary-term-row__status"><span class="' + status_class + '">' + status_label + '</span></td>' +
+						'<td class="epkb-glossary-term-row__definition">' + $( '<span>' ).text( data.definition ).html() + '</td>' +
+						'<td class="epkb-glossary-term-row__status"><span class="' + status_class + '" title="' + status_label + '"></span></td>' +
 						'<td class="epkb-glossary-term-row__actions">' +
 							'<button class="epkb-glossary-edit-btn epkb-primary-btn" title="Edit"><span class="epkbfa epkbfa-edit"></span></button>' +
 							'<button class="epkb-glossary-delete-btn epkb-error-btn" title="Delete"><span class="epkbfa epkbfa-trash"></span></button>' +
@@ -3661,34 +3676,140 @@ jQuery(document).ready(function($) {
 				}
 
 				glossary_sort_table();
+				glossary_apply_filters();
 				$( '#epkb-glossary-form' ).slideUp( 200 );
+				$( '.epkb-glossary-form-buttons' ).hide();
+				$( '#epkb-glossary-create-term' ).show();
 			}
 		});
 	});
 
-	// Edit term
+	// Edit term — inline editing (reads data directly from DOM, no AJAX needed)
 	$( document ).on( 'click', '.epkb-glossary-edit-btn', function() {
 
-		let term_id = $( this ).closest( '.epkb-glossary-term-row' ).data( 'term-id' );
+		let row = $( this ).closest( '.epkb-glossary-term-row' );
+
+		// If this row is already being edited, do nothing
+		if ( row.hasClass( 'epkb-glossary-term-row--editing' ) ) {
+			return;
+		}
+
+		// Cancel any other active inline edit
+		glossary_cancel_inline_edit();
+
+		// Close the Add Term form if open
+		$( '#epkb-glossary-form' ).slideUp( 200 );
+		$( '.epkb-glossary-form-buttons' ).hide();
+		$( '#epkb-glossary-create-term' ).show();
+
+		// Read data from the row
+		let name = row.find( '.epkb-glossary-term-row__name' ).text();
+		let definition = row.find( '.epkb-glossary-term-row__definition' ).text();
+		let status = row.attr( 'data-status' ) || 'publish';
+		let sort_key = row.attr( 'data-sort-key' ) || '';
+		let is_cjk = $( '#epkb-glossary-terms-list' ).data( 'is-cjk' ) === 1;
+
+		// Store original row HTML for cancel
+		row.data( 'original-html', row.html() );
+		row.addClass( 'epkb-glossary-term-row--editing' );
+
+		// Build inline edit cells
+		let checkbox_cell = '<td class="epkb-glossary-term-row__checkbox"><input type="checkbox" class="epkb-glossary-term-select" disabled></td>';
+		let name_cell = '<td class="epkb-glossary-term-row__name">' +
+			'<input type="text" class="epkb-glossary-inline-input epkb-glossary-inline-name" value="' + $( '<span>' ).text( name ).html() + '" maxlength="100">' +
+			( is_cjk ? '<input type="text" class="epkb-glossary-inline-input epkb-glossary-inline-sort-key" value="' + $( '<span>' ).text( sort_key ).html() + '" maxlength="100" placeholder="' + ( epkb_vars.glossary_sort_key_placeholder || 'Sort key (reading)' ) + '">' : '' ) +
+			'</td>';
+		let def_cell = '<td class="epkb-glossary-term-row__definition">' +
+			'<textarea class="epkb-glossary-inline-textarea" maxlength="500" rows="3">' + $( '<span>' ).text( definition ).html() + '</textarea></td>';
+		let publish_selected = status === 'publish' ? ' selected' : '';
+		let draft_selected = status === 'draft' ? ' selected' : '';
+		let status_cell = '<td class="epkb-glossary-term-row__status">' +
+			'<select class="epkb-glossary-status-select epkb-glossary-inline-status">' +
+				'<option value="publish"' + publish_selected + '>' + ( epkb_vars.glossary_published || 'Published' ) + '</option>' +
+				'<option value="draft"' + draft_selected + '>' + ( epkb_vars.glossary_draft || 'Draft' ) + '</option>' +
+			'</select></td>';
+		let actions_cell = '<td class="epkb-glossary-term-row__actions">' +
+			'<button class="epkb-glossary-inline-save-btn epkb-success-btn" title="Save"><span class="epkbfa epkbfa-check"></span></button>' +
+			'<button class="epkb-glossary-inline-cancel-btn epkb-primary-btn" title="Cancel"><span class="epkbfa epkbfa-times"></span></button>' +
+			'</td>';
+
+		row.html( checkbox_cell + name_cell + def_cell + status_cell + actions_cell );
+		row.find( '.epkb-glossary-inline-name' ).focus();
+	});
+
+	// Inline save
+	$( document ).on( 'click', '.epkb-glossary-inline-save-btn', function() {
+
+		let row = $( this ).closest( '.epkb-glossary-term-row' );
+		let term_id = row.data( 'term-id' );
+		let term_name = row.find( '.epkb-glossary-inline-name' ).val().trim();
+
+		if ( ! term_name.length ) {
+			epkb_show_error_notification( epkb_vars.glossary_name_required || 'Term name is required.' );
+			return;
+		}
+
+		let definition = row.find( '.epkb-glossary-inline-textarea' ).val().trim();
+		let status = row.find( '.epkb-glossary-inline-status' ).val();
+		if ( status === 'publish' && ! definition.length ) {
+			epkb_show_error_notification( epkb_vars.glossary_definition_required || 'Definition is required for published terms.' );
+			return;
+		}
 
 		let postData = {
-			action: 'epkb_glossary_get_term',
+			action: 'epkb_glossary_save_term',
 			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
-			term_id: term_id
+			term_id: term_id,
+			term_name: term_name,
+			sort_key: row.find( '.epkb-glossary-inline-sort-key' ).val() || '',
+			definition: definition,
+			status: status
 		};
 
 		epkb_send_ajax( postData, function( response ) {
-			if ( ! response.error && typeof response.data !== 'undefined' ) {
-				$( '#epkb-glossary-term-id' ).val( response.data.term_id );
-				$( '#epkb-glossary-term-name' ).val( response.data.name );
-				$( '#epkb-glossary-term-definition' ).val( response.data.definition );
-				$( '#epkb-glossary-term-status' ).val( response.data.status );
-				glossary_update_char_counters();
-				$( '#epkb-glossary-form' ).slideDown( 200 );
-				$( '#epkb-glossary-term-name' ).focus();
+			if ( ! response.error && typeof response.message !== 'undefined' ) {
+				epkb_show_success_notification( response.message );
+
+				let data = response.data;
+				let status_label = data.status === 'publish' ? ( epkb_vars.glossary_published || 'Published' ) : ( epkb_vars.glossary_draft || 'Draft' );
+				let status_class = data.status === 'publish' ? 'epkb-glossary-status--publish' : 'epkb-glossary-status--draft';
+
+				// Rebuild normal row
+				row.removeClass( 'epkb-glossary-term-row--editing' ).removeData( 'original-html' );
+				row.attr( 'data-status', data.status ).attr( 'data-sort-key', data.sort_key || '' );
+				row.html(
+					'<td class="epkb-glossary-term-row__checkbox"><input type="checkbox" class="epkb-glossary-term-select"></td>' +
+					'<td class="epkb-glossary-term-row__name">' + $( '<span>' ).text( data.name ).html() + '</td>' +
+					'<td class="epkb-glossary-term-row__definition">' + $( '<span>' ).text( data.definition ).html() + '</td>' +
+					'<td class="epkb-glossary-term-row__status"><span class="' + status_class + '" title="' + status_label + '"></span></td>' +
+					'<td class="epkb-glossary-term-row__actions">' +
+						'<button class="epkb-glossary-edit-btn epkb-primary-btn" title="Edit"><span class="epkbfa epkbfa-edit"></span></button>' +
+						'<button class="epkb-glossary-delete-btn epkb-error-btn" title="Delete"><span class="epkbfa epkbfa-trash"></span></button>' +
+					'</td>'
+				);
+
+				glossary_sort_table();
+				glossary_apply_filters();
+				glossary_update_bulk_button();
 			}
 		});
 	});
+
+	// Inline cancel
+	$( document ).on( 'click', '.epkb-glossary-inline-cancel-btn', function() {
+		glossary_cancel_inline_edit();
+	});
+
+	// Cancel any active inline edit
+	function glossary_cancel_inline_edit() {
+		$( '.epkb-glossary-term-row--editing' ).each( function() {
+			let original = $( this ).data( 'original-html' );
+			if ( original ) {
+				$( this ).html( original );
+			}
+			$( this ).removeClass( 'epkb-glossary-term-row--editing' ).removeData( 'original-html' );
+		});
+	}
 
 	// Delete term
 	$( document ).on( 'click', '.epkb-glossary-delete-btn', function() {
@@ -3713,36 +3834,140 @@ jQuery(document).ready(function($) {
 
 				if ( ! $( '.epkb-glossary-term-row' ).length ) {
 					$( '.epkb-glossary-terms-table tbody' ).append(
-						'<tr class="epkb-glossary-empty-row"><td colspan="4">No glossary terms found. Click "Add Term" to create one.</td></tr>'
+						'<tr class="epkb-glossary-empty-row"><td colspan="5">No glossary terms found. Click "Add Term" to create one.</td></tr>'
 					);
 				}
 
-				$( '#epkb-glossary-form' ).slideUp( 200 );
+				glossary_update_bulk_button();
 			}
 		});
 	});
 
+	// Filter buttons
+	$( document ).on( 'click', '.epkb-glossary-filter-btn', function() {
+		$( '.epkb-glossary-filter-btn' ).removeClass( 'epkb-glossary-filter-btn--active' );
+		$( this ).addClass( 'epkb-glossary-filter-btn--active' );
+		$( '#epkb-glossary-search-input' ).val( '' );
+		glossary_apply_filters();
+		glossary_update_bulk_button();
+	});
+
 	// Search/filter terms
 	$( document ).on( 'input', '#epkb-glossary-search-input', function() {
-		let search = $( this ).val().toLowerCase();
+		glossary_apply_filters();
+	});
+
+	// Apply both search and status filters
+	function glossary_apply_filters() {
+		let search = $( '#epkb-glossary-search-input' ).val().toLowerCase();
+		let active_filter = $( '.epkb-glossary-filter-btn--active' ).data( 'filter' ) || 'all';
+
 		$( '.epkb-glossary-term-row' ).each( function() {
-			let name = $( this ).find( '.epkb-glossary-term-row__name' ).text().toLowerCase();
-			let definition = $( this ).find( '.epkb-glossary-term-row__definition' ).text().toLowerCase();
-			$( this ).toggle( name.indexOf( search ) > -1 || definition.indexOf( search ) > -1 );
+			let row = $( this );
+			let name = row.find( '.epkb-glossary-term-row__name' ).text().toLowerCase();
+			let definition = row.find( '.epkb-glossary-term-row__definition' ).text().toLowerCase();
+			let status = row.attr( 'data-status' );
+
+			let matches_search = ! search || name.indexOf( search ) > -1 || definition.indexOf( search ) > -1;
+			let matches_filter = active_filter === 'all' || status === active_filter;
+
+			row.toggle( matches_search && matches_filter );
+		});
+	}
+
+	// Select-all checkbox
+	$( document ).on( 'change', '#epkb-glossary-select-all', function() {
+		let checked = $( this ).is( ':checked' );
+		$( '.epkb-glossary-term-row:visible .epkb-glossary-term-select' ).prop( 'checked', checked );
+		glossary_update_bulk_button();
+	});
+
+	// Individual checkbox
+	$( document ).on( 'change', '.epkb-glossary-term-select', function() {
+		let all_visible = $( '.epkb-glossary-term-row:visible .epkb-glossary-term-select' );
+		let all_checked = all_visible.length > 0 && all_visible.filter( ':checked' ).length === all_visible.length;
+		$( '#epkb-glossary-select-all' ).prop( 'checked', all_checked );
+		glossary_update_bulk_button();
+	});
+
+	// Show/hide bulk publish button based on selected draft terms
+	function glossary_update_bulk_button() {
+		let has_draft_checked = false;
+		$( '.epkb-glossary-term-row' ).each( function() {
+			if ( $( this ).attr( 'data-status' ) === 'draft' && $( this ).find( '.epkb-glossary-term-select' ).is( ':checked' ) ) {
+				has_draft_checked = true;
+				return false;
+			}
+		});
+		$( '.epkb-glossary-bulk-actions' ).toggle( has_draft_checked );
+	}
+
+	// Bulk publish
+	$( document ).on( 'click', '#epkb-glossary-bulk-publish', function() {
+
+		let term_ids = [];
+		$( '.epkb-glossary-term-row' ).each( function() {
+			if ( $( this ).attr( 'data-status' ) === 'draft' && $( this ).find( '.epkb-glossary-term-select' ).is( ':checked' ) ) {
+				term_ids.push( $( this ).data( 'term-id' ) );
+			}
+		});
+
+		if ( ! term_ids.length ) {
+			return;
+		}
+
+		let postData = {
+			action: 'epkb_glossary_bulk_publish',
+			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+			term_ids: term_ids
+		};
+
+		epkb_send_ajax( postData, function( response ) {
+			if ( ! response.error && typeof response.message !== 'undefined' ) {
+				epkb_show_success_notification( response.message );
+
+				let published_label = epkb_vars.glossary_published || 'Published';
+				term_ids.forEach( function( id ) {
+					let row = $( '.epkb-glossary-term-row[data-term-id="' + id + '"]' );
+					row.attr( 'data-status', 'publish' );
+					row.find( '.epkb-glossary-term-row__status' ).html( '<span class="epkb-glossary-status--publish" title="' + published_label + '"></span>' );
+				});
+
+				// Uncheck all
+				$( '.epkb-glossary-term-select, #epkb-glossary-select-all' ).prop( 'checked', false );
+				glossary_update_bulk_button();
+				glossary_apply_filters();
+			}
 		});
 	});
 
 	// Character counters
-	$( document ).on( 'input', '#epkb-glossary-term-name', function() {
-		$( this ).closest( '.epkb-glossary-form-field' ).find( '.epkb-characters_left-counter' ).text( $( this ).val().length );
-	});
-	$( document ).on( 'input', '#epkb-glossary-term-definition', function() {
+	$( document ).on( 'input', '#epkb-glossary-term-name, #epkb-glossary-term-sort-key, #epkb-glossary-term-definition', function() {
 		$( this ).closest( '.epkb-glossary-form-field' ).find( '.epkb-characters_left-counter' ).text( $( this ).val().length );
 	});
 
 	function glossary_update_char_counters() {
-		$( '#epkb-glossary-term-name' ).closest( '.epkb-glossary-form-field' ).find( '.epkb-characters_left-counter' ).text( $( '#epkb-glossary-term-name' ).val().length );
-		$( '#epkb-glossary-term-definition' ).closest( '.epkb-glossary-form-field' ).find( '.epkb-characters_left-counter' ).text( $( '#epkb-glossary-term-definition' ).val().length );
+		$( '#epkb-glossary-term-name, #epkb-glossary-term-sort-key, #epkb-glossary-term-definition' ).each( function() {
+			if ( $( this ).length ) {
+				$( this ).closest( '.epkb-glossary-form-field' ).find( '.epkb-characters_left-counter' ).text( $( this ).val().length );
+			}
+		});
+	}
+
+	// Status toggle buttons in Add Term form
+	$( document ).on( 'click', '.epkb-glossary-status-toggle__btn', function() {
+		let toggle = $( this ).closest( '.epkb-glossary-status-toggle' );
+		toggle.find( '.epkb-glossary-status-toggle__btn' ).removeClass( 'epkb-glossary-status-toggle__btn--active' );
+		$( this ).addClass( 'epkb-glossary-status-toggle__btn--active' );
+		toggle.data( 'value', $( this ).data( 'status' ) );
+	});
+
+	// Set status toggle to a specific value
+	function glossary_set_status_toggle( status ) {
+		let toggle = $( '#epkb-glossary-term-status' );
+		toggle.data( 'value', status );
+		toggle.find( '.epkb-glossary-status-toggle__btn' ).removeClass( 'epkb-glossary-status-toggle__btn--active' );
+		toggle.find( '.epkb-glossary-status-toggle__btn[data-status="' + status + '"]' ).addClass( 'epkb-glossary-status-toggle__btn--active' );
 	}
 
 	// Sort glossary table alphabetically
@@ -3770,62 +3995,23 @@ jQuery(document).ready(function($) {
 	 * 
 	 *********************************************************************************************/
 	
-	// Vote for Features dialog functionality
-	let voteDialog = null;
-	
-	$("#epkb-open-vote-dialog").on("click", function() {
-		if (!voteDialog) {
-			voteDialog = $("#epkb-vote-dialog").dialog({
-				modal: true,
-				width: 600,
-				maxWidth: "90%",
-				height: "auto",
-				maxHeight: "80vh",
-				resizable: false,
-				dialogClass: "epkb-vote-features-dialog",
-				buttons: [
-					{
-						text: "Submit Vote",
-						class: "epkb-btn-vote-submit-dialog",
-						click: function() {
-							$("#epkb-kb-vote-features-form").submit();
-						}
-					},
-					{
-						text: "Cancel",
-						click: function() {
-							$(this).dialog("close");
-						}
-					}
-				],
-				open: function() {
-					$(".ui-widget-overlay").on("click", function() {
-						voteDialog.dialog("close");
-					});
-				}
-			});
-		} else {
-			voteDialog.dialog("open");
-		}
-	});
-	
 	// Vote form submission
 	$("#epkb-kb-vote-features-form").on("submit", function(e) {
 		e.preventDefault();
-		
+
 		const $form = $(this);
 		const $message = $form.find(".epkb-vote-message");
-		const $submitBtn = $(".epkb-btn-vote-submit-dialog");
+		const $submitBtn = $form.find(".epkb-btn-vote-submit");
 		const formData = new FormData(this);
-		
+
 		// Add nonce and action
 		formData.append("_wpnonce_epkb_ajax_action", epkb_vars.nonce);
 		formData.append("action", "epkb_kb_vote_for_features");
-		
+
 		// Disable submit button and show loading
 		$submitBtn.prop("disabled", true).html("<span class=\"epkbfa epkbfa-spinner epkb-icon-spin\"></span> Submitting...");
 		$message.hide().removeClass("epkb-vote-success epkb-vote-error");
-		
+
 		$.ajax({
 			url: ajaxurl,
 			type: "POST",
@@ -3835,17 +4021,13 @@ jQuery(document).ready(function($) {
 			success: function(response) {
 				if (response.success) {
 					$message.addClass("epkb-vote-success").html(response.data.message).fadeIn();
-					
-					// Close dialog after short delay
+
+					// Reset form after delay
 					setTimeout(function() {
-						if (voteDialog) {
-							voteDialog.dialog("close");
-						}
-						// Reset form for next use
 						$form[0].reset();
 						$(".epkb-vote-other-input").hide();
 						$message.hide();
-					}, 2000);
+					}, 3000);
 				} else {
 					$message.addClass("epkb-vote-error").html(response.data || "An error occurred. Please try again.").fadeIn();
 				}
@@ -3854,7 +4036,7 @@ jQuery(document).ready(function($) {
 				$message.addClass("epkb-vote-error").html("Failed to submit vote. Please try again.").fadeIn();
 			},
 			complete: function() {
-				$submitBtn.prop("disabled", false).text("Submit Vote");
+				$submitBtn.prop("disabled", false).html("<span class=\"epkbfa epkbfa-bullhorn\"></span> Submit Vote");
 			}
 		});
 	});

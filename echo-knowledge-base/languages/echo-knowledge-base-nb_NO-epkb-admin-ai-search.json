@@ -19,6 +19,12 @@
             "Cancel": [
                 "Avbryt"
             ],
+            "Save Settings": [
+                "Lagre innstillinger"
+            ],
+            "Delete": [
+                "Slett"
+            ],
             "Next": [
                 "Neste"
             ],
@@ -30,9 +36,6 @@
             ],
             "Saving...": [
                 "Lagrer..."
-            ],
-            "Save Settings": [
-                "Lagre innstillinger"
             ],
             "Search History": [
                 "Søkshistorikk"
@@ -57,9 +60,6 @@
             ],
             "AI Assistant": [
                 "AI-assistent"
-            ],
-            "Delete": [
-                "Slett"
             ],
             "Delete Selected": [
                 "Slett valgte"
@@ -102,6 +102,9 @@
             ],
             "Go to Settings": [
                 "Gå til Innstillinger"
+            ],
+            "Deleting search...": [
+                "Søket slettes..."
             ],
             "Are you sure you want to delete the selected searches?": [
                 "Er du sikker på at du vil slette de valgte søkene?"

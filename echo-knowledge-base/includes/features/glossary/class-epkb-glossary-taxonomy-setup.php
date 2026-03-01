@@ -35,5 +35,11 @@ class EPKB_Glossary_Taxonomy_Setup {
 			'single'  => true,
 			'default' => 'publish',
 		) );
+
+		register_term_meta( self::GLOSSARY_TAXONOMY, 'epkb_glossary_sort_key', array(
+			'type'    => 'string',
+			'single'  => true,
+			'default' => '',
+		) );
 	}
 }

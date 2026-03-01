@@ -102,6 +102,23 @@ class EPKB_Glossary_Page {
 			),
 		);
 
+		$views_config = apply_filters( 'epkb_glossary_page_views', $views_config );
+
+		// Show AI Generate tab with ad if AI Features PRO is not active
+		if ( ! EPKB_Utilities::is_ai_features_pro_enabled() ) {
+			$views_config[] = array(
+				'minimum_required_capability' => EPKB_Admin_UI_Access::get_editor_capability(),
+				'list_key'   => 'glossary-ai-generate',
+				'label_text' => esc_html__( 'AI Generate Terms', 'echo-knowledge-base' ),
+				'icon_class' => 'epkbfa epkbfa-magic',
+				'boxes_list' => array(
+					array(
+						'html' => self::ai_generate_ad_tab(),
+					)
+				),
+			);
+		}
+
 		return $views_config;
 	}
 
@@ -214,16 +231,15 @@ class EPKB_Glossary_Page {
 			$terms = [];
 		}
 
+		$lang = EPKB_Language_Utilities::detect_current_language();
+		$is_cjk = in_array( $lang['code'], array( 'ja', 'zh', 'ko' ), true );
+
 		ob_start(); ?>
 
 		<!-- Add/Edit Form -->
 		<div id="epkb-glossary-form" style="display:none;">
 			<div class="epkb-glossary-form-head">
 				<div class="epkb-glossary-form-head__title"><?php esc_html_e( 'Term', 'echo-knowledge-base' ); ?></div>
-				<div class="epkb-glossary-form-head__actions">
-					<button class="epkb-glossary-form__save epkb-success-btn"><?php esc_html_e( 'Save', 'echo-knowledge-base' ); ?></button>
-					<button class="epkb-glossary-form__cancel epkb-primary-btn"><?php esc_html_e( 'Cancel', 'echo-knowledge-base' ); ?></button>
-				</div>
 			</div>
 			<div class="epkb-glossary-form-body">
 				<input type="hidden" id="epkb-glossary-term-id" value="0">
@@ -231,7 +247,14 @@ class EPKB_Glossary_Page {
 					<label for="epkb-glossary-term-name"><?php esc_html_e( 'Term Name', 'echo-knowledge-base' ); ?></label>
 					<input type="text" id="epkb-glossary-term-name" maxlength="100" placeholder="<?php esc_attr_e( 'Enter term name...', 'echo-knowledge-base' ); ?>">
 					<div class="epkb-characters_left"><span class="epkb-characters_left-counter">100</span>/100</div>
-				</div>
+				</div>	<?php
+				if ( $is_cjk ) { ?>
+				<div class="epkb-glossary-form-field">
+					<label for="epkb-glossary-term-sort-key"><?php esc_html_e( 'Sort Key (Reading)', 'echo-knowledge-base' ); ?></label>
+					<input type="text" id="epkb-glossary-term-sort-key" maxlength="100" placeholder="<?php esc_attr_e( 'Enter reading (e.g. furigana, pinyin)...', 'echo-knowledge-base' ); ?>">
+					<div class="epkb-characters_left"><span class="epkb-characters_left-counter">100</span>/100</div>
+				</div>	<?php
+				} ?>
 				<div class="epkb-glossary-form-field">
 					<label for="epkb-glossary-term-definition"><?php esc_html_e( 'Definition', 'echo-knowledge-base' ); ?></label>
 					<textarea id="epkb-glossary-term-definition" maxlength="500" rows="4" placeholder="<?php esc_attr_e( 'Enter definition...', 'echo-knowledge-base' ); ?>"></textarea>
@@ -239,10 +262,10 @@ class EPKB_Glossary_Page {
 				</div>
 				<div class="epkb-glossary-form-field">
 					<label><?php esc_html_e( 'Status', 'echo-knowledge-base' ); ?></label>
-					<select id="epkb-glossary-term-status">
-						<option value="publish"><?php esc_html_e( 'Published', 'echo-knowledge-base' ); ?></option>
-						<option value="draft"><?php esc_html_e( 'Draft', 'echo-knowledge-base' ); ?></option>
-					</select>
+					<div class="epkb-glossary-status-toggle" id="epkb-glossary-term-status" data-value="publish">
+						<button type="button" class="epkb-glossary-status-toggle__btn epkb-glossary-status-toggle__btn--active" data-status="publish"><?php esc_html_e( 'Published', 'echo-knowledge-base' ); ?></button>
+						<button type="button" class="epkb-glossary-status-toggle__btn" data-status="draft"><?php esc_html_e( 'Draft', 'echo-knowledge-base' ); ?></button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -253,6 +276,10 @@ class EPKB_Glossary_Page {
 				<span class="epkb-btn-icon epkbfa epkbfa-plus-circle"></span>
 				<span class="epkb-btn-text"><?php esc_html_e( 'Add Term', 'echo-knowledge-base' ); ?></span>
 			</button>
+			<div class="epkb-glossary-form-buttons" style="display:none;">
+				<button class="epkb-glossary-form__save epkb-success-btn"><?php esc_html_e( 'Save', 'echo-knowledge-base' ); ?></button>
+				<button class="epkb-glossary-form__cancel epkb-primary-btn"><?php esc_html_e( 'Cancel', 'echo-knowledge-base' ); ?></button>
+			</div>
 		</div>
 
 		<!-- Search -->
@@ -261,11 +288,24 @@ class EPKB_Glossary_Page {
 			<span class="epkbfa epkbfa-search"></span>
 		</div>
 
+		<!-- Toolbar: Filter Buttons + Bulk Actions -->
+		<div id="epkb-glossary-toolbar">
+			<div class="epkb-glossary-filter-buttons">
+				<button type="button" class="epkb-glossary-filter-btn epkb-glossary-filter-btn--active" data-filter="all"><?php esc_html_e( 'All', 'echo-knowledge-base' ); ?></button>
+				<button type="button" class="epkb-glossary-filter-btn" data-filter="publish"><?php esc_html_e( 'Published', 'echo-knowledge-base' ); ?></button>
+				<button type="button" class="epkb-glossary-filter-btn" data-filter="draft"><?php esc_html_e( 'Draft', 'echo-knowledge-base' ); ?></button>
+			</div>
+			<div class="epkb-glossary-bulk-actions" style="display:none;">
+				<button type="button" id="epkb-glossary-bulk-publish" class="epkb-success-btn"><?php esc_html_e( 'Publish Selected', 'echo-knowledge-base' ); ?></button>
+			</div>
+		</div>
+
 		<!-- Terms List -->
-		<div id="epkb-glossary-terms-list">
+		<div id="epkb-glossary-terms-list" data-is-cjk="<?php echo esc_attr( $is_cjk ? '1' : '0' ); ?>">
 			<table class="epkb-glossary-terms-table">
 				<thead>
 					<tr>
+						<th class="epkb-glossary-col-checkbox"><input type="checkbox" id="epkb-glossary-select-all"></th>
 						<th><?php esc_html_e( 'Term', 'echo-knowledge-base' ); ?></th>
 						<th><?php esc_html_e( 'Definition', 'echo-knowledge-base' ); ?></th>
 						<th><?php esc_html_e( 'Status', 'echo-knowledge-base' ); ?></th>
@@ -275,7 +315,7 @@ class EPKB_Glossary_Page {
 				<tbody>  <?php
 					if ( empty( $terms ) ) { ?>
 						<tr class="epkb-glossary-empty-row">
-							<td colspan="4"><?php esc_html_e( 'No glossary terms found. Click "Add Term" to create one.', 'echo-knowledge-base' ); ?></td>
+							<td colspan="5"><?php esc_html_e( 'No glossary terms found. Click "Add Term" to create one.', 'echo-knowledge-base' ); ?></td>
 						</tr> <?php
 					}
 
@@ -284,7 +324,8 @@ class EPKB_Glossary_Page {
 						if ( empty( $status ) ) {
 							$status = 'publish';
 						}
-						self::display_term_row( $term->term_id, $term->name, $term->description, $status );
+						$sort_key = get_term_meta( $term->term_id, 'epkb_glossary_sort_key', true );
+						self::display_term_row( $term->term_id, $term->name, $term->description, $status, false, $sort_key );
 					} ?>
 				</tbody>
 			</table>
@@ -363,28 +404,49 @@ class EPKB_Glossary_Page {
 	}
 
 	/**
+	 * Show HTML content for AI Generate ad tab (when AI Features PRO is not active)
+	 * @return false|string
+	 */
+	private static function ai_generate_ad_tab() {
+		return EPKB_HTML_Forms::pro_feature_ad_box( array(
+			'return_html'  => true,
+			'icon'         => 'epkbfa epkbfa-magic',
+			'title'        => esc_html__( 'AI Glossary Term Generator', 'echo-knowledge-base' ),
+			'desc'         => esc_html__( 'Let AI scan your Knowledge Base articles and automatically suggest glossary terms with definitions.', 'echo-knowledge-base' ),
+			'list'         => array(
+				esc_html__( 'AI discovers glossary-worthy terms from your articles', 'echo-knowledge-base' ),
+				esc_html__( 'Review, edit, and approve suggested terms before adding', 'echo-knowledge-base' ),
+				esc_html__( 'Customize AI guidance with optional prompts', 'echo-knowledge-base' ),
+			),
+			'btn_text'     => esc_html__( 'Upgrade to PRO', 'echo-knowledge-base' ),
+			'btn_url'      => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/',
+		) );
+	}
+
+	/**
 	 * Display a single term row in the table
 	 * @param int $term_id
 	 * @param string $name
 	 * @param string $definition
 	 * @param string $status
 	 * @param bool $return_html
+	 * @param string $sort_key
 	 * @return string|void
 	 */
-	public static function display_term_row( $term_id, $name, $definition, $status, $return_html = false ) {
+	public static function display_term_row( $term_id, $name, $definition, $status, $return_html = false, $sort_key = '' ) {
 
 		if ( $return_html ) {
 			ob_start();
 		}
 
-		$truncated_def = mb_strlen( $definition ) > 80 ? mb_substr( $definition, 0, 80 ) . '...' : $definition;
 		$status_label = $status === 'publish' ? esc_html__( 'Published', 'echo-knowledge-base' ) : esc_html__( 'Draft', 'echo-knowledge-base' );
 		$status_class = $status === 'publish' ? 'epkb-glossary-status--publish' : 'epkb-glossary-status--draft'; ?>
 
-		<tr class="epkb-glossary-term-row" data-term-id="<?php echo esc_attr( $term_id ); ?>">
+		<tr class="epkb-glossary-term-row" data-term-id="<?php echo esc_attr( $term_id ); ?>" data-status="<?php echo esc_attr( $status ); ?>" data-sort-key="<?php echo esc_attr( $sort_key ); ?>">
+			<td class="epkb-glossary-term-row__checkbox"><input type="checkbox" class="epkb-glossary-term-select"></td>
 			<td class="epkb-glossary-term-row__name"><?php echo esc_html( $name ); ?></td>
-			<td class="epkb-glossary-term-row__definition"><?php echo esc_html( $truncated_def ); ?></td>
-			<td class="epkb-glossary-term-row__status"><span class="<?php echo esc_attr( $status_class ); ?>"><?php echo esc_html( $status_label ); ?></span></td>
+			<td class="epkb-glossary-term-row__definition"><?php echo esc_html( $definition ); ?></td>
+			<td class="epkb-glossary-term-row__status"><span class="<?php echo esc_attr( $status_class ); ?>" title="<?php echo esc_attr( $status_label ); ?>"></span></td>
 			<td class="epkb-glossary-term-row__actions">
 				<button class="epkb-glossary-edit-btn epkb-primary-btn" title="<?php esc_attr_e( 'Edit', 'echo-knowledge-base' ); ?>">
 					<span class="epkbfa epkbfa-edit"></span>

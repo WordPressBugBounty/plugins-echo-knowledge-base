@@ -62,6 +62,11 @@ abstract class EPKB_AI_Base_Handler {
 
 		if ( is_wp_error( $response ) ) {
 			if ( $response->get_error_code() === 'authentication_failed' ) {
+				// Distinguish between API key issues and store access issues
+				$error_msg = $response->get_error_message();
+				if ( stripos( $error_msg, 'file search store' ) !== false || stripos( $error_msg, 'fileSearchStore' ) !== false || stripos( $error_msg, 'vector_store' ) !== false ) {
+					return new WP_Error( 'store_access_denied', __( 'The AI data store is no longer accessible. This usually happens when the API key is changed. Please re-sync your training data to create a new data store.', 'echo-knowledge-base' ) );
+				}
 				return new WP_Error( 'authentication_failed', __( 'AI service authentication failed. Please check your API key in the AI settings.', 'echo-knowledge-base' ) );
 			}
 			return $response;

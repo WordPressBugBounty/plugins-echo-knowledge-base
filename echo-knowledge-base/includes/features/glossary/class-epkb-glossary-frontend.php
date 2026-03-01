@@ -127,7 +127,7 @@ class EPKB_Glossary_Frontend {
 				}
 
 				$escaped_name = preg_quote( $term->name, '/' );
-				$pattern = '/\b(' . $escaped_name . ')\b/iu';
+				$pattern = '/(?<!\w)(' . $escaped_name . ')(?!\w)/iu';
 
 				if ( preg_match( $pattern, $parts[$i] ) ) {
 					$tooltip_text = esc_attr( $term->description );

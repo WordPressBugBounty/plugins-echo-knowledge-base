@@ -31,6 +31,9 @@
             "selected": [
                 "Vald"
             ],
+            "Delete": [
+                "Ta bort"
+            ],
             "Article": [
                 "Artikel"
             ],
@@ -60,9 +63,6 @@
             ],
             "Pending": [
                 "Väntande"
-            ],
-            "Delete": [
-                "Ta bort"
             ],
             "of": [
                 "av"

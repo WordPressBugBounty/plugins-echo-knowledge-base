@@ -10,8 +10,8 @@
             "Cancel": [
                 "Annuller"
             ],
-            "Vote for Top 3 Features": [
-                "Stem på de tre vigtigste funktioner"
+            "Released": [
+                "Udgivet"
             ],
             "First Name": [
                 "Fornavn"
@@ -22,14 +22,29 @@
             "Email": [
                 "E-mail"
             ],
+            "Submit Vote": [
+                "Indsend stemme"
+            ],
             "Failed to submit vote. Please try again.": [
                 "Det lykkedes ikke at indsende din stemme. Prøv igen."
+            ],
+            "General Settings": [
+                "Generelle indstillinger"
             ],
             "Please enter a valid email address.": [
                 "Indtast en gyldig e-mailadresse."
             ],
             "Warnings": [
                 "Advarsler"
+            ],
+            "This Knowledge Base AI Is Not Enabled": [
+                "Denne vidensbase-AI er ikke aktiveret"
+            ],
+            "AI features are optional and turned off by default. AI will only work after you manually enable it and add your own API key in ": [
+                "AI-funktioner er valgfri og som standard slukket. AI vil kun virke, efter at du manuelt aktiverer den og tilføjer din egen API-nøgle i"
+            ],
+            "Vote for Top 3 Features": [
+                "Stem på de tre vigtigste funktioner"
             ],
             "Help us prioritize features by providing your information:": [
                 "Hjælp os med at prioritere funktionerne ved at give dine oplysninger:"
@@ -39,9 +54,6 @@
             ],
             "Please describe the feature you would like to see...": [
                 "Beskriv den ønskede funktion, du gerne vil se..."
-            ],
-            "Submit Vote": [
-                "Indsend stemme"
             ],
             "Please describe the feature you would like to see.": [
                 "Beskriv den funktion, du gerne vil se."
@@ -66,9 +78,6 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Vælg de funktioner, du gerne vil have implementeret:"
-            ],
-            "Released": [
-                "Udgivet"
             ],
             "feature selected": [
                 "funktion valgt"

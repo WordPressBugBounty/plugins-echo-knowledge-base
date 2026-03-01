@@ -7,6 +7,9 @@
                 "lang": "es_ES",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Actions": [
+                "Acciones"
+            ],
             "Analyze Content": [
                 "Analizar Contenido"
             ],
@@ -21,9 +24,6 @@
             ],
             "Improve": [
                 "Mejorar"
-            ],
-            "Actions": [
-                "Acciones"
             ],
             "Analyzing": [
                 "Analizando"

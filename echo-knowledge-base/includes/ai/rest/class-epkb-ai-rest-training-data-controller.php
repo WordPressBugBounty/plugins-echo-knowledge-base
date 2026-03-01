@@ -617,8 +617,8 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 		$post_id = intval( $training_data->item_id );
 		$post = get_post( $post_id );
 		if ( ! $post ) {
-			$training_data_db->mark_as_error( $id, 404, __( 'Original post not found', 'echo-knowledge-base' ) );
-			return $this->create_rest_response( [], 404, new WP_Error( 'post_not_found', __( 'Original post not found', 'echo-knowledge-base' ), array( 'training_data_id' => $id, 'post_id' => $post_id ) ) );
+			$training_data_db->mark_as_error( $id, 404, __( 'Original post not found. It may have been deleted.', 'echo-knowledge-base' ) );
+			return $this->create_rest_response( [], 404, new WP_Error( 'post_not_found', __( 'Original post not found. It may have been deleted.', 'echo-knowledge-base' ), array( 'training_data_id' => $id, 'post_id' => $post_id ) ) );
 		}
 		
 		// Check if this is a KB files type - content comes from filter

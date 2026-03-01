@@ -31,6 +31,9 @@
             "selected": [
                 "ausgewählt"
             ],
+            "Delete": [
+                "Löschen"
+            ],
             "Article": [
                 "Dokumentationsseite"
             ],
@@ -60,9 +63,6 @@
             ],
             "Pending": [
                 "Ausstehend"
-            ],
-            "Delete": [
-                "Löschen"
             ],
             "of": [
                 "von"

@@ -287,6 +287,10 @@ class EPKB_AI_Log {
 				$friendly_message = __( 'The training data store was not found. Please check your Training Data settings.', 'echo-knowledge-base' );
 				break;
 
+			case 'store_access_denied':
+				$friendly_message = __( 'The AI data store is no longer accessible. This usually happens when the API key is changed. Please re-sync your training data.', 'echo-knowledge-base' );
+				break;
+
 			case 'provider_mismatch':
 				$friendly_message = __( 'The AI provider configuration needs attention. Please check your settings.', 'echo-knowledge-base' );
 				break;
@@ -413,15 +417,10 @@ class EPKB_AI_Log {
 		$error_data = $wp_error->get_error_data();
 		$error_code = empty( $error_data['response']['code'] ) ? 500 : $error_data['response']['code'];
 
-		// Try to map to internal error code
-		$internal_code = $wp_error->get_error_code();
-
-		// If we have a valid internal code, use it instead of the full message except for validation errors where details are important
-		if ( $internal_code && strpos( $internal_code, '_' ) !== false ) {
-			if ( $internal_code === 'validation_failed' ) {
-				// keep the detailed message
-				$error_message = $error_message ?: $internal_code;
-			} else {
+		// Keep the human-readable error message; only fall back to error code if message is empty
+		if ( empty( $error_message ) ) {
+			$internal_code = $wp_error->get_error_code();
+			if ( $internal_code ) {
 				$error_message = $internal_code;
 			}
 		}
@@ -506,7 +505,7 @@ class EPKB_AI_Log {
 
 		// For certain errors, provide different messages for admins vs regular users
 		$user_message = $friendly_message;
-		$config_errors = array( 'missing_api_key', 'invalid_api_key', 'provider_mismatch', 'collection_not_found', 'no_vector_store', 'vector_store_not_configured', 'vector_store_not_found', 'insufficient_quota' );
+		$config_errors = array( 'missing_api_key', 'invalid_api_key', 'store_access_denied', 'provider_mismatch', 'collection_not_found', 'no_vector_store', 'vector_store_not_configured', 'vector_store_not_found', 'insufficient_quota' );
 		if ( in_array( $error_code, $config_errors ) && ! current_user_can( 'manage_options' ) ) {
 			// Show generic message to regular users/guests for configuration and quota errors
 			$user_message = __( 'The service is temporarily unavailable. Please try again later.', 'echo-knowledge-base' );
@@ -598,6 +597,7 @@ class EPKB_AI_Log {
 			'vector_store_not_configured' => 400,
 			'vector_store_not_found' => 400,
 			'authentication_failed' => 401,
+			'store_access_denied' => 403,
 			'invalid_session'     => 401,
 			'no_session'          => 401,
 			'login_required'      => 401,
@@ -709,6 +709,7 @@ class EPKB_AI_Log {
 			// Authorization errors
 			'unauthorized' => 'authorization',
 			'access_denied' => 'authorization',
+			'store_access_denied' => 'configuration',
 			'ai_disabled' => 'authorization',
 			'ai_chat_disabled' => 'authorization',
 			'ai_search_disabled' => 'authorization',

@@ -119,7 +119,8 @@ class EPKB_AI_Conversation_Model {
 		$this->title = isset( $data['title'] ) ? EPKB_AI_Validation::validate_title( $data['title'] ) : '';
 		$this->messages = isset( $data['messages'] ) ? $this->parse_messages( $data['messages'] ) : array();
 		$this->widget_id = isset( $data['widget_id'] ) ? EPKB_AI_Validation::validate_widget_id( $data['widget_id'] ) : '1';
-		$this->idempotency_key = isset( $data['idempotency_key'] ) ? EPKB_AI_Validation::validate_idempotency_key( $data['idempotency_key'] ) : '';
+		$validated_key = isset( $data['idempotency_key'] ) ? EPKB_AI_Validation::validate_idempotency_key( $data['idempotency_key'] ) : '';
+		$this->idempotency_key = is_wp_error( $validated_key ) ? '' : $validated_key;
 		$this->language = isset( $data['language'] ) ? EPKB_AI_Validation::validate_language( $data['language'] ) : '';
 		$this->ip = isset( $data['ip'] ) ? sanitize_text_field( $data['ip'] ) : '';
 		$this->metadata = isset( $data['metadata'] ) ? $this->parse_metadata( $data['metadata'] ) : array();
@@ -389,7 +390,8 @@ class EPKB_AI_Conversation_Model {
 	}
 
 	public function set_idempotency_key( $idempotency_key ) {
-		$this->idempotency_key = EPKB_AI_Validation::validate_idempotency_key( $idempotency_key );
+		$validated = EPKB_AI_Validation::validate_idempotency_key( $idempotency_key );
+		$this->idempotency_key = is_wp_error( $validated ) ? '' : $validated;
 	}
 
 	public function get_session_id() {

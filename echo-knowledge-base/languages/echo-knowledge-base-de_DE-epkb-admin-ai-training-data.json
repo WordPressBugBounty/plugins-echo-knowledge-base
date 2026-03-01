@@ -7,6 +7,9 @@
                 "lang": "de_DE",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Title": [
+                "Titel"
+            ],
             "Learn More": [
                 "Mehr erfahren"
             ],
@@ -22,8 +25,20 @@
             "Cancel": [
                 "Abbrechen"
             ],
+            "Delete": [
+                "Löschen"
+            ],
+            "Updated": [
+                "Aktualisiert"
+            ],
+            "View Full Documentation": [
+                "Vollständige Dokumentation anzeigen"
+            ],
             "Saving...": [
                 "Speichern..."
+            ],
+            "Error": [
+                "Fehler"
             ],
             "Add Training Data": [
                 "Trainingsdaten hinzufügen"
@@ -49,32 +64,29 @@
             "Additional Notes": [
                 "Zusätzliche Hinweise"
             ],
-            "Delete": [
-                "Löschen"
+            "Pending": [
+                "Ausstehend"
             ],
             "Delete Selected": [
                 "Auswahl löschen"
             ],
+            "of": [
+                "von"
+            ],
             "Failed to create collection": [
                 "Sammlung konnte nicht erstellt werden"
+            ],
+            "Outdated": [
+                "Veraltet"
+            ],
+            "Added": [
+                "Hinzugefügt"
             ],
             "How to get started": [
                 "So starten Sie"
             ],
-            "Pick the content types to include.": [
-                "Wählen Sie die Inhaltstypen aus, die eingeschlossen werden sollen."
-            ],
-            "Select items in the table, then sync them.": [
-                "Wählen Sie Elemente in der Tabelle aus, dann synchronisieren Sie sie."
-            ],
             "Other Actions": [
                 "Weitere Aktionen"
-            ],
-            "Rename the collection or delete items.": [
-                "Die Sammlung umbenennen oder Elemente löschen."
-            ],
-            "Tip: Start with a small set to test the flow.": [
-                "Tipp: Beginnen Sie mit einem kleinen Datensatz, um den Ablauf zu testen."
             ],
             "Failed to load note content": [
                 "Fehler beim Laden des Notizinhalts"
@@ -127,6 +139,75 @@
             "Save Note": [
                 "Notiz speichern"
             ],
+            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
+                "PDF-Extraktion ist nicht verfügbar. Bitte stellen Sie sicher, dass AI Features Pro aktiv ist."
+            ],
+            "No text could be extracted from this PDF. The file may be scanned images or have no selectable text.": [
+                "Aus diesem PDF konnte kein Text extrahiert werden. Die Datei enthält möglicherweise gescannte Bilder oder hat keinen auswählbaren Text."
+            ],
+            "Failed to extract text from PDF": [
+                "Text aus PDF konnte nicht extrahiert werden"
+            ],
+            "unknown type": [
+                "Unbekannter Typ"
+            ],
+            "no file": [
+                "Keine Datei"
+            ],
+            "Invalid file type": [
+                "Ungültiger Dateityp"
+            ],
+            "Please drop a valid PDF file.": [
+                "Bitte legen Sie eine gültige PDF-Datei ab."
+            ],
+            "Please enter a title for the note.": [
+                "Bitte geben Sie einen Titel für die Notiz ein."
+            ],
+            "No content to save. Please select a PDF file that contains extractable text.": [
+                "Kein Inhalt zum Speichern. Bitte wählen Sie eine PDF-Datei aus, die extrahierbaren Text enthält."
+            ],
+            "Failed to save note": [
+                "Hinweis konnte nicht gespeichert werden"
+            ],
+            "Upload PDF": [
+                "PDF hochladen"
+            ],
+            "Dismiss": [
+                "Schließen"
+            ],
+            "Extracting page": [
+                "Seite wird extrahiert"
+            ],
+            "Loading PDF...": [
+                "PDF wird geladen..."
+            ],
+            "Drop PDF file here": [
+                "PDF-Datei hier ablegen"
+            ],
+            "Drag and drop a PDF file here, or click the button below": [
+                "Ziehen Sie eine PDF-Datei hierher oder klicken Sie unten auf die Schaltfläche"
+            ],
+            "Select PDF": [
+                "PDF auswählen"
+            ],
+            "Enter title...": [
+                "Titel eingeben..."
+            ],
+            "Extracted Content": [
+                "Extrahierter Inhalt"
+            ],
+            "characters": [
+                "Zeichen"
+            ],
+            "Extracted text will appear here...": [
+                "Extrahierter Text wird hier angezeigt..."
+            ],
+            "Choose Different File": [
+                "Andere Datei auswählen"
+            ],
+            "Save as Note": [
+                "Als Notiz speichern"
+            ],
             "Collection name updated successfully": [
                 "Sammlungsname erfolgreich aktualisiert"
             ],
@@ -166,6 +247,39 @@
             "Cannot change actions while sync is in progress": [
                 "Aktionen können während der Synchronisierung nicht geändert werden"
             ],
+            "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
+                "Wählen Sie Inhaltstypen (KB-Artikel, Beiträge, Seiten) aus, die in die Tabelle geladen werden sollen. Dies sendet noch nichts an KI."
+            ],
+            "To exclude specific items, search for them in the table, select them, then use Other Actions > Delete Selected.": [
+                "Um bestimmte Elemente auszuschließen, suchen Sie sie in der Tabelle, wählen Sie sie aus, und verwenden Sie anschließend Weitere Aktionen > Ausgewählte löschen."
+            ],
+            "Select items from the table and send them to train the AI. Use the status tabs to filter, then select all and send.": [
+                "Wählen Sie Elemente aus der Tabelle aus und senden Sie sie, um die KI zu trainieren. Verwenden Sie die Status-Reiter zum Filtern, dann Alles auswählen und senden."
+            ],
+            "Keep Content in Sync": [
+                "Inhalte synchron halten"
+            ],
+            "When you edit content on your site, its status changes to \"Outdated\". Filter by Outdated, select, and re-send to update the AI.": [
+                "Wenn Sie Inhalte auf Ihrer Website bearbeiten, ändert sich ihr Status zu „Veraltet“. Filtern Sie nach Veraltet, wählen Sie sie aus und senden Sie sie erneut, um die KI zu aktualisieren."
+            ],
+            "Statuses": [
+                "Status"
+            ],
+            "In the table but not yet sent to AI.": [
+                "In der Tabelle, aber noch nicht an die KI gesendet."
+            ],
+            "Sent to AI successfully.": [
+                "Erfolgreich an die KI gesendet."
+            ],
+            "Re-sent after changes.": [
+                "Nach Änderungen erneut gesendet."
+            ],
+            "Content changed since last sync. Re-send to update.": [
+                "Seit der letzten Synchronisierung wurde der Inhalt geändert. Erneut senden, um zu aktualisieren."
+            ],
+            "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
+                "Synchronisierung fehlgeschlagen. Erneut senden, um es erneut zu versuchen. Prüfen Sie, dass der Inhalt vorhanden ist und nicht leer ist."
+            ],
             "Cannot navigate while sync is in progress": [
                 "Während der Synchronisierung kann nicht navigiert werden"
             ],
@@ -174,6 +288,9 @@
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Wählen Sie aus, welche Inhaltstypen Sie in Ihre KI-Trainingsdaten aufnehmen möchten."
+            ],
+            "Only Published content is included. Drafts, Private, and Pending posts are not available for AI training.": [
+                "Nur veröffentlichte Inhalte sind enthalten. Entwürfe, Private und ausstehende Beiträge stehen nicht für das KI-Training zur Verfügung."
             ],
             "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
                 "Fügen Sie zusätzlichen Support und sonstige Informationen hinzu, die in Artikeln, Beiträgen und Seiten nicht gefunden werden und die AI ebenfalls kennen sollte."
@@ -199,6 +316,9 @@
             "Loading content types...": [
                 "Lade Inhaltstypen..."
             ],
+            "No content types available.": [
+                "Keine Inhaltstypen verfügbar."
+            ],
             "available": [
                 "verfügbar"
             ],
@@ -217,8 +337,32 @@
             "No %s found. First create and publish %s.": [
                 "Keine %s gefunden. Erstelle zuerst und veröffentliche %s."
             ],
-            "No content types available.": [
-                "Keine Inhaltstypen verfügbar."
+            "Already in Collection": [
+                "Bereits in der Sammlung"
+            ],
+            "These content types have been added": [
+                "Diese Inhaltstypen wurden hinzugefügt"
+            ],
+            "Available to Add": [
+                "Zum Hinzufügen verfügbar"
+            ],
+            "Select items to include in training data": [
+                "Elemente auswählen, die in die Trainingsdaten aufgenommen werden sollen"
+            ],
+            "All available content types have been added.": [
+                "Alle verfügbaren Inhaltstypen wurden hinzugefügt."
+            ],
+            "No Content Available": [
+                "Kein Inhalt verfügbar"
+            ],
+            "Create and publish content first": [
+                "Erstellen und veröffentlichen Sie zuerst Inhalte"
+            ],
+            "Requires AI Pro": [
+                "Erfordert KI Pro"
+            ],
+            "Unlock with AI Advanced Features plugin": [
+                "Mit dem AI Advanced Features Plugin freischalten"
             ],
             "Adding Data...": [
                 "Daten werden hinzugefügt..."
@@ -256,8 +400,11 @@
             "AI Features Pro is not properly configured. Please ensure the plugin is activated.": [
                 "AI Features Pro ist nicht ordnungsgemäß konfiguriert. Bitte stellen Sie sicher, dass das Plugin aktiviert ist."
             ],
-            "Failed to save note": [
-                "Hinweis konnte nicht gespeichert werden"
+            "PDF note added successfully": [
+                "PDF-Notiz erfolgreich hinzugefügt"
+            ],
+            "Failed to save PDF note": [
+                "PDF-Notiz konnte nicht gespeichert werden"
             ],
             "Unable to determine next collection ID": [
                 "Die nächste Sammlungs-ID konnte nicht bestimmt werden"

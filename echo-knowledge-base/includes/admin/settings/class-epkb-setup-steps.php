@@ -173,6 +173,25 @@ class EPKB_Setup_Steps {
 			'condition'      => array( 'type' => 'core' ),
 			'priority'       => 90,
 		),
+		'setup_glossary' => array(
+			'category'       => 'basic',
+			'show_me'        => array(
+				array(
+					'target_page'    => 'edit.php?post_type=epkb_post_type_1&page=epkb-glossary',
+					'target_element' => '.epkb-admin__top-panel__item[data-target="glossary-introduction"]',
+				),
+				array(
+					'target_element' => '.epkb-admin__top-panel__item[data-target="glossary-terms"]',
+				),
+				array(
+					'target_element' => '.epkb-admin__top-panel__item[data-target="glossary-settings"]',
+				),
+			),
+			'learn_more_url' => 'https://www.echoknowledgebase.com/documentation/glossary/',
+			'keywords'       => array( 'glossary', 'terms', 'definitions', 'tooltips', 'highlight' ),
+			'condition'      => array( 'type' => 'core' ),
+			'priority'       => 95,
+		),
 		'configure_article_views' => array(
 			'category'       => 'basic',
 			'show_me'        => array(
@@ -1634,6 +1653,36 @@ class EPKB_Setup_Steps {
 							__( 'Display options: shortcodes, Gutenberg blocks, KB Main Page', 'echo-knowledge-base' ),
 							__( 'Multiple designs including accordion style', 'echo-knowledge-base' ),
 							__( 'Help visitors find answers without reading full articles.', 'echo-knowledge-base' ),
+						)
+					),
+				),
+			),
+			'setup_glossary' => array(
+				'title'       => __( 'Set Up Glossary', 'echo-knowledge-base' ),
+				'description' => __( 'Create glossary terms that automatically highlight in your articles and show tooltip definitions on hover.', 'echo-knowledge-base' ),
+				'pointers'    => array(
+					array(
+						'title'   => __( 'Introduction', 'echo-knowledge-base' ),
+						'content' => __( 'Learn how the Glossary feature works and see examples of highlighted terms with tooltips.', 'echo-knowledge-base' ),
+					),
+					array(
+						'title'   => __( 'Glossary Terms', 'echo-knowledge-base' ),
+						'content' => __( 'Add, edit, and manage your glossary terms and their definitions here.', 'echo-knowledge-base' ),
+					),
+					array(
+						'title'   => __( 'Settings', 'echo-knowledge-base' ),
+						'content' => __( 'Configure tooltip styles, highlighting behavior, and other glossary options.', 'echo-knowledge-base' ),
+					),
+				),
+				'learn_more'  => array(
+					'title'       => __( 'Glossary Feature Overview', 'echo-knowledge-base' ),
+					'description' => self::format_bullet_description(
+						__( 'Add a glossary to your Knowledge Base:', 'echo-knowledge-base' ),
+						array(
+							__( 'Glossary terms are shared across all Knowledge Bases', 'echo-knowledge-base' ),
+							__( 'Terms auto-highlight in articles with tooltip definitions on hover', 'echo-knowledge-base' ),
+							__( 'Customize tooltip styles and highlighting colors', 'echo-knowledge-base' ),
+							__( 'Use the Glossary Index shortcode or Gutenberg block to display all terms on a page', 'echo-knowledge-base' ),
 						)
 					),
 				),

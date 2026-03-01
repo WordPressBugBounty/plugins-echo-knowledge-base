@@ -19,6 +19,12 @@
             "Cancel": [
                 "Avbryt"
             ],
+            "Save Settings": [
+                "Spara inställningar"
+            ],
+            "Delete": [
+                "Ta bort"
+            ],
             "Next": [
                 "Nästa"
             ],
@@ -30,9 +36,6 @@
             ],
             "Saving...": [
                 "Sparar …"
-            ],
-            "Save Settings": [
-                "Spara inställningar"
             ],
             "Search History": [
                 "Sökhistorik"
@@ -57,9 +60,6 @@
             ],
             "AI Assistant": [
                 "AI-assistent"
-            ],
-            "Delete": [
-                "Ta bort"
             ],
             "Delete Selected": [
                 "Ta bort valda"

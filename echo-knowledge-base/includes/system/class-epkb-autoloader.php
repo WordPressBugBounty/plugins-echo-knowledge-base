@@ -147,6 +147,7 @@ class EPKB_Autoloader {
 				// FEATURES - SHORTCODES
 				'epkb_shortcodes'                   =>  'includes/features/shortcodes/class-epkb-shortcodes.php',
 				'epkb_articles_index_shortcode'     =>  'includes/features/shortcodes/class-epkb-articles-index-shortcode.php',
+				'epkb_glossary_index_shortcode'     =>  'includes/features/shortcodes/class-epkb-glossary-index-shortcode.php',
 				'epkb_faqs_shortcode'               =>  'includes/features/shortcodes/class-epkb-faqs-shortcode.php',
 				'epkb_ai_smart_search_shortcode' =>  'includes/features/shortcodes/class-epkb-ai-smart-search-shortcode.php',
 
@@ -250,6 +251,7 @@ class EPKB_Autoloader {
 				'epkb_sidebar_layout_block'         =>  'includes/admin/blocks/class-epkb-sidebar-layout-block.php',
 				'epkb_advanced_search_block'        =>  'includes/admin/blocks/class-epkb-advanced-search-block.php',
 				'epkb_articles_index_directory_block' =>  'includes/admin/blocks/class-epkb-articles-index-directory-block.php',
+				'epkb_glossary_index_block'         =>  'includes/admin/blocks/class-epkb-glossary-index-block.php',
 			);
 		}
 

@@ -13,6 +13,9 @@
             "Error": [
                 "Feil"
             ],
+            "OK": [
+                "OK"
+            ],
             "No posts found to sync": [
                 "Ingen innlegg funnet for synkronisering"
             ],
@@ -33,6 +36,9 @@
             ],
             "Failed to cancel sync": [
                 "Kunne ikke avbryte synkroniseringen"
+            ],
+            "Failed to start verification": [
+                "Kunne ikke starte verifisering"
             ],
             "A sync job is already running.": [
                 "En synkroniseringsjobb kjører allerede."
@@ -76,8 +82,8 @@
             "Select at least one item to sync": [
                 "Velg minst ett element å synkronisere"
             ],
-            "Start Sync": [
-                "Start synkronisering"
+            "Send Data to AI for Training": [
+                "Send data til AI for trening"
             ],
             "Sync started successfully! ": [
                 "Synkronisering startet vellykket!"
@@ -108,6 +114,45 @@
             ],
             "Sync scheduled, waiting to start...": [
                 "Planlagt synkronisering, venter på å starte..."
+            ],
+            "Verifying": [
+                "Verifiserer"
+            ],
+            "items": [
+                "elementer"
+            ],
+            "Verification complete:": [
+                "Verifisering fullført:"
+            ],
+            "marked outdated": [
+                "merket som foreldet"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Kjør synkronisering for å laste opp foreldede elementer på nytt."
+            ],
+            "Upload completed, but the number of items doesn't match:": [
+                "Opplastingen er fullført, men antall elementer stemmer ikke overens:"
+            ],
+            "items tracked locally vs": [
+                "elementer sporet lokalt mot"
+            ],
+            "items in the AI provider.": [
+                "elementer i AI-leverandøren."
+            ],
+            "Checking for specific mismatches...": [
+                "Sjekker etter spesifikke avvik..."
+            ],
+            "The following items were not found in the AI provider:": [
+                "Følgende elementer ble ikke funnet i AI-leverandøren:"
+            ],
+            "items in the AI provider are not tracked locally.": [
+                "Elementer i AI-leverandøren spores ikke lokalt."
+            ],
+            "Verify & Fix": [
+                "Verifiser og rett opp"
+            ],
+            "Cancel Verify": [
+                "Avbryt verifisering"
             ]
         }
     }

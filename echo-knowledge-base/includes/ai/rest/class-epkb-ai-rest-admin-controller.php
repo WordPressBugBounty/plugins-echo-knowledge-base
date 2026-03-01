@@ -132,6 +132,8 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			'ai_gemini_key' => EPKB_AI_Provider::PROVIDER_GEMINI
 		);
 
+		$key_changed_needs_resync = false;
+
 		foreach ( $api_key_fields as $key_field => $key_provider ) {
 			if ( ! empty( $new_config[$key_field] ) ) {
 				// If the value is our placeholder, preserve the existing encrypted key from database
@@ -163,6 +165,15 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 					}
 
 					$new_config[$key_field] = $encrypted_test_key;
+
+					// Detect key change for the selected provider — existing training data will need re-sync
+					if ( $old_key !== $encrypted_test_key && $key_provider === $selected_provider ) {
+						$collection_ids = EPKB_AI_Training_Data_Config_Specs::get_collection_ids_by_provider( $key_provider );
+						if ( ! empty( $collection_ids ) && EPKB_AI_Training_Data_DB::count_synced_data( $collection_ids ) > 0 ) {
+							$key_changed_needs_resync = true;
+							EPKB_AI_Log::add_log( 'API key changed for provider ' . EPKB_AI_Provider::get_provider_label( $key_provider ) . ', existing training data needs to be re-synced' );
+						}
+					}
 				}
 			}
 		}
@@ -265,6 +276,10 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		
 		if ( $widget_config !== null ) {
 			$response_data['widget_config'] = $widget_config;
+		}
+
+		if ( $key_changed_needs_resync ) {
+			$response_data['key_changed_warning'] = __( 'Your API key has changed. Please re-sync your training data so AI Chat and AI Search can access the new data store.', 'echo-knowledge-base' );
 		}
 
 		return $this->create_rest_response( $response_data );

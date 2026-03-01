@@ -7,6 +7,9 @@
                 "lang": "sv_SE",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Title": [
+                "Rubrik"
+            ],
             "Learn More": [
                 "Lär dig mer"
             ],
@@ -22,8 +25,20 @@
             "Cancel": [
                 "Avbryt"
             ],
+            "Delete": [
+                "Ta bort"
+            ],
+            "Updated": [
+                "Uppdaterad"
+            ],
+            "View Full Documentation": [
+                "Visa fullständig dokumentation"
+            ],
             "Saving...": [
                 "Sparar …"
+            ],
+            "Error": [
+                "Fel"
             ],
             "Add Training Data": [
                 "Lägg till maskininlärningsdata"
@@ -49,32 +64,29 @@
             "Additional Notes": [
                 "Ytterligare anteckningar"
             ],
-            "Delete": [
-                "Ta bort"
+            "Pending": [
+                "Väntande"
             ],
             "Delete Selected": [
                 "Ta bort valda"
             ],
+            "of": [
+                "av"
+            ],
             "Failed to create collection": [
                 "Misslyckades med att skapa en insamling"
+            ],
+            "Outdated": [
+                "Föråldrad"
+            ],
+            "Added": [
+                "Tillagt"
             ],
             "How to get started": [
                 "Kom igång"
             ],
-            "Pick the content types to include.": [
-                "Välj vilka innehållstyper som ska ingå."
-            ],
-            "Select items in the table, then sync them.": [
-                "Välj objekten i tabellen och synkronisera dem."
-            ],
             "Other Actions": [
                 "Andra åtgärder"
-            ],
-            "Rename the collection or delete items.": [
-                "Byt namn på samlingen eller ta bort objekt."
-            ],
-            "Tip: Start with a small set to test the flow.": [
-                "Tips: Börja med ett litet urval för att testa flödet."
             ],
             "Failed to load note content": [
                 "Misslyckades med att ladda anteckningsinnehåll"
@@ -127,6 +139,75 @@
             "Save Note": [
                 "Spara anteckning"
             ],
+            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
+                "PDF-extrahering är inte tillgänglig. Se till att AI Features Pro är aktiverat."
+            ],
+            "No text could be extracted from this PDF. The file may be scanned images or have no selectable text.": [
+                "Det gick inte att extrahera text från denna PDF. Filen kan vara skannade bilder eller sakna text som går att markera."
+            ],
+            "Failed to extract text from PDF": [
+                "Misslyckades med att extrahera text från PDF"
+            ],
+            "unknown type": [
+                "okänd typ"
+            ],
+            "no file": [
+                "ingen fil"
+            ],
+            "Invalid file type": [
+                "Ogiltig filtyp"
+            ],
+            "Please drop a valid PDF file.": [
+                "Släpp en giltig PDF-fil."
+            ],
+            "Please enter a title for the note.": [
+                "Vänligen ange en titel för anteckningen."
+            ],
+            "No content to save. Please select a PDF file that contains extractable text.": [
+                "Inget innehåll att spara. Välj en PDF-fil som innehåller extraherbar text."
+            ],
+            "Failed to save note": [
+                "Misslyckades med att spara anteckningen"
+            ],
+            "Upload PDF": [
+                "Ladda upp PDF"
+            ],
+            "Dismiss": [
+                "Stäng"
+            ],
+            "Extracting page": [
+                "Extraherar sida"
+            ],
+            "Loading PDF...": [
+                "Laddar PDF..."
+            ],
+            "Drop PDF file here": [
+                "Släpp PDF-fil här"
+            ],
+            "Drag and drop a PDF file here, or click the button below": [
+                "Dra och släpp en PDF-fil här, eller klicka på knappen nedanför"
+            ],
+            "Select PDF": [
+                "Välj PDF-fil"
+            ],
+            "Enter title...": [
+                "Ange titel..."
+            ],
+            "Extracted Content": [
+                "Extraherat innehåll"
+            ],
+            "characters": [
+                "tecken"
+            ],
+            "Extracted text will appear here...": [
+                "Extraherad text kommer att visas här..."
+            ],
+            "Choose Different File": [
+                "Välj en annan fil"
+            ],
+            "Save as Note": [
+                "Spara som anteckning"
+            ],
             "Collection name updated successfully": [
                 "Namn på samlingen uppdaterades"
             ],
@@ -166,6 +247,39 @@
             "Cannot change actions while sync is in progress": [
                 "Kan inte ändra åtgärder medan synkronisering pågår"
             ],
+            "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
+                "Välj innehållstyper (KB-artiklar, Inlägg, Sidor) som laddas in i tabellen. Detta skickar inget till AI än."
+            ],
+            "To exclude specific items, search for them in the table, select them, then use Other Actions > Delete Selected.": [
+                "För att utesluta specifika poster, sök efter dem i tabellen, markera dem och använd sedan Övriga åtgärder > Ta bort markerade."
+            ],
+            "Select items from the table and send them to train the AI. Use the status tabs to filter, then select all and send.": [
+                "Välj poster från tabellen och skicka dem för att träna AI:n. Använd statusflikarna för filtrering, markera sedan allt och skicka."
+            ],
+            "Keep Content in Sync": [
+                "Håll innehållet synkroniserat"
+            ],
+            "When you edit content on your site, its status changes to \"Outdated\". Filter by Outdated, select, and re-send to update the AI.": [
+                "När du redigerar innehåll på din webbplats ändras dess status till 'Föråldrad'. Filtrera efter Föråldrad, markera och skicka igen för att uppdatera AI:n."
+            ],
+            "Statuses": [
+                "Statusar"
+            ],
+            "In the table but not yet sent to AI.": [
+                "I tabellen men ännu inte skickats till AI."
+            ],
+            "Sent to AI successfully.": [
+                "Skickat till AI."
+            ],
+            "Re-sent after changes.": [
+                "Återsänt efter ändringar."
+            ],
+            "Content changed since last sync. Re-send to update.": [
+                "Innehållet har ändrats sedan senaste synkronisering. Skicka igen för att uppdatera."
+            ],
+            "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
+                "Synkronisering misslyckades. Skicka igen för att försöka igen. Kontrollera att innehållet finns och inte är tomt."
+            ],
             "Cannot navigate while sync is in progress": [
                 "Kan inte navigera medan synkronisering pågår"
             ],
@@ -174,6 +288,9 @@
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Välj vilka innehållstyper du vill inkludera i din maskininlärningsdata."
+            ],
+            "Only Published content is included. Drafts, Private, and Pending posts are not available for AI training.": [
+                "Endast publicerat innehåll ingår. Utkast, Privata och Väntande inlägg är inte tillgängliga för AI-träning."
             ],
             "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
                 "Lägg till ytterligare stöd och övrig information som AI också bör känna till och som inte finns i artiklar, inlägg och sidor."
@@ -199,6 +316,9 @@
             "Loading content types...": [
                 "Laddar innehållstyper..."
             ],
+            "No content types available.": [
+                "Inga innehållstyper tillgängliga."
+            ],
             "available": [
                 "tillgänglig"
             ],
@@ -217,8 +337,32 @@
             "No %s found. First create and publish %s.": [
                 "Inga %s hittades. Skapa och publicera %s först."
             ],
-            "No content types available.": [
-                "Inga innehållstyper tillgängliga."
+            "Already in Collection": [
+                "Redan i samlingen"
+            ],
+            "These content types have been added": [
+                "Dessa innehållstyper har lagts till"
+            ],
+            "Available to Add": [
+                "Tillgängliga att lägga till"
+            ],
+            "Select items to include in training data": [
+                "Välj objekt att inkludera i maskininlärningsdata"
+            ],
+            "All available content types have been added.": [
+                "Alla tillgängliga innehållstyper har lagts till."
+            ],
+            "No Content Available": [
+                "Inget innehåll tillgängligt"
+            ],
+            "Create and publish content first": [
+                "Skapa och publicera innehåll först"
+            ],
+            "Requires AI Pro": [
+                "Kräver AI Pro"
+            ],
+            "Unlock with AI Advanced Features plugin": [
+                "Lås upp med AI Advanced Features-plugin"
             ],
             "Adding Data...": [
                 "Lägger till data..."
@@ -256,8 +400,11 @@
             "AI Features Pro is not properly configured. Please ensure the plugin is activated.": [
                 "AI Features Pro är inte korrekt konfigurerat. Se till att tillägget är aktiverat."
             ],
-            "Failed to save note": [
-                "Misslyckades med att spara anteckningen"
+            "PDF note added successfully": [
+                "PDF-notering tillagd"
+            ],
+            "Failed to save PDF note": [
+                "Misslyckades med att spara PDF-notering"
             ],
             "Unable to determine next collection ID": [
                 "Kunde inte fastställa nästa samlings-ID"

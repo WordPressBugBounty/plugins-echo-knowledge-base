@@ -31,6 +31,9 @@
             "selected": [
                 "sélectionné"
             ],
+            "Delete": [
+                "Supprimer"
+            ],
             "Next": [
                 "Suivant"
             ],
@@ -45,9 +48,6 @@
             ],
             "Loading...": [
                 "Chargement..."
-            ],
-            "Delete": [
-                "Supprimer"
             ],
             "of": [
                 "de"

@@ -16,11 +16,11 @@
             "Cancel": [
                 "Annuler"
             ],
-            "Saving...": [
-                "Sauvegarde en cours..."
-            ],
             "Save Settings": [
                 "Enregistrer les paramètres"
+            ],
+            "Saving...": [
+                "Sauvegarde en cours..."
             ],
             "Failed to save settings": [
                 "Échec de l'enregistrement des paramètres"

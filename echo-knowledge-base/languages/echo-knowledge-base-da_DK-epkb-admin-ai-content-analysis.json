@@ -7,6 +7,9 @@
                 "lang": "da_DK",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Actions": [
+                "Handlinger"
+            ],
             "Analyze Content": [
                 "Analyser indhold"
             ],
@@ -21,9 +24,6 @@
             ],
             "Improve": [
                 "Forbedr"
-            ],
-            "Actions": [
-                "Handlinger"
             ],
             "Analyzing": [
                 "Analyserer"

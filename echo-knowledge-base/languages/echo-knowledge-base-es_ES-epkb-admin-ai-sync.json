@@ -13,6 +13,9 @@
             "Error": [
                 "Error"
             ],
+            "OK": [
+                "Correcto"
+            ],
             "No posts found to sync": [
                 "No se encontraron publicaciones para sincronizar"
             ],
@@ -33,6 +36,9 @@
             ],
             "Failed to cancel sync": [
                 "No se pudo cancelar la sincronización"
+            ],
+            "Failed to start verification": [
+                "Error al iniciar la verificación"
             ],
             "A sync job is already running.": [
                 "Ya se está ejecutando una tarea de sincronización."
@@ -76,8 +82,8 @@
             "Select at least one item to sync": [
                 "Seleccione al menos un elemento para sincronizar"
             ],
-            "Start Sync": [
-                "Iniciar sincronización"
+            "Send Data to AI for Training": [
+                "Enviar datos a la IA para entrenamiento"
             ],
             "Sync started successfully! ": [
                 "¡Sincronización iniciada con éxito!"
@@ -108,6 +114,45 @@
             ],
             "Sync scheduled, waiting to start...": [
                 "Sincronización programada, esperando para comenzar..."
+            ],
+            "Verifying": [
+                "Verificando"
+            ],
+            "items": [
+                "elementos"
+            ],
+            "Verification complete:": [
+                "Verificación completa:"
+            ],
+            "marked outdated": [
+                "marcado como desactualizado"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Ejecute la sincronización para volver a subir los elementos desactualizados."
+            ],
+            "Upload completed, but the number of items doesn't match:": [
+                "La carga se completó, pero el número de elementos no coincide:"
+            ],
+            "items tracked locally vs": [
+                "elementos rastreados localmente frente a"
+            ],
+            "items in the AI provider.": [
+                "elementos en el proveedor de IA."
+            ],
+            "Checking for specific mismatches...": [
+                "Comprobando discrepancias específicas..."
+            ],
+            "The following items were not found in the AI provider:": [
+                "Los siguientes elementos no se encontraron en el proveedor de IA:"
+            ],
+            "items in the AI provider are not tracked locally.": [
+                "Los elementos en el proveedor de IA no se rastrean localmente."
+            ],
+            "Verify & Fix": [
+                "Verificar y arreglar"
+            ],
+            "Cancel Verify": [
+                "Cancelar verificación"
             ]
         }
     }

@@ -7,6 +7,9 @@
                 "lang": "ja",
                 "plural-forms": "nplurals=1; plural=0;"
             },
+            "Actions": [
+                "操作"
+            ],
             "Analyze Content": [
                 "コンテンツを分析"
             ],
@@ -21,9 +24,6 @@
             ],
             "Improve": [
                 "改善"
-            ],
-            "Actions": [
-                "操作"
             ],
             "Analyzing": [
                 "分析中"

@@ -10,8 +10,8 @@
             "Cancel": [
                 "Avbryt"
             ],
-            "Vote for Top 3 Features": [
-                "Stem på de tre beste funksjonene"
+            "Released": [
+                "Lansert"
             ],
             "First Name": [
                 "Fornavn"
@@ -22,14 +22,29 @@
             "Email": [
                 "E-post"
             ],
+            "Submit Vote": [
+                "Send inn stemme"
+            ],
             "Failed to submit vote. Please try again.": [
                 "Kunne ikke sende stemme. Vennligst prøv igjen."
+            ],
+            "General Settings": [
+                "Generelle innstillinger"
             ],
             "Please enter a valid email address.": [
                 "Vennligst oppgi en gyldig e-postadresse."
             ],
             "Warnings": [
                 "Advarsler"
+            ],
+            "This Knowledge Base AI Is Not Enabled": [
+                "Denne kunnskapsbase-AI er ikke aktivert"
+            ],
+            "AI features are optional and turned off by default. AI will only work after you manually enable it and add your own API key in ": [
+                "AI-funksjoner er valgfritt og slått av som standard. AI vil kun fungere etter at du manuelt aktiverer det og legger til din egen API-nøkkel i"
+            ],
+            "Vote for Top 3 Features": [
+                "Stem på de tre beste funksjonene"
             ],
             "Help us prioritize features by providing your information:": [
                 "Hjelp oss med å prioritere funksjoner ved å oppgi informasjonen din:"
@@ -39,9 +54,6 @@
             ],
             "Please describe the feature you would like to see...": [
                 "Vennligst beskriv funksjonen du ønsker å se..."
-            ],
-            "Submit Vote": [
-                "Send inn stemme"
             ],
             "Please describe the feature you would like to see.": [
                 "Beskriv funksjonen du ønsker å se."
@@ -66,9 +78,6 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Velg funksjonene du ønsker å få implementert:"
-            ],
-            "Released": [
-                "Lansert"
             ],
             "feature selected": [
                 "funksjon valgt"

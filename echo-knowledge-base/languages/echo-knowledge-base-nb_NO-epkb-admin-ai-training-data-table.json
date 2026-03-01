@@ -31,6 +31,9 @@
             "selected": [
                 "valgt"
             ],
+            "Delete": [
+                "Slett"
+            ],
             "Article": [
                 "Artikkel"
             ],
@@ -60,9 +63,6 @@
             ],
             "Pending": [
                 "Ventende"
-            ],
-            "Delete": [
-                "Slett"
             ],
             "of": [
                 "av"

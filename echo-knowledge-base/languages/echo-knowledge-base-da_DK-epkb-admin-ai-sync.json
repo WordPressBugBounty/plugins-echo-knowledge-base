@@ -13,6 +13,9 @@
             "Error": [
                 "Fejl"
             ],
+            "OK": [
+                "OK"
+            ],
             "No posts found to sync": [
                 "Ingen indlæg fundet til synkronisering"
             ],
@@ -33,6 +36,9 @@
             ],
             "Failed to cancel sync": [
                 "Fejl ved annullering af synkronisering"
+            ],
+            "Failed to start verification": [
+                "Kunne ikke starte verifikation"
             ],
             "A sync job is already running.": [
                 "En synkroniseringsopgave kører allerede."
@@ -76,8 +82,8 @@
             "Select at least one item to sync": [
                 "Vælg mindst ét element til synkronisering"
             ],
-            "Start Sync": [
-                "Start synkronisering"
+            "Send Data to AI for Training": [
+                "Send data til AI til træning"
             ],
             "Sync started successfully! ": [
                 "Synkronisering startet med succes!"
@@ -108,6 +114,45 @@
             ],
             "Sync scheduled, waiting to start...": [
                 "Planlagt synkronisering, venter på at starte..."
+            ],
+            "Verifying": [
+                "Verificerer"
+            ],
+            "items": [
+                "elementer"
+            ],
+            "Verification complete:": [
+                "Verifikation afsluttet:"
+            ],
+            "marked outdated": [
+                "markeret forældet"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Kør synkronisering for at uploade forældede elementer igen."
+            ],
+            "Upload completed, but the number of items doesn't match:": [
+                "Upload fuldført, men antallet af elementer stemmer ikke overens:"
+            ],
+            "items tracked locally vs": [
+                "elementer sporet lokalt vs"
+            ],
+            "items in the AI provider.": [
+                "Elementer i AI-udbyderen."
+            ],
+            "Checking for specific mismatches...": [
+                "Kontrollerer for specifikke uoverensstemmelser..."
+            ],
+            "The following items were not found in the AI provider:": [
+                "Følgende elementer blev ikke fundet i AI-udbyderen:"
+            ],
+            "items in the AI provider are not tracked locally.": [
+                "Elementer i AI-udbyderen spores ikke lokalt."
+            ],
+            "Verify & Fix": [
+                "Kontroller og ret"
+            ],
+            "Cancel Verify": [
+                "Annuller kontrol"
             ]
         }
     }

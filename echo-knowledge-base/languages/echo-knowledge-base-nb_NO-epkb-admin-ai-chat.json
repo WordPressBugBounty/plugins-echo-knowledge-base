@@ -7,8 +7,14 @@
                 "lang": "nb_NO",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Restore": [
+                "Gjenopprett"
+            ],
             "Settings": [
                 "Innstillinger"
+            ],
+            "All": [
+                "Alle"
             ],
             "Page": [
                 "Side"
@@ -18,6 +24,12 @@
             ],
             "Cancel": [
                 "Avbryt"
+            ],
+            "Save Settings": [
+                "Lagre innstillinger"
+            ],
+            "Delete": [
+                "Slett"
             ],
             "Next": [
                 "Neste"
@@ -34,9 +46,6 @@
             "Go to General Settings": [
                 "Gå til Generelle innstillinger"
             ],
-            "Save Settings": [
-                "Lagre innstillinger"
-            ],
             "Chat History": [
                 "Chathistorikk"
             ],
@@ -48,9 +57,6 @@
             ],
             "AI Assistant": [
                 "AI-assistent"
-            ],
-            "Delete": [
-                "Slett"
             ],
             "Delete Selected": [
                 "Slett valgte"
@@ -88,8 +94,35 @@
             "Conversations refreshed successfully": [
                 "Samtalene ble oppdatert"
             ],
+            "Archive Conversations": [
+                "Arkiver samtaler"
+            ],
+            "Are you sure you want to archive the selected conversations?": [
+                "Er du sikker på at du vil arkivere de valgte samtalene?"
+            ],
+            "Archive": [
+                "Arkiver"
+            ],
+            "Archiving conversations...": [
+                "Arkiverer samtaler..."
+            ],
+            "Restore Conversations": [
+                "Gjenopprett samtaler"
+            ],
+            "Are you sure you want to restore the selected conversations?": [
+                "Er du sikker på at du vil gjenopprette de valgte samtalene?"
+            ],
+            "Restoring conversations...": [
+                "Gjenoppretter samtaler..."
+            ],
             "Agent handover request": [
                 "Forespørsel om agentoverlevering"
+            ],
+            "plugin\u0004Active": [
+                "Aktiv"
+            ],
+            "Archived": [
+                "Arkivert"
             ],
             "Search conversations...": [
                 "Søk i samtaler..."
@@ -99,6 +132,12 @@
             ],
             "Refresh": [
                 "Oppdater"
+            ],
+            "Archive Selected": [
+                "Arkiver valgte"
+            ],
+            "Restore Selected": [
+                "Gjenopprett valgte"
             ],
             "Loading conversations...": [
                 "Laster inn samtaler..."
@@ -115,17 +154,35 @@
             "Conversation": [
                 "Samtale"
             ],
+            "Message Count": [
+                "Antall meldinger"
+            ],
+            "Agent Handover": [
+                "Overføring til agent"
+            ],
+            "Number of messages": [
+                "Antall meldinger"
+            ],
             "Searching server for more results...": [
                 "Søker på serveren etter flere resultater..."
             ],
             "Deleting conversation...": [
                 "Sletter samtale..."
             ],
+            "Archiving conversation...": [
+                "Arkiverer samtale..."
+            ],
+            "Restoring conversation...": [
+                "Gjenoppretter samtale..."
+            ],
             "Conversation Details": [
                 "Samtaledetaljer"
             ],
             "Select a conversation to view details": [
                 "Velg en samtale for å vise detaljer"
+            ],
+            "Conversation Summary": [
+                "Samtaleoppsummering"
             ],
             "Full Conversation": [
                 "Hele samtalen"
@@ -135,6 +192,9 @@
             ],
             "Collection": [
                 "Samling"
+            ],
+            "Requires AI Features PRO": [
+                "Krever AI-funksjoner PRO"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "Er du sikker på at du vil tilbakestille til standardinstruksjoner?"
@@ -165,6 +225,18 @@
             ],
             "Failed to delete conversations": [
                 "Klarte ikke å slette samtaler"
+            ],
+            "Conversations archived successfully": [
+                "Samtalene ble arkivert"
+            ],
+            "Failed to archive conversations": [
+                "Kunne ikke arkivere samtalene"
+            ],
+            "Conversations restored successfully": [
+                "Samtalene ble gjenopprettet"
+            ],
+            "Failed to restore conversations": [
+                "Kunne ikke gjenopprette samtalene"
             ],
             "AI Chat is Disabled": [
                 "AI chat er deaktivert"

@@ -12,8 +12,8 @@ class EPKB_Glossary_Ctrl {
 		add_action( 'wp_ajax_epkb_glossary_delete_term', array( $this, 'delete_term' ) );
 		add_action( 'wp_ajax_nopriv_epkb_glossary_delete_term', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
-		add_action( 'wp_ajax_epkb_glossary_get_term', array( $this, 'get_term' ) );
-		add_action( 'wp_ajax_nopriv_epkb_glossary_get_term', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+		add_action( 'wp_ajax_epkb_glossary_bulk_publish', array( $this, 'bulk_publish' ) );
+		add_action( 'wp_ajax_nopriv_epkb_glossary_bulk_publish', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 	}
 
 	/**
@@ -30,6 +30,10 @@ class EPKB_Glossary_Ctrl {
 
 		if ( empty( $term_name ) ) {
 			EPKB_Utilities::ajax_show_error_die( esc_html__( 'Term name is required.', 'echo-knowledge-base' ) );
+		}
+
+		if ( $status === 'publish' && empty( $definition ) ) {
+			EPKB_Utilities::ajax_show_error_die( esc_html__( 'Definition is required for published terms.', 'echo-knowledge-base' ) );
 		}
 
 		// Enforce max lengths
@@ -72,6 +76,10 @@ class EPKB_Glossary_Ctrl {
 
 		update_term_meta( $term_id, 'epkb_glossary_status', $status );
 
+		$sort_key = sanitize_text_field( EPKB_Utilities::post( 'sort_key' ) );
+		$sort_key = mb_substr( $sort_key, 0, 100 );
+		update_term_meta( $term_id, 'epkb_glossary_sort_key', $sort_key );
+
 		wp_die( wp_json_encode( array(
 			'status'  => 'success',
 			'message' => esc_html__( 'Term Saved', 'echo-knowledge-base' ),
@@ -80,6 +88,7 @@ class EPKB_Glossary_Ctrl {
 				'name'       => esc_html( $term_name ),
 				'definition' => esc_html( $definition ),
 				'status'     => esc_attr( $status ),
+				'sort_key'   => esc_html( $sort_key ),
 			),
 		) ) );
 	}
@@ -108,36 +117,37 @@ class EPKB_Glossary_Ctrl {
 	}
 
 	/**
-	 * Get a single glossary term for editing
+	 * Bulk publish glossary terms
 	 */
-	public function get_term() {
+	public function bulk_publish() {
 
 		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die( EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY );
 
-		$term_id = (int) EPKB_Utilities::post( 'term_id', 0 );
-		if ( empty( $term_id ) ) {
-			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 764 ) );
+		$term_ids = EPKB_Utilities::post( 'term_ids' );
+		if ( empty( $term_ids ) || ! is_array( $term_ids ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 766 ) );
 		}
 
-		$term = get_term( $term_id, EPKB_Glossary_Taxonomy_Setup::GLOSSARY_TAXONOMY );
-		if ( empty( $term ) || is_wp_error( $term ) ) {
-			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 765 ) );
-		}
-
-		$status = get_term_meta( $term_id, 'epkb_glossary_status', true );
-		if ( empty( $status ) ) {
-			$status = 'publish';
+		$count = 0;
+		$skipped = 0;
+		foreach ( $term_ids as $term_id ) {
+			$term_id = (int) $term_id;
+			$term = get_term( $term_id, EPKB_Glossary_Taxonomy_Setup::GLOSSARY_TAXONOMY );
+			if ( empty( $term ) || is_wp_error( $term ) ) {
+				continue;
+			}
+			if ( empty( $term->description ) ) {
+				$skipped++;
+				continue;
+			}
+			update_term_meta( $term_id, 'epkb_glossary_status', 'publish' );
+			$count++;
 		}
 
 		wp_die( wp_json_encode( array(
 			'status'  => 'success',
-			'message' => '',
-			'data'    => array(
-				'term_id'    => esc_attr( $term->term_id ),
-				'name'       => esc_html( $term->name ),
-				'definition' => esc_html( $term->description ),
-				'status'     => esc_attr( $status ),
-			),
+			'message' => sprintf( esc_html__( '%d term(s) published', 'echo-knowledge-base' ), $count ),
+			'data'    => array( 'count' => $count ),
 		) ) );
 	}
 }

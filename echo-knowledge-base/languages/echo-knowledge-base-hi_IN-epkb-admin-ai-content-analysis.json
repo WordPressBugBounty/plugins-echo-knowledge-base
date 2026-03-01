@@ -7,6 +7,9 @@
                 "lang": "hi_IN",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Actions": [
+                "क्रियाएं"
+            ],
             "Analyze Content": [
                 "सामग्री विश्लेषण करें"
             ],
@@ -21,9 +24,6 @@
             ],
             "Improve": [
                 "सुधारें"
-            ],
-            "Actions": [
-                "क्रियाएं"
             ],
             "Analyzing": [
                 "विश्लेषण किया जा रहा है"

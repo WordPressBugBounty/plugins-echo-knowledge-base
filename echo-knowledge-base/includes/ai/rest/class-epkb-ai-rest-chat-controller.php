@@ -205,6 +205,16 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 	public function send_message( $request ) {
 
 		try {
+			// Check access control based on the collection being accessed
+			$params = $request->get_json_params();
+			$collection_id = isset( $params['collection_id'] ) ? absint( $params['collection_id'] ) : 0;
+			if ( empty( $collection_id ) ) {
+				return $this->create_rest_response( array(), 400, new WP_Error( 'missing_collection', __( 'Collection ID is required.', 'echo-knowledge-base' ) ) );
+			}
+			if ( ! EPKB_AI_Chat_Frontend::is_user_allowed_for_collection( $collection_id ) ) {
+				return $this->create_rest_response( array(), 403, new WP_Error( 'access_denied', __( 'You do not have permission to use AI Chat.', 'echo-knowledge-base' ) ) );
+			}
+
 			$result = $this->retrieve_conversation( $request, true );
 			if ( ! empty( $result['wp_error'] ) && is_wp_error( $result['wp_error'] ) ) {
 				$data = isset( $result['data'] ) ? $result['data'] : array();
@@ -216,11 +226,17 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			$conversation_obj->set_widget_id( $result['request_data']['widget_id'] );
 			$conversation_obj->set_idempotency_key( $result['request_data']['idempotency_key'] );
 
-			// Set page_url and page_title in metadata for new conversations
-			if ( empty( $conversation_obj->get_chat_id() ) && ! empty( $result['request_data']['page_url'] ) ) {
-				$metadata = array( 'page_url' => $result['request_data']['page_url'] );
+			// Set metadata for new conversations
+			if ( empty( $conversation_obj->get_chat_id() ) ) {
+				$metadata = array();
+				if ( ! empty( $result['request_data']['page_url'] ) ) {
+					$metadata['page_url'] = $result['request_data']['page_url'];
+				}
 				if ( ! empty( $result['request_data']['page_title'] ) ) {
 					$metadata['page_title'] = $result['request_data']['page_title'];
+				}
+				if ( ! empty( $result['request_data']['collection_id'] ) ) {
+					$metadata['collection_id'] = absint( $result['request_data']['collection_id'] );
 				}
 				$conversation_obj->set_metadata( $metadata );
 			}
@@ -262,7 +278,15 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 		// Format conversation data for response
 		if ( isset( $data['conversation'] ) && $data['conversation'] instanceof EPKB_AI_Conversation_Model ) {
 			$conversation = $data['conversation'];
-			$messages = $conversation->get_messages();	
+
+			// Check collection access from stored metadata
+			$metadata = $conversation->get_metadata();
+			$collection_id = isset( $metadata['collection_id'] ) ? absint( $metadata['collection_id'] ) : 0;
+			if ( ! empty( $collection_id ) && ! EPKB_AI_Chat_Frontend::is_user_allowed_for_collection( $collection_id ) ) {
+				return $this->create_rest_response( array(), 403, new WP_Error( 'access_denied', __( 'You do not have permission to use AI Chat.', 'echo-knowledge-base' ) ) );
+			}
+
+			$messages = $conversation->get_messages();
 			$data = array(
 				'chat_id' => $conversation->get_chat_id(),
 				'messages' => $this->format_messages_for_response( $messages )
@@ -328,7 +352,19 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 		} else {
 			// Validate chat belongs to session
 			if ( ! EPKB_AI_Security::validate_chat_session( $chat_id, $session_id ) ) {
-				return [ 'status' => 403, 'wp_error' => new WP_Error( 'unauthorized', __( 'Unauthorized access to conversation.', 'echo-knowledge-base' ) ) ];
+
+				// For logged-in users, fall back to user_id matching — their identity is verified via WordPress auth cookies which is stronger than a session cookie
+				if ( is_user_logged_in() ) {
+					$user_validation = EPKB_AI_Security::validate_user_matching( $chat_id );
+					if ( ! is_wp_error( $user_validation ) ) {
+						// User owns this conversation — reassign to current session so subsequent requests work
+						$messages_db->update_conversation_session( $chat_id, $session_id );
+					} else {
+						return [ 'status' => 403, 'wp_error' => $user_validation ];
+					}
+				} else {
+					return [ 'status' => 403, 'wp_error' => new WP_Error( 'unauthorized', __( 'Unauthorized access to conversation.', 'echo-knowledge-base' ) ) ];
+				}
 			}
 			
 			// Get conversation from database
@@ -356,7 +392,7 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 
 		// Check rate limit before processing
 		/** @disregard P1011 */
-		if ( ! is_admin() && ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {	
+		if ( ! is_admin() && ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 			/* $result = EPKB_AI_Security::check_rate_limit();   // TODO
 			if ( is_wp_error( $result ) ) {
 				return new WP_Error( 'rate_limit' ); //$this->create_rest_response( array(), 429, $result );

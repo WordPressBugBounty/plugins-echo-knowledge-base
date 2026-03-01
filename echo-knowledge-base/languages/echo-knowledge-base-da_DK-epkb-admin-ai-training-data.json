@@ -7,6 +7,9 @@
                 "lang": "da_DK",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Title": [
+                "Titel"
+            ],
             "Learn More": [
                 "Lær mere"
             ],
@@ -22,8 +25,20 @@
             "Cancel": [
                 "Annuller"
             ],
+            "Delete": [
+                "Slet"
+            ],
+            "Updated": [
+                "Opdateret"
+            ],
+            "View Full Documentation": [
+                "Se fuld dokumentation"
+            ],
             "Saving...": [
                 "Gemmer..."
+            ],
+            "Error": [
+                "Fejl"
             ],
             "Add Training Data": [
                 "Tilføj maskinlæringsdata"
@@ -49,32 +64,29 @@
             "Additional Notes": [
                 "Yderligere bemærkninger"
             ],
-            "Delete": [
-                "Slet"
+            "Pending": [
+                "Afventer"
             ],
             "Delete Selected": [
                 "Slet valgte"
             ],
+            "of": [
+                "af"
+            ],
             "Failed to create collection": [
                 "Fejl ved oprettelse af samling"
+            ],
+            "Outdated": [
+                "Forældet"
+            ],
+            "Added": [
+                "Tilføjet"
             ],
             "How to get started": [
                 "Sådan kommer du i gang"
             ],
-            "Pick the content types to include.": [
-                "Vælg de indholdstyper, der skal inkluderes."
-            ],
-            "Select items in the table, then sync them.": [
-                "Vælg posterne i tabellen, og synkroniser dem."
-            ],
             "Other Actions": [
                 "Andre handlinger"
-            ],
-            "Rename the collection or delete items.": [
-                "Omdøb samlingen eller slet emnerne."
-            ],
-            "Tip: Start with a small set to test the flow.": [
-                "Tip: Start med et lille sæt for at teste flowet."
             ],
             "Failed to load note content": [
                 "Fejl ved indlæsning af noteindhold"
@@ -127,6 +139,75 @@
             "Save Note": [
                 "Gem notat"
             ],
+            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
+                "PDF-udtræk er ikke tilgængeligt. Sørg for, at AI Features Pro er aktiv."
+            ],
+            "No text could be extracted from this PDF. The file may be scanned images or have no selectable text.": [
+                "Der kunne ikke udtrækkes tekst fra denne PDF. Filen kan være scannede billeder eller have tekst, der ikke kan markeres."
+            ],
+            "Failed to extract text from PDF": [
+                "Fejl ved udtræk af tekst fra PDF"
+            ],
+            "unknown type": [
+                "ukendt type"
+            ],
+            "no file": [
+                "ingen fil"
+            ],
+            "Invalid file type": [
+                "Ugyldig filtype"
+            ],
+            "Please drop a valid PDF file.": [
+                "Drop venligst en gyldig PDF-fil."
+            ],
+            "Please enter a title for the note.": [
+                "Indtast venligst en titel til notatet."
+            ],
+            "No content to save. Please select a PDF file that contains extractable text.": [
+                "Intet indhold at gemme. Vælg venligst en PDF-fil, der indeholder tekst, der kan udtrækkes."
+            ],
+            "Failed to save note": [
+                "Kunne ikke gemme note"
+            ],
+            "Upload PDF": [
+                "Upload PDF"
+            ],
+            "Dismiss": [
+                "Luk"
+            ],
+            "Extracting page": [
+                "Ekstraherer side"
+            ],
+            "Loading PDF...": [
+                "Indlæser PDF..."
+            ],
+            "Drop PDF file here": [
+                "Drop PDF-fil her"
+            ],
+            "Drag and drop a PDF file here, or click the button below": [
+                "Træk og slip en PDF-fil her, eller klik på knappen nedenfor"
+            ],
+            "Select PDF": [
+                "Vælg PDF-fil"
+            ],
+            "Enter title...": [
+                "Indtast titel..."
+            ],
+            "Extracted Content": [
+                "Ekstraheret indhold"
+            ],
+            "characters": [
+                "tegn"
+            ],
+            "Extracted text will appear here...": [
+                "Uddraget tekst vil vises her..."
+            ],
+            "Choose Different File": [
+                "Vælg en anden fil"
+            ],
+            "Save as Note": [
+                "Gem som notat"
+            ],
             "Collection name updated successfully": [
                 "Samlingens navn blev opdateret"
             ],
@@ -166,6 +247,39 @@
             "Cannot change actions while sync is in progress": [
                 "Kan ikke ændre handlinger, mens synkronisering er i gang"
             ],
+            "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
+                "Vælg indholdstyper (KB-artikler, indlæg, sider) til at indlæses i tabellen. Dette sender endnu ikke noget til AI."
+            ],
+            "To exclude specific items, search for them in the table, select them, then use Other Actions > Delete Selected.": [
+                "For at ekskludere specifikke elementer, søg efter dem i tabellen, vælg dem, og brug derefter Andre Handlinger > Slet valgte."
+            ],
+            "Select items from the table and send them to train the AI. Use the status tabs to filter, then select all and send.": [
+                "Vælg elementer fra tabellen og send dem for at træne AI. Brug statusfanerne til at filtrere, vælg derefter Alle og send."
+            ],
+            "Keep Content in Sync": [
+                "Hold indholdet synkroniseret"
+            ],
+            "When you edit content on your site, its status changes to \"Outdated\". Filter by Outdated, select, and re-send to update the AI.": [
+                "Når du redigerer indhold på dit site, ændres dets status til \"Forældet\". Filtrer efter Forældet, vælg, og send igen for at opdatere AI'en."
+            ],
+            "Statuses": [
+                "Statusser"
+            ],
+            "In the table but not yet sent to AI.": [
+                "I tabellen, men endnu ikke sendt til AI."
+            ],
+            "Sent to AI successfully.": [
+                "Sendt til AI med succes."
+            ],
+            "Re-sent after changes.": [
+                "Sendt igen efter ændringer."
+            ],
+            "Content changed since last sync. Re-send to update.": [
+                "Indhold ændret siden seneste synkronisering. Send igen for at opdatere."
+            ],
+            "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
+                "Synkronisering mislykkedes. Send igen for at prøve igen. Kontroller, at indholdet findes og ikke er tomt."
+            ],
             "Cannot navigate while sync is in progress": [
                 "Kan ikke navigere, mens synkronisering er i gang"
             ],
@@ -174,6 +288,9 @@
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Vælg hvilke indholdstyper du vil inkludere i dine AI-træningsdata."
+            ],
+            "Only Published content is included. Drafts, Private, and Pending posts are not available for AI training.": [
+                "Kun offentliggjort indhold er inkluderet. Udkast, Privat og Afventende indlæg er ikke tilgængelige for AI-træning."
             ],
             "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
                 "Tilføj yderligere support og diverse oplysninger, som ikke findes i artikler, indlæg og sider, som AI også bør kende."
@@ -199,6 +316,9 @@
             "Loading content types...": [
                 "Indlæser indholdstyper..."
             ],
+            "No content types available.": [
+                "Ingen indholdstyper tilgængelige."
+            ],
             "available": [
                 "tilgængelig"
             ],
@@ -217,8 +337,32 @@
             "No %s found. First create and publish %s.": [
                 "Ingen %s fundet. Først opret og offentliggør %s."
             ],
-            "No content types available.": [
-                "Ingen indholdstyper tilgængelige."
+            "Already in Collection": [
+                "Allerede i samlingen"
+            ],
+            "These content types have been added": [
+                "Disse indholdstyper er blevet tilføjet"
+            ],
+            "Available to Add": [
+                "Tilgængelig til tilføjelse"
+            ],
+            "Select items to include in training data": [
+                "Vælg elementer til træningsdata"
+            ],
+            "All available content types have been added.": [
+                "Alle tilgængelige indholdstyper er blevet tilføjet."
+            ],
+            "No Content Available": [
+                "Intet indhold tilgængeligt"
+            ],
+            "Create and publish content first": [
+                "Opret og udgiv indhold først"
+            ],
+            "Requires AI Pro": [
+                "AI Pro kræves"
+            ],
+            "Unlock with AI Advanced Features plugin": [
+                "Lås op med AI Advanced Features-plugin"
             ],
             "Adding Data...": [
                 "Tilføjer data..."
@@ -256,8 +400,11 @@
             "AI Features Pro is not properly configured. Please ensure the plugin is activated.": [
                 "AI Features Pro er ikke korrekt konfigureret. Sørg for, at plugin'et er aktiveret."
             ],
-            "Failed to save note": [
-                "Kunne ikke gemme note"
+            "PDF note added successfully": [
+                "PDF-note tilføjet med succes"
+            ],
+            "Failed to save PDF note": [
+                "Kunne ikke gemme PDF-noten"
             ],
             "Unable to determine next collection ID": [
                 "Kan ikke bestemme næste samlings-ID"

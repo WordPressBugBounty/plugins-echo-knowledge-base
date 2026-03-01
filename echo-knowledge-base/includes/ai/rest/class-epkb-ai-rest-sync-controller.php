@@ -76,6 +76,56 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 				'permission_callback' => array( $this, 'check_admin_permission' ),
 			)
 		) );
+
+		// Start verify & fix
+		register_rest_route( $this->admin_namespace, '/start-verify', array(
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'start_verify' ),
+				'permission_callback' => array( $this, 'check_admin_permission' ),
+				'args'                => array(
+					'collection_id' => array(
+						'required' => true,
+						'type' => 'integer',
+						'description' => 'Collection ID',
+					),
+				),
+			)
+		) );
+
+		// Process next verify item
+		register_rest_route( $this->admin_namespace, '/process-next-verify', array(
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'process_next_verify' ),
+				'permission_callback' => array( $this, 'check_admin_permission' ),
+			)
+		) );
+
+		// Cancel verify job
+		register_rest_route( $this->admin_namespace, '/cancel-verify', array(
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'cancel_verify' ),
+				'permission_callback' => array( $this, 'check_admin_permission' ),
+			)
+		) );
+
+		// Get mismatch details
+		register_rest_route( $this->admin_namespace, '/mismatch-details', array(
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'get_mismatch_details' ),
+				'permission_callback' => array( $this, 'check_admin_permission' ),
+				'args'                => array(
+					'collection_id' => array(
+						'required' => true,
+						'type' => 'integer',
+						'description' => 'Collection ID',
+					),
+				),
+			)
+		) );
 	}
 	
 	/**
@@ -162,7 +212,8 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 									'errors' => isset( $job['errors'] ) ? $job['errors'] : 0,
 									'type' => $job['type'],
 									'retrying' => isset( $job['retrying'] ) ? $job['retrying'] : false,
-									'cancel_requested' => isset( $job['cancel_requested'] ) ? $job['cancel_requested'] : false
+									'cancel_requested' => isset( $job['cancel_requested'] ) ? $job['cancel_requested'] : false,
+									'collection_id' => $job['collection_id']
 								)
 		) );
 	}
@@ -191,7 +242,7 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 		// Get updated job status
 		$job = EPKB_AI_Sync_Job_Manager::get_sync_job();
 
-		return $this->create_rest_response( array(
+		$response = array(
 			'success' => true,
 			'status' => $batch_result['status'],
 			'updated_posts' => isset( $batch_result['updated_posts'] ) ? $batch_result['updated_posts'] : array(),
@@ -202,14 +253,24 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 				'percent' => $job['percent'],
 				'errors' => $job['errors'],
 				'retrying' => ! empty( $job['retrying'] ),
-				'cancel_requested' => ! empty( $job['cancel_requested'] )
+				'cancel_requested' => ! empty( $job['cancel_requested'] ),
+				'collection_id' => $job['collection_id']
 			)
-		) );
+		);
+
+		// Pass through count mismatch data if present
+		if ( ! empty( $batch_result['count_mismatch'] ) ) {
+			$response['count_mismatch'] = true;
+			$response['db_synced_count'] = $batch_result['db_synced_count'];
+			$response['ai_store_count'] = $batch_result['ai_store_count'];
+		}
+
+		return $this->create_rest_response( $response );
 	}
 
 	/**
 	 * Cancel all sync operations
-	 * 
+	 *
 	 * @param WP_REST_Request $request
 	 * @return WP_REST_Response
 	 */
@@ -218,5 +279,82 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 		$result = EPKB_AI_Sync_Job_Manager::cancel_all_sync();
 
 		return $this->create_rest_response( array( 'success' => $result,  'message' => __( 'Sync canceled successfully', 'echo-knowledge-base' )) );
+	}
+
+	/**
+	 * Start verify & fix job
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function start_verify( $request ) {
+
+		$collection_id = intval( $request->get_param( 'collection_id' ) );
+
+		$result = EPKB_AI_Sync_Job_Manager::initialize_verify_job( $collection_id );
+		if ( is_wp_error( $result ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'error' => $result->get_error_code(), 'message' => $result->get_error_message() ), 400 );
+		}
+
+		return $this->create_rest_response( array( 'success' => true, 'total' => $result['total'] ) );
+	}
+
+	/**
+	 * Process next verify item
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function process_next_verify( $request ) {
+
+		$job = EPKB_AI_Sync_Job_Manager::get_verify_job();
+		if ( $job['status'] !== 'running' ) {
+			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'No active verify job', 'echo-knowledge-base' ) ) );
+		}
+
+		$result = EPKB_AI_Sync_Job_Manager::process_next_verify_item();
+
+		return $this->create_rest_response( array(
+			'success' => true,
+			'status' => $result['status'],
+			'processed' => isset( $result['processed'] ) ? $result['processed'] : 0,
+			'total' => isset( $result['total'] ) ? $result['total'] : 0,
+			'percent' => isset( $result['percent'] ) ? $result['percent'] : 0,
+			'verified_ok' => isset( $result['verified_ok'] ) ? $result['verified_ok'] : 0,
+			'marked_outdated' => isset( $result['marked_outdated'] ) ? $result['marked_outdated'] : 0,
+			'errors' => isset( $result['errors'] ) ? $result['errors'] : 0,
+			'updated_post' => isset( $result['updated_post'] ) ? $result['updated_post'] : null
+		) );
+	}
+
+	/**
+	 * Cancel verify job
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function cancel_verify( $request ) {
+
+		$result = EPKB_AI_Sync_Job_Manager::cancel_verify_job();
+
+		return $this->create_rest_response( array( 'success' => $result, 'message' => __( 'Verify canceled', 'echo-knowledge-base' ) ) );
+	}
+
+	/**
+	 * Get mismatch details between DB and AI store
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function get_mismatch_details( $request ) {
+
+		$collection_id = intval( $request->get_param( 'collection_id' ) );
+
+		$result = EPKB_AI_Sync_Job_Manager::get_mismatch_details( $collection_id );
+		if ( is_wp_error( $result ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'error' => $result->get_error_code(), 'message' => $result->get_error_message() ), 400 );
+		}
+
+		return $this->create_rest_response( array_merge( array( 'success' => true ), $result ) );
 	}
 }

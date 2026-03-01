@@ -10,6 +10,7 @@
 class EPKB_AI_Sync_Job_Manager {
 
 	const SYNC_OPTION_NAME = 'epkb_ai_sync_job_status';
+	const VERIFY_OPTION_NAME = 'epkb_ai_verify_job_status';
 	const CRON_HOOK = 'epkb_do_sync_cron_event';
 	const OLD_JOB_THRESHOLD_HOURS = 24; // Jobs older than 1 day are auto-canceled
 
@@ -125,7 +126,14 @@ class EPKB_AI_Sync_Job_Manager {
 		// check if all done including retries
 		if ( empty( $remaining_post_ids ) ) {
 			self::update_sync_job( array( 'status' => 'completed', 'percent' => 100 ) );
-			return array( 'status' => 'completed' );
+
+			$count_check = self::check_sync_count_match( $job['collection_id'] );
+			$result = array( 'status' => 'completed' );
+			if ( ! empty( $count_check ) ) {
+				$result = array_merge( $result, $count_check );
+			}
+
+			return $result;
 		}
 		
 		$consecutive_errors = $job['consecutive_errors'];
@@ -229,8 +237,15 @@ class EPKB_AI_Sync_Job_Manager {
 
 			self::update_sync_job( array( 'status' => 'completed', 'percent' => 100, 'processed' => $new_processed ) );
 
-			// Sync completed successfully - return completed status regardless of DB update result
-			return array( 'status' => 'completed', 'updated_posts' => $updated_posts );
+			// Verify count match between DB and AI store
+			$count_check = self::check_sync_count_match( $job['collection_id'] );
+
+			$result = array( 'status' => 'completed', 'updated_posts' => $updated_posts );
+			if ( ! empty( $count_check ) ) {
+				$result = array_merge( $result, $count_check );
+			}
+
+			return $result;
 		}
 		
 		return array(
@@ -256,6 +271,118 @@ class EPKB_AI_Sync_Job_Manager {
 		$training_data_db->mark_as_error( $training_data_id, $error_code, $error_message );
 	}
 
+
+	/**
+	 * Compare DB synced count vs AI store file count after sync completes
+	 *
+	 * @param int $collection_id Collection ID
+	 * @return array Empty if counts match, or array with count_mismatch data
+	 */
+	private static function check_sync_count_match( $collection_id ) {
+
+		if ( empty( $collection_id ) ) {
+			return array();
+		}
+
+		$training_data_db = new EPKB_AI_Training_Data_DB();
+		$stats = $training_data_db->get_status_statistics( $collection_id );
+		$db_synced_count = $stats['synced']; // 'added' + 'updated'
+
+		$vector_store = EPKB_AI_Provider::get_vector_store_handler();
+		$store_info = $vector_store->get_vector_store_info_by_collection_id( $collection_id );
+		if ( is_wp_error( $store_info ) ) {
+			return array();
+		}
+
+		$ai_store_count = isset( $store_info['file_counts']['completed'] ) ? (int) $store_info['file_counts']['completed'] : 0;
+
+		if ( $db_synced_count !== $ai_store_count ) {
+			return array(
+				'count_mismatch' => true,
+				'db_synced_count' => $db_synced_count,
+				'ai_store_count' => $ai_store_count
+			);
+		}
+
+		return array();
+	}
+
+	/**
+	 * Get details about mismatched items between DB and AI store
+	 *
+	 * @param int $collection_id Collection ID
+	 * @return array|WP_Error Mismatch details or error
+	 */
+	public static function get_mismatch_details( $collection_id ) {
+
+		$collection_id = EPKB_AI_Validation::validate_collection_id( $collection_id );
+		if ( is_wp_error( $collection_id ) ) {
+			return $collection_id;
+		}
+
+		// Get all synced DB items (status 'added' or 'updated')
+		$training_data_db = new EPKB_AI_Training_Data_DB();
+		$added_items = $training_data_db->get_training_data_by_collection( $collection_id, array( 'status' => 'added' ) );
+		$updated_items = $training_data_db->get_training_data_by_collection( $collection_id, array( 'status' => 'updated' ) );
+		$synced_items = array_merge( $added_items, $updated_items );
+
+		// Get vector store ID for this collection
+		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
+		if ( is_wp_error( $collection_config ) ) {
+			return $collection_config;
+		}
+
+		$store_id = isset( $collection_config['ai_training_data_store_id'] ) ? $collection_config['ai_training_data_store_id'] : '';
+		if ( empty( $store_id ) ) {
+			return new WP_Error( 'no_store', __( 'No AI store found for this collection', 'echo-knowledge-base' ) );
+		}
+
+		// Get all file IDs from the AI store
+		$vector_store = EPKB_AI_Provider::get_vector_store_handler();
+		$ai_file_ids = $vector_store->list_vector_store_file_ids( $store_id );
+		if ( is_wp_error( $ai_file_ids ) ) {
+			return $ai_file_ids;
+		}
+
+		$ai_file_ids_set = array_flip( $ai_file_ids );
+
+		// Build map of DB file_id => item data
+		$db_file_ids = array();
+		$missing_from_ai_store = array();
+		foreach ( $synced_items as $item ) {
+			$file_id = isset( $item->file_id ) ? $item->file_id : '';
+			if ( ! empty( $file_id ) ) {
+				$db_file_ids[ $file_id ] = true;
+			}
+
+			// Check if this DB item's file_id exists in AI store
+			if ( empty( $file_id ) || ! isset( $ai_file_ids_set[ $file_id ] ) ) {
+				if ( count( $missing_from_ai_store ) < 20 ) {
+					$missing_from_ai_store[] = array(
+						'item_id' => isset( $item->item_id ) ? $item->item_id : '',
+						'title'   => isset( $item->title ) ? $item->title : '',
+						'url'     => isset( $item->url ) ? $item->url : '',
+						'type'    => isset( $item->type ) ? $item->type : '',
+					);
+				}
+			}
+		}
+
+		// Count AI store files not in DB
+		$missing_from_db_count = 0;
+		foreach ( $ai_file_ids as $ai_file_id ) {
+			if ( ! isset( $db_file_ids[ $ai_file_id ] ) ) {
+				$missing_from_db_count++;
+			}
+		}
+
+		return array(
+			'missing_from_ai_store' => $missing_from_ai_store,
+			'missing_from_db_count' => $missing_from_db_count,
+			'db_synced_count'       => count( $synced_items ),
+			'ai_store_count'        => count( $ai_file_ids ),
+		);
+	}
 
 	/***********************************************************************************************
 	 *      Sync Job Data Management
@@ -391,9 +518,208 @@ class EPKB_AI_Sync_Job_Manager {
 		return true;
 	}
 	
+	/***********************************************************************************************
+	 *      Verify & Fix Job
+	 * *********************************************************************************************/
+
+	/**
+	 * Initialize a verify job for synced items in a collection
+	 *
+	 * @param int $collection_id Collection ID
+	 * @return array|WP_Error
+	 */
+	public static function initialize_verify_job( $collection_id ) {
+
+		// Check if there's an active verify job
+		$existing = self::get_verify_job();
+		if ( $existing['status'] === 'running' ) {
+			return new WP_Error( 'verify_active', __( 'A verify job is already running.', 'echo-knowledge-base' ) );
+		}
+
+		// Clear any existing verify job
+		delete_option( self::VERIFY_OPTION_NAME );
+
+		$collection_id = EPKB_AI_Validation::validate_collection_id( $collection_id );
+		if ( is_wp_error( $collection_id ) ) {
+			return $collection_id;
+		}
+
+		// Get all synced items (status 'added' or 'updated')
+		$training_data_db = new EPKB_AI_Training_Data_DB();
+		$added_items = $training_data_db->get_training_data_by_collection( $collection_id, array( 'status' => 'added' ) );
+		$updated_items = $training_data_db->get_training_data_by_collection( $collection_id, array( 'status' => 'updated' ) );
+		$synced_items = array_merge( $added_items, $updated_items );
+
+		if ( empty( $synced_items ) ) {
+			return new WP_Error( 'no_items', __( 'No synced items found to verify', 'echo-knowledge-base' ) );
+		}
+
+		$items = array();
+		foreach ( $synced_items as $item ) {
+			$items[] = array(
+				'id' => $item->item_id,
+				'type' => empty( $item->type ) ? 'post' : $item->type
+			);
+		}
+
+		$job_data = array(
+			'status' => 'running',
+			'collection_id' => $collection_id,
+			'items' => $items,
+			'total' => count( $items ),
+			'processed' => 0,
+			'percent' => 0,
+			'verified_ok' => 0,
+			'marked_outdated' => 0,
+			'errors' => 0,
+			'start_time' => gmdate( 'Y-m-d H:i:s' ),
+			'last_update' => gmdate( 'Y-m-d H:i:s' ),
+			'cancel_requested' => false
+		);
+
+		update_option( self::VERIFY_OPTION_NAME, $job_data, false );
+
+		return $job_data;
+	}
+
+	/**
+	 * Process next item in the verify queue
+	 *
+	 * @return array Result with status and counts
+	 */
+	public static function process_next_verify_item() {
+
+		$job = self::get_verify_job();
+
+		if ( ! empty( $job['cancel_requested'] ) ) {
+			return array( 'status' => 'idle' );
+		}
+
+		if ( $job['status'] !== 'running' ) {
+			return array( 'status' => $job['status'] );
+		}
+
+		// Get next unprocessed item
+		$item = isset( $job['items'][ $job['processed'] ] ) ? $job['items'][ $job['processed'] ] : null;
+
+		if ( empty( $item ) ) {
+			$job['status'] = 'completed';
+			$job['percent'] = 100;
+			$job['last_update'] = gmdate( 'Y-m-d H:i:s' );
+			update_option( self::VERIFY_OPTION_NAME, $job, false );
+
+			return array(
+				'status' => 'completed',
+				'verified_ok' => $job['verified_ok'],
+				'marked_outdated' => $job['marked_outdated'],
+				'errors' => $job['errors']
+			);
+		}
+
+		// Verify the item
+		$sync_manager = new EPKB_AI_Sync_Manager();
+
+		try {
+			$result = $sync_manager->verify_item( $item['id'], $job['collection_id'] );
+		} catch ( Exception $e ) {
+			$result = array( 'status' => 'error', 'message' => $e->getMessage() );
+		}
+
+		$updated_post = array( 'id' => $item['id'] );
+
+		// Update counters
+		switch ( $result['status'] ) {
+			case 'ok':
+				$job['verified_ok']++;
+				$updated_post['status'] = 'verified_ok';
+				break;
+			case 'outdated':
+				$job['marked_outdated']++;
+				$updated_post['status'] = 'outdated';
+				$updated_post['message'] = isset( $result['message'] ) ? $result['message'] : '';
+				break;
+			case 'error':
+				$job['errors']++;
+				$updated_post['status'] = 'verify_error';
+				$updated_post['message'] = isset( $result['message'] ) ? $result['message'] : '';
+				break;
+			default: // skipped
+				$updated_post['status'] = 'skipped';
+				break;
+		}
+
+		$job['processed']++;
+		$job['percent'] = round( ( $job['processed'] / $job['total'] ) * 100 );
+		$job['last_update'] = gmdate( 'Y-m-d H:i:s' );
+
+		// Check if complete
+		if ( $job['processed'] >= $job['total'] ) {
+			$job['status'] = 'completed';
+			$job['percent'] = 100;
+		}
+
+		update_option( self::VERIFY_OPTION_NAME, $job, false );
+
+		$response = array(
+			'status' => $job['status'],
+			'processed' => $job['processed'],
+			'total' => $job['total'],
+			'percent' => $job['percent'],
+			'verified_ok' => $job['verified_ok'],
+			'marked_outdated' => $job['marked_outdated'],
+			'errors' => $job['errors'],
+			'updated_post' => $updated_post
+		);
+
+		return $response;
+	}
+
+	/**
+	 * Get current verify job status
+	 *
+	 * @return array
+	 */
+	public static function get_verify_job() {
+
+		$default = array(
+			'status' => 'idle',
+			'collection_id' => 0,
+			'items' => array(),
+			'total' => 0,
+			'processed' => 0,
+			'percent' => 0,
+			'verified_ok' => 0,
+			'marked_outdated' => 0,
+			'errors' => 0,
+			'start_time' => '',
+			'last_update' => '',
+			'cancel_requested' => false
+		);
+
+		$job = get_option( self::VERIFY_OPTION_NAME, $default );
+
+		return wp_parse_args( $job, $default );
+	}
+
+	/**
+	 * Cancel verify job
+	 *
+	 * @return bool
+	 */
+	public static function cancel_verify_job() {
+
+		$job = self::get_verify_job();
+		$job['status'] = 'idle';
+		$job['cancel_requested'] = true;
+		$job['last_update'] = gmdate( 'Y-m-d H:i:s' );
+		update_option( self::VERIFY_OPTION_NAME, $job, false );
+
+		return true;
+	}
+
 	/**
 	 * Get all posts for a collection with their metadata
-	 * 
+	 *
 	 * @param int $collection_id Collection ID
 	 * @return array Array of items with id and type
 	 */

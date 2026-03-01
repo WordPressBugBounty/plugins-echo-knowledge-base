@@ -31,6 +31,9 @@
             "selected": [
                 "valgt"
             ],
+            "Delete": [
+                "Slett"
+            ],
             "Next": [
                 "Neste"
             ],
@@ -45,9 +48,6 @@
             ],
             "Loading...": [
                 "Laster..."
-            ],
-            "Delete": [
-                "Slett"
             ],
             "of": [
                 "av"

@@ -40,22 +40,26 @@ class EPKB_Admin_UI_Access {
 	public static function is_post_eligible_for_ai_training( $post ) {
 		
 		// Get post object if ID was passed
-		if ( is_numeric( $post ) ) {
+		$was_numeric = is_numeric( $post );
+		if ( $was_numeric ) {
 			$post = get_post( $post );
 		}
-		
+
 		// Validate post object
 		if ( ! $post || ! is_object( $post ) || empty( $post->ID ) ) {
-			return new WP_Error( 'invalid_post', __( 'Invalid post object', 'echo-knowledge-base' ) );
+			$message = $was_numeric
+				? __( 'Post not found. It may have been deleted.', 'echo-knowledge-base' )
+				: __( 'Invalid post object provided', 'echo-knowledge-base' );
+			return new WP_Error( 'invalid_post', $message );
 		}
-		
+
 		// Check post status - allow 'publish' for all, and 'private' for AI Notes
 		$allowed_statuses = array( 'publish' );
 		if ( $post->post_type === EPKB_AI_Utilities::AI_PRO_NOTES_POST_TYPE ) {
 			$allowed_statuses[] = 'private';
 		}
 		if ( ! in_array( $post->post_status, $allowed_statuses, true ) ) {
-			return new WP_Error( 'post_not_published', __( 'Post is not published', 'echo-knowledge-base' ) );
+			return new WP_Error( 'post_not_published', sprintf( __( 'Post is not published (current status: %s)', 'echo-knowledge-base' ), $post->post_status ) );
 		}
 		
 		// Check if post is password protected

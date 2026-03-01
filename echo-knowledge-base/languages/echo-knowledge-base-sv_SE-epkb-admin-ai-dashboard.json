@@ -10,8 +10,8 @@
             "Cancel": [
                 "Avbryt"
             ],
-            "Vote for Top 3 Features": [
-                "Rösta på de tre främsta funktionerna"
+            "Released": [
+                "Släpppt"
             ],
             "First Name": [
                 "Förnamn"
@@ -22,14 +22,29 @@
             "Email": [
                 "E-post"
             ],
+            "Submit Vote": [
+                "Skicka röst"
+            ],
             "Failed to submit vote. Please try again.": [
                 "Misslyckades med att skicka din röst. Försök igen."
+            ],
+            "General Settings": [
+                "Allmänna inställningar"
             ],
             "Please enter a valid email address.": [
                 "Vänligen ange en giltig e-postadress."
             ],
             "Warnings": [
                 "Varningar"
+            ],
+            "This Knowledge Base AI Is Not Enabled": [
+                "AI-funktioner i Kunskapsbasen är inte aktiverade"
+            ],
+            "AI features are optional and turned off by default. AI will only work after you manually enable it and add your own API key in ": [
+                "AI-funktioner är valfria och avstängda som standard. AI-funktionerna fungerar endast efter att du manuellt aktiverar dem och lägger till din egen API-nyckel i"
+            ],
+            "Vote for Top 3 Features": [
+                "Rösta på de tre främsta funktionerna"
             ],
             "Help us prioritize features by providing your information:": [
                 "Hjälp oss prioritera funktioner genom att lämna din information:"
@@ -39,9 +54,6 @@
             ],
             "Please describe the feature you would like to see...": [
                 "Vänligen beskriv den funktion du skulle vilja se..."
-            ],
-            "Submit Vote": [
-                "Skicka röst"
             ],
             "Please describe the feature you would like to see.": [
                 "Vänligen beskriv den funktion du vill se."
@@ -66,9 +78,6 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Välj de funktioner du vill se implementeras:"
-            ],
-            "Released": [
-                "Släpppt"
             ],
             "feature selected": [
                 "funktionen vald"

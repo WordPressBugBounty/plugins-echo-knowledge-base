@@ -16,11 +16,11 @@
             "Cancel": [
                 "Annuller"
             ],
-            "Saving...": [
-                "Gemmer..."
-            ],
             "Save Settings": [
                 "Gem indstillinger"
+            ],
+            "Saving...": [
+                "Gemmer..."
             ],
             "Failed to save settings": [
                 "Kunne ikke gemme indstillinger"

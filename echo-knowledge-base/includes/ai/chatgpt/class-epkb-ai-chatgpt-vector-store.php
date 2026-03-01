@@ -363,6 +363,59 @@ class EPKB_AI_ChatGPT_Vector_Store {
 	}
 
 	/**
+	 * List all file IDs in a vector store
+	 *
+	 * @param string $vector_store_id Vector store ID
+	 * @return array|WP_Error Array of file ID strings or error
+	 */
+	public function list_vector_store_file_ids( $vector_store_id ) {
+
+		if ( empty( $vector_store_id ) ) {
+			return new WP_Error( 'missing_id', __( 'Vector store ID is required', 'echo-knowledge-base' ) );
+		}
+
+		$file_ids = array();
+		$after = '';
+		$max_files = 500;
+
+		while ( count( $file_ids ) < $max_files ) {
+			$params = array( 'limit' => 100 );
+			if ( ! empty( $after ) ) {
+				$params['after'] = $after;
+			}
+
+			$response = $this->client->request( self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}" . self::FILES_ENDPOINT, $params, 'GET', 'vector_store_file' );
+			if ( is_wp_error( $response ) ) {
+				return $response;
+			}
+
+			if ( empty( $response['data'] ) || ! is_array( $response['data'] ) ) {
+				break;
+			}
+
+			foreach ( $response['data'] as $file ) {
+				if ( isset( $file['id'] ) && ( ! isset( $file['status'] ) || $file['status'] === 'completed' ) ) {
+					$file_ids[] = $file['id'];
+				}
+			}
+
+			// Check if there are more pages
+			if ( empty( $response['has_more'] ) ) {
+				break;
+			}
+
+			// Get the last file ID for cursor pagination
+			$last_file = end( $response['data'] );
+			$after = isset( $last_file['id'] ) ? $last_file['id'] : '';
+			if ( empty( $after ) ) {
+				break;
+			}
+		}
+
+		return $file_ids;
+	}
+
+	/**
 	 * Verify file existence
 	 *
 	 * @param string $file_id File ID to verify

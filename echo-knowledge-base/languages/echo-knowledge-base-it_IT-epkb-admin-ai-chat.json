@@ -7,8 +7,14 @@
                 "lang": "it_IT",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "Restore": [
+                "Ripristina"
+            ],
             "Settings": [
                 "Impostazioni"
+            ],
+            "All": [
+                "Tutti"
             ],
             "Page": [
                 "Pagina"
@@ -18,6 +24,12 @@
             ],
             "Cancel": [
                 "Annulla"
+            ],
+            "Save Settings": [
+                "Salva impostazioni"
+            ],
+            "Delete": [
+                "Elimina"
             ],
             "Next": [
                 "Avanti"
@@ -34,9 +46,6 @@
             "Go to General Settings": [
                 "Vai alle Impostazioni Generali"
             ],
-            "Save Settings": [
-                "Salva impostazioni"
-            ],
             "Chat History": [
                 "Cronologia chat"
             ],
@@ -48,9 +57,6 @@
             ],
             "AI Assistant": [
                 "Assistente IA"
-            ],
-            "Delete": [
-                "Elimina"
             ],
             "Delete Selected": [
                 "Elimina selezionati"
@@ -88,8 +94,35 @@
             "Conversations refreshed successfully": [
                 "Conversazioni aggiornate con successo"
             ],
+            "Archive Conversations": [
+                "Archivia conversazioni"
+            ],
+            "Are you sure you want to archive the selected conversations?": [
+                "Sei sicuro di voler archiviare le conversazioni selezionate?"
+            ],
+            "Archive": [
+                "Archivia"
+            ],
+            "Archiving conversations...": [
+                "Archiviazione delle conversazioni..."
+            ],
+            "Restore Conversations": [
+                "Ripristina conversazioni"
+            ],
+            "Are you sure you want to restore the selected conversations?": [
+                "Sei sicuro di voler ripristinare le conversazioni selezionate?"
+            ],
+            "Restoring conversations...": [
+                "Ripristinazione delle conversazioni..."
+            ],
             "Agent handover request": [
                 "Richiesta di trasferimento all'agente"
+            ],
+            "plugin\u0004Active": [
+                "Attivo"
+            ],
+            "Archived": [
+                "Archiviato"
             ],
             "Search conversations...": [
                 "Cerca conversazioni..."
@@ -99,6 +132,12 @@
             ],
             "Refresh": [
                 "Aggiorna"
+            ],
+            "Archive Selected": [
+                "Archivia selezionate"
+            ],
+            "Restore Selected": [
+                "Ripristina selezionate"
             ],
             "Loading conversations...": [
                 "Caricamento delle conversazioni in corso..."
@@ -130,6 +169,12 @@
             "Deleting conversation...": [
                 "Eliminazione della conversazione..."
             ],
+            "Archiving conversation...": [
+                "Archiviazione della conversazione..."
+            ],
+            "Restoring conversation...": [
+                "Ripristino della conversazione..."
+            ],
             "Conversation Details": [
                 "Dettagli della conversazione"
             ],
@@ -147,6 +192,9 @@
             ],
             "Collection": [
                 "Collezione"
+            ],
+            "Requires AI Features PRO": [
+                "Richiede funzionalità IA PRO"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "Sei sicuro di voler ripristinare le istruzioni predefinite?"
@@ -177,6 +225,18 @@
             ],
             "Failed to delete conversations": [
                 "Impossibile eliminare le conversazioni"
+            ],
+            "Conversations archived successfully": [
+                "Conversazioni archiviate con successo"
+            ],
+            "Failed to archive conversations": [
+                "Impossibile archiviare le conversazioni"
+            ],
+            "Conversations restored successfully": [
+                "Conversazioni ripristinate con successo"
+            ],
+            "Failed to restore conversations": [
+                "Impossibile ripristinare le conversazioni"
             ],
             "AI Chat is Disabled": [
                 "IA Chat è disabilitato"

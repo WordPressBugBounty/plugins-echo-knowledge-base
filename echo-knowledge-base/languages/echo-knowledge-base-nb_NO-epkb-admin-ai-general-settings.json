@@ -16,11 +16,11 @@
             "Cancel": [
                 "Avbryt"
             ],
-            "Saving...": [
-                "Lagrer..."
-            ],
             "Save Settings": [
                 "Lagre innstillinger"
+            ],
+            "Saving...": [
+                "Lagrer..."
             ],
             "Failed to save settings": [
                 "Kunne ikke lagre innstillinger"

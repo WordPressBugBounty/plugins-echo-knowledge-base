@@ -345,6 +345,48 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'max'         => 1000
 			),
 
+			/***  AI Chat Access Control Settings ***/
+			'ai_chat_access_mode' => array(
+				'name' => 'ai_chat_access_mode', 'type' => EPKB_Input_Filter::SELECTION,
+				'options' => array( 'all' => 'Everyone', 'logged_in' => 'Logged-in Users Only', 'wp_role' => 'Specific WordPress Roles' ),
+				'default' => 'all'
+			),
+			'ai_chat_access_roles' => array(
+				'name' => 'ai_chat_access_roles', 'type' => EPKB_Input_Filter::INTERNAL_ARRAY, 'default' => array()
+			),
+			'ai_chat_access_mode_2' => array(
+				'name' => 'ai_chat_access_mode_2', 'type' => EPKB_Input_Filter::SELECTION,
+				'options' => array( 'all' => 'Everyone', 'logged_in' => 'Logged-in Users Only', 'wp_role' => 'Specific WordPress Roles' ),
+				'default' => 'all'
+			),
+			'ai_chat_access_roles_2' => array(
+				'name' => 'ai_chat_access_roles_2', 'type' => EPKB_Input_Filter::INTERNAL_ARRAY, 'default' => array()
+			),
+			'ai_chat_access_mode_3' => array(
+				'name' => 'ai_chat_access_mode_3', 'type' => EPKB_Input_Filter::SELECTION,
+				'options' => array( 'all' => 'Everyone', 'logged_in' => 'Logged-in Users Only', 'wp_role' => 'Specific WordPress Roles' ),
+				'default' => 'all'
+			),
+			'ai_chat_access_roles_3' => array(
+				'name' => 'ai_chat_access_roles_3', 'type' => EPKB_Input_Filter::INTERNAL_ARRAY, 'default' => array()
+			),
+			'ai_chat_access_mode_4' => array(
+				'name' => 'ai_chat_access_mode_4', 'type' => EPKB_Input_Filter::SELECTION,
+				'options' => array( 'all' => 'Everyone', 'logged_in' => 'Logged-in Users Only', 'wp_role' => 'Specific WordPress Roles' ),
+				'default' => 'all'
+			),
+			'ai_chat_access_roles_4' => array(
+				'name' => 'ai_chat_access_roles_4', 'type' => EPKB_Input_Filter::INTERNAL_ARRAY, 'default' => array()
+			),
+			'ai_chat_access_mode_5' => array(
+				'name' => 'ai_chat_access_mode_5', 'type' => EPKB_Input_Filter::SELECTION,
+				'options' => array( 'all' => 'Everyone', 'logged_in' => 'Logged-in Users Only', 'wp_role' => 'Specific WordPress Roles' ),
+				'default' => 'all'
+			),
+			'ai_chat_access_roles_5' => array(
+				'name' => 'ai_chat_access_roles_5', 'type' => EPKB_Input_Filter::INTERNAL_ARRAY, 'default' => array()
+			),
+
 			/***  AI Chat Handoff Settings ***/
 			'ai_chat_feedback_enabled' => array(
 				'name'        => 'ai_chat_feedback_enabled',

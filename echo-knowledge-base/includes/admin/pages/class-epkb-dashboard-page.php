@@ -642,26 +642,15 @@ class EPKB_Dashboard_Page {
 					</aside>
 
 					<!-- Vote for Features -->
-					<aside class='epkb-card epkb-card--vote-features'>
+					<aside id='epkb-card--vote-features' class='epkb-card'>
 						<div class='epkb-vote-header'>
 							<span class='epkb-vote-icon epkbfa epkbfa-check-square-o'></span>
 							<h3><?php esc_html_e( 'Vote for Features', 'echo-knowledge-base' ); ?></h3>
 						</div>
-						<div class="epkb-vote-content">
-							<p><?php esc_html_e( 'Help us prioritize new features! Tell us what you\'d like to see next.', 'echo-knowledge-base' ); ?></p>
-							<button id="epkb-open-vote-dialog" class="epkb-btn epkb-btn-vote-open">
-								<span class="epkbfa epkbfa-bullhorn"></span>
-								<?php esc_html_e( 'Vote for Top 3 Features', 'echo-knowledge-base' ); ?>
-							</button>
-						</div>
-					</aside>
-
-					<!-- Vote Dialog (hidden by default) -->
-					<div id="epkb-vote-dialog" style="display: none;" title="<?php esc_attr_e( 'Vote for Future Features', 'echo-knowledge-base' ); ?>">
 						<form id="epkb-kb-vote-features-form" class="epkb-vote-form">
-							<p class="epkb-vote-dialog-intro"><?php esc_html_e( 'Select the features you\'d like to see implemented:', 'echo-knowledge-base' ); ?></p>
-							<p class="epkb-vote-dialog-note"><?php esc_html_e( 'Vote for AI features on the AI Features page.', 'echo-knowledge-base' ); ?></p>
-							
+							<p class="epkb-vote-form-intro"><?php esc_html_e( 'Select the features you\'d like to see implemented:', 'echo-knowledge-base' ); ?></p>
+							<p class="epkb-vote-form-note"><?php esc_html_e( 'Vote for AI features on the AI Features page.', 'echo-knowledge-base' ); ?></p>
+
 							<div class="epkb-vote-features-list">
 								<label class="epkb-vote-feature-item">
 									<input type="checkbox" name="features[]" value="pdf-to-article">
@@ -670,7 +659,7 @@ class EPKB_Dashboard_Page {
 										<span class="epkb-vote-feature-text"><?php esc_html_e( 'PDF to Article (Plain Text Only)', 'echo-knowledge-base' ); ?></span>
 									</span>
 								</label>
-								
+
 								<label class="epkb-vote-feature-item epkb-vote-feature-released">
 									<input type="checkbox" name="features[]" value="glossary" disabled>
 									<span class="epkb-vote-feature-label">
@@ -695,12 +684,12 @@ class EPKB_Dashboard_Page {
 										<span class="epkb-vote-feature-text"><?php esc_html_e( 'Custom Feature (please specify)', 'echo-knowledge-base' ); ?></span>
 									</span>
 								</label>
-								
+
 								<div class="epkb-vote-other-input" style="display: none;">
 									<textarea name="other_feature_text" placeholder="<?php esc_attr_e( 'Describe the feature you would like...', 'echo-knowledge-base' ); ?>" rows="3"></textarea>
 								</div>
 							</div>
-							
+
 							<div class="epkb-vote-user-info">
 								<div class="epkb-vote-field">
 									<label><?php esc_html_e( 'First Name', 'echo-knowledge-base' ); ?> <span class="epkb-optional" style="font-weight: bold;"><?php esc_html_e( '(optional)', 'echo-knowledge-base' ); ?></span></label>
@@ -711,10 +700,15 @@ class EPKB_Dashboard_Page {
 									<input type="email" name="email" value="<?php echo esc_attr( wp_get_current_user()->user_email ); ?>">
 								</div>
 							</div>
-							
+
 							<div class="epkb-vote-message" style="display: none;"></div>
+
+							<button type="submit" class="epkb-btn epkb-btn-vote-submit">
+								<span class="epkbfa epkbfa-bullhorn"></span>
+								<?php esc_html_e( 'Submit Vote', 'echo-knowledge-base' ); ?>
+							</button>
 						</form>
-					</div>
+					</aside>
 					
 					</div> <!-- End of Sidebar -->
 
@@ -781,7 +775,7 @@ class EPKB_Dashboard_Page {
 		// Ensure WordPress admin scripts are loaded
 		wp_enqueue_script( 'jquery' );
 		wp_enqueue_script( 'jquery-ui-core' );
-		wp_enqueue_script( 'jquery-ui-dialog' );
+		// jquery-ui-dialog removed - vote form is now inline
 		wp_enqueue_script( 'jquery-effects-core' );
 		wp_enqueue_script( 'jquery-effects-bounce' );
 		wp_enqueue_script( 'jquery-ui-sortable' );

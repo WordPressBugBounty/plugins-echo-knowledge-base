@@ -10,8 +10,8 @@
             "Cancel": [
                 "キャンセル"
             ],
-            "Vote for Top 3 Features": [
-                "トップ3機能に投票"
+            "Released": [
+                "公開済み"
             ],
             "First Name": [
                 "名"
@@ -22,14 +22,29 @@
             "Email": [
                 "メール"
             ],
+            "Submit Vote": [
+                "投票を送信"
+            ],
             "Failed to submit vote. Please try again.": [
                 "投票の送信に失敗しました。もう一度お試しください。."
+            ],
+            "General Settings": [
+                "一般設定"
             ],
             "Please enter a valid email address.": [
                 "有効なメールアドレスを入力してください。."
             ],
             "Warnings": [
                 "警告"
+            ],
+            "This Knowledge Base AI Is Not Enabled": [
+                "このナレッジベースAIは有効になっていません"
+            ],
+            "AI features are optional and turned off by default. AI will only work after you manually enable it and add your own API key in ": [
+                "AI機能はオプションで、デフォルトではオフです。AIは手動で有効化し、独自のAPIキーを追加した後にのみ動作します"
+            ],
+            "Vote for Top 3 Features": [
+                "トップ3機能に投票"
             ],
             "Help us prioritize features by providing your information:": [
                 "情報を提供して、機能の優先順位を決定するのをお手伝いください："
@@ -39,9 +54,6 @@
             ],
             "Please describe the feature you would like to see...": [
                 "見てみたい機能を説明してください..."
-            ],
-            "Submit Vote": [
-                "投票を送信"
             ],
             "Please describe the feature you would like to see.": [
                 "見てみたい機能について説明してください。."
@@ -66,9 +78,6 @@
             ],
             "Select the features you would like to see implemented:": [
                 "実装してほしい機能を選択してください："
-            ],
-            "Released": [
-                "公開済み"
             ],
             "feature selected": [
                 "機能が選択されました"

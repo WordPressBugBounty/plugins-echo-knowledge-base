@@ -13,6 +13,9 @@
             "Error": [
                 "त्रुटि"
             ],
+            "OK": [
+                "ठीक है"
+            ],
             "No posts found to sync": [
                 "सिंक के लिए पोस्ट नहीं मिली"
             ],
@@ -33,6 +36,9 @@
             ],
             "Failed to cancel sync": [
                 "सिंक रद्द करने में विफल"
+            ],
+            "Failed to start verification": [
+                "सत्यापन शुरू करने में विफल रहा"
             ],
             "A sync job is already running.": [
                 "एक सिंक जॉब पहले से चल रहा है।."
@@ -76,8 +82,8 @@
             "Select at least one item to sync": [
                 "कम से कम एक आइटम चुनें ताकि सिंक किया जा सके"
             ],
-            "Start Sync": [
-                "सिंक शुरू करें"
+            "Send Data to AI for Training": [
+                "ट्रेनिंग के लिए AI को डेटा भेजें"
             ],
             "Sync started successfully! ": [
                 "सिंक सफलतापूर्वक शुरू हुआ!"
@@ -108,6 +114,45 @@
             ],
             "Sync scheduled, waiting to start...": [
                 "सिंक निर्धारित है, शुरू होने के लिए प्रतीक्षा कर रहा है..."
+            ],
+            "Verifying": [
+                "जाँच किया जा रहा है"
+            ],
+            "items": [
+                "आइटम"
+            ],
+            "Verification complete:": [
+                "जाँच पूरी:"
+            ],
+            "marked outdated": [
+                "पुराने के रूप में चिह्नित"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "पुराने आइटमों को पुनः अपलोड करने के लिए सिंक चलाएं."
+            ],
+            "Upload completed, but the number of items doesn't match:": [
+                "अपलोड पूर्ण हो गया, लेकिन आइटमों की संख्या मेल नहीं खाती:"
+            ],
+            "items tracked locally vs": [
+                "स्थानीय रूप से ट्रैक किए गए आइटम बनाम"
+            ],
+            "items in the AI provider.": [
+                "एआई प्रदाता में आइटम्स।."
+            ],
+            "Checking for specific mismatches...": [
+                "विशिष्ट असंगतियों के लिए जाँच कर रहे हैं..."
+            ],
+            "The following items were not found in the AI provider:": [
+                "एआई प्रदाता में निम्न आइटम नहीं मिले:"
+            ],
+            "items in the AI provider are not tracked locally.": [
+                "एआई प्रदाता में आइटम स्थानीय रूप से ट्रैक नहीं किए जाते।."
+            ],
+            "Verify & Fix": [
+                "जाँच करें & ठीक करें"
+            ],
+            "Cancel Verify": [
+                "जाँच रद्द करें"
             ]
         }
     }
