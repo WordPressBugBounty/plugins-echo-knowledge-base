@@ -146,7 +146,7 @@ class EPKB_Glossary_Ctrl {
 
 		wp_die( wp_json_encode( array(
 			'status'  => 'success',
-			'message' => sprintf( esc_html__( '%d term(s) published', 'echo-knowledge-base' ), $count ),
+			'message' => esc_html__( 'Term(s) published', 'echo-knowledge-base' ),
 			'data'    => array( 'count' => $count ),
 		) ) );
 	}

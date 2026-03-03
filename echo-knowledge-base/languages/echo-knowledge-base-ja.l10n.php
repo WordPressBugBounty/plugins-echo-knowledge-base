@@ -1,7 +1,7 @@
 <?php
 return [
 	'project-id-version' => 'Knowledge Base for Documents and FAQs',
-	'po-revision-date' => '2026-02-28 20:45:10',
+	'po-revision-date' => '2026-03-02 19:10:27',
 	'last-translator' => 'AI Translation Generator',
 	'language-team' => '',
 	'language' => 'ja',
@@ -4196,7 +4196,7 @@ return [
 		'PDF note added successfully' => 'PDFノートを正常に追加しました。',
 		'Failed to save PDF note' => 'PDFノートの保存に失敗しました。',
 		'Definition is required for published terms.' => '公開済みの用語には定義が必要です。.',
-		'%d term(s) published' => '%d 件の用語が公開されています。',
+		'Terms published' => '用語が公開されました',
 		'Sort Key (Reading)' => '並べ替えキー（読み仮名）',
 		'Enter reading (e.g. furigana, pinyin)...' => '読みを入力してください（例: ふりがな、ピンイン）...',
 		'Publish Selected' => '選択を公開',
@@ -4217,5 +4217,9 @@ return [
 		'Re-sent after changes.' => '変更後に再送信しました。.',
 		'Content changed since last sync. Re-send to update.' => '前回の同期以降、コンテンツが変更されています。更新のために再送信してください。.',
 		'Sync failed. Re-send to retry. Check the content exists and is not empty.' => '同期に失敗しました。再送信して再試行してください。コンテンツが存在し、空でないことを確認してください。.',
+		'Term(s) published' => '用語を公開しました',
+		'Validate & Fix after Sync' => '同期後に検証と修正',
+		'When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.' => '有効にすると、同期が完了した後、システムは自動的に検証と修正を実行して、同期データ内の問題を確認し、それらを解決しようとします。.',
+		'Your session has expired. Please refresh the page to log in again.' => 'セッションの有効期限が切れました。再度ログインするには、ページを更新してください。.',
 	],
 ];

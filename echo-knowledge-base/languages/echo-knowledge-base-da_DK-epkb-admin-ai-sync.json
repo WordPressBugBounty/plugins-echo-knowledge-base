@@ -70,6 +70,12 @@
             "Select All Records": [
                 "Vælg alle poster"
             ],
+            "Validate & Fix after Sync": [
+                "Valider og ret efter synkronisering"
+            ],
+            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
+                "Når den er aktiveret, vil systemet automatisk køre Valider og Ret for at kontrollere problemer i de synkroniserede data og forsøge at løse dem."
+            ],
             "Sync in Progress": [
                 "Synkronisering i gang"
             ],

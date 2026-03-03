@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chatbot, faq
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 17.0.1
+Stable tag: 17.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -417,6 +417,12 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 18. Glossary 
 
 == Changelog ==
+
+= 17.0.4 =
+Release Date: Mar 2, 2026
+* Update: AI Training Data - make Validate & Fix feature optional
+* Update: improve glossary matching
+* Fix: Cleanup and minor fixes
 
 = 17.0.1 =
 Release Date: Mar 1, 2026

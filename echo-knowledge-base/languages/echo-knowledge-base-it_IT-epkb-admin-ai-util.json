@@ -37,8 +37,8 @@
             "Go to Settings": [
                 "Vai alle Impostazioni"
             ],
-            "Your session has expired. Please refresh the page.": [
-                "La tua sessione è scaduta. Aggiorna la pagina."
+            "Your session has expired. Please refresh the page to log in again.": [
+                "La tua sessione è scaduta. Per favore, aggiorna la pagina per accedere nuovamente."
             ],
             "Too many requests. Please wait a moment and try again.": [
                 "Troppi tentativi. Attendere un momento e riprovare."

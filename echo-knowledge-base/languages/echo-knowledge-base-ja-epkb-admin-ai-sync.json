@@ -70,6 +70,12 @@
             "Select All Records": [
                 "すべてのレコードを選択"
             ],
+            "Validate & Fix after Sync": [
+                "同期後に検証と修正"
+            ],
+            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
+                "有効にすると、同期が完了した後、システムは自動的に検証と修正を実行して、同期データ内の問題を確認し、それらを解決しようとします。."
+            ],
             "Sync in Progress": [
                 "同期中"
             ],

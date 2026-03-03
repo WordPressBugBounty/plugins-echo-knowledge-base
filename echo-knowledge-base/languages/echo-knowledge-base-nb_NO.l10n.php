@@ -1,7 +1,7 @@
 <?php
 return [
 	'project-id-version' => 'Knowledge Base for Documents and FAQs',
-	'po-revision-date' => '2026-02-28 20:47:51',
+	'po-revision-date' => '2026-03-02 19:11:58',
 	'last-translator' => 'AI Translation Generator',
 	'language-team' => '',
 	'language' => 'nb_NO',
@@ -4183,10 +4183,7 @@ return [
 		'Failed to save PDF note' => 'PDF-notat ble ikke lagret',
 		'The Knowledge Base Editor is disabled while the %s is active. Do you want to go to the Knowledge Base settings instead?' => 'Kunnskapsbase-redigeringsverktøyet er deaktivert mens %s er aktiv. Vil du gå til innstillingene for Kunnskapsbase i stedet?',
 		'Definition is required for published terms.' => 'Definisjon er påkrevd for publiserte begreper.',
-		'%d term(s) published' => [
-			0 => '%d begrep publisert',
-			1 => '%d begreper publisert',
-		],
+		'Terms published' => 'Begreper publisert',
 		'Sort Key (Reading)' => 'Sorteringsnøkkel (Lesing)',
 		'Enter reading (e.g. furigana, pinyin)...' => 'Skriv inn lesing (f.eks. furigana, pinyin)...',
 		'Publish Selected' => 'Publiser valgte',
@@ -4207,5 +4204,9 @@ return [
 		'Re-sent after changes.' => 'Sendt på nytt etter endringer.',
 		'Content changed since last sync. Re-send to update.' => 'Innhold endret siden siste synkronisering. Send på nytt for å oppdatere.',
 		'Sync failed. Re-send to retry. Check the content exists and is not empty.' => 'Synkronisering mislyktes. Send på nytt for å prøve igjen. Kontroller at innholdet eksisterer og ikke er tomt.',
+		'Term(s) published' => 'Begrep publisert',
+		'Validate & Fix after Sync' => 'Valider og fikse etter synkronisering',
+		'When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.' => 'Når dette er aktivert, vil systemet etter at synkroniseringen er fullført automatisk kjøre Valider og fikse for å kontrollere om det finnes problemer i de synkroniserte dataene og forsøke å løse dem.',
+		'Your session has expired. Please refresh the page to log in again.' => 'Økten din har utløpt. Oppdater siden for å logge inn igjen.',
 	],
 ];

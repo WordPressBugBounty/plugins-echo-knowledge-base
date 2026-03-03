@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Knowledge Base for Documents and FAQs\n"
-"POT-Creation-Date: 2026-02-28 12:03-0800\n"
+"POT-Creation-Date: 2026-03-02 11:07-0800\n"
 "PO-Revision-Date: 2025-06-08 08:46-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.7\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: echo-knowledge-base.php\n"
@@ -2127,7 +2127,7 @@ msgstr ""
 #: js/ai/admin-ai-content-analysis-table.js:2907
 #: js/ai/admin-ai-general-settings.js:518
 #: js/ai/admin-ai-training-data-table.js:1775 js/ai/admin-ai-util.js:116
-#: js/ai/admin-ai-util.js:869 js/ai/admin-ai-util.js:1131
+#: js/ai/admin-ai-util.js:872 js/ai/admin-ai-util.js:1134
 msgid "Close"
 msgstr ""
 
@@ -2187,7 +2187,7 @@ msgstr ""
 #: js/ai/admin-ai-training-data-table.js:955
 #: js/ai/admin-ai-training-data.js:302 js/ai/admin-ai-training-data.js:458
 #: js/ai/admin-ai-training-data.js:824 js/ai/admin-ai-training-data.js:1047
-#: js/ai/admin-ai-util.js:656
+#: js/ai/admin-ai-util.js:659
 msgid "Cancel"
 msgstr ""
 
@@ -2391,9 +2391,7 @@ msgid "Term Deleted"
 msgstr ""
 
 #: includes/admin/glossary/class-epkb-glossary-ctrl.php:149
-#: includes/system/scripts-registration-admin.php:140
-#, php-format
-msgid "%d term(s) published"
+msgid "Term(s) published"
 msgstr ""
 
 #: includes/admin/glossary/class-epkb-glossary-page.php:20
@@ -3839,7 +3837,7 @@ msgid "Posted"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2255
-#: js/ai/admin-ai-sync.js:928 js/ai/admin-ai-training-data-table.js:998
+#: js/ai/admin-ai-sync.js:898 js/ai/admin-ai-training-data-table.js:998
 #: js/ai/admin-ai-training-data-table.js:1197
 #: js/ai/admin-ai-training-data-table.js:1392
 #: js/ai/admin-ai-training-data.js:1236
@@ -3906,7 +3904,7 @@ msgstr ""
 #: includes/features/articles/class-epkb-articles-setup.php:648
 #: includes/system/class-epkb-ui-table.php:166 js/ai/admin-ai-chat.js:761
 #: js/ai/admin-ai-content-analysis-table.js:2787 js/ai/admin-ai-search.js:509
-#: js/ai/admin-ai-training-data-table.js:1595 js/ai/admin-ai-util.js:879
+#: js/ai/admin-ai-training-data-table.js:1595 js/ai/admin-ai-util.js:882
 #: templates/archive-categories.php:507
 msgid "Next"
 msgstr ""
@@ -4861,7 +4859,7 @@ msgstr ""
 #: includes/admin/pages/class-epkb-add-ons-page.php:107
 #: includes/admin/pages/class-epkb-dashboard-page.php:903
 #: includes/ai/admin/class-epkb-ai-tools-tab.php:219 js/ai/admin-ai-app.js:305
-#: js/ai/admin-ai-util.js:1100
+#: js/ai/admin-ai-util.js:1103
 msgid "AI Features"
 msgstr ""
 
@@ -8573,7 +8571,7 @@ msgstr ""
 #: includes/admin/pages/class-epkb-dashboard-page.php:724
 #: includes/admin/settings/class-epkb-setup-steps.php:1917
 #: includes/class-epkb-html-admin.php:815
-#: includes/class-epkb-html-forms.php:998 js/ai/admin-ai-util.js:1039
+#: includes/class-epkb-html-forms.php:998 js/ai/admin-ai-util.js:1042
 msgid "Documentation"
 msgstr ""
 
@@ -8898,7 +8896,7 @@ msgstr ""
 
 #: includes/admin/settings/class-epkb-setup-pointers.php:270
 #: includes/system/scripts-registration-admin.php:189
-#: js/ai/admin-ai-util.js:869
+#: js/ai/admin-ai-util.js:872
 msgid "Got it!"
 msgstr ""
 
@@ -9980,7 +9978,7 @@ msgstr ""
 
 #: includes/admin/settings/class-epkb-setup-steps.php:2111
 #: includes/admin/settings/class-epkb-setup-steps.php:2116
-#: js/ai/admin-ai-util.js:1006
+#: js/ai/admin-ai-util.js:1009
 msgid "Show Me"
 msgstr ""
 
@@ -10272,7 +10270,7 @@ msgstr ""
 #: includes/system/scripts-registration-admin.php:459
 #: js/ai/admin-ai-content-analysis-app.js:51
 #: js/ai/admin-ai-content-analysis-table.js:2401
-#: js/ai/admin-ai-training-data-table.js:1670 js/ai/admin-ai-util.js:1149
+#: js/ai/admin-ai-training-data-table.js:1670 js/ai/admin-ai-util.js:1152
 msgid "Loading..."
 msgstr ""
 
@@ -10833,7 +10831,7 @@ msgstr ""
 #: includes/ai/admin/class-epkb-ai-admin-page.php:208
 #: includes/ai/admin/class-epkb-ai-general-settings-tab.php:19
 #: includes/ai/admin/class-epkb-ai-search-tab.php:91
-#: js/ai/admin-ai-dashboard.js:120 js/ai/admin-ai-util.js:1083
+#: js/ai/admin-ai-dashboard.js:120 js/ai/admin-ai-util.js:1086
 msgid "General Settings"
 msgstr ""
 
@@ -10860,7 +10858,7 @@ msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-admin-page.php:225
 #: includes/ai/admin/class-epkb-ai-content-analysis-page.php:291
-#: js/ai/admin-ai-content-analysis.js:625 js/ai/admin-ai-sync.js:924
+#: js/ai/admin-ai-content-analysis.js:625 js/ai/admin-ai-sync.js:894
 #: js/ai/admin-ai-training-data-table.js:1000
 #: js/ai/admin-ai-training-data-table.js:1193
 #: js/ai/admin-ai-training-data.js:1238
@@ -10894,7 +10892,7 @@ msgstr ""
 
 #: includes/ai/admin/class-epkb-ai-admin-page.php:232
 #: includes/ai/admin/class-epkb-ai-content-analysis-page.php:298
-#: js/ai/admin-ai-sync.js:1069
+#: js/ai/admin-ai-sync.js:1066
 msgid "OK"
 msgstr ""
 
@@ -14791,15 +14789,15 @@ msgstr ""
 msgid "Sync stopped after 5 consecutive errors"
 msgstr ""
 
-#: includes/ai/sync/class-epkb-ai-sync-job-manager.php:337
+#: includes/ai/sync/class-epkb-ai-sync-job-manager.php:339
 msgid "No AI store found for this collection"
 msgstr ""
 
-#: includes/ai/sync/class-epkb-ai-sync-job-manager.php:536
+#: includes/ai/sync/class-epkb-ai-sync-job-manager.php:538
 msgid "A verify job is already running."
 msgstr ""
 
-#: includes/ai/sync/class-epkb-ai-sync-job-manager.php:554
+#: includes/ai/sync/class-epkb-ai-sync-job-manager.php:556
 msgid "No synced items found to verify"
 msgstr ""
 
@@ -15134,7 +15132,7 @@ msgstr ""
 msgid "The value \"%s\" is not a valid HEX color. Expected format: #xxxxxx"
 msgstr ""
 
-#: includes/class-epkb-utilities.php:20 js/ai/admin-ai-sync.js:925
+#: includes/class-epkb-utilities.php:20 js/ai/admin-ai-sync.js:895
 #: js/ai/admin-ai-training-data-table.js:1001
 #: js/ai/admin-ai-training-data-table.js:1194
 #: js/ai/admin-ai-training-data.js:1234
@@ -16187,8 +16185,8 @@ msgstr ""
 #: js/ai/admin-ai-content-analysis-sync.js:946
 #: js/ai/admin-ai-content-analysis-sync.js:957
 #: js/ai/admin-ai-content-analysis-table.js:2778 js/ai/admin-ai-search.js:500
-#: js/ai/admin-ai-sync.js:1047 js/ai/admin-ai-sync.js:1049
-#: js/ai/admin-ai-sync.js:1057 js/ai/admin-ai-sync.js:1067
+#: js/ai/admin-ai-sync.js:1044 js/ai/admin-ai-sync.js:1046
+#: js/ai/admin-ai-sync.js:1054 js/ai/admin-ai-sync.js:1064
 #: js/ai/admin-ai-training-data-table.js:1586
 #: js/ai/admin-ai-training-data.js:729
 msgid "of"
@@ -16316,6 +16314,10 @@ msgstr ""
 
 #: includes/system/scripts-registration-admin.php:139
 msgid "Are you sure you want to delete this term?"
+msgstr ""
+
+#: includes/system/scripts-registration-admin.php:140
+msgid "Terms published"
 msgstr ""
 
 #: includes/system/scripts-registration-admin.php:141
@@ -16790,7 +16792,7 @@ msgid "To view chat history, please enable AI Chat in the Settings tab."
 msgstr ""
 
 #: js/ai/admin-ai-chat.js:2376 js/ai/admin-ai-search.js:2340
-#: js/ai/admin-ai-util.js:1017 js/ai/admin-ai-util.js:1028
+#: js/ai/admin-ai-util.js:1020 js/ai/admin-ai-util.js:1031
 msgid "Go to Settings"
 msgstr ""
 
@@ -17225,12 +17227,12 @@ msgstr ""
 msgid "error"
 msgstr ""
 
-#: js/ai/admin-ai-content-analysis-sync.js:952 js/ai/admin-ai-sync.js:1054
-#: js/ai/admin-ai-sync.js:1074
+#: js/ai/admin-ai-content-analysis-sync.js:952 js/ai/admin-ai-sync.js:1051
+#: js/ai/admin-ai-sync.js:1071
 msgid "errors"
 msgstr ""
 
-#: js/ai/admin-ai-content-analysis-sync.js:953 js/ai/admin-ai-sync.js:1054
+#: js/ai/admin-ai-content-analysis-sync.js:953 js/ai/admin-ai-sync.js:1051
 msgid "with"
 msgstr ""
 
@@ -17838,7 +17840,7 @@ msgid "To view search history, please enable AI Search in the Settings tab."
 msgstr ""
 
 #: js/ai/admin-ai-sync.js:117 js/ai/admin-ai-sync.js:146
-#: js/ai/admin-ai-sync.js:1061
+#: js/ai/admin-ai-sync.js:1058
 msgid "Sync canceled"
 msgstr ""
 
@@ -17850,160 +17852,171 @@ msgstr ""
 msgid "Failed to start verification"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:695
+#: js/ai/admin-ai-sync.js:664
 msgid "A sync job is already running."
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:705 js/ai/admin-ai-sync.js:718
+#: js/ai/admin-ai-sync.js:674 js/ai/admin-ai-sync.js:687
 msgid "Failed to start sync"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:874
+#: js/ai/admin-ai-sync.js:844
 msgid ""
 "API key is required to sync content. Please configure it in General Settings."
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:926 js/ai/admin-ai-training-data-table.js:999
+#: js/ai/admin-ai-sync.js:896 js/ai/admin-ai-training-data-table.js:999
 #: js/ai/admin-ai-training-data-table.js:1195
 #: js/ai/admin-ai-training-data.js:1237
 msgid "Outdated"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:927 js/ai/admin-ai-training-data-table.js:997
+#: js/ai/admin-ai-sync.js:897 js/ai/admin-ai-training-data-table.js:997
 #: js/ai/admin-ai-training-data-table.js:1196
 #: js/ai/admin-ai-training-data.js:1235
 msgid "Added"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:937
+#: js/ai/admin-ai-sync.js:907
 msgid "Selected"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:937
+#: js/ai/admin-ai-sync.js:907
 msgid "Records"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:940 js/ai/admin-ai-sync.js:943
+#: js/ai/admin-ai-sync.js:910 js/ai/admin-ai-sync.js:913
 msgid "selected records"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:960
+#: js/ai/admin-ai-sync.js:930
 msgid "Select All Filtered Records"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:960
+#: js/ai/admin-ai-sync.js:930
 msgid "Select All Records"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:978
+#: js/ai/admin-ai-sync.js:945
+msgid "Validate & Fix after Sync"
+msgstr ""
+
+#: js/ai/admin-ai-sync.js:955
+msgid ""
+"When enabled, after syncing completes, the system will automatically run "
+"Validate & Fix to check for issues in the synced data and attempt to resolve "
+"them."
+msgstr ""
+
+#: js/ai/admin-ai-sync.js:975
 msgid "Sync in Progress"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:992
+#: js/ai/admin-ai-sync.js:989
 msgid "Cancel Sync"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1000
+#: js/ai/admin-ai-sync.js:997
 msgid "API key required"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1001
+#: js/ai/admin-ai-sync.js:998
 msgid "Select at least one item to sync"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1003
+#: js/ai/admin-ai-sync.js:1000
 msgid "Send Data to AI for Training"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1042
+#: js/ai/admin-ai-sync.js:1039
 msgid "Sync started successfully! "
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1045
+#: js/ai/admin-ai-sync.js:1042
 msgid "Starting sync..."
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1047
+#: js/ai/admin-ai-sync.js:1044
 msgid "Retrying failed posts:"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1049
+#: js/ai/admin-ai-sync.js:1046
 msgid "Processing"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1049 js/ai/admin-ai-sync.js:1052
+#: js/ai/admin-ai-sync.js:1046 js/ai/admin-ai-sync.js:1049
 msgid "posts"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1052
+#: js/ai/admin-ai-sync.js:1049
 msgid "Completed! Processed"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1057
+#: js/ai/admin-ai-sync.js:1054
 msgid "Sync stopped after 5 consecutive errors. Processed"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1057
+#: js/ai/admin-ai-sync.js:1054
 msgid "posts with"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1057
+#: js/ai/admin-ai-sync.js:1054
 msgid "total errors"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1059
+#: js/ai/admin-ai-sync.js:1056
 msgid "Sync scheduled, waiting to start..."
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1067
+#: js/ai/admin-ai-sync.js:1064
 msgid "Verifying"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1067
+#: js/ai/admin-ai-sync.js:1064
 msgid "items"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1069
+#: js/ai/admin-ai-sync.js:1066
 msgid "Verification complete:"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1071
+#: js/ai/admin-ai-sync.js:1068
 msgid "marked outdated"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1077
+#: js/ai/admin-ai-sync.js:1074
 msgid "Run sync to re-upload outdated items."
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1103
+#: js/ai/admin-ai-sync.js:1100
 msgid "Upload completed, but the number of items doesn't match:"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1103
+#: js/ai/admin-ai-sync.js:1100
 msgid "items tracked locally vs"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1103
+#: js/ai/admin-ai-sync.js:1100
 msgid "items in the AI provider."
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1107
+#: js/ai/admin-ai-sync.js:1104
 msgid "Checking for specific mismatches..."
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1112
+#: js/ai/admin-ai-sync.js:1109
 msgid "The following items were not found in the AI provider:"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1127
+#: js/ai/admin-ai-sync.js:1124
 msgid "items in the AI provider are not tracked locally."
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1133
+#: js/ai/admin-ai-sync.js:1130
 msgid "Verify & Fix"
 msgstr ""
 
-#: js/ai/admin-ai-sync.js:1152
+#: js/ai/admin-ai-sync.js:1149
 msgid "Cancel Verify"
 msgstr ""
 
@@ -18801,48 +18814,48 @@ msgid "No training data configuration available."
 msgstr ""
 
 #: js/ai/admin-ai-util.js:367
-msgid "Your session has expired. Please refresh the page."
+msgid "Your session has expired. Please refresh the page to log in again."
 msgstr ""
 
-#: js/ai/admin-ai-util.js:369
+#: js/ai/admin-ai-util.js:372
 msgid "Too many requests. Please wait a moment and try again."
 msgstr ""
 
-#: js/ai/admin-ai-util.js:373
+#: js/ai/admin-ai-util.js:376
 msgid "An unexpected error occurred. Please try again."
 msgstr ""
 
-#: js/ai/admin-ai-util.js:653
+#: js/ai/admin-ai-util.js:656
 msgid "Confirm Action"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:654
+#: js/ai/admin-ai-util.js:657
 msgid "Are you sure you want to proceed?"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:655
+#: js/ai/admin-ai-util.js:658
 msgid "Confirm"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:962
+#: js/ai/admin-ai-util.js:965
 msgid "Setup Steps"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:1072
+#: js/ai/admin-ai-util.js:1075
 msgid ""
 "To use AI features, please configure your API key and accept the data "
 "privacy agreement in "
 msgstr ""
 
-#: js/ai/admin-ai-util.js:1128
+#: js/ai/admin-ai-util.js:1131
 msgid "Session Expired"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:1130
+#: js/ai/admin-ai-util.js:1133
 msgid "Refresh Page"
 msgstr ""
 
-#: js/ai/admin-ai-util.js:1254
+#: js/ai/admin-ai-util.js:1257
 msgid "No results found"
 msgstr ""
 

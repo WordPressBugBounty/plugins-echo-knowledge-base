@@ -1,7 +1,7 @@
 <?php
 return [
 	'project-id-version' => 'Knowledge Base for Documents and FAQs',
-	'po-revision-date' => '2026-02-28 20:47:01',
+	'po-revision-date' => '2026-03-02 19:11:25',
 	'last-translator' => 'AI Translation Generator',
 	'language-team' => '',
 	'language' => 'da_DK',
@@ -4175,7 +4175,7 @@ return [
 		'PDF note added successfully' => 'PDF-note tilføjet med succes',
 		'Failed to save PDF note' => 'Kunne ikke gemme PDF-noten',
 		'Definition is required for published terms.' => 'Definition er påkrævet for offentliggjorte termer.',
-		'%d term(s) published' => '%d term(er) udgivet',
+		'Terms published' => 'Termer udgivet',
 		'Sort Key (Reading)' => 'Sortér nøgle (læsning)',
 		'Enter reading (e.g. furigana, pinyin)...' => 'Indtast læsning (f.eks. furigana, pinyin)...',
 		'Publish Selected' => 'Udgiv valgte',
@@ -4196,5 +4196,9 @@ return [
 		'Re-sent after changes.' => 'Sendt igen efter ændringer.',
 		'Content changed since last sync. Re-send to update.' => 'Indhold ændret siden seneste synkronisering. Send igen for at opdatere.',
 		'Sync failed. Re-send to retry. Check the content exists and is not empty.' => 'Synkronisering mislykkedes. Send igen for at prøve igen. Kontroller, at indholdet findes og ikke er tomt.',
+		'Term(s) published' => 'Termer offentliggjort',
+		'Validate & Fix after Sync' => 'Valider og ret efter synkronisering',
+		'When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.' => 'Når den er aktiveret, vil systemet automatisk køre Valider og Ret for at kontrollere problemer i de synkroniserede data og forsøge at løse dem.',
+		'Your session has expired. Please refresh the page to log in again.' => 'Din session er udløbet. Opdater siden venligst for at logge ind igen.',
 	],
 ];

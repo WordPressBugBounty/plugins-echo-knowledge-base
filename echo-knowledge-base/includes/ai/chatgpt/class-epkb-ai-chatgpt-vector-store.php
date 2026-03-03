@@ -376,7 +376,7 @@ class EPKB_AI_ChatGPT_Vector_Store {
 
 		$file_ids = array();
 		$after = '';
-		$max_files = 500;
+		$max_files = 5000;
 
 		while ( count( $file_ids ) < $max_files ) {
 			$params = array( 'limit' => 100 );
@@ -394,7 +394,7 @@ class EPKB_AI_ChatGPT_Vector_Store {
 			}
 
 			foreach ( $response['data'] as $file ) {
-				if ( isset( $file['id'] ) && ( ! isset( $file['status'] ) || $file['status'] === 'completed' ) ) {
+				if ( isset( $file['id'] ) && ( ! isset( $file['status'] ) || in_array( $file['status'], array( 'completed', 'in_progress' ), true ) ) ) {
 					$file_ids[] = $file['id'];
 				}
 			}

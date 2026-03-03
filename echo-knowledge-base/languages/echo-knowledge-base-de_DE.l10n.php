@@ -1,7 +1,7 @@
 <?php
 return [
 	'project-id-version' => 'Knowledge Base for Documents and FAQs',
-	'po-revision-date' => '2026-02-28 20:39:51',
+	'po-revision-date' => '2026-03-02 19:08:18',
 	'last-translator' => 'AI Translation Generator',
 	'language-team' => '',
 	'language' => 'de_DE',
@@ -4313,5 +4313,10 @@ return [
 		'Re-sent after changes.' => 'Nach Änderungen erneut gesendet.',
 		'Content changed since last sync. Re-send to update.' => 'Seit der letzten Synchronisierung wurde der Inhalt geändert. Erneut senden, um zu aktualisieren.',
 		'Sync failed. Re-send to retry. Check the content exists and is not empty.' => 'Synchronisierung fehlgeschlagen. Erneut senden, um es erneut zu versuchen. Prüfen Sie, dass der Inhalt vorhanden ist und nicht leer ist.',
+		'Term(s) published' => 'Begriff(e) veröffentlicht',
+		'Terms published' => 'Begriffe veröffentlicht',
+		'Validate & Fix after Sync' => 'Validieren & Beheben nach der Synchronisierung',
+		'When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.' => 'Wenn aktiviert, wird nach Abschluss der Synchronisierung automatisch Validieren & Beheben ausgeführt, um Probleme in den synchronisierten Daten zu prüfen und zu beheben.',
+		'Your session has expired. Please refresh the page to log in again.' => 'Ihre Sitzung ist abgelaufen. Bitte aktualisieren Sie die Seite, um sich erneut anzumelden.',
 	],
 ];

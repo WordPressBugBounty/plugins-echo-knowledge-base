@@ -37,8 +37,8 @@
             "Go to Settings": [
                 "設定へ移動"
             ],
-            "Your session has expired. Please refresh the page.": [
-                "セッションの有効期限が切れました。ページを更新してください。."
+            "Your session has expired. Please refresh the page to log in again.": [
+                "セッションの有効期限が切れました。再度ログインするには、ページを更新してください。."
             ],
             "Too many requests. Please wait a moment and try again.": [
                 "リクエストが多すぎます。しばらく待ってからもう一度お試しください。."

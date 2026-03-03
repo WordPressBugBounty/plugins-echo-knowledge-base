@@ -70,6 +70,12 @@
             "Select All Records": [
                 "Sélectionner tous les enregistrements"
             ],
+            "Validate & Fix after Sync": [
+                "Valider et corriger après synchronisation"
+            ],
+            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
+                "Lorsque l'option est activée, après la synchronisation, le système exécutera automatiquement Valider et corriger pour vérifier les problèmes dans les données synchronisées et tenter de les résoudre."
+            ],
             "Sync in Progress": [
                 "Synchronisation en cours"
             ],

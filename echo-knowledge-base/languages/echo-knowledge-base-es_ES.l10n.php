@@ -1,7 +1,7 @@
 <?php
 return [
 	'project-id-version' => 'Knowledge Base for Documents and FAQs',
-	'po-revision-date' => '2026-02-28 20:41:51',
+	'po-revision-date' => '2026-03-02 19:08:58',
 	'last-translator' => 'AI Translation Generator',
 	'language-team' => '',
 	'language' => 'es_ES',
@@ -4320,7 +4320,7 @@ return [
 		'PDF note added successfully' => 'Nota PDF añadida con éxito',
 		'Failed to save PDF note' => 'Error al guardar la nota PDF',
 		'Definition is required for published terms.' => 'Se requiere definición para términos publicados.',
-		'%d term(s) published' => '%d término(s) publicado(s)',
+		'Terms published' => 'Términos publicados',
 		'Sort Key (Reading)' => 'Clave de ordenación (Lectura)',
 		'Enter reading (e.g. furigana, pinyin)...' => 'Introduce lectura (p. ej. furigana, pinyin)...',
 		'Publish Selected' => 'Publicar seleccionados',
@@ -4341,5 +4341,9 @@ return [
 		'Re-sent after changes.' => 'Reenviado después de los cambios.',
 		'Content changed since last sync. Re-send to update.' => 'El contenido ha cambiado desde la última sincronización. Vuelva a enviarlo para actualizar.',
 		'Sync failed. Re-send to retry. Check the content exists and is not empty.' => 'La sincronización ha fallado. Vuelva a enviarlo para intentar de nuevo. Verifique que el contenido exista y no esté vacío.',
+		'Term(s) published' => 'Términos publicados',
+		'Validate & Fix after Sync' => 'Validar y corregir tras la sincronización',
+		'When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.' => 'Cuando esté habilitado, después de que se complete la sincronización, el sistema ejecutará automáticamente Validar y corregir para verificar problemas en los datos sincronizados e intentar resolverlos.',
+		'Your session has expired. Please refresh the page to log in again.' => 'Su sesión ha expirado. Por favor, recargue la página para volver a iniciar sesión.',
 	],
 ];

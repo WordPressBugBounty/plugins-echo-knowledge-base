@@ -4239,6 +4239,10 @@ button .epkb-ai-spinner {
 }
 .epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-sync-controls .epkb-ai-select-all-checkbox {
   margin: 0 0 15px 25px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-wrap: wrap;
 }
 .epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-sync-controls .epkb-ai-select-all-checkbox label {
   display: inline-flex;
@@ -4256,6 +4260,51 @@ button .epkb-ai-spinner {
   width: 14px;
   height: 14px;
   cursor: pointer;
+}
+.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-sync-controls .epkb-ai-select-all-checkbox .epkb__option-tooltip {
+  margin-left: 5px;
+  position: static;
+  display: inline-block;
+}
+.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-sync-controls .epkb-ai-select-all-checkbox .epkb__option-tooltip .epkb__option-tooltip__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background-color: #2EA3F2;
+  cursor: pointer;
+  color: #FFFFFF;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  border-radius: 20px;
+}
+.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-sync-controls .epkb-ai-select-all-checkbox .epkb__option-tooltip .epkb__option-tooltip__button:hover + .epkb__option-tooltip__contents {
+  display: block;
+}
+.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-sync-controls .epkb-ai-select-all-checkbox .epkb__option-tooltip .epkb__option-tooltip__contents {
+  position: absolute;
+  display: none;
+  left: 0;
+  right: 0;
+  margin-top: 5px;
+  z-index: 10;
+  background-color: #FFFFFF;
+  border-radius: 6px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  white-space: normal;
+}
+.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-sync-controls .epkb-ai-select-all-checkbox .epkb__option-tooltip .epkb__option-tooltip__contents:hover {
+  display: block;
+}
+.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-sync-controls .epkb-ai-select-all-checkbox .epkb__option-tooltip .epkb__option-tooltip__contents .epkb__option-tooltip__body {
+  padding: 15px;
+  font-size: 12px;
+  line-height: 1.5;
+  box-sizing: border-box;
+  color: #6D7882;
+  border: 1px solid #E3E6EA;
+  border-radius: 6px;
 }
 .epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-sync-controls .epkb-ai-button {
   padding: 12px 24px;

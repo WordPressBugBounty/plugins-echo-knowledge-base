@@ -294,7 +294,9 @@ class EPKB_AI_Sync_Job_Manager {
 			return array();
 		}
 
-		$ai_store_count = isset( $store_info['file_counts']['completed'] ) ? (int) $store_info['file_counts']['completed'] : 0;
+		$completed = isset( $store_info['file_counts']['completed'] ) ? (int) $store_info['file_counts']['completed'] : 0;
+		$in_progress = isset( $store_info['file_counts']['in_progress'] ) ? (int) $store_info['file_counts']['in_progress'] : 0;
+		$ai_store_count = $completed + $in_progress;
 
 		if ( $db_synced_count !== $ai_store_count ) {
 			return array(

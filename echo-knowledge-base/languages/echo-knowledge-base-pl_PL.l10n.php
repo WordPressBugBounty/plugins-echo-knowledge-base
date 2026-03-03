@@ -1,7 +1,7 @@
 <?php
 return [
 	'project-id-version' => 'Knowledge Base for Documents and FAQs',
-	'po-revision-date' => '2026-02-28 20:44:24',
+	'po-revision-date' => '2026-03-02 19:10:13',
 	'last-translator' => 'AI Translation Generator',
 	'language-team' => '',
 	'language' => 'pl_PL',
@@ -4191,11 +4191,7 @@ return [
 		'PDF note added successfully' => 'Notatka PDF dodana pomyślnie',
 		'Failed to save PDF note' => 'Nie udało się zapisać notatki PDF',
 		'Definition is required for published terms.' => 'Definicja jest wymagana dla opublikowanych terminów.',
-		'%d term(s) published' => [
-			0 => '%d termin opublikowany',
-			1 => '%d terminy opublikowane',
-			2 => '%d terminów opublikowanych',
-		],
+		'Terms published' => 'Terminy opublikowane',
 		'Sort Key (Reading)' => 'Klucz sortowania (odczyt)',
 		'Enter reading (e.g. furigana, pinyin)...' => 'Wprowadź odczyt (np. furigana, pinyin)...',
 		'Publish Selected' => 'Opublikuj wybrane',
@@ -4216,5 +4212,9 @@ return [
 		'Re-sent after changes.' => 'Wysłano ponownie po zmianach.',
 		'Content changed since last sync. Re-send to update.' => 'Zawartość została zmieniona od czasu ostatniej synchronizacji. Wyślij ponownie, aby zaktualizować.',
 		'Sync failed. Re-send to retry. Check the content exists and is not empty.' => 'Synchronizacja nie powiodła się. Wyślij ponownie, aby ponowić próbę. Sprawdź, czy treść istnieje i nie jest pusta.',
+		'Term(s) published' => 'Terminy opublikowane',
+		'Validate & Fix after Sync' => 'Zweryfikuj i napraw po synchronizacji',
+		'When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.' => 'Gdy opcja jest włączona, po zakończeniu synchronizacji system automatycznie uruchomi narzędzie \'Zweryfikuj i napraw\', aby sprawdzić problemy w zsynchronizowanych danych i spróbować je rozwiązać.',
+		'Your session has expired. Please refresh the page to log in again.' => 'Twoja sesja wygasła. Proszę odświeżyć stronę, aby ponownie się zalogować.',
 	],
 ];

@@ -93,17 +93,21 @@ function epkb_set_top_level_admin_submenu_page(){
 		}
 	}
 
-	// Move Dashboard to position 1
+	// Remove items from original positions first to avoid collisions when original position matches target position
 	if ( $dashboard_item !== null && $dashboard_id !== null ) {
-		$submenu[$find_page][1] = $dashboard_item;
-		$submenu[$find_page][1][2] = 'edit.php?post_type=' . $post_type_name . '&page=epkb-dashboard';
 		unset( $submenu[$find_page][$dashboard_id] );
 	}
-
-	// Move Help to position 2 (right after Dashboard)
 	if ( $help_item !== null && $help_id !== null ) {
-		$submenu[$find_page][2] = $help_item;
 		unset( $submenu[$find_page][$help_id] );
+	}
+
+	// Place items at desired positions
+	if ( $dashboard_item !== null ) {
+		$submenu[$find_page][1] = $dashboard_item;
+		$submenu[$find_page][1][2] = 'edit.php?post_type=' . $post_type_name . '&page=epkb-dashboard';
+	}
+	if ( $help_item !== null ) {
+		$submenu[$find_page][2] = $help_item;
 	}
 
 	// Sort submenu pages accordingly to their position

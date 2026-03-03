@@ -37,8 +37,8 @@
             "Go to Settings": [
                 "सेटिंग्स पर जाएँ"
             ],
-            "Your session has expired. Please refresh the page.": [
-                "आपका सत्र समाप्त हो गया है। कृपया पृष्ठ को ताज़ा करें।."
+            "Your session has expired. Please refresh the page to log in again.": [
+                "आपका सत्र समाप्त हो गया है। कृपया फिर से लॉग इन करने के लिए पेज को रीफ्रेश करें।."
             ],
             "Too many requests. Please wait a moment and try again.": [
                 "बहुत अधिक अनुरोध हैं। कृपया एक पल प्रतीक्षा करें और फिर से प्रयास करें।."

@@ -1,7 +1,7 @@
 <?php
 return [
 	'project-id-version' => 'Knowledge Base for Documents and FAQs',
-	'po-revision-date' => '2026-02-28 20:43:34',
+	'po-revision-date' => '2026-03-02 19:09:48',
 	'last-translator' => 'AI Translation Generator',
 	'language-team' => '',
 	'language' => 'hi_IN',
@@ -4179,7 +4179,7 @@ return [
 		'PDF note added successfully' => 'PDF नोट सफलतापूर्वक जोड़ा गया',
 		'Failed to save PDF note' => 'PDF नोट सहेजना विफल रहा',
 		'Definition is required for published terms.' => 'प्रकाशित शब्दों के लिए परिभाषा आवश्यक है.',
-		'%d term(s) published' => '%d शब्द प्रकाशित',
+		'Terms published' => 'शब्द प्रकाशित',
 		'Sort Key (Reading)' => 'पठन के लिए क्रम कुंजी',
 		'Enter reading (e.g. furigana, pinyin)...' => 'पढ़ना दर्ज करें (जैसे फुरिगाना, पिनयिन)...',
 		'Publish Selected' => 'चयनित प्रकाशित करें',
@@ -4200,5 +4200,9 @@ return [
 		'Re-sent after changes.' => 'परिवर्तनों के बाद पुनः भेजा गया।.',
 		'Content changed since last sync. Re-send to update.' => 'पिछली सिंक्रनाइज़ेशन के बाद सामग्री बदली है। अपडेट के लिए पुनः भेजें।.',
 		'Sync failed. Re-send to retry. Check the content exists and is not empty.' => 'सिंक विफल रहा। पुनः प्रयास के लिए पुनः भेजें। जाँच करें कि सामग्री मौजूद है और खाली नहीं है।.',
+		'Term(s) published' => 'टर्म प्रकाशित',
+		'Validate & Fix after Sync' => 'सिंक के बाद सत्यापित करें और ठीक करें',
+		'When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.' => 'जब सक्षम हो, सिंक पूरा होने के बाद सिस्टम स्वतः सत्यापित और ठीक करेगा ताकि सिंक किए गए डेटा में किसी भी समस्या की जाँच हो सके और उन्हें हल करने का प्रयास किया जा सके.',
+		'Your session has expired. Please refresh the page to log in again.' => 'आपका सत्र समाप्त हो गया है। कृपया फिर से लॉग इन करने के लिए पेज को रीफ्रेश करें।.',
 	],
 ];

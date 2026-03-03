@@ -81,11 +81,8 @@ class EPKB_Glossary_Frontend {
 			return mb_strlen( $b->name ) - mb_strlen( $a->name );
 		} );
 
-		// Split content by HTML tags so we only replace in text nodes
-		$parts = preg_split( '/(<[^>]+>)/s', $content, -1, PREG_SPLIT_DELIM_CAPTURE );
-		if ( $parts === false ) {
-			return $content;
-		}
+		// Split content by HTML tags so we only replace in text nodes (handles comments, CDATA, and > inside attributes)
+		$parts = wp_html_split( $content );
 
 		$matched_any = false;
 		$matched_terms = array(); // track which terms were already matched
@@ -143,6 +140,12 @@ class EPKB_Glossary_Frontend {
 					$parts[$i] = preg_replace( $pattern, $replacement, $parts[$i], 1 );
 					$matched_terms[$term->term_id] = true;
 					$matched_any = true;
+
+					// Re-split to isolate injected HTML from remaining text so subsequent terms don't match inside attributes
+					$new_parts = wp_html_split( $parts[$i] );
+					if ( count( $new_parts ) > 1 ) {
+						array_splice( $parts, $i, 1, $new_parts );
+					}
 				}
 			}
 		}
