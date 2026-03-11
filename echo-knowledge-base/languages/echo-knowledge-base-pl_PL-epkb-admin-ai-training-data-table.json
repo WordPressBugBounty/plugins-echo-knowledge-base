@@ -58,14 +58,26 @@
             "Send Data to AI": [
                 "Wyślij dane do SI"
             ],
+            "Thank you! Your report has been submitted successfully.": [
+                "Dziękujemy! Twój raport został pomyślnie przesłany."
+            ],
             "Never": [
                 "Nigdy"
+            ],
+            "Submitting...": [
+                "Przesyłanie..."
             ],
             "Pending": [
                 "Oczekujące"
             ],
             "of": [
                 "z"
+            ],
+            "Canceled": [
+                "Anulowano"
+            ],
+            "Skipped": [
+                "Pominięto"
             ],
             "Refreshing...": [
                 "Odświeżanie..."
@@ -94,11 +106,23 @@
             "Completed": [
                 "Zakończono"
             ],
+            "An error occurred. Please try again.": [
+                "Wystąpił błąd. Spróbuj ponownie."
+            ],
             "Outdated": [
                 "Nieaktualne"
             ],
             "Added": [
                 "Dodano"
+            ],
+            "Added:": [
+                "Dodano:"
+            ],
+            "Manage Notes and PDFs": [
+                "Zarządzaj notatkami i PDF-ami"
+            ],
+            "Deleting...": [
+                "Usuwanie..."
             ],
             "Failed to load training data": [
                 "Nie udało się wczytać danych treningowych"
@@ -106,14 +130,8 @@
             "Failed to delete items": [
                 "Nie udało się usunąć elementów"
             ],
-            "Delete Items": [
-                "Usuń elementy"
-            ],
             "Syncing": [
                 "Synchronizowanie"
-            ],
-            "Canceled": [
-                "Anulowano"
             ],
             "How to get started": [
                 "Jak zacząć"
@@ -160,11 +178,26 @@
             "View Error": [
                 "Pokaż błąd"
             ],
+            "View Info": [
+                "Zobacz informacje"
+            ],
             "View content": [
                 "Pokaż treść"
             ],
             "KB Files": [
                 "Pliki KB"
+            ],
+            "Failed to submit report.": [
+                "Nie udało się przesłać zgłoszenia."
+            ],
+            "Submit this issue if you need help:": [
+                "Wyślij to zgłoszenie, jeśli potrzebujesz pomocy:"
+            ],
+            "Your email (optional)": [
+                "Twój adres e-mail (opcjonalny)"
+            ],
+            "Submit to Us": [
+                "Wyślij do nas"
             ],
             "Error Details": [
                 "Szczegóły błędu"
@@ -172,23 +205,65 @@
             "Failed to load content": [
                 "Nie udało się załadować treści"
             ],
+            "Delete Items": [
+                "Usuń elementy"
+            ],
             "Post ID:": [
                 "ID wpisu:"
             ],
             "Loading content...": [
                 "Ładowanie treści..."
             ],
+            "Content Processing Warning": [
+                "Ostrzeżenie dotyczące przetwarzania treści"
+            ],
+            "The HTML content of this post produced empty text after processing. This usually means the post contains only non-text elements (scripts, styles, embeds, etc.). The original HTML is shown below for inspection.": [
+                "Zawartość HTML tego posta po przetworzeniu wygenerowała pusty tekst. Zwykle oznacza to, że post zawiera wyłącznie elementy niebędące tekstem (skrypty, style, osadzenia itp.). Oryginalny HTML jest pokazany poniżej do wglądu."
+            ],
+            "Original HTML Content": [
+                "Oryginalna zawartość HTML"
+            ],
+            "No content available": [
+                "Brak treści"
+            ],
             "Error Processing Content": [
                 "Błąd przetwarzania treści"
+            ],
+            "Delete from Training Data": [
+                "Usuń z danych treningowych"
+            ],
+            "File Name:": [
+                "Nazwa pliku:"
+            ],
+            "Unknown PDF": [
+                "Nieznany plik PDF"
+            ],
+            "Original PDF:": [
+                "Oryginalny PDF:"
+            ],
+            "Open PDF": [
+                "Otwórz PDF"
+            ],
+            "If this stored URL no longer works, the original PDF is no longer available from this training data record.": [
+                "Jeśli zapisany adres URL przestał działać, oryginalny plik PDF nie jest już dostępny w tym rekordzie danych treningowych."
+            ],
+            "No original URL is stored for this PDF upload. Only the saved file information is available here.": [
+                "Nie przechowano oryginalnego adresu URL dla tego przesyłanego pliku PDF. Dostępne są tutaj tylko zapisane informacje o pliku."
+            ],
+            "Provider:": [
+                "Dostawca:"
+            ],
+            "AI File ID:": [
+                "ID pliku AI:"
+            ],
+            "Last Synced:": [
+                "Ostatnia synchronizacja:"
             ],
             "Original Content": [
                 "Oryginalna treść"
             ],
             "Processed Content": [
                 "Przetworzona treść"
-            ],
-            "No content available": [
-                "Brak treści"
             ],
             "No processed content available": [
                 "Brak przetworzonej treści"

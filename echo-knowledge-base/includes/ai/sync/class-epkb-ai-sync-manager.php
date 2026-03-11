@@ -44,6 +44,7 @@ class EPKB_AI_Sync_Manager {
 		// Get or create vector store (use $this->vector_store to ensure current_store_id is set for Gemini)
 		$vector_store_id = $this->vector_store->get_or_create_vector_store( $collection_id );
 		if ( is_wp_error( $vector_store_id ) ) {
+			EPKB_AI_Log::add_log( $vector_store_id, array( 'item_id' => $post_id, 'collection_id' => $collection_id, 'message' => 'Failed to get or create vector store' ) );
 			return $vector_store_id;
 		}
 
@@ -81,6 +82,7 @@ class EPKB_AI_Sync_Manager {
 		if ( $remove_from_file_system ) {
 			$file_result = $this->vector_store->delete_file_from_file_storage( $training_record->file_id, $vector_store_id );
 			if ( is_wp_error( $file_result ) ) {
+				EPKB_AI_Log::add_log( $file_result, array( 'item_id' => $post_id, 'file_id' => $training_record->file_id, 'message' => 'Failed to delete file from file storage' ) );
 				return $file_result;
 			}
 			$file_id = '';
@@ -91,6 +93,7 @@ class EPKB_AI_Sync_Manager {
 		if ( $add_to_file_system ) {
 			$file_result = $this->vector_store->upload_file_to_file_storage( $post_id, $file_content, $item_type, $vector_store_id );
 			if ( is_wp_error( $file_result ) ) {
+				EPKB_AI_Log::add_log( $file_result, array( 'item_id' => $post_id, 'message' => 'Failed to upload file to file storage' ) );
 				return $file_result;
 			}
 
@@ -99,6 +102,7 @@ class EPKB_AI_Sync_Manager {
 			// update the training data record with the file id
 			$result = $this->training_data_db->update_training_data( $training_data_id, array( 'file_id' => $file_id ) );
 			if ( is_wp_error( $result ) ) {
+				EPKB_AI_Log::add_log( $result, array( 'item_id' => $post_id, 'message' => 'Failed to update training data with file ID' ) );
 				return $result;
 			}
 
@@ -111,6 +115,7 @@ class EPKB_AI_Sync_Manager {
 		if ( $remove_from_vector_store ) {
 			$file_result = $this->vector_store->remove_file_from_vector_store( $vector_store_id, $training_record->file_id );
 			if ( is_wp_error( $file_result ) ) {
+				EPKB_AI_Log::add_log( $file_result, array( 'item_id' => $post_id, 'file_id' => $training_record->file_id, 'message' => 'Failed to remove file from vector store' ) );
 				return $file_result;
 			}
 		}
@@ -119,6 +124,7 @@ class EPKB_AI_Sync_Manager {
 		if ( $add_to_vector_store ) {
 			$file_result = $this->vector_store->add_file_to_vector_store( $vector_store_id, $file_id, true );	// checks file is in vector store
 			if ( is_wp_error( $file_result ) ) {
+				EPKB_AI_Log::add_log( $file_result, array( 'item_id' => $post_id, 'file_id' => $file_id, 'message' => 'Failed to add file to vector store' ) );
 				return $file_result;
 			}
 		}
@@ -302,11 +308,9 @@ class EPKB_AI_Sync_Manager {
 				$content = apply_filters( 'epkb_process_kb_file', $post_id );
 			}
 			if ( is_wp_error( $content ) ) {
-				$this->training_data_db->mark_as_error( $post_id, 500, $content->get_error_message() );
 				return $content;
 			}
 			if ( empty( $content ) ) {
-				$this->training_data_db->mark_as_error( $post_id, 404, __( 'Content not found for KB file', 'echo-knowledge-base' ) );
 				return new WP_Error( 'invalid_content', __( 'Content not found for KB file', 'echo-knowledge-base' ), array( 'post_id' => $post_id ) );
 			}
 
@@ -320,19 +324,13 @@ class EPKB_AI_Sync_Manager {
 			$post = get_post( $post_id );
 			if ( ! $post ) {
 				$error_msg = __( 'Post not found. It may have been deleted.', 'echo-knowledge-base' );
-				$this->training_data_db->mark_as_error( $post_id, 404, $error_msg );
 				return new WP_Error( 'invalid_post', $error_msg, array( 'post_id' => $post_id ) );
 			}
 
 			// Use centralized eligibility check
 			$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
 			if ( is_wp_error( $eligibility_check ) ) {
-				$error_code = 404; // Default error code
-				if ( $eligibility_check->get_error_code() === 'post_password_protected' ) {
-					$error_code = 403;
-				}
 				EPKB_AI_Log::add_log( 'Post excluded from sync: ' . $eligibility_check->get_error_message(), array( 'post_id' => $post_id, 'title' => $post->post_title ) );
-				$this->training_data_db->mark_as_error( $post_id, $error_code, $eligibility_check->get_error_message() );
 				return $eligibility_check;
 			}
 
@@ -340,8 +338,6 @@ class EPKB_AI_Sync_Manager {
 			$content_processor = new EPKB_AI_Content_Processor();
 			$prepared = $content_processor->prepare_post( $post );
 			if ( is_wp_error( $prepared ) ) {
-				$error_code = $prepared->get_error_code() === 'post_not_published' ? 404 : 500;
-				$this->training_data_db->mark_as_error( $post_id, $error_code, $prepared->get_error_message() );
 				return $prepared;
 			}
 

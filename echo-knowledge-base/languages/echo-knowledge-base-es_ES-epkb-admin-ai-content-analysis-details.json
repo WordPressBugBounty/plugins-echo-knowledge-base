@@ -10,8 +10,20 @@
             "Categories": [
                 "Categorías"
             ],
+            "OFF": [
+                "APAGADO"
+            ],
+            "Use code:": [
+                "Usar código:"
+            ],
+            "Copy": [
+                "Copiar"
+            ],
             "Article Content": [
                 "Contenido del artículo"
+            ],
+            "Copied!": [
+                "¡Copiado!"
             ],
             "Analyzing...": [
                 "Analizando..."
@@ -19,11 +31,17 @@
             "Content Gaps Analysis": [
                 "Análisis de brechas de contenido"
             ],
+            "Identifies unanswered user questions": [
+                "Identifica preguntas de los usuarios sin respuesta"
+            ],
+            "Detects missing or underdeveloped topics": [
+                "Detecta temas faltantes o poco desarrollados"
+            ],
+            "Provides actionable recommendations for improvement": [
+                "Proporciona recomendaciones accionables para la mejora"
+            ],
             "AI-Powered Tag Suggestions": [
                 "Sugerencias de etiquetas impulsadas por IA"
-            ],
-            "Gap analysis is only available with AI Features add-on.": [
-                "El análisis de brechas solo está disponible con el complemento de Funciones de IA."
             ],
             "Readability": [
                 "Legibilidad"
@@ -121,8 +139,11 @@
             "An error occurred during Content Gaps analysis.": [
                 "Se produjo un error durante el análisis de huecos de contenido."
             ],
-            "Learn More About AI Features": [
-                "Aprende más sobre las funciones de IA"
+            "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
+                "La IA identifica información faltante y preguntas sin responder en sus artículos. Descubra qué temas requieren más cobertura."
+            ],
+            "Get AI Features PRO": [
+                "Obtenga AI Features PRO"
             ],
             "Analyzing article for content gaps...": [
                 "Analizando el artículo para identificar huecos de contenido..."

@@ -7,9 +7,6 @@
                 "lang": "it_IT",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
-            "Title": [
-                "Titolo"
-            ],
             "Learn More": [
                 "Scopri di più"
             ],
@@ -22,14 +19,23 @@
             "Save": [
                 "Salva"
             ],
+            "Close": [
+                "Chiudi"
+            ],
             "Cancel": [
                 "Annulla"
+            ],
+            "selected": [
+                "selezionato"
             ],
             "Delete": [
                 "Elimina"
             ],
             "Updated": [
                 "Aggiornato"
+            ],
+            "OFF": [
+                "DISATTIVATO"
             ],
             "View Full Documentation": [
                 "Visualizza la documentazione completa"
@@ -58,20 +64,17 @@
             "Note updated successfully": [
                 "Nota aggiornata con successo"
             ],
-            "Note deleted successfully": [
-                "Nota eliminata con successo"
-            ],
-            "Additional Notes": [
-                "Note aggiuntive"
+            "Name": [
+                "Nome"
             ],
             "Pending": [
                 "In attesa"
             ],
+            "All Categories": [
+                "Tutte le categorie"
+            ],
             "Delete Selected": [
                 "Elimina selezionati"
-            ],
-            "of": [
-                "di"
             ],
             "Failed to create collection": [
                 "Impossibile creare la raccolta"
@@ -82,131 +85,77 @@
             "Added": [
                 "Aggiunto"
             ],
+            "Deleting...": [
+                "Eliminazione in corso..."
+            ],
+            "added": [
+                "aggiunto"
+            ],
             "How to get started": [
                 "Come iniziare"
             ],
             "Other Actions": [
                 "Altre azioni"
             ],
-            "Failed to load note content": [
-                "Errore nel caricamento del contenuto della nota"
+            "Failed to load available items": [
+                "Impossibile caricare gli elementi disponibili"
             ],
-            "Please enter both title and content for the note": [
-                "Inserisci sia il titolo che il contenuto della nota"
+            "Please select one content type first": [
+                "Seleziona prima un tipo di contenuto"
             ],
-            "Unable to delete note. Please refresh the page and try again.": [
-                "Impossibile eliminare la nota. Aggiorna la pagina e riprova."
+            "Please select at least one item to add": [
+                "Seleziona almeno un elemento da aggiungere"
             ],
-            "Delete Note": [
-                "Elimina nota"
+            "Data added successfully": [
+                "Dati aggiunti con successo"
             ],
-            "Are you sure you want to delete this note? This action cannot be undone.": [
-                "Sei sicuro di voler eliminare questa nota? Questa azione non può essere annullata."
+            "Failed to add selected items": [
+                "Impossibile aggiungere gli elementi selezionati"
             ],
-            "Failed to delete note": [
-                "Errore nell'eliminazione della nota"
+            "available": [
+                "disponibile"
             ],
-            "Edit Note": [
-                "Modifica nota"
+            "Select Individual Items": [
+                "Seleziona elementi individuali"
             ],
-            "Add Note": [
-                "Aggiungi nota"
+            "Choose one content type, then select the individual items you want to add to this collection.": [
+                "Scegli un tipo di contenuto, quindi seleziona gli elementi individuali che vuoi aggiungere a questa raccolta."
             ],
-            "View and manage all notes (opens in new tab)": [
-                "Visualizza e gestisci tutte le note (si apre in una nuova scheda)"
+            "Content Type": [
+                "Tipo di contenuto"
             ],
-            "All Notes": [
-                "Tutte le note"
+            "No content types are currently available.": [
+                "Attualmente non sono disponibili tipi di contenuto."
             ],
-            "Loading note content...": [
-                "Caricamento contenuto della nota..."
+            "Select a content type to load its available items.": [
+                "Seleziona un tipo di contenuto per caricare gli elementi disponibili."
             ],
-            "Note Title": [
-                "Titolo della nota"
+            "Loading available items...": [
+                "Caricamento degli elementi disponibili in corso..."
             ],
-            "Enter note title...": [
-                "Inserisci il titolo della nota..."
+            "Unable to load the available items for this content type.": [
+                "Impossibile caricare gli elementi disponibili per questo tipo di contenuto."
             ],
-            "Note Content": [
-                "Contenuto della nota"
+            "Search by name": [
+                "Cerca per nome"
             ],
-            "Enter note content...": [
-                "Inserisci il contenuto della nota..."
+            "Select All": [
+                "Seleziona tutto"
             ],
-            "Deleting...": [
-                "Eliminazione in corso..."
+            "Clear All": [
+                "Cancella tutto"
             ],
-            "Save Note": [
-                "Salva nota"
+            "No available items were found for this content type.": [
+                "Nessun elemento disponibile per questo tipo di contenuto."
             ],
-            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
-                "L'estrazione PDF non è disponibile. Assicurati che AI Features Pro sia attivo."
+            "No items match the current filters.": [
+                "Nessun elemento corrisponde ai filtri correnti."
             ],
-            "No text could be extracted from this PDF. The file may be scanned images or have no selectable text.": [
-                "Nessun testo è stato estratto da questo PDF. Il file potrebbe contenere immagini scansionate o non avere testo selezionabile."
+            "Adding Items...": [
+                "Aggiungendo elementi..."
             ],
-            "Failed to extract text from PDF": [
-                "Impossibile estrarre testo dal PDF"
-            ],
-            "unknown type": [
-                "Tipo sconosciuto"
-            ],
-            "no file": [
-                "Nessun file"
-            ],
-            "Invalid file type": [
-                "Tipo di file non valido"
-            ],
-            "Please drop a valid PDF file.": [
-                "Rilascia un file PDF valido."
-            ],
-            "Please enter a title for the note.": [
-                "Inserisci un titolo per la nota."
-            ],
-            "No content to save. Please select a PDF file that contains extractable text.": [
-                "Nessun contenuto da salvare. Seleziona un file PDF che contenga testo estraibile."
-            ],
-            "Failed to save note": [
-                "Impossibile salvare la nota"
-            ],
-            "Upload PDF": [
-                "Carica PDF"
-            ],
-            "Dismiss": [
-                "Chiudi"
-            ],
-            "Extracting page": [
-                "Estrazione pagina"
-            ],
-            "Loading PDF...": [
-                "Caricamento PDF..."
-            ],
-            "Drop PDF file here": [
-                "Rilascia qui il file PDF"
-            ],
-            "Drag and drop a PDF file here, or click the button below": [
-                "Trascina e rilascia un file PDF qui, oppure fai clic sul pulsante qui sotto"
-            ],
-            "Select PDF": [
-                "Seleziona PDF"
-            ],
-            "Enter title...": [
-                "Inserisci titolo..."
-            ],
-            "Extracted Content": [
-                "Contenuto estratto"
-            ],
-            "characters": [
-                "caratteri"
-            ],
-            "Extracted text will appear here...": [
-                "Il testo estratto apparirà qui..."
-            ],
-            "Choose Different File": [
-                "Scegli un file diverso"
-            ],
-            "Save as Note": [
-                "Salva come nota"
+            "Add Selected Items": [
+                "Aggiungi elementi selezionati"
             ],
             "Collection name updated successfully": [
                 "Nome della collezione aggiornato con successo"
@@ -234,9 +183,6 @@
             ],
             "Please select at least one data type": [
                 "Seleziona almeno un tipo di dato"
-            ],
-            "Data added successfully": [
-                "Dati aggiunti con successo"
             ],
             "Failed to add data": [
                 "Errore nell'aggiunta dei dati"
@@ -292,21 +238,6 @@
             "Only Published content is included. Drafts, Private, and Pending posts are not available for AI training.": [
                 "Viene incluso solo il contenuto pubblicato. Bozze, post Privati e post in attesa non sono disponibili per l'addestramento dell'IA."
             ],
-            "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
-                "Aggiungi supporto aggiuntivo e informazioni varie non presenti in articoli, post e pagine che IA dovrebbe conoscere."
-            ],
-            "Examples: business hours, contact information, company policies, product details, or any other information you want the AI to reference.": [
-                "Esempi: orari di lavoro, informazioni di contatto, politiche aziendali, dettagli sui prodotti o qualsiasi altra informazione a cui l'IA dovrebbe fare riferimento."
-            ],
-            "Got it": [
-                "Capito"
-            ],
-            "added": [
-                "aggiunto"
-            ],
-            "Requires AI Advanced Features plugin.": [
-                "Richiede il plugin AI Advanced Features."
-            ],
             "Access Manager Notice": [
                 "Avviso del gestore degli accessi"
             ],
@@ -318,9 +249,6 @@
             ],
             "No content types available.": [
                 "Nessun tipo di contenuto disponibile."
-            ],
-            "available": [
-                "disponibile"
             ],
             "excluded": [
                 "escluso"
@@ -361,9 +289,6 @@
             "Requires AI Pro": [
                 "Richiede AI Pro"
             ],
-            "Unlock with AI Advanced Features plugin": [
-                "Sblocca con il plug-in AI Advanced Features"
-            ],
             "Adding Data...": [
                 "Aggiungendo dati..."
             ],
@@ -400,11 +325,8 @@
             "AI Features Pro is not properly configured. Please ensure the plugin is activated.": [
                 "AI Features Pro non è configurato correttamente. Assicurati che il plugin sia attivo."
             ],
-            "PDF note added successfully": [
-                "Nota PDF aggiunta con successo"
-            ],
-            "Failed to save PDF note": [
-                "Impossibile salvare la nota PDF"
+            "Failed to save note": [
+                "Impossibile salvare la nota"
             ],
             "Unable to determine next collection ID": [
                 "Impossibile determinare l'ID della prossima collezione"

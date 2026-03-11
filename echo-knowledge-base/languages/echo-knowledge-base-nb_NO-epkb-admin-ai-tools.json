@@ -13,6 +13,9 @@
             "Disabled": [
                 "Deaktivert"
             ],
+            "Debug Mode": [
+                "Feilrettingsmodus"
+            ],
             "API Key": [
                 "API-nøkkel"
             ],
@@ -66,9 +69,6 @@
             ],
             "Error clearing AI logs": [
                 "Feil ved tømming av AI-loggene"
-            ],
-            "Debug Mode": [
-                "Feilrettingsmodus"
             ],
             "Enable Debug Mode": [
                 "Aktiver feilrettingsmodus"

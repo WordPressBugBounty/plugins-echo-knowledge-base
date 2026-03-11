@@ -7,14 +7,14 @@
                 "lang": "fr_FR",
                 "plural-forms": "nplurals=2; plural=(n > 1);"
             },
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
+                "Pour utiliser les fonctionnalités IA, veuillez configurer votre clé API et accepter l'accord de confidentialité des données dans les Paramètres généraux, puis activer IA Recherche ou IA Chat."
+            ],
             "AI Features": [
                 "Fonctionnalités d'IA"
             ],
             "Go to General Settings": [
                 "Aller dans les Paramètres généraux"
-            ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
-                "Pour utiliser les fonctionnalités IA, veuillez configurer votre clé API et accepter l'accord de confidentialité des données dans les Paramètres généraux, puis activer IA Recherche ou IA Chat."
             ],
             "To use Training Data, please enable either AI Chat or AI Search in their respective tabs.": [
                 "Pour utiliser les données d'apprentissage automatique, veuillez activer soit IA Chat ou IA Recherche dans leurs onglets respectifs."
@@ -31,8 +31,26 @@
             "Configure API Key": [
                 "Configurer la clé API"
             ],
+            "Legacy AI Models Detected": [
+                "Modèles IA hérités détectés"
+            ],
+            "Your AI configuration still uses legacy Gemini model names. Update the AI configuration to save the current model names.": [
+                "Votre configuration d'IA utilise toujours des noms de modèles Gemini hérités. Mettez à jour la configuration d'IA pour enregistrer les noms de modèles actuels."
+            ],
+            "Updating...": [
+                "Mise à jour..."
+            ],
+            "Update AI Configuration": [
+                "Mettre à jour la configuration d'IA"
+            ],
             "Failed to load tab data": [
                 "Échec du chargement des données de l'onglet"
+            ],
+            "AI configuration updated successfully": [
+                "La configuration d'IA a été mise à jour avec succès"
+            ],
+            "Failed to update AI configuration": [
+                "Échec de la mise à jour de la configuration d'IA"
             ],
             "Failed to load dashboard data. Please reload the page.": [
                 "Échec du chargement des données du tableau de bord. Veuillez recharger la page."

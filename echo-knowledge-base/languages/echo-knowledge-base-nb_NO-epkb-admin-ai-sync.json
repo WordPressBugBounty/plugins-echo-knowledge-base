@@ -19,11 +19,20 @@
             "No posts found to sync": [
                 "Ingen innlegg funnet for synkronisering"
             ],
+            "No synced items found to verify": [
+                "Ingen synkroniserte elementer funnet for å verifisere"
+            ],
             "Pending": [
                 "Ventende"
             ],
             "of": [
                 "av"
+            ],
+            "Selected": [
+                "Valgt"
+            ],
+            "Processing": [
+                "Behandler"
             ],
             "errors": [
                 "feil"
@@ -55,9 +64,6 @@
             "Added": [
                 "Lagt til"
             ],
-            "Selected": [
-                "Valgt"
-            ],
             "Records": [
                 "Poster"
             ],
@@ -70,11 +76,11 @@
             "Select All Records": [
                 "Velg alle poster"
             ],
-            "Validate & Fix after Sync": [
-                "Valider og fikse etter synkronisering"
+            "Validate & Fix Synced Items": [
+                "Valider og rett synkroniserte elementer"
             ],
-            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
-                "Når dette er aktivert, vil systemet etter at synkroniseringen er fullført automatisk kjøre Valider og fikse for å kontrollere om det finnes problemer i de synkroniserte dataene og forsøke å løse dem."
+            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
+                "Når dette er aktivert, vil systemet automatisk validere og rette kun de synkroniserte elementene etter at synkroniseringen er fullført. Utdaterte eller ventende elementer vil ikke bli verifisert før de er synkronisert."
             ],
             "Sync in Progress": [
                 "Synkronisering pågår"
@@ -99,9 +105,6 @@
             ],
             "Retrying failed posts:": [
                 "Gjenforsøker mislykkede poster:"
-            ],
-            "Processing": [
-                "Behandler"
             ],
             "posts": [
                 "poster"

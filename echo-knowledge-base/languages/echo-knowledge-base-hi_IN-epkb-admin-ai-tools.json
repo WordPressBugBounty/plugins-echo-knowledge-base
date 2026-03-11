@@ -13,6 +13,9 @@
             "Disabled": [
                 "निष्क्रिय"
             ],
+            "Debug Mode": [
+                "डिबग मोड"
+            ],
             "API Key": [
                 "एपीआई कुंजी"
             ],
@@ -66,9 +69,6 @@
             ],
             "Error clearing AI logs": [
                 "AI लॉग साफ़ करते समय त्रुटि"
-            ],
-            "Debug Mode": [
-                "डिबग मोड"
             ],
             "Enable Debug Mode": [
                 "डिबग मोड सक्षम करें"

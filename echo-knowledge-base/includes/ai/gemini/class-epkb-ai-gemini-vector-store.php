@@ -310,6 +310,45 @@ class EPKB_AI_Gemini_Vector_Store {
 	}
 
 	/**
+	 * Upload a PDF file directly to a store using resumable upload
+	 *
+	 * @param string $id Entity ID (e.g., unique identifier for the PDF)
+	 * @param string $pdf_binary_content Raw PDF binary content
+	 * @param string $store_id Store ID (required for Gemini)
+	 * @return array|WP_Error File object with 'id' or error
+	 */
+	public function upload_pdf_to_file_storage( $id, $pdf_binary_content, $store_id = '' ) {
+
+		if ( empty( $store_id ) ) {
+			return new WP_Error( 'missing_store_id', __( 'Store ID is required for Gemini', 'echo-knowledge-base' ) );
+		}
+
+		$display_name = 'kb_pdf_' . $id . '_' . time();
+		$resource_name = $this->get_resource_name( $store_id );
+		$upload_endpoint = '/' . $resource_name . ':uploadToFileSearchStore';
+
+		$metadata = array( 'displayName' => $display_name );
+		$response = $this->client->upload_file_resumable( $upload_endpoint, $pdf_binary_content, $metadata, 'application/pdf' );
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		// Handle long-running operation
+		$doc_response = $this->handle_operation_response( $response );
+		if ( is_wp_error( $doc_response ) ) {
+			return $doc_response;
+		}
+
+		$document_id = $this->extract_document_id_from_response( $doc_response );
+
+		return array(
+			'id'     => $document_id,
+			'name'   => isset( $doc_response['displayName'] ) ? $doc_response['displayName'] : $display_name,
+			'status' => isset( $doc_response['state'] ) ? $doc_response['state'] : 'completed'
+		);
+	}
+
+	/**
 	 * Add file to vector store
 	 *
 	 * In Gemini, files are uploaded directly to stores, so this is a verification-only operation.

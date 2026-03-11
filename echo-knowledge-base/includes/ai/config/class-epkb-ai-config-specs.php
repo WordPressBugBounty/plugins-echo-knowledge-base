@@ -78,10 +78,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			'ai_provider' => array(
 				'name'    => 'ai_provider',
 				'type'    => EPKB_Input_Filter::SELECTION,
-				'options' => array(
-					EPKB_AI_Provider::PROVIDER_GEMINI => 'Gemini',
-					EPKB_AI_Provider::PROVIDER_CHATGPT => 'ChatGPT'
-				),
+				'options' => EPKB_AI_Provider::get_provider_options(),
 				'default' => EPKB_AI_Provider::PROVIDER_GEMINI
 			),
 
@@ -874,6 +871,12 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			$new_config = self::reset_inactive_provider_collections( $original_config, $new_config );
 		}
 
+		$new_config = array_merge(
+			self::get_legacy_model_updates( $original_config ),
+			$new_config,
+			self::get_legacy_model_updates( $new_config )
+		);
+
 		$new_config = parent::update_config( $new_config );
 		if ( is_wp_error( $new_config ) ) {
 			return $new_config;
@@ -924,6 +927,46 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	public static function get_default_value( $field_name ) {
 		$specs = self::get_config_fields_specifications();
 		return isset( $specs[$field_name]['default'] ) ? $specs[$field_name]['default'] : null;
+	}
+
+	/**
+	 * Get legacy model updates for the provided AI config.
+	 *
+	 * @param array|null $config
+	 * @return array
+	 */
+	public static function get_legacy_model_updates( $config = null ) {
+		if ( $config === null ) {
+			$config = self::get_ai_config();
+		}
+
+		if ( empty( $config ) || ! is_array( $config ) ) {
+			return array();
+		}
+
+		$legacy_model_map = array(
+			'ai_gemini_chat_model' => array(
+				'gemini-2.5-flash-lite' => 'gemini-3.1-flash-lite-preview',
+				'gemini-3-pro-preview'  => 'gemini-3.1-pro-preview',
+			),
+			'ai_gemini_search_model' => array(
+				'gemini-2.5-flash-lite' => 'gemini-3.1-flash-lite-preview',
+				'gemini-3-pro-preview'  => 'gemini-3.1-pro-preview',
+			),
+		);
+		$updates = array();
+
+		foreach ( $legacy_model_map as $field_name => $field_map ) {
+			if ( empty( $config[ $field_name ] ) || ! is_string( $config[ $field_name ] ) ) {
+				continue;
+			}
+
+			if ( isset( $field_map[ $config[ $field_name ] ] ) ) {
+				$updates[ $field_name ] = $field_map[ $config[ $field_name ] ];
+			}
+		}
+
+		return $updates;
 	}
 
 	/**

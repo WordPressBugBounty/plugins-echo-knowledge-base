@@ -10,26 +10,17 @@
             "Cancel": [
                 "रद्द करें"
             ],
-            "Released": [
-                "रिलीज़ किया गया"
-            ],
-            "First Name": [
-                "पहला नाम"
-            ],
-            "(optional)": [
-                "(वैकल्पिक)"
-            ],
-            "Email": [
-                "ईमेल"
-            ],
-            "Submit Vote": [
-                "वोट जमा करें"
+            "General Settings": [
+                "सामान्य सेटिंग्स"
             ],
             "Failed to submit vote. Please try again.": [
                 "मतदान जमा करने में विफल रहा। कृपया पुनः प्रयास करें।."
             ],
-            "General Settings": [
-                "सामान्य सेटिंग्स"
+            "Email": [
+                "ईमेल"
+            ],
+            "First Name": [
+                "पहला नाम"
             ],
             "Please enter a valid email address.": [
                 "कृपया एक मान्य ईमेल पता दर्ज करें।."
@@ -49,11 +40,17 @@
             "Help us prioritize features by providing your information:": [
                 "अपनी जानकारी देकर सुविधाओं को प्राथमिकता निर्धारित करने में हमारी मदद करें:"
             ],
+            "(optional)": [
+                "(वैकल्पिक)"
+            ],
             "Describe Your Feature Request": [
                 "अपना फीचर अनुरोध विवरण दें"
             ],
             "Please describe the feature you would like to see...": [
                 "कृपया वह फीचर बताएं जिसे आप देखना चाहेंगे..."
+            ],
+            "Submit Vote": [
+                "वोट जमा करें"
             ],
             "Please describe the feature you would like to see.": [
                 "कृपया वह फीचर बताएं जिसे आप देखना चाहेंगे।."
@@ -78,6 +75,9 @@
             ],
             "Select the features you would like to see implemented:": [
                 "वे फीचर्स चुनें जिन्हें आप लागू होते देखना चाहते हैं:"
+            ],
+            "Released": [
+                "रिलीज़ किया गया"
             ],
             "feature selected": [
                 "चयनित फीचर"

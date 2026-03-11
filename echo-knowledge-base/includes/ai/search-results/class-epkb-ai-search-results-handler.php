@@ -61,7 +61,12 @@ class EPKB_AI_Search_Results_Handler {
 		$search_handler = new EPKB_AI_Search_Handler();
 		$result = $search_handler->search( $query, $collection_id );
 		if ( is_wp_error( $result ) ) {
-			EPKB_AI_Log::add_log( 'AI Answer section error', $result->get_error_message() );
+			if ( $result->get_error_code() !== 'empty_response' ) {
+				EPKB_AI_Log::add_log( 'AI Answer section error', array(
+					'error_code' => $result->get_error_code(),
+					'details'    => $result->get_error_message(),
+				) );
+			}
 			return self::get_empty_response( $section_name );
 		}
 

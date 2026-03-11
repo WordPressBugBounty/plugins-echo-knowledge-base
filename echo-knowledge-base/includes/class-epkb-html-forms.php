@@ -686,6 +686,15 @@ class EPKB_HTML_Forms {
 					<p class="epkb-body__footer_desc"><?php echo esc_html( $args['footer_desc'] ); ?></p>				<?php
 				}
 
+			if ( ! empty( $args['discount_coupon'] ) && ! empty( $args['discount_coupon']['discount_percentage'] ) ) {
+					$coupon = $args['discount_coupon']; ?>
+					<div class="epkb-ad-discount-coupon">
+						<span class="epkb-ad-discount-badge"><?php echo esc_html( $coupon['discount_percentage'] . '% ' . __( 'OFF', 'echo-knowledge-base' ) ); ?></span>
+						<span class="epkb-ad-discount-text"><?php echo esc_html__( 'Use code:', 'echo-knowledge-base' ); ?> <code><?php echo esc_html( $coupon['coupon_code'] ); ?></code></span>
+						<button type="button" class="epkb-ad-discount-copy-btn" data-code="<?php echo esc_attr( $coupon['coupon_code'] ); ?>"><?php esc_html_e( 'Copy', 'echo-knowledge-base' ); ?></button>
+					</div>				<?php
+				}
+
 			if ( $args['btn_text'] || ! empty( $args['btn_text_2'] ) || ! empty( $args['cancel_btn_text'] ) ) { ?>
 				<div class="epkb-aa__footer-buttons">					<?php
 					if ( ! empty( $args['cancel_btn_text'] ) ) { ?>

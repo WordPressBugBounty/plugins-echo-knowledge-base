@@ -13,7 +13,7 @@ class EPKB_AI_Content_Analysis_Page {
 		EPKB_Core_Utilities::display_missing_css_message();
 
 		// Get tab configuration
-		$tab_config = $this->get_tab_config();
+		$tab_config = self::get_tab_config();
 
 		// Get current KB ID and post type
 		$kb_id = EPKB_KB_Handler::get_current_kb_id();
@@ -34,6 +34,7 @@ class EPKB_AI_Content_Analysis_Page {
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'ajax_nonce' => wp_create_nonce( '_wpnonce_epkb_ajax_action' ),
 			'i18n' => $this->get_i18n_strings(),
+			'discount_coupon' => EPKB_AI_PRO_Features_Tab::get_discount_coupon(),
 		);
 
 		// Start the page output
@@ -62,7 +63,7 @@ class EPKB_AI_Content_Analysis_Page {
 	 * Get the configuration for the Content Analysis tab
 	 * @return array
 	 */
-	public function get_tab_config() {
+	public static function get_tab_config() {
 
 		if ( ! EPKB_AI_Utilities::is_ai_configured() ) {
 			return array(
@@ -90,7 +91,7 @@ class EPKB_AI_Content_Analysis_Page {
 		);
 
 		// Get preloaded content analysis data for initial display
-		$preloaded_data = $this->get_preloaded_content_analysis_data();
+		$preloaded_data = self::get_preloaded_content_analysis_data();
 
 		$kb_id = EPKB_KB_Handler::get_current_kb_id();
 		if ( ! EPKB_Utilities::is_positive_int( $kb_id ) ) {
@@ -141,7 +142,7 @@ class EPKB_AI_Content_Analysis_Page {
 	 * Get pre-loaded content analysis data for initial page load
 	 * @return array
 	 */
-	private function get_preloaded_content_analysis_data() {
+	private static function get_preloaded_content_analysis_data() {
 
 		$preloaded = array();
 
@@ -310,6 +311,5 @@ class EPKB_AI_Content_Analysis_Page {
 		);
 	}
 }
-
 
 

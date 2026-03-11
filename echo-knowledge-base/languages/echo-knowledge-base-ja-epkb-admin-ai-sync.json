@@ -19,11 +19,20 @@
             "No posts found to sync": [
                 "同期する投稿が見つかりません"
             ],
+            "No synced items found to verify": [
+                "検証する同期済みアイテムが見つかりません。"
+            ],
             "Pending": [
                 "承認待ち"
             ],
             "of": [
                 "の"
+            ],
+            "Selected": [
+                "選択済み"
+            ],
+            "Processing": [
+                "処理中"
             ],
             "errors": [
                 "エラー"
@@ -55,9 +64,6 @@
             "Added": [
                 "追加済み"
             ],
-            "Selected": [
-                "選択済み"
-            ],
             "Records": [
                 "レコード"
             ],
@@ -70,11 +76,11 @@
             "Select All Records": [
                 "すべてのレコードを選択"
             ],
-            "Validate & Fix after Sync": [
-                "同期後に検証と修正"
+            "Validate & Fix Synced Items": [
+                "同期済みアイテムの検証と修正"
             ],
-            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
-                "有効にすると、同期が完了した後、システムは自動的に検証と修正を実行して、同期データ内の問題を確認し、それらを解決しようとします。."
+            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
+                "有効にすると、同期が完了した後、システムは同期済みアイテムのみを自動的に検証・修正します。古くなったアイテムや保留中のアイテムは、同期されるまで検証されません。."
             ],
             "Sync in Progress": [
                 "同期中"
@@ -99,9 +105,6 @@
             ],
             "Retrying failed posts:": [
                 "失敗した投稿を再試行中:"
-            ],
-            "Processing": [
-                "処理中"
             ],
             "posts": [
                 "投稿"

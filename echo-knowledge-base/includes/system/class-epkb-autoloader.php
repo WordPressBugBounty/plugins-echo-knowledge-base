@@ -18,6 +18,7 @@ class EPKB_Autoloader {
 
 				// CORE
 				'epkb_utilities'                    =>  'includes/class-epkb-utilities.php',
+				'epkb_pdf_utilities'                =>  'includes/class-epkb-pdf-utilities.php',
 				'epkb_core_utilities'               =>  'includes/class-epkb-core-utilities.php',
 				'epkb_html_elements'                =>  'includes/class-epkb-html-elements.php',
 				'epkb_html_admin'                   =>  'includes/class-epkb-html-admin.php',
@@ -64,6 +65,7 @@ class EPKB_Autoloader {
 				// CONVERT
 				'epkb_convert'                      =>  'includes/admin/convert/class-epkb-convert.php',
 				'epkb_convert_ctrl'                 =>  'includes/admin/convert/class-epkb-convert-ctrl.php',
+				'epkb_pdf_import_ctrl'              =>  'includes/admin/convert/class-epkb-pdf-import-ctrl.php',
 
 				// KB CONFIGURATION
 				'epkb_kb_config_specs'              =>  'includes/admin/kb-configuration/class-epkb-kb-config-specs.php',
@@ -203,12 +205,14 @@ class EPKB_Autoloader {
 				'epkb_ai_rest_sync_controller'          =>  'includes/ai/rest/class-epkb-ai-rest-sync-controller.php',
 				'epkb_ai_rest_support_controller'       =>  'includes/ai/rest/class-epkb-ai-rest-support-controller.php',
 				'epkb_ai_rest_search_results_controller' => 'includes/ai/rest/class-epkb-ai-rest-search-results-controller.php',
+				'epkb_ai_rest_pdf_extract_controller'   =>  'includes/ai/rest/class-epkb-ai-rest-pdf-extract-controller.php',
 
 				// AI Services
 				'epkb_ai_base_handler'              	=>  'includes/ai/services/class-epkb-ai-base-handler.php',
 				'epkb_ai_chat_handler'              	=>  'includes/ai/services/class-epkb-ai-chat-handler.php',
 				'epkb_ai_search_handler'            	=>  'includes/ai/services/class-epkb-ai-search-handler.php',
 				'epkb_ai_provider'				        =>  'includes/ai/services/class-epkb-ai-provider.php',
+				'epkb_ai_pdf_extractor'                 =>  'includes/ai/services/class-epkb-ai-pdf-extractor.php',
 
 				// AI Support
 				'epkb_ai_content_processor'             =>  'includes/ai/support/class-epkb-ai-content-processor.php',

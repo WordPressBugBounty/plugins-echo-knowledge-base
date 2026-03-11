@@ -19,8 +19,20 @@
             "AI Features": [
                 "AI-funksjoner"
             ],
+            "OFF": [
+                "AV"
+            ],
+            "Use code:": [
+                "Bruk kode:"
+            ],
+            "Copy": [
+                "Kopier"
+            ],
             "Documentation": [
                 "Dokumentasjon"
+            ],
+            "Copied!": [
+                "Kopiert!"
             ],
             "Got it!": [
                 "Forstått!"

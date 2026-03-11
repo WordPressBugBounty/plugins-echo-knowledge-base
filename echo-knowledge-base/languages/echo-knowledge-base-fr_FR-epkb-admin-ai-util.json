@@ -19,8 +19,20 @@
             "AI Features": [
                 "Fonctionnalités d'IA"
             ],
+            "OFF": [
+                "Désactivé"
+            ],
+            "Use code:": [
+                "Utiliser le code :"
+            ],
+            "Copy": [
+                "Copier"
+            ],
             "Documentation": [
                 "Documentation"
+            ],
+            "Copied!": [
+                "Copié !"
             ],
             "Got it!": [
                 "Compris !"

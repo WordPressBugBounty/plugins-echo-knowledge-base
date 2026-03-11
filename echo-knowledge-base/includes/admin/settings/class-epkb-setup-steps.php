@@ -293,11 +293,11 @@ class EPKB_Setup_Steps {
 			'category'       => 'advanced',
 			'show_me'        => array(
 				array(
-					'target_page'    => 'edit.php?post_type=epkb_post_type_1&page=epkb-content-analysis',
+					'target_page'    => 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=content-analysis',
 					'target_element' => '.epkb-ai-tabs-action-group .epkb-ai-tab-button:first-child, .epkb-ai-tabs-nav .epkb-ai-tab-button:first-child',
 				),
 				array(
-					'target_page'    => 'edit.php?post_type=epkb_post_type_1&page=epkb-content-analysis',
+					'target_page'    => 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=content-analysis',
 					'target_element' => '.epkb-ai-tabs-action-group .epkb-ai-tab-button:nth-child(2), .epkb-ai-tabs-nav .epkb-ai-tab-button:nth-child(2)',
 				),
 			),

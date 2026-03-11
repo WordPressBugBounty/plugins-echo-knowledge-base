@@ -10,8 +10,20 @@
             "Categories": [
                 "カテゴリー"
             ],
+            "OFF": [
+                "オフ"
+            ],
+            "Use code:": [
+                "コードを使用:"
+            ],
+            "Copy": [
+                "コピー"
+            ],
             "Article Content": [
                 "記事の内容"
+            ],
+            "Copied!": [
+                "コピーしました"
             ],
             "Analyzing...": [
                 "分析中..."
@@ -19,11 +31,17 @@
             "Content Gaps Analysis": [
                 "コンテンツギャップ分析"
             ],
+            "Identifies unanswered user questions": [
+                "未回答のユーザー質問を特定します"
+            ],
+            "Detects missing or underdeveloped topics": [
+                "不足しているまたは未発展のトピックを検出します"
+            ],
+            "Provides actionable recommendations for improvement": [
+                "改善のための実践的な推奨事項を提供します"
+            ],
             "AI-Powered Tag Suggestions": [
                 "AI搭載タグ提案"
-            ],
-            "Gap analysis is only available with AI Features add-on.": [
-                "ギャップ分析は AI Features アドオンでのみ利用できます。."
             ],
             "Readability": [
                 "可読性"
@@ -121,8 +139,11 @@
             "An error occurred during Content Gaps analysis.": [
                 "コンテンツギャップ分析中にエラーが発生しました。."
             ],
-            "Learn More About AI Features": [
-                "AI機能について詳しく知る"
+            "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
+                "AI は記事の不足情報と未回答の質問を特定します。より多く取り上げるべきトピックを確認しましょう。."
+            ],
+            "Get AI Features PRO": [
+                "AI 機能 PRO を入手"
             ],
             "Analyzing article for content gaps...": [
                 "記事のコンテンツギャップを分析中..."

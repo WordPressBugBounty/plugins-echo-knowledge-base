@@ -104,8 +104,14 @@ class EPKB_Glossary_Page {
 
 		$views_config = apply_filters( 'epkb_glossary_page_views', $views_config );
 
-		// Show AI Generate tab with ad if AI Features PRO is not active
+		// Show AI Generate tab with ad if AI Features PRO is not active, or with configure message if AI is not configured
 		if ( ! EPKB_Utilities::is_ai_features_pro_enabled() ) {
+			$ai_generate_html = self::ai_generate_ad_tab();
+		} else if ( ! EPKB_AI_Utilities::is_ai_configured() ) {
+			$ai_generate_html = self::ai_generate_configure_tab();
+		}
+
+		if ( ! empty( $ai_generate_html ) ) {
 			$views_config[] = array(
 				'minimum_required_capability' => EPKB_Admin_UI_Access::get_editor_capability(),
 				'list_key'   => 'glossary-ai-generate',
@@ -113,7 +119,7 @@ class EPKB_Glossary_Page {
 				'icon_class' => 'epkbfa epkbfa-magic',
 				'boxes_list' => array(
 					array(
-						'html' => self::ai_generate_ad_tab(),
+						'html' => $ai_generate_html,
 					)
 				),
 			);
@@ -263,8 +269,8 @@ class EPKB_Glossary_Page {
 				<div class="epkb-glossary-form-field">
 					<label><?php esc_html_e( 'Status', 'echo-knowledge-base' ); ?></label>
 					<div class="epkb-glossary-status-toggle" id="epkb-glossary-term-status" data-value="publish">
-						<button type="button" class="epkb-glossary-status-toggle__btn epkb-glossary-status-toggle__btn--active" data-status="publish"><?php esc_html_e( 'Published', 'echo-knowledge-base' ); ?></button>
-						<button type="button" class="epkb-glossary-status-toggle__btn" data-status="draft"><?php esc_html_e( 'Draft', 'echo-knowledge-base' ); ?></button>
+						<button type="button" class="epkb-glossary-status-toggle__btn epkb-glossary-status-toggle__btn--publish epkb-glossary-status-toggle__btn--active" data-status="publish"><?php esc_html_e( 'Published', 'echo-knowledge-base' ); ?></button>
+						<button type="button" class="epkb-glossary-status-toggle__btn epkb-glossary-status-toggle__btn--draft" data-status="draft"><?php esc_html_e( 'Draft', 'echo-knowledge-base' ); ?></button>
 					</div>
 				</div>
 			</div>
@@ -420,7 +426,28 @@ class EPKB_Glossary_Page {
 			),
 			'btn_text'     => esc_html__( 'Upgrade to PRO', 'echo-knowledge-base' ),
 			'btn_url'      => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/',
+			'discount_coupon' => EPKB_AI_PRO_Features_Tab::get_discount_coupon(),
 		) );
+	}
+
+	/**
+	 * Show HTML content for AI Generate tab when AI Features PRO is active but AI is not configured
+	 * @return false|string
+	 */
+	private static function ai_generate_configure_tab() {
+
+		ob_start(); ?>
+		<div class="epkb-admin-info-box">
+			<div class="epkb-admin-info-box__header">
+				<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-exclamation-triangle"></div>
+				<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'AI Features Required', 'echo-knowledge-base' ); ?></div>
+			</div>
+			<div class="epkb-admin-info-box__body">
+				<p><?php esc_html_e( 'To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.', 'echo-knowledge-base' ); ?></p>
+			</div>
+		</div> <?php
+
+		return ob_get_clean();
 	}
 
 	/**

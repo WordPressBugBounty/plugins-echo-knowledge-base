@@ -284,7 +284,10 @@ class EPKB_KB_Config_Controller {
 			$new_config = array_merge( $orig_config, $new_config );
 
 			// update KB and add-ons configuration
-			EPKB_Core_Utilities::prepare_update_to_kb_configuration( $kb_id, $orig_config, $new_config, true );
+			$result = EPKB_Core_Utilities::prepare_update_to_kb_configuration( $kb_id, $orig_config, $new_config, true );
+			if ( ! empty( $result ) ) {
+				EPKB_Utilities::ajax_show_error_die( $result );
+			}
 
 		// save all settings from backend
 		} else {

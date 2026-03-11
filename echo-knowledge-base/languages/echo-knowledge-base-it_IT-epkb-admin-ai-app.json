@@ -7,14 +7,14 @@
                 "lang": "it_IT",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
+                "Per utilizzare le funzionalità IA, configura la tua chiave API e accetta l'accordo sulla privacy dei dati nelle Impostazioni Generali, quindi abilita IA Ricerca o IA Chat."
+            ],
             "AI Features": [
                 "Funzionalità IA"
             ],
             "Go to General Settings": [
                 "Vai alle Impostazioni Generali"
-            ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
-                "Per utilizzare le funzionalità IA, configura la tua chiave API e accetta l'accordo sulla privacy dei dati nelle Impostazioni Generali, quindi abilita IA Ricerca o IA Chat."
             ],
             "To use Training Data, please enable either AI Chat or AI Search in their respective tabs.": [
                 "Per utilizzare i Dati di addestramento, abilita IA Chat o IA Ricerca nelle rispettive schede."
@@ -31,8 +31,26 @@
             "Configure API Key": [
                 "Configura chiave API"
             ],
+            "Legacy AI Models Detected": [
+                "Modelli AI obsoleti rilevati"
+            ],
+            "Your AI configuration still uses legacy Gemini model names. Update the AI configuration to save the current model names.": [
+                "La tua configurazione AI utilizza ancora nomi di modelli Gemini obsoleti. Aggiorna la configurazione AI per salvare i nomi dei modelli correnti."
+            ],
+            "Updating...": [
+                "Aggiornamento in corso..."
+            ],
+            "Update AI Configuration": [
+                "Aggiorna la configurazione AI"
+            ],
             "Failed to load tab data": [
                 "Impossibile caricare i dati della scheda"
+            ],
+            "AI configuration updated successfully": [
+                "Configurazione AI aggiornata con successo"
+            ],
+            "Failed to update AI configuration": [
+                "Impossibile aggiornare la configurazione AI"
             ],
             "Failed to load dashboard data. Please reload the page.": [
                 "Impossibile caricare i dati della Bacheca. Ricarica la pagina."

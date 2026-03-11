@@ -10,26 +10,17 @@
             "Cancel": [
                 "Cancelar"
             ],
-            "Released": [
-                "Lanzado"
-            ],
-            "First Name": [
-                "Nombre"
-            ],
-            "(optional)": [
-                "(opcional)"
-            ],
-            "Email": [
-                "Correo electrónico"
-            ],
-            "Submit Vote": [
-                "Enviar voto"
+            "General Settings": [
+                "Ajustes generales"
             ],
             "Failed to submit vote. Please try again.": [
                 "No se pudo enviar el voto. Por favor, inténtelo de nuevo."
             ],
-            "General Settings": [
-                "Ajustes generales"
+            "Email": [
+                "Correo electrónico"
+            ],
+            "First Name": [
+                "Nombre"
             ],
             "Please enter a valid email address.": [
                 "Por favor, introduce una dirección de correo electrónico válida."
@@ -49,11 +40,17 @@
             "Help us prioritize features by providing your information:": [
                 "Ayúdanos a priorizar las características proporcionando tu información:"
             ],
+            "(optional)": [
+                "(opcional)"
+            ],
             "Describe Your Feature Request": [
                 "Describe tu solicitud de característica"
             ],
             "Please describe the feature you would like to see...": [
                 "Por favor, describe la característica que te gustaría ver..."
+            ],
+            "Submit Vote": [
+                "Enviar voto"
             ],
             "Please describe the feature you would like to see.": [
                 "Por favor describe la característica que te gustaría ver."
@@ -78,6 +75,9 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Selecciona las características que te gustaría ver implementadas:"
+            ],
+            "Released": [
+                "Lanzado"
             ],
             "feature selected": [
                 "característica seleccionada"

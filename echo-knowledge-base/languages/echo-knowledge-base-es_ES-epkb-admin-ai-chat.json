@@ -37,6 +37,9 @@
             "Previous": [
                 "Anterior"
             ],
+            "OFF": [
+                "APAGADO"
+            ],
             "Reset": [
                 "Restablecer"
             ],
@@ -63,6 +66,12 @@
             ],
             "of": [
                 "de"
+            ],
+            "Requires AI Features PRO": [
+                "Requiere funciones de IA PRO"
+            ],
+            "with code": [
+                "con código"
             ],
             "Thumbs up (%d)": [
                 "Me gusta (%d)"
@@ -192,9 +201,6 @@
             ],
             "Collection": [
                 "Colección"
-            ],
-            "Requires AI Features PRO": [
-                "Requiere funciones de IA PRO"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "¿Está seguro de que desea restablecer las instrucciones predeterminadas?"

@@ -338,6 +338,26 @@ class EPKB_AI_ChatGPT_Vector_Store {
 	}
 
 	/**
+	 * Upload a PDF file to file storage
+	 *
+	 * @param string $id Related entity ID (e.g., unique identifier for the PDF)
+	 * @param string $pdf_binary_content Raw PDF binary content
+	 * @param string $store_id Store ID (ignored for ChatGPT - files exist independently of stores)
+	 * @return array|WP_Error File object with 'id' or error
+	 */
+	public function upload_pdf_to_file_storage( $id, $pdf_binary_content, $store_id = '' ) {
+
+		$file_name = 'kb_pdf_' . $id . '_' . time() . '.pdf';
+
+		return $this->client->request( self::FILES_ENDPOINT, array(
+			'file_name'        => $file_name,
+			'file_content'     => $pdf_binary_content,
+			'file_purpose'     => 'assistants',
+			'file_content_type' => 'application/pdf',
+		), 'POST', 'file_storage_upload' );
+	}
+
+	/**
 	 * Delete file from storage
 	 *
 	 * @param string $file_id File ID

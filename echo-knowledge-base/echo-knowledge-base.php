@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 17.0.4
+ * Version: 17.1.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '17.0.4';
+	public static $version = '17.1.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -173,6 +173,7 @@ final class Echo_Knowledge_Base {
 		new EPKB_AI_REST_Sync_Controller();
 		new EPKB_AI_REST_Content_Analysis_Controller();
 		new EPKB_AI_REST_Search_Results_Controller();
+		new EPKB_AI_REST_PDF_Extract_Controller();
 
 		EPKB_AI_Sync_Cron_Handler::init();
 		EPKB_AI_Search_Results_Display::init();
@@ -241,10 +242,10 @@ final class Echo_Knowledge_Base {
 		} else if ( $action == 'epkb_ai_toggle_debug_mode' ) {
 			new EPKB_AI_Tools_Tab();
 			return;
-		} else if ( in_array( $action, array( 'epkb_get_ai_status', 'epkb_vote_for_features' ) ) ) {
+		} else if ( in_array( $action, array( 'epkb_get_ai_status', 'epkb_vote_for_features', 'epkb_submit_empty_content_report' ) ) ) {
 			new EPKB_AI_Dashboard_Tab();
 			return;
-		} else if ( $action == 'epkb_kb_vote_for_features' ) {
+		} else if ( in_array( $action, array( 'epkb_kb_vote_for_features', 'epkb_enable_glossary' ) ) ) {
 			new EPKB_Dashboard_Page();
 			return;
 		} else if ( $action == 'epkb_check_training_data_sync' ) {
@@ -269,6 +270,11 @@ final class Echo_Knowledge_Base {
 
 		if ( in_array( $action, array( 'epkb_load_articles_list', 'epkb_convert_kb_content' ) )  ) {
 			new EPKB_Convert_Ctrl();
+			return;
+		}
+
+		if ( in_array( $action, array( 'epkb_import_pdf_article', 'epkb_ai_extract_pdf_text', 'epkb_prepare_pdf_content' ) ) ) {
+			new EPKB_PDF_Import_Ctrl();
 			return;
 		}
 

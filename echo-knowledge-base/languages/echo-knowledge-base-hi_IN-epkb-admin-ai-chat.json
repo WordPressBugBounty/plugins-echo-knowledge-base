@@ -37,6 +37,9 @@
             "Previous": [
                 "पिछला"
             ],
+            "OFF": [
+                "ऑफ"
+            ],
             "Reset": [
                 "रीसेट"
             ],
@@ -63,6 +66,12 @@
             ],
             "of": [
                 "में से"
+            ],
+            "Requires AI Features PRO": [
+                "एआई फीचर्स PRO आवश्यक हैं"
+            ],
+            "with code": [
+                "कोड के साथ"
             ],
             "Thumbs up (%d)": [
                 "थंब्स अप (%d)"
@@ -192,9 +201,6 @@
             ],
             "Collection": [
                 "संग्रह"
-            ],
-            "Requires AI Features PRO": [
-                "एआई फीचर्स PRO आवश्यक हैं"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "क्या आप सुनिश्चित हैं कि आप डिफ़ॉल्ट निर्देशों पर रीसेट करना चाहते हैं?"

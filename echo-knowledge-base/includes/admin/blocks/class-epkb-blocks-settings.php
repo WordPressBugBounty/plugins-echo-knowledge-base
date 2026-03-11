@@ -478,7 +478,7 @@ class EPKB_Blocks_Settings {
 		return array(
 			'setting_type' => 'section_description',
 			'description' => esc_html__( 'Need help configuring your Knowledge Base?', 'echo-knowledge-base' ),
-			'link_text' => esc_html__( 'Help Resources', 'echo-knowledge-base' ),
+			'link_text' => esc_html__( 'Setup Guide', 'echo-knowledge-base' ),
 			'link_url' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-help-resources' ),
 		);
 	}

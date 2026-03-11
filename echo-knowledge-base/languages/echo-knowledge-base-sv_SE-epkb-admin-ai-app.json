@@ -7,14 +7,14 @@
                 "lang": "sv_SE",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
+                "För att använda AI-funktioner, konfigurera din API-nyckel och acceptera sekretessavtalet i Allmänna inställningar, och aktivera sedan AI Sök eller AI Chatt."
+            ],
             "AI Features": [
                 "AI-funktioner"
             ],
             "Go to General Settings": [
                 "Gå till allmänna inställningar"
-            ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
-                "För att använda AI-funktioner, konfigurera din API-nyckel och acceptera sekretessavtalet i Allmänna inställningar, och aktivera sedan AI Sök eller AI Chatt."
             ],
             "To use Training Data, please enable either AI Chat or AI Search in their respective tabs.": [
                 "För att använda Träningsdata, vänligen aktivera antingen AI Chatt eller AI Sök i respektive flik."
@@ -31,8 +31,26 @@
             "Configure API Key": [
                 "Konfigurera API-nyckel"
             ],
+            "Legacy AI Models Detected": [
+                "Äldre AI-modeller upptäckta"
+            ],
+            "Your AI configuration still uses legacy Gemini model names. Update the AI configuration to save the current model names.": [
+                "Din AI-konfiguration använder fortfarande äldre Gemini-modellnamn. Uppdatera AI-konfigurationen för att spara de nuvarande modellnamnen."
+            ],
+            "Updating...": [
+                "Uppdaterar..."
+            ],
+            "Update AI Configuration": [
+                "Uppdatera AI-konfigurationen"
+            ],
             "Failed to load tab data": [
                 "Misslyckades med att läsa in flikdata"
+            ],
+            "AI configuration updated successfully": [
+                "AI-konfigurationen uppdaterades framgångsrikt"
+            ],
+            "Failed to update AI configuration": [
+                "Misslyckades med att uppdatera AI-konfigurationen"
             ],
             "Failed to load dashboard data. Please reload the page.": [
                 "Misslyckades med att ladda instrumentpanelens data. Ladda om sidan."

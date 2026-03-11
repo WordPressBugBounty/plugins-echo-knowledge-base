@@ -477,7 +477,40 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		
 		return $this->update_training_data( $id, $data );
 	}
-	
+
+	/**
+	 * Mark item as skipped (empty content, deleted source, etc.)
+	 * No retry_count increment — retrying skipped items is pointless.
+	 *
+	 * @param int $id
+	 * @param int $error_code HTTP error code
+	 * @param string $error_message Error message
+	 * @return bool|WP_Error
+	 */
+	public function mark_as_skipped( $id, $error_code, $error_message ) {
+		$data = array(
+			'status'        => 'skipped',
+			'error_code'    => $error_code,
+			'error_message' => $error_message,
+		);
+		return $this->update_training_data( $id, $data );
+	}
+
+	/**
+	 * Migrate existing error records with empty content/deleted source to skipped status
+	 *
+	 * @return int|false Number of rows updated or false on failure
+	 */
+	public function migrate_error_to_skipped() {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name is safe
+		return $wpdb->query(
+			"UPDATE {$this->table_name} SET status = 'skipped', updated = '" . gmdate( 'Y-m-d H:i:s' ) . "'
+			 WHERE status = 'error' AND error_message IN ('empty_content', 'empty_markdown', 'post_not_found')"
+		);
+	}
+
 	/**
 	 * Mark items as outdated by source
 	 *
@@ -581,6 +614,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			'updated'   => 0,
 			'outdated'  => 0,
 			'error'     => 0,
+			'skipped'   => 0,
 			'pending'   => 0
 		);
 		
@@ -818,8 +852,69 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	}
 
 	/**
+	 * Get training data by item_id only (without requiring collection_id)
+	 * Used for source reference lookups where collection_id is unknown (e.g., PDFs referenced by UUID)
+	 *
+	 * @param string $item_id Item ID (e.g., UUID for PDFs)
+	 * @return object|null Training data record or null if not found
+	 */
+	public function get_training_data_by_item_id_only( $item_id ) {
+		global $wpdb;
+
+		$item_id = sanitize_text_field( (string) $item_id );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name is safe
+		$sql = $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE item_id = %s AND status IN ('added', 'updated') LIMIT 1", $item_id );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is prepared above
+		$row = $wpdb->get_row( $sql );
+		$this->handle_db_error( $row, 'get_training_data_by_item_id_only' );
+
+		return $row ?: null;
+	}
+
+	/**
+	 * Get training data by file_id only (without requiring collection_id)
+	 * Used for provider citation lookups where only the AI file_id is available.
+	 *
+	 * @param string $file_id AI file ID (e.g., file-xxx)
+	 * @param string $provider Optional provider slug to avoid cross-provider collisions
+	 * @return object|null Training data record or null if not found
+	 */
+	public function get_training_data_by_file_id_only( $file_id, $provider = '' ) {
+		global $wpdb;
+
+		$file_id = sanitize_text_field( (string) $file_id );
+		$provider = sanitize_text_field( (string) $provider );
+
+		if ( empty( $file_id ) ) {
+			return null;
+		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name is safe
+		$sql = "SELECT * FROM {$this->table_name} WHERE file_id = %s AND status IN ('added', 'updated')";
+		$params = array( $file_id );
+
+		if ( ! empty( $provider ) ) {
+			$sql .= ' AND provider = %s';
+			$params[] = $provider;
+		}
+
+		$sql .= ' LIMIT 1';
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is prepared below
+		$prepared_sql = $wpdb->prepare( $sql, $params );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $prepared_sql is prepared above
+		$row = $wpdb->get_row( $prepared_sql );
+		$this->handle_db_error( $row, 'get_training_data_by_file_id_only' );
+
+		return $row ?: null;
+	}
+
+	/**
 	 * Get the table version
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function get_table_version() {
@@ -841,7 +936,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 * - last_synced: Timestamp of last successful sync
 	 * - title: Post/page/attachment/note title; file name
 	 * - type: Post, page, CPT, attachment, file, note, PDF, CSV, XML, AI-generated, URL
-	 * - status: 'error', 'adding' → 'added', 'updating' → 'updated', 'outdated', 'pending'
+	 * - status: 'error', 'skipped', 'adding' → 'added', 'updating' → 'updated', 'outdated', 'pending'
 	 * - error_code: HTTP error code (e.g. 429, 503)
 	 * - error_message: Error description
 	 * - retry_count: Number of sync retry attempts

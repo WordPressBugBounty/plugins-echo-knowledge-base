@@ -8,8 +8,8 @@
  */
 class EPKB_AI_Provider {
 
-	const PROVIDER_CHATGPT = 'chatgpt';
-	const PROVIDER_GEMINI = 'gemini';
+	const PROVIDER_CHATGPT = 'chatgpt';	// do not modify
+	const PROVIDER_GEMINI = 'gemini';	// do not modify
 	const FASTEST_MODEL = 'fastest';
 
 	private static $cached_active_provider = null;
@@ -79,7 +79,19 @@ class EPKB_AI_Provider {
 	public static function get_provider_label( $provider = null ) {
 		$provider = $provider ?: self::get_active_provider();
 
-		return $provider === self::PROVIDER_GEMINI ? 'Gemini' : 'ChatGPT';
+		return $provider === self::PROVIDER_GEMINI ? 'Google Gemini' : 'OpenAI';
+	}
+
+	/**
+	 * Get user-facing provider options for select fields.
+	 *
+	 * @return array
+	 */
+	public static function get_provider_options() {
+		return array(
+			self::PROVIDER_GEMINI => self::get_provider_label( self::PROVIDER_GEMINI ),
+			self::PROVIDER_CHATGPT => self::get_provider_label( self::PROVIDER_CHATGPT ),
+		);
 	}
 
 	/**
@@ -511,7 +523,7 @@ class EPKB_AI_Provider {
 	}
 
 	/**
-	 * Extract source references from API response grounding metadata
+	 * Extract source references from provider response metadata
 	 *
 	 * @param array $response Raw API response
 	 * @param string|null $provider Provider (defaults to active)
@@ -520,14 +532,11 @@ class EPKB_AI_Provider {
 	public static function extract_response_sources( $response, $provider = null ) {
 		$provider = $provider ?: self::get_active_provider();
 
-		// Currently only Gemini returns grounding metadata
 		if ( $provider === self::PROVIDER_GEMINI ) {
 			return EPKB_AI_Utilities::extract_sources_from_grounding_metadata( $response );
 		}
 
-		// ChatGPT doesn't return grounding metadata in the same way
-		// Fall back to pattern matching in the response content
-		return array();
+		return EPKB_AI_Utilities::extract_sources_from_chatgpt_annotations( $response );
 	}
 
 	/**

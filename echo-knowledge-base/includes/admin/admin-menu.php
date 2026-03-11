@@ -18,9 +18,9 @@ function epkb_add_plugin_menus() {
 	add_submenu_page( $parent_slug, esc_html__( 'Dashboard - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'Dashboard', 'echo-knowledge-base' ),
 		EPKB_Admin_UI_Access::get_editor_capability( $eckb_kb_id ), 'epkb-dashboard', array( new EPKB_Dashboard_Page(), 'display_dashboard_page' ) );
 
-	// Help Resources page - right after Dashboard
-	add_submenu_page( $parent_slug, esc_html__( 'Help Resources - Echo Knowledge Base', 'echo-knowledge-base' ),
-		'<span style="color: #FFD700; font-weight: bold;">' . esc_html__( 'Help', 'echo-knowledge-base' ) . '</span>',
+	// Setup Guide page - right after Dashboard
+	add_submenu_page( $parent_slug, esc_html__( 'Setup Guide - Echo Knowledge Base', 'echo-knowledge-base' ),
+		'<span style="color: #FFD700; font-weight: bold;">' . esc_html__( 'Setup Guide', 'echo-knowledge-base' ) . '</span>',
 		EPKB_Admin_UI_Access::get_editor_capability( $eckb_kb_id ), 'epkb-help-resources', array( new EPKB_Help_Resources_Page(), 'display_page' ) );
 
 	add_submenu_page( $parent_slug, esc_html__( 'FAQs - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'FAQs', 'echo-knowledge-base' ),
@@ -33,9 +33,6 @@ function epkb_add_plugin_menus() {
 
 	add_submenu_page( $parent_slug, esc_html__( 'AI', 'echo-knowledge-base' ), esc_html__( 'AI', 'echo-knowledge-base' ),
 		'manage_options', 'epkb-kb-ai-features', array( new EPKB_AI_Admin_Page(), 'display_page' ) );
-
-	add_submenu_page( $parent_slug, esc_html__( 'Content Analysis', 'echo-knowledge-base' ), esc_html__( 'Content Analysis', 'echo-knowledge-base' ),
-		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_content_analysis'] ), 'epkb-content-analysis', array( new EPKB_AI_Content_Analysis_Page(), 'display_content_analysis_page' ) );
 
 	do_action( 'eckb_add_kb_menu_item', $post_type_name );
 
@@ -181,7 +178,6 @@ function epkb_add_page_tabs() {
 		case 'EKB_SCREEN_page_epkb-glossary':           // Glossary page
 		case 'EKB_SCREEN_page_epkb-kb-configuration':   // KB Configuration page
 		case 'EKB_SCREEN_page_epkb-kb-ai-features':     // AI page
-		case 'EKB_SCREEN_page_epkb-content-analysis':   // Content Analysis page
 		case 'EKB_SCREEN_page_epkb-plugin-analytics':   // Analytics page
 		case 'EKB_SCREEN_page_epkb-add-ons':            // Add-ons page
 		case 'EKB_SCREEN_page_epkb-new-features':       // New Features page

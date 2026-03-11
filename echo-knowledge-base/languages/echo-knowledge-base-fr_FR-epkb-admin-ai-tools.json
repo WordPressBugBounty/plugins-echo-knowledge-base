@@ -13,6 +13,9 @@
             "Disabled": [
                 "Désactivé"
             ],
+            "Debug Mode": [
+                "Mode de débogage"
+            ],
             "API Key": [
                 "Clé API"
             ],
@@ -66,9 +69,6 @@
             ],
             "Error clearing AI logs": [
                 "Erreur lors de la suppression des journaux d'IA"
-            ],
-            "Debug Mode": [
-                "Mode de débogage"
             ],
             "Enable Debug Mode": [
                 "Activer le mode de débogage"

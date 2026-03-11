@@ -59,12 +59,12 @@ class EPKB_ChatGPT_Client {
 
 			// 3. Request succeeded, parse final response
 			if ( ! is_wp_error( $parsed ) ) {
-				$parsed['_timing'] = array( 'elapsed_seconds' => round( $request_duration, 2 ) );
+				$parsed['_timing'] = array( 'elapsed_seconds' => round( $request_duration, 3 ) );
 				EPKB_AI_Log::add_log( 'API request completed', array(
 					'purpose'          => $purpose,
 					'request_endpoint' => $endpoint,
-					'model'            => isset( $data['model'] ) ? $data['model'] : '',
-					'elapsed_seconds'  => round( $request_duration, 2 ),
+					'model'            => isset( $data['model'] ) ? $data['model'] : $purpose,
+					'elapsed_seconds'  => round( $request_duration, 3 ),
 					'attempt'          => $attempt + 1
 				) );
 				return $parsed;
@@ -77,9 +77,9 @@ class EPKB_ChatGPT_Client {
 			$log_context = $parsed->get_error_data();
 			$log_context['purpose'] = $purpose;
 			$log_context['request_endpoint'] = $endpoint;
-			$log_context['model'] = isset( $data['model'] ) ? $data['model'] : '';
+			$log_context['model'] = isset( $data['model'] ) ? $data['model'] : $purpose;
 			$log_context['request_method'] = $method;
-			$log_context['elapsed_seconds'] = round( $request_duration, 2 );
+			$log_context['elapsed_seconds'] = round( $request_duration, 3 );
 			EPKB_AI_Log::add_log( 'API request error: ' . $parsed->get_error_message(), $log_context );
 
 			// Warn if execution time limit is too low
@@ -121,7 +121,8 @@ class EPKB_ChatGPT_Client {
 		$body = null;
 		if ( $purpose === 'file_storage_upload' ) {
 			$boundary = wp_generate_password( 24, false, false );
-			$body = $this->build_multipart_body( $boundary, ['purpose' => $data['file_purpose']], $data['file_content'], $data['file_name'] );
+			$content_type = isset( $data['file_content_type'] ) ? $data['file_content_type'] : 'text/plain; charset=utf-8';
+			$body = $this->build_multipart_body( $boundary, ['purpose' => $data['file_purpose']], $data['file_content'], $data['file_name'], $content_type );
 			$headers['Content-Type'] = 'multipart/form-data; boundary=' . $boundary;
 		}
 
@@ -183,9 +184,10 @@ class EPKB_ChatGPT_Client {
 	 * @param array $fields
 	 * @param string $file_content
 	 * @param string $filename
+	 * @param string $content_type MIME type for the file part
 	 * @return string
 	 */
-	private function build_multipart_body( $boundary, $fields, $file_content, $filename ) {
+	private function build_multipart_body( $boundary, $fields, $file_content, $filename, $content_type = 'text/plain; charset=utf-8' ) {
 
 		$eol = "\r\n";
 		$body = '';
@@ -200,7 +202,7 @@ class EPKB_ChatGPT_Client {
 		// file field
 		$body .= '--' . $boundary . $eol;
 		$body .= 'Content-Disposition: form-data; name="file"; filename="' . $filename . '"' . $eol;
-		$body .= 'Content-Type: text/plain; charset=utf-8' . $eol;
+		$body .= 'Content-Type: ' . $content_type . $eol;
 		$body .= $eol;
 		$body .= $file_content . $eol;
 
@@ -586,6 +588,22 @@ class EPKB_ChatGPT_Client {
 			),
 			'gpt-5.2' => array(
 				'name'                       => 'GPT-5.2',
+				'type'                       => 'gpt5',
+				'default_params'             => array(
+					'reasoning'         => 'medium',
+					'verbosity'         => 'medium',
+					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
+				),
+				'supports_temperature'       => false,
+				'supports_top_p'             => false,
+				'supports_verbosity'         => true,
+				'supports_reasoning'         => true,
+				'supports_max_output_tokens' => true,
+				'max_output_tokens_limit'    => 16384,
+				'parameters'                 => array( 'verbosity', 'reasoning', 'max_output_tokens' )
+			),
+			'gpt-5.4' => array(
+				'name'                       => 'GPT-5.4',
 				'type'                       => 'gpt5',
 				'default_params'             => array(
 					'reasoning'         => 'medium',

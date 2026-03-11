@@ -75,9 +75,9 @@ class EPKB_AI_Sync_Job_Manager {
 			return new WP_Error( 'invalid_post_ids', __( 'Invalid post IDs provided', 'echo-knowledge-base' ) );
 		}
 
-		// Check if we have posts to sync
+		// Check if we have items to sync
 		if ( empty( $items ) ) {
-			return new WP_Error( 'no_posts', __( 'No posts found to sync', 'echo-knowledge-base' ) );
+			return new WP_Error( 'no_posts', __( 'No syncable items found to sync', 'echo-knowledge-base' ) );
 		}
 
 		// Create job data
@@ -93,7 +93,9 @@ class EPKB_AI_Sync_Job_Manager {
 		$update_result = self::update_sync_job( $job_data );
 		if ( ! $update_result['success'] ) {
 			// translators: %s is the failure reason
-			return new WP_Error( 'save_failed', sprintf( __( 'Failed to save sync job: %s', 'echo-knowledge-base' ), $update_result['reason'] ) );
+			$error = new WP_Error( 'save_failed', sprintf( __( 'Failed to save sync job: %s', 'echo-knowledge-base' ), $update_result['reason'] ) );
+			EPKB_AI_Log::add_log( $error, array( 'collection_id' => $collection_id ) );
+			return $error;
 		}
 
 		return $job_data;
@@ -141,6 +143,7 @@ class EPKB_AI_Sync_Job_Manager {
 		
 		// Process the single post
 		$post_id = $remaining_post_ids[0];
+		$training_data_id = empty( $remaining_item['training_data_id'] ) ? 0 : absint( $remaining_item['training_data_id'] );
 
 		// Sync the post
 		$training_data_db = new EPKB_AI_Training_Data_DB();
@@ -149,14 +152,25 @@ class EPKB_AI_Sync_Job_Manager {
 
 		try {
 			$sync_data = $sync_manager->sync_post( $post_id, $remaining_item['type'], $job['collection_id'] );
-		} catch ( Exception $e ) {	
+		} catch ( Exception $e ) {
 			$error = new WP_Error( 'sync_exception', $e->getMessage() );
-			self::handle_sync_error( $training_data_db, $post_id, $error );
+			EPKB_AI_Log::add_log( 'Sync exception for item ' . $post_id . ': ' . $e->getMessage() );
+			self::handle_sync_error( $training_data_db, $training_data_id, $error );
 			return array( 'status' => 'failed', 'processed' => 0, 'errors' => 1, 'message' => $error->get_error_message(), 'updated_posts' => $updated_posts );
 		}
 
 		if ( is_wp_error( $sync_data ) ) {
-			self::handle_sync_error( $training_data_db, $post_id, $sync_data );
+			$error_type = self::handle_sync_error( $training_data_db, $training_data_id, $sync_data );
+
+			// Skipped items (empty content) are not real errors — don't count them
+			if ( $error_type === 'skipped' ) {
+				$updated_posts[] = array(
+					'id' => $post_id,
+					'status' => 'skipped',
+					'message' => $sync_data->get_error_message()
+				);
+				$consecutive_errors = 0;
+			} else {
 
 			$updated_posts[] = array(
 				'id' => $post_id,
@@ -167,6 +181,7 @@ class EPKB_AI_Sync_Job_Manager {
 			// Check for fatal errors that should stop sync immediately (e.g., invalid API key, billing issues)
 			$error_code = $sync_data->get_error_code();
 			if ( in_array( $error_code, array( 'authentication_failed', 'invalid_api_key', 'missing_api_key', 'insufficient_quota' ), true ) ) {
+				EPKB_AI_Log::add_log( 'Sync stopped due to fatal error: ' . $sync_data->get_error_message(), array( 'error_code' => $error_code, 'item_id' => $post_id ) );
 				self::update_sync_job( array(
 					'status' => 'failed',
 					'processed' => $job['processed'],
@@ -188,6 +203,7 @@ class EPKB_AI_Sync_Job_Manager {
 
 			// Check if we've hit 5 consecutive errors
 			if ( $consecutive_errors >= 5 ) {
+				EPKB_AI_Log::add_log( 'Sync stopped after 5 consecutive errors', array( 'item_id' => $post_id, 'last_error' => $sync_data->get_error_message() ) );
 				// Update job status and exit sync
 				self::update_sync_job( array(
 					'status' => 'failed',
@@ -207,10 +223,13 @@ class EPKB_AI_Sync_Job_Manager {
 				);
 			}
 
+			} // end real error handling
+
 		} else {
 
 			$new_status = $training_data_db->mark_as_synced( $sync_data['training_data_id'], $sync_data['sync_data'] );
 			if ( is_wp_error( $new_status ) ) {
+				EPKB_AI_Log::add_log( $new_status, array( 'item_id' => $post_id, 'message' => 'Failed to mark item as synced' ) );
 				return $new_status;
 			}
 
@@ -262,13 +281,28 @@ class EPKB_AI_Sync_Job_Manager {
 	 * @param EPKB_AI_Training_Data_DB $training_data_db Training data database object
 	 * @param int $training_data_id Training data ID
 	 * @param WP_Error $wp_error Error object
-	 * @return void
+	 * @return string 'skipped' for empty content items, 'error' for real errors
 	 */
 	private static function handle_sync_error( $training_data_db, $training_data_id, $wp_error ) {
+		if ( empty( $training_data_id ) ) {
+			EPKB_AI_Log::add_log( $wp_error, array( 'message' => 'Sync error for item without training data ID' ) );
+			return 'error';
+		}
+
+		// For empty content errors, mark as skipped — retrying won't help
+		$wp_error_code = $wp_error->get_error_code();
+		if ( in_array( $wp_error_code, array( 'empty_markdown', 'empty_content' ), true ) ) {
+			$training_data_db->mark_as_skipped( $training_data_id, 500, $wp_error_code );
+			EPKB_AI_Log::add_log( $wp_error, array( 'item_id' => $training_data_id, 'message' => 'Sync warning: empty content' ) );
+			return 'skipped';
+		}
+
 		$mapped = EPKB_AI_Log::map_error_to_internal_code( $wp_error );
 		$error_code = isset( $mapped['code'] ) ? $mapped['code'] : 500;
 		$error_message = isset( $mapped['message'] ) ? $mapped['message'] : $wp_error->get_error_message();
 		$training_data_db->mark_as_error( $training_data_id, $error_code, $error_message );
+		EPKB_AI_Log::add_log( $wp_error, array( 'item_id' => $training_data_id, 'message' => 'Sync error for item' ) );
+		return 'error';
 	}
 
 
@@ -610,6 +644,8 @@ class EPKB_AI_Sync_Job_Manager {
 			$job['last_update'] = gmdate( 'Y-m-d H:i:s' );
 			update_option( self::VERIFY_OPTION_NAME, $job, false );
 
+			EPKB_AI_Log::add_log( 'Validate & Fix completed: ' . $job['verified_ok'] . ' OK, ' . $job['marked_outdated'] . ' marked outdated, ' . $job['errors'] . ' errors (total: ' . $job['total'] . ')' );
+
 			return array(
 				'status' => 'completed',
 				'verified_ok' => $job['verified_ok'],
@@ -624,6 +660,7 @@ class EPKB_AI_Sync_Job_Manager {
 		try {
 			$result = $sync_manager->verify_item( $item['id'], $job['collection_id'] );
 		} catch ( Exception $e ) {
+			EPKB_AI_Log::add_log( 'Verify exception for item ' . $item['id'] . ': ' . $e->getMessage() );
 			$result = array( 'status' => 'error', 'message' => $e->getMessage() );
 		}
 
@@ -644,6 +681,7 @@ class EPKB_AI_Sync_Job_Manager {
 				$job['errors']++;
 				$updated_post['status'] = 'verify_error';
 				$updated_post['message'] = isset( $result['message'] ) ? $result['message'] : '';
+				EPKB_AI_Log::add_log( 'Verify error for item ' . $item['id'] . ': ' . $updated_post['message'] );
 				break;
 			default: // skipped
 				$updated_post['status'] = 'skipped';
@@ -658,6 +696,7 @@ class EPKB_AI_Sync_Job_Manager {
 		if ( $job['processed'] >= $job['total'] ) {
 			$job['status'] = 'completed';
 			$job['percent'] = 100;
+			EPKB_AI_Log::add_log( 'Validate & Fix completed: ' . $job['verified_ok'] . ' OK, ' . $job['marked_outdated'] . ' marked outdated, ' . $job['errors'] . ' errors (total: ' . $job['total'] . ')' );
 		}
 
 		update_option( self::VERIFY_OPTION_NAME, $job, false );
@@ -723,24 +762,27 @@ class EPKB_AI_Sync_Job_Manager {
 	 * Get all posts for a collection with their metadata
 	 *
 	 * @param int $collection_id Collection ID
-	 * @return array Array of items with id and type
+	 * @return array Array of items with item ID, training data ID, and type
 	 */
 	private static function get_all_posts_for_collection( $collection_id ) {
 		
-		// Get all items from the training data database for this collection
-		// This includes posts, KB files, and any other item types
+		// Get all items from the training data database for this collection.
+		// Uploaded PDFs are excluded because they are synced at upload time, not through this sync flow.
 		$training_data_db = new EPKB_AI_Training_Data_DB();
 		$training_items = $training_data_db->get_training_data_by_collection( $collection_id );
 
 		// Extract item IDs and types from the training data
 		$items = array();
 		foreach ( $training_items as $item ) {
-			if ( ! empty( $item->item_id ) ) {
-				$items[] = array(
-					'id' => $item->item_id,
-					'type' => empty( $item->type ) ? 'post' : $item->type
-				);
+			if ( empty( $item->item_id ) || $item->type === 'PDF' ) {
+				continue;
 			}
+
+			$items[] = array(
+				'id' => $item->item_id,
+				'training_data_id' => (int) $item->id,
+				'type' => empty( $item->type ) ? 'post' : $item->type
+			);
 		}
 		
 		return $items;

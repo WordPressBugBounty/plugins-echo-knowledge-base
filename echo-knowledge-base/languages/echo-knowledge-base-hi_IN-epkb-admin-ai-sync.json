@@ -19,11 +19,20 @@
             "No posts found to sync": [
                 "सिंक के लिए पोस्ट नहीं मिली"
             ],
+            "No synced items found to verify": [
+                "सत्यापन के लिए कोई सिंक किए गए आइटम नहीं मिले।"
+            ],
             "Pending": [
                 "स्थगित"
             ],
             "of": [
                 "में से"
+            ],
+            "Selected": [
+                "चयनित"
+            ],
+            "Processing": [
+                "प्रक्रासन"
             ],
             "errors": [
                 "त्रुटियाँ"
@@ -55,9 +64,6 @@
             "Added": [
                 "जोड़ा गया"
             ],
-            "Selected": [
-                "चयनित"
-            ],
             "Records": [
                 "रिकॉर्ड्स"
             ],
@@ -70,11 +76,11 @@
             "Select All Records": [
                 "सभी रिकॉर्ड चुनें"
             ],
-            "Validate & Fix after Sync": [
-                "सिंक के बाद सत्यापित करें और ठीक करें"
+            "Validate & Fix Synced Items": [
+                "समन्वयित आइटमों को सत्यापित करें और ठीक करें"
             ],
-            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
-                "जब सक्षम हो, सिंक पूरा होने के बाद सिस्टम स्वतः सत्यापित और ठीक करेगा ताकि सिंक किए गए डेटा में किसी भी समस्या की जाँच हो सके और उन्हें हल करने का प्रयास किया जा सके."
+            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
+                "सक्षम होने पर, समन्वय पूरा हो जाने के बाद सिस्टम केवल समन्वयित आइटमों को स्वचालित रूप से सत्यापित करेगा और ठीक करेगा। पुराने या पेंडिंग आइटम तब तक सत्यापित नहीं होंगे जब तक वे समन्वयित नहीं हो जाते।."
             ],
             "Sync in Progress": [
                 "सिंक प्रगति पर है"
@@ -99,9 +105,6 @@
             ],
             "Retrying failed posts:": [
                 "असफल पोस्टों को पुनः प्रयास किया जा रहा है:"
-            ],
-            "Processing": [
-                "प्रक्रासन"
             ],
             "posts": [
                 "पोस्ट"

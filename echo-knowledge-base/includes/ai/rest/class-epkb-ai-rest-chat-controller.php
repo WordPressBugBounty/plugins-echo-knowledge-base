@@ -336,6 +336,9 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 		if ( empty( $chat_id ) ) {
 			// Get active conversation for the session
 			$conversation = $messages_db->get_latest_active_chat_for_session( $session_id );
+			if ( is_wp_error( $conversation ) ) {
+				return [ 'status' => 500, 'wp_error' => $conversation ];
+			}
 			if ( ! $conversation ) {
 				// No RECENT active conversation found so create a new one
 				return [ 'status' => 200, 'wp_error' => null, 'data' => [], 'request_data' => $request_data ];
@@ -369,6 +372,9 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			
 			// Get conversation from database
 			$conversation = $messages_db->get_conversation_by_chat_and_session( $chat_id, $session_id );
+			if ( is_wp_error( $conversation ) ) {
+				return [ 'status' => 500, 'wp_error' => $conversation ];
+			}
 			if ( ! $conversation ) {
 				return [ 'status' => 200, 'wp_error' => null, 'data' => [], 'request_data' => $request_data ];
 			}

@@ -19,6 +19,14 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			)
 		) );
 
+		register_rest_route( $this->admin_namespace, '/ai/migrate-legacy-models', array(
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'migrate_legacy_models' ),
+				'permission_callback' => array( $this, 'check_admin_permission' ),
+			)
+		) );
+
 		// Load AI tab data on demand (currently used for dashboard)
 		register_rest_route( $this->admin_namespace, '/ai/(?P<tab>[a-z0-9\\-]+)', array(
 			array(
@@ -126,6 +134,14 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		$provider = isset( $new_config['ai_provider'] ) ? $new_config['ai_provider'] : EPKB_AI_Provider::get_active_provider();
 		$selected_provider = EPKB_AI_Provider::normalize_provider( $provider );
 
+		// Hidden inputs from the inactive provider can contain stale browser or password-manager values.
+		// Drop them so partial updates preserve the saved inactive-provider settings.
+		if ( $selected_provider === EPKB_AI_Provider::PROVIDER_GEMINI ) {
+			unset( $new_config['ai_chatgpt_key'], $new_config['ai_organization_id'] );
+		} else {
+			unset( $new_config['ai_gemini_key'] );
+		}
+
 		// Handle provider-specific API keys - process both fields
 		$api_key_fields = array(
 			'ai_chatgpt_key' => EPKB_AI_Provider::PROVIDER_CHATGPT,
@@ -206,6 +222,10 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 
 		// Update only the provided fields (partial update)
 		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
+		$legacy_model_updates = array_merge(
+			EPKB_AI_Config_Specs::get_legacy_model_updates( $orig_config ),
+			EPKB_AI_Config_Specs::get_legacy_model_updates( $new_config )
+		);
 
 		$result = EPKB_AI_Config_Specs::update_ai_config( $orig_config, $new_config );
 		if ( is_wp_error( $result ) ) {
@@ -268,10 +288,15 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			}
 		}
 
+		$updated_ai_config = EPKB_AI_Config_Specs::get_ai_config();
+
 		$response_data = array(
 			'success' => true,
 			'message' => __( 'Settings saved successfully.', 'echo-knowledge-base' ),
-			'settings' => $new_config
+			'settings' => $updated_ai_config,
+			'ai_config' => $updated_ai_config,
+			'legacy_models_notice_active' => ! empty( EPKB_AI_Config_Specs::get_legacy_model_updates( $updated_ai_config ) ),
+			'legacy_models_migrated' => ! empty( $legacy_model_updates )
 		);
 		
 		if ( $widget_config !== null ) {
@@ -283,5 +308,41 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		}
 
 		return $this->create_rest_response( $response_data );
+	}
+
+	/**
+	 * Migrate legacy AI model values in the current AI configuration.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function migrate_legacy_models() {
+		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
+		$legacy_model_updates = EPKB_AI_Config_Specs::get_legacy_model_updates( $orig_config );
+
+		if ( empty( $legacy_model_updates ) ) {
+			return $this->create_rest_response( array(
+				'success' => true,
+				'message' => __( 'AI configuration is already up to date.', 'echo-knowledge-base' ),
+				'ai_config' => $orig_config,
+				'legacy_models_notice_active' => false,
+			) );
+		}
+
+		$result = EPKB_AI_Config_Specs::update_ai_config( $orig_config, $legacy_model_updates );
+		if ( is_wp_error( $result ) ) {
+			$status_code = $result->get_error_code() == 'validation_failed' ? 400 : 500;
+			return $this->create_rest_response( array(
+				'success' => false,
+				'error' => $result->get_error_code(),
+				'message' => sprintf( __( 'Error saving settings: %s', 'echo-knowledge-base' ), $result->get_error_message() )
+			), $status_code );
+		}
+
+		return $this->create_rest_response( array(
+			'success' => true,
+			'message' => __( 'AI configuration updated successfully.', 'echo-knowledge-base' ),
+			'ai_config' => EPKB_AI_Config_Specs::get_ai_config(),
+			'legacy_models_notice_active' => false,
+		) );
 	}
 }

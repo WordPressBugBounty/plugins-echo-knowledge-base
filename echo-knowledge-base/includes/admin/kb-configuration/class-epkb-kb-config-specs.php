@@ -2712,7 +2712,7 @@ class EPKB_KB_Config_Specs {
 			'glossary_enable' => array(
 				'name'        => 'glossary_enable',
 				'type'        => EPKB_Input_Filter::CHECKBOX,
-				'default'     => 'on'
+				'default'     => 'off'
 			),
 			'glossary_tooltip_text_color' => array(
 				'name'        => 'glossary_tooltip_text_color',

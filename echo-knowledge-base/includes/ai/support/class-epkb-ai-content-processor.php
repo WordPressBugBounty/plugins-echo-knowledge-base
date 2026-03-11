@@ -29,7 +29,7 @@ class EPKB_AI_Content_Processor {
 		} 
 
 		if ( $post_type === EPKB_AI_Utilities::AI_PRO_NOTES_POST_TYPE ) {
-			$content = EPKB_Utilities::is_ai_features_pro_enabled() ? $post->post_content : '';
+			$content = EPKB_Utilities::is_ai_features_pro_enabled() ? EPKB_PDF_Utilities::strip_html_for_ai( $post->post_content ) : '';
 			if ( empty( $content ) ) {
 				return new WP_Error( 'ai_note_empty', __( 'AI note content is empty', 'echo-knowledge-base' ) );
 			}

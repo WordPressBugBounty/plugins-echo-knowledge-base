@@ -13,6 +13,9 @@
             "Disabled": [
                 "Deaktiveret"
             ],
+            "Debug Mode": [
+                "Fejlfindings-tilstand"
+            ],
             "API Key": [
                 "API-nøgle"
             ],
@@ -66,9 +69,6 @@
             ],
             "Error clearing AI logs": [
                 "Fejl ved rydning af AI-logfiler"
-            ],
-            "Debug Mode": [
-                "Fejlfindings-tilstand"
             ],
             "Enable Debug Mode": [
                 "Aktiver fejlfindingstilstand"

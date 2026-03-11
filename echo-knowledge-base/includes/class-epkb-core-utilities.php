@@ -908,8 +908,8 @@ class EPKB_Core_Utilities {
 			} else if ( $new_icon_type == 'font' ) {    // font icon
 				$user_defined = $current_icon_type == 'font' && ! in_array( $category_icons[$term_id]['name'], $all_default_icons );
 			} else {    // image icon
-				$user_defined = $current_icon_type == 'image' && strpos( $category_icons[$term_id]['image_thumbnail_url'], 'img/demo-icons' ) == false &&
-					strpos( $category_icons[$term_id]['image_thumbnail_url'], 'www.echoknowledgebase.com' ) == false;
+				$user_defined = $current_icon_type == 'image' && strpos( $category_icons[$term_id]['image_thumbnail_url'], 'img/demo-icons' ) === false &&
+					strpos( $category_icons[$term_id]['image_thumbnail_url'], 'www.echoknowledgebase.com' ) === false;
 			}
 
 			// do not change user-defined icons

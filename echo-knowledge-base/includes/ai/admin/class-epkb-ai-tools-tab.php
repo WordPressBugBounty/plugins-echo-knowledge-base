@@ -386,12 +386,13 @@ class EPKB_AI_Tools_Tab {
 			'kb_collection_mapping' => array(),
 		);
 
-		// Gather data from both sources
+		// Gather data from both sources - only for the active provider
+		$active_provider = EPKB_AI_Provider::get_active_provider();
 		$options_data = array(); // key: collection_id
 		$db_data = array();      // key: collection_id
 
-		// 1. Get collections from options table (all providers)
-		$options_collections = EPKB_AI_Training_Data_Config_Specs::get_training_data_collections( false, false );
+		// 1. Get collections from options table (active provider only)
+		$options_collections = EPKB_AI_Training_Data_Config_Specs::get_training_data_collections( false, true );
 		if ( ! is_wp_error( $options_collections ) && ! empty( $options_collections ) ) {
 			foreach ( $options_collections as $collection_id => $config ) {
 				$options_data[ $collection_id ] = array(
@@ -402,11 +403,14 @@ class EPKB_AI_Tools_Tab {
 			}
 		}
 
-		// 2. Get collections from training data DB table
+		// 2. Get collections from training data DB table (active provider only)
 		$training_data_db = new EPKB_AI_Training_Data_DB( true );
 		$db_collections = $training_data_db->get_all_collection_ids_from_db();
 		if ( ! is_wp_error( $db_collections ) && ! empty( $db_collections ) ) {
 			foreach ( $db_collections as $collection_id => $provider ) {
+				if ( $provider !== $active_provider ) {
+					continue;
+				}
 				$status_stats = $training_data_db->get_status_statistics( $collection_id );
 				$db_data[ $collection_id ] = array(
 					'provider' => $provider,

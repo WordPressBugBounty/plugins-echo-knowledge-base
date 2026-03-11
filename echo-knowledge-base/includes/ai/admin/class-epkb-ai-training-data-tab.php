@@ -153,7 +153,7 @@ class EPKB_AI_Training_Data_Tab {
 		$preloaded = array();
 		
 		// Status tabs to pre-load (all, pending, added, updated, outdated, error)
-		$statuses = array( 'all', 'pending', 'added', 'updated', 'outdated', 'error' );
+		$statuses = array( 'all', 'pending', 'added', 'updated', 'outdated', 'error', 'skipped' );
 		
 		foreach ( $statuses as $status ) {
 			// Pre-load first page with default settings for each status
@@ -175,6 +175,7 @@ class EPKB_AI_Training_Data_Tab {
 			if ( is_wp_error( $data ) ) {
 				$preloaded[$status] = array(
 					'data' => array(),
+					'available_types' => array(),
 					'pagination' => array(
 						'page' => 1,
 						'per_page' => 20,
@@ -185,39 +186,19 @@ class EPKB_AI_Training_Data_Tab {
 				continue;
 			}
 			
-			// Add post type names to each item (same logic as REST endpoint)
+			// Add display metadata needed by the admin table.
 			foreach ( $data as &$item ) {
-				// Get the post type object to get the label
-				$post_type_obj = get_post_type_object( $item->type );
-				if ( $post_type_obj && isset( $post_type_obj->labels->name ) ) {
-					
-					if ( strpos( $item->type, 'epkb_post_type' ) === 0 && isset( $post_type_obj->labels->name ) ) {
-						$type_name = $post_type_obj->labels->name;
-					} else {
-						// For standard post types, use singular_name
-						$type_name = $post_type_obj->labels->singular_name;
-					}
-				} else {
-					// Fallback to the type if post type object not found
-					$type_name = ucfirst( $item->type );
-				}
-				
-				// Limit to 20 characters with ellipsis if longer
-				if ( strlen( $type_name ) > 20 ) {
-					$item->type_name = substr( $type_name, 0, 18 ) . '..';
-				} else {
-					$item->type_name = $type_name;
-				}
-				// Keep the original type as item_type for filtering
-				$item->item_type = $item->type;
+				$item = EPKB_AI_Utilities::prepare_training_data_item_for_display( $item );
 			}
 			
 			// Get total count for pagination
 			$total = $training_data_db->get_training_data_count( $args );
 			$total_pages = ceil( $total / 20 );
+			$available_types = $training_data_db->get_collection_types( $collection_id, $status );
 			
 			$preloaded[$status] = array(
 				'data' => $data,
+				'available_types' => $available_types,
 				'pagination' => array(
 					'page' => 1,
 					'per_page' => 20,

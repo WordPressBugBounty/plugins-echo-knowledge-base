@@ -1,4 +1,4 @@
-=== Echo Knowledge Base - Documentation, FAQs, AI Chat & AI Search ===
+=== Echo Knowledge Base - Documentation, FAQs, Chat & Smart Search ===
 Author URI: https://www.echoknowledgebase.com/about-us/
 Plugin URI: https://www.echoknowledgebase.com/
 Contributors: echoplugins
@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chatbot, faq
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 17.0.4
+Stable tag: 17.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,22 +18,6 @@ A fully featured, easy-to-use documentation plugin with AI chat and search integ
 Echo Knowledge Base is a powerful documentation tool that helps you create and organize your documentation, FAQs, and articles. It has built-in AI search and AI chatbot features and includes comprehensive features to help you build a visually appealing knowledge base.
 
 Designed with a modern and professional appearance by default, the plugin offers extensive customization options to align perfectly with your brand identity.
-
-
-## FREE AI FEATURES (Optional)
-
-All AI features are completely optional and disabled by default. You can enable them at any time if you choose to use AI-powered capabilities.
-
-* **AI Content Analysis**: Automatically analyze your knowledge base articles for quality and optimization. Get AI-powered insights including:
-  * **Tags Analysis** - Optimize article tags and categories for better organization and SEO
-  * **Readability Score** - Evaluate content clarity and structure with AI assistance
-[Learn more.](https://www.echoknowledgebase.com/documentation/content-analysis/)
-
-* **AI Chat (Chatbot)**: Add a frontend chat dialog where users and visitors can ask questions and get instant AI-powered answers based on on your Knowledge Base, FAQs, internal documentation, notes, and any other source of information.
-
-* **AI Search**: When users search, results show relevant KB articles plus an 'Ask AI' button to dive deeper with the same query.
-
-* **AI Training Data**: Easily choose which KB articles to include in AI training, so responses stay accurate and on-brand.
 
 
 ## FREE KB FEATURES
@@ -64,6 +48,20 @@ All AI features are completely optional and disabled by default. You can enable 
 * **Article Enhancement Tools**: Improve user experience with breadcrumbs, next/previous article navigation, print and PDF export options, and more.
 
 
+## FREE AI FEATURES (Optional)
+
+All AI features are completely optional and **disabled by default**. You can enable them at any time if you choose to use AI-powered capabilities.
+
+* **AI Content Analysis**: Automatically analyze your knowledge base articles for quality and optimization. Get AI-powered insights including:
+  * **Tags Analysis** - Optimize article tags and categories for better organization and SEO
+  * **Readability Score** - Evaluate content clarity and structure with AI assistance
+[Learn more.](https://www.echoknowledgebase.com/documentation/content-analysis/)
+
+* **AI Chat (Chatbot)**: Add a frontend chat dialog where users and visitors can ask questions and get instant AI-powered answers based on on your Knowledge Base, FAQs, internal documentation, notes, and any other source of information.
+
+* **AI Search**: When users search, results show relevant KB articles plus an 'Ask AI' button to dive deeper with the same query.
+
+
 ## PRO KB FEATURES
 
 * **AI Features**:
@@ -72,7 +70,8 @@ All AI features are completely optional and disabled by default. You can enable 
    * **Email Notifications** for AI insights
    * **Human Agent Handoff** – lets users escalate from AI to your support team
    * **Feedback Buttons** – collect thumbs-up/down ratings on AI responses
-   * **PDF to Notes** – upload PDF files and convert them into AI training notes to expand your AI's knowledge beyond KB articles
+   * **PDF to Articles** – upload PDF files and convert them into KB articles with optional AI formatting that organizes content into headings, lists, and paragraphs
+   * **PDF to Notes** – upload PDF files via drag-and-drop or the Media Library and convert them into AI training notes to expand your AI's knowledge beyond KB articles
    * **AI Chat Access Control** – restrict who can use AI Chat: everyone, logged-in users only, or specific WordPress roles. Set different access rules for each chat location
 
 * **Advanced Search**: Highlight search keywords on article pages, filter search by category, adjust search box styling, and add helper text or links below the search bar. Use advanced search analytics to discover popular queries and identify searches with no results.
@@ -83,16 +82,7 @@ All AI features are completely optional and disabled by default. You can enable 
 
 * **Articles Import and Export**: Import or export articles and categories using CSV or XML formats for easy migration or backup.
 
-* **NEW: AI Smart Search**: Display intelligent search results with optional multi-panel sections:
-  * **AI Answer** - Get instant AI-generated answers directly from your knowledge base content
-  * **Matching Articles** - Browse relevant KB articles with excerpts and direct links
-  * **Step-by-Step Instructions** - AI-generated procedural steps for task-oriented queries
-  * **Related Keywords** - Discover related topics and keywords to explore
-  * **You Can Also Ask** - Get suggestions for related questions
-  * **Glossary Terms** - View terminology and definitions relevant to the search
-  * **Helpful Tips** - Access AI-generated tips and best practices
-  * **Contact Us** - Quick access to support when users can't find what they need
-  * Fully customizable layout with column options and section arrangement
+* **AI Smart Search**: Display intelligent search results with optional multi-panel sections
 
 * **User Feedback System**: Gather valuable insights with article upvote/downvote and feedback forms.
 
@@ -108,22 +98,6 @@ Transform your knowledge base into an intelligent chatbot that provides instant,
 **AI Chat** can answer questions by drawing on content from your Knowledge Base, FAQs, internal documentation, notes, pages, or any other information source you choose, essentially serving as a chatbot on your site.
 
 **73% fewer repeat tickets (our own numbers)** – After enabling AI Chat, we saw a 73% drop in repetitive questions. Response times shrank, customers got answers faster, and the team could finally tackle higher-value projects *without* hiring extra staff.
-
-### Why Customers Love It
-
-* **Answers in Seconds, Day or Night** – The bot reads your KB articles, FAQs, pages, and internal notes, then delivers clear replies *before* a ticket ever lands in your inbox.
-* **Set-Up in a Coffee Break** – A guided wizard takes you from install to "live" in under 30 minutes. No coding, no external APIs, no fuss.
-* **Visible ROI, Fast** – Most teams cut repeat questions within the first week, freeing staff for revenue-generating work instead of copy-paste responses.
-* **Human Agent Handoff (PRO)** – When users need more help, they can escalate directly to your support team. Triggers via button click, keywords like "talk to a human," or after thumbs-down feedback. Your team receives an email with the full chat transcript.
-* **Feedback Buttons (PRO)** – Let users rate AI responses with thumbs-up/down. Negative feedback can prompt follow-up actions: "Try a different approach" or "Talk to a human" to seamlessly connect with support.
-
-### AI-Powered Search Integration
-
-Not only does Echo Knowledge Base offer an interactive chatbot, it also **supercharges your site’s search**. When users perform a search, they’ll see the usual article results *alongside* an option to **“Ask AI”** the same question. This means visitors can get immediate, concise answers from your content – without ever leaving the search page. It’s like giving your search bar the power of a support agent, helping users find what they need faster than ever.
-
-**Result:** fewer repetitive support tickets and unanswered questions, happier users, and a support team free to focus on high-value work that moves your business forward.
-
-Bring the latest OpenAI models (GPT-5, GPT 4.1) and Google Gemini models to WordPress. Gemini models can speed up AI Chat and AI Search by up to 50%.
 
 For detailed setup instructions, visit our [AI Integration Guide](https://www.echoknowledgebase.com/documentation/setup-ai-provider-and-key/).
 
@@ -146,7 +120,6 @@ See our comprehensive documentation [here](https://www.echoknowledgebase.com/doc
 
 ## ⭐ ADDITIONAL FEATURES
 
-* **AI Smart Search (PRO):** Introducing AI Smart Search a **first-of-its-kind**, multi-panel search experience. We pioneered a results layout that runs multiple AI prompts in parallel to surface not just an answer or article list, but complementary sections like Tips, Glossary, Related Questions, and more so users get clarity faster.
 * **Gutenberg Blocks:** Seamlessly integrate knowledge base elements using the WordPress block editor.
 * **Flexible Ordering:** Order articles and categories alphabetically, by date, or manually with drag-and-drop.
 * **SEO Optimization:** Built with SEO best practices to help your documentation rank well in search engines.
@@ -188,56 +161,6 @@ Echo Knowledge Base works great with popular page builders:
 * **Global Ready:** Translate your documentation and serve users in any language with full multilingual support.
 
 **About Us:** We are a Canadian company with over a decade of experience in WordPress and web technologies. We’re passionate about helping you provide better support to your customers.
-
-##_____
-
-
->💡 <strong>GO FURTHER WITH ADD-ONS</strong>
->
->
-> <strong>PRO Bundle</strong><br>
-> See our [PRO Bundle](https://www.echoknowledgebase.com/bundle-pricing/).
->
->
-> <strong>Content Protection with Access Manager</strong><br>
-> [Access Manager](https://www.echoknowledgebase.com/wordpress-plugin/access-manager/) allows administrators, companies, and organizations to control and restrict access to their private Knowledge Base based on WordPress user accounts. Grant permission using roles and groups.
->
->
-> <strong>AI Features</strong><br>
-> [AI Features](https://www.echoknowledgebase.com/wordpress-plugin/ai-features/) enhances your WordPress site with AI Smart Search, AI training from posts, pages, custom post types, and private notes, PDF to Notes for converting uploaded PDFs into AI training notes, plus smart daily email notifications summarizing AI Chat and Search activity. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/ai-features/).
->
->
-> <strong>Unlimited Knowledge Bases</strong><br>
-> Create [Multiple Knowledge Bases](https://www.echoknowledgebase.com/wordpress-plugin/multiple-knowledge-bases/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=multiple-kbs), one for each product, service, topic or department. Each Knowledgebase has separate articles, URLs, KB Main Page and admin screens. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/multiple-knowledge-bases/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=multiple-kbs).
->
->
-> <strong>Elegant Layouts</strong><br>
-> [Elegant Layouts](https://www.echoknowledgebase.com/wordpress-plugin/elegant-layouts/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=elegant-layouts) adds Grid and Sidebar Layouts. Use Grid Layout or Sidebar Layout for KB Main page or combine Basic, Tabs, Grid and Sidebar layouts in a variety ways. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/elegant-layouts/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=elegant-layouts).
->
->
-> <strong>Advanced Search</strong><br>
-> Enhance users search experience and view search analytics including popular searches and no results searches. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/advanced-search/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=advanced-search).
->
->
-> <strong>Article Rating and Feedback</strong><br>
-> Enable users to provide valuable feedback on your articles. Collect analytics on the most and least rated articles. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/article-rating-and-feedback/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=article-rating).
->
->
-> <strong>Widgets</strong><br>
-> Add Knowledgebase Search, Most Recent Articles and other Widgets and Shortcodes to your documentation, sidebars and pages. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/widgets/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=widgets).
->
->
-> <strong>Custom Links for PDFs and More</strong><br>
-> Set Articles to link to PDFs, pages, posts and websites. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/links-editor-for-pdfs-and-more/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=links-editor).
->
->
-> <strong>Articles Import and Export</strong><br>
-> Import and export articles and their content, comments, categories, tags, and attachments. Migrate and copy articles between KBs. Edit articles outside of WordPress. [Learn More](https://www.echoknowledgebase.com/wordpress-plugin/kb-articles-import-export/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=import).
->
-
-* (PRO) Grid Layout [here](https://www.echoknowledgebase.com/demo-5-knowledge-base-grid-layout/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=demo5 "KB Demo 5")
-* (PRO) Sidebar Layout [here](https://www.echoknowledgebase.com/demo-8-knowledge-base-sidebar-layout/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=demo8 "KB Demo 8")
-* (PRO) Links [here](https://www.echoknowledgebase.com/demo-9-knowledge-base-add-ons/?utm_source=plugin&utm_medium=readme&utm_content=home&utm_campaign=demo9 "KB Demos 9")
 
 
 == Installation ==
@@ -417,6 +340,14 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 18. Glossary 
 
 == Changelog ==
+
+= 17.1.0 =
+Release Date: Mar 11, 2026
+* New: PDF to Articles - upload and convert PDF files into KB articles with basic or AI-structured formatting (PRO)
+* New: Media Library support for PDF uploads (PRO)
+* Update: empty or missing content now marked as Skipped
+* Update: various improvements
+* Fix: Cleanup and minor fixes
 
 = 17.0.4 =
 Release Date: Mar 2, 2026
@@ -641,126 +572,6 @@ Release Date: Dec 7, 2024
 * NEW: Articles List block
 * NEW: KB Block Template
 * Mobile article view improvements
-* Fix: Cleanup and minor fixes
-
-= 12.43.0 =
-Release Date: Nov 10, 2024
-* Update: WordPress 6.7
-* Fix: Cleanup and minor fixes
-
-= 12.42.1 =
-Release Date: Oct 13, 2024
-* Update: Security improvements
-* Update: Visual Helper improvements
-* Fix: Cleanup and minor fixes
-
-= 12.42.0 =
-Release Date: Oct 5, 2024
-* Update: Security improvements
-* Update: Improvements to Visual Helper
-* Fix: Cleanup and minor fixes
-
-= 12.41.0 =
-Release Date: Sept 28, 2024
-* Update: Improvements to Visual Helper
-* Fix: Cleanup and minor fixes
-
-= 12.40.0 =
-Release Date: Sept 21, 2024
-* Fix: Major clean up and fixes
-
-= 12.33.0 =
-Release Date: Sept 14, 2024
-* New: Tag Archive Page with separate KB Template
-* New: Custom category slug
-* Fix: Cleanup and minor fixes
-
-= 12.32.0 =
-Release Date: Sept 3, 2024
-* New: Visual Helper
-* Fix: Cleanup and minor fixes
-
-= 12.31.1 =
-Release Date: Aug 1, 2024
-* Fix: Cleanup and minor fixes
-
-= 12.31.0 =
-Release Date: July 7, 2024
-* Update: WordPress 6.6
-* New: Utility to convert selected articles to posts
-* Fix: Cleanup and minor fixes
-
-= 12.30.1 =
-Release Date: June 10, 2024
-* Fix: Cleanup and minor fixes
-
-= 12.30.0 =
-Release Date: May 27, 2024
-* New: Category Archive Page with separate KB Template
-* New: Toggle for archive page sub-categories
-* Fix: Cleanup and minor fixes
-
-= 12.21.0 =
-Release Date: May 11, 2024
-* New: toggle article list icons on/off
-* New: custom article list icons (Elegant Layout)
-* Update: FAQs shortcode with extra parameters
-* Fix: Cleanup and minor fixes
-
-= 12.20.0 =
-Release Date: Apr 27, 2024
-* Update: demo data
-* Update: security improvements
-* Fix: Cleanup and minor fixes
-
-= 12.11.2 =
-Release Date: Apr 5, 2024
-* Update: security improvements
-* Update: Show KB Main Page tag in list of pages
-* Fix: Cleanup and minor fixes
-
-= 12.11.0 =
-Release Date: Mar 24, 2024
-* Update: WordPress 6.5
-* Update: Category Archive Page v3 with more settings and features
-* Fix: Cleanup and minor fixes
-
-= 12.0.1 =
-Release Date: Mar 8, 2024
-* Fix: Cleanup and minor fixes
-
-= 12.0.0 =
-Release Date: Mar 8, 2024
-* New: Category Archive Page v3 with new designs and settings
-* Fix: Cleanup and minor fixes
-
-= 11.42.0 =
-Release Date: Feb 25, 2024
-* Fix: Cleanup and minor fixes
-
-= 11.41.0 =
-Release Date: Feb 25, 2024
-* New: FAQs title and location
-* New: Articles List title and location
-* Update: Drill Down Layout - improved sub-category display
-* Update: remove FAQ draft status
-* Fix: Cleanup and minor fixes
-
-= 11.40.1 =
-Release Date: Feb 16, 2024
-* Update: improved loading of settings UI
-* Fix: Cleanup and minor fixes
-
-= 11.40.0 =
-Release Date: Feb 10, 2024
-* New: FAQ Groups and FAQ Group Shortcode
-* New: All Articles - add category filter
-* Fix: Cleanup and minor fixes
-
-= 11.31.0 =
-Release Date: Jan 6, 2024
-* Update: Retire Article v1
-* Fix: Article View Counter unserialize fix
 * Fix: Cleanup and minor fixes
 
 See [changelog.txt](https://plugins.svn.wordpress.org/echo-knowledge-base/tags/13.10.0/readme.txt) for older changelog

@@ -35,10 +35,7 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 			'ai_training_data_provider' => array(
 				'name'    => 'ai_training_data_provider',
 				'type'    => EPKB_Input_Filter::SELECTION,
-				'options' => array(
-					EPKB_AI_Provider::PROVIDER_GEMINI => 'Gemini',
-					EPKB_AI_Provider::PROVIDER_CHATGPT => 'ChatGPT'
-				),
+				'options' => EPKB_AI_Provider::get_provider_options(),
 				'default' => EPKB_AI_Provider::PROVIDER_GEMINI
 			),
 			'ai_training_data_store_post_types' => array(

@@ -19,11 +19,20 @@
             "No posts found to sync": [
                 "Es wurden keine Beiträge zum Synchronisieren gefunden"
             ],
+            "No synced items found to verify": [
+                "Keine synchronisierten Elemente zum Verifizieren gefunden"
+            ],
             "Pending": [
                 "Ausstehend"
             ],
             "of": [
                 "von"
+            ],
+            "Selected": [
+                "Ausgewählt"
+            ],
+            "Processing": [
+                "In Bearbeitung"
             ],
             "errors": [
                 "Fehler"
@@ -55,9 +64,6 @@
             "Added": [
                 "Hinzugefügt"
             ],
-            "Selected": [
-                "Ausgewählt"
-            ],
             "Records": [
                 "Datensätze"
             ],
@@ -70,11 +76,11 @@
             "Select All Records": [
                 "Alle Datensätze auswählen"
             ],
-            "Validate & Fix after Sync": [
-                "Validieren & Beheben nach der Synchronisierung"
+            "Validate & Fix Synced Items": [
+                "Synchronisierte Elemente validieren und reparieren"
             ],
-            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
-                "Wenn aktiviert, wird nach Abschluss der Synchronisierung automatisch Validieren & Beheben ausgeführt, um Probleme in den synchronisierten Daten zu prüfen und zu beheben."
+            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
+                "Wenn aktiviert, validiert und repariert das System nach Abschluss der Synchronisierung automatisch nur die synchronisierten Elemente. Veraltete oder ausstehende Elemente werden nicht verifiziert, bis sie synchronisiert wurden."
             ],
             "Sync in Progress": [
                 "Synchronisierung läuft"
@@ -99,9 +105,6 @@
             ],
             "Retrying failed posts:": [
                 "Wiederhole fehlgeschlagene Beiträge:"
-            ],
-            "Processing": [
-                "In Bearbeitung"
             ],
             "posts": [
                 "Beiträge"

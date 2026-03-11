@@ -19,11 +19,20 @@
             "No posts found to sync": [
                 "Inga inlägg hittades för att synkronisera"
             ],
+            "No synced items found to verify": [
+                "Inga synkroniserade objekt hittades för verifiering"
+            ],
             "Pending": [
                 "Väntande"
             ],
             "of": [
                 "av"
+            ],
+            "Selected": [
+                "Markerad"
+            ],
+            "Processing": [
+                "Bearbetar"
             ],
             "errors": [
                 "fel"
@@ -55,9 +64,6 @@
             "Added": [
                 "Tillagt"
             ],
-            "Selected": [
-                "Markerad"
-            ],
             "Records": [
                 "Poster"
             ],
@@ -70,11 +76,11 @@
             "Select All Records": [
                 "Välj alla poster"
             ],
-            "Validate & Fix after Sync": [
-                "Verifiera & Åtgärda efter synkronisering"
+            "Validate & Fix Synced Items": [
+                "Verifiera och åtgärda synkroniserade objekt"
             ],
-            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
-                "När den är aktiverad, efter att synkroniseringen har slutförts, kommer systemet automatiskt att köra Verifiera & Åtgärda för att kontrollera problem i de synkroniserade uppgifterna och försöka åtgärda dem."
+            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
+                "När den är aktiverad kommer systemet, efter att synkroniseringen har slutförts, automatiskt att verifiera och åtgärda endast de synkroniserade objekten. Föråldrade eller väntande objekt kommer inte att verifieras förrän de har synkroniserats."
             ],
             "Sync in Progress": [
                 "Synkronisering pågår"
@@ -99,9 +105,6 @@
             ],
             "Retrying failed posts:": [
                 "Återförsöker misslyckade inlägg:"
-            ],
-            "Processing": [
-                "Bearbetar"
             ],
             "posts": [
                 "inlägg"

@@ -37,6 +37,9 @@
             "Previous": [
                 "Zurück"
             ],
+            "OFF": [
+                "AUS"
+            ],
             "Reset": [
                 "Zurücksetzen"
             ],
@@ -63,6 +66,12 @@
             ],
             "of": [
                 "von"
+            ],
+            "Requires AI Features PRO": [
+                "Erfordert KI-Funktionen PRO"
+            ],
+            "with code": [
+                "mit Code"
             ],
             "Thumbs up (%d)": [
                 "Daumen hoch (%d)"
@@ -192,9 +201,6 @@
             ],
             "Collection": [
                 "Sammlung"
-            ],
-            "Requires AI Features PRO": [
-                "Erfordert KI-Funktionen PRO"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "Möchten Sie wirklich die Standardanweisungen zurücksetzen?"

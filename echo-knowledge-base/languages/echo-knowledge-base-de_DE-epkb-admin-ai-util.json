@@ -19,8 +19,20 @@
             "AI Features": [
                 "KI-Funktionen"
             ],
+            "OFF": [
+                "AUS"
+            ],
+            "Use code:": [
+                "Code verwenden:"
+            ],
+            "Copy": [
+                "Kopieren"
+            ],
             "Documentation": [
                 "Dokumentation"
+            ],
+            "Copied!": [
+                "Kopiert!"
             ],
             "Got it!": [
                 "Verstanden!"

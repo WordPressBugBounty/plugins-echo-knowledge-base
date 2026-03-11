@@ -10,8 +10,20 @@
             "Categories": [
                 "Kategorier"
             ],
+            "OFF": [
+                "AV"
+            ],
+            "Use code:": [
+                "Bruk kode:"
+            ],
+            "Copy": [
+                "Kopier"
+            ],
             "Article Content": [
                 "Artikkelinnhold"
+            ],
+            "Copied!": [
+                "Kopiert!"
             ],
             "Analyzing...": [
                 "Analyserer..."
@@ -19,11 +31,17 @@
             "Content Gaps Analysis": [
                 "Innholdsgap-analyse"
             ],
+            "Identifies unanswered user questions": [
+                "Identifiserer ubesvarte brukerspørsmål"
+            ],
+            "Detects missing or underdeveloped topics": [
+                "Oppdager manglende eller underutviklede emner"
+            ],
+            "Provides actionable recommendations for improvement": [
+                "Gir konkrete anbefalinger for forbedring"
+            ],
             "AI-Powered Tag Suggestions": [
                 "AI-drevne tagforslag"
-            ],
-            "Gap analysis is only available with AI Features add-on.": [
-                "Gapanalyse er kun tilgjengelig med AI-funksjoner-tillegget."
             ],
             "Readability": [
                 "Lesbarhet"
@@ -121,8 +139,11 @@
             "An error occurred during Content Gaps analysis.": [
                 "En feil oppstod under innholdsgapanalysen."
             ],
-            "Learn More About AI Features": [
-                "Lær mer om AI-funksjoner"
+            "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
+                "AI identifiserer manglende informasjon og ubesvarte spørsmål i artiklene dine. Finn ut hvilke emner som trenger mer dekning."
+            ],
+            "Get AI Features PRO": [
+                "Få AI-funksjoner PRO"
             ],
             "Analyzing article for content gaps...": [
                 "Analyserer artikkelen for innholdsgap..."

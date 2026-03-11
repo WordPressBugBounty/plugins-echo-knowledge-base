@@ -37,6 +37,9 @@
             "Previous": [
                 "Poprzednie"
             ],
+            "OFF": [
+                "WYŁ"
+            ],
             "Reset": [
                 "Resetuj"
             ],
@@ -63,6 +66,12 @@
             ],
             "of": [
                 "z"
+            ],
+            "Requires AI Features PRO": [
+                "Wymaga funkcji AI PRO"
+            ],
+            "with code": [
+                "z kodem"
             ],
             "Thumbs up (%d)": [
                 "Kciuk w górę (%d)"
@@ -192,9 +201,6 @@
             ],
             "Collection": [
                 "Kolekcja"
-            ],
-            "Requires AI Features PRO": [
-                "Wymaga funkcji AI PRO"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "Czy na pewno chcesz zresetować instrukcje do wartości domyślnych?"

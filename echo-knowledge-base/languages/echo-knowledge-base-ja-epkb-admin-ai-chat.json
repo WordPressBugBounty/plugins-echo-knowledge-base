@@ -37,6 +37,9 @@
             "Previous": [
                 "前"
             ],
+            "OFF": [
+                "オフ"
+            ],
             "Reset": [
                 "リセット"
             ],
@@ -63,6 +66,12 @@
             ],
             "of": [
                 "の"
+            ],
+            "Requires AI Features PRO": [
+                "AI機能 PRO が必要です"
+            ],
+            "with code": [
+                "コード付き"
             ],
             "Thumbs up (%d)": [
                 "いいね (%d)"
@@ -192,9 +201,6 @@
             ],
             "Collection": [
                 "コレクション"
-            ],
-            "Requires AI Features PRO": [
-                "AI機能 PRO が必要です"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "デフォルトの指示にリセットしてもよろしいですか？"

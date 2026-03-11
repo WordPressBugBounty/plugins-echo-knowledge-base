@@ -7,14 +7,14 @@
                 "lang": "hi_IN",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
+                "AI सुविधाओं के उपयोग के लिए, कृपया अपनी API कुंजी कॉन्फ़िगर करें और सामान्य सेटिंग्स में डेटा गोपनीयता समझौते को स्वीकार करें, फिर AI खोज या AI चैट सक्षम करें।."
+            ],
             "AI Features": [
                 "एआई सुविधाएँ"
             ],
             "Go to General Settings": [
                 "सामान्य सेटिंग्स पर जाएँ"
-            ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
-                "AI सुविधाओं के उपयोग के लिए, कृपया अपनी API कुंजी कॉन्फ़िगर करें और सामान्य सेटिंग्स में डेटा गोपनीयता समझौते को स्वीकार करें, फिर AI खोज या AI चैट सक्षम करें।."
             ],
             "To use Training Data, please enable either AI Chat or AI Search in their respective tabs.": [
                 "मशीन लर्निंग डेटा के उपयोग के लिए, कृपया उनके संबंधित टैब में से AI चैट या AI खोज को सक्षम करें।."
@@ -31,8 +31,26 @@
             "Configure API Key": [
                 "API कुंजी कॉन्फ़िगर करें"
             ],
+            "Legacy AI Models Detected": [
+                "पारंपरिक AI मॉडल पाए गए"
+            ],
+            "Your AI configuration still uses legacy Gemini model names. Update the AI configuration to save the current model names.": [
+                "आपकी AI कॉन्फ़िगरेशन अभी भी पुराने Gemini मॉडल नामों का उपयोग कर रही है। वर्तमान मॉडल नामों को सुरक्षित रखने के लिए AI कॉन्फ़िगरेशन को अपडेट करें।."
+            ],
+            "Updating...": [
+                "अपडेट हो रहा है..."
+            ],
+            "Update AI Configuration": [
+                "AI कॉन्फ़िगरेशन अपडेट करें"
+            ],
             "Failed to load tab data": [
                 "टैब डेटा लोड करने में असफल"
+            ],
+            "AI configuration updated successfully": [
+                "AI कॉन्फ़िगरेशन सफलतापूर्वक अपडेट हो गया है।"
+            ],
+            "Failed to update AI configuration": [
+                "AI कॉन्फ़िगरेशन को अपडेट करने में विफल रहा है।"
             ],
             "Failed to load dashboard data. Please reload the page.": [
                 "डैशबोर्ड डेटा लोड करने में विफल रहा। कृपया पेज को फिर से लोड करें।."

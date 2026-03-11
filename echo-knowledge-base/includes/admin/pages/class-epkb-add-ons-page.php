@@ -70,7 +70,15 @@ class EPKB_Add_Ons_Page {
 				<p>
 					<?php echo wp_kses_post( $values['desc'] ); ?>
 				</p>
-			</div>
+			</div>			<?php
+			if ( ! empty( $values['discount_coupon'] ) && ! empty( $values['discount_coupon']['discount_percentage'] ) ) {
+				$coupon = $values['discount_coupon']; ?>
+				<div class="epkb-ad-discount-coupon">
+					<span class="epkb-ad-discount-badge"><?php echo esc_html( $coupon['discount_percentage'] . '% ' . __( 'OFF', 'echo-knowledge-base' ) ); ?></span>
+					<span class="epkb-ad-discount-text"><?php echo esc_html__( 'Use code:', 'echo-knowledge-base' ); ?> <code><?php echo esc_html( $coupon['coupon_code'] ); ?></code></span>
+					<button type="button" class="epkb-ad-discount-copy-btn" data-code="<?php echo esc_attr( $coupon['coupon_code'] ); ?>"><?php esc_html_e( 'Copy', 'echo-knowledge-base' ); ?></button>
+				</div>			<?php
+			} ?>
 			<div class="button_container">				<?php
 				if ( ! empty($values['coming_when']) ) { ?>
 					<div class="coming_soon"><?php echo esc_html( $values['coming_when'] ); ?></div>				<?php
@@ -109,6 +117,7 @@ class EPKB_Add_Ons_Page {
 				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/08/ai-features-banner.jpg',
 				'desc'              => esc_html__( 'Enhance your site with AI training from posts, pages, custom post types, and private notes, plus smart daily email notifications summarizing AI Chat and Search activity.', 'echo-knowledge-base' ),
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=ai-features',
+				'discount_coupon'   => EPKB_AI_PRO_Features_Tab::get_discount_coupon(),
 			) );
 
 			self::add_on_product( array(

@@ -10,8 +10,20 @@
             "Categories": [
                 "Kategorie"
             ],
+            "OFF": [
+                "WYŁ"
+            ],
+            "Use code:": [
+                "Użyj kodu:"
+            ],
+            "Copy": [
+                "Kopiuj"
+            ],
             "Article Content": [
                 "Zawartość artykułu"
+            ],
+            "Copied!": [
+                "Skopiowano!"
             ],
             "Analyzing...": [
                 "Analizowanie..."
@@ -19,11 +31,17 @@
             "Content Gaps Analysis": [
                 "Analiza luk w treści"
             ],
+            "Identifies unanswered user questions": [
+                "Identyfikuje nieodpowiedziane pytania użytkowników"
+            ],
+            "Detects missing or underdeveloped topics": [
+                "Wykrywa braki lub niedostatecznie rozwinięte tematy"
+            ],
+            "Provides actionable recommendations for improvement": [
+                "Dostarcza praktyczne rekomendacje dotyczące ulepszeń"
+            ],
             "AI-Powered Tag Suggestions": [
                 "Sugestie tagów zasilane AI"
-            ],
-            "Gap analysis is only available with AI Features add-on.": [
-                "Analiza luk dostępna jest tylko w dodatku Funkcje AI."
             ],
             "Readability": [
                 "Czytelność"
@@ -121,8 +139,11 @@
             "An error occurred during Content Gaps analysis.": [
                 "Wystąpił błąd podczas analizy luk w treści."
             ],
-            "Learn More About AI Features": [
-                "Dowiedz się więcej o funkcjach AI"
+            "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
+                "AI identyfikuje brakujące informacje i niezadane pytania w twoich artykułach. Dowiedz się, które tematy wymagają szerszego omówienia."
+            ],
+            "Get AI Features PRO": [
+                "Pobierz funkcje AI PRO"
             ],
             "Analyzing article for content gaps...": [
                 "Analizowanie artykułu pod kątem luk w treści..."

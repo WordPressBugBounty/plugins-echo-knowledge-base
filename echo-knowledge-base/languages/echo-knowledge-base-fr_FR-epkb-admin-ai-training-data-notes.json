@@ -1,0 +1,231 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "fr_FR",
+                "plural-forms": "nplurals=2; plural=(n > 1);"
+            },
+            "Title": [
+                "Titre"
+            ],
+            "Learn More": [
+                "En savoir plus"
+            ],
+            "Close": [
+                "Fermer"
+            ],
+            "Cancel": [
+                "Annuler"
+            ],
+            "Delete": [
+                "Supprimer"
+            ],
+            "Previous": [
+                "Précédent"
+            ],
+            "Basic formatting": [
+                "Mise en forme de base"
+            ],
+            "AI-structured": [
+                "Structuré par IA"
+            ],
+            "Select PDF Files": [
+                "Sélectionner les fichiers PDF"
+            ],
+            "Drag and drop PDF files here, or click the buttons below": [
+                "Glissez-déposez les fichiers PDF ici, ou cliquez sur les boutons ci-dessous"
+            ],
+            "Select PDFs": [
+                "Sélectionner les PDFs"
+            ],
+            "Media Library": [
+                "Bibliothèque de médias"
+            ],
+            "Retry": [
+                "Réessayer"
+            ],
+            "PDF to Notes": [
+                "PDF vers Notes"
+            ],
+            "Saving...": [
+                "Sauvegarde en cours..."
+            ],
+            "No": [
+                "Non"
+            ],
+            "Preview": [
+                "Aperçu"
+            ],
+            "Note deleted successfully": [
+                "Note supprimée avec succès"
+            ],
+            "AI was unable to extract text from this PDF.": [
+                "L'IA n'a pas pu extraire le texte de ce PDF."
+            ],
+            "Additional Notes": [
+                "Notes supplémentaires"
+            ],
+            "PDF file exceeds the 20 MB size limit.": [
+                "Le fichier PDF dépasse la limite de taille de 20 Mo."
+            ],
+            "of": [
+                "de"
+            ],
+            "Drop PDF files here": [
+                "Déposez des fichiers PDF ici"
+            ],
+            "Failed to prepare PDF preview": [
+                "Échec de la préparation de l'aperçu PDF"
+            ],
+            "No text could be extracted from this PDF.": [
+                "Aucun texte n'a pu être extrait de ce PDF."
+            ],
+            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
+                "L'extraction PDF n'est pas disponible. Veuillez vous assurer que AI Features Pro est actif."
+            ],
+            "Use AI to Extract Text?": [
+                "Utiliser l'IA pour extraire le texte ?"
+            ],
+            "This PDF appears to contain scanned images. Would you like to use AI to extract the text? This will send the PDF to your configured AI provider.": [
+                "Ce PDF semble contenir des images numérisées. Voulez-vous utiliser l'IA pour extraire le texte ? Cela enverra le PDF à votre fournisseur d'IA configuré."
+            ],
+            "Yes, Use AI": [
+                "Oui, Utiliser l'IA"
+            ],
+            "Please drop a valid PDF file.": [
+                "Veuillez déposer un fichier PDF valide."
+            ],
+            "Failed to read file.": [
+                "Échec de la lecture du fichier."
+            ],
+            "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
+                "Ajoutez des informations d'assistance supplémentaires et des informations diverses qui ne se trouvent pas dans les articles, les publications et les pages et que l'IA devrait également connaître."
+            ],
+            "Examples: business hours, contact information, company policies, product details, or any other information you want the AI to reference.": [
+                "Exemples : heures d'ouverture, coordonnées, politiques de l'entreprise, détails du produit, ou toute autre information que vous souhaitez que l'IA référence."
+            ],
+            "Got it": [
+                "Compris"
+            ],
+            "Failed to load note content": [
+                "Échec du chargement du contenu de la note"
+            ],
+            "Please enter both title and content for the note": [
+                "Veuillez saisir à la fois le titre et le contenu de la note"
+            ],
+            "Unable to delete note. Please refresh the page and try again.": [
+                "Impossible de supprimer la note. Veuillez actualiser la page et réessayer."
+            ],
+            "Delete Note": [
+                "Supprimer la note"
+            ],
+            "Are you sure you want to delete this note? This action cannot be undone.": [
+                "Êtes-vous sûr de vouloir supprimer cette note ? Cette action ne peut pas être annulée."
+            ],
+            "Failed to delete note": [
+                "Échec de la suppression de la note"
+            ],
+            "Edit Note": [
+                "Modifier la note"
+            ],
+            "Add Note": [
+                "Ajouter une note"
+            ],
+            "View and manage notes and PDFs (opens in new tab)": [
+                "Afficher et gérer les notes et les PDFs (s'ouvre dans un nouvel onglet)"
+            ],
+            "Manage Notes and PDFs": [
+                "Gérer les notes et les PDFs"
+            ],
+            "Loading note content...": [
+                "Chargement du contenu de la note..."
+            ],
+            "Note Title": [
+                "Titre de la note"
+            ],
+            "Enter note title...": [
+                "Saisissez le titre de la note..."
+            ],
+            "Note Content": [
+                "Contenu de la note"
+            ],
+            "Enter note content...": [
+                "Saisissez le contenu de la note..."
+            ],
+            "Deleting...": [
+                "Suppression en cours..."
+            ],
+            "Save Note": [
+                "Enregistrer la note"
+            ],
+            "Please enter a title for the note.": [
+                "Veuillez entrer un titre pour la note."
+            ],
+            "No content to save. Please prepare the PDF preview first.": [
+                "Aucun contenu à enregistrer. Veuillez préparer d'abord l'aperçu du PDF."
+            ],
+            "Failed to save PDF note": [
+                "Échec de l'enregistrement de la note PDF"
+            ],
+            "Media Library is not available.": [
+                "La Bibliothèque de médias n'est pas disponible."
+            ],
+            "Select": [
+                "Sélectionner"
+            ],
+            "Failed to load file from Media Library.": [
+                "Échec du chargement du fichier depuis la Bibliothèque de médias."
+            ],
+            "Preparing preview...": [
+                "Préparation de l'aperçu..."
+            ],
+            "Enter title...": [
+                "Saisissez le titre..."
+            ],
+            "Formatting": [
+                "Mise en forme"
+            ],
+            "No formatting": [
+                "Aucune mise en forme"
+            ],
+            "Checking selected PDF files...": [
+                "Vérification des fichiers PDF sélectionnés..."
+            ],
+            "Skip": [
+                "Passer"
+            ],
+            "Save as Note": [
+                "Enregistrer comme note"
+            ],
+            "Upload failed.": [
+                "Échec du téléversement."
+            ],
+            "Upload PDFs to AI Store": [
+                "Téléverser des PDFs vers AI Store"
+            ],
+            "Uploaded": [
+                "Téléversé"
+            ],
+            "Uploading...": [
+                "Téléversement en cours..."
+            ],
+            "Waiting...": [
+                "En attente..."
+            ],
+            "Upload": [
+                "Téléverser"
+            ],
+            "Add Notes and PDFs": [
+                "Ajouter des notes et des PDFs"
+            ],
+            "added": [
+                "ajouté"
+            ],
+            "Requires AI Advanced Features plugin.": [
+                "Nécessite le plugin IA Advanced Features."
+            ]
+        }
+    }
+}

@@ -37,6 +37,9 @@
             "Previous": [
                 "Précédent"
             ],
+            "OFF": [
+                "Désactivé"
+            ],
             "Reset": [
                 "Réinitialiser"
             ],
@@ -63,6 +66,12 @@
             ],
             "of": [
                 "de"
+            ],
+            "Requires AI Features PRO": [
+                "Nécessite les fonctionnalités IA PRO"
+            ],
+            "with code": [
+                "avec du code"
             ],
             "Thumbs up (%d)": [
                 "Pouce levé (%d)"
@@ -192,9 +201,6 @@
             ],
             "Collection": [
                 "Collection"
-            ],
-            "Requires AI Features PRO": [
-                "Nécessite les fonctionnalités IA PRO"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "Êtes-vous sûr de vouloir réinitialiser les instructions par défaut ?"

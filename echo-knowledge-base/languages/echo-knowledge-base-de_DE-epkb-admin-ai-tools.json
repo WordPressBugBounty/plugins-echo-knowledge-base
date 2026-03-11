@@ -13,6 +13,9 @@
             "Disabled": [
                 "Deaktiviert"
             ],
+            "Debug Mode": [
+                "Debug-Modus"
+            ],
             "API Key": [
                 "API-Schlüssel"
             ],
@@ -66,9 +69,6 @@
             ],
             "Error clearing AI logs": [
                 "Fehler beim Löschen der KI-Protokolle"
-            ],
-            "Debug Mode": [
-                "Debug-Modus"
             ],
             "Enable Debug Mode": [
                 "Debug-Modus aktivieren"

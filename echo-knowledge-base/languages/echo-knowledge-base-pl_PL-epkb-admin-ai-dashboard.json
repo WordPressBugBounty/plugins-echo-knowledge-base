@@ -10,26 +10,17 @@
             "Cancel": [
                 "Anuluj"
             ],
-            "Released": [
-                "Wydano"
-            ],
-            "First Name": [
-                "Imię"
-            ],
-            "(optional)": [
-                "(opcjonalnie)"
-            ],
-            "Email": [
-                "E-mail"
-            ],
-            "Submit Vote": [
-                "Wyślij głos"
+            "General Settings": [
+                "Ustawienia ogólne"
             ],
             "Failed to submit vote. Please try again.": [
                 "Nie udało się oddać głosu. Spróbuj ponownie."
             ],
-            "General Settings": [
-                "Ustawienia ogólne"
+            "Email": [
+                "E-mail"
+            ],
+            "First Name": [
+                "Imię"
             ],
             "Please enter a valid email address.": [
                 "Wprowadź poprawny adres e-mail."
@@ -49,11 +40,17 @@
             "Help us prioritize features by providing your information:": [
                 "Pomóż nam ustalić priorytety funkcji, podając informacje:"
             ],
+            "(optional)": [
+                "(opcjonalnie)"
+            ],
             "Describe Your Feature Request": [
                 "Opisz żądaną funkcję"
             ],
             "Please describe the feature you would like to see...": [
                 "Proszę opisz funkcję, którą chciałbyś zobaczyć..."
+            ],
+            "Submit Vote": [
+                "Wyślij głos"
             ],
             "Please describe the feature you would like to see.": [
                 "Proszę opisz funkcję, którą chciałbyś zobaczyć."
@@ -78,6 +75,9 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Wybierz funkcje, które chciałbyś zobaczyć wdrożone:"
+            ],
+            "Released": [
+                "Wydano"
             ],
             "feature selected": [
                 "Wybrano funkcję"

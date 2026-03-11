@@ -38,6 +38,13 @@ class EPKB_AI_Admin_Page {
 			// Training Data requires AI to be enabled
 			'requires_ai' => true
 		),
+		'content-analysis' => array(
+			'title' => 'Content Analysis',
+			'icon' => 'epkbfa epkbfa-line-chart',
+			'class' => 'EPKB_AI_Content_Analysis_Page',
+			'requires_ai' => true,
+			'has_sub_tabs' => true,
+		),
 		'general-settings' => array(
 			'title' => 'General Settings',
 			'icon' => 'epkbfa epkbfa-cogs',
@@ -125,9 +132,6 @@ class EPKB_AI_Admin_Page {
 	 */
 	public function display_page() {
 
-		// Run AI migration if user bypassed the normal upgrade process
-		EPKB_Upgrades::maybe_run_ai_migration();	// TODO remove
-
 		EPKB_Core_Utilities::display_missing_css_message();
 
 		// Get ordered tabs for display
@@ -172,7 +176,9 @@ class EPKB_AI_Admin_Page {
 			'i18n' => $this->get_i18n_strings(),
 			'tabs_data' => $this->get_all_tabs_data( $active_tab ),  // Pre-load tab settings
 			'are_settings_configured' => EPKB_AI_General_Settings_Tab::are_settings_configured(),
-			'show_get_started' => $show_get_started  // Pre-calculated for immediate display
+			'show_get_started' => $show_get_started,  // Pre-calculated for immediate display
+			'discount_coupon' => EPKB_AI_PRO_Features_Tab::get_discount_coupon(),
+			'legacy_models_notice_active' => ! empty( EPKB_AI_Config_Specs::get_legacy_model_updates() )
 		);
 
 		// Start the page output
@@ -204,8 +210,9 @@ class EPKB_AI_Admin_Page {
 			'dashboard'        => __( 'Dashboard', 'echo-knowledge-base' ),
 			'chat'             => __( 'Chat', 'echo-knowledge-base' ),
 			'search'           => __( 'Search', 'echo-knowledge-base' ),
-			'training-data'    => __( 'Training Data', 'echo-knowledge-base' ),
-			'general-settings' => __( 'General Settings', 'echo-knowledge-base' ),
+			'training-data'      => __( 'Training Data', 'echo-knowledge-base' ),
+			'content-analysis'   => __( 'Content Analysis', 'echo-knowledge-base' ),
+			'general-settings'   => __( 'General Settings', 'echo-knowledge-base' ),
 			'pro-features'     => __( 'PRO Features', 'echo-knowledge-base' ),
 			'tools'            => __( 'Tools', 'echo-knowledge-base' ),
 		);
@@ -238,7 +245,18 @@ class EPKB_AI_Admin_Page {
 			'disclaimer_required' => __( 'Data Privacy Agreement Required', 'echo-knowledge-base' ),
 			'disclaimer_message' => __( 'To use AI features, you must accept our data privacy agreement. This ensures you understand how your data will be processed by AI services.', 'echo-knowledge-base' ),
 			'go_to_settings' => __( 'Go to General Settings', 'echo-knowledge-base' ),
-			'privacy_policy' => __( 'View Privacy Policy', 'echo-knowledge-base' )
+			'privacy_policy' => __( 'View Privacy Policy', 'echo-knowledge-base' ),
+			'content_analysis' => __( 'Content Analysis', 'echo-knowledge-base' ),
+			'analyze' => __( 'Analyze', 'echo-knowledge-base' ),
+			'improve' => __( 'Improve', 'echo-knowledge-base' ),
+			'analyzing' => __( 'Analyzing...', 'echo-knowledge-base' ),
+			'analysis_complete' => __( 'Analysis complete!', 'echo-knowledge-base' ),
+			'analysis_failed' => __( 'Analysis failed. Please try again.', 'echo-knowledge-base' ),
+			'ai_disabled_message' => __( 'AI features are not configured. Please add your API key and accept the terms to use Content Analysis.', 'echo-knowledge-base' ),
+			'go_to_ai_settings' => __( 'Go to AI Settings', 'echo-knowledge-base' ),
+			'demo_analytics_badge' => __( 'Demo', 'echo-knowledge-base' ),
+			'demo_analytics_message' => __( 'This is demo analytics data for demonstration purposes.', 'echo-knowledge-base' ),
+			'demo_analytics_notice' => __( 'Demo Analytics', 'echo-knowledge-base' ),
 		);
 	}
 
@@ -328,6 +346,8 @@ class EPKB_AI_Admin_Page {
 		$instructions = __( 'To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.', 'echo-knowledge-base' );
 		if ( $tab_key === 'training-data' ) {
 			$instructions = __( 'To use Training Data, please enable either AI Chat or AI Search in their respective tabs.', 'echo-knowledge-base' );
+		} elseif ( $tab_key === 'content-analysis' ) {
+			$instructions = __( 'To use Content Analysis, please configure your API key and accept the data privacy agreement in General Settings.', 'echo-knowledge-base' );
 		}
 
 		$base['instructions'] = $instructions;
@@ -498,24 +518,24 @@ class EPKB_AI_Admin_Page {
 					: '#epkb-ai-api_settings-ai_chatgpt_key';
 
 				$steps = array(
-					array(
-						'title'          => __( 'Choose AI Provider', 'echo-knowledge-base' ),
-						'description'    => __( 'Select Gemini or ChatGPT as your AI provider.', 'echo-knowledge-base' ),
-						'completed'      => true,  // Always completed since a provider is always selected
-						'doc_link'       => 'https://www.echoknowledgebase.com/documentation/setup-ai-provider-and-key/',
-						'pointer_target' => '#epkb-ai-api_settings-ai_provider',
-						'pointer_title'  => __( 'AI Provider Selection', 'echo-knowledge-base' ),
-						'pointer_content' => __( 'Google Gemini is recommended for its speed and cost-effectiveness. Select your preferred AI provider here.', 'echo-knowledge-base' )
+						array(
+							'title'          => __( 'Choose AI Provider', 'echo-knowledge-base' ),
+							'description'    => __( 'Select Google Gemini or OpenAI as your AI provider.', 'echo-knowledge-base' ),
+							'completed'      => true,  // Always completed since a provider is always selected
+							'doc_link'       => 'https://www.echoknowledgebase.com/documentation/setup-ai-provider-and-key/',
+							'pointer_target' => '#epkb-ai-api_settings-ai_provider',
+							'pointer_title'  => __( 'AI Provider Selection', 'echo-knowledge-base' ),
+							'pointer_content' => __( 'Google Gemini is recommended for its speed and cost-effectiveness. Select your preferred AI provider here.', 'echo-knowledge-base' )
 					),
 					array(
-						'title'          => __( 'Enter API Key', 'echo-knowledge-base' ),
-						'description'    => __( 'Add your API key for the selected provider.', 'echo-knowledge-base' ),
-						'completed'      => ! empty( $encrypted_key ),
-						'doc_link'       => 'https://www.echoknowledgebase.com/documentation/setup-ai-provider-and-key/',
-						'pointer_target' => $api_key_field_id,
-						'pointer_title'  => __( 'API Key', 'echo-knowledge-base' ),
-						'pointer_content' => __( 'Enter your API key here. You can get a free API key from Google AI Studio (Gemini) or OpenAI (ChatGPT).', 'echo-knowledge-base' )
-					),
+							'title'          => __( 'Enter API Key', 'echo-knowledge-base' ),
+							'description'    => __( 'Add your API key for the selected provider.', 'echo-knowledge-base' ),
+							'completed'      => ! empty( $encrypted_key ),
+							'doc_link'       => 'https://www.echoknowledgebase.com/documentation/setup-ai-provider-and-key/',
+							'pointer_target' => $api_key_field_id,
+							'pointer_title'  => __( 'API Key', 'echo-knowledge-base' ),
+							'pointer_content' => __( 'Enter your API key here. You can get a free API key from Google AI Studio for Gemini or directly from OpenAI.', 'echo-knowledge-base' )
+						),
 					array(
 						'title'          => __( 'Accept Privacy Terms', 'echo-knowledge-base' ),
 						'description'    => __( 'Read and accept the data privacy agreement.', 'echo-knowledge-base' ),

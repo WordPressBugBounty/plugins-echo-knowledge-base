@@ -1,0 +1,231 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "pl_PL",
+                "plural-forms": "nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"
+            },
+            "Title": [
+                "Tytuł"
+            ],
+            "Learn More": [
+                "Dowiedz się więcej"
+            ],
+            "Close": [
+                "Zamknij"
+            ],
+            "Cancel": [
+                "Anuluj"
+            ],
+            "Delete": [
+                "Usuń"
+            ],
+            "Previous": [
+                "Poprzednie"
+            ],
+            "Basic formatting": [
+                "Podstawowe formatowanie"
+            ],
+            "AI-structured": [
+                "Zorganizowane przez AI"
+            ],
+            "Select PDF Files": [
+                "Wybierz pliki PDF"
+            ],
+            "Drag and drop PDF files here, or click the buttons below": [
+                "Przeciągnij i upuść pliki PDF tutaj, lub kliknij przyciski poniżej"
+            ],
+            "Select PDFs": [
+                "Wybierz pliki PDF"
+            ],
+            "Media Library": [
+                "Biblioteka multimediów"
+            ],
+            "Retry": [
+                "Spróbuj ponownie"
+            ],
+            "PDF to Notes": [
+                "PDF do Notatek"
+            ],
+            "Saving...": [
+                "Zapisywanie..."
+            ],
+            "No": [
+                "Nie"
+            ],
+            "Preview": [
+                "Podgląd"
+            ],
+            "Note deleted successfully": [
+                "Notatka została pomyślnie usunięta"
+            ],
+            "AI was unable to extract text from this PDF.": [
+                "AI nie był w stanie wyodrębnić tekstu z tego pliku PDF."
+            ],
+            "Additional Notes": [
+                "Dodatkowe uwagi"
+            ],
+            "PDF file exceeds the 20 MB size limit.": [
+                "Plik PDF przekracza limit rozmiaru 20 MB."
+            ],
+            "of": [
+                "z"
+            ],
+            "Drop PDF files here": [
+                "Upuść pliki PDF tutaj"
+            ],
+            "Failed to prepare PDF preview": [
+                "Nie udało się przygotować podglądu PDF"
+            ],
+            "No text could be extracted from this PDF.": [
+                "Nie można wydobyć tekstu z tego pliku PDF."
+            ],
+            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
+                "Ekstrakcja PDF nie jest dostępna. Upewnij się, że AI Features Pro jest aktywny."
+            ],
+            "Use AI to Extract Text?": [
+                "Czy użyć AI do wyodrębniania tekstu?"
+            ],
+            "This PDF appears to contain scanned images. Would you like to use AI to extract the text? This will send the PDF to your configured AI provider.": [
+                "Ten plik PDF wydaje się zawierać zeskanowane obrazy. Czy chcesz użyć AI do wyodrębnienia tekstu? To wyśle plik PDF do skonfigurowanego dostawcy AI."
+            ],
+            "Yes, Use AI": [
+                "Tak, użyj AI"
+            ],
+            "Please drop a valid PDF file.": [
+                "Upuść prawidłowy plik PDF."
+            ],
+            "Failed to read file.": [
+                "Nie udało się odczytać pliku."
+            ],
+            "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
+                "Dodaj dodatkowe wsparcie i informacje dodatkowe, których nie ma w artykułach, postach ani stronach, o których AI również powinno wiedzieć."
+            ],
+            "Examples: business hours, contact information, company policies, product details, or any other information you want the AI to reference.": [
+                "Przykłady: godziny pracy, dane kontaktowe, polityki firmy, szczegóły produktu lub inne informacje, do których AI ma się odwoływać."
+            ],
+            "Got it": [
+                "Zrozumiano"
+            ],
+            "Failed to load note content": [
+                "Nie udało się wczytać zawartości notatki"
+            ],
+            "Please enter both title and content for the note": [
+                "Podaj tytuł i treść notatki"
+            ],
+            "Unable to delete note. Please refresh the page and try again.": [
+                "Nie udało się usunąć notatki. Odśwież stronę i spróbuj ponownie."
+            ],
+            "Delete Note": [
+                "Usuń notatkę"
+            ],
+            "Are you sure you want to delete this note? This action cannot be undone.": [
+                "Czy na pewno chcesz usunąć tę notatkę? Ta operacja nie będzie możliwa do cofnięcia."
+            ],
+            "Failed to delete note": [
+                "Nie udało się usunąć notatki"
+            ],
+            "Edit Note": [
+                "Edytuj notatkę"
+            ],
+            "Add Note": [
+                "Dodaj notatkę"
+            ],
+            "View and manage notes and PDFs (opens in new tab)": [
+                "Wyświetl i zarządzaj notatkami i PDF-ami (otwiera się w nowej karcie)"
+            ],
+            "Manage Notes and PDFs": [
+                "Zarządzaj notatkami i PDF-ami"
+            ],
+            "Loading note content...": [
+                "Ładowanie treści notatki..."
+            ],
+            "Note Title": [
+                "Tytuł notatki"
+            ],
+            "Enter note title...": [
+                "Wprowadź tytuł notatki..."
+            ],
+            "Note Content": [
+                "Treść notatki"
+            ],
+            "Enter note content...": [
+                "Wpisz treść notatki..."
+            ],
+            "Deleting...": [
+                "Usuwanie..."
+            ],
+            "Save Note": [
+                "Zapisz notatkę"
+            ],
+            "Please enter a title for the note.": [
+                "Wprowadź tytuł notatki."
+            ],
+            "No content to save. Please prepare the PDF preview first.": [
+                "Brak treści do zapisania. Najpierw przygotuj podgląd PDF."
+            ],
+            "Failed to save PDF note": [
+                "Nie udało się zapisać notatki PDF"
+            ],
+            "Media Library is not available.": [
+                "Biblioteka mediów nie jest dostępna."
+            ],
+            "Select": [
+                "Wybierz"
+            ],
+            "Failed to load file from Media Library.": [
+                "Nie udało się wczytać pliku z Biblioteki mediów."
+            ],
+            "Preparing preview...": [
+                "Przygotowywanie podglądu..."
+            ],
+            "Enter title...": [
+                "Wpisz tytuł..."
+            ],
+            "Formatting": [
+                "Formatowanie"
+            ],
+            "No formatting": [
+                "Brak formatowania"
+            ],
+            "Checking selected PDF files...": [
+                "Sprawdzanie wybranych plików PDF..."
+            ],
+            "Skip": [
+                "Pomiń"
+            ],
+            "Save as Note": [
+                "Zapisz jako notatkę"
+            ],
+            "Upload failed.": [
+                "Przesyłanie nie powiodło się."
+            ],
+            "Upload PDFs to AI Store": [
+                "Prześlij pliki PDF do AI Store"
+            ],
+            "Uploaded": [
+                "Przesłano"
+            ],
+            "Uploading...": [
+                "Przesyłanie..."
+            ],
+            "Waiting...": [
+                "Oczekiwanie..."
+            ],
+            "Upload": [
+                "Prześlij"
+            ],
+            "Add Notes and PDFs": [
+                "Dodaj notatki i PDF-y"
+            ],
+            "added": [
+                "dodano"
+            ],
+            "Requires AI Advanced Features plugin.": [
+                "Wymaga wtyczki AI Advanced Features."
+            ]
+        }
+    }
+}

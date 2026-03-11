@@ -37,6 +37,9 @@
             "Previous": [
                 "Forrige"
             ],
+            "OFF": [
+                "AV"
+            ],
             "Reset": [
                 "Tilbakestill"
             ],
@@ -63,6 +66,12 @@
             ],
             "of": [
                 "av"
+            ],
+            "Requires AI Features PRO": [
+                "Krever AI-funksjoner PRO"
+            ],
+            "with code": [
+                "med kode"
             ],
             "Thumbs up (%d)": [
                 "Tommel opp (%d)"
@@ -192,9 +201,6 @@
             ],
             "Collection": [
                 "Samling"
-            ],
-            "Requires AI Features PRO": [
-                "Krever AI-funksjoner PRO"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "Er du sikker på at du vil tilbakestille til standardinstruksjoner?"

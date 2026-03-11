@@ -221,6 +221,27 @@ class EPKB_Upgrades {
 		if ( version_compare( $last_version, '16.011.1', '<=' ) ) {
 			self::upgrade_to_v16_011_1( $kb_config );
 		}
+
+		if ( version_compare( $last_version, '17.1.0', '<' ) ) {
+			self::upgrade_to_v17_1_0();
+		}
+	}
+
+	/**
+	 * Migrate training data error records with empty content/deleted source to skipped status
+	 */
+	private static function upgrade_to_v17_1_0() {
+		static $ai_training_data_migration_done = false;
+
+		$ai_config = get_option( 'epkb_ai_configuration', array() );
+		$has_ai_key = ! empty( $ai_config['ai_chatgpt_key'] ) || ! empty( $ai_config['ai_gemini_key'] );
+		if ( $ai_training_data_migration_done || empty( $ai_config['ai_disclaimer_accepted'] ) || $ai_config['ai_disclaimer_accepted'] !== 'on' || ! $has_ai_key ) {
+			return;
+		}
+		$ai_training_data_migration_done = true;
+
+		$training_data_db = new EPKB_AI_Training_Data_DB();
+		$training_data_db->migrate_error_to_skipped();
 	}
 
 	/**

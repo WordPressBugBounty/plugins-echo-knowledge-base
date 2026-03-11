@@ -293,6 +293,88 @@ class EPKB_AI_Utilities {
 	}
 
 	/**
+	 * Prepare a training data row for admin display.
+	 *
+	 * @param object $item Training data row.
+	 * @return object
+	 */
+	public static function prepare_training_data_item_for_display( $item ) {
+
+		if ( empty( $item ) || ! is_object( $item ) ) {
+			return $item;
+		}
+
+		$item->type_name = self::get_training_data_type_name( $item->type );
+		$item->item_type = $item->type;
+		$item->can_delete_missing_source = self::can_delete_missing_source_training_data_item( $item );
+		if ( $item->can_delete_missing_source ) {
+			$item->error_message = __( 'Original post not found. It may have been deleted.', 'echo-knowledge-base' );
+		}
+
+		return $item;
+	}
+
+	/**
+	 * Get a display label for a training data type.
+	 *
+	 * @param string $type Training data post type.
+	 * @return string
+	 */
+	public static function get_training_data_type_name( $type ) {
+
+		$post_type_obj = get_post_type_object( $type );
+		if ( $post_type_obj && isset( $post_type_obj->labels->name ) ) {
+			if ( strpos( $type, 'epkb_post_type' ) === 0 ) {
+				$type_name = $post_type_obj->labels->name;
+			} else {
+				$type_name = $post_type_obj->labels->singular_name;
+			}
+		} else {
+			$type_name = ucfirst( $type );
+		}
+
+		if ( strlen( $type_name ) > 20 ) {
+			return substr( $type_name, 0, 18 ) . '..';
+		}
+
+		return $type_name;
+	}
+
+	/**
+	 * Determine whether an errored training data row can be safely deleted because its source is gone.
+	 *
+	 * @param object $item Training data row.
+	 * @return bool
+	 */
+	public static function can_delete_missing_source_training_data_item( $item ) {
+		return ! empty( $item ) &&
+			is_object( $item ) &&
+			! empty( $item->status ) &&
+			in_array( $item->status, array( 'error', 'skipped' ), true ) &&
+			! empty( $item->error_message ) &&
+			$item->error_message === 'post_not_found';
+	}
+
+	/**
+	 * Check whether a training data type is backed by a WordPress post.
+	 *
+	 * @param string $type Training data type.
+	 * @return bool
+	 */
+	public static function is_post_backed_training_data_type( $type ) {
+
+		if ( empty( $type ) || $type === 'PDF' ) {
+			return false;
+		}
+
+		if ( $type === 'epkb_kb_files' || $type === self::AI_PRO_NOTES_POST_TYPE || $type === 'epkb_ai_note' ) {
+			return true;
+		}
+
+		return (bool) get_post_type_object( $type );
+	}
+
+	/**
 	 * Get AI Training Data Collection options for dropdowns/selects
 	 * Returns an array of collection_id => collection_name pairs
 	 *
@@ -641,6 +723,71 @@ class EPKB_AI_Utilities {
 	}
 
 	/**
+	 * Extract source references from ChatGPT Responses API file citations.
+	 *
+	 * OpenAI file search returns file_citation annotations on output_text items.
+	 * This maps those file IDs back to training data records so the frontend can
+	 * render the same title/url source list used by Gemini.
+	 *
+	 * @param array $response Raw API response from ChatGPT/OpenAI
+	 * @return array Array of source articles with post_id, title, url
+	 */
+	public static function extract_sources_from_chatgpt_annotations( $response ) {
+		$sources = array();
+		$seen_file_ids = array();
+
+		if ( empty( $response['output'] ) || ! is_array( $response['output'] ) ) {
+			return $sources;
+		}
+
+		$training_data_db = new EPKB_AI_Training_Data_DB();
+
+		foreach ( $response['output'] as $output_item ) {
+			if ( empty( $output_item['content'] ) || ! is_array( $output_item['content'] ) ) {
+				continue;
+			}
+
+			foreach ( $output_item['content'] as $content_item ) {
+				$annotations = array();
+
+				if ( ! empty( $content_item['annotations'] ) && is_array( $content_item['annotations'] ) ) {
+					$annotations = $content_item['annotations'];
+				} elseif ( ! empty( $content_item['text']['annotations'] ) && is_array( $content_item['text']['annotations'] ) ) {
+					$annotations = $content_item['text']['annotations'];
+				}
+
+				if ( empty( $annotations ) ) {
+					continue;
+				}
+
+				foreach ( $annotations as $annotation ) {
+					if ( empty( $annotation['type'] ) || $annotation['type'] !== 'file_citation' || empty( $annotation['file_id'] ) ) {
+						continue;
+					}
+
+					$file_id = sanitize_text_field( (string) $annotation['file_id'] );
+					if ( isset( $seen_file_ids[ $file_id ] ) ) {
+						continue;
+					}
+					$seen_file_ids[ $file_id ] = true;
+
+					$record = $training_data_db->get_training_data_by_file_id_only( $file_id, EPKB_AI_Provider::PROVIDER_CHATGPT );
+					if ( ! $record ) {
+						continue;
+					}
+
+					$source = self::build_source_reference_from_training_record( $record );
+					if ( ! empty( $source ) ) {
+						$sources[] = $source;
+					}
+				}
+			}
+		}
+
+		return $sources;
+	}
+
+	/**
 	 * Extract source article references from Gemini grounding metadata
 	 *
 	 * Gemini File Search returns groundingMetadata with groundingChunks that contain
@@ -666,33 +813,104 @@ class EPKB_AI_Utilities {
 				continue;
 			}
 
-			// Parse post_id from file title: kb_article_{postId}_{timestamp}.txt or kb_page_{postId}_{timestamp}.txt
-			if ( ! preg_match( '/kb_(?:article|page|post)_(\d+)_\d+/', $context['title'], $matches ) ) {
+			// Parse type and ID from file title: kb_{type}_{id}_{timestamp}
+			// Matches: kb_article_{postId}_{ts}, kb_page_{postId}_{ts}, kb_post_{postId}_{ts},
+			//          kb_pdf_{uuid}_{ts}, kb_aipro_ai_note_{postId}_{ts}
+			if ( ! preg_match( '/kb_([a-z_]+)_([a-z0-9-]+)_\d+/', $context['title'], $matches ) ) {
 				continue;
 			}
 
-			$post_id = intval( $matches[1] );
+			$type = $matches[1];
+			$id   = $matches[2];
 
 			// Skip duplicates
-			if ( isset( $seen_ids[ $post_id ] ) ) {
+			if ( isset( $seen_ids[ $type . '_' . $id ] ) ) {
 				continue;
 			}
-			$seen_ids[ $post_id ] = true;
+			$seen_ids[ $type . '_' . $id ] = true;
 
-			// Get CURRENT article info from WordPress (not stale DB data)
+			// Handle PDFs — look up training data DB by UUID
+			if ( $type === 'pdf' ) {
+				$training_data_db = new EPKB_AI_Training_Data_DB();
+				$record = $training_data_db->get_training_data_by_item_id_only( $id );
+				if ( ! $record ) {
+					continue;
+				}
+
+				$sources[] = array(
+					'post_id' => 0,
+					'title'   => $record->title,
+					'url'     => ! empty( $record->url ) ? $record->url : ''
+				);
+				continue;
+			}
+
+			// Handle articles, pages, posts, and notes — use get_post()
+			if ( ! is_numeric( $id ) ) {
+				continue;
+			}
+
+			$post_id = intval( $id );
 			$post = get_post( $post_id );
-			if ( ! $post || $post->post_status !== 'publish' ) {
-				continue; // Skip deleted or unpublished articles
+			if ( ! $post ) {
+				continue;
+			}
+
+			// Notes use private status; articles/pages must be published
+			$is_note = ( $type === 'aipro_ai_note' );
+			if ( ! $is_note && $post->post_status !== 'publish' ) {
+				continue;
 			}
 
 			$sources[] = array(
 				'post_id' => $post_id,
 				'title'   => get_the_title( $post ),
-				'url'     => get_permalink( $post_id )
+				'url'     => $is_note ? '' : get_permalink( $post_id )
 			);
 		}
 
 		return $sources;
+	}
+
+	/**
+	 * Convert a training data record into a frontend source reference.
+	 *
+	 * @param object $record Training data DB record
+	 * @return array Source reference with post_id, title, url or empty array if unavailable
+	 */
+	private static function build_source_reference_from_training_record( $record ) {
+		if ( empty( $record ) ) {
+			return array();
+		}
+
+		if ( ! empty( $record->item_id ) && is_numeric( $record->item_id ) ) {
+			$post_id = intval( $record->item_id );
+			$post = get_post( $post_id );
+			if ( ! $post ) {
+				return array();
+			}
+
+			$is_note = $post->post_type === self::AI_PRO_NOTES_POST_TYPE;
+			if ( ! $is_note && $post->post_status !== 'publish' ) {
+				return array();
+			}
+
+			return array(
+				'post_id' => $post_id,
+				'title'   => get_the_title( $post ),
+				'url'     => $is_note ? '' : get_permalink( $post_id )
+			);
+		}
+
+		if ( empty( $record->title ) ) {
+			return array();
+		}
+
+		return array(
+			'post_id' => 0,
+			'title'   => $record->title,
+			'url'     => ! empty( $record->url ) ? $record->url : ''
+		);
 	}
 
 	/**
@@ -709,7 +927,8 @@ class EPKB_AI_Utilities {
 			case 'content_analysis_gap_analysis':
 			case 'content_analysis_tag_suggestions':
 			case 'content_analysis':
-				// Content analysis needs longer timeout
+			case 'pdf_extraction':
+			case 'pdf_import_structure':
 				$ideal_timeout = 120;
 				break;
 			case 'chat':

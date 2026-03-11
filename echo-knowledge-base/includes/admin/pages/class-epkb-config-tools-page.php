@@ -26,7 +26,7 @@ class EPKB_Config_Tools_Page {
 			'active'     => true,
 
 			// Secondary Panel Item
-			'label_text' => esc_html__( 'Export KB', 'echo-knowledge-base' ),
+			'label_text' => esc_html__( 'Export', 'echo-knowledge-base' ),
 
 			// Secondary Boxes List
 			'boxes_list' => self::get_export_boxes( $kb_config )
@@ -39,7 +39,7 @@ class EPKB_Config_Tools_Page {
 			'list_key'   => 'import',
 
 			// Secondary Panel Item
-			'label_text' => esc_html__( 'Import KB', 'echo-knowledge-base' ),
+			'label_text' => esc_html__( 'Import', 'echo-knowledge-base' ),
 
 			// Secondary Boxes List
 			'boxes_list' => self::get_import_boxes( $kb_config )
@@ -151,7 +151,7 @@ class EPKB_Config_Tools_Page {
 					<input class="epkb-form-label__input epkb-form-label__input--text" type="file" name="import_file"
 						   required><br>
 					<input type="button" class="epkb-kbnh-back-btn epkb-default-btn"
-						   value="<?php esc_attr_e( 'Back', 'echo-knowledge-base' ); ?>"/>
+						   value="< <?php esc_attr_e( 'Back', 'echo-knowledge-base' ); ?>"/>
 					<input type="submit" class="epkb-primary-btn"
 						   value="<?php esc_attr_e( 'Import Configuration', 'echo-knowledge-base' ); ?>"/><br/>
 				</form>
@@ -243,7 +243,7 @@ class EPKB_Config_Tools_Page {
 			[
 				'plugin'       => 'epie',
 				'icon'         => 'epkbfa epkbfa-upload',
-				'title'        => esc_html__( 'Export Articles as CSV', 'echo-knowledge-base' ),
+				'title'        => esc_html__( 'Export Articles to CSV', 'echo-knowledge-base' ),
 				'title_class'  => 'epkb-kbnh__feature-name',
 				'desc'         => esc_html__( 'Export basic article information: title, content, categories, and tags.', 'echo-knowledge-base' ),
 				'button_id'    => EPKB_Utilities::is_export_import_enabled() ? 'epie_export_data_csv' : '',
@@ -254,7 +254,7 @@ class EPKB_Config_Tools_Page {
 			[
 				'plugin'       => 'epie',
 				'icon'         => 'epkbfa epkbfa-upload',
-				'title'        => esc_html__( 'Export Articles as XML', 'echo-knowledge-base' ),
+				'title'        => esc_html__( 'Export Articles to XML', 'echo-knowledge-base' ),
 				'title_class'  => 'epkb-kbnh__feature-name',
 				'desc'         => esc_html__( 'Export articles, including content, comments, authors, categories, meta data, and references to attachments.', 'echo-knowledge-base' ),
 				'button_id'    => EPKB_Utilities::is_export_import_enabled() ? 'epie_export_data_xml' : '',
@@ -356,7 +356,7 @@ class EPKB_Config_Tools_Page {
 			[
 				'plugin'       => 'epie',
 				'icon'         => 'epkbfa epkbfa-download',
-				'title'        => esc_html__( 'Import Articles as CSV', 'echo-knowledge-base' ),
+				'title'        => esc_html__( 'Import Articles from CSV', 'echo-knowledge-base' ),
 				'title_class'  => 'epkb-kbnh__feature-name',
 				'desc'         => esc_html__( 'Import basic article information: title, content, categories and tags.', 'echo-knowledge-base' ),
 				'button_id'    => EPKB_Utilities::is_export_import_enabled() ? 'epie_import_data_csv' : '',
@@ -367,7 +367,7 @@ class EPKB_Config_Tools_Page {
 			[
 				'plugin'       => 'epie',
 				'icon'         => 'epkbfa epkbfa-download',
-				'title'        => esc_html__( 'Import Articles as XML', 'echo-knowledge-base' ),
+				'title'        => esc_html__( 'Import Articles from XML', 'echo-knowledge-base' ),
 				'title_class'  => 'epkb-kbnh__feature-name',
 				'desc'         => esc_html__( 'Import articles including content, comments, authors, categories, meta data, attachments.', 'echo-knowledge-base' ),
 				'button_id'    => EPKB_Utilities::is_export_import_enabled() ? 'epie_import_data_xml' : '',
@@ -387,6 +387,21 @@ class EPKB_Config_Tools_Page {
 		$boxes = [];
 
 		foreach ( self::get_convert_boxes_config() as $box ) {
+
+			if ( $box['plugin'] == 'ai' . 'fp' ) {
+				if ( EPKB_Utilities::is_ai_features_pro_enabled() ) {
+					$box['active_status'] = true;
+				} else {
+					$box['upgrade_link'] = EPKB_Core_Utilities::get_plugin_sales_page( 'ai' . 'fp' );
+					$box['corner_label'] = esc_html__( 'Add-on', 'echo-knowledge-base' );
+				}
+			}
+
+			// add pro tag
+			if ( ! empty( $box['title_class'] ) && empty( $box['active_status'] ) ) {
+				$box['title_class'] .= '--pro';
+			}
+
 			$boxes[] = [
 				'class' => 'epkb-kbnh__feature-container',
 				'html'  => EPKB_HTML_Forms::get_feature_box_html( $box )
@@ -413,6 +428,10 @@ class EPKB_Config_Tools_Page {
 
 			if ( ! empty( $box['button_id'] ) && $box['button_id'] == 'epkb_convert_cpt' ) {
 				$panel_html = self::get_convert_cpt_box( $kb_config );
+			}
+
+			if ( ! empty( $box['button_id'] ) && $box['button_id'] == 'epkb_import_pdf' ) {
+				$panel_html = self::get_import_pdf_panel( $kb_config );
 			}
 
 			$boxes[] = [
@@ -445,7 +464,7 @@ class EPKB_Config_Tools_Page {
 			[
 				'plugin'        => 'core',
 				'icon'          => 'epkbfa epkbfa-download',
-				'title'         => esc_html__( 'Convert From Other Documentation KB to Echo KB', 'echo-knowledge-base' ),
+				'title'         => esc_html__( 'Import Articles from Other Knowledge Base Plugins', 'echo-knowledge-base' ),
 				'desc'          => esc_html__( 'Convert your blog or custom post types into Knowledge Base articles.', 'echo-knowledge-base' ),
 				'button_id'     => 'epkb_convert_cpt',
 				'button_title'  => esc_html__( 'Convert From Another KB', 'echo-knowledge-base' ),
@@ -459,6 +478,16 @@ class EPKB_Config_Tools_Page {
 				'button_id'     => 'epkb_convert_articles',
 				'button_title'  => esc_html__( 'Convert Articles', 'echo-knowledge-base' ),
 				'active_status' => true
+			],
+			[
+				'plugin'        => 'ai' . 'fp',
+				'icon'          => 'epkbfa epkbfa-file-pdf-o',
+				'title'         => esc_html__( 'Convert PDFs to Articles', 'echo-knowledge-base' ),
+				'title_class'   => 'epkb-kbnh__feature-name',
+				'desc'          => esc_html__( 'Upload PDF files and convert them into Knowledge Base articles.', 'echo-knowledge-base' ),
+				'desc_escaped'  => self::get_pdf_import_features_list_html(),
+				'button_id'     => EPKB_Utilities::is_ai_features_pro_enabled() ? 'epkb_import_pdf' : '',
+				'button_title'  => esc_html__( 'Import PDF', 'echo-knowledge-base' ),
 			],
 		];
 	}
@@ -843,6 +872,178 @@ class EPKB_Config_Tools_Page {
 	}
 
 
+	/*******         Convert PDFs to Articles        *****************/
+
+	/**
+	 * Get features list HTML for the PDF import feature box.
+	 * @return string
+	 */
+	private static function get_pdf_import_features_list_html() {
+		$features = [
+			esc_html__( 'PDF to Article', 'echo-knowledge-base' ),
+			esc_html__( 'PDF to Article using AI', 'echo-knowledge-base' ),
+			esc_html__( 'Bulk PDF to Articles', 'echo-knowledge-base' ),
+		];
+		$html = '<div class="epkb-pdf-import__box-features"><div class="epkb-form-field-instruction-title">' . esc_html__( 'Features', 'echo-knowledge-base' ) . '</div>';
+		foreach ( $features as $feature ) {
+			$html .= '<div class="epkb-form-field-instruction-item">' .
+				'<div class="epkb-form-field-instruction-icon"><i class="epkbfa epkbfa-check"></i></div>' .
+				'<div class="epkb-form-field-instruction-text">' . $feature . '</div></div>';
+		}
+		$html .= '</div>';
+		return $html;
+	}
+
+	/**
+	 * Render the Import PDF panel.
+	 *
+	 * @param $kb_config
+	 * @return false|string
+	 */
+	private static function get_import_pdf_panel( $kb_config ) {
+
+		$categories = EPKB_Core_Utilities::get_kb_categories_visible( $kb_config['id'] );
+		$categories = is_array( $categories ) ? $categories : [];
+
+		ob_start(); ?>
+
+		<div class="epkb-form-wrap epkb-import-form epkb-pdf-import-form">
+			<div class="epkb-import-body">
+
+				<!-- Step 1: Options -->
+				<div class="epkb-pdf-import-step epkb-pdf-import-step--1">
+
+					<!-- Conversion Mode -->
+					<div class="epkb-pdf-import__option-group">
+						<label class="epkb-pdf-import__option-label"><?php esc_html_e( 'Conversion Mode', 'echo-knowledge-base' ); ?></label>
+						<label class="epkb-form-label">
+							<input type="radio" name="epkb_pdf_conversion_mode" value="basic" checked>
+							<span><?php esc_html_e( 'Basic formatting', 'echo-knowledge-base' ); ?></span><?php
+							EPKB_HTML_Elements::display_tooltip( '', esc_html__( 'Extracts text from PDF and wraps it in paragraphs. Fast and preserves all content as-is.', 'echo-knowledge-base' ) ); ?>
+						</label>
+						<label class="epkb-form-label">
+							<input type="radio" name="epkb_pdf_conversion_mode" value="ai">
+							<span><?php esc_html_e( 'AI-structured', 'echo-knowledge-base' ); ?></span><?php
+							EPKB_HTML_Elements::display_tooltip( '', esc_html__( 'Uses AI to organize the extracted text into headings, lists, and paragraphs. Cleans up PDF artifacts like broken words and page numbers.', 'echo-knowledge-base' ) ); ?>
+						</label>
+					</div>
+
+					<!-- File Upload -->
+					<div class="epkb-pdf-import__option-group">
+						<label class="epkb-pdf-import__option-label"><?php esc_html_e( 'Select PDF Files', 'echo-knowledge-base' ); ?></label>
+						<div class="epkb-pdf-import__dropzone" id="epkb-pdf-dropzone">
+							<input type="file" id="epkb-pdf-file-input" accept=".pdf" multiple style="display:none;">
+							<i class="epkbfa epkbfa-file-pdf-o epkb-pdf-import__dropzone-icon"></i>
+							<p class="epkb-pdf-import__dropzone-text"><?php esc_html_e( 'Drag and drop PDF files here, or click the buttons below', 'echo-knowledge-base' ); ?></p>
+							<div style="display: flex; gap: 10px; justify-content: center;">
+								<button type="button" class="epkb-pdf-import__dropzone-btn" id="epkb-pdf-select-btn">
+									<i class="epkbfa epkbfa-upload"></i>
+									<?php esc_html_e( 'Select PDFs', 'echo-knowledge-base' ); ?>
+								</button>
+								<button type="button" class="epkb-pdf-import__dropzone-btn epkb-pdf-import__dropzone-btn--secondary" id="epkb-pdf-media-library-btn">
+									<i class="epkbfa epkbfa-image"></i>
+									<?php esc_html_e( 'Media Library', 'echo-knowledge-base' ); ?>
+								</button>
+							</div>
+						</div>
+						<div class="epkb-pdf-import__file-list" id="epkb-pdf-file-list"></div>
+					</div>
+
+					<!-- Category -->
+					<div class="epkb-pdf-import__option-group">
+						<label class="epkb-pdf-import__option-label"><?php esc_html_e( 'Category', 'echo-knowledge-base' ); ?></label>
+						<select id="epkb-pdf-category">
+							<option value="0"><?php esc_html_e( '-- No Category --', 'echo-knowledge-base' ); ?></option><?php
+							foreach ( $categories as $category ) { ?>
+								<option value="<?php echo esc_attr( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></option><?php
+							} ?>
+						</select>
+					</div>
+
+					<!-- Status of Imported Articles -->
+					<div class="epkb-pdf-import__option-group">
+						<label class="epkb-pdf-import__option-label"><?php esc_html_e( 'Status of Imported Articles', 'echo-knowledge-base' ); ?></label>
+						<label class="epkb-form-label">
+							<input type="radio" name="epkb_pdf_post_status" value="draft" checked>
+							<span><?php esc_html_e( 'Draft', 'echo-knowledge-base' ); ?></span>
+						</label>
+						<label class="epkb-form-label">
+							<input type="radio" name="epkb_pdf_post_status" value="publish">
+							<span><?php esc_html_e( 'Published', 'echo-knowledge-base' ); ?></span>
+						</label>
+					</div>
+
+					<!-- Debug Mode -->
+					<div class="epkb-pdf-import__option-group">
+						<label class="epkb-form-label">
+							<input type="checkbox" id="epkb-pdf-debug-toggle">
+							<span><?php esc_html_e( 'Debug Mode', 'echo-knowledge-base' ); ?></span>
+						</label>
+					</div>
+
+				</div>
+
+				<!-- Step 2: Review -->
+				<div class="epkb-pdf-import-step epkb-pdf-import-step--2 epkb-hidden">
+					<h3><?php esc_html_e( 'Convert PDFs', 'echo-knowledge-base' ); ?></h3>
+					<div class="epkb-pdf-import__batch-summary">
+						<div class="epkb-pdf-import__batch-summary-status">
+							<strong id="epkb-pdf-batch-status-label"><?php esc_html_e( 'Ready to convert', 'echo-knowledge-base' ); ?></strong>
+							<span id="epkb-pdf-batch-status-detail"></span>
+						</div>
+						<div class="epkb-pdf-import__batch-summary-counts" id="epkb-pdf-batch-summary-counts"></div>
+					</div>
+					<div class="epkb-pdf-import__review-layout">
+						<div class="epkb-pdf-import__review-sidebar" id="epkb-pdf-review-sidebar"></div>
+						<div class="epkb-pdf-import__review-panel">
+							<div class="epkb-pdf-import__review-header">
+								<strong id="epkb-pdf-review-counter"></strong>
+								<span id="epkb-pdf-review-file-name"></span>
+							</div>
+							<div class="epkb-pdf-import__review-status" id="epkb-pdf-review-status"></div>
+							<div class="epkb-pdf-import__option-group">
+								<label class="epkb-pdf-import__option-label" for="epkb-pdf-review-title"><?php esc_html_e( 'Article Title', 'echo-knowledge-base' ); ?></label>
+								<input type="text" id="epkb-pdf-review-title" class="epkb-input epkb-pdf-import__title-input" />
+							</div>
+							<div class="epkb-pdf-import__option-group">
+								<span class="epkb-pdf-import__option-label"><?php esc_html_e( 'HTML Preview', 'echo-knowledge-base' ); ?></span>
+								<div class="epkb-pdf-import__preview" id="epkb-pdf-review-preview"></div>
+							</div>
+							<div class="epkb-pdf-import__review-actions">
+								<button type="button" class="epkb-default-btn epkb-pdf-import__review-retry-btn epkb-hidden"><?php esc_html_e( 'Retry', 'echo-knowledge-base' ); ?></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Step 3: Results -->
+				<div class="epkb-pdf-import-step epkb-pdf-import-step--3 epkb-hidden">
+					<h3><?php esc_html_e( 'Import Complete', 'echo-knowledge-base' ); ?></h3>
+					<div class="epkb-pdf-import__results" id="epkb-pdf-results"></div>
+				</div>
+
+				<!-- Debug Output -->
+				<div class="epkb-pdf-import__debug-wrap epkb-hidden" id="epkb-pdf-debug-wrap">
+					<label class="epkb-pdf-import__option-label"><?php esc_html_e( 'Debug Log', 'echo-knowledge-base' ); ?></label>
+					<textarea class="epkb-pdf-import__debug-log" id="epkb-pdf-debug-log" readonly></textarea>
+				</div>
+
+			</div>
+
+			<div class="epkb-import-footer">
+				<button type="button" class="epkb-default-btn epkb-pdf-import__back-btn"><?php echo '< ' . esc_html__( 'Back', 'echo-knowledge-base' ); ?></button>
+				<button type="button" class="epkb-error-btn epkb-hidden epkb-pdf-import__cancel-btn"><?php esc_html_e( 'Cancel', 'echo-knowledge-base' ); ?></button>
+				<button type="button" class="epkb-primary-btn epkb-hidden epkb-pdf-import__save-all-btn"><?php esc_html_e( 'Save All Selected', 'echo-knowledge-base' ); ?></button>
+				<button type="button" class="epkb-primary-btn epkb-pdf-import__start-btn" data-kb_id="<?php echo esc_attr( $kb_config['id'] ); ?>">
+					<?php esc_html_e( 'Start Import', 'echo-knowledge-base' ); ?>
+				</button>
+			</div>
+		</div><?php
+
+		return ob_get_clean();
+	}
+
+
 	/*******         OTHER         *****************/
 
 	/**
@@ -901,9 +1102,7 @@ class EPKB_Config_Tools_Page {
 	 */
 	private static function show_convert_footer_html( $kb_config ) { ?>
 		<div class="epkb-import-footer">
-			<button type="button" class="epkb-default-btn epkb-convert-button-back"> <?php
-				'< ' . esc_html_e( 'Back', 'echo-knowledge-base' ); ?>
-			</button>
+			<button type="button" class="epkb-default-btn epkb-convert-button-back"><?php echo '< ' . esc_html__( 'Back', 'echo-knowledge-base' ); ?></button>
 			<button type="button" class="epkb-default-btn epkb-hidden epkb-convert-button-exit">
 				<?php esc_html_e( 'Exit', 'echo-knowledge-base' ); ?>
 			</button>

@@ -51,10 +51,9 @@ class EPKB_Logging {
 
 		// prepare error message
 		$error_message = EPKB_Utilities::substr( $error_message, 0, 3000);
-		$serialized_error_message = serialize( $error_message ); //serialize(base64_encode( $error_message ) );
-		$unserialized_error_message = unserialize( $serialized_error_message ); //base64_decode(unserialize( $serialized_error_message ) );
-		if ( $unserialized_error_message != $error_message ) {
-			$error_message = "can't serialize error message:" . preg_replace('/[^A-Za-z0-9\-]/', '.', $error_message);
+		$encoded = wp_json_encode( $error_message );
+		if ( $encoded === false || json_decode( $encoded ) !== $error_message ) {
+			$error_message = "can't encode error message:" . preg_replace('/[^A-Za-z0-9\-]/', '.', $error_message);
 		}
 
 		// prepare error stack trace
@@ -162,10 +161,9 @@ class EPKB_Logging {
 		$stackMsg = str_replace('\\', '/', $stackMsg);
 		$stackMsg = EPKB_Utilities::substr( $stackMsg, 0, 2000);
 
-		$serialized_stackMsg = serialize( $stackMsg ); //serialize(base64_encode( $stackMsg ) );
-		$unserialized_stackMsg = unserialize( $serialized_stackMsg ); //base64_decode(unserialize( $serialized_stackMsg ) );
-		if ($unserialized_stackMsg != $stackMsg) {
-			$stackMsg = "can't serialize stacktrace:" . preg_replace('/[^A-Za-z0-9\-]/', '.', $stackMsg);
+		$encoded_stackMsg = wp_json_encode( $stackMsg );
+		if ( $encoded_stackMsg === false || json_decode( $encoded_stackMsg ) !== $stackMsg ) {
+			$stackMsg = "can't encode stacktrace:" . preg_replace('/[^A-Za-z0-9\-]/', '.', $stackMsg);
 		}
 
 		return $stackMsg;

@@ -10,26 +10,17 @@
             "Cancel": [
                 "Avbryt"
             ],
-            "Released": [
-                "Lansert"
-            ],
-            "First Name": [
-                "Fornavn"
-            ],
-            "(optional)": [
-                "(valgfritt)"
-            ],
-            "Email": [
-                "E-post"
-            ],
-            "Submit Vote": [
-                "Send inn stemme"
+            "General Settings": [
+                "Generelle innstillinger"
             ],
             "Failed to submit vote. Please try again.": [
                 "Kunne ikke sende stemme. Vennligst prøv igjen."
             ],
-            "General Settings": [
-                "Generelle innstillinger"
+            "Email": [
+                "E-post"
+            ],
+            "First Name": [
+                "Fornavn"
             ],
             "Please enter a valid email address.": [
                 "Vennligst oppgi en gyldig e-postadresse."
@@ -49,11 +40,17 @@
             "Help us prioritize features by providing your information:": [
                 "Hjelp oss med å prioritere funksjoner ved å oppgi informasjonen din:"
             ],
+            "(optional)": [
+                "(valgfritt)"
+            ],
             "Describe Your Feature Request": [
                 "Beskriv funksjonsforespørselen din"
             ],
             "Please describe the feature you would like to see...": [
                 "Vennligst beskriv funksjonen du ønsker å se..."
+            ],
+            "Submit Vote": [
+                "Send inn stemme"
             ],
             "Please describe the feature you would like to see.": [
                 "Beskriv funksjonen du ønsker å se."
@@ -78,6 +75,9 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Velg funksjonene du ønsker å få implementert:"
+            ],
+            "Released": [
+                "Lansert"
             ],
             "feature selected": [
                 "funksjon valgt"

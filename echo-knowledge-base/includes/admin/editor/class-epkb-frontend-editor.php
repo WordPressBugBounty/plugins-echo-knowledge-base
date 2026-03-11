@@ -275,7 +275,7 @@ class EPKB_Frontend_Editor {
 				<div class="epkb-fe__help-links__buttons">
 					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) . '&page=epkb-help-resources' ) ); ?>" target="_blank" rel="noopener noreferrer" class="epkb-fe__help-link">
 						<span class="epkb-fe__help-link__icon epkbfa epkbfa-life-ring"></span>
-						<span class="epkb-fe__help-link__text"><?php esc_html_e( 'Help Resources', 'echo-knowledge-base' ); ?></span>
+						<span class="epkb-fe__help-link__text"><?php esc_html_e( 'Setup Guide', 'echo-knowledge-base' ); ?></span>
 					</a>
 					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) . '&page=epkb-kb-configuration&setup-wizard-on=true' ) ); ?>" target="_blank" rel="noopener noreferrer" class="epkb-fe__help-link">
 						<span class="epkb-fe__help-link__icon epkbfa epkbfa-magic"></span>

@@ -10,26 +10,17 @@
             "Cancel": [
                 "Avbryt"
             ],
-            "Released": [
-                "Släpppt"
-            ],
-            "First Name": [
-                "Förnamn"
-            ],
-            "(optional)": [
-                "(valfritt)"
-            ],
-            "Email": [
-                "E-post"
-            ],
-            "Submit Vote": [
-                "Skicka röst"
+            "General Settings": [
+                "Allmänna inställningar"
             ],
             "Failed to submit vote. Please try again.": [
                 "Misslyckades med att skicka din röst. Försök igen."
             ],
-            "General Settings": [
-                "Allmänna inställningar"
+            "Email": [
+                "E-post"
+            ],
+            "First Name": [
+                "Förnamn"
             ],
             "Please enter a valid email address.": [
                 "Vänligen ange en giltig e-postadress."
@@ -49,11 +40,17 @@
             "Help us prioritize features by providing your information:": [
                 "Hjälp oss prioritera funktioner genom att lämna din information:"
             ],
+            "(optional)": [
+                "(valfritt)"
+            ],
             "Describe Your Feature Request": [
                 "Beskriv din begäran om en funktion"
             ],
             "Please describe the feature you would like to see...": [
                 "Vänligen beskriv den funktion du skulle vilja se..."
+            ],
+            "Submit Vote": [
+                "Skicka röst"
             ],
             "Please describe the feature you would like to see.": [
                 "Vänligen beskriv den funktion du vill se."
@@ -78,6 +75,9 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Välj de funktioner du vill se implementeras:"
+            ],
+            "Released": [
+                "Släpppt"
             ],
             "feature selected": [
                 "funktionen vald"

@@ -58,14 +58,26 @@
             "Send Data to AI": [
                 "データをAIに送信"
             ],
+            "Thank you! Your report has been submitted successfully.": [
+                "ありがとうございます！レポートが正常に送信されました。."
+            ],
             "Never": [
                 "決して"
+            ],
+            "Submitting...": [
+                "送信中..."
             ],
             "Pending": [
                 "承認待ち"
             ],
             "of": [
                 "の"
+            ],
+            "Canceled": [
+                "キャンセル済み"
+            ],
+            "Skipped": [
+                "スキップ済み"
             ],
             "Refreshing...": [
                 "更新しています..."
@@ -94,11 +106,23 @@
             "Completed": [
                 "完了済み"
             ],
+            "An error occurred. Please try again.": [
+                "エラーが発生しました。もう一度お試しください。."
+            ],
             "Outdated": [
                 "時代遅れ"
             ],
             "Added": [
                 "追加済み"
+            ],
+            "Added:": [
+                "追加済み:"
+            ],
+            "Manage Notes and PDFs": [
+                "ノートとPDFを管理"
+            ],
+            "Deleting...": [
+                "削除中..."
             ],
             "Failed to load training data": [
                 "機械学習データの読み込みに失敗しました"
@@ -106,14 +130,8 @@
             "Failed to delete items": [
                 "アイテムの削除に失敗しました"
             ],
-            "Delete Items": [
-                "アイテムを削除"
-            ],
             "Syncing": [
                 "同期中"
-            ],
-            "Canceled": [
-                "キャンセル済み"
             ],
             "How to get started": [
                 "はじめ方"
@@ -160,11 +178,26 @@
             "View Error": [
                 "エラーを表示"
             ],
+            "View Info": [
+                "情報を表示"
+            ],
             "View content": [
                 "コンテンツを表示"
             ],
             "KB Files": [
                 "KB ファイル"
+            ],
+            "Failed to submit report.": [
+                "レポートの送信に失敗しました。."
+            ],
+            "Submit this issue if you need help:": [
+                "サポートが必要な場合は、この問題を送信してください："
+            ],
+            "Your email (optional)": [
+                "メールアドレス（任意）"
+            ],
+            "Submit to Us": [
+                "私たちに送信"
             ],
             "Error Details": [
                 "エラー詳細"
@@ -172,23 +205,65 @@
             "Failed to load content": [
                 "コンテンツの読み込みに失敗しました"
             ],
+            "Delete Items": [
+                "アイテムを削除"
+            ],
             "Post ID:": [
                 "投稿ID:"
             ],
             "Loading content...": [
                 "コンテンツを読み込み中..."
             ],
+            "Content Processing Warning": [
+                "コンテンツ処理の警告"
+            ],
+            "The HTML content of this post produced empty text after processing. This usually means the post contains only non-text elements (scripts, styles, embeds, etc.). The original HTML is shown below for inspection.": [
+                "この投稿の HTML コンテンツは処理後に空のテキストを生成しました。これは通常、投稿にスクリプト、スタイル、埋め込みなどの非テキスト要素のみが含まれていることを意味します。点検のため、以下に元の HTML を表示します。."
+            ],
+            "Original HTML Content": [
+                "元の HTML コンテンツ"
+            ],
+            "No content available": [
+                "利用可能なコンテンツがありません"
+            ],
             "Error Processing Content": [
                 "コンテンツの処理中にエラーが発生しました"
+            ],
+            "Delete from Training Data": [
+                "機械学習データから削除"
+            ],
+            "File Name:": [
+                "ファイル名："
+            ],
+            "Unknown PDF": [
+                "不明な PDF"
+            ],
+            "Original PDF:": [
+                "元の PDF："
+            ],
+            "Open PDF": [
+                "PDF を開く"
+            ],
+            "If this stored URL no longer works, the original PDF is no longer available from this training data record.": [
+                "この保存済み URL が機能しなくなった場合、元の PDF はこの機械学習データのレコードからは利用できなくなります。."
+            ],
+            "No original URL is stored for this PDF upload. Only the saved file information is available here.": [
+                "この PDF アップロードには元の URL が保存されていません。ここでは保存済みのファイル情報のみ利用可能です。."
+            ],
+            "Provider:": [
+                "提供元："
+            ],
+            "AI File ID:": [
+                "AI ファイル ID："
+            ],
+            "Last Synced:": [
+                "最終同期日時："
             ],
             "Original Content": [
                 "元のコンテンツ"
             ],
             "Processed Content": [
                 "処理済みコンテンツ"
-            ],
-            "No content available": [
-                "利用可能なコンテンツがありません"
             ],
             "No processed content available": [
                 "処理済みのコンテンツはありません"

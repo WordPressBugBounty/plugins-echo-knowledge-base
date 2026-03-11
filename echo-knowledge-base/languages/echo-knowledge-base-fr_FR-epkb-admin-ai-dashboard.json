@@ -10,26 +10,17 @@
             "Cancel": [
                 "Annuler"
             ],
-            "Released": [
-                "Publié"
-            ],
-            "First Name": [
-                "Prénom"
-            ],
-            "(optional)": [
-                "(facultatif)"
-            ],
-            "Email": [
-                "E-mail"
-            ],
-            "Submit Vote": [
-                "Soumettre un vote"
+            "General Settings": [
+                "Paramètres généraux"
             ],
             "Failed to submit vote. Please try again.": [
                 "Échec de l'envoi du vote. Veuillez réessayer."
             ],
-            "General Settings": [
-                "Paramètres généraux"
+            "Email": [
+                "E-mail"
+            ],
+            "First Name": [
+                "Prénom"
             ],
             "Please enter a valid email address.": [
                 "Veuillez saisir une adresse e-mail valide."
@@ -49,11 +40,17 @@
             "Help us prioritize features by providing your information:": [
                 "Aidez-nous à prioriser les fonctionnalités en fournissant vos informations :"
             ],
+            "(optional)": [
+                "(facultatif)"
+            ],
             "Describe Your Feature Request": [
                 "Décrivez votre demande de fonctionnalité"
             ],
             "Please describe the feature you would like to see...": [
                 "Veuillez décrire la fonctionnalité que vous aimeriez voir..."
+            ],
+            "Submit Vote": [
+                "Soumettre un vote"
             ],
             "Please describe the feature you would like to see.": [
                 "Veuillez décrire la fonctionnalité que vous aimeriez voir."
@@ -78,6 +75,9 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Sélectionnez les fonctionnalités que vous aimeriez voir mises en œuvre :"
+            ],
+            "Released": [
+                "Publié"
             ],
             "feature selected": [
                 "fonctionnalité sélectionnée"

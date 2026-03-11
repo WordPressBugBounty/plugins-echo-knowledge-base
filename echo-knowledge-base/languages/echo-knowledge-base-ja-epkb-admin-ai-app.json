@@ -7,14 +7,14 @@
                 "lang": "ja",
                 "plural-forms": "nplurals=1; plural=0;"
             },
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
+                "AI機能を使用するには、一般設定でAPIキーを設定し、データプライバシー同意に同意してください。その后、AI検索またはAIチャットを有効にしてください。."
+            ],
             "AI Features": [
                 "AI機能"
             ],
             "Go to General Settings": [
                 "一般設定へ移動"
-            ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.": [
-                "AI機能を使用するには、一般設定でAPIキーを設定し、データプライバシー同意に同意してください。その后、AI検索またはAIチャットを有効にしてください。."
             ],
             "To use Training Data, please enable either AI Chat or AI Search in their respective tabs.": [
                 "機械学習データを使用するには、それぞれのタブでAIチャットまたはAI検索のいずれかを有効にしてください。."
@@ -31,8 +31,26 @@
             "Configure API Key": [
                 "APIキーを設定"
             ],
+            "Legacy AI Models Detected": [
+                "レガシーAIモデルを検出しました"
+            ],
+            "Your AI configuration still uses legacy Gemini model names. Update the AI configuration to save the current model names.": [
+                "AI 設定にはまだレガシー Gemini モデル名が使用されています。現在のモデル名を保存するには、AI 設定を更新してください。."
+            ],
+            "Updating...": [
+                "更新中..."
+            ],
+            "Update AI Configuration": [
+                "AI 設定を更新"
+            ],
             "Failed to load tab data": [
                 "タブデータの読み込みに失敗しました。"
+            ],
+            "AI configuration updated successfully": [
+                "AI 設定が正常に更新されました。"
+            ],
+            "Failed to update AI configuration": [
+                "AI 設定の更新に失敗しました。"
             ],
             "Failed to load dashboard data. Please reload the page.": [
                 "ダッシュボードデータの読み込みに失敗しました。ページを再読み込みしてください。."

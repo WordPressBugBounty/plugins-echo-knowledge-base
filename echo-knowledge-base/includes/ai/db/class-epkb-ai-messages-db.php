@@ -10,8 +10,9 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	/**
 	 * Version History:
 	 * 1.0 - Initial table structure
+	 * 1.1 - Refresh schema for chat conversation columns on upgraded sites
 	 */
-	const TABLE_VERSION = '1.0';    /** update when table schema changes **/
+	const TABLE_VERSION = '1.1';    /** update when table schema changes **/
 	const PER_PAGE = 20;
 	const PRIMARY_KEY = 'id';
 	const TABLE_NAME_SUFFIX = 'epkb_ai_messages';
@@ -167,7 +168,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 * Active = updated within last 24 hours
 	 *
 	 * @param string $session_id
-	 * @return EPKB_AI_Conversation_Model|null - null if no active conversation found
+	 * @return Object|WP_Error - null if no active conversation found
 	 */
 	public function get_latest_active_chat_for_session( $session_id ) {
 		
@@ -194,7 +195,7 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 *
 	 * @param string $chat_id
 	 * @param string $session_id
-	 * @return EPKB_AI_Conversation_Model|null - null if no conversation found
+	 * @return Object|WP_Error - null if no conversation found
 	 */
 	public function get_conversation_by_chat_and_session( $chat_id, $session_id ) {
 		

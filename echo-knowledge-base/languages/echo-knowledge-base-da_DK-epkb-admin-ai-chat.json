@@ -37,6 +37,9 @@
             "Previous": [
                 "Forrige"
             ],
+            "OFF": [
+                "FRA"
+            ],
             "Reset": [
                 "Nulstil"
             ],
@@ -63,6 +66,12 @@
             ],
             "of": [
                 "af"
+            ],
+            "Requires AI Features PRO": [
+                "AI-funktioner PRO kræves"
+            ],
+            "with code": [
+                "med kode"
             ],
             "Thumbs up (%d)": [
                 "Tommel op (%d)"
@@ -192,9 +201,6 @@
             ],
             "Collection": [
                 "Samling"
-            ],
-            "Requires AI Features PRO": [
-                "AI-funktioner PRO kræves"
             ],
             "Are you sure you want to reset to default instructions?": [
                 "Er du sikker på, at du vil nulstille til standardinstruktioner?"

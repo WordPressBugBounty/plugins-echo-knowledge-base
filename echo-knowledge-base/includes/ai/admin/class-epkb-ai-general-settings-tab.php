@@ -31,6 +31,7 @@ class EPKB_AI_General_Settings_Tab {
 	 */
 	private static function get_settings_sections( $ai_config ) {
 		$provider = $ai_config['ai_provider'];
+		$provider_options = EPKB_AI_Provider::get_provider_options();
 
 		$sections = array(
 			'api_settings' => array(
@@ -42,17 +43,14 @@ class EPKB_AI_General_Settings_Tab {
 						'type' => 'select',
 						'label' => __( 'AI Provider', 'echo-knowledge-base' ),
 						'value' => $provider,
-						'options' => array(
-							EPKB_AI_Provider::PROVIDER_GEMINI => 'Gemini',
-							EPKB_AI_Provider::PROVIDER_CHATGPT => 'ChatGPT'
-						),
+						'options' => $provider_options,
 						'description' => __( 'Choose which provider to use for chat, search, and training data.', 'echo-knowledge-base' )
 					),
 					'ai_gemini_key' => array(
 						'type' => 'password',
-						'label' => __( 'Gemini API Key', 'echo-knowledge-base' ),
+						'label' => __( 'Google Gemini API Key', 'echo-knowledge-base' ),
 						'value' => empty( $ai_config['ai_gemini_key'] ) ? '' : '********',
-						'description' => __( 'Enter your Gemini API key.', 'echo-knowledge-base' ),
+						'description' => __( 'Enter your Google Gemini API key.', 'echo-knowledge-base' ),
 						'placeholder' => 'AIza...',
 						'required' => true,
 						'dependency' => array(
@@ -62,9 +60,9 @@ class EPKB_AI_General_Settings_Tab {
 					),
 					'ai_chatgpt_key' => array(
 						'type' => 'password',
-						'label' => __( 'ChatGPT API Key', 'echo-knowledge-base' ),
+						'label' => __( 'OpenAI API Key', 'echo-knowledge-base' ),
 						'value' => empty( $ai_config['ai_chatgpt_key'] ) ? '' : '********',
-						'description' => __( 'Enter your ChatGPT API key.', 'echo-knowledge-base' ),
+						'description' => __( 'Enter your OpenAI API key.', 'echo-knowledge-base' ),
 						'placeholder' => 'sk-...',
 						'required' => true,
 						'dependency' => array(
@@ -74,9 +72,9 @@ class EPKB_AI_General_Settings_Tab {
 					),
 					'ai_organization_id' => array(
 						'type' => 'text',
-						'label' => __( 'Organization ID', 'echo-knowledge-base' ),
+						'label' => __( 'OpenAI Organization ID', 'echo-knowledge-base' ),
 						'value' => $ai_config['ai_organization_id'],
-						'description' => __( 'Optional: Enter your ChatGPT Organization ID if you belong to multiple organizations', 'echo-knowledge-base' ),
+						'description' => __( 'Optional: Enter your OpenAI Organization ID if you belong to multiple organizations', 'echo-knowledge-base' ),
 						'placeholder' => 'org-...',
 						'dependency' => array(
 							'field' => 'ai_provider',

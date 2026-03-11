@@ -1,0 +1,231 @@
+{
+    "domain": "echo-knowledge-base",
+    "locale_data": {
+        "echo-knowledge-base": {
+            "": {
+                "domain": "echo-knowledge-base",
+                "lang": "da_DK",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "Title": [
+                "Titel"
+            ],
+            "Learn More": [
+                "Lær mere"
+            ],
+            "Close": [
+                "Luk"
+            ],
+            "Cancel": [
+                "Annuller"
+            ],
+            "Delete": [
+                "Slet"
+            ],
+            "Previous": [
+                "Forrige"
+            ],
+            "Basic formatting": [
+                "Grundlæggende formatering"
+            ],
+            "AI-structured": [
+                "AI-struktureret"
+            ],
+            "Select PDF Files": [
+                "Vælg PDF-filer"
+            ],
+            "Drag and drop PDF files here, or click the buttons below": [
+                "Træk og slip PDF-filer her, eller klik på knapperne nedenfor"
+            ],
+            "Select PDFs": [
+                "Vælg PDF'er"
+            ],
+            "Media Library": [
+                "Mediebibliotek"
+            ],
+            "Retry": [
+                "Prøv igen"
+            ],
+            "PDF to Notes": [
+                "PDF til noter"
+            ],
+            "Saving...": [
+                "Gemmer..."
+            ],
+            "No": [
+                "Nej"
+            ],
+            "Preview": [
+                "Forhåndsvisning"
+            ],
+            "Note deleted successfully": [
+                "Noten blev slettet"
+            ],
+            "AI was unable to extract text from this PDF.": [
+                "AI var ikke i stand til at udtrække tekst fra denne PDF."
+            ],
+            "Additional Notes": [
+                "Yderligere bemærkninger"
+            ],
+            "PDF file exceeds the 20 MB size limit.": [
+                "PDF-filen overskrider grænsen på 20 MB."
+            ],
+            "of": [
+                "af"
+            ],
+            "Drop PDF files here": [
+                "Drop PDF-filer her"
+            ],
+            "Failed to prepare PDF preview": [
+                "Mislykkedes at forberede PDF-forhåndsvisning"
+            ],
+            "No text could be extracted from this PDF.": [
+                "Der kunne ikke udtrækkes tekst fra denne PDF."
+            ],
+            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
+                "PDF-udtræk er ikke tilgængeligt. Sørg for, at AI Features Pro er aktiv."
+            ],
+            "Use AI to Extract Text?": [
+                "Brug AI til at udtrække tekst?"
+            ],
+            "This PDF appears to contain scanned images. Would you like to use AI to extract the text? This will send the PDF to your configured AI provider.": [
+                "Denne PDF ser ud til at indeholde scannede billeder. Vil du bruge AI til at udtrække teksten? Dette vil sende PDF'en til din konfigurerede AI-udbyder."
+            ],
+            "Yes, Use AI": [
+                "Ja, brug AI"
+            ],
+            "Please drop a valid PDF file.": [
+                "Drop venligst en gyldig PDF-fil."
+            ],
+            "Failed to read file.": [
+                "Kunne ikke læse filen."
+            ],
+            "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
+                "Tilføj yderligere support og diverse oplysninger, som ikke findes i artikler, indlæg og sider, som AI også bør kende."
+            ],
+            "Examples: business hours, contact information, company policies, product details, or any other information you want the AI to reference.": [
+                "Eksempler: åbningstider, kontaktoplysninger, virksomhedspolitikker, produktoplysninger eller andre oplysninger, som AI'en også bør referere til."
+            ],
+            "Got it": [
+                "Forstået"
+            ],
+            "Failed to load note content": [
+                "Fejl ved indlæsning af noteindhold"
+            ],
+            "Please enter both title and content for the note": [
+                "Indtast venligst både titel og indhold til noten"
+            ],
+            "Unable to delete note. Please refresh the page and try again.": [
+                "Kan ikke slette noten. Opdater venligst siden og prøv igen."
+            ],
+            "Delete Note": [
+                "Slet noten"
+            ],
+            "Are you sure you want to delete this note? This action cannot be undone.": [
+                "Er du sikker på, at du vil slette dette notat? Denne handling kan ikke fortrydes."
+            ],
+            "Failed to delete note": [
+                "Fejl ved sletning af notat"
+            ],
+            "Edit Note": [
+                "Rediger notat"
+            ],
+            "Add Note": [
+                "Tilføj notat"
+            ],
+            "View and manage notes and PDFs (opens in new tab)": [
+                "Se og administrér noter og PDF'er (åbnes i en ny fane)"
+            ],
+            "Manage Notes and PDFs": [
+                "Administrér noter og PDF'er"
+            ],
+            "Loading note content...": [
+                "Indlæser notatindhold..."
+            ],
+            "Note Title": [
+                "Notatets titel"
+            ],
+            "Enter note title...": [
+                "Indtast notatets titel..."
+            ],
+            "Note Content": [
+                "Notatets indhold"
+            ],
+            "Enter note content...": [
+                "Indtast notatets indhold..."
+            ],
+            "Deleting...": [
+                "Sletter..."
+            ],
+            "Save Note": [
+                "Gem notat"
+            ],
+            "Please enter a title for the note.": [
+                "Indtast venligst en titel til notatet."
+            ],
+            "No content to save. Please prepare the PDF preview first.": [
+                "Intet indhold at gemme. Forbered venligst PDF-forhåndsvisningen først."
+            ],
+            "Failed to save PDF note": [
+                "Kunne ikke gemme PDF-noten"
+            ],
+            "Media Library is not available.": [
+                "Mediebiblioteket er ikke tilgængeligt."
+            ],
+            "Select": [
+                "Vælg"
+            ],
+            "Failed to load file from Media Library.": [
+                "Kunne ikke indlæse fil fra Mediebiblioteket."
+            ],
+            "Preparing preview...": [
+                "Forbereder forhåndsvisningen..."
+            ],
+            "Enter title...": [
+                "Indtast titel..."
+            ],
+            "Formatting": [
+                "Formatering"
+            ],
+            "No formatting": [
+                "Ingen formatering"
+            ],
+            "Checking selected PDF files...": [
+                "Kontrollerer valgte PDF-filer..."
+            ],
+            "Skip": [
+                "Spring over"
+            ],
+            "Save as Note": [
+                "Gem som notat"
+            ],
+            "Upload failed.": [
+                "Upload mislykkedes."
+            ],
+            "Upload PDFs to AI Store": [
+                "Upload PDF'er til AI Store"
+            ],
+            "Uploaded": [
+                "Uploadet"
+            ],
+            "Uploading...": [
+                "Uploader..."
+            ],
+            "Waiting...": [
+                "Vent..."
+            ],
+            "Upload": [
+                "Upload"
+            ],
+            "Add Notes and PDFs": [
+                "Tilføj noter og PDF'er"
+            ],
+            "added": [
+                "tilføjet"
+            ],
+            "Requires AI Advanced Features plugin.": [
+                "Kræver AI Advanced Features-plugin."
+            ]
+        }
+    }
+}

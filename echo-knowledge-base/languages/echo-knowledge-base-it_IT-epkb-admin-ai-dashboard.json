@@ -10,26 +10,17 @@
             "Cancel": [
                 "Annulla"
             ],
-            "Released": [
-                "Rilasciato"
-            ],
-            "First Name": [
-                "Nome"
-            ],
-            "(optional)": [
-                "(facoltativo)"
-            ],
-            "Email": [
-                "E-mail"
-            ],
-            "Submit Vote": [
-                "Invia voto"
+            "General Settings": [
+                "Impostazioni Generali"
             ],
             "Failed to submit vote. Please try again.": [
                 "Impossibile inviare il voto. Per favore riprova."
             ],
-            "General Settings": [
-                "Impostazioni Generali"
+            "Email": [
+                "E-mail"
+            ],
+            "First Name": [
+                "Nome"
             ],
             "Please enter a valid email address.": [
                 "Per favore inserisci un indirizzo email valido."
@@ -49,11 +40,17 @@
             "Help us prioritize features by providing your information:": [
                 "Aiutaci a dare priorità alle funzionalità fornendo le tue informazioni:"
             ],
+            "(optional)": [
+                "(facoltativo)"
+            ],
             "Describe Your Feature Request": [
                 "Descrivi la tua richiesta di funzionalità"
             ],
             "Please describe the feature you would like to see...": [
                 "Per favore descrivi la funzionalità che vorresti vedere..."
+            ],
+            "Submit Vote": [
+                "Invia voto"
             ],
             "Please describe the feature you would like to see.": [
                 "Per favore descrivi la funzionalità che vorresti vedere."
@@ -78,6 +75,9 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Seleziona le funzionalità che vorresti vedere implementate:"
+            ],
+            "Released": [
+                "Rilasciato"
             ],
             "feature selected": [
                 "funzionalità selezionata"

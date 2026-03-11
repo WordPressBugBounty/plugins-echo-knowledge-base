@@ -12,7 +12,7 @@ class EPKB_Gemini_Client {
 	const API_VERSION = 'v1beta';
 	const DEFAULT_MAX_RETRIES = 3;
 	const MAX_FILE_SIZE = 1048576; // 1MB
-	const DEFAULT_MODEL = 'gemini-2.5-flash-lite';
+	const DEFAULT_MODEL = 'gemini-3.1-flash-lite-preview';
 	const DEFAULT_MAX_OUTPUT_TOKENS = 8192;
 	const DEFAULT_MAX_NUM_RESULTS = 10;
 
@@ -57,12 +57,12 @@ class EPKB_Gemini_Client {
 
 			// 3. Request succeeded, parse final response
 			if ( ! is_wp_error( $parsed ) ) {
-				$parsed['_timing'] = array( 'elapsed_seconds' => round( $request_duration, 2 ) );
+				$parsed['_timing'] = array( 'elapsed_seconds' => round( $request_duration, 3 ) );
 				EPKB_AI_Log::add_log( 'API request completed', array(
 					'purpose'          => $purpose,
 					'request_endpoint' => $endpoint,
-					'model'            => isset( $data['model'] ) ? $data['model'] : '',
-					'elapsed_seconds'  => round( $request_duration, 2 ),
+					'model'            => isset( $data['model'] ) ? $data['model'] : $purpose,
+					'elapsed_seconds'  => round( $request_duration, 3 ),
 					'attempt'          => $attempt + 1
 				) );
 				return $parsed;
@@ -75,9 +75,9 @@ class EPKB_Gemini_Client {
 			$log_context = $parsed->get_error_data();
 			$log_context['purpose'] = $purpose;
 			$log_context['request_endpoint'] = $endpoint;
-			$log_context['model'] = isset( $data['model'] ) ? $data['model'] : '';
+			$log_context['model'] = isset( $data['model'] ) ? $data['model'] : $purpose;
 			$log_context['request_method'] = $method;
-			$log_context['elapsed_seconds'] = round( $request_duration, 2 );
+			$log_context['elapsed_seconds'] = round( $request_duration, 3 );
 			EPKB_AI_Log::add_log( 'API request error: ' . $parsed->get_error_message(), $log_context );
 
 			// Warn if execution time limit is too low
@@ -583,22 +583,23 @@ class EPKB_Gemini_Client {
 	public static function get_models_and_default_params( $model_name = null ) {
 
 		$models = array(
-			'gemini-2.5-flash-lite' => array(
-				'name'                       => 'Gemini 2.5 Flash-Lite',
+			'gemini-3.1-flash-lite-preview' => array(
+				'name'                       => 'Gemini 3.1 Flash-Lite Preview',
 				'type'                       => 'gemini',
 				'preset_key'                 => EPKB_AI_Provider::FASTEST_MODEL,
 				'preset_label'               => __( 'Fastest', 'echo-knowledge-base' ),
 				'default_params'             => array(
 					'temperature'       => 1,
 					'top_p'             => 0.95,
+					'thinking_level'    => 'low',
 					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
 				),
 				'supports_temperature'       => true,
 				'supports_top_p'             => true,
-				'supports_thinking_level'    => false,
+				'supports_thinking_level'    => true,
 				'supports_max_output_tokens' => true,
 				'max_output_tokens_limit'    => 65536,
-				'parameters'                 => array( 'temperature', 'top_p', 'max_output_tokens' )
+				'parameters'                 => array( 'temperature', 'top_p', 'thinking_level', 'max_output_tokens' )
 			),
 			'gemini-2.5-flash' => array(
 				'name'                       => 'Gemini 2.5 Flash',
@@ -650,8 +651,8 @@ class EPKB_Gemini_Client {
 				'max_output_tokens_limit'    => 65536,
 				'parameters'                 => array( 'temperature', 'top_p', 'thinking_level', 'max_output_tokens' )
 			),
-			'gemini-3-pro-preview' => array(
-				'name'                       => 'Gemini 3 Pro',
+			'gemini-3.1-pro-preview' => array(
+				'name'                       => 'Gemini 3.1 Pro Preview',
 				'type'                       => 'gemini',
 				'preset_key'                 => 'smartest',
 				'preset_label'               => __( 'Smartest', 'echo-knowledge-base' ),

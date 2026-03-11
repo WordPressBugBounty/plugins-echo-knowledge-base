@@ -45,7 +45,7 @@ class EPKB_AI_PRO_Features_Tab {
 	 *
 	 * @return int
 	 */
-	private static function get_addon_count() {
+	public static function get_addon_count() {
 		$addon_count = 0;
 		
 		// Check for each known Echo KB add-on
@@ -77,7 +77,7 @@ class EPKB_AI_PRO_Features_Tab {
 	 *
 	 * @return array
 	 */
-	private static function get_discount_coupon() {
+	public static function get_discount_coupon() {
 		$addon_count = self::get_addon_count();
 		$current_date = gmdate('Y-m-d');
 		$expiry_date = gmdate('Y-m-d', strtotime('September 15'));
@@ -213,14 +213,26 @@ class EPKB_AI_PRO_Features_Tab {
 			),
 			array(
 				'id' => 'pdf-to-notes',
-				'title' => __( 'PDF to Notes', 'echo-knowledge-base' ),
-				'description' => __( 'Upload PDF files and convert them into AI training notes. Expand your AI knowledge beyond KB articles by importing existing documentation, manuals, and guides.', 'echo-knowledge-base' ),
+				'title' => __( 'PDF to Notes & Articles', 'echo-knowledge-base' ),
+				'description' => __( 'Upload PDF files and convert them into AI training notes or KB articles. Expand your AI knowledge beyond existing content by importing documentation, manuals, and guides.', 'echo-knowledge-base' ),
 				'icon' => 'epkbfa epkbfa-file-pdf-o',
 				'icon_color' => '#C0392B',
 				'benefits' => array(
 					__( 'Upload PDF files directly from the Training Data tab', 'echo-knowledge-base' ),
-					__( 'Automatically extract content and create AI training notes', 'echo-knowledge-base' ),
+					__( 'Convert PDFs into AI training notes or full KB articles', 'echo-knowledge-base' ),
 					__( 'Include existing documentation and manuals in AI responses', 'echo-knowledge-base' ),
+				),
+			),
+			array(
+				'id' => 'upload-pdfs',
+				'title' => __( 'Upload PDFs for AI Data Collections', 'echo-knowledge-base' ),
+				'description' => __( 'Upload PDF documents directly into your AI Data Collections. Your AI chatbot and search will use the PDF content to provide accurate, relevant answers.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-cloud-upload',
+				'icon_color' => '#2980B9',
+				'benefits' => array(
+					__( 'Upload PDFs to any AI Data Collection', 'echo-knowledge-base' ),
+					__( 'AI automatically extracts and indexes PDF content', 'echo-knowledge-base' ),
+					__( 'Use PDF content alongside articles and notes for AI responses', 'echo-knowledge-base' ),
 				),
 			),
 			// array(

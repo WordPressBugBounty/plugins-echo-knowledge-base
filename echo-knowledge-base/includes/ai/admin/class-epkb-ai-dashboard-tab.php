@@ -9,6 +9,7 @@ class EPKB_AI_Dashboard_Tab {
 		add_action( 'wp_ajax_epkb_get_ai_status', array( $this, 'ajax_get_ai_status' ) );
 		add_action( 'wp_ajax_epkb_vote_for_features', array( $this, 'ajax_vote_for_features' ) );
 		add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_training_data_sync' ) );
+		add_action( 'wp_ajax_epkb_submit_empty_content_report', array( $this, 'ajax_submit_empty_content_report' ) );
 	}
 
 	/**
@@ -152,6 +153,62 @@ class EPKB_AI_Dashboard_Tab {
 		}
 
 		wp_send_json_success( array( 'message' => __( 'Thank you for voting! Your feedback helps us prioritize future features.', 'echo-knowledge-base' ) ) );
+	}
+
+	/**
+	 * AJAX handler for submitting empty content error reports
+	 */
+	public function ajax_submit_empty_content_report() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
+
+		$email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
+		$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+		$error_type = isset( $_POST['error_type'] ) ? sanitize_text_field( $_POST['error_type'] ) : '';
+
+		if ( ! empty( $email ) && ! is_email( $email ) ) {
+			wp_send_json_error( __( 'Please provide a valid email address.', 'echo-knowledge-base' ) );
+		}
+
+		// Build feedback message with post details
+		$post = get_post( $post_id );
+		$post_title = $post ? $post->post_title : 'N/A';
+		$original_html = $post ? mb_substr( $post->post_content, 0, 5000 ) : 'N/A';
+
+		$feedback_message = "Empty Content Report\n";
+		$feedback_message .= "Error Type: " . $error_type . "\n";
+		$feedback_message .= "Post ID: " . $post_id . "\n";
+		$feedback_message .= "Post Title: " . $post_title . "\n";
+		$feedback_message .= "Original HTML:\n" . $original_html;
+
+		$report_data = array(
+			'epkb_action'       => 'epkb_process_user_feedback',
+			'feedback_type'     => 'empty_content_report',
+			'feedback_input'    => $feedback_message,
+			'plugin_name'       => 'AI',
+			'plugin_version'    => class_exists( 'Echo_Knowledge_Base' ) ? Echo_Knowledge_Base::$version : 'N/A',
+			'first_version'     => '',
+			'wp_version'        => '',
+			'theme_info'        => '',
+			'contact_user'      => $email,
+			'first_name'        => '',
+			'email_subject'     => 'Empty Content Report',
+		);
+
+		$response = wp_remote_post(
+			esc_url_raw( add_query_arg( $report_data, 'https://www.echoknowledgebase.com' ) ),
+			array(
+				'timeout'   => 15,
+				'body'      => $report_data,
+				'sslverify' => false
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			wp_send_json_error( array( 'message' => __( 'Failed to submit report. Please try again.', 'echo-knowledge-base' ) ) );
+		}
+
+		wp_send_json_success( array( 'message' => __( 'Thank you! Your report has been submitted successfully.', 'echo-knowledge-base' ) ) );
 	}
 
 	/**
@@ -960,6 +1017,20 @@ class EPKB_AI_Dashboard_Tab {
 	 */
 	private static function get_news_items() {
 		return array(
+			array(
+				'date' => '2026-03-09',
+				'type' => 'feature',
+				'title' => __( 'PDF to Articles (PRO)', 'echo-knowledge-base' ),
+				'description' => __( 'Upload PDF files and convert them into KB articles with AI-powered formatting. Import documentation, manuals, and guides directly into your knowledge base.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' )
+			),
+			array(
+				'date' => '2026-03-09',
+				'type' => 'feature',
+				'title' => __( 'PDF Uploads for AI Data Collections (PRO)', 'echo-knowledge-base' ),
+				'description' => __( 'Upload PDF documents directly into AI Data Collections. Your AI Chat and Search will use the PDF content to provide accurate answers.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' )
+			),
 			array(
 				'date' => '2026-03-01',
 				'type' => 'feature',

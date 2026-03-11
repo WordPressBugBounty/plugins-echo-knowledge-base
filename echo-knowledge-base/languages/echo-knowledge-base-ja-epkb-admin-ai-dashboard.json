@@ -10,26 +10,17 @@
             "Cancel": [
                 "キャンセル"
             ],
-            "Released": [
-                "公開済み"
-            ],
-            "First Name": [
-                "名"
-            ],
-            "(optional)": [
-                "（任意）"
-            ],
-            "Email": [
-                "メール"
-            ],
-            "Submit Vote": [
-                "投票を送信"
+            "General Settings": [
+                "一般設定"
             ],
             "Failed to submit vote. Please try again.": [
                 "投票の送信に失敗しました。もう一度お試しください。."
             ],
-            "General Settings": [
-                "一般設定"
+            "Email": [
+                "メール"
+            ],
+            "First Name": [
+                "名"
             ],
             "Please enter a valid email address.": [
                 "有効なメールアドレスを入力してください。."
@@ -49,11 +40,17 @@
             "Help us prioritize features by providing your information:": [
                 "情報を提供して、機能の優先順位を決定するのをお手伝いください："
             ],
+            "(optional)": [
+                "（任意）"
+            ],
             "Describe Your Feature Request": [
                 "機能リクエストの内容を説明してください"
             ],
             "Please describe the feature you would like to see...": [
                 "見てみたい機能を説明してください..."
+            ],
+            "Submit Vote": [
+                "投票を送信"
             ],
             "Please describe the feature you would like to see.": [
                 "見てみたい機能について説明してください。."
@@ -78,6 +75,9 @@
             ],
             "Select the features you would like to see implemented:": [
                 "実装してほしい機能を選択してください："
+            ],
+            "Released": [
+                "公開済み"
             ],
             "feature selected": [
                 "機能が選択されました"

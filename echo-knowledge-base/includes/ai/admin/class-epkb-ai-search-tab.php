@@ -658,6 +658,7 @@ class EPKB_AI_Search_Tab {
 			'btn_url' => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/',
 			'btn_text_2' => __( 'See It In Action', 'echo-knowledge-base' ),
 			'btn_url_2' => 'https://contentdisplay.wpengine.com/knowledge-base/',
+			'discount_coupon' => EPKB_AI_PRO_Features_Tab::get_discount_coupon(),
 			'return_html' => true
 		) );
 	}

@@ -13,6 +13,9 @@
             "Disabled": [
                 "Wyłączone"
             ],
+            "Debug Mode": [
+                "Tryb debugowania"
+            ],
             "API Key": [
                 "Klucz API"
             ],
@@ -66,9 +69,6 @@
             ],
             "Error clearing AI logs": [
                 "Błąd czyszczenia logów AI"
-            ],
-            "Debug Mode": [
-                "Tryb debugowania"
             ],
             "Enable Debug Mode": [
                 "Włącz tryb debugowania"

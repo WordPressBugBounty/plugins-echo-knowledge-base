@@ -586,7 +586,13 @@ class EPKB_AI_Tags_Usage {
 				'message' => __( 'AI analysis did not generate tag suggestions for this article. This may be because the article already has well-optimized tags or the content is too short.', 'echo-knowledge-base' )
 			);
 		} elseif ( ! empty( $analysis['ai_suggestions']['ai_feature_unavailable'] ) ) {
-			// Scenario 3: PRO is NOT active - show activation message
+			// Scenario 3: PRO is NOT active - show activation message with discount
+			$discount_coupon = EPKB_AI_PRO_Features_Tab::get_discount_coupon();
+			$discount_text = '';
+			if ( ! empty( $discount_coupon['discount_percentage'] ) ) {
+				// translators: %1$s is discount percentage, %2$s is the coupon code
+				$discount_text = ' ' . sprintf( __( 'Save %1$s%% with code %2$s', 'echo-knowledge-base' ), $discount_coupon['discount_percentage'], $discount_coupon['coupon_code'] );
+			}
 			$recommendations[] = array(
 				'priority' => 'medium',
 				'type' => 'ai_feature_required',
@@ -595,7 +601,7 @@ class EPKB_AI_Tags_Usage {
 					__( 'Get the %1$sAI Features add-on%2$s to unlock AI-powered tag suggestions based on your article content.', 'echo-knowledge-base' ),
 					'<a href="https://www.echoknowledgebase.com/wordpress-plugin/ai-features/" target="_blank" rel="noopener noreferrer">',
 					'</a>'
-				)
+				) . $discount_text
 			);
 		}
 

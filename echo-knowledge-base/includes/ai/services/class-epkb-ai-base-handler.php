@@ -75,7 +75,18 @@ abstract class EPKB_AI_Base_Handler {
 		// Extract content from response
 		$content = EPKB_AI_Provider::extract_response_content( $response );
 		if ( empty( $content ) ) {
-			return new WP_Error( 'empty_response', __( 'Received empty response from AI', 'echo-knowledge-base' ) );
+			EPKB_AI_Log::add_log( 'Warning: AI did not return a response. Check the training data and request to see why no response was returned.', array(
+				'provider'          => $provider,
+				'model'             => $model,
+				'collection_id'     => $collection_id,
+				'request_preview'   => $message,
+				'request_endpoint'  => $provider === EPKB_AI_Provider::PROVIDER_GEMINI ? '/models/' . $model . ':generateContent' : '/responses',
+				'response_id'       => isset( $response['id'] ) ? $response['id'] : '',
+				'output_items'      => isset( $response['output'] ) && is_array( $response['output'] ) ? count( $response['output'] ) : 0,
+				'candidate_count'   => isset( $response['candidates'] ) && is_array( $response['candidates'] ) ? count( $response['candidates'] ) : 0,
+				'raw_response_body' => wp_json_encode( $response )
+			) );
+			return new WP_Error( 'empty_response', __( 'AI did not return a response. Please try again.', 'echo-knowledge-base' ) );
 		}
 
 		// Extract source references from grounding metadata

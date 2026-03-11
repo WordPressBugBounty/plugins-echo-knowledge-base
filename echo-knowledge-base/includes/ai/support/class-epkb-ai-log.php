@@ -57,6 +57,9 @@ class EPKB_AI_Log {
 			$message = substr( $message, 0, $max_message_length - 3 ) . '...';
 		}
 
+		// Enrich vector store logs with collection ID
+		$context = self::maybe_add_collection_id( $context );
+
 		// Sanitize and limit context
 		$context = self::sanitize_log_context( $context, $max_context_size );
 
@@ -186,8 +189,10 @@ class EPKB_AI_Log {
 				// Allow debug keys to have more data (up to 1000 chars for full error responses)
 				$max_length = in_array( $key, $debug_keys, true ) ? 1000 : 100;
 				$sanitized[ $key ] = wp_strip_all_tags( substr( $value, 0, $max_length ) );
+			} elseif ( is_float( $value ) ) {
+				$sanitized[ $key ] = number_format( $value, 1, '.', '' );
 			} elseif ( is_numeric( $value ) ) {
-				$sanitized[ $key ] = $value;
+				$sanitized[ $key ] = is_float( $value ) ? round( $value, 3 ) : $value;
 			} elseif ( is_bool( $value ) ) {
 				$sanitized[ $key ] = $value;
 			} elseif ( is_array( $value ) ) {
@@ -206,7 +211,7 @@ class EPKB_AI_Log {
 		$serialized = serialize( $sanitized );
 		if ( strlen( $serialized ) > $max_size ) {
 			// Truncate to most important keys, including debug keys for AI errors
-			$important_keys = array( 'error_code', 'status', 'user_id', 'action', 'raw_response_body', 'response_code', 'request_endpoint' );
+			$important_keys = array( 'error_code', 'status', 'user_id', 'action', 'raw_response_body', 'response_code', 'request_endpoint', 'collection_id' );
 			$truncated = array();
 			foreach ( $important_keys as $key ) {
 				if ( isset( $sanitized[ $key ] ) ) {
@@ -266,6 +271,10 @@ class EPKB_AI_Log {
 				} else {
 					$friendly_message = __( 'Rate limit exceeded. Please try again in a few minutes.', 'echo-knowledge-base' );
 				}
+				break;
+
+			case 'empty_response':
+				$friendly_message = __( 'AI did not return a response. Please try again.', 'echo-knowledge-base' );
 				break;
 				
 			case 'server_error':
@@ -328,6 +337,10 @@ class EPKB_AI_Log {
 				// For validation errors, use the original error message as-is
 				$friendly_message = $error_message;
 				break;
+
+			case 'empty_markdown':
+				$friendly_message = $error_message;
+				break;
 				
 			default:
 				// For unknown errors, provide a generic message
@@ -340,8 +353,8 @@ class EPKB_AI_Log {
 				}
 		}
 		
-		// Add technical details for admins (except for validation errors which already have clear messages)
-		if ( current_user_can( 'manage_options' ) && $error_code !== 'validation_failed' ) {
+		// Keep certain validation/content errors as plain messages for admins too.
+		if ( current_user_can( 'manage_options' ) && ! in_array( $error_code, array( 'validation_failed', 'empty_markdown' ), true ) ) {
 			$technical_details = '';
 			
 			// Add error code if available
@@ -791,5 +804,46 @@ class EPKB_AI_Log {
 		return 'unknown';
 	}
 
+	/**
+	 * If the log context describes a vector store interaction, add the collection ID
+	 *
+	 * @param array $context
+	 * @return array
+	 */
+	private static function maybe_add_collection_id( $context ) {
 
+		if ( ! is_array( $context ) || empty( $context['purpose'] ) || empty( $context['request_endpoint'] ) ) {
+			return $context;
+		}
+
+		$store_purposes = array( 'vector_store', 'vector_store_file', 'file_storage_upload', 'file_storage', 'file_search_store' );
+		if ( ! in_array( $context['purpose'], $store_purposes, true ) ) {
+			return $context;
+		}
+
+		// Extract store ID from the endpoint: /vector_stores/{id}... or /fileSearchStores/{id}...
+		$store_id = '';
+		if ( preg_match( '#/vector_stores/([^/]+)#', $context['request_endpoint'], $matches ) ) {
+			$store_id = $matches[1];
+		} elseif ( preg_match( '#/fileSearchStores/([^/:]+)#', $context['request_endpoint'], $matches ) ) {
+			$store_id = $matches[1];
+		}
+
+		if ( empty( $store_id ) ) {
+			return $context;
+		}
+
+		// Look up which collection owns this store ID
+		$collections = get_option( 'epkb_ai_training_data_configuration', array() );
+		if ( is_array( $collections ) ) {
+			foreach ( $collections as $collection_id => $config ) {
+				if ( ! empty( $config['ai_training_data_store_id'] ) && $config['ai_training_data_store_id'] === $store_id ) {
+					$context['collection_id'] = $collection_id;
+					break;
+				}
+			}
+		}
+
+		return $context;
+	}
 }

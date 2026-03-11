@@ -265,7 +265,11 @@ class EPKB_AI_Security {
 		// Check database for matching chat_id and session_id
 		$messages_db = new EPKB_AI_Messages_DB();
 		$conversation = $messages_db->get_conversation_by_chat_and_session( $chat_id, $session_id );
-		
+		if ( is_wp_error( $conversation ) ) {
+			EPKB_AI_Log::add_log( $conversation, array( 'context' => 'validate_chat_session' ) );
+			return false;
+		}
+
 		// If not found, check if this is a recently created conversation (within last 5 seconds)
 		// This handles race conditions where the second message arrives before DB write completes
 		if ( $conversation === null ) {
@@ -273,12 +277,16 @@ class EPKB_AI_Security {
 			if ( strpos( $chat_id, self::CHAT_ID_PREFIX ) !== 0 ) {
 				return false;
 			}
-			
+
 			// Try once more with a small delay (100ms)
 			usleep( 100000 );
 			$conversation = $messages_db->get_conversation_by_chat_and_session( $chat_id, $session_id );
+			if ( is_wp_error( $conversation ) ) {
+				EPKB_AI_Log::add_log( $conversation, array( 'context' => 'validate_chat_session_retry' ) );
+				return false;
+			}
 		}
-		
+
 		return $conversation !== null;
 	}
 
@@ -333,20 +341,22 @@ class EPKB_AI_Security {
 		// Check global rate limit first
 		$global_limit = apply_filters( 'epkb_ai_chat_global_rate_limit', 1000 ); // 1000 requests per hour globally
 		$global_count = get_transient( self::GLOBAL_RATE_LIMIT_TRANSIENT );
-		
+		$global_count = $global_count === false ? 0 : (int) $global_count;
+
 		if ( $global_count >= $global_limit ) {
 			return new WP_Error( 'global_rate_limit', __( 'Chat service is temporarily unavailable due to high demand. Please try again later.', 'echo-knowledge-base' ), array( 'retry_after' => 60 ) );  // 1 minute
 		}
-		
+
 		// Check user rate limit
 		$user_limit = apply_filters( 'epkb_ai_chat_user_rate_limit', 50 ); // 50 requests per hour per user
 		$user_transient = self::RATE_LIMIT_TRANSIENT_PREFIX . $user_identifier;
 		$user_count = get_transient( $user_transient );
-		
+		$user_count = $user_count === false ? 0 : (int) $user_count;
+
 		if ( $user_count >= $user_limit ) {
 			return new WP_Error( 'user_rate_limit', __( 'You have reached the chat limit. Please try again in a minute.', 'echo-knowledge-base' ), array( 'retry_after' => 60 ) );  // 1 minute
 		}
-		
+
 		// Increment counters
 		set_transient( self::GLOBAL_RATE_LIMIT_TRANSIENT, $global_count + 1, HOUR_IN_SECONDS );
 		set_transient( $user_transient, $user_count + 1, HOUR_IN_SECONDS );

@@ -19,11 +19,20 @@
             "No posts found to sync": [
                 "No se encontraron publicaciones para sincronizar"
             ],
+            "No synced items found to verify": [
+                "No se encontraron elementos sincronizados para verificar"
+            ],
             "Pending": [
                 "Pendiente"
             ],
             "of": [
                 "de"
+            ],
+            "Selected": [
+                "Seleccionado"
+            ],
+            "Processing": [
+                "Procesando"
             ],
             "errors": [
                 "errores"
@@ -55,9 +64,6 @@
             "Added": [
                 "Añadido"
             ],
-            "Selected": [
-                "Seleccionado"
-            ],
             "Records": [
                 "Registros"
             ],
@@ -70,11 +76,11 @@
             "Select All Records": [
                 "Seleccionar todos los registros"
             ],
-            "Validate & Fix after Sync": [
-                "Validar y corregir tras la sincronización"
+            "Validate & Fix Synced Items": [
+                "Validar y corregir los elementos sincronizados"
             ],
-            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
-                "Cuando esté habilitado, después de que se complete la sincronización, el sistema ejecutará automáticamente Validar y corregir para verificar problemas en los datos sincronizados e intentar resolverlos."
+            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
+                "Cuando esté habilitado, tras completarse la sincronización, el sistema validará y corregirá automáticamente solo los elementos sincronizados. Los elementos desactualizados o pendientes no se verificarán hasta que se sincronicen."
             ],
             "Sync in Progress": [
                 "Sincronización en curso"
@@ -99,9 +105,6 @@
             ],
             "Retrying failed posts:": [
                 "Reintentando publicaciones fallidas:"
-            ],
-            "Processing": [
-                "Procesando"
             ],
             "posts": [
                 "Publicaciones"

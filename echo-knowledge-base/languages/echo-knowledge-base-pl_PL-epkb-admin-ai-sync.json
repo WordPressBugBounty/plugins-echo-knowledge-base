@@ -19,11 +19,20 @@
             "No posts found to sync": [
                 "Nie znaleziono postów do synchronizacji"
             ],
+            "No synced items found to verify": [
+                "Nie znaleziono zsynchronizowanych elementów do weryfikacji"
+            ],
             "Pending": [
                 "Oczekujące"
             ],
             "of": [
                 "z"
+            ],
+            "Selected": [
+                "Wybrane"
+            ],
+            "Processing": [
+                "Przetwarzanie"
             ],
             "errors": [
                 "błędy"
@@ -55,9 +64,6 @@
             "Added": [
                 "Dodano"
             ],
-            "Selected": [
-                "Wybrane"
-            ],
             "Records": [
                 "Rekordy"
             ],
@@ -70,11 +76,11 @@
             "Select All Records": [
                 "Zaznacz wszystkie rekordy"
             ],
-            "Validate & Fix after Sync": [
-                "Zweryfikuj i napraw po synchronizacji"
+            "Validate & Fix Synced Items": [
+                "Zweryfikuj i napraw zsynchronizowane elementy"
             ],
-            "When enabled, after syncing completes, the system will automatically run Validate & Fix to check for issues in the synced data and attempt to resolve them.": [
-                "Gdy opcja jest włączona, po zakończeniu synchronizacji system automatycznie uruchomi narzędzie 'Zweryfikuj i napraw', aby sprawdzić problemy w zsynchronizowanych danych i spróbować je rozwiązać."
+            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
+                "Po włączeniu, po zakończeniu synchronizacji system automatycznie zweryfikuje i naprawi tylko zsynchronizowane elementy. Przestarzałe lub oczekujące na synchronizację elementy nie będą weryfikowane, dopóki nie zostaną zsynchronizowane."
             ],
             "Sync in Progress": [
                 "Synchronizacja w toku"
@@ -99,9 +105,6 @@
             ],
             "Retrying failed posts:": [
                 "Ponawianie nieudanych wpisów:"
-            ],
-            "Processing": [
-                "Przetwarzanie"
             ],
             "posts": [
                 "Wpisy"

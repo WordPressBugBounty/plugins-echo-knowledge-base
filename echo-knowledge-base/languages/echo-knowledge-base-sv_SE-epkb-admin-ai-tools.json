@@ -13,6 +13,9 @@
             "Disabled": [
                 "Inaktiverad"
             ],
+            "Debug Mode": [
+                "Felsökningsläge"
+            ],
             "API Key": [
                 "API-nyckel"
             ],
@@ -66,9 +69,6 @@
             ],
             "Error clearing AI logs": [
                 "Fel vid rensning av AI-loggar"
-            ],
-            "Debug Mode": [
-                "Felsökningsläge"
             ],
             "Enable Debug Mode": [
                 "Aktivera felsökningsläge"

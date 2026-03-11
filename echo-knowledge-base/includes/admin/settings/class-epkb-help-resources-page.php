@@ -35,7 +35,7 @@ class EPKB_Help_Resources_Page {
 
 				<!-- Page Title -->
 				<div class="epkb-help-resources__title-section">
-					<h1 class="epkb-help-resources__title"><?php esc_html_e( 'Help Resources', 'echo-knowledge-base' ); ?></h1>
+					<h1 class="epkb-help-resources__title"><?php esc_html_e( 'Setup Guide', 'echo-knowledge-base' ); ?></h1>
 					<?php /* Hidden for now - re-enable when ready ?>
 					<p class="epkb-help-resources__subtitle"><?php esc_html_e( 'Get instant help with AI-powered search and explore our video guides', 'echo-knowledge-base' ); ?></p>
 					<?php */ ?>

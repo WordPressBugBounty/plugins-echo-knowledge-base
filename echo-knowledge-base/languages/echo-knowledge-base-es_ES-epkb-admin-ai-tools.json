@@ -13,6 +13,9 @@
             "Disabled": [
                 "Desactivado"
             ],
+            "Debug Mode": [
+                "Modo de depuración"
+            ],
             "API Key": [
                 "Clave API"
             ],
@@ -66,9 +69,6 @@
             ],
             "Error clearing AI logs": [
                 "Error al borrar los registros de IA"
-            ],
-            "Debug Mode": [
-                "Modo de depuración"
             ],
             "Enable Debug Mode": [
                 "Activar modo de depuración"

@@ -10,26 +10,17 @@
             "Cancel": [
                 "Annuller"
             ],
-            "Released": [
-                "Udgivet"
-            ],
-            "First Name": [
-                "Fornavn"
-            ],
-            "(optional)": [
-                "(valgfrit)"
-            ],
-            "Email": [
-                "E-mail"
-            ],
-            "Submit Vote": [
-                "Indsend stemme"
+            "General Settings": [
+                "Generelle indstillinger"
             ],
             "Failed to submit vote. Please try again.": [
                 "Det lykkedes ikke at indsende din stemme. Prøv igen."
             ],
-            "General Settings": [
-                "Generelle indstillinger"
+            "Email": [
+                "E-mail"
+            ],
+            "First Name": [
+                "Fornavn"
             ],
             "Please enter a valid email address.": [
                 "Indtast en gyldig e-mailadresse."
@@ -49,11 +40,17 @@
             "Help us prioritize features by providing your information:": [
                 "Hjælp os med at prioritere funktionerne ved at give dine oplysninger:"
             ],
+            "(optional)": [
+                "(valgfrit)"
+            ],
             "Describe Your Feature Request": [
                 "Beskriv din ønskede funktion"
             ],
             "Please describe the feature you would like to see...": [
                 "Beskriv den ønskede funktion, du gerne vil se..."
+            ],
+            "Submit Vote": [
+                "Indsend stemme"
             ],
             "Please describe the feature you would like to see.": [
                 "Beskriv den funktion, du gerne vil se."
@@ -78,6 +75,9 @@
             ],
             "Select the features you would like to see implemented:": [
                 "Vælg de funktioner, du gerne vil have implementeret:"
+            ],
+            "Released": [
+                "Udgivet"
             ],
             "feature selected": [
                 "funktion valgt"
