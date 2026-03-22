@@ -46,6 +46,9 @@
             "Error": [
                 "Feil"
             ],
+            "OK": [
+                "OK"
+            ],
             "Add Training Data": [
                 "Legg til maskinlæringsdata"
             ],
@@ -54,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "Send data til KI"
+            ],
+            "Optional": [
+                "Valgfritt"
             ],
             "Collection name cannot be empty": [
                 "Samlingens navn kan ikke være tomt"
@@ -76,14 +82,41 @@
             "Delete Selected": [
                 "Slett valgte"
             ],
+            "of": [
+                "av"
+            ],
+            "Skipped": [
+                "Hoppet over"
+            ],
             "Failed to create collection": [
                 "Klarte ikke å opprette samling"
+            ],
+            "errors": [
+                "feil"
             ],
             "Outdated": [
                 "Utdatert"
             ],
             "Added": [
                 "Lagt til"
+            ],
+            "Verifying": [
+                "Verifiserer"
+            ],
+            "items": [
+                "elementer"
+            ],
+            "Verification complete:": [
+                "Verifisering fullført:"
+            ],
+            "marked outdated": [
+                "merket som foreldet"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Kjør synkronisering for å laste opp foreldede elementer på nytt."
+            ],
+            "Cancel Verify": [
+                "Avbryt verifisering"
             ],
             "Deleting...": [
                 "Sletter..."
@@ -157,6 +190,12 @@
             "Add Selected Items": [
                 "Legg til valgte elementer"
             ],
+            "Cannot change actions while sync is in progress": [
+                "Kan ikke endre handlinger mens synkronisering pågår"
+            ],
+            "Cannot change actions while validation is in progress": [
+                "Kan ikke endre handlinger mens validering pågår"
+            ],
             "Collection name updated successfully": [
                 "Samlingens navn oppdatert"
             ],
@@ -190,8 +229,8 @@
             "Choose an Action": [
                 "Velg en handling"
             ],
-            "Cannot change actions while sync is in progress": [
-                "Kan ikke endre handlinger mens synkronisering pågår"
+            "Validate & Fix Synced Items": [
+                "Valider og rett synkroniserte elementer"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Velg innholdstyper (KB-artikler, Innlegg, Sider) som skal lastes inn i tabellen. Dette sender ikke noe til AI ennå."
@@ -223,14 +262,11 @@
             "Content changed since last sync. Re-send to update.": [
                 "Innhold endret siden siste synkronisering. Send på nytt for å oppdatere."
             ],
+            "Could not be synced because the content is empty or the source no longer exists.": [
+                "Kunne ikke synkroniseres fordi innholdet er tomt eller kilden ikke lenger eksisterer."
+            ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "Synkronisering mislyktes. Send på nytt for å prøve igjen. Kontroller at innholdet eksisterer og ikke er tomt."
-            ],
-            "Cannot navigate while sync is in progress": [
-                "Kan ikke navigere mens synkronisering pågår"
-            ],
-            "Adding data to:": [
-                "Legger til data til:"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Velg hvilke innholdstyper du vil inkludere i AI-maskinlæringsdataene."
@@ -297,6 +333,24 @@
             ],
             "Select items from the table and choose a sync method to update your AI training data.": [
                 "Velg elementer fra tabellen og velg en synkroniseringsmetode for å oppdatere AI-maskinlæringsdataene."
+            ],
+            "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
+                "Kjør en ekstra valideringsrunde for å sikre at den lokale databasen og AI-lageret forblir synkronisert. Hvis en fil mangler fra AI-lageret, vil den bli markert som utdatert slik at den kan sendes på nytt."
+            ],
+            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
+                "Dette sjekker tillagte og oppdaterte elementer som allerede spores i denne samlingen, inkludert opplastede PDF-filer."
+            ],
+            "Collection:": [
+                "Samling:"
+            ],
+            "synced items ready to validate": [
+                "synkroniserte elementer klare for validering"
+            ],
+            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
+                "Ingen tillagte eller oppdaterte elementer er tilgjengelige ennå. Send innhold til AI først, og kjør deretter validering ved behov."
+            ],
+            "Validation in Progress...": [
+                "Validering pågår..."
             ],
             "Manage your collection settings and data.": [
                 "Administrer samlingsinnstillingene og dataene."

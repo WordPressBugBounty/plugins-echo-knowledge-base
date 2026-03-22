@@ -285,6 +285,14 @@ class EPKB_AI_Log {
 			case 'http_request_timeout':
 				$friendly_message = __( 'The request timed out. This might be due to network issues or a long-running operation. Please try again.', 'echo-knowledge-base' );
 				break;
+
+			case 'file_processing_timeout':
+				$friendly_message = __( 'AI provider is still processing the uploaded file. Please try again.', 'echo-knowledge-base' );
+				break;
+
+			case 'file_processing_failed':
+				$friendly_message = $error_message;
+				break;
 				
 			case 'content_too_large':
 			case 'file_too_large':
@@ -635,6 +643,8 @@ class EPKB_AI_Log {
 			'unexpected_error'   => 500,
 			'service_unavailable' => 503,
 			'empty_response'     => 503,
+			'file_processing_timeout' => 408,
+			'file_processing_failed' => 500,
 		);
 
 		return isset( $status_map[ $error_code ] ) ? $status_map[ $error_code ] : 500;
@@ -680,7 +690,8 @@ class EPKB_AI_Log {
 			'connection_error',
 			'service_unavailable',
 			'empty_response',
-			'rate_limit_exceeded'  // Rate limits are retryable after appropriate delay
+			'rate_limit_exceeded',
+			'file_processing_timeout'
 		);
 		
 		if ( in_array( $error_code, $retryable_codes, true ) ) {
@@ -740,6 +751,7 @@ class EPKB_AI_Log {
 			// Timeout errors
 			'timeout' => 'timeout',
 			'http_request_timeout' => 'timeout',
+			'file_processing_timeout' => 'timeout',
 			
 			// Network errors
 			'network_error' => 'network',
@@ -754,6 +766,7 @@ class EPKB_AI_Log {
 			'unexpected_error' => 'server_error',
 			'service_unavailable' => 'server_error',
 			'empty_response' => 'server_error',
+			'file_processing_failed' => 'server_error',
 			
 			// Content errors
 			'content_too_large' => 'content_error',

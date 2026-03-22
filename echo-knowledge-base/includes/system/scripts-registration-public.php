@@ -50,9 +50,7 @@ function epkb_load_public_resources() {
 		}
 	}
 	
-	if ( is_rtl() ) {
-		wp_register_style( 'epkb-frontend-editor-rtl', Echo_Knowledge_Base::$plugin_url . 'css/frontend-editor-rtl' . $suffix . '.css', array('wp-color-picker'), Echo_Knowledge_Base::$version );
-	}
+	wp_register_style( 'epkb-frontend-editor-rtl', Echo_Knowledge_Base::$plugin_url . 'css/frontend-editor-rtl' . $suffix . '.css', array('wp-color-picker'), Echo_Knowledge_Base::$version );
 
 	wp_register_style( 'epkb-glossary', Echo_Knowledge_Base::$plugin_url . 'css/glossary' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-glossary-tooltips', Echo_Knowledge_Base::$plugin_url . 'js/glossary-tooltips' . $suffix . '.js', array(), Echo_Knowledge_Base::$version, true );

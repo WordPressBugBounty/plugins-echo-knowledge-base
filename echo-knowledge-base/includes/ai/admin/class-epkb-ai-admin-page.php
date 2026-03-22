@@ -254,6 +254,8 @@ class EPKB_AI_Admin_Page {
 			'analysis_failed' => __( 'Analysis failed. Please try again.', 'echo-knowledge-base' ),
 			'ai_disabled_message' => __( 'AI features are not configured. Please add your API key and accept the terms to use Content Analysis.', 'echo-knowledge-base' ),
 			'go_to_ai_settings' => __( 'Go to AI Settings', 'echo-knowledge-base' ),
+			'upload_pdfs_to_ai_store' => __( 'Upload PDFs to AI Store', 'echo-knowledge-base' ),
+			'no_pdfs_uploaded_yet' => __( 'No PDFs uploaded yet', 'echo-knowledge-base' ),
 			'demo_analytics_badge' => __( 'Demo', 'echo-knowledge-base' ),
 			'demo_analytics_message' => __( 'This is demo analytics data for demonstration purposes.', 'echo-knowledge-base' ),
 			'demo_analytics_notice' => __( 'Demo Analytics', 'echo-knowledge-base' ),
@@ -518,9 +520,9 @@ class EPKB_AI_Admin_Page {
 					: '#epkb-ai-api_settings-ai_chatgpt_key';
 
 				$steps = array(
-						array(
+					array(
 							'title'          => __( 'Choose AI Provider', 'echo-knowledge-base' ),
-							'description'    => __( 'Select Google Gemini or OpenAI as your AI provider.', 'echo-knowledge-base' ),
+							'description'    => __( 'Select Google Gemini or OpenAI ChatGPT as your AI provider.', 'echo-knowledge-base' ),
 							'completed'      => true,  // Always completed since a provider is always selected
 							'doc_link'       => 'https://www.echoknowledgebase.com/documentation/setup-ai-provider-and-key/',
 							'pointer_target' => '#epkb-ai-api_settings-ai_provider',

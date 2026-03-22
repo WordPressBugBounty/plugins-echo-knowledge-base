@@ -7,14 +7,8 @@
                 "lang": "it_IT",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
-            "Title": [
-                "Titolo"
-            ],
             "Learn More": [
                 "Scopri di più"
-            ],
-            "Close": [
-                "Chiudi"
             ],
             "Cancel": [
                 "Annulla"
@@ -22,83 +16,14 @@
             "Delete": [
                 "Elimina"
             ],
-            "Previous": [
-                "Precedente"
-            ],
-            "Basic formatting": [
-                "Formattazione di base"
-            ],
-            "AI-structured": [
-                "Strutturato dall'IA"
-            ],
-            "Select PDF Files": [
-                "Seleziona file PDF"
-            ],
-            "Drag and drop PDF files here, or click the buttons below": [
-                "Trascina e rilascia i file PDF qui, oppure fai clic sui pulsanti qui sotto"
-            ],
-            "Select PDFs": [
-                "Seleziona PDF"
-            ],
-            "Media Library": [
-                "Libreria multimediale"
-            ],
-            "Retry": [
-                "Riprova"
-            ],
-            "PDF to Notes": [
-                "PDF alle note"
-            ],
             "Saving...": [
                 "Salvataggio..."
-            ],
-            "No": [
-                "No"
-            ],
-            "Preview": [
-                "Anteprima"
             ],
             "Note deleted successfully": [
                 "Nota eliminata con successo"
             ],
-            "AI was unable to extract text from this PDF.": [
-                "L'AI non è riuscita a estrarre il testo da questo PDF."
-            ],
             "Additional Notes": [
                 "Note aggiuntive"
-            ],
-            "PDF file exceeds the 20 MB size limit.": [
-                "Il file PDF supera il limite di dimensione di 20 MB."
-            ],
-            "of": [
-                "di"
-            ],
-            "Drop PDF files here": [
-                "Trascina qui i file PDF"
-            ],
-            "Failed to prepare PDF preview": [
-                "Impossibile preparare l'anteprima PDF"
-            ],
-            "No text could be extracted from this PDF.": [
-                "Non è stato possibile estrarre alcun testo da questo PDF."
-            ],
-            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
-                "L'estrazione PDF non è disponibile. Assicurati che AI Features Pro sia attivo."
-            ],
-            "Use AI to Extract Text?": [
-                "Usare IA per estrarre il testo?"
-            ],
-            "This PDF appears to contain scanned images. Would you like to use AI to extract the text? This will send the PDF to your configured AI provider.": [
-                "Questo PDF sembra contenere immagini scansionate. Vuoi utilizzare l'IA per estrarre il testo? Questo invierà il PDF al fornitore IA configurato."
-            ],
-            "Yes, Use AI": [
-                "Sì, usa IA"
-            ],
-            "Please drop a valid PDF file.": [
-                "Rilascia un file PDF valido."
-            ],
-            "Failed to read file.": [
-                "Impossibile leggere il file."
             ],
             "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
                 "Aggiungi supporto aggiuntivo e informazioni varie non presenti in articoli, post e pagine che IA dovrebbe conoscere."
@@ -160,71 +85,11 @@
             "Save Note": [
                 "Salva nota"
             ],
-            "Please enter a title for the note.": [
-                "Inserisci un titolo per la nota."
-            ],
-            "No content to save. Please prepare the PDF preview first.": [
-                "Nessun contenuto da salvare. Si prega di preparare prima l'anteprima PDF."
-            ],
-            "Failed to save PDF note": [
-                "Impossibile salvare la nota PDF"
-            ],
-            "Media Library is not available.": [
-                "La Libreria multimediale non è disponibile."
-            ],
-            "Select": [
-                "Seleziona"
-            ],
-            "Failed to load file from Media Library.": [
-                "Impossibile caricare il file dalla Libreria multimediale."
-            ],
-            "Preparing preview...": [
-                "Preparazione anteprima in corso..."
-            ],
-            "Enter title...": [
-                "Inserisci titolo..."
-            ],
-            "Formatting": [
-                "Formattazione"
-            ],
-            "No formatting": [
-                "Nessuna formattazione"
-            ],
-            "Checking selected PDF files...": [
-                "Verifica dei file PDF selezionati in corso..."
-            ],
-            "Skip": [
-                "Salta"
-            ],
-            "Save as Note": [
-                "Salva come nota"
-            ],
-            "Upload failed.": [
-                "Caricamento non riuscito."
-            ],
-            "Upload PDFs to AI Store": [
-                "Carica PDF su AI Store"
-            ],
-            "Uploaded": [
-                "Caricato"
-            ],
-            "Uploading...": [
-                "Caricamento in corso..."
-            ],
-            "Waiting...": [
-                "In attesa..."
-            ],
-            "Upload": [
-                "Carica"
-            ],
             "Add Notes and PDFs": [
                 "Aggiungi Note e PDF"
             ],
             "added": [
                 "aggiunto"
-            ],
-            "Requires AI Advanced Features plugin.": [
-                "Richiede il plugin AI Advanced Features."
             ]
         }
     }

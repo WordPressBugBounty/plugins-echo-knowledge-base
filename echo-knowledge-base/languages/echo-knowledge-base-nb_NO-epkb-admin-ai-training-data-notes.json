@@ -7,14 +7,8 @@
                 "lang": "nb_NO",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
-            "Title": [
-                "Tittel"
-            ],
             "Learn More": [
                 "Lær mer"
-            ],
-            "Close": [
-                "Lukk"
             ],
             "Cancel": [
                 "Avbryt"
@@ -22,83 +16,14 @@
             "Delete": [
                 "Slett"
             ],
-            "Previous": [
-                "Forrige"
-            ],
-            "Basic formatting": [
-                "Grunnleggende formatering"
-            ],
-            "AI-structured": [
-                "AI-strukturert"
-            ],
-            "Select PDF Files": [
-                "Velg PDF-filer"
-            ],
-            "Drag and drop PDF files here, or click the buttons below": [
-                "Dra og slipp PDF-filer her, eller klikk på knappene nedenfor"
-            ],
-            "Select PDFs": [
-                "Velg PDF-er"
-            ],
-            "Media Library": [
-                "Mediebibliotek"
-            ],
-            "Retry": [
-                "Prøv igjen"
-            ],
-            "PDF to Notes": [
-                "PDF til notater"
-            ],
             "Saving...": [
                 "Lagrer..."
-            ],
-            "No": [
-                "Nei"
-            ],
-            "Preview": [
-                "Forhåndsvisning"
             ],
             "Note deleted successfully": [
                 "Notatet ble slettet"
             ],
-            "AI was unable to extract text from this PDF.": [
-                "AI klarte ikke å hente ut tekst fra denne PDF-en."
-            ],
             "Additional Notes": [
                 "Tilleggsnotater"
-            ],
-            "PDF file exceeds the 20 MB size limit.": [
-                "PDF-filen overstiger 20 MB-størrelsesgrensen."
-            ],
-            "of": [
-                "av"
-            ],
-            "Drop PDF files here": [
-                "Slipp PDF-filer her"
-            ],
-            "Failed to prepare PDF preview": [
-                "Feilet i å forberede PDF-forhåndsvisning"
-            ],
-            "No text could be extracted from this PDF.": [
-                "Ingen tekst kunne hentes fra denne PDF-en."
-            ],
-            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
-                "PDF-ekstraksjon er ikke tilgjengelig. Vennligst sørg for at AI Features Pro er aktiv."
-            ],
-            "Use AI to Extract Text?": [
-                "Bruk AI til å trekke ut tekst?"
-            ],
-            "This PDF appears to contain scanned images. Would you like to use AI to extract the text? This will send the PDF to your configured AI provider.": [
-                "Denne PDF-en ser ut til å inneholde skannede bilder. Ønsker du å bruke AI til å trekke ut teksten? Dette vil sende PDF-en til den konfigurerte AI-leverandøren."
-            ],
-            "Yes, Use AI": [
-                "Ja, bruk AI"
-            ],
-            "Please drop a valid PDF file.": [
-                "Slipp en gyldig PDF-fil."
-            ],
-            "Failed to read file.": [
-                "Kunne ikke lese filen."
             ],
             "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
                 "Legg til ytterligere støtte- og tilleggsinformasjon som ikke finnes i artikler, innlegg og sider som AI også bør vite om."
@@ -160,71 +85,11 @@
             "Save Note": [
                 "Lagre notat"
             ],
-            "Please enter a title for the note.": [
-                "Vennligst skriv inn en tittel for notatet."
-            ],
-            "No content to save. Please prepare the PDF preview first.": [
-                "Ingen innhold å lagre. Vennligst forbered PDF-forhåndsvisningen først."
-            ],
-            "Failed to save PDF note": [
-                "PDF-notat ble ikke lagret"
-            ],
-            "Media Library is not available.": [
-                "Media-biblioteket er ikke tilgjengelig."
-            ],
-            "Select": [
-                "Velg"
-            ],
-            "Failed to load file from Media Library.": [
-                "Kunne ikke laste inn fil fra Media-biblioteket."
-            ],
-            "Preparing preview...": [
-                "Forbereder forhåndsvisning..."
-            ],
-            "Enter title...": [
-                "Skriv inn tittel..."
-            ],
-            "Formatting": [
-                "Formatering"
-            ],
-            "No formatting": [
-                "Ingen formatering"
-            ],
-            "Checking selected PDF files...": [
-                "Sjekker valgte PDF-filer..."
-            ],
-            "Skip": [
-                "Hopp over"
-            ],
-            "Save as Note": [
-                "Lagre som notat"
-            ],
-            "Upload failed.": [
-                "Opplastingen mislyktes."
-            ],
-            "Upload PDFs to AI Store": [
-                "Last opp PDF-er til AI Store"
-            ],
-            "Uploaded": [
-                "Lastet opp"
-            ],
-            "Uploading...": [
-                "Laster opp..."
-            ],
-            "Waiting...": [
-                "Venter..."
-            ],
-            "Upload": [
-                "Last opp"
-            ],
             "Add Notes and PDFs": [
                 "Legg til notater og PDF-er"
             ],
             "added": [
                 "lagt til"
-            ],
-            "Requires AI Advanced Features plugin.": [
-                "Krever AI Advanced Features-plugin."
             ]
         }
     }

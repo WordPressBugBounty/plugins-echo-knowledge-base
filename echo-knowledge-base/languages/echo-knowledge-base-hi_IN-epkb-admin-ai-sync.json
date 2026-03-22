@@ -16,9 +16,6 @@
             "OK": [
                 "ठीक है"
             ],
-            "No posts found to sync": [
-                "सिंक के लिए पोस्ट नहीं मिली"
-            ],
             "No synced items found to verify": [
                 "सत्यापन के लिए कोई सिंक किए गए आइटम नहीं मिले।"
             ],
@@ -42,6 +39,9 @@
             ],
             "Sync canceled": [
                 "सिंक रद्द किया गया"
+            ],
+            "No posts found to sync": [
+                "सिंक के लिए पोस्ट नहीं मिली"
             ],
             "Failed to cancel sync": [
                 "सिंक रद्द करने में विफल"
@@ -75,12 +75,6 @@
             ],
             "Select All Records": [
                 "सभी रिकॉर्ड चुनें"
-            ],
-            "Validate & Fix Synced Items": [
-                "समन्वयित आइटमों को सत्यापित करें और ठीक करें"
-            ],
-            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
-                "सक्षम होने पर, समन्वय पूरा हो जाने के बाद सिस्टम केवल समन्वयित आइटमों को स्वचालित रूप से सत्यापित करेगा और ठीक करेगा। पुराने या पेंडिंग आइटम तब तक सत्यापित नहीं होंगे जब तक वे समन्वयित नहीं हो जाते।."
             ],
             "Sync in Progress": [
                 "सिंक प्रगति पर है"

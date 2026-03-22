@@ -79,8 +79,12 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 
 		// Get parameters
 		$query = $request->get_param( 'query' );
-		$kb_id = $request->get_param( 'kb_id' );
-		$collection_id = $request->get_param( 'collection_id' );
+		$kb_id = absint( $request->get_param( 'kb_id' ) );
+		$collection_id = absint( $request->get_param( 'collection_id' ) );
+
+		if ( empty( $kb_id ) ) {
+			return $this->create_rest_response( array( 'section_id' => $section_id ), 400, new WP_Error( 'missing_kb_id', __( 'Knowledge Base ID is required', 'echo-knowledge-base' ) ) );
+		}
 
 		// Validate collection is configured (not 0)
 		if ( empty( $collection_id ) ) {
@@ -91,6 +95,16 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 				'status' => 'error',
 			), 400 );
 		}
+
+		$collection_access = $this->validate_public_collection_request( $request, $kb_id, $collection_id );
+		if ( is_wp_error( $collection_access ) ) {
+			return $this->create_rest_response( array( 'section_id' => $section_id ), 403, $collection_access );
+		}
+
+		/* $rate_limit_check = EPKB_AI_Security::check_search_rate_limit();
+		if ( is_wp_error( $rate_limit_check ) ) {
+			return $this->create_rest_response( array( 'section_id' => $section_id ), 429, $rate_limit_check );
+		} */
 
 		// Validate collection exists and has vector store - check BEFORE processing to fail fast
 		$config_error = $this->get_collection_configuration_error( $collection_id );
@@ -122,7 +136,7 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 		);
 
 		// Get section data via filter hook or demo data
-		define( 'ECKB_AI_USE_DEMO_DATA', false );   // for testing only
+			define( 'ECKB_AI_USE_DEMO_DATA', false );   // for testing only
 		if ( defined( 'EPCB_AI_USE_DEMO_DATA' ) && ECKB_AI_USE_DEMO_DATA && in_array( $section_id, ['ai-answer','matching-articles', 'contact-us', 'feedback'] ) ) {
 			$section_data = EPKB_KB_Demo_Data::get_ai_search_results_section_demo_data( $section_id, $data );
 		} else {
@@ -184,17 +198,23 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 				},
 				'sanitize_callback' => 'absint',
 			),
-			'collection_id' => array(
-				'required'          => false,
-				'type'              => 'integer',
-				'description'       => __( 'AI Training Data Collection ID (optional, overrides KB default)', 'echo-knowledge-base' ),
+				'collection_id' => array(
+					'required'          => false,
+					'type'              => 'integer',
+					'description'       => __( 'AI Training Data Collection ID (optional, overrides KB default)', 'echo-knowledge-base' ),
 				'validate_callback' => function( $param ) {
 					return is_numeric( $param ) && $param > 0;
-				},
-				'sanitize_callback' => 'absint',
-			),
-		);
-	}
+					},
+					'sanitize_callback' => 'absint',
+				),
+				'collection_token' => array(
+					'required'          => false,
+					'type'              => 'string',
+					'description'       => __( 'Access token for collection overrides', 'echo-knowledge-base' ),
+					'sanitize_callback' => 'sanitize_text_field',
+				),
+			);
+		}
 
 	/**
 	 * Record feedback vote
@@ -204,11 +224,16 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 	 */
 	public function record_feedback( $request ) {
 
+		/* $rate_limit_check = EPKB_AI_Security::check_rate_limit();
+		if ( is_wp_error( $rate_limit_check ) ) {
+			return $this->create_rest_response( array(), 429, $rate_limit_check );
+		} */
+
 		$chat_id = $request->get_param( 'chat_id' );
-		$vote = $request->get_param( 'vote' );
+		$vote = sanitize_text_field( $request->get_param( 'vote' ) );
+		$db = new EPKB_AI_Messages_DB();
 
 		// Get conversation from database
-		$db = new EPKB_AI_Messages_DB();
 		$conversation = $db->get_conversation_by_chat_id( $chat_id );
 		if ( empty( $conversation ) ) {
 			return $this->create_rest_response( array(), 404, new WP_Error( 'not_found', __( 'Conversation not found', 'echo-knowledge-base' ) ) );
@@ -260,10 +285,22 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 	 */
 	public function submit_contact_support( $request ) {
 
+		/* $rate_limit_check = EPKB_AI_Security::check_rate_limit();
+		if ( is_wp_error( $rate_limit_check ) ) {
+			return $this->create_rest_response( array(), 429, $rate_limit_check );
+		} */
+
 		$query = $request->get_param( 'query' );
-		$name = $request->get_param( 'name' );
+		$name = sanitize_text_field( $request->get_param( 'name' ) );
 		$email = $request->get_param( 'email' );
 		$chat_id = $request->get_param( 'chat_id' );
+		$kb_id = absint( $request->get_param( 'kb_id' ) );
+		$collection_id = absint( $request->get_param( 'collection_id' ) );
+
+		$collection_access = $this->validate_public_collection_request( $request, $kb_id, $collection_id );
+		if ( is_wp_error( $collection_access ) ) {
+			return $this->create_rest_response( array(), 403, $collection_access );
+		}
 
 		// Get destination email from config
 		$destination_email = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_results_contact_support_email' );
@@ -334,18 +371,42 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 				},
 				'sanitize_callback' => 'sanitize_text_field',
 			),
-			'email' => array(
-				'required'          => true,
-				'type'              => 'string',
+				'email' => array(
+					'required'          => true,
+					'type'              => 'string',
 				'description'       => __( 'User email', 'echo-knowledge-base' ),
 				'validate_callback' => function( $param ) {
 					return is_email( $param );
-				},
-				'sanitize_callback' => 'sanitize_email',
-			),
-			'chat_id' => array(
-				'required'          => false,
-				'type'              => 'string',
+					},
+					'sanitize_callback' => 'sanitize_email',
+				),
+				'kb_id' => array(
+					'required'          => true,
+					'type'              => 'integer',
+					'description'       => __( 'Knowledge Base ID', 'echo-knowledge-base' ),
+					'validate_callback' => function( $param ) {
+						return is_numeric( $param ) && $param > 0;
+					},
+					'sanitize_callback' => 'absint',
+				),
+				'collection_id' => array(
+					'required'          => true,
+					'type'              => 'integer',
+					'description'       => __( 'AI Training Data Collection ID', 'echo-knowledge-base' ),
+					'validate_callback' => function( $param ) {
+						return is_numeric( $param ) && $param > 0;
+					},
+					'sanitize_callback' => 'absint',
+				),
+				'collection_token' => array(
+					'required'          => false,
+					'type'              => 'string',
+					'description'       => __( 'Access token for collection overrides', 'echo-knowledge-base' ),
+					'sanitize_callback' => 'sanitize_text_field',
+				),
+				'chat_id' => array(
+					'required'          => false,
+					'type'              => 'string',
 				'description'       => __( 'Chat ID for tracking', 'echo-knowledge-base' ),
 				'validate_callback' => function( $param ) {
 					return is_string( $param );

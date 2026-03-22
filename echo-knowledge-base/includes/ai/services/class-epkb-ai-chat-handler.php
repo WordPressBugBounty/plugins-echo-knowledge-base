@@ -42,7 +42,7 @@ class EPKB_AI_Chat_Handler extends EPKB_AI_Base_Handler {
 		
 		// Check if source references should be included
 		$show_sources = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_show_sources' ) === 'on';
-		$sources = $show_sources && ! empty( $ai_response['sources'] ) ? $ai_response['sources'] : array();
+		$sources = $show_sources && EPKB_AI_Utilities::should_show_sources_for_answer( $ai_response['content'] ) && ! empty( $ai_response['sources'] ) ? $ai_response['sources'] : array();
 
 		// Return successful response
 		return array(

@@ -139,6 +139,8 @@ function epkb_load_admin_plugin_pages_resources() {
 		'pdf_articles_created'          => esc_html__( 'articles created', 'echo-knowledge-base' ),
 		'pdf_failed'                    => esc_html__( 'failed', 'echo-knowledge-base' ),
 		'pdf_skipped'                   => esc_html__( 'skipped', 'echo-knowledge-base' ),
+		'max_pdf_file_size'             => EPKB_PDF_Utilities::MAX_PDF_FILE_SIZE,
+		'pdf_too_large'                 => EPKB_PDF_Utilities::get_pdf_too_large_message(),
 		'pdf_invalid_file'              => esc_html__( 'Please select a valid PDF file.', 'echo-knowledge-base' ),
 		'pdf_drop_here'                 => esc_html__( 'Drop PDF files here', 'echo-knowledge-base' ),
 		'pdf_drag_drop'                 => esc_html__( 'Drag and drop PDF files here, or click below', 'echo-knowledge-base' ),
@@ -293,6 +295,10 @@ function epkb_load_admin_plugin_pages_resources() {
 		// Training data notes and PDF components (must load before main training data file)
 		wp_enqueue_script( 'epkb-admin-ai-training-data-notes', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-training-data-notes' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-i18n', 'epkb-admin-ai-util'), Echo_Knowledge_Base::$version );
+		wp_localize_script( 'epkb-admin-ai-training-data-notes', 'epkb_ai_pdf_config', array(
+			'max_file_size'   => EPKB_PDF_Utilities::MAX_PDF_FILE_SIZE,
+			'too_large_error' => EPKB_PDF_Utilities::get_pdf_too_large_message(),
+		) );
 
 		wp_enqueue_script( 'epkb-admin-ai-training-data', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-training-data' . $ai_suffix . '.js',
 			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-admin-ai-training-data-table', 'epkb-admin-ai-training-data-notes', 'epkb-admin-ai-sync', 'epkb-ai-chat-util'), Echo_Knowledge_Base::$version );

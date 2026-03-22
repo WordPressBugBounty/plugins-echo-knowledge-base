@@ -30,11 +30,15 @@ class EPKB_ML_Search {
 	 */
 	public function display_classic_search_layout() {	?>
 
-		<!-- Classic Search Layout -->
-		<div id="epkb-ml-search-classic-layout">    <?php
-			$this->display_search_title();
-			$collection_id_attr_escaped = ' data-collection-id="' . esc_attr( $this->kb_config['kb_ai_collection_id'] ) . '"';  ?>
-			<form id="epkb-ml-search-form" class="epkb-ml-search-input-height--<?php echo esc_attr( $this->kb_config['search_box_input_height'] ); ?>" method="get" onsubmit="return false;"<?php echo $this->is_kb_block ? ' ' . 'data-kb-block-post-id="' . (int)get_the_ID() . '"' : ''; ?><?php echo EPKB_AI_Utilities::is_ai_search_smart_enabled() ? ' data-ai-search-results="1"' : ''; ?><?php echo $collection_id_attr_escaped; ?>>
+			<!-- Classic Search Layout -->
+			<div id="epkb-ml-search-classic-layout">    <?php
+				$this->display_search_title();
+				$collection_attrs = '';
+				if ( ! empty( $this->kb_config['kb_ai_collection_id'] ) ) {
+					$collection_attrs = ' data-collection-id="' . esc_attr( $this->kb_config['kb_ai_collection_id'] ) . '"';
+					$collection_attrs .= ' data-collection-token="' . esc_attr( EPKB_AI_Security::create_collection_access_token( $this->kb_config['kb_ai_collection_id'], $this->kb_config['id'] ) ) . '"';
+				} ?>
+				<form id="epkb-ml-search-form" class="epkb-ml-search-input-height--<?php echo esc_attr( $this->kb_config['search_box_input_height'] ); ?>" method="get" onsubmit="return false;"<?php echo $this->is_kb_block ? ' ' . 'data-kb-block-post-id="' . (int)get_the_ID() . '"' : ''; ?><?php echo EPKB_AI_Utilities::is_ai_search_smart_enabled() ? ' data-ai-search-results="1"' : ''; ?><?php echo $collection_attrs; ?>>
 				<input type="hidden" id="epkb_kb_id" value="<?php echo esc_attr( $this->kb_config['id'] ); ?>" >
 
 				<!-- Search Input Box -->
@@ -58,11 +62,15 @@ class EPKB_ML_Search {
 	 */
 	public function display_modern_search_layout() {	?>
 
-		<!-- Modern Search Layout -->
-		<div id="epkb-ml-search-modern-layout">    <?php
-			$this->display_search_title();
-			$collection_id_attr_escaped = ' data-collection-id="' . esc_attr( $this->kb_config['kb_ai_collection_id'] ) . '"';  ?>
-			<form id="epkb-ml-search-form" class="epkb-ml-search-input-height--<?php echo esc_attr( $this->kb_config['search_box_input_height'] ); ?>" method="get" onsubmit="return false;"<?php echo $this->is_kb_block ? ' ' . 'data-kb-block-post-id="' . (int)get_the_ID() . '"' : ''; ?><?php echo EPKB_AI_Utilities::is_ai_search_smart_enabled() ? ' data-ai-search-results="1"' : ''; ?><?php echo $collection_id_attr_escaped; ?>>
+			<!-- Modern Search Layout -->
+			<div id="epkb-ml-search-modern-layout">    <?php
+				$this->display_search_title();
+				$collection_attrs = '';
+				if ( ! empty( $this->kb_config['kb_ai_collection_id'] ) ) {
+					$collection_attrs = ' data-collection-id="' . esc_attr( $this->kb_config['kb_ai_collection_id'] ) . '"';
+					$collection_attrs .= ' data-collection-token="' . esc_attr( EPKB_AI_Security::create_collection_access_token( $this->kb_config['kb_ai_collection_id'], $this->kb_config['id'] ) ) . '"';
+				} ?>
+				<form id="epkb-ml-search-form" class="epkb-ml-search-input-height--<?php echo esc_attr( $this->kb_config['search_box_input_height'] ); ?>" method="get" onsubmit="return false;"<?php echo $this->is_kb_block ? ' ' . 'data-kb-block-post-id="' . (int)get_the_ID() . '"' : ''; ?><?php echo EPKB_AI_Utilities::is_ai_search_smart_enabled() ? ' data-ai-search-results="1"' : ''; ?><?php echo $collection_attrs; ?>>
 				<input type="hidden" id="epkb_kb_id" value="<?php echo esc_attr( $this->kb_config['id'] ); ?>" >
 
 				<!-- Search Input Box -->

@@ -46,6 +46,9 @@
             "Error": [
                 "Fehler"
             ],
+            "OK": [
+                "OK"
+            ],
             "Add Training Data": [
                 "Trainingsdaten hinzufügen"
             ],
@@ -54,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "Daten an KI senden"
+            ],
+            "Optional": [
+                "Optional"
             ],
             "Collection name cannot be empty": [
                 "Der Sammlungsname darf nicht leer sein"
@@ -76,14 +82,41 @@
             "Delete Selected": [
                 "Auswahl löschen"
             ],
+            "of": [
+                "von"
+            ],
+            "Skipped": [
+                "Übersprungen"
+            ],
             "Failed to create collection": [
                 "Sammlung konnte nicht erstellt werden"
+            ],
+            "errors": [
+                "Fehler"
             ],
             "Outdated": [
                 "Veraltet"
             ],
             "Added": [
                 "Hinzugefügt"
+            ],
+            "Verifying": [
+                "Verifizierung läuft"
+            ],
+            "items": [
+                "Elemente"
+            ],
+            "Verification complete:": [
+                "Verifizierung abgeschlossen:"
+            ],
+            "marked outdated": [
+                "als veraltet markiert"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Synchronisieren Sie, um veraltete Elemente erneut hochzuladen."
+            ],
+            "Cancel Verify": [
+                "Überprüfung abbrechen"
             ],
             "Deleting...": [
                 "Löschen..."
@@ -136,6 +169,33 @@
             "Unable to load the available items for this content type.": [
                 "Die verfügbaren Elemente für diesen Inhaltstyp können nicht geladen werden."
             ],
+            "Search by name": [
+                "Nach Namen suchen"
+            ],
+            "Select All": [
+                "Alle auswählen"
+            ],
+            "Clear All": [
+                "Alle abwählen"
+            ],
+            "No available items were found for this content type.": [
+                "Für diesen Inhaltstyp wurden keine verfügbaren Elemente gefunden."
+            ],
+            "No items match the current filters.": [
+                "Keine Elemente entsprechen den aktuellen Filtern."
+            ],
+            "Adding Items...": [
+                "Elemente werden hinzugefügt..."
+            ],
+            "Add Selected Items": [
+                "Ausgewählte Elemente hinzufügen"
+            ],
+            "Cannot change actions while sync is in progress": [
+                "Aktionen können während der Synchronisierung nicht geändert werden"
+            ],
+            "Cannot change actions while validation is in progress": [
+                "Aktionen können während der laufenden Validierung nicht geändert werden"
+            ],
             "Collection name updated successfully": [
                 "Sammlungsname erfolgreich aktualisiert"
             ],
@@ -169,8 +229,8 @@
             "Choose an Action": [
                 "Aktion auswählen"
             ],
-            "Cannot change actions while sync is in progress": [
-                "Aktionen können während der Synchronisierung nicht geändert werden"
+            "Validate & Fix Synced Items": [
+                "Synchronisierte Elemente validieren und reparieren"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Wählen Sie Inhaltstypen (KB-Artikel, Beiträge, Seiten) aus, die in die Tabelle geladen werden sollen. Dies sendet noch nichts an KI."
@@ -202,14 +262,11 @@
             "Content changed since last sync. Re-send to update.": [
                 "Seit der letzten Synchronisierung wurde der Inhalt geändert. Erneut senden, um zu aktualisieren."
             ],
+            "Could not be synced because the content is empty or the source no longer exists.": [
+                "Konnte nicht synchronisiert werden, da der Inhalt leer ist oder die Quelle nicht mehr existiert."
+            ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "Synchronisierung fehlgeschlagen. Erneut senden, um es erneut zu versuchen. Prüfen Sie, dass der Inhalt vorhanden ist und nicht leer ist."
-            ],
-            "Cannot navigate while sync is in progress": [
-                "Während der Synchronisierung kann nicht navigiert werden"
-            ],
-            "Adding data to:": [
-                "Daten hinzufügen zu:"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Wählen Sie aus, welche Inhaltstypen Sie in Ihre KI-Trainingsdaten aufnehmen möchten."
@@ -276,6 +333,24 @@
             ],
             "Select items from the table and choose a sync method to update your AI training data.": [
                 "Wählen Sie Elemente aus der Tabelle aus und wählen Sie eine Synchronisierungsmethode, um Ihre KI-Trainingsdaten zu aktualisieren."
+            ],
+            "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
+                "Führen Sie einen zusätzlichen Validierungsdurchlauf aus, um sicherzustellen, dass die lokale Datenbank und der KI-Speicher synchron bleiben. Wenn eine Datei im KI-Speicher fehlt, wird sie als veraltet markiert, damit sie erneut gesendet werden kann."
+            ],
+            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
+                "Dies überprüft hinzugefügte und aktualisierte Elemente, die bereits in dieser Sammlung erfasst sind, einschließlich hochgeladener PDFs."
+            ],
+            "Collection:": [
+                "Sammlung:"
+            ],
+            "synced items ready to validate": [
+                "synchronisierte Elemente bereit zur Validierung"
+            ],
+            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
+                "Es sind noch keine hinzugefügten oder aktualisierten Elemente verfügbar. Senden Sie zuerst Inhalte an die KI und führen Sie dann bei Bedarf eine Validierung durch."
+            ],
+            "Validation in Progress...": [
+                "Validierung läuft..."
             ],
             "Manage your collection settings and data.": [
                 "Verwalten Sie Ihre Sammlungs-Einstellungen und -Daten."

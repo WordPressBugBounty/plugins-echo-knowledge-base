@@ -53,7 +53,7 @@ abstract class EPKB_Abstract_Block {
 
 		$block_title = $this->block_title;
 		if ( EPKB_Utilities::is_advanced_search_enabled() && $this->block_name == 'search' ) {
-			$block_title = esc_html__( 'KB Basic Search', 'echo-knowledge-base' );
+			$block_title = __( 'KB Basic Search', 'echo-knowledge-base' );
 		}
 
 		register_block_type(
@@ -313,11 +313,11 @@ abstract class EPKB_Abstract_Block {
 					);
 				}
 
-				$block_attributes[ $block_setting_name ]['default'] = $block_config_defaults[ $block_setting_name ];
+				$block_attributes[ $block_setting_name ]['default'] = $this->decode_block_ui_config_strings( $block_config_defaults[ $block_setting_name ] );
 				continue;
 			}
 
-			$block_attributes[ $block_setting_name ]['default'] = isset( $kb_config_defaults[ $block_setting_name ] ) ? $kb_config_defaults[ $block_setting_name ] : '';
+			$block_attributes[ $block_setting_name ]['default'] = isset( $kb_config_defaults[ $block_setting_name ] ) ? $this->decode_block_ui_config_strings( $kb_config_defaults[ $block_setting_name ] ) : '';
 
 			// ensure attributes type to avoid type errors on attributes validation by WordPress blocks core
 			if ( $block_spec['type'] === 'string' ) {
@@ -345,11 +345,11 @@ abstract class EPKB_Abstract_Block {
 
 			// allow block config to set default value instead of KB config
 			if ( isset( $block_config_defaults[ $block_setting_name ] ) ) {
-				$block_attributes_defaults[ $block_setting_name ] = $block_config_defaults[ $block_setting_name ];
+				$block_attributes_defaults[ $block_setting_name ] = $this->decode_block_ui_config_strings( $block_config_defaults[ $block_setting_name ] );
 				continue;
 			}
 
-			$block_attributes_defaults[ $block_setting_name ] = isset( $kb_config_defaults[ $block_setting_name ] ) ? $kb_config_defaults[ $block_setting_name ] : '';
+			$block_attributes_defaults[ $block_setting_name ] = isset( $kb_config_defaults[ $block_setting_name ] ) ? $this->decode_block_ui_config_strings( $kb_config_defaults[ $block_setting_name ] ) : '';
 		}
 
 		return $block_attributes_defaults;
@@ -583,7 +583,29 @@ abstract class EPKB_Abstract_Block {
 			}
 		}
 
-		return $block_ui_config;
+		return $this->decode_block_ui_config_strings( $block_ui_config );
+	}
+
+	/**
+	 * Block editor labels are rendered by React, so they should be passed as raw text instead of HTML-escaped strings.
+	 *
+	 * @param mixed $value
+	 * @return mixed
+	 */
+	private function decode_block_ui_config_strings( $value ) {
+
+		if ( is_array( $value ) ) {
+			foreach ( $value as $key => $item ) {
+				$value[ $key ] = $this->decode_block_ui_config_strings( $item );
+			}
+			return $value;
+		}
+
+		if ( is_string( $value ) ) {
+			return htmlspecialchars_decode( $value, ENT_QUOTES );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -698,14 +720,14 @@ abstract class EPKB_Abstract_Block {
 		// Localize ONCE here (only when we had to create the canonical).
 		wp_localize_script( $canonical, 'epkb_vars', array(
 			'ajaxurl'           => admin_url( 'admin-ajax.php', 'relative' ),
-			'msg_try_again'     => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
-			'error_occurred'    => esc_html__( 'Error occurred', 'echo-knowledge-base' ) . ' (1936)',
-			'unknown_error'     => esc_html__( 'Unknown error', 'echo-knowledge-base' ) . ' (1247)',
-			'reload_try_again'  => esc_html__( 'Please reload the page and try again.', 'echo-knowledge-base' ),
-			'save_config'       => esc_html__( 'Saving configuration', 'echo-knowledge-base' ),
-			'input_required'    => esc_html__( 'Input is required', 'echo-knowledge-base' ),
+			'msg_try_again'     => __( 'Please try again later.', 'echo-knowledge-base' ),
+			'error_occurred'    => __( 'Error occurred', 'echo-knowledge-base' ) . ' (1936)',
+			'unknown_error'     => __( 'Unknown error', 'echo-knowledge-base' ) . ' (1247)',
+			'reload_try_again'  => __( 'Please reload the page and try again.', 'echo-knowledge-base' ),
+			'save_config'       => __( 'Saving configuration', 'echo-knowledge-base' ),
+			'input_required'    => __( 'Input is required', 'echo-knowledge-base' ),
 			'nonce'             => wp_create_nonce( "_wpnonce_epkb_ajax_action" ),
-			'creating_demo_data'=> esc_html__( 'Creating a Knowledge Base with demo categories and articles. It will be completed shortly.', 'echo-knowledge-base' ),
+			'creating_demo_data'=> __( 'Creating a Knowledge Base with demo categories and articles. It will be completed shortly.', 'echo-knowledge-base' ),
 		) );
 	}
 

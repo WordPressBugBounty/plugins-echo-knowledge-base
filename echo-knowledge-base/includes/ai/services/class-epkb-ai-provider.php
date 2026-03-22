@@ -79,7 +79,7 @@ class EPKB_AI_Provider {
 	public static function get_provider_label( $provider = null ) {
 		$provider = $provider ?: self::get_active_provider();
 
-		return $provider === self::PROVIDER_GEMINI ? 'Google Gemini' : 'OpenAI';
+		return $provider === self::PROVIDER_GEMINI ? 'Google Gemini' : 'OpenAI ChatGPT';
 	}
 
 	/**
@@ -387,6 +387,257 @@ class EPKB_AI_Provider {
 	public static function get_max_file_size( $provider = null ) {
 		$provider = $provider ?: self::get_active_provider();
 		return $provider === self::PROVIDER_GEMINI ? EPKB_Gemini_Client::MAX_FILE_SIZE : EPKB_ChatGPT_Client::MAX_FILE_SIZE;
+	}
+
+	/**
+	 * Upload a temporary file for direct prompt input.
+	 *
+	 * @param string $file_content Raw file bytes.
+	 * @param string $file_name Original file name.
+	 * @param string $mime_type MIME type.
+	 * @return array|WP_Error Normalized attachment reference.
+	 */
+	public static function upload_prompt_attachment( $file_content, $file_name, $mime_type ) {
+
+		if ( ! is_string( $file_content ) || $file_content === '' ) {
+			return new WP_Error( 'empty_file', __( 'File content is empty.', 'echo-knowledge-base' ) );
+		}
+
+		$provider = self::get_active_provider();
+		$file_name = sanitize_file_name( $file_name );
+		$file_name = empty( $file_name ) ? 'document' : $file_name;
+		$mime_type = empty( $mime_type ) ? 'application/octet-stream' : $mime_type;
+
+		if ( $provider === self::PROVIDER_GEMINI ) {
+			return self::upload_gemini_prompt_attachment( $file_content, $file_name, $mime_type );
+		}
+
+		return self::upload_chatgpt_prompt_attachment( $file_content, $file_name, $mime_type );
+	}
+
+	/**
+	 * Build provider-native request content for an uploaded prompt attachment.
+	 *
+	 * @param array $attachment Normalized attachment reference.
+	 * @param string|null $provider
+	 * @return array
+	 */
+	public static function build_prompt_attachment_content( $attachment, $provider = null ) {
+
+		$provider = $provider ?: ( ! empty( $attachment['provider'] ) ? $attachment['provider'] : self::get_active_provider() );
+
+		if ( $provider === self::PROVIDER_GEMINI ) {
+			return array(
+				'fileData' => array(
+					'mimeType' => $attachment['mime_type'],
+					'fileUri'  => $attachment['file_uri'],
+				)
+			);
+		}
+
+		return array(
+			'type'    => 'input_file',
+			'file_id' => $attachment['file_id'],
+		);
+	}
+
+	/**
+	 * Delete a temporary prompt attachment.
+	 *
+	 * @param array $attachment Normalized attachment reference.
+	 * @param string|null $provider
+	 * @return bool
+	 */
+	public static function delete_prompt_attachment( $attachment, $provider = null ) {
+
+		$provider = $provider ?: ( ! empty( $attachment['provider'] ) ? $attachment['provider'] : self::get_active_provider() );
+
+		if ( $provider === self::PROVIDER_GEMINI ) {
+			return self::delete_gemini_prompt_attachment( $attachment );
+		}
+
+		return self::delete_chatgpt_prompt_attachment( $attachment );
+	}
+
+	/**
+	 * Upload a temporary prompt attachment to OpenAI.
+	 *
+	 * @param string $file_content Raw file bytes.
+	 * @param string $file_name Original file name.
+	 * @param string $mime_type MIME type.
+	 * @return array|WP_Error
+	 */
+	private static function upload_chatgpt_prompt_attachment( $file_content, $file_name, $mime_type ) {
+
+		$client = new EPKB_ChatGPT_Client();
+		$response = $client->request( '/files', array(
+			'file_name'         => $file_name,
+			'file_content'      => $file_content,
+			'file_purpose'      => 'user_data',
+			'file_content_type' => $mime_type,
+		), 'POST', 'file_storage_upload' );
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		if ( empty( $response['id'] ) ) {
+			return new WP_Error( 'file_upload_failed', __( 'Failed to upload file to AI storage.', 'echo-knowledge-base' ) );
+		}
+
+		return array(
+			'provider'  => self::PROVIDER_CHATGPT,
+			'file_id'   => $response['id'],
+			'mime_type' => ! empty( $response['mime_type'] ) ? $response['mime_type'] : $mime_type,
+			'file_name' => $file_name,
+		);
+	}
+
+	/**
+	 * Upload a temporary prompt attachment to Gemini.
+	 *
+	 * @param string $file_content Raw file bytes.
+	 * @param string $file_name Original file name.
+	 * @param string $mime_type MIME type.
+	 * @return array|WP_Error
+	 */
+	private static function upload_gemini_prompt_attachment( $file_content, $file_name, $mime_type ) {
+
+		$client = new EPKB_Gemini_Client();
+		$response = $client->upload_prompt_file( $file_content, array( 'displayName' => $file_name ), $mime_type );
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$file = isset( $response['file'] ) && is_array( $response['file'] ) ? $response['file'] : $response;
+		$file = self::wait_for_gemini_prompt_attachment( $client, $file );
+		if ( is_wp_error( $file ) ) {
+			return $file;
+		}
+
+		if ( empty( $file['name'] ) || empty( $file['uri'] ) ) {
+			return new WP_Error( 'file_upload_failed', __( 'Failed to upload file to AI storage.', 'echo-knowledge-base' ) );
+		}
+
+		return array(
+			'provider'      => self::PROVIDER_GEMINI,
+			'resource_name' => $file['name'],
+			'file_uri'      => $file['uri'],
+			'mime_type'     => ! empty( $file['mimeType'] ) ? $file['mimeType'] : $mime_type,
+			'file_name'     => $file_name,
+		);
+	}
+
+	/**
+	 * Wait until Gemini marks an uploaded file as ready for prompt usage.
+	 *
+	 * @param EPKB_Gemini_Client $client
+	 * @param array $file Uploaded Gemini File resource.
+	 * @return array|WP_Error
+	 */
+	private static function wait_for_gemini_prompt_attachment( $client, $file ) {
+
+		if ( empty( $file['name'] ) ) {
+			return new WP_Error( 'file_upload_failed', __( 'Failed to upload file to AI storage.', 'echo-knowledge-base' ) );
+		}
+
+		$state = ! empty( $file['state'] ) ? strtoupper( $file['state'] ) : '';
+		if ( $state === '' || $state === 'ACTIVE' ) {
+			return $file;
+		}
+
+		if ( $state === 'FAILED' ) {
+			return self::get_gemini_prompt_attachment_error( $file );
+		}
+
+		for ( $attempt = 0; $attempt < 30; $attempt++ ) {
+			EPKB_AI_Utilities::safe_sleep( 2 );
+
+			$latest = $client->get_file( $file['name'] );
+			if ( is_wp_error( $latest ) ) {
+				return $latest;
+			}
+
+			$file = isset( $latest['file'] ) && is_array( $latest['file'] ) ? $latest['file'] : $latest;
+			$state = ! empty( $file['state'] ) ? strtoupper( $file['state'] ) : '';
+
+			if ( $state === '' || $state === 'ACTIVE' ) {
+				return $file;
+			}
+
+			if ( $state === 'FAILED' ) {
+				return self::get_gemini_prompt_attachment_error( $file );
+			}
+		}
+
+		return new WP_Error( 'file_processing_timeout', __( 'AI provider is still processing the uploaded file. Please try again.', 'echo-knowledge-base' ) );
+	}
+
+	/**
+	 * Build a Gemini processing error from a File resource.
+	 *
+	 * @param array $file Gemini File resource.
+	 * @return WP_Error
+	 */
+	private static function get_gemini_prompt_attachment_error( $file ) {
+
+		$message = __( 'AI provider failed to process the uploaded file.', 'echo-knowledge-base' );
+		if ( ! empty( $file['error']['message'] ) ) {
+			$message = 'AI ERROR: ' . $file['error']['message'];
+		}
+
+		return new WP_Error( 'file_processing_failed', $message );
+	}
+
+	/**
+	 * Delete a temporary OpenAI prompt attachment.
+	 *
+	 * @param array $attachment Normalized attachment reference.
+	 * @return bool
+	 */
+	private static function delete_chatgpt_prompt_attachment( $attachment ) {
+
+		if ( empty( $attachment['file_id'] ) ) {
+			return true;
+		}
+
+		$client = new EPKB_ChatGPT_Client();
+		$response = $client->request( '/files/' . rawurlencode( $attachment['file_id'] ), array(), 'DELETE', 'file_storage' );
+		if ( is_wp_error( $response ) && $response->get_error_code() !== 'not_found' ) {
+			EPKB_AI_Log::add_log( 'Failed to delete temporary AI prompt file', array(
+				'provider' => self::PROVIDER_CHATGPT,
+				'file_id'  => $attachment['file_id'],
+				'error'    => $response->get_error_message(),
+			) );
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Delete a temporary Gemini prompt attachment.
+	 *
+	 * @param array $attachment Normalized attachment reference.
+	 * @return bool
+	 */
+	private static function delete_gemini_prompt_attachment( $attachment ) {
+
+		if ( empty( $attachment['resource_name'] ) ) {
+			return true;
+		}
+
+		$client = new EPKB_Gemini_Client();
+		$response = $client->delete_file( $attachment['resource_name'] );
+		if ( is_wp_error( $response ) && $response->get_error_code() !== 'not_found' ) {
+			EPKB_AI_Log::add_log( 'Failed to delete temporary AI prompt file', array(
+				'provider'      => self::PROVIDER_GEMINI,
+				'resource_name' => $attachment['resource_name'],
+				'error'         => $response->get_error_message(),
+			) );
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

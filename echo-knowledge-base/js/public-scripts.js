@@ -27,13 +27,14 @@ jQuery(document).ready(function($) {
 
 
 			// Check if AI Search Results is enabled
-			if ( $( this ).attr( "data-ai-search-results" ) === "1" && typeof window.epkbAISearchResults !== "undefined" ) {
-				const query = $( ".epkb-ml-search-box__input" ).val();
-				const kbId = $( "#epkb_kb_id" ).val();
-				const collectionId = $( this ).attr( "data-collection-id" );
-				window.epkbAISearchResults.openDialog( query, kbId, collectionId );
-				return;
-			}
+				if ( $( this ).attr( "data-ai-search-results" ) === "1" && typeof window.epkbAISearchResults !== "undefined" ) {
+					const query = $( ".epkb-ml-search-box__input" ).val();
+					const kbId = $( "#epkb_kb_id" ).val();
+					const collectionId = $( this ).attr( "data-collection-id" );
+					const collectionToken = $( this ).attr( "data-collection-token" ) || null;
+					window.epkbAISearchResults.openDialog( query, kbId, collectionId, collectionToken );
+					return;
+				}
 
 			const kb_block_post_id = $( this ).data( 'kb-block-post-id' );
 
@@ -2057,4 +2058,3 @@ jQuery(document).ready(function($) {
 	});
 
 });
-

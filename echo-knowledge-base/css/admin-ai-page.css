@@ -3751,7 +3751,7 @@ button .epkb-ai-spinner {
   padding: 24px;
 }
 .epkb-ai-training-data-container .epkb-ai-data-source-settings > *:not(:last-child) {
-  border-bottom: 1px solid #F3F4F6;
+  border-bottom: 2px solid #D0D0D0;
 }
 .epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-data-source-heading {
   margin: 0;
@@ -4599,8 +4599,23 @@ button .epkb-ai-spinner {
 .epkb-ai-training-data-container .epkb-ai-action-buttons {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0;
   margin-bottom: 20px;
+}
+.epkb-ai-training-data-container .epkb-ai-action-buttons .epkb-ai-action-buttons__group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.epkb-ai-training-data-container .epkb-ai-action-buttons .epkb-ai-action-buttons__divider {
+  margin: 18px 0 14px;
+  padding-top: 18px;
+  border-top: 1px solid #DCDCDE;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #787C82;
 }
 .epkb-ai-training-data-container .epkb-ai-action-buttons .epkb-ai-button {
   width: 100%;
@@ -4637,6 +4652,12 @@ button .epkb-ai-spinner {
 .epkb-ai-training-data-container .epkb-ai-action-info {
   margin: 0 20px;
 }
+.epkb-ai-training-data-container .epkb-ai-action-title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
+  padding-bottom: 10px;
+}
 .epkb-ai-training-data-container .epkb-ai-back-button {
   display: flex;
   align-items: center;
@@ -4672,7 +4693,11 @@ button .epkb-ai-spinner {
   font-size: 14px;
 }
 .epkb-ai-training-data-container .epkb-ai-action-content {
+  padding-top: 0 !important;
   animation: fadeIn 0.3s ease;
+}
+.epkb-ai-training-data-container .epkb-ai-action-content .epkb-ai-action-description {
+  margin: 0 0 40px 0;
 }
 .epkb-ai-training-data-container .epkb-ai-action-content h4 {
   margin-top: 0;
@@ -4963,8 +4988,22 @@ button .epkb-ai-spinner {
 .epkb-ai-training-data-container .epkb-ai-sync-buttons {
   margin-top: 20px;
 }
+.epkb-ai-training-data-container .epkb-ai-sync-buttons > div {
+  flex-wrap: wrap;
+}
 .epkb-ai-training-data-container .epkb-ai-sync-buttons button + button {
   margin-left: 10px;
+}
+html:not(:lang(en)) .epkb-ai-training-data-container .epkb-ai-sync-buttons > div {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+html:not(:lang(en)) .epkb-ai-training-data-container .epkb-ai-sync-buttons .epkb-ai-button {
+  margin-left: 0;
+  margin-right: 0;
+}
+html:not(:lang(en)) .epkb-ai-training-data-container .epkb-ai-sync-buttons .epkb-ai-button-danger {
+  padding: 9px 16px;
 }
 
 .epkb-ai-chat-container {
@@ -8903,278 +8942,6 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   cursor: not-allowed;
 }
 
-.epkb-ai-pdf-dialog {
-  max-width: 720px;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-body .epkb-ai-button {
-  margin: 4px 8px 4px 0;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-body .epkb-ai-button:last-child {
-  margin-right: 0;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-body .epkb-ai-pdf-upload-section .epkb-ai-button {
-  margin-top: 10px;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-body .epkb-ai-button-secondary {
-  background-color: #F0F0F1;
-  border-color: #DCDCDE;
-  color: #2C3338;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 16px 20px;
-  border-top: 1px solid #E0E0E0;
-  background: #F9F9F9;
-  border-radius: 0 0 12px 12px;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button {
-  margin: 0 4px;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button:first-child {
-  margin-left: 0;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button:last-child {
-  margin-right: 0;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button.epkb-ai-button-secondary {
-  background-color: #F0F0F1;
-  border-color: #DCDCDE;
-  color: #2C3338;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button.epkb-ai-button-primary {
-  opacity: 1 !important;
-  visibility: visible !important;
-  background: #0073AA !important;
-  background-color: #0073AA !important;
-  border-color: #0073AA !important;
-  color: #FFFFFF !important;
-}
-.epkb-ai-pdf-dialog .epkb-ai-dialog-footer .epkb-ai-button.epkb-ai-button-primary:hover:not(:disabled) {
-  background: #005A87 !important;
-  background-color: #005A87 !important;
-  border-color: #005A87 !important;
-  color: #FFFFFF !important;
-}
-
-.epkb-ai-pdf-dialog--queue {
-  max-width: 980px;
-  width: calc(100vw - 120px);
-}
-
-.epkb-ai-pdf-upload-section {
-  text-align: center;
-  padding: 32px 28px;
-  border: 2px dashed #D0D7DE;
-  border-radius: 10px;
-  background: #FAFAFA;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-.epkb-ai-pdf-upload-section.is-dragging {
-  border-color: #2271B1;
-  background: #F0F7FC;
-}
-.epkb-ai-pdf-upload-section p {
-  margin: 12px 0 18px;
-  color: #5F6B76;
-}
-
-.epkb-ai-pdf-upload-icon {
-  display: block;
-  font-size: 48px;
-  color: #DC2626;
-}
-
-.epkb-ai-pdf-error {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-  padding: 12px 14px;
-  border: 1px solid #FECACA;
-  border-radius: 8px;
-  background: #FFF1F2;
-  color: #991B1B;
-}
-
-.epkb-ai-pdf-queue-layout {
-  display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
-  gap: 18px;
-  min-height: 460px;
-}
-
-.epkb-ai-pdf-queue-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 560px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.epkb-ai-pdf-queue-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #D0D7DE;
-  border-radius: 8px;
-  background: #FFFFFF;
-  color: #344054;
-  cursor: pointer;
-  text-align: left;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-.epkb-ai-pdf-queue-item:hover {
-  border-color: #94A3B8;
-  background: #F8FAFC;
-}
-.epkb-ai-pdf-queue-item.is-active {
-  border-color: #2271B1;
-  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.15);
-}
-
-.epkb-ai-pdf-queue-item__name {
-  flex: 1;
-  min-width: 0;
-  font-size: 13px;
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.epkb-ai-pdf-queue-item__status {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #64748B;
-}
-
-.epkb-ai-pdf-queue-item--saved .epkb-ai-pdf-queue-item__status {
-  color: #15803D;
-}
-
-.epkb-ai-pdf-queue-item--error .epkb-ai-pdf-queue-item__status {
-  color: #B91C1C;
-}
-
-.epkb-ai-pdf-queue-item--preparing .epkb-ai-pdf-queue-item__status {
-  color: #1D4ED8;
-}
-
-.epkb-ai-pdf-queue-content {
-  min-width: 0;
-}
-
-.epkb-ai-pdf-queue-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #E5E7EB;
-  color: #475467;
-}
-
-.epkb-ai-pdf-format-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 8px;
-}
-
-.epkb-ai-pdf-format-option {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #344054;
-}
-
-.epkb-ai-pdf-preview {
-  max-height: 420px;
-  overflow: auto;
-  padding: 16px;
-  border: 1px solid #D0D7DE;
-  border-radius: 8px;
-  background: #FFFFFF;
-  line-height: 1.6;
-}
-.epkb-ai-pdf-preview h1, .epkb-ai-pdf-preview h2, .epkb-ai-pdf-preview h3, .epkb-ai-pdf-preview h4, .epkb-ai-pdf-preview h5, .epkb-ai-pdf-preview h6 {
-  margin-top: 0;
-}
-.epkb-ai-pdf-preview p:last-child {
-  margin-bottom: 0;
-}
-
-.epkb-ai-pdf-preview--plain {
-  white-space: pre-wrap;
-  font-family: inherit;
-}
-
-.epkb-ai-pdf-selected-files,
-.epkb-ai-pdf-upload-results {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.epkb-ai-pdf-selected-file,
-.epkb-ai-pdf-upload-result {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid #D0D7DE;
-  border-radius: 8px;
-  background: #FFFFFF;
-}
-
-.epkb-ai-pdf-remove-file {
-  margin-left: auto;
-  border: none;
-  background: transparent;
-  color: #64748B;
-  cursor: pointer;
-}
-
-.epkb-ai-pdf-upload-result__name {
-  flex: 1;
-  min-width: 0;
-  font-weight: 600;
-}
-
-.epkb-ai-pdf-upload-result__status {
-  font-size: 12px;
-  color: #475467;
-}
-
-.epkb-ai-pdf-upload-result--success .epkb-ai-pdf-upload-result__status {
-  color: #15803D;
-}
-
-.epkb-ai-pdf-upload-result--error .epkb-ai-pdf-upload-result__status {
-  color: #B91C1C;
-}
-
-@media (max-width: 900px) {
-  .epkb-ai-pdf-dialog--queue {
-    width: calc(100vw - 32px);
-  }
-  .epkb-ai-pdf-queue-layout {
-    grid-template-columns: 1fr;
-  }
-  .epkb-ai-pdf-queue-sidebar {
-    max-height: 180px;
-  }
-}
 .epkb-ai-loading-spinner {
   text-align: center;
   padding: 40px;

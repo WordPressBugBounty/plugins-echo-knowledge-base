@@ -686,13 +686,8 @@ class EPKB_HTML_Forms {
 					<p class="epkb-body__footer_desc"><?php echo esc_html( $args['footer_desc'] ); ?></p>				<?php
 				}
 
-			if ( ! empty( $args['discount_coupon'] ) && ! empty( $args['discount_coupon']['discount_percentage'] ) ) {
-					$coupon = $args['discount_coupon']; ?>
-					<div class="epkb-ad-discount-coupon">
-						<span class="epkb-ad-discount-badge"><?php echo esc_html( $coupon['discount_percentage'] . '% ' . __( 'OFF', 'echo-knowledge-base' ) ); ?></span>
-						<span class="epkb-ad-discount-text"><?php echo esc_html__( 'Use code:', 'echo-knowledge-base' ); ?> <code><?php echo esc_html( $coupon['coupon_code'] ); ?></code></span>
-						<button type="button" class="epkb-ad-discount-copy-btn" data-code="<?php echo esc_attr( $coupon['coupon_code'] ); ?>"><?php esc_html_e( 'Copy', 'echo-knowledge-base' ); ?></button>
-					</div>				<?php
+				if ( ! empty( $args['discount_coupon'] ) ) {
+					echo self::get_discount_coupon_box_html( $args['discount_coupon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				}
 
 			if ( $args['btn_text'] || ! empty( $args['btn_text_2'] ) || ! empty( $args['cancel_btn_text'] ) ) { ?>
@@ -725,6 +720,28 @@ class EPKB_HTML_Forms {
 		}
 
 		return '';
+	}
+
+	/**
+	 * Get reusable discount coupon HTML.
+	 *
+	 * @param array  $coupon
+	 * @param string $class
+	 * @return string
+	 */
+	public static function get_discount_coupon_box_html( $coupon, $class = '' ) {
+
+		if ( empty( $coupon['discount_percentage'] ) || empty( $coupon['coupon_code'] ) ) {
+			return '';
+		}
+
+		$class = trim( 'epkb-ad-discount-coupon ' . $class );
+
+		return '<div class="' . esc_attr( $class ) . '">'
+			. '<span class="epkb-ad-discount-badge">' . esc_html( $coupon['discount_percentage'] . '% ' . __( 'OFF', 'echo-knowledge-base' ) ) . '</span>'
+			. '<span class="epkb-ad-discount-text">' . esc_html__( 'Use code:', 'echo-knowledge-base' ) . ' <code>' . esc_html( $coupon['coupon_code'] ) . '</code></span>'
+			. '<button type="button" class="epkb-ad-discount-copy-btn" data-code="' . esc_attr( $coupon['coupon_code'] ) . '">' . esc_html__( 'Copy', 'echo-knowledge-base' ) . '</button>'
+			. '</div>';
 	}
 
 	/**

@@ -7,14 +7,8 @@
                 "lang": "hi_IN",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
-            "Title": [
-                "शीर्षक"
-            ],
             "Learn More": [
                 "अधिक जानकारी"
-            ],
-            "Close": [
-                "बंद करें"
             ],
             "Cancel": [
                 "रद्द करें"
@@ -22,83 +16,14 @@
             "Delete": [
                 "हटाएं"
             ],
-            "Previous": [
-                "पिछला"
-            ],
-            "Basic formatting": [
-                "बुनियादी स्वरूपण"
-            ],
-            "AI-structured": [
-                "AI-संरचित"
-            ],
-            "Select PDF Files": [
-                "PDF फ़ाइलें चुनें"
-            ],
-            "Drag and drop PDF files here, or click the buttons below": [
-                "यहां PDF फ़ाइलें ड्रैग करें और ड्रॉप करें, या नीचे दिए बटनों पर क्लिक करें।"
-            ],
-            "Select PDFs": [
-                "PDFs चुनें"
-            ],
-            "Media Library": [
-                "मीडिया लाइब्रेरी"
-            ],
-            "Retry": [
-                "पुनः प्रयास करें"
-            ],
-            "PDF to Notes": [
-                "PDF से नोट्स"
-            ],
             "Saving...": [
                 "सहेजा जा रहा है..."
-            ],
-            "No": [
-                "नहीं"
-            ],
-            "Preview": [
-                "पूर्वावलोकन"
             ],
             "Note deleted successfully": [
                 "नोट सफलतापूर्वक हटाई गई।"
             ],
-            "AI was unable to extract text from this PDF.": [
-                "AI इस PDF से टेक्स्ट निकालने में सक्षम नहीं था।."
-            ],
             "Additional Notes": [
                 "अतिरिक्त नोट्स"
-            ],
-            "PDF file exceeds the 20 MB size limit.": [
-                "PDF फ़ाइल 20 MB आकार सीमा से अधिक है।."
-            ],
-            "of": [
-                "में से"
-            ],
-            "Drop PDF files here": [
-                "यहाँ PDF फ़ाइलें ड्रॉप करें।"
-            ],
-            "Failed to prepare PDF preview": [
-                "PDF पूर्वावलोकन तैयार करने में असफल रहा।"
-            ],
-            "No text could be extracted from this PDF.": [
-                "इस PDF से कोई टेक्स्ट नहीं निकाला जा सका।."
-            ],
-            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
-                "PDF एक्सट्रैक्शन उपलब्ध नहीं है। कृपया सुनिश्चित करें कि AI Features Pro सक्रिय है।."
-            ],
-            "Use AI to Extract Text?": [
-                "पाठ निकालने के लिए AI का उपयोग करें?"
-            ],
-            "This PDF appears to contain scanned images. Would you like to use AI to extract the text? This will send the PDF to your configured AI provider.": [
-                "यह PDF स्कैन की गई छवियाँ दिखता है। क्या आप टेक्स्ट निकालने के लिए AI का उपयोग करना चाहेंगे? इससे PDF आपके कॉन्फ़िगर किए गए AI प्रदाता को भेजा जाएगा।."
-            ],
-            "Yes, Use AI": [
-                "हाँ, AI का उपयोग करें"
-            ],
-            "Please drop a valid PDF file.": [
-                "कृपया एक मान्य PDF फ़ाइल ड्रॉप करें।."
-            ],
-            "Failed to read file.": [
-                "फ़ाइल पढ़ी नहीं जा सकी।."
             ],
             "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
                 "अतिरिक्त सहायता जोड़ें और लेखों, पोस्टों और पन्नों में नहीं मिल पाने वाली ऐसी विविध जानकारी जिन्हें AI को भी जानना चाहिए."
@@ -160,71 +85,11 @@
             "Save Note": [
                 "नोट सहेजें"
             ],
-            "Please enter a title for the note.": [
-                "नोट के लिए शीर्षक दर्ज करें।."
-            ],
-            "No content to save. Please prepare the PDF preview first.": [
-                "सहेजने के लिए कोई सामग्री नहीं है। कृपया पहले PDF पूर्वावलोकन तैयार करें।."
-            ],
-            "Failed to save PDF note": [
-                "PDF नोट सहेजना विफल रहा"
-            ],
-            "Media Library is not available.": [
-                "मीडिया लाइब्रेरी उपलब्ध नहीं है।."
-            ],
-            "Select": [
-                "चुनें"
-            ],
-            "Failed to load file from Media Library.": [
-                "मीडिया लाइब्रेरी से फ़ाइल लोड करने में विफल रहा है।."
-            ],
-            "Preparing preview...": [
-                "पूर्वावलोकन तैयार किया जा रहा है..."
-            ],
-            "Enter title...": [
-                "शीर्षक दर्ज करें..."
-            ],
-            "Formatting": [
-                "फ़ॉर्मैटिंग"
-            ],
-            "No formatting": [
-                "कोई फ़ॉर्मैटिंग नहीं"
-            ],
-            "Checking selected PDF files...": [
-                "चयनित PDF फ़ाइलों की जाँच की जा रही है..."
-            ],
-            "Skip": [
-                "छोड़ें"
-            ],
-            "Save as Note": [
-                "नोट के रूप में सहेजें"
-            ],
-            "Upload failed.": [
-                "अपलोड विफल रहा।."
-            ],
-            "Upload PDFs to AI Store": [
-                "AI स्टोर में PDFs अपलोड करें"
-            ],
-            "Uploaded": [
-                "अपलोड किया गया"
-            ],
-            "Uploading...": [
-                "अपलोड हो रहा है..."
-            ],
-            "Waiting...": [
-                "इंतजार हो रहा है..."
-            ],
-            "Upload": [
-                "अपलोड"
-            ],
             "Add Notes and PDFs": [
                 "नोट्स और PDFs जोड़ें"
             ],
             "added": [
                 "जोड़ा गया"
-            ],
-            "Requires AI Advanced Features plugin.": [
-                "AI उन्नत सुविधाओं वाला प्लगइन आवश्यक है."
             ]
         }
     }

@@ -16,9 +16,6 @@
             "OK": [
                 "OK"
             ],
-            "No posts found to sync": [
-                "同期する投稿が見つかりません"
-            ],
             "No synced items found to verify": [
                 "検証する同期済みアイテムが見つかりません。"
             ],
@@ -42,6 +39,9 @@
             ],
             "Sync canceled": [
                 "同期がキャンセルされました"
+            ],
+            "No posts found to sync": [
+                "同期する投稿が見つかりません"
             ],
             "Failed to cancel sync": [
                 "同期のキャンセルに失敗しました"
@@ -75,12 +75,6 @@
             ],
             "Select All Records": [
                 "すべてのレコードを選択"
-            ],
-            "Validate & Fix Synced Items": [
-                "同期済みアイテムの検証と修正"
-            ],
-            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
-                "有効にすると、同期が完了した後、システムは同期済みアイテムのみを自動的に検証・修正します。古くなったアイテムや保留中のアイテムは、同期されるまで検証されません。."
             ],
             "Sync in Progress": [
                 "同期中"

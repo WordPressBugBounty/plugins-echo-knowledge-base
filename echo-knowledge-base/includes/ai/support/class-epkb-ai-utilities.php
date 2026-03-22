@@ -552,18 +552,54 @@ class EPKB_AI_Utilities {
 	}
 
 	/**
+	 * Determine if an AI answer is empty after removing markup and whitespace.
+	 *
+	 * @param string $answer
+	 * @return bool
+	 */
+	public static function is_empty_ai_answer( $answer ) {
+		if ( ! is_string( $answer ) ) {
+			return true;
+		}
+
+		return trim( wp_strip_all_tags( $answer ) ) === '';
+	}
+
+	/**
+	 * Determine if an AI answer is the configured refusal response.
+	 *
+	 * @param string $answer
+	 * @return bool
+	 */
+	public static function is_ai_refusal_answer( $answer ) {
+		if ( self::is_empty_ai_answer( $answer ) ) {
+			return false;
+		}
+
+		$normalized = trim( wp_strip_all_tags( $answer ) );
+
+		return stripos( $normalized, EPKB_AI_Config_Specs::get_ai_refusal_message() ) !== false
+			|| stripos( $normalized, EPKB_AI_Config_Specs::get_ai_refusal_prompt() ) !== false;
+	}
+
+	/**
+	 * Determine if sources should be displayed for the current AI answer.
+	 *
+	 * @param string $answer
+	 * @return bool
+	 */
+	public static function should_show_sources_for_answer( $answer ) {
+		return ! self::is_empty_ai_answer( $answer ) && ! self::is_ai_refusal_answer( $answer );
+	}
+
+	/**
 	 * Determine if an AI search answer is the configured refusal message.
 	 *
 	 * @param string $answer
 	 * @return bool
 	 */
 	public static function is_search_refusal_answer( $answer ) {
-		if ( empty( $answer ) ) {
-			return false;
-		}
-
-		$normalized = wp_strip_all_tags( $answer );
-		return stripos( $normalized, EPKB_AI_Config_Specs::get_ai_refusal_message() ) !== false;
+		return self::is_ai_refusal_answer( $answer );
 	}
 
 	/**
@@ -864,12 +900,28 @@ class EPKB_AI_Utilities {
 
 			$sources[] = array(
 				'post_id' => $post_id,
-				'title'   => get_the_title( $post ),
+				'title'   => self::get_source_title_for_post( $post ),
 				'url'     => $is_note ? '' : get_permalink( $post_id )
 			);
-		}
+			}
 
 		return $sources;
+	}
+
+	/**
+	 * Get the source label for a post without WordPress private/protected prefixes.
+	 *
+	 * @param WP_Post $post
+	 * @return string
+	 */
+	private static function get_source_title_for_post( $post ) {
+		if ( empty( $post ) || empty( $post->ID ) ) {
+			return '';
+		}
+
+		$title = isset( $post->post_title ) ? (string) $post->post_title : '';
+
+		return apply_filters( 'the_title', $title, $post->ID );
 	}
 
 	/**
@@ -897,7 +949,7 @@ class EPKB_AI_Utilities {
 
 			return array(
 				'post_id' => $post_id,
-				'title'   => get_the_title( $post ),
+				'title'   => self::get_source_title_for_post( $post ),
 				'url'     => $is_note ? '' : get_permalink( $post_id )
 			);
 		}
@@ -927,9 +979,12 @@ class EPKB_AI_Utilities {
 			case 'content_analysis_gap_analysis':
 			case 'content_analysis_tag_suggestions':
 			case 'content_analysis':
+				$ideal_timeout = 120;
+				break;
+			case 'file_upload':
 			case 'pdf_extraction':
 			case 'pdf_import_structure':
-				$ideal_timeout = 120;
+				$ideal_timeout = 600;
 				break;
 			case 'chat':
 			case 'search':

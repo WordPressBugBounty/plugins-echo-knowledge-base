@@ -821,6 +821,10 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			return 'off';
 		}
 
+		if ( $field_name === 'ai_search_mode' && ! EPKB_Utilities::is_ai_features_pro_enabled() ) {
+			return 'simple_search';
+		}
+
 		$config = static::get_ai_config();
 
 		// If field exists in config, return it
@@ -865,6 +869,10 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	 * @return array|WP_Error Updated configuration or error
 	 */
 	public static function update_ai_config( $original_config, $new_config ) {
+
+		if ( ! EPKB_Utilities::is_ai_features_pro_enabled() && isset( $new_config['ai_search_mode'] ) && $new_config['ai_search_mode'] === 'smart_search' ) {
+			return new WP_Error( 'validation_failed', __( 'Smart Search requires AI Features PRO.', 'echo-knowledge-base' ) );
+		}
 
 		// If provider is changing, reset collection settings that belong to the now-inactive provider
 		if ( isset( $new_config['ai_provider'] ) && $new_config['ai_provider'] !== $original_config['ai_provider'] ) {

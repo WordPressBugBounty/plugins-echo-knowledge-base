@@ -7,14 +7,8 @@
                 "lang": "ja",
                 "plural-forms": "nplurals=1; plural=0;"
             },
-            "Title": [
-                "タイトル"
-            ],
             "Learn More": [
                 "さらに詳しく"
-            ],
-            "Close": [
-                "閉じる"
             ],
             "Cancel": [
                 "キャンセル"
@@ -22,83 +16,14 @@
             "Delete": [
                 "削除"
             ],
-            "Previous": [
-                "前"
-            ],
-            "Basic formatting": [
-                "基本の書式設定"
-            ],
-            "AI-structured": [
-                "AI構造化"
-            ],
-            "Select PDF Files": [
-                "PDFファイルを選択"
-            ],
-            "Drag and drop PDF files here, or click the buttons below": [
-                "ここにPDFファイルをドラッグ＆ドロップするか、下のボタンをクリックしてください"
-            ],
-            "Select PDFs": [
-                "PDFを選択"
-            ],
-            "Media Library": [
-                "メディアライブラリ"
-            ],
-            "Retry": [
-                "再試行"
-            ],
-            "PDF to Notes": [
-                "PDFをノートに変換"
-            ],
             "Saving...": [
                 "保存中..."
-            ],
-            "No": [
-                "いいえ"
-            ],
-            "Preview": [
-                "プレビュー"
             ],
             "Note deleted successfully": [
                 "ノートを正常に削除しました。"
             ],
-            "AI was unable to extract text from this PDF.": [
-                "このPDFからテキストを抽出できませんでした。."
-            ],
             "Additional Notes": [
                 "追加ノート"
-            ],
-            "PDF file exceeds the 20 MB size limit.": [
-                "PDFファイルは20 MBのサイズ上限を超えています。."
-            ],
-            "of": [
-                "の"
-            ],
-            "Drop PDF files here": [
-                "ここにPDFファイルをドロップ"
-            ],
-            "Failed to prepare PDF preview": [
-                "PDFプレビューの準備に失敗しました。"
-            ],
-            "No text could be extracted from this PDF.": [
-                "このPDFからテキストを抽出できませんでした。."
-            ],
-            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
-                "PDF抽出は利用できません。AI Features Proが有効になっていることを確認してください。."
-            ],
-            "Use AI to Extract Text?": [
-                "テキストを抽出するためにAIを使用しますか？"
-            ],
-            "This PDF appears to contain scanned images. Would you like to use AI to extract the text? This will send the PDF to your configured AI provider.": [
-                "このPDFにはスキャン画像が含まれているようです。テキストをAIで抽出しますか？これは設定済みのAIプロバイダーにPDFを送信します。."
-            ],
-            "Yes, Use AI": [
-                "はい、AIを使用します"
-            ],
-            "Please drop a valid PDF file.": [
-                "有効なPDFファイルをドロップしてください。."
-            ],
-            "Failed to read file.": [
-                "ファイルの読み取りに失敗しました。."
             ],
             "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
                 "AIが知っておくべき、記事・投稿・ページには含まれない追加のサポート情報やその他の情報を追加してください。."
@@ -160,71 +85,11 @@
             "Save Note": [
                 "ノートを保存"
             ],
-            "Please enter a title for the note.": [
-                "ノートのタイトルを入力してください。."
-            ],
-            "No content to save. Please prepare the PDF preview first.": [
-                "保存する内容がありません。まずPDFプレビューを準備してください。."
-            ],
-            "Failed to save PDF note": [
-                "PDFノートの保存に失敗しました。"
-            ],
-            "Media Library is not available.": [
-                "メディアライブラリは利用できません。."
-            ],
-            "Select": [
-                "選択"
-            ],
-            "Failed to load file from Media Library.": [
-                "メディアライブラリからファイルの読み込みに失敗しました。."
-            ],
-            "Preparing preview...": [
-                "プレビューを準備しています..."
-            ],
-            "Enter title...": [
-                "タイトルを入力..."
-            ],
-            "Formatting": [
-                "書式設定"
-            ],
-            "No formatting": [
-                "書式設定なし"
-            ],
-            "Checking selected PDF files...": [
-                "選択したPDFファイルを確認しています..."
-            ],
-            "Skip": [
-                "スキップ"
-            ],
-            "Save as Note": [
-                "ノートとして保存"
-            ],
-            "Upload failed.": [
-                "アップロードに失敗しました。."
-            ],
-            "Upload PDFs to AI Store": [
-                "AI Store に PDF をアップロード"
-            ],
-            "Uploaded": [
-                "アップロード済み"
-            ],
-            "Uploading...": [
-                "アップロード中..."
-            ],
-            "Waiting...": [
-                "待機中..."
-            ],
-            "Upload": [
-                "アップロード"
-            ],
             "Add Notes and PDFs": [
                 "ノートとPDFを追加"
             ],
             "added": [
                 "追加済み"
-            ],
-            "Requires AI Advanced Features plugin.": [
-                "AI Advanced Features プラグインが必要です。."
             ]
         }
     }

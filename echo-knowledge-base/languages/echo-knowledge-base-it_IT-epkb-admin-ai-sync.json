@@ -16,9 +16,6 @@
             "OK": [
                 "OK"
             ],
-            "No posts found to sync": [
-                "Nessun post trovato da sincronizzare"
-            ],
             "No synced items found to verify": [
                 "Nessun elemento sincronizzato trovato da verificare"
             ],
@@ -42,6 +39,9 @@
             ],
             "Sync canceled": [
                 "Sincronizzazione annullata"
+            ],
+            "No posts found to sync": [
+                "Nessun post trovato da sincronizzare"
             ],
             "Failed to cancel sync": [
                 "Impossibile annullare la sincronizzazione"
@@ -75,12 +75,6 @@
             ],
             "Select All Records": [
                 "Seleziona tutti i record"
-            ],
-            "Validate & Fix Synced Items": [
-                "Convalida e ripara gli elementi sincronizzati"
-            ],
-            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
-                "Quando è abilitato, dopo che la sincronizzazione è completata, il sistema convaliderà e correggerà automaticamente solo gli elementi sincronizzati. Gli elementi obsoleti o in attesa non verranno verificati finché non saranno sincronizzati."
             ],
             "Sync in Progress": [
                 "Sincronizzazione in corso"

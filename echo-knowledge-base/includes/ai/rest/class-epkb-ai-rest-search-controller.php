@@ -83,16 +83,15 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 	 */
 	public function search( $request ) {
 
-		// Check rate limit before processing
-		/* $rate_limit_check = EPKB_AI_Security::check_rate_limit();
-		if ( is_wp_error( $rate_limit_check ) ) {
-			return 'TODO";
-		} */
-
 		// Get search query
 		$query = $request->get_param( 'query' );
 		if ( empty( $query ) || strlen( $query ) < 3 ) {
 			return $this->create_rest_response( array( 'message' => __( 'Search query must be at least 3 characters long.', 'echo-knowledge-base' ) ), 400 );
+		}
+
+		$kb_id = absint( $request->get_param( 'kb_id' ) );
+		if ( empty( $kb_id ) ) {
+			return $this->create_rest_response( array( 'message' => __( 'Knowledge Base ID is required.', 'echo-knowledge-base' ) ), 400 );
 		}
 
 		// collection_id is required - set via kb_ai_collection_id in KB Config or shortcode/block attribute
@@ -100,6 +99,16 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 		if ( empty( $collection_id ) ) {
 			return $this->create_rest_response( array( 'message' => __( 'No AI data collection selected. Please select a collection in KB Configuration.', 'echo-knowledge-base' ) ), 400 );
 		}
+
+		$collection_access = $this->validate_public_collection_request( $request, $kb_id, $collection_id );
+		if ( is_wp_error( $collection_access ) ) {
+			return $this->create_rest_response( array(), 403, $collection_access );
+		}
+
+		/* $rate_limit_check = EPKB_AI_Security::check_search_rate_limit();
+		if ( is_wp_error( $rate_limit_check ) ) {
+			return $this->create_rest_response( array(), 429, $rate_limit_check );
+		} */
 
 		// Validate collection configuration (provider match, vector store exists)
 		$config_error = $this->get_collection_configuration_error( $collection_id );
@@ -266,27 +275,33 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 				},
 				'sanitize_callback' => 'sanitize_text_field',
 			),
-			'kb_id' => array(
-				'required'          => false,
-				'type'              => 'integer',
-				'description'       => __( 'Knowledge base ID', 'echo-knowledge-base' ),
-				'validate_callback' => function( $param ) {
-					return empty( $param ) || ( is_numeric( $param ) && $param > 0 );
-				},
-				'sanitize_callback' => 'absint',
-			),
-			'collection_id' => array(
-				'required'          => false,
+				'kb_id' => array(
+					'required'          => true,
+					'type'              => 'integer',
+					'description'       => __( 'Knowledge base ID', 'echo-knowledge-base' ),
+					'validate_callback' => function( $param ) {
+						return is_numeric( $param ) && $param > 0;
+					},
+					'sanitize_callback' => 'absint',
+				),
+				'collection_id' => array(
+					'required'          => false,
 				'type'              => 'integer',
 				'description'       => __( 'AI Training Data Collection ID (optional, overrides KB default)', 'echo-knowledge-base' ),
 				'validate_callback' => function( $param ) {
 					return is_numeric( $param ) && $param > 0;
-				},
-				'sanitize_callback' => 'absint',
-			),
-			'limit' => array(
-				'type'              => 'integer',
-				'description'       => __( 'Maximum number of results', 'echo-knowledge-base' ),
+					},
+					'sanitize_callback' => 'absint',
+				),
+				'collection_token' => array(
+					'required'          => false,
+					'type'              => 'string',
+					'description'       => __( 'Access token for collection overrides', 'echo-knowledge-base' ),
+					'sanitize_callback' => 'sanitize_text_field',
+				),
+				'limit' => array(
+					'type'              => 'integer',
+					'description'       => __( 'Maximum number of results', 'echo-knowledge-base' ),
 				'default'           => 5,
 				'minimum'           => 1,
 				'maximum'           => 20,

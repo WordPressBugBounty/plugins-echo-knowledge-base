@@ -64,6 +64,8 @@ class EPKB_AI_REST_PDF_Extract_Controller extends EPKB_AI_REST_Base_Controller {
 	 */
 	public function extract_text( $request ) {
 
+		EPKB_PDF_Utilities::setup_timeout_error_handling( 'rest' );
+
 		$pdf_data = EPKB_PDF_Utilities::decode_base64_pdf(
 			$request->get_param( 'pdf_base64' ),
 			$request->get_param( 'file_name' )
@@ -87,6 +89,8 @@ class EPKB_AI_REST_PDF_Extract_Controller extends EPKB_AI_REST_Base_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function format_content( $request ) {
+
+		EPKB_PDF_Utilities::setup_timeout_error_handling( 'rest' );
 
 		$format_mode = $request->get_param( 'format_mode' );
 		if ( $format_mode === 'ai' ) {

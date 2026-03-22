@@ -68,7 +68,7 @@ class EPKB_Blocks_Setup {
 		array_unshift( $block_categories,
 			array(
 				'slug' => EPKB_Abstract_Block::EPKB_BLOCK_CATEGORY,
-				'title' => esc_html__( 'Echo Knowledge Base', 'echo-knowledge-base' ),
+				'title' => __( 'Echo Knowledge Base', 'echo-knowledge-base' ),
 				'icon' => EPKB_Abstract_Block::EPKB_BLOCK_CATEGORY_ICON,
 			)
 		);
@@ -107,8 +107,8 @@ class EPKB_Blocks_Setup {
 
 		// register template
 		register_block_template( $template_name, [
-			'title' => esc_html__( 'KB Block Page Template', 'echo-knowledge-base' ),
-			'description' => esc_html__( 'The recommended template to use for creating the KB main page.', 'echo-knowledge-base' ),
+			'title' => __( 'KB Block Page Template', 'echo-knowledge-base' ),
+			'description' => __( 'The recommended template to use for creating the KB main page.', 'echo-knowledge-base' ),
 			'content' => $template_content,
 			'post_types'  => array( 'page' ),
 		] );
@@ -188,8 +188,8 @@ class EPKB_Blocks_Setup {
 
 			// insert the custom template
 			$inserted_template_id = wp_insert_post( array(
-				'post_title'   => esc_html__( 'KB Block Page Template', 'echo-knowledge-base' ),
-				'post_excerpt' => esc_html__( 'The recommended template to use for creating the KB main page.', 'echo-knowledge-base' ),
+				'post_title'   => __( 'KB Block Page Template', 'echo-knowledge-base' ),
+				'post_excerpt' => __( 'The recommended template to use for creating the KB main page.', 'echo-knowledge-base' ),
 				'post_name'    => sanitize_title( EPKB_Abstract_Block::EPKB_KB_BLOCK_PAGE_TEMPLATE ),
 				'post_content' => $template_content,
 				'post_status'  => 'publish',

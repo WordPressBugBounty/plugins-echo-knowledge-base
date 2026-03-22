@@ -46,6 +46,9 @@
             "Error": [
                 "エラー"
             ],
+            "OK": [
+                "OK"
+            ],
             "Add Training Data": [
                 "機械学習データを追加"
             ],
@@ -54,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "データをAIに送信"
+            ],
+            "Optional": [
+                "任意"
             ],
             "Collection name cannot be empty": [
                 "コレクション名を空にすることはできません"
@@ -76,14 +82,41 @@
             "Delete Selected": [
                 "選択した項目を削除"
             ],
+            "of": [
+                "の"
+            ],
+            "Skipped": [
+                "スキップ済み"
+            ],
             "Failed to create collection": [
                 "コレクションの作成に失敗しました"
+            ],
+            "errors": [
+                "エラー"
             ],
             "Outdated": [
                 "時代遅れ"
             ],
             "Added": [
                 "追加済み"
+            ],
+            "Verifying": [
+                "検証中"
+            ],
+            "items": [
+                "アイテム"
+            ],
+            "Verification complete:": [
+                "検証完了:"
+            ],
+            "marked outdated": [
+                "時代遅れとしてマークされました"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "時代遅れのアイテムを再アップロードするには同期を実行してください。."
+            ],
+            "Cancel Verify": [
+                "検証をキャンセル"
             ],
             "Deleting...": [
                 "削除中..."
@@ -157,6 +190,12 @@
             "Add Selected Items": [
                 "選択したアイテムを追加"
             ],
+            "Cannot change actions while sync is in progress": [
+                "同期中はアクションを変更できません。"
+            ],
+            "Cannot change actions while validation is in progress": [
+                "検証の進行中はアクションを変更できません"
+            ],
             "Collection name updated successfully": [
                 "コレクション名が正常に更新されました"
             ],
@@ -190,8 +229,8 @@
             "Choose an Action": [
                 "アクションを選択してください。"
             ],
-            "Cannot change actions while sync is in progress": [
-                "同期中はアクションを変更できません。"
+            "Validate & Fix Synced Items": [
+                "同期済みアイテムの検証と修正"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "テーブルに読み込むコンテンツタイプを選択してください（KB 記事、投稿、固定ページ）。この操作はまだ AI には送信されません。."
@@ -223,14 +262,11 @@
             "Content changed since last sync. Re-send to update.": [
                 "前回の同期以降、コンテンツが変更されています。更新のために再送信してください。."
             ],
+            "Could not be synced because the content is empty or the source no longer exists.": [
+                "コンテンツが空であるか、ソースがすでに存在しないため、同期できませんでした。."
+            ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "同期に失敗しました。再送信して再試行してください。コンテンツが存在し、空でないことを確認してください。."
-            ],
-            "Cannot navigate while sync is in progress": [
-                "同期中は移動できません。"
-            ],
-            "Adding data to:": [
-                "データを追加する先:"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "AIの機械学習データに含めるコンテンツタイプを選択してください。."
@@ -297,6 +333,24 @@
             ],
             "Select items from the table and choose a sync method to update your AI training data.": [
                 "表からアイテムを選択し、AIの機械学習データを更新する同期方法を選択してください。."
+            ],
+            "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
+                "ローカルデータベースとAIストアの同期を確実にするため、追加の検証パスを実行します。AIストアからファイルが欠落している場合、再送信できるように古いファイルとしてマークされます。."
+            ],
+            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
+                "これにより、アップロードされたPDFを含む、このコレクションで既に追跡されている追加および更新されたアイテムがチェックされます。."
+            ],
+            "Collection:": [
+                "コレクション:"
+            ],
+            "synced items ready to validate": [
+                "検証の準備ができている同期済みアイテム"
+            ],
+            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
+                "追加または更新されたアイテムはまだありません。まずコンテンツをAIに送信し、必要に応じて検証を実行してください。."
+            ],
+            "Validation in Progress...": [
+                "検証中..."
             ],
             "Manage your collection settings and data.": [
                 "コレクションの設定とデータを管理します。."

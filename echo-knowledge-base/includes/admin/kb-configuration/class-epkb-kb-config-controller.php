@@ -85,8 +85,7 @@ class EPKB_KB_Config_Controller {
 
 		$category_slug_param = EPKB_Utilities::post( 'category_slug_param' );
 
-		// allow only letters, numbers, dash, underscore
-		$category_slug_param = preg_replace( '/[^a-zA-Z0-9-_]/', '', $category_slug_param );
+		$category_slug_param = sanitize_title_with_dashes( $category_slug_param, '', 'save' );
 
 		$result = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'category_slug', $category_slug_param );
 		if ( is_wp_error( $result ) ) {
@@ -113,8 +112,7 @@ class EPKB_KB_Config_Controller {
 
 		$tag_slug_param = EPKB_Utilities::post( 'tag_slug_param' );
 
-		// allow only letters, numbers, dash, underscore
-		$tag_slug_param = preg_replace( '/[^a-zA-Z0-9-_]/', '', $tag_slug_param );
+		$tag_slug_param = sanitize_title_with_dashes( $tag_slug_param, '', 'save' );
 
 		$result = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'tag_slug', $tag_slug_param );
 		if ( is_wp_error( $result ) ) {

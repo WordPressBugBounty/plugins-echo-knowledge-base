@@ -767,14 +767,14 @@ class EPKB_AI_Sync_Job_Manager {
 	private static function get_all_posts_for_collection( $collection_id ) {
 		
 		// Get all items from the training data database for this collection.
-		// Uploaded PDFs are excluded because they are synced at upload time, not through this sync flow.
+		// Uploaded PDF/HTML files are excluded because they are synced at upload time, not through this sync flow.
 		$training_data_db = new EPKB_AI_Training_Data_DB();
 		$training_items = $training_data_db->get_training_data_by_collection( $collection_id );
 
 		// Extract item IDs and types from the training data
 		$items = array();
 		foreach ( $training_items as $item ) {
-			if ( empty( $item->item_id ) || $item->type === 'PDF' ) {
+			if ( empty( $item->item_id ) || in_array( $item->type, array( 'PDF', 'HTML' ), true ) ) {
 				continue;
 			}
 

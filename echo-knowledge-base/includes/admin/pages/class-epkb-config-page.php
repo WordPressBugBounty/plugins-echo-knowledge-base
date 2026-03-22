@@ -728,7 +728,7 @@ class EPKB_Config_Page {
 				'icon'         => 'epkbfa epkbfa-search',
 				'title'        => esc_html__( 'AI Smart Search', 'echo-knowledge-base' ),
 				'desc'         => esc_html__( 'Display AI-powered smart search with customizable results columns and sections.', 'echo-knowledge-base' ),
-				'desc_escaped' => EPKB_Shortcodes::get_copy_box( 'ai-smart-search', $kb_id, esc_html__( 'Shortcode:', 'echo-knowledge-base' ) ),
+				'desc_escaped' => $this->get_ai_smart_search_box_html( $kb_id ),
 				'demo'         => 'https://contentdisplay.wpengine.com/contact-us/',
 				'docs'         => 'https://www.echoknowledgebase.com/documentation/ai-smart-search-shortcode/',
 			],
@@ -823,6 +823,21 @@ class EPKB_Config_Page {
 				'video'        => '',
 			],
 		];
+	}
+
+	/**
+	 * Get the AI Smart Search box content.
+	 *
+	 * @param int $kb_id
+	 * @return string
+	 */
+	private function get_ai_smart_search_box_html( $kb_id ) {
+
+		if ( EPKB_Utilities::is_ai_features_pro_enabled() ) {
+			return EPKB_Shortcodes::get_copy_box( 'ai-smart-search', $kb_id, esc_html__( 'Shortcode:', 'echo-knowledge-base' ) );
+		}
+
+		return EPKB_HTML_Forms::get_discount_coupon_box_html( EPKB_AI_PRO_Features_Tab::get_discount_coupon(), 'epkb-pdf-import__discount-coupon' );
 	}
 
 	/**

@@ -10,6 +10,8 @@ class EPKB_AI_ChatGPT_Vector_Store {
 
 	const VECTOR_STORES_ENDPOINT = '/vector_stores';
 	const FILES_ENDPOINT = '/files';
+	const FILE_PROCESSING_POLL_ATTEMPTS = 30;
+	const FILE_PROCESSING_POLL_INTERVAL = 2;
 
 	/**
 	 * ChatGPT client
@@ -306,6 +308,49 @@ class EPKB_AI_ChatGPT_Vector_Store {
 		return $this->client->request( self::VECTOR_STORES_ENDPOINT . "/{$vector_store_id}" . self::FILES_ENDPOINT . "/{$file_id}", array(), 'GET', 'vector_store_file' );
 	}
 
+	/**
+	 * Wait until a vector store file is ready for search.
+	 *
+	 * @param string $vector_store_id Vector store ID.
+	 * @param string $file_id File ID.
+	 * @return array|WP_Error
+	 */
+	public function wait_for_file_to_complete_in_vector_store( $vector_store_id, $file_id ) {
+
+		if ( empty( $vector_store_id ) || empty( $file_id ) ) {
+			return new WP_Error( 'missing_params', __( 'Vector store ID and file ID are required', 'echo-knowledge-base' ) );
+		}
+
+		for ( $attempt = 0; $attempt < self::FILE_PROCESSING_POLL_ATTEMPTS; $attempt++ ) {
+			$file_details = $this->get_file_details_from_vector_store( $vector_store_id, $file_id );
+			if ( is_wp_error( $file_details ) ) {
+				if ( $file_details->get_error_code() !== 'not_found' ) {
+					return $file_details;
+				}
+			} else {
+				$status = isset( $file_details['status'] ) ? strtolower( (string) $file_details['status'] ) : '';
+				if ( $status === '' || $status === 'completed' ) {
+					return $file_details;
+				}
+
+				if ( in_array( $status, array( 'failed', 'cancelled' ), true ) ) {
+					$message = __( 'AI provider failed to process the uploaded file.', 'echo-knowledge-base' );
+					if ( ! empty( $file_details['last_error']['message'] ) ) {
+						$message = 'AI ERROR: ' . $file_details['last_error']['message'];
+					}
+
+					return new WP_Error( 'file_processing_failed', $message, array( 'status' => $status ) );
+				}
+			}
+
+			if ( $attempt < self::FILE_PROCESSING_POLL_ATTEMPTS - 1 ) {
+				EPKB_AI_Utilities::safe_sleep( self::FILE_PROCESSING_POLL_INTERVAL );
+			}
+		}
+
+		return new WP_Error( 'file_processing_timeout', __( 'AI provider is still processing the uploaded file. Please try again.', 'echo-knowledge-base' ) );
+	}
+
 
 	/************************************************************************************
 	 * Manage files in AI file storage
@@ -318,9 +363,11 @@ class EPKB_AI_ChatGPT_Vector_Store {
 	 * @param string $file_content File content
 	 * @param string $file_type File type (e.g., post type)
 	 * @param string $store_id Store ID (ignored for ChatGPT - files exist independently of stores)
+	 * @param string $file_extension File extension for the uploaded file
+	 * @param string $file_content_type MIME type for the uploaded file
 	 * @return array|WP_Error File object with 'id' or error
 	 */
-	public function upload_file_to_file_storage( $id, $file_content, $file_type, $store_id = '' ) {
+	public function upload_file_to_file_storage( $id, $file_content, $file_type, $store_id = '', $file_extension = 'txt', $file_content_type = 'text/plain' ) {
 
 		// Map KB post types to 'article' for clarity, use the actual type for others
 		if ( strpos( $file_type, 'epkb_post_type_' ) === 0 ) {
@@ -332,9 +379,16 @@ class EPKB_AI_ChatGPT_Vector_Store {
 		}
 
 		$safe_type = empty( $safe_type ) ? 'article' : $safe_type;
-		$file_name = 'kb_' . $safe_type . '_' . $id . '_' . time() . '.txt';
+		$safe_extension = preg_replace( '/[^a-z0-9]/', '', strtolower( (string) $file_extension ) );
+		$safe_extension = empty( $safe_extension ) ? 'txt' : $safe_extension;
+		$file_name = 'kb_' . $safe_type . '_' . $id . '_' . time() . '.' . $safe_extension;
 
-		return $this->client->request( self::FILES_ENDPOINT, array( 'file_name' => $file_name, 'file_content' => $file_content, 'file_purpose' => 'assistants' ), 'POST', 'file_storage_upload' );
+		return $this->client->request( self::FILES_ENDPOINT, array(
+			'file_name'         => $file_name,
+			'file_content'      => $file_content,
+			'file_purpose'      => 'assistants',
+			'file_content_type' => $file_content_type,
+		), 'POST', 'file_storage_upload' );
 	}
 
 	/**

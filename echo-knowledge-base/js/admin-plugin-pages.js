@@ -757,14 +757,6 @@ jQuery(document).ready(function($) {
 		});
 
 		// KB Category Slug Parameter
-		$( '#category_slug_param' ).on( 'keyup', function( e ) {
-			let val = $( this ).val();
-			// allow only letters, numbers, dash, underscore
-			if ( ! val.match( /^[a-zA-Z0-9-_]*$/ ) ) {
-				$( this ).val( val.replace( /[^a-zA-Z0-9-_]/g, '' ) );
-			}
-		});
-
 		$( '#epkb-category-slug-parameter__form' ).on( 'submit', function( e ) {
 			let form = $( this );
 			let postData = {
@@ -785,14 +777,6 @@ jQuery(document).ready(function($) {
 		});
 
 		// KB Tag Slug Parameter
-		$( '#tag_slug_param' ).on( 'keyup', function( e ) {
-			let val = $( this ).val();
-			// allow only letters, numbers, dash, underscore
-			if ( ! val.match( /^[a-zA-Z0-9-_]*$/ ) ) {
-				$( this ).val( val.replace( /[^a-zA-Z0-9-_]/g, '' ) );
-			}
-		});
-
 		$( '#epkb-tag-slug-parameter__form' ).on( 'submit', function( e ) {
 			let form = $( this );
 			let postData = {
@@ -4198,6 +4182,20 @@ jQuery(document).ready(function($) {
 		var totalSlides = $( '.epkb-feature-slide' ).length;
 		var carouselInterval = null;
 
+		function updateFeaturesCta() {
+			var $ctaButton = $( '.epkb-btn-features-primary' );
+			var $activeSlide = $( '.epkb-feature-slide[data-slide="' + currentSlide + '"]' );
+			var ctaUrl = $activeSlide.attr( 'data-cta-url' ) || $ctaButton.attr( 'data-default-url' );
+			var ctaText = $activeSlide.attr( 'data-cta-text' ) || $ctaButton.attr( 'data-default-text' );
+
+			if ( ! $ctaButton.length ) {
+				return;
+			}
+
+			$ctaButton.attr( 'href', ctaUrl );
+			$ctaButton.find( '.epkb-features-cta-label' ).text( ctaText );
+		}
+
 		// Function to show specific slide
 		function showSlide( slideIndex ) {
 			// Wrap around if needed
@@ -4216,7 +4214,10 @@ jQuery(document).ready(function($) {
 			// Show current slide
 			$( '.epkb-feature-slide[data-slide="' + currentSlide + '"]' ).addClass( 'epkb-feature-slide--active' );
 			$( '.epkb-carousel-dot[data-slide="' + currentSlide + '"]' ).addClass( 'epkb-carousel-dot--active' );
+			updateFeaturesCta();
 		}
+
+		updateFeaturesCta();
 
 		// Previous button click
 		$( document ).on( 'click', '.epkb-carousel-btn--prev', function() {
@@ -4420,9 +4421,9 @@ jQuery(document).ready(function($) {
 	function epkb_pdf_reset_form( $form ) {
 		pdfImportFiles = [];
 		epkb_pdf_reset_batch_state();
-		$( '#epkb-pdf-file-list' ).empty();
-		$( '#epkb-pdf-file-input' ).val( '' );
-		$( '#epkb-pdf-debug-log' ).val( '' );
+		$form.find( '#epkb-pdf-file-list' ).empty();
+		$form.find( '.epkb-pdf-import__file-input' ).val( '' );
+		$form.find( '#epkb-pdf-debug-log' ).val( '' );
 		$form.find( '.epkb-pdf-import-step' ).addClass( 'epkb-hidden' );
 		$form.find( '.epkb-pdf-import-step--1' ).removeClass( 'epkb-hidden' );
 		$form.find( '.epkb-pdf-import__start-btn' ).removeClass( 'epkb-hidden' );
@@ -4467,6 +4468,60 @@ jQuery(document).ready(function($) {
 				reject( new Error( epkb_vars.pdf_prepare_failed || 'Failed to prepare PDF preview' ) );
 			};
 			reader.readAsDataURL( file );
+		} );
+	}
+
+	function epkb_pdf_validate_file( file ) {
+		let fileName = file && typeof file.name === 'string' ? file.name.toLowerCase() : '';
+		let fileType = file && typeof file.type === 'string' ? file.type.toLowerCase() : '';
+		let fileSize = file && file.size !== undefined ? Number( file.size ) || 0 : 0;
+		let maxPdfFileSize = epkb_vars.max_pdf_file_size !== undefined ? Number( epkb_vars.max_pdf_file_size ) || 0 : 0;
+		let isPdf = !! ( window.AIPRO_PDF_Utils && typeof window.AIPRO_PDF_Utils.isPdfFile === 'function'
+			? window.AIPRO_PDF_Utils.isPdfFile( file )
+			: file && ( fileType.indexOf( 'pdf' ) !== -1 || fileName.slice( -4 ) === '.pdf' ) );
+
+		if ( ! isPdf ) {
+			return {
+				valid: false,
+				error: epkb_vars.pdf_invalid_file || 'Please select a valid PDF file.'
+			};
+		}
+
+		if ( maxPdfFileSize && fileSize > maxPdfFileSize ) {
+			return {
+				valid: false,
+				error: epkb_vars.pdf_too_large || 'PDF file exceeds the file size limit.'
+			};
+		}
+
+		return {
+			valid: true,
+			error: ''
+		};
+	}
+
+	function epkb_pdf_validate_media_attachment( attachment ) {
+		return epkb_pdf_validate_file( {
+			name: attachment && typeof attachment.filename === 'string' ? attachment.filename : '',
+			size: attachment && attachment.filesizeInBytes !== undefined ? Number( attachment.filesizeInBytes ) || 0 : 0,
+			type: attachment && typeof attachment.mime === 'string' ? attachment.mime : 'application/pdf'
+		} );
+	}
+
+	function epkb_pdf_format_validation_error( fileName, errorMessage ) {
+		return fileName ? fileName + ': ' + errorMessage : errorMessage;
+	}
+
+	function epkb_pdf_is_duplicate_file( file, pendingFiles ) {
+		pendingFiles = Array.isArray( pendingFiles ) ? pendingFiles : [];
+
+		return pdfImportFiles.some( function( queuedFile ) {
+			return queuedFile !== null &&
+				queuedFile.name === file.name &&
+				queuedFile.size === file.size;
+		} ) || pendingFiles.some( function( queuedFile ) {
+			return queuedFile.name === file.name &&
+				queuedFile.size === file.size;
 		} );
 	}
 
@@ -5091,7 +5146,15 @@ jQuery(document).ready(function($) {
 
 	// Select button click triggers file input
 	$( document ).on( 'click', '#epkb-pdf-select-btn', function() {
-		$( '#epkb-pdf-file-input' ).trigger( 'click' );
+		let $input = $( this ).closest( '.epkb-pdf-import-form' ).find( '.epkb-pdf-import__file-input' ).first();
+		let input = $input.get( 0 );
+
+		if ( ! input ) {
+			return;
+		}
+
+		input.multiple = true;
+		input.click();
 	} );
 
 	function epkb_pdf_show_error_notification( message ) {
@@ -5103,55 +5166,78 @@ jQuery(document).ready(function($) {
 
 	// Media Library button click
 	$( document ).on( 'click', '#epkb-pdf-media-library-btn', function() {
+		let $form = $( this ).closest( '.epkb-pdf-import-form' );
+
 		if ( typeof wp === 'undefined' || typeof wp.media === 'undefined' ) {
 			epkb_pdf_show_error_notification( 'Media Library is not available.' );
 			return;
 		}
 
-		var mediaFrame = wp.media( {
+		let mediaFrame = wp.media( {
 			title: epkb_vars.pdf_select_from_media || 'Select PDF Files',
 			library: { type: 'application/pdf' },
 			multiple: true,
 			button: { text: epkb_vars.select_text || 'Select' }
 		} );
 
-		mediaFrame.on( 'select', function() {
-			var selection = mediaFrame.state().get( 'selection' );
-			var promises = [];
+		mediaFrame.on( 'select', async function() {
+			let selection = mediaFrame.state().get( 'selection' );
+			let nextFiles = [];
+			let selectionErrors = [];
 
-			selection.each( function( attachment ) {
-				var data = attachment.toJSON();
-				if ( ! data.url || ! data.filename ) {
-					return;
+			for ( const model of selection.models ) {
+				let attachment = model.toJSON();
+
+				if ( ! attachment.url || ! attachment.filename ) {
+					continue;
 				}
 
-				promises.push(
-					fetch( data.url )
-						.then( function( response ) { return response.blob(); } )
-						.then( function( blob ) { return new File( [ blob ], data.filename, { type: 'application/pdf' } ); } )
-						.catch( function() { return null; } )
-				);
-			} );
+				let validation = epkb_pdf_validate_media_attachment( attachment );
+				if ( ! validation.valid ) {
+					selectionErrors.push( epkb_pdf_format_validation_error( attachment.filename, validation.error || ( epkb_vars.pdf_invalid_file || 'Please select a valid PDF file.' ) ) );
+					continue;
+				}
 
-			Promise.all( promises ).then( function( files ) {
-				var dataTransfer = new DataTransfer();
-				files.forEach( function( file ) {
-					if ( file ) {
-						dataTransfer.items.add( file );
+				if ( epkb_pdf_is_duplicate_file( {
+					name: attachment.filename,
+					size: attachment.filesizeInBytes !== undefined ? Number( attachment.filesizeInBytes ) || 0 : 0
+				}, nextFiles ) ) {
+					continue;
+				}
+
+				try {
+					let response = await fetch( attachment.url );
+					let blob = await response.blob();
+					let file = new File( [ blob ], attachment.filename, { type: 'application/pdf' } );
+					let fileValidation = epkb_pdf_validate_file( file );
+
+					if ( ! fileValidation.valid ) {
+						selectionErrors.push( epkb_pdf_format_validation_error( attachment.filename, fileValidation.error || ( epkb_vars.pdf_invalid_file || 'Please select a valid PDF file.' ) ) );
+						continue;
 					}
-				} );
-				if ( dataTransfer.files.length > 0 ) {
-					epkb_pdf_add_files( dataTransfer.files );
+
+					nextFiles.push( file );
+				} catch ( error ) {
+					selectionErrors.push( epkb_pdf_format_validation_error( attachment.filename, epkb_vars.pdf_media_fetch_failed || 'Failed to load file from Media Library.' ) );
 				}
-			} );
+			}
+
+			if ( nextFiles.length > 0 ) {
+				epkb_pdf_add_files( $form, nextFiles );
+			}
+
+			if ( selectionErrors.length > 0 ) {
+				epkb_pdf_show_error_notification( selectionErrors[0] );
+			}
 		} );
 
 		mediaFrame.open();
 	} );
 
 	// File input change
-	$( document ).on( 'change', '#epkb-pdf-file-input', function() {
-		epkb_pdf_add_files( this.files );
+	$( document ).on( 'change', '.epkb-pdf-import__file-input', function() {
+		epkb_pdf_add_files( $( this ).closest( '.epkb-pdf-import-form' ), this.files );
+		$( this ).val( '' );
 	} );
 
 	// Drag and drop handlers
@@ -5174,45 +5260,40 @@ jQuery(document).ready(function($) {
 		e.stopPropagation();
 		$( this ).removeClass( 'epkb-pdf-import__dropzone--active' );
 		$( this ).find( '.epkb-pdf-import__dropzone-text' ).text( epkb_vars.pdf_drag_drop || 'Drag and drop PDF files here, or click below' );
-		epkb_pdf_add_files( e.originalEvent.dataTransfer.files );
+		epkb_pdf_add_files( $( this ).closest( '.epkb-pdf-import-form' ), e.originalEvent.dataTransfer.files );
 	});
 
-	function epkb_pdf_add_files( fileList ) {
-		let $list = $( '#epkb-pdf-file-list' );
-		let validationError = '';
-		for ( let i = 0; i < fileList.length; i++ ) {
-			let file = fileList[i];
-			let validation = window.AIPRO_PDF_Utils && typeof window.AIPRO_PDF_Utils.validatePdfFile === 'function'
-				? window.AIPRO_PDF_Utils.validatePdfFile( file )
-				: {
-					valid: !! ( window.AIPRO_PDF_Utils && window.AIPRO_PDF_Utils.isPdfFile( file ) ),
-					error: epkb_vars.pdf_invalid_file || 'Please select a valid PDF file.'
-				};
+	function epkb_pdf_add_files( $form, fileList ) {
+		let $list = $form.find( '#epkb-pdf-file-list' );
+		let nextFiles = [];
+		let validationErrors = [];
+
+		Array.from( fileList || [] ).forEach( function( file ) {
+			let validation = epkb_pdf_validate_file( file );
 
 			if ( ! validation.valid ) {
-				validationError = validation.error || ( epkb_vars.pdf_invalid_file || 'Please select a valid PDF file.' );
+				validationErrors.push( epkb_pdf_format_validation_error( file && file.name ? file.name : '', validation.error || ( epkb_vars.pdf_invalid_file || 'Please select a valid PDF file.' ) ) );
 				epkb_pdf_debug_log( 'Skipped invalid file: ' + ( file && file.name ? file.name : 'unknown file' ) );
-				continue;
+				return;
 			}
 
-			let isDuplicate = pdfImportFiles.some( function( queuedFile ) {
-				return queuedFile !== null &&
-					queuedFile.name === file.name &&
-					queuedFile.size === file.size &&
-					queuedFile.lastModified === file.lastModified;
-			} );
-			if ( isDuplicate ) {
-				continue;
+			if ( epkb_pdf_is_duplicate_file( file, nextFiles ) ) {
+				return;
 			}
+
+			nextFiles.push( file );
+		} );
+
+		nextFiles.forEach( function( file ) {
 			pdfImportFiles.push( file );
 			$list.append( '<div class="epkb-pdf-import__file-item" data-index="' + ( pdfImportFiles.length - 1 ) + '">' +
 				'<span>' + $( '<span>' ).text( file.name ).html() + '</span>' +
 				'<button type="button" class="epkb-pdf-import__file-remove" data-index="' + ( pdfImportFiles.length - 1 ) + '">&times;</button>' +
 				'</div>' );
-		}
+		} );
 
-		if ( validationError ) {
-			epkb_pdf_show_error_notification( validationError );
+		if ( validationErrors.length > 0 ) {
+			epkb_pdf_show_error_notification( validationErrors[0] );
 		}
 	}
 

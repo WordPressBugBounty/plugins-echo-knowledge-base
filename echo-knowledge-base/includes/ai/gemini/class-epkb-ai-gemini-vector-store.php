@@ -252,15 +252,17 @@ class EPKB_AI_Gemini_Vector_Store {
 	 * @param string $file_content File content
 	 * @param string $file_type File type (e.g., post type)
 	 * @param string $store_id Store ID (required for Gemini, ignored by ChatGPT)
+	 * @param string $file_extension File extension for the uploaded file
+	 * @param string $mime_type MIME type for the uploaded file
 	 * @return array|WP_Error File object with 'id' or error
 	 */
-	public function upload_file_to_file_storage( $id, $file_content, $file_type, $store_id = '' ) {
+	public function upload_file_to_file_storage( $id, $file_content, $file_type, $store_id = '', $file_extension = 'txt', $mime_type = 'text/plain' ) {
 
 		if ( empty( $store_id ) ) {
 			return new WP_Error( 'missing_store_id', __( 'Store ID is required for Gemini', 'echo-knowledge-base' ) );
 		}
 
-		return $this->upload_document_to_store( $store_id, $id, $file_content, $file_type );
+		return $this->upload_document_to_store( $store_id, $id, $file_content, $file_type, $file_extension, $mime_type );
 	}
 
 	/**
@@ -270,9 +272,11 @@ class EPKB_AI_Gemini_Vector_Store {
 	 * @param string $id Entity ID
 	 * @param string $file_content Content
 	 * @param string $file_type Type
+	 * @param string $file_extension File extension for display name
+	 * @param string $mime_type MIME type for the uploaded content
 	 * @return array|WP_Error
 	 */
-	public function upload_document_to_store( $store_id, $id, $file_content, $file_type ) {
+	public function upload_document_to_store( $store_id, $id, $file_content, $file_type, $file_extension = 'txt', $mime_type = 'text/plain' ) {
 
 		if ( empty( $store_id ) || empty( $file_content ) ) {
 			return new WP_Error( 'missing_params', __( 'Store ID and content are required', 'echo-knowledge-base' ) );
@@ -282,13 +286,17 @@ class EPKB_AI_Gemini_Vector_Store {
 		$safe_type = strpos( $file_type, 'epkb_post_type_' ) === 0 ? 'article' : preg_replace( '/[^a-z0-9_-]/', '_', strtolower( $file_type ) );
 		$safe_type = empty( $safe_type ) ? 'article' : $safe_type;
 		$display_name = 'kb_' . $safe_type . '_' . $id . '_' . time();
+		$safe_extension = preg_replace( '/[^a-z0-9]/', '', strtolower( (string) $file_extension ) );
+		if ( ! empty( $safe_extension ) ) {
+			$display_name .= '.' . $safe_extension;
+		}
 
 		$resource_name = $this->get_resource_name( $store_id );
 		$upload_endpoint = '/' . $resource_name . ':uploadToFileSearchStore';
 
 		// Use resumable upload protocol (required by Gemini API)
 		$metadata = array( 'displayName' => $display_name );
-		$response = $this->client->upload_file_resumable( $upload_endpoint, $file_content, $metadata, 'text/plain' );
+		$response = $this->client->upload_file_resumable( $upload_endpoint, $file_content, $metadata, $mime_type );
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}

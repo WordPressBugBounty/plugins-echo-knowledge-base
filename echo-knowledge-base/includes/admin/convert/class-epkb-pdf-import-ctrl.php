@@ -20,6 +20,7 @@ class EPKB_PDF_Import_Ctrl {
 	public function import_pdf_article() {
 
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+		EPKB_PDF_Utilities::setup_timeout_error_handling( 'ajax' );
 
 		$kb_id = EPKB_Utilities::post( 'kb_id' );
 		$kb_id = empty( $kb_id ) ? '' : EPKB_Utilities::sanitize_get_id( $kb_id );
@@ -188,6 +189,7 @@ class EPKB_PDF_Import_Ctrl {
 	public function prepare_pdf_content() {
 
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+		EPKB_PDF_Utilities::setup_timeout_error_handling( 'ajax' );
 
 		$format_mode = EPKB_Utilities::post( 'format_mode', 'basic' );
 		$format_mode = in_array( $format_mode, array( 'none', 'basic', 'ai' ), true ) ? $format_mode : 'basic';
@@ -235,6 +237,7 @@ class EPKB_PDF_Import_Ctrl {
 	public function ai_extract_pdf_text() {
 
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+		EPKB_PDF_Utilities::setup_timeout_error_handling( 'ajax' );
 
 		$pdf_data = self::get_posted_pdf_data();
 		if ( is_wp_error( $pdf_data ) ) {

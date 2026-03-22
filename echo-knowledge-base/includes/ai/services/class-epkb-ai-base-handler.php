@@ -74,7 +74,7 @@ abstract class EPKB_AI_Base_Handler {
 
 		// Extract content from response
 		$content = EPKB_AI_Provider::extract_response_content( $response );
-		if ( empty( $content ) ) {
+		if ( EPKB_AI_Utilities::is_empty_ai_answer( $content ) ) {
 			EPKB_AI_Log::add_log( 'Warning: AI did not return a response. Check the training data and request to see why no response was returned.', array(
 				'provider'          => $provider,
 				'model'             => $model,

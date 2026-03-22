@@ -85,8 +85,8 @@ class EPKB_AI_Search_Results_Handler {
 		// Get chat_id from the result (used by record-feedback and submit-contact-support)
 		$chat_id = isset( $result['chat_id'] ) ? $result['chat_id'] : '';
 
-		// Build HTML with markdown-style formatting
-		$html = '<div class="epkb-ai-sr-ai-answer-text">' . $ai_answer . '</div>';
+		// Store the raw answer as text so frontend formatting can be applied safely after insertion.
+		$html = '<div class="epkb-ai-sr-ai-answer-text">' . esc_html( $ai_answer ) . '</div>';
 
 		return array(
 			'has_content' => true,

@@ -235,8 +235,17 @@
             "File Name:": [
                 "फाइल का नाम:"
             ],
-            "Unknown PDF": [
-                "अज्ञात PDF"
+            "Unknown file": [
+                "अज्ञात फ़ाइल"
+            ],
+            "Stored as:": [
+                "इस रूप में सहेजा गया:"
+            ],
+            "HTML": [
+                "HTML"
+            ],
+            "PDF": [
+                "PDF"
             ],
             "Original PDF:": [
                 "मूल PDF:"
@@ -247,8 +256,8 @@
             "If this stored URL no longer works, the original PDF is no longer available from this training data record.": [
                 "अगर यह संग्रहीत URL अब काम नहीं करता है, तो इस Machine learning data रिकॉर्ड से मूल PDF अब उपलब्ध नहीं है।."
             ],
-            "No original URL is stored for this PDF upload. Only the saved file information is available here.": [
-                "इस PDF अपलोड के लिए कोई मूल URL संग्रहीत नहीं है। यहां केवल सहेजी गई फ़ाइल जानकारी उपलब्ध है।."
+            "No original URL is stored for this upload. Only the saved file information is available here.": [
+                "इस अपलोड के लिए कोई मूल URL सहेजा नहीं गया है। यहाँ केवल सहेजी गई फ़ाइल की जानकारी उपलब्ध है।."
             ],
             "Provider:": [
                 "प्रदाता:"

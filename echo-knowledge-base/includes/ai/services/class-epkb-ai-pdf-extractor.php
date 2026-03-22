@@ -29,9 +29,9 @@ class EPKB_AI_PDF_Extractor {
 		$instructions = 'You are a document text extraction specialist. Extract text accurately and completely.';
 
 		$response_text = EPKB_PDF_Utilities::send_ai_request( $prompt, $instructions, 'pdf_extraction', array(
-			'data'      => base64_encode( $pdf_binary ),
-			'mime_type' => 'application/pdf',
-			'file_name' => $file_name,
+			'file_content' => $pdf_binary,
+			'mime_type'    => 'application/pdf',
+			'file_name'    => $file_name,
 		) );
 
 		if ( is_wp_error( $response_text ) ) {

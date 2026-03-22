@@ -381,10 +381,17 @@ class EPKB_HTML_Elements {
 						self::display_pro_setting_tag_pro_feature_ad( $args['pro_tooltip_args'] );
 					}   ?>
 				</label>
-				<div class="epkb-settings-control__input <?php echo esc_attr( $args['input_class'] ); ?>">
-					<label class="epkb-settings-control-toggle">
+				<div class="epkb-settings-control__input <?php echo esc_attr( $args['input_class'] ); ?>">     <?php
+						$toggle_on_text  = $args['toggleOnText'];
+						$toggle_off_text = $args['toggleOffText'];
+						$longest_text    = mb_strtoupper( mb_strlen( $toggle_off_text ) > mb_strlen( $toggle_on_text ) ? $toggle_off_text : $toggle_on_text );
+						$char_count      = mb_strlen( $longest_text );
+						$toggle_width      = max( 54, ( $char_count * 7 ) + 24 );
+						$toggle_text_offset = $toggle_width > 54 ? (int) round( 3 + ( $toggle_width - 54 ) / 2 ) : 3;
+						$toggle_style      = $toggle_width > 54 ? 'style="width: ' . esc_attr( $toggle_width ) . 'px; --epkb-toggle-text-offset: ' . esc_attr( $toggle_text_offset ) . 'px;"' : '';    ?>
+					<label class="epkb-settings-control-toggle" <?php echo $toggle_style; ?>>
 						<input type="checkbox" class="epkb-settings-control__input__toggle" value="on" name="<?php echo esc_attr( $args['name'] ); ?>" <?php checked( true, $args['checked'] ); ?>>
-						<span class="epkb-settings-control__input__label" data-on="<?php echo esc_attr( $args['toggleOnText'] ); ?>" data-off="<?php echo esc_attr( $args['toggleOffText'] ); ?>"></span>
+						<span class="epkb-settings-control__input__label" data-on="<?php echo esc_attr( $toggle_on_text ); ?>" data-off="<?php echo esc_attr( $toggle_off_text ); ?>"></span>
 						<span class="epkb-settings-control__input__handle"></span>
 					</label>
 				</div>

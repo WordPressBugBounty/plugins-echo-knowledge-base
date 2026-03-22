@@ -86,8 +86,11 @@ class EPKB_Frontend_Editor {
 	    // when FE preview is updated via the entire page reload without saving settings (for some of the settings controls need to reload the entire page)
 	    $kb_config = self::fe_preview_config( $kb_config );
 
+		$locale_context = self::switch_to_user_locale_for_fe( $kb_config['id'] );
+		$editor_kb_config = self::get_localized_default_text_config( $kb_config, $locale_context );
+
 		// render settings
-		self::render_editor( $kb_config, $kb_page_type );
+		self::render_editor( $editor_kb_config, $kb_page_type );
 
 		// Enqueue assets
 		wp_enqueue_style( 'epkb-frontend-editor' );
@@ -105,6 +108,8 @@ class EPKB_Frontend_Editor {
 		wp_localize_script( 'epkb-frontend-editor', 'epkb_fe_vars', array(
 			'admin_url' => admin_url()
 		) );
+
+		self::restore_user_locale_for_fe( $locale_context );
     }
 
     /**
@@ -113,17 +118,6 @@ class EPKB_Frontend_Editor {
      */
     private static function render_editor( $kb_config, $kb_page_type ) {
 		global $post;
-
-		// Switch to user locale for Frontend Editor (normally front-end uses site locale, but FE should use user's locale like admin pages)
-		$switched_locale = false;
-		if ( function_exists( 'switch_to_locale' ) && function_exists( 'get_user_locale' ) && function_exists( 'determine_locale' ) ) {
-			$user_locale = get_user_locale();
-			$current_locale = determine_locale();
-			if ( $user_locale !== $current_locale ) {
-				switch_to_locale( $user_locale );
-				$switched_locale = true;
-			}
-		}
 
 		$display_frontend_editor_closed = EPKB_Core_Utilities::is_kb_flag_set( 'epkb_fe_editor_closed' );
 		$has_page_builder = ( $kb_page_type != 'block-main-page' && ! empty( $post ) && EPKB_Site_Builders::has_page_builder_content( $post->post_content ) ) ? 'true' : 'false'; ?>
@@ -286,11 +280,67 @@ class EPKB_Frontend_Editor {
 
 		</div><?php
 
-		// Restore previous locale if we switched it
-		if ( $switched_locale && function_exists( 'restore_previous_locale' ) ) {
-			restore_previous_locale();
-		}
     }
+
+	private static function switch_to_user_locale_for_fe( $kb_id ) {
+
+		$locale_context = array(
+			'switched_locale' => false,
+			'frontend_defaults' => array(),
+			'user_defaults' => array(),
+		);
+
+		if ( ! function_exists( 'switch_to_locale' ) || ! function_exists( 'restore_previous_locale' ) || ! function_exists( 'get_user_locale' ) ) {
+			return $locale_context;
+		}
+
+		$user_locale = get_user_locale();
+		$frontend_locale = get_locale();
+		if ( empty( $user_locale ) || $user_locale === $frontend_locale ) {
+			return $locale_context;
+		}
+
+		EPKB_KB_Config_Specs::reset_cache_specs();
+		$locale_context['frontend_defaults'] = EPKB_KB_Config_Specs::get_default_kb_config( $kb_id );
+
+		switch_to_locale( $user_locale );
+
+		EPKB_KB_Config_Specs::reset_cache_specs();
+		$locale_context['switched_locale'] = true;
+		$locale_context['user_defaults'] = EPKB_KB_Config_Specs::get_default_kb_config( $kb_id );
+
+		return $locale_context;
+	}
+
+	private static function restore_user_locale_for_fe( $locale_context ) {
+		if ( ! empty( $locale_context['switched_locale'] ) && function_exists( 'restore_previous_locale' ) ) {
+			restore_previous_locale();
+			EPKB_KB_Config_Specs::reset_cache_specs();
+		}
+	}
+
+	private static function get_localized_default_text_config( $kb_config, $locale_context ) {
+
+		if ( empty( $locale_context['switched_locale'] ) || empty( $locale_context['frontend_defaults'] ) || empty( $locale_context['user_defaults'] ) ) {
+			return $kb_config;
+		}
+
+		// Preserve user/customized values, but show unchanged defaults in the FE user's locale.
+		foreach ( $locale_context['user_defaults'] as $setting_name => $user_default ) {
+			$frontend_default = isset( $locale_context['frontend_defaults'][ $setting_name ] ) ? $locale_context['frontend_defaults'][ $setting_name ] : null;
+			if ( ! isset( $kb_config[ $setting_name ] ) || ! is_string( $kb_config[ $setting_name ] ) || ! is_string( $frontend_default ) || ! is_string( $user_default ) ) {
+				continue;
+			}
+
+			if ( $frontend_default === $user_default || $kb_config[ $setting_name ] !== $frontend_default ) {
+				continue;
+			}
+
+			$kb_config[ $setting_name ] = $user_default;
+		}
+
+		return $kb_config;
+	}
 
 	private static function display_main_page_settings( $features_config, $kb_config ) {
 

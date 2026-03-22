@@ -60,9 +60,9 @@ class EPKB_AI_General_Settings_Tab {
 					),
 					'ai_chatgpt_key' => array(
 						'type' => 'password',
-						'label' => __( 'OpenAI API Key', 'echo-knowledge-base' ),
+						'label' => __( 'OpenAI ChatGPT API Key', 'echo-knowledge-base' ),
 						'value' => empty( $ai_config['ai_chatgpt_key'] ) ? '' : '********',
-						'description' => __( 'Enter your OpenAI API key.', 'echo-knowledge-base' ),
+						'description' => __( 'Enter your OpenAI ChatGPT API key.', 'echo-knowledge-base' ),
 						'placeholder' => 'sk-...',
 						'required' => true,
 						'dependency' => array(

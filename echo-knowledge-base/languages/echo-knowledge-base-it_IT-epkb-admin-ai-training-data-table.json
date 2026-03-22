@@ -235,8 +235,17 @@
             "File Name:": [
                 "Nome file:"
             ],
-            "Unknown PDF": [
-                "PDF sconosciuto"
+            "Unknown file": [
+                "File sconosciuto"
+            ],
+            "Stored as:": [
+                "Salvato come:"
+            ],
+            "HTML": [
+                "HTML"
+            ],
+            "PDF": [
+                "PDF"
             ],
             "Original PDF:": [
                 "PDF originale:"
@@ -247,8 +256,8 @@
             "If this stored URL no longer works, the original PDF is no longer available from this training data record.": [
                 "Se questo URL salvato non funziona più, il PDF originale non è più disponibile in questo record di dati di addestramento."
             ],
-            "No original URL is stored for this PDF upload. Only the saved file information is available here.": [
-                "Nessun URL originale è memorizzato per questo caricamento PDF. Qui sono disponibili solo le informazioni sul file salvato."
+            "No original URL is stored for this upload. Only the saved file information is available here.": [
+                "Nessun URL originale è stato memorizzato per questo caricamento. Qui sono disponibili solo le informazioni del file salvato."
             ],
             "Provider:": [
                 "Fornitore:"

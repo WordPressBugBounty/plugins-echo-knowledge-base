@@ -7,14 +7,8 @@
                 "lang": "sv_SE",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
-            "Title": [
-                "Rubrik"
-            ],
             "Learn More": [
                 "Lär dig mer"
-            ],
-            "Close": [
-                "Stäng"
             ],
             "Cancel": [
                 "Avbryt"
@@ -22,83 +16,14 @@
             "Delete": [
                 "Ta bort"
             ],
-            "Previous": [
-                "Föregående"
-            ],
-            "Basic formatting": [
-                "Grundläggande formatering"
-            ],
-            "AI-structured": [
-                "AI-strukturerad"
-            ],
-            "Select PDF Files": [
-                "Välj PDF-filer"
-            ],
-            "Drag and drop PDF files here, or click the buttons below": [
-                "Dra och släpp PDF-filer här, eller klicka på knapparna nedan"
-            ],
-            "Select PDFs": [
-                "Välj PDF-filer"
-            ],
-            "Media Library": [
-                "Mediebibliotek"
-            ],
-            "Retry": [
-                "Prova igen"
-            ],
-            "PDF to Notes": [
-                "PDF till anteckningar"
-            ],
             "Saving...": [
                 "Sparar …"
-            ],
-            "No": [
-                "Nej"
-            ],
-            "Preview": [
-                "Förhandsvisning"
             ],
             "Note deleted successfully": [
                 "Anteckningen raderades framgångsrikt"
             ],
-            "AI was unable to extract text from this PDF.": [
-                "AI kunde inte extrahera text från denna PDF."
-            ],
             "Additional Notes": [
                 "Ytterligare anteckningar"
-            ],
-            "PDF file exceeds the 20 MB size limit.": [
-                "PDF-filen överskrider storleksgränsen på 20 MB."
-            ],
-            "of": [
-                "av"
-            ],
-            "Drop PDF files here": [
-                "Släpp PDF-filer här"
-            ],
-            "Failed to prepare PDF preview": [
-                "Misslyckades med att förbereda PDF-förhandsgranskningen"
-            ],
-            "No text could be extracted from this PDF.": [
-                "Ingen text kunde hämtas från denna PDF."
-            ],
-            "PDF extraction is not available. Please ensure AI Features Pro is active.": [
-                "PDF-extrahering är inte tillgänglig. Se till att AI Features Pro är aktiverat."
-            ],
-            "Use AI to Extract Text?": [
-                "Använd AI för att extrahera text?"
-            ],
-            "This PDF appears to contain scanned images. Would you like to use AI to extract the text? This will send the PDF to your configured AI provider.": [
-                "Denna PDF verkar innehålla skannade bilder. Skulle du vilja använda AI för att extrahera texten? Detta kommer att skicka PDF-filen till den konfigurerade AI-leverantören."
-            ],
-            "Yes, Use AI": [
-                "Ja, använd AI"
-            ],
-            "Please drop a valid PDF file.": [
-                "Släpp en giltig PDF-fil."
-            ],
-            "Failed to read file.": [
-                "Misslyckades med att läsa filen."
             ],
             "Add additional support and miscellaneous information not found in articles, posts, and pages that AI should also know about.": [
                 "Lägg till ytterligare stöd och övrig information som AI också bör känna till och som inte finns i artiklar, inlägg och sidor."
@@ -160,71 +85,11 @@
             "Save Note": [
                 "Spara anteckning"
             ],
-            "Please enter a title for the note.": [
-                "Vänligen ange en titel för anteckningen."
-            ],
-            "No content to save. Please prepare the PDF preview first.": [
-                "Inget innehåll att spara. Förbered PDF-förhandsgranskningen först."
-            ],
-            "Failed to save PDF note": [
-                "Misslyckades med att spara PDF-notering"
-            ],
-            "Media Library is not available.": [
-                "Mediebiblioteket är inte tillgängligt."
-            ],
-            "Select": [
-                "Välj"
-            ],
-            "Failed to load file from Media Library.": [
-                "Misslyckades med att ladda filen från Mediebiblioteket."
-            ],
-            "Preparing preview...": [
-                "Förbereder förhandsgranskning..."
-            ],
-            "Enter title...": [
-                "Ange titel..."
-            ],
-            "Formatting": [
-                "Formatering"
-            ],
-            "No formatting": [
-                "Ingen formatering"
-            ],
-            "Checking selected PDF files...": [
-                "Kontrollerar valda PDF-filer..."
-            ],
-            "Skip": [
-                "Hoppa över"
-            ],
-            "Save as Note": [
-                "Spara som anteckning"
-            ],
-            "Upload failed.": [
-                "Misslyckades med uppladdningen."
-            ],
-            "Upload PDFs to AI Store": [
-                "Ladda upp PDF:er till AI Store"
-            ],
-            "Uploaded": [
-                "Uppladdat"
-            ],
-            "Uploading...": [
-                "Laddar upp..."
-            ],
-            "Waiting...": [
-                "Väntar..."
-            ],
-            "Upload": [
-                "Ladda upp"
-            ],
             "Add Notes and PDFs": [
                 "Lägg till anteckningar och PDF-filer"
             ],
             "added": [
                 "tillagd"
-            ],
-            "Requires AI Advanced Features plugin.": [
-                "Kräver AI Advanced Features-tillägg."
             ]
         }
     }

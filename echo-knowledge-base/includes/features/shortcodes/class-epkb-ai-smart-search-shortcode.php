@@ -23,7 +23,11 @@ class EPKB_AI_Smart_Search_Shortcode {
 	 */
 	public static function output_shortcode( $attributes ) {
 
-		// Only render if advanced search mode is enabled
+		if ( ! EPKB_Utilities::is_ai_features_pro_enabled() ) {
+			return self::render_coming_soon_state();
+		}
+
+		// Only render if smart search mode is enabled
 		if ( ! EPKB_AI_Utilities::is_ai_search_smart_enabled() ) {
 			return '';
 		}
@@ -63,7 +67,11 @@ class EPKB_AI_Smart_Search_Shortcode {
 		}
 
 		// Prepare data attributes
-		$collection_attr_escaped = ! empty( $collection_id ) ? ' data-collection-id="' . esc_attr( $collection_id ) . '"' : '';
+		$collection_attr_escaped = '';
+		if ( ! empty( $collection_id ) ) {
+			$collection_attr_escaped = ' data-collection-id="' . esc_attr( $collection_id ) . '"';
+			$collection_attr_escaped .= ' data-collection-token="' . esc_attr( EPKB_AI_Security::create_collection_access_token( $collection_id, $kb_id ) ) . '"';
+		}
 
 		// Start output buffering
 		ob_start();
@@ -139,6 +147,22 @@ class EPKB_AI_Smart_Search_Shortcode {
 				<?php else : ?>
 				<p><?php esc_html_e( 'AI Search is temporarily unavailable. Please try again later.', 'echo-knowledge-base' ); ?></p>
 				<?php endif; ?>
+			</div>
+		</div>		<?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render placeholder output when AI Features PRO is not active.
+	 *
+	 * @return string
+	 */
+	private static function render_coming_soon_state() {
+		ob_start(); ?>
+		<div class="epkb-ai-sr-shortcode epkb-ai-sr-shortcode--disabled">
+			<div class="epkb-ai-sr-shortcode__disabled-notice">
+				<p><?php esc_html_e( 'Smart Search comming soon', 'echo-knowledge-base' ); ?></p>
 			</div>
 		</div>		<?php
 

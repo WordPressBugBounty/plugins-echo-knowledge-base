@@ -46,6 +46,9 @@
             "Error": [
                 "त्रुटि"
             ],
+            "OK": [
+                "ठीक है"
+            ],
             "Add Training Data": [
                 "प्रशिक्षण डेटा जोड़ें"
             ],
@@ -54,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "एआई में डेटा भेजें"
+            ],
+            "Optional": [
+                "वैकल्पिक"
             ],
             "Collection name cannot be empty": [
                 "संग्रह का नाम खाली नहीं हो सकता"
@@ -76,14 +82,41 @@
             "Delete Selected": [
                 "चयनित को हटाएं"
             ],
+            "of": [
+                "में से"
+            ],
+            "Skipped": [
+                "छोड़ दिया गया"
+            ],
             "Failed to create collection": [
                 "संग्रह बनाने में असफल रहा।"
+            ],
+            "errors": [
+                "त्रुटियाँ"
             ],
             "Outdated": [
                 "पुराना"
             ],
             "Added": [
                 "जोड़ा गया"
+            ],
+            "Verifying": [
+                "जाँच किया जा रहा है"
+            ],
+            "items": [
+                "आइटम"
+            ],
+            "Verification complete:": [
+                "जाँच पूरी:"
+            ],
+            "marked outdated": [
+                "पुराने के रूप में चिह्नित"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "पुराने आइटमों को पुनः अपलोड करने के लिए सिंक चलाएं."
+            ],
+            "Cancel Verify": [
+                "जाँच रद्द करें"
             ],
             "Deleting...": [
                 "हटाया जा रहा है..."
@@ -157,6 +190,12 @@
             "Add Selected Items": [
                 "चयनित आइटम जोड़ें"
             ],
+            "Cannot change actions while sync is in progress": [
+                "सिंक प्रगति के दौरान क्रियाओं को बदला नहीं जा सकता"
+            ],
+            "Cannot change actions while validation is in progress": [
+                "सत्यापन प्रगति पर होने के दौरान कार्रवाइयां नहीं बदली जा सकतीं"
+            ],
             "Collection name updated successfully": [
                 "संग्रह का नाम सफलतापूर्वक अपडेट किया गया"
             ],
@@ -190,8 +229,8 @@
             "Choose an Action": [
                 "क्रिया चुनें"
             ],
-            "Cannot change actions while sync is in progress": [
-                "सिंक प्रगति के दौरान क्रियाओं को बदला नहीं जा सकता"
+            "Validate & Fix Synced Items": [
+                "समन्वयित आइटमों को सत्यापित करें और ठीक करें"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "टेबल में लोड करने के लिए सामग्री प्रकार चुनें (KB लेख, पोस्ट, पेज)। यह अभी AI को कुछ भी नहीं भेजता।."
@@ -223,14 +262,11 @@
             "Content changed since last sync. Re-send to update.": [
                 "पिछली सिंक्रनाइज़ेशन के बाद सामग्री बदली है। अपडेट के लिए पुनः भेजें।."
             ],
+            "Could not be synced because the content is empty or the source no longer exists.": [
+                "सिंक नहीं किया जा सका क्योंकि सामग्री खाली है या स्रोत अब मौजूद नहीं है।."
+            ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "सिंक विफल रहा। पुनः प्रयास के लिए पुनः भेजें। जाँच करें कि सामग्री मौजूद है और खाली नहीं है।."
-            ],
-            "Cannot navigate while sync is in progress": [
-                "सिंक प्रगति के दौरान नेविगेशन नहीं किया जा सकता"
-            ],
-            "Adding data to:": [
-                "डेटा जोड़ना:"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "अपने AI प्रशिक्षण डेटा में आप किन कंटेंट प्रकारों को शामिल करना चाहते हैं?."
@@ -297,6 +333,24 @@
             ],
             "Select items from the table and choose a sync method to update your AI training data.": [
                 "टेबल से आइटम चुनें और अपने एआई मशीन लर्निंग डेटा को अपडेट करने के लिए एक सिंक विधि चुनें."
+            ],
+            "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
+                "यह सुनिश्चित करने के लिए एक अतिरिक्त सत्यापन पास चलाएँ कि स्थानीय डेटाबेस और AI स्टोर सिंक में रहें। यदि AI स्टोर से कोई फ़ाइल गायब है, तो उसे पुराना चिह्नित किया जाएगा ताकि उसे फिर से भेजा जा सके।."
+            ],
+            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
+                "यह इस संग्रह में पहले से ट्रैक किए गए जोड़े गए और अपडेट किए गए आइटम की जांच करता है, जिसमें अपलोड किए गए PDF भी शामिल हैं।."
+            ],
+            "Collection:": [
+                "संग्रह:"
+            ],
+            "synced items ready to validate": [
+                "सिंक किए गए आइटम सत्यापन के लिए तैयार हैं"
+            ],
+            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
+                "अभी तक कोई जोड़ा गया या अपडेट किया गया आइटम उपलब्ध नहीं है। पहले सामग्री को AI को भेजें, फिर आवश्यकता होने पर सत्यापन चलाएँ।."
+            ],
+            "Validation in Progress...": [
+                "सत्यापन प्रगति पर है..."
             ],
             "Manage your collection settings and data.": [
                 "अपने संग्रह की सेटिंग्स और डेटा का प्रबंधन करें।."

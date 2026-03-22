@@ -235,8 +235,17 @@
             "File Name:": [
                 "Filnavn:"
             ],
-            "Unknown PDF": [
-                "Ukendt PDF"
+            "Unknown file": [
+                "Ukendt fil"
+            ],
+            "Stored as:": [
+                "Gemt som:"
+            ],
+            "HTML": [
+                "HTML"
+            ],
+            "PDF": [
+                "PDF"
             ],
             "Original PDF:": [
                 "Oprindeligt PDF:"
@@ -247,8 +256,8 @@
             "If this stored URL no longer works, the original PDF is no longer available from this training data record.": [
                 "Hvis denne gemte URL ikke længere fungerer, er den oprindelige PDF ikke længere tilgængelig fra denne registrering af maskinlæringsdata."
             ],
-            "No original URL is stored for this PDF upload. Only the saved file information is available here.": [
-                "Der er ingen oprindelig URL gemt for denne PDF-upload. Kun gemte filoplysninger er tilgængelige her."
+            "No original URL is stored for this upload. Only the saved file information is available here.": [
+                "Der er ikke gemt nogen original URL for denne upload. Kun den gemte filinformation er tilgængelig her."
             ],
             "Provider:": [
                 "Udbyder:"

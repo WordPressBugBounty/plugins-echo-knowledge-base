@@ -16,9 +16,6 @@
             "OK": [
                 "OK"
             ],
-            "No posts found to sync": [
-                "Inga inlägg hittades för att synkronisera"
-            ],
             "No synced items found to verify": [
                 "Inga synkroniserade objekt hittades för verifiering"
             ],
@@ -42,6 +39,9 @@
             ],
             "Sync canceled": [
                 "Synkronisering avbruten"
+            ],
+            "No posts found to sync": [
+                "Inga inlägg hittades för att synkronisera"
             ],
             "Failed to cancel sync": [
                 "Misslyckades med att avbryta synkroniseringen"
@@ -75,12 +75,6 @@
             ],
             "Select All Records": [
                 "Välj alla poster"
-            ],
-            "Validate & Fix Synced Items": [
-                "Verifiera och åtgärda synkroniserade objekt"
-            ],
-            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
-                "När den är aktiverad kommer systemet, efter att synkroniseringen har slutförts, automatiskt att verifiera och åtgärda endast de synkroniserade objekten. Föråldrade eller väntande objekt kommer inte att verifieras förrän de har synkroniserats."
             ],
             "Sync in Progress": [
                 "Synkronisering pågår"

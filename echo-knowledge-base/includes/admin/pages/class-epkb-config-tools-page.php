@@ -450,6 +450,8 @@ class EPKB_Config_Tools_Page {
 	 */
 	private static function get_convert_boxes_config() {
 
+		$is_ai_features_pro_enabled = EPKB_Utilities::is_ai_features_pro_enabled();
+
 		return [
 			[
 				'plugin'        => 'core',
@@ -485,9 +487,10 @@ class EPKB_Config_Tools_Page {
 				'title'         => esc_html__( 'Convert PDFs to Articles', 'echo-knowledge-base' ),
 				'title_class'   => 'epkb-kbnh__feature-name',
 				'desc'          => esc_html__( 'Upload PDF files and convert them into Knowledge Base articles.', 'echo-knowledge-base' ),
-				'desc_escaped'  => self::get_pdf_import_features_list_html(),
-				'button_id'     => EPKB_Utilities::is_ai_features_pro_enabled() ? 'epkb_import_pdf' : '',
+				'desc_escaped'  => self::get_pdf_import_features_list_html( ! $is_ai_features_pro_enabled ),
+				'button_id'     => $is_ai_features_pro_enabled ? 'epkb_import_pdf' : '',
 				'button_title'  => esc_html__( 'Import PDF', 'echo-knowledge-base' ),
+				'learn_more'    => $is_ai_features_pro_enabled ? '' : self::get_ai_pro_features_admin_url(),
 			],
 		];
 	}
@@ -876,9 +879,11 @@ class EPKB_Config_Tools_Page {
 
 	/**
 	 * Get features list HTML for the PDF import feature box.
+	 *
+	 * @param bool $show_discount_coupon
 	 * @return string
 	 */
-	private static function get_pdf_import_features_list_html() {
+	private static function get_pdf_import_features_list_html( $show_discount_coupon = false ) {
 		$features = [
 			esc_html__( 'PDF to Article', 'echo-knowledge-base' ),
 			esc_html__( 'PDF to Article using AI', 'echo-knowledge-base' ),
@@ -890,8 +895,34 @@ class EPKB_Config_Tools_Page {
 				'<div class="epkb-form-field-instruction-icon"><i class="epkbfa epkbfa-check"></i></div>' .
 				'<div class="epkb-form-field-instruction-text">' . $feature . '</div></div>';
 		}
+
+		if ( $show_discount_coupon ) {
+			$html .= self::get_pdf_import_discount_coupon_html();
+		}
+
 		$html .= '</div>';
+
 		return $html;
+	}
+
+	/**
+	 * Get the admin URL for the AI PRO Features tab.
+	 *
+	 * @return string
+	 */
+	private static function get_ai_pro_features_admin_url() {
+		return admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=pro-features' );
+	}
+
+	/**
+	 * Get discount coupon HTML for the gated PDF import feature box.
+	 *
+	 * @return string
+	 */
+	private static function get_pdf_import_discount_coupon_html() {
+		$coupon = EPKB_AI_PRO_Features_Tab::get_discount_coupon();
+
+		return EPKB_HTML_Forms::get_discount_coupon_box_html( $coupon, 'epkb-pdf-import__discount-coupon' );
 	}
 
 	/**
@@ -932,7 +963,7 @@ class EPKB_Config_Tools_Page {
 					<div class="epkb-pdf-import__option-group">
 						<label class="epkb-pdf-import__option-label"><?php esc_html_e( 'Select PDF Files', 'echo-knowledge-base' ); ?></label>
 						<div class="epkb-pdf-import__dropzone" id="epkb-pdf-dropzone">
-							<input type="file" id="epkb-pdf-file-input" accept=".pdf" multiple style="display:none;">
+							<input type="file" id="epkb-pdf-file-input" class="epkb-pdf-import__file-input" accept=".pdf" multiple="multiple" style="display:none;">
 							<i class="epkbfa epkbfa-file-pdf-o epkb-pdf-import__dropzone-icon"></i>
 							<p class="epkb-pdf-import__dropzone-text"><?php esc_html_e( 'Drag and drop PDF files here, or click the buttons below', 'echo-knowledge-base' ); ?></p>
 							<div style="display: flex; gap: 10px; justify-content: center;">
@@ -1231,17 +1262,15 @@ class EPKB_Config_Tools_Page {
 			'html'  => $delete_kb_handler->get_archive_or_delete_kb_form( $kb_config ),
 		);
 
-		if ( ! EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
-			$boxes_config[] = array(
-				'title' => esc_html__( 'Category Slug', 'echo-knowledge-base' ),
-				'html'  => self::display_category_slug_html( $kb_config ),
-			);
+		$boxes_config[] = array(
+			'title' => esc_html__( 'Category Slug', 'echo-knowledge-base' ),
+			'html'  => self::display_category_slug_html( $kb_config ),
+		);
 
-			$boxes_config[] = array(
-				'title' => esc_html__( 'Tag Slug', 'echo-knowledge-base' ),
-				'html'  => self::display_tag_slug_html( $kb_config ),
-			);
-		}
+		$boxes_config[] = array(
+			'title' => esc_html__( 'Tag Slug', 'echo-knowledge-base' ),
+			'html'  => self::display_tag_slug_html( $kb_config ),
+		);
 
 		// Search Query Parameter
 		if ( EPKB_Utilities::is_advanced_search_enabled() ) {

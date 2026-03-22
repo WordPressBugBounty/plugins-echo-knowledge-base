@@ -75,6 +75,7 @@ class EPKB_Add_Ons_Page {
 				$coupon = $values['discount_coupon']; ?>
 				<div class="epkb-ad-discount-coupon">
 					<span class="epkb-ad-discount-badge"><?php echo esc_html( $coupon['discount_percentage'] . '% ' . __( 'OFF', 'echo-knowledge-base' ) ); ?></span>
+					<br>
 					<span class="epkb-ad-discount-text"><?php echo esc_html__( 'Use code:', 'echo-knowledge-base' ); ?> <code><?php echo esc_html( $coupon['coupon_code'] ); ?></code></span>
 					<button type="button" class="epkb-ad-discount-copy-btn" data-code="<?php echo esc_attr( $coupon['coupon_code'] ); ?>"><?php esc_html_e( 'Copy', 'echo-knowledge-base' ); ?></button>
 				</div>			<?php
@@ -195,15 +196,6 @@ class EPKB_Add_Ons_Page {
 				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/edd/2022/01/KB-Import-Export-Banner-v2.jpg',
 				'desc'              => esc_html__( "Powerful import and export plugin to migrate, create and copy articles and images from your Knowledge Base. You can also import articles from CSV and other sources.", 'echo-knowledge-base' ),
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/kb-import-export//?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=kb-import-export/',
-			) );
-
-			self::add_on_product( array(
-				'id'                => '',
-				'title'             => esc_html__( 'Help Dialog Chat', 'echo-knowledge-base' ),
-				'special_note'      => esc_html__( 'FAQs, Articles and Contact Form', 'echo-knowledge-base' ),
-				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2022/06/featured-help-dialog.jpg',
-				'desc'              => esc_html__( 'Engage your website visitors and gain new customers with page-specific FAQs and knowledge base articles. Help users communicate with you without leaving the page by using a simple contact form shown with the Help Dialog Chat.', 'echo-knowledge-base' ),
-				'learn_more_url'    => 'https://wordpress.org/plugins/help-dialog/',
 			) );   ?>
 
 		</div>      <?php
@@ -346,7 +338,6 @@ class EPKB_Add_Ons_Page {
 		$our_free_plugins = array();
 
 		$args_list = array(
-			array( 'slug' => 'help-dialog' ),
 			array( 'slug' => 'creative-addons-for-elementor' ),
 			array( 'slug' => 'echo-show-ids' ),
 			array( 'slug' => 'scroll-down-arrow' ),

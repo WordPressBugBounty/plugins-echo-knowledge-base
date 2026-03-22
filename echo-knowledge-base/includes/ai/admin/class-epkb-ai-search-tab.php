@@ -21,6 +21,7 @@ class EPKB_AI_Search_Tab {
 
 		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
 		$has_ai_features_pro = EPKB_Utilities::is_ai_features_pro_enabled();
+		$ai_config['ai_search_mode'] = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_mode', 'simple_search' );
 
 		// Get provider-specific model field and validate it
 		$search_model_field = EPKB_AI_Provider::get_search_model_field();
@@ -74,6 +75,13 @@ class EPKB_AI_Search_Tab {
 	private static function get_settings_sections( $ai_config ) {
 
 		$has_ai_features_pro = EPKB_Utilities::is_ai_features_pro_enabled();
+		$search_mode_options = array(
+			'simple_search' => __( 'Simple Search', 'echo-knowledge-base' ),
+		);
+
+		if ( $has_ai_features_pro ) {
+			$search_mode_options['smart_search'] = __( 'Smart Search', 'echo-knowledge-base' );
+		}
 
 		$preset_options = EPKB_AI_Provider::get_preset_options( 'search' );
 		$custom_param_fields = EPKB_AI_Provider::get_model_parameter_fields( 'search', $ai_config );
@@ -112,10 +120,7 @@ class EPKB_AI_Search_Tab {
 						'type' => 'radio',
 						'label' => __( 'AI Search Display Mode', 'echo-knowledge-base' ),
 						'value' => $ai_config['ai_search_mode'],
-						'options' => array(
-							'simple_search' => __( 'Simple Search', 'echo-knowledge-base' ),
-							'smart_search'  => __( 'Smart Search', 'echo-knowledge-base' )
-						),
+						'options' => $search_mode_options,
 						'description' => __( 'Choose which AI search experience to display: Ask AI shows a simple Q&A button/interface, Search Results shows an advanced multi-column results layout', 'echo-knowledge-base' ),
 						'field_class' => 'epkb-ai-search-mode'
 					),
@@ -171,7 +176,7 @@ class EPKB_AI_Search_Tab {
 			'ai_setup' => array(
 				'id' => 'ai_setup',
 				'title' => __( 'AI Setup', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-brain',
+				'icon' => 'epkbfa epkbfa-magic',
 				'sub_tab' => 'search-settings',
 				'fields' => array(
 					'kb_collection_mapping' => array(

@@ -762,7 +762,8 @@
   border-radius: 18px;
   cursor: pointer;
   min-width: 54px;
-  width: fit-content;
+  width: fit-content !important;
+  overflow: hidden;
 }
 #epkb-fe__editor .epkb-settings-control-type-toggle .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__toggle {
   display: none;
@@ -791,11 +792,13 @@
 #epkb-fe__editor .epkb-settings-control-type-toggle .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__label:before {
   content: attr(data-off);
   color: #A4AFB7;
+  justify-self: end;
 }
 #epkb-fe__editor .epkb-settings-control-type-toggle .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__label:after {
   opacity: 0;
   content: attr(data-on);
   color: #FFFFFF;
+  justify-self: start;
 }
 #epkb-fe__editor .epkb-settings-control-type-toggle .epkb-settings-control__field .epkb-settings-control__input .epkb-settings-control-toggle .epkb-settings-control__input__handle {
   -webkit-box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);

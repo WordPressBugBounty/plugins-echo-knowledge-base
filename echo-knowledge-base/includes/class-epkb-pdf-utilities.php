@@ -5,15 +5,18 @@
  */
 class EPKB_PDF_Utilities {
 
-	const MAX_PDF_FILE_SIZE = 20971520; // 20 MB.
+	const MAX_PDF_FILE_SIZE = 51380224; // 49 MB.
+	const PDF_AI_EXECUTION_TIME_LIMIT = 600; // 10 minutes.
 	const PDF_HEADER_SEARCH_WINDOW = 1024;
-	const MAX_BASE64_PDF_LENGTH = 27962028; // 20 MB encoded as base64.
+	const MAX_BASE64_PDF_LENGTH = 68506968; // 49 MB encoded as base64.
 	const MAX_AI_STRUCTURE_TEXT_LENGTH = 400000;
 	const MAX_AI_STRUCTURE_CHUNKS = 5;
 	const AI_STRUCTURE_CHUNK_SIZE = 80000;
 
 	/** @var array|null Last AI structuring debug info: model, elapsed_seconds, chunks */
 	private static $last_ai_debug = null;
+	private static $timeout_error_handler_registered = false;
+	private static $timeout_error_response_type = 'ajax';
 
 	/**
 	 * Get debug info from the most recent AI structuring call.
@@ -22,6 +25,115 @@ class EPKB_PDF_Utilities {
 	 */
 	public static function get_last_ai_debug() {
 		return self::$last_ai_debug;
+	}
+
+	/**
+	 * Get the PDF size validation error message.
+	 *
+	 * @return string
+	 */
+	public static function get_pdf_too_large_message() {
+		return sprintf(
+			/* translators: %s is the maximum PDF file size. */
+			__( 'PDF file exceeds the %s size limit.', 'echo-knowledge-base' ),
+			size_format( self::MAX_PDF_FILE_SIZE )
+		);
+	}
+
+	/**
+	 * Set shared timeout handling for long-running PDF requests.
+	 *
+	 * @param string $response_type ajax|rest
+	 */
+	public static function setup_timeout_error_handling( $response_type = 'ajax' ) {
+
+		self::$timeout_error_response_type = $response_type === 'rest' ? 'rest' : 'ajax';
+
+		if ( function_exists( 'set_time_limit' ) ) {
+			@set_time_limit( self::PDF_AI_EXECUTION_TIME_LIMIT );
+		}
+
+		if ( self::$timeout_error_handler_registered || ! function_exists( 'register_shutdown_function' ) ) {
+			return;
+		}
+
+		self::$timeout_error_handler_registered = true;
+		register_shutdown_function( array( __CLASS__, 'maybe_send_timeout_error' ) );
+	}
+
+	/**
+	 * Convert PHP execution timeout fatals into JSON responses for PDF requests.
+	 */
+	public static function maybe_send_timeout_error() {
+
+		$error = error_get_last();
+		if ( empty( $error['message'] ) || empty( $error['type'] ) || (int) $error['type'] !== E_ERROR ) {
+			return;
+		}
+
+		if ( strpos( $error['message'], 'Maximum execution time' ) === false ) {
+			return;
+		}
+
+		$timeout_seconds = self::extract_timeout_seconds( $error['message'] );
+		while ( ob_get_level() > 0 ) {
+			@ob_end_clean();
+		}
+
+		if ( ! headers_sent() ) {
+			status_header( 500 );
+			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+		}
+
+		if ( self::$timeout_error_response_type === 'rest' ) {
+			echo wp_json_encode( array(
+				'code'    => 'pdf_timeout',
+				'message' => self::get_pdf_timeout_error_message( $timeout_seconds ),
+				'data'    => array(
+					'status'          => 500,
+					'timeout_seconds' => $timeout_seconds,
+				),
+			) );
+			return;
+		}
+
+		echo wp_json_encode( array(
+			'error'           => true,
+			'message'         => self::get_pdf_timeout_error_message( $timeout_seconds ),
+			'error_code'      => 'pdf_timeout',
+			'timeout_seconds' => $timeout_seconds,
+		) );
+	}
+
+	/**
+	 * Get the user-facing timeout message for PDF requests.
+	 *
+	 * @param int $timeout_seconds
+	 * @return string
+	 */
+	public static function get_pdf_timeout_error_message( $timeout_seconds = 0 ) {
+
+		$timeout_seconds = $timeout_seconds > 0 ? $timeout_seconds : self::PDF_AI_EXECUTION_TIME_LIMIT;
+
+		return sprintf(
+			esc_html__( 'PDF processing timed out after %s seconds. Increase the server timeout and try again.', 'echo-knowledge-base' ),
+			number_format_i18n( $timeout_seconds )
+		);
+	}
+
+	/**
+	 * Get the timeout duration from a PHP fatal error message.
+	 *
+	 * @param string $message
+	 * @return int
+	 */
+	private static function extract_timeout_seconds( $message ) {
+
+		if ( preg_match( '/Maximum execution time of\s+(\d+)(?:\+\d+)?\s+seconds exceeded/i', $message, $matches ) ) {
+			return (int) $matches[1];
+		}
+
+		return 0;
 	}
 
 	/**
@@ -53,7 +165,7 @@ class EPKB_PDF_Utilities {
 		}
 
 		if ( strlen( $encoded_pdf ) > self::MAX_BASE64_PDF_LENGTH ) {
-			return new WP_Error( 'pdf_too_large', __( 'PDF file exceeds the 20 MB size limit.', 'echo-knowledge-base' ) );
+			return new WP_Error( 'pdf_too_large', self::get_pdf_too_large_message() );
 		}
 
 		$pdf_binary = base64_decode( $encoded_pdf, true );
@@ -103,7 +215,7 @@ class EPKB_PDF_Utilities {
 		}
 
 		if ( strlen( $pdf_binary ) > self::MAX_PDF_FILE_SIZE ) {
-			return new WP_Error( 'pdf_too_large', __( 'PDF file exceeds the 20 MB size limit.', 'echo-knowledge-base' ) );
+			return new WP_Error( 'pdf_too_large', self::get_pdf_too_large_message() );
 		}
 
 		$header_window = substr( $pdf_binary, 0, self::PDF_HEADER_SEARCH_WINDOW );
@@ -148,7 +260,7 @@ class EPKB_PDF_Utilities {
 
 	/**
 	 * Convert a PDF into display content.
-	 * AI mode sends the PDF directly to the configured provider.
+	 * AI mode uploads the PDF to the configured provider and lets the model read it directly.
 	 * Basic and no-format modes use extracted text supplied by the caller.
 	 *
 	 * @param string $pdf_binary Raw PDF bytes.
@@ -452,9 +564,9 @@ class EPKB_PDF_Utilities {
 		$instructions = 'You are a knowledge base content expert specializing in document formatting and content structuring.';
 
 		$response_text = self::send_ai_request( $prompt, $instructions, 'pdf_import_structure', array(
-			'data'      => base64_encode( $pdf_binary ),
-			'mime_type' => 'application/pdf',
-			'file_name' => $file_name,
+			'file_content' => $pdf_binary,
+			'mime_type'    => 'application/pdf',
+			'file_name'    => $file_name,
 		) );
 		if ( is_wp_error( $response_text ) ) {
 			return $response_text;
@@ -591,7 +703,7 @@ class EPKB_PDF_Utilities {
 	 * @param string $prompt       User prompt text.
 	 * @param string $instructions System instructions.
 	 * @param string $label        Request label for logging.
-	 * @param array  $attachment   Optional file attachment with 'data', 'mime_type', 'file_name' keys.
+	 * @param array  $attachment   Optional file attachment with 'file_content', 'mime_type', 'file_name' keys.
 	 * @return string|WP_Error
 	 */
 	public static function send_ai_request( $prompt, $instructions, $label = 'ai_request', $attachment = array() ) {
@@ -615,55 +727,64 @@ class EPKB_PDF_Utilities {
 			'max_output_tokens' => $max_limit,
 		);
 
-		if ( $provider === EPKB_AI_Provider::PROVIDER_GEMINI ) {
-			$parts = array( array( 'text' => $prompt ) );
-			if ( ! empty( $attachment['data'] ) ) {
-				$parts[] = array(
-					'inlineData' => array(
-						'mimeType' => $attachment['mime_type'],
-						'data'     => $attachment['data'],
-					)
-				);
-			}
-
-			$request = array(
-				'contents' => array(
-					array( 'parts' => $parts )
-				),
-				'system_instruction' => array(
-					'parts' => array(
-						array( 'text' => $instructions )
-					)
-				)
+		$uploaded_attachment = array();
+		if ( ! empty( $attachment['file_content'] ) ) {
+			$uploaded_attachment = EPKB_AI_Provider::upload_prompt_attachment(
+				$attachment['file_content'],
+				isset( $attachment['file_name'] ) ? $attachment['file_name'] : 'document',
+				isset( $attachment['mime_type'] ) ? $attachment['mime_type'] : 'application/octet-stream'
 			);
-			$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
-			$response = $client->request( '/models/' . $model . ':generateContent', $request, 'POST', $label );
-		} else {
-			if ( ! empty( $attachment['data'] ) ) {
-				$content = array(
-					array( 'type' => 'input_text', 'text' => $prompt ),
-					array(
-						'type'      => 'input_file',
-						'filename'  => $attachment['file_name'],
-						'file_data' => 'data:' . $attachment['mime_type'] . ';base64,' . $attachment['data'],
+			if ( is_wp_error( $uploaded_attachment ) ) {
+				return $uploaded_attachment;
+			}
+		}
+
+		try {
+			if ( $provider === EPKB_AI_Provider::PROVIDER_GEMINI ) {
+				$parts = array( array( 'text' => $prompt ) );
+				if ( ! empty( $uploaded_attachment ) ) {
+					$parts[] = EPKB_AI_Provider::build_prompt_attachment_content( $uploaded_attachment, $provider );
+				}
+
+				$request = array(
+					'contents' => array(
+						array( 'parts' => $parts )
+					),
+					'system_instruction' => array(
+						'parts' => array(
+							array( 'text' => $instructions )
+						)
 					)
 				);
+				$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
+				$response = $client->request( '/models/' . $model . ':generateContent', $request, 'POST', $label );
 			} else {
-				$content = $prompt;
-			}
+				if ( ! empty( $uploaded_attachment ) ) {
+					$content = array(
+						array( 'type' => 'input_text', 'text' => $prompt ),
+						EPKB_AI_Provider::build_prompt_attachment_content( $uploaded_attachment, $provider ),
+					);
+				} else {
+					$content = $prompt;
+				}
 
-			$request = array(
-				'model'        => $model,
-				'instructions' => $instructions,
-				'input'        => array(
-					array(
-						'role'    => 'user',
-						'content' => $content,
+				$request = array(
+					'model'        => $model,
+					'instructions' => $instructions,
+					'input'        => array(
+						array(
+							'role'    => 'user',
+							'content' => $content,
+						)
 					)
-				)
-			);
-			$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
-			$response = $client->request( '/responses', $request, 'POST', $label );
+				);
+				$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
+				$response = $client->request( '/responses', $request, 'POST', $label );
+			}
+		} finally {
+			if ( ! empty( $uploaded_attachment ) ) {
+				EPKB_AI_Provider::delete_prompt_attachment( $uploaded_attachment, $provider );
+			}
 		}
 
 		if ( is_wp_error( $response ) ) {

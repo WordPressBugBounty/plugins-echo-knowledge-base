@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chatbot, faq
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 17.1.0
+Stable tag: 17.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,16 +64,6 @@ All AI features are completely optional and **disabled by default**. You can ena
 
 ## PRO KB FEATURES
 
-* **AI Features**:
-   * Content Gap Analysis
-   * Expand training to include notes, posts, pages, and custom post types
-   * **Email Notifications** for AI insights
-   * **Human Agent Handoff** – lets users escalate from AI to your support team
-   * **Feedback Buttons** – collect thumbs-up/down ratings on AI responses
-   * **PDF to Articles** – upload PDF files and convert them into KB articles with optional AI formatting that organizes content into headings, lists, and paragraphs
-   * **PDF to Notes** – upload PDF files via drag-and-drop or the Media Library and convert them into AI training notes to expand your AI's knowledge beyond KB articles
-   * **AI Chat Access Control** – restrict who can use AI Chat: everyone, logged-in users only, or specific WordPress roles. Set different access rules for each chat location
-
 * **Advanced Search**: Highlight search keywords on article pages, filter search by category, adjust search box styling, and add helper text or links below the search bar. Use advanced search analytics to discover popular queries and identify searches with no results.
 
 * **Granular Content Protection**: Control access to documentation based on user groups, WordPress roles, or custom permissions. Seamlessly manage public and private knowledge base content.
@@ -88,18 +78,18 @@ All AI features are completely optional and **disabled by default**. You can ena
 
 * **Article Links**: Turn any article into a link that points to PDFs, external documentation, videos, or other resources.
 
+* **AI Features**:
+   * Content Gap Analysis
+   * Expand training to include notes, posts, pages, and custom post types
+   * **Email Notifications** for AI insights
+   * **Human Agent Handoff** – lets users escalate from AI to your support team
+   * **Feedback Buttons** – collect thumbs-up/down ratings on AI responses
+   * **PDF to Articles** – upload PDF files and convert them into KB articles with optional AI formatting that organizes content into headings, lists, and paragraphs
+   * **PDF to Notes** – upload PDF files via drag-and-drop or the Media Library and convert them into AI training notes to expand your AI's knowledge beyond KB articles
+   * **AI Chat Access Control** – restrict who can use AI Chat: everyone, logged-in users only, or specific WordPress roles. Set different access rules for each chat location
+
 See the [official website](https://www.echoknowledgebase.com/bundle-pricing/) for more details on Pro features.
 
-
-## 🚀 AI Chat - Turn Your Knowledge Base into a 24/7 Support Pro
-
-Transform your knowledge base into an intelligent chatbot that provides instant, accurate answers to user questions.
-
-**AI Chat** can answer questions by drawing on content from your Knowledge Base, FAQs, internal documentation, notes, pages, or any other information source you choose, essentially serving as a chatbot on your site.
-
-**73% fewer repeat tickets (our own numbers)** – After enabling AI Chat, we saw a 73% drop in repetitive questions. Response times shrank, customers got answers faster, and the team could finally tackle higher-value projects *without* hiring extra staff.
-
-For detailed setup instructions, visit our [AI Integration Guide](https://www.echoknowledgebase.com/documentation/setup-ai-provider-and-key/).
 
 ## ⭐ WALK-THROUGH OF ECHO KNOWLEDGE BASE
 
@@ -340,6 +330,12 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 18. Glossary 
 
 == Changelog ==
+
+= 17.1.2 =
+Release Date: Mar 22, 2026
+* Update: PDF improvements (PRO)
+* Update: other improvements
+* Fix: Cleanup and minor fixes
 
 = 17.1.0 =
 Release Date: Mar 11, 2026

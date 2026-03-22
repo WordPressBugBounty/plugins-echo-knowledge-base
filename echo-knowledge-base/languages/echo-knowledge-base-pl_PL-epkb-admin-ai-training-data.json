@@ -46,6 +46,9 @@
             "Error": [
                 "Błąd"
             ],
+            "OK": [
+                "OK"
+            ],
             "Add Training Data": [
                 "Dodaj dane treningowe"
             ],
@@ -54,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "Wyślij dane do SI"
+            ],
+            "Optional": [
+                "Opcjonalny"
             ],
             "Collection name cannot be empty": [
                 "Nazwa kolekcji nie może być pusta"
@@ -76,14 +82,41 @@
             "Delete Selected": [
                 "Usuń wybrane"
             ],
+            "of": [
+                "z"
+            ],
+            "Skipped": [
+                "Pominięto"
+            ],
             "Failed to create collection": [
                 "Nie udało się utworzyć kolekcji"
+            ],
+            "errors": [
+                "błędy"
             ],
             "Outdated": [
                 "Nieaktualne"
             ],
             "Added": [
                 "Dodano"
+            ],
+            "Verifying": [
+                "Weryfikacja w toku"
+            ],
+            "items": [
+                "elementy"
+            ],
+            "Verification complete:": [
+                "Weryfikacja zakończona:"
+            ],
+            "marked outdated": [
+                "oznaczono jako przestarzałe"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Uruchom synchronizację, aby ponownie przesłać przestarzałe elementy."
+            ],
+            "Cancel Verify": [
+                "Anuluj weryfikację"
             ],
             "Deleting...": [
                 "Usuwanie..."
@@ -157,6 +190,12 @@
             "Add Selected Items": [
                 "Dodaj wybrane elementy"
             ],
+            "Cannot change actions while sync is in progress": [
+                "Nie można zmieniać akcji podczas trwania synchronizacji"
+            ],
+            "Cannot change actions while validation is in progress": [
+                "Nie można zmienić akcji w trakcie trwania walidacji"
+            ],
             "Collection name updated successfully": [
                 "Nazwa kolekcji zaktualizowana pomyślnie"
             ],
@@ -190,8 +229,8 @@
             "Choose an Action": [
                 "Wybierz akcję"
             ],
-            "Cannot change actions while sync is in progress": [
-                "Nie można zmieniać akcji podczas trwania synchronizacji"
+            "Validate & Fix Synced Items": [
+                "Zweryfikuj i napraw zsynchronizowane elementy"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Wybierz typy treści (Artykuły KB, Posty, Strony), które mają zostać załadowane do tabeli. To jeszcze nic nie wysyła do AI."
@@ -223,14 +262,11 @@
             "Content changed since last sync. Re-send to update.": [
                 "Zawartość została zmieniona od czasu ostatniej synchronizacji. Wyślij ponownie, aby zaktualizować."
             ],
+            "Could not be synced because the content is empty or the source no longer exists.": [
+                "Nie można zsynchronizować, ponieważ zawartość jest pusta lub źródło już nie istnieje."
+            ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "Synchronizacja nie powiodła się. Wyślij ponownie, aby ponowić próbę. Sprawdź, czy treść istnieje i nie jest pusta."
-            ],
-            "Cannot navigate while sync is in progress": [
-                "Nie można nawigować podczas synchronizacji w toku"
-            ],
-            "Adding data to:": [
-                "Dodawanie danych do:"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Wybierz typy treści, które chcesz uwzględnić w danych treningowych AI."
@@ -297,6 +333,24 @@
             ],
             "Select items from the table and choose a sync method to update your AI training data.": [
                 "Zaznacz elementy z tabeli i wybierz metodę synchronizacji, aby zaktualizować dane treningowe AI."
+            ],
+            "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
+                "Uruchom dodatkowy przebieg walidacji, aby upewnić się, że lokalna baza danych i magazyn AI są zsynchronizowane. Jeśli w magazynie AI brakuje pliku, zostanie on oznaczony jako nieaktualny, aby można go było wysłać ponownie."
+            ],
+            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
+                "Sprawdza to Dodane i Zaktualizowane elementy już śledzone w tej kolekcji, w tym przesłane pliki PDF."
+            ],
+            "Collection:": [
+                "Kolekcja:"
+            ],
+            "synced items ready to validate": [
+                "zsynchronizowane elementy gotowe do walidacji"
+            ],
+            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
+                "Żadne Dodane ani Zaktualizowane elementy nie są jeszcze dostępne. Najpierw wyślij treść do AI, a następnie w razie potrzeby uruchom walidację."
+            ],
+            "Validation in Progress...": [
+                "Walidacja w toku..."
             ],
             "Manage your collection settings and data.": [
                 "Zarządzaj ustawieniami kolekcji i danymi."

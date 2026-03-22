@@ -11,7 +11,7 @@ class EPKB_Gemini_Client {
 	const API_BASE_URL = 'https://generativelanguage.googleapis.com';
 	const API_VERSION = 'v1beta';
 	const DEFAULT_MAX_RETRIES = 3;
-	const MAX_FILE_SIZE = 1048576; // 1MB
+	const MAX_FILE_SIZE = 51380224; // 49 MB.
 	const DEFAULT_MODEL = 'gemini-3.1-flash-lite-preview';
 	const DEFAULT_MAX_OUTPUT_TOKENS = 8192;
 	const DEFAULT_MAX_NUM_RESULTS = 10;
@@ -179,13 +179,88 @@ class EPKB_Gemini_Client {
 			$init_body['customMetadata'] = $metadata['customMetadata'];
 		}
 
-		// Use upload URI (note: /upload/ prefix required for file uploads)
-		$upload_base_url = 'https://generativelanguage.googleapis.com/upload/' . self::API_VERSION;
+		return $this->execute_resumable_upload( '/upload/' . self::API_VERSION . $endpoint, $file_content, $init_headers, $init_body );
+	}
 
-		$init_response = wp_remote_post( $upload_base_url . $endpoint, array(
+	/**
+	 * Upload a file to Gemini Files API for direct prompt usage.
+	 *
+	 * @param string $file_content Raw file content.
+	 * @param array $metadata Metadata including displayName.
+	 * @param string $mime_type MIME type.
+	 * @return array|WP_Error
+	 */
+	public function upload_prompt_file( $file_content, $metadata = array(), $mime_type = 'application/octet-stream' ) {
+
+		$api_key_check = $this->check_api_key();
+		if ( is_wp_error( $api_key_check ) ) {
+			return $api_key_check;
+		}
+
+		$content_length = strlen( $file_content );
+		$init_headers = array(
+			'Content-Type'                        => 'application/json',
+			'x-goog-api-key'                      => self::get_api_key(),
+			'X-Goog-Upload-Protocol'              => 'resumable',
+			'X-Goog-Upload-Command'               => 'start',
+			'X-Goog-Upload-Header-Content-Length' => $content_length,
+			'X-Goog-Upload-Header-Content-Type'   => $mime_type,
+			'User-Agent'                          => 'Echo-Knowledge-Base/' . \Echo_Knowledge_Base::$version
+		);
+
+		$init_body = array();
+		if ( ! empty( $metadata['displayName'] ) ) {
+			$init_body['file'] = array( 'display_name' => $metadata['displayName'] );
+		}
+
+		return $this->execute_resumable_upload( '/upload/' . self::API_VERSION . '/files', $file_content, $init_headers, $init_body );
+	}
+
+	/**
+	 * Get a Gemini File resource.
+	 *
+	 * @param string $file_name Resource name like files/abc123.
+	 * @return array|WP_Error
+	 */
+	public function get_file( $file_name ) {
+
+		if ( empty( $file_name ) ) {
+			return new WP_Error( 'missing_file_name', __( 'File name is required.', 'echo-knowledge-base' ) );
+		}
+
+		return $this->request( '/' . ltrim( $file_name, '/' ), array(), 'GET', 'file_storage' );
+	}
+
+	/**
+	 * Delete a Gemini File resource.
+	 *
+	 * @param string $file_name Resource name like files/abc123.
+	 * @return array|WP_Error
+	 */
+	public function delete_file( $file_name ) {
+
+		if ( empty( $file_name ) ) {
+			return new WP_Error( 'missing_file_name', __( 'File name is required.', 'echo-knowledge-base' ) );
+		}
+
+		return $this->request( '/' . ltrim( $file_name, '/' ), array(), 'DELETE', 'file_storage' );
+	}
+
+	/**
+	 * Execute Gemini resumable upload flow.
+	 *
+	 * @param string $upload_path API path beginning with /upload/.
+	 * @param string $file_content Raw file content.
+	 * @param array $init_headers Headers for the initiation request.
+	 * @param array $init_body Optional initiation metadata.
+	 * @return array|WP_Error
+	 */
+	private function execute_resumable_upload( $upload_path, $file_content, $init_headers, $init_body = array() ) {
+
+		$init_response = wp_remote_post( self::API_BASE_URL . $upload_path, array(
 			'headers'   => $init_headers,
 			'body'      => ! empty( $init_body ) ? wp_json_encode( $init_body ) : '',
-			'timeout'   => 60,
+			'timeout'   => EPKB_AI_Utilities::get_timeout_for_purpose( 'file_upload' ),
 			'sslverify' => true
 		) );
 
@@ -201,7 +276,6 @@ class EPKB_Gemini_Client {
 			return new WP_Error( 'upload_init_failed', __( 'Failed to initiate file upload', 'echo-knowledge-base' ), array( 'status_code' => $init_status, 'raw_body' => $body ) );
 		}
 
-		// Extract upload URL from response headers
 		$headers = wp_remote_retrieve_headers( $init_response );
 		$upload_url = isset( $headers['x-goog-upload-url'] ) ? $headers['x-goog-upload-url'] : '';
 		if ( empty( $upload_url ) ) {
@@ -209,11 +283,10 @@ class EPKB_Gemini_Client {
 			return new WP_Error( 'upload_url_missing', __( 'Upload URL not found in response', 'echo-knowledge-base' ) );
 		}
 
-		// Step 2: Upload the actual file content
 		$upload_headers = array(
-			'Content-Length'         => $content_length,
-			'X-Goog-Upload-Offset'   => '0',
-			'X-Goog-Upload-Command'  => 'upload, finalize'
+			'Content-Length'        => strlen( $file_content ),
+			'X-Goog-Upload-Offset'  => '0',
+			'X-Goog-Upload-Command' => 'upload, finalize'
 		);
 
 		$upload_response = wp_remote_post( $upload_url, array(

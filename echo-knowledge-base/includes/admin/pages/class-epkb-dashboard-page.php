@@ -414,7 +414,9 @@ class EPKB_Dashboard_Page {
 										</div>
 
 										<!-- Slide 6: Import Export -->
-										<div class="epkb-feature-slide" data-slide="5">
+										<div class="epkb-feature-slide" data-slide="5"
+											 data-cta-url="https://www.echoknowledgebase.com/wordpress-plugin/kb-import-export/"
+											 data-cta-text="<?php echo esc_attr__( 'Get Articles Import and Export', 'echo-knowledge-base' ); ?>">
 											<h4 class="epkb-feature-title"><?php esc_html_e( 'Articles CVS/XML Import and EXPORT Add-on', 'echo-knowledge-base' ); ?></h4>
 											<div class="epkb-feature-image-container">
 												<img src="<?php echo esc_url( Echo_Knowledge_Base::$plugin_url . 'img/dashboard/KB-Import-Export-Banner-v2.jpg' ); ?>"
@@ -445,9 +447,11 @@ class EPKB_Dashboard_Page {
 								</div>
 								
 							<div class="epkb-features-cta">
-								<a href="https://www.echoknowledgebase.com/bundle-pricing/" target="_blank" class="epkb-btn epkb-btn-features-primary">
+								<a href="https://www.echoknowledgebase.com/bundle-pricing/" target="_blank" class="epkb-btn epkb-btn-features-primary"
+								   data-default-url="https://www.echoknowledgebase.com/bundle-pricing/"
+								   data-default-text="<?php echo esc_attr__( 'Upgrade to PRO', 'echo-knowledge-base' ); ?>">
 									<i class="epkbfa epkbfa-trophy"></i>
-									<?php esc_html_e( 'Upgrade to PRO', 'echo-knowledge-base' ); ?>
+									<span class="epkb-features-cta-label"><?php esc_html_e( 'Upgrade to PRO', 'echo-knowledge-base' ); ?></span>
 								</a>								<?php
 								// Show Free Pro offer for new users only during first two weeks of December
 								$is_new_user = $kb_config['first_plugin_version'] === Echo_Knowledge_Base::$version;
@@ -907,6 +911,8 @@ class EPKB_Dashboard_Page {
 				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/edd/2022/01/KB-Import-Export-Banner-v2.jpg',
 				'desc'              => esc_html__( "Powerful import and export plugin to migrate, create and copy articles and images from your Knowledge Base.", 'echo-knowledge-base' ),
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/kb-import-export/?utm_source=plugin&utm_medium=dashboard&utm_content=carousel&utm_campaign=kb-import-export',
+				'cta_text'          => esc_html__( 'Get Articles Import and Export', 'echo-knowledge-base' ),
+				'cta_url'           => 'https://www.echoknowledgebase.com/wordpress-plugin/kb-import-export/',
 			),
 		);
 		
@@ -927,9 +933,12 @@ class EPKB_Dashboard_Page {
 				$html .= '</div>';
 			}
 
-			$html .= '<a href="https://www.echoknowledgebase.com/bundle-pricing/" target="_blank" class="epkb-btn epkb-btn-upgrade-pro">';
+			$cta_url = empty( $addon['cta_url'] ) ? 'https://www.echoknowledgebase.com/bundle-pricing/' : $addon['cta_url'];
+			$cta_text = empty( $addon['cta_text'] ) ? esc_html__( 'Upgrade to PRO', 'echo-knowledge-base' ) : $addon['cta_text'];
+
+			$html .= '<a href="' . esc_url( $cta_url ) . '" target="_blank" class="epkb-btn epkb-btn-upgrade-pro">';
 			$html .= '<span class="epkbfa epkbfa-trophy"></span>';
-			$html .= esc_html__( 'Upgrade to PRO', 'echo-knowledge-base' );
+			$html .= esc_html( $cta_text );
 			$html .= '</a>';
 			$html .= '</div>';
 		}

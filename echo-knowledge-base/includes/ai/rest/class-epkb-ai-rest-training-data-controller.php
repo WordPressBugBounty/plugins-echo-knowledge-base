@@ -253,6 +253,18 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 				'file_data' => array(
 					'required' => true,
 					'type' => 'string'
+				),
+				'attachment_url' => array(
+					'type' => 'string',
+					'sanitize_callback' => 'esc_url_raw'
+				),
+				'upload_mode' => array(
+					'type' => 'string',
+					'enum' => array( 'raw_pdf', 'extract_pdf_text' ),
+					'default' => 'raw_pdf'
+				),
+				'raw_text' => array(
+					'type' => 'string'
 				)
 			)
 		) );
@@ -663,23 +675,24 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 			return $this->create_rest_response( [], 404, new WP_Error( 'not_found', __( 'Training data not found', 'echo-knowledge-base' ), array( 'training_data_id' => $id ) ) );
 		}
 
-		if ( $training_data->type === 'PDF' ) {
+		if ( in_array( $training_data->type, array( 'PDF', 'HTML' ), true ) ) {
 			$original_url = ! empty( $training_data->url ) ? esc_url_raw( $training_data->url ) : '';
 
 			return $this->create_rest_response( array(
 				'success' => true,
 				'data' => array(
 					'title'        => $training_data->title,
-					'content_type' => 'pdf',
+					'content_type' => 'uploaded_file',
 					'status'       => $training_data->status,
 					'last_synced'  => $training_data->last_synced,
-					'pdf_info'     => array(
+					'upload_info'  => array(
 						'file_name'        => $training_data->title,
 						'original_url'     => $original_url,
 						'has_original_url' => ! empty( $original_url ),
 						'provider'         => $training_data->provider,
 						'file_id'          => $training_data->file_id,
 						'created'          => $training_data->created,
+						'storage_type'     => $training_data->type,
 					),
 				),
 			) );
@@ -1021,12 +1034,11 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 		$categories = array();
 		$items = array();
 
-		foreach ( $posts_data['eligible_posts'] as $post ) {
-			$title = EPKB_AI_Validation::validate_title( get_the_title( $post ) );
-			if ( $title === '' ) {
-				// translators: %d is the post ID.
-				$title = sprintf( __( 'Untitled #%d', 'echo-knowledge-base' ), $post->ID );
-			}
+			foreach ( $posts_data['eligible_posts'] as $post ) {
+				$title = EPKB_AI_Validation::validate_title( get_the_title( $post ) );
+				if ( $title === '' ) {
+					$title = __( 'Untitled', 'echo-knowledge-base' ) . ' ' . $post->ID;
+				}
 
 			$item_category_ids = array();
 			$item_category_names = array();
@@ -1390,9 +1402,12 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 	 */
 	public function upload_pdf_to_vector_store( $request ) {
 
+		EPKB_PDF_Utilities::setup_timeout_error_handling( 'rest' );
+
 		$collection_id = (int) $request->get_param( 'collection_id' );
 		$file_name = $request->get_param( 'file_name' );
 		$file_data = $request->get_param( 'file_data' );
+		$upload_mode = $request->get_param( 'upload_mode' ) === 'extract_pdf_text' ? 'extract_pdf_text' : 'raw_pdf';
 		$attachment_url = $request->get_param( 'attachment_url' );
 		$attachment_url = ! empty( $attachment_url ) ? esc_url_raw( $attachment_url ) : '';
 
@@ -1419,8 +1434,36 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 		// Generate a unique ID for this PDF upload
 		$pdf_id = EPKB_AI_Utilities::generate_uuid_v4();
 
-		// Upload PDF binary to AI file storage
-		$upload_result = $vector_store_handler->upload_pdf_to_file_storage( $pdf_id, $pdf_data['binary'], $store_id );
+		$content_hash = $pdf_data['content_hash'];
+		$training_data_type = 'PDF';
+
+		if ( $upload_mode === 'extract_pdf_text' ) {
+			$formatted_content = EPKB_PDF_Utilities::format_text_for_display( $request->get_param( 'raw_text' ), 'basic' );
+			if ( is_wp_error( $formatted_content ) ) {
+				return $this->create_rest_response( [], 400, $formatted_content );
+			}
+
+			$formatted_content = EPKB_PDF_Utilities::sanitize_note_content( $formatted_content );
+			$plain_content = EPKB_PDF_Utilities::strip_html_for_ai( $formatted_content );
+			if ( $plain_content === '' ) {
+				return $this->create_rest_response( [], 400, new WP_Error( 'empty_content', __( 'PDF text content is empty.', 'echo-knowledge-base' ) ) );
+			}
+
+			$content_hash = md5( $plain_content );
+			$training_data_type = 'HTML';
+			$upload_result = $vector_store_handler->upload_file_to_file_storage(
+				$pdf_id,
+				$this->build_html_document_for_vector_store_upload( $pdf_data['file_name'], $formatted_content ),
+				'pdf_html',
+				$store_id,
+				'html',
+				'text/html'
+			);
+		} else {
+			// Upload PDF binary to AI file storage
+			$upload_result = $vector_store_handler->upload_pdf_to_file_storage( $pdf_id, $pdf_data['binary'], $store_id );
+		}
+
 		if ( is_wp_error( $upload_result ) ) {
 			return $this->create_rest_response( [], 500, $upload_result );
 		}
@@ -1435,7 +1478,14 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 		if ( $provider !== EPKB_AI_Provider::PROVIDER_GEMINI ) {
 			$add_result = $vector_store_handler->add_file_to_vector_store( $store_id, $file_id, true );
 			if ( is_wp_error( $add_result ) ) {
+				$this->cleanup_failed_pdf_upload( $vector_store_handler, $store_id, $file_id, $collection_id, $provider, 'add_failed' );
 				return $this->create_rest_response( [], 500, $add_result );
+			}
+
+			$processing_result = $vector_store_handler->wait_for_file_to_complete_in_vector_store( $store_id, $file_id );
+			if ( is_wp_error( $processing_result ) ) {
+				$this->cleanup_failed_pdf_upload( $vector_store_handler, $store_id, $file_id, $collection_id, $provider, 'processing_failed' );
+				return $this->create_rest_response( [], 500, $processing_result );
 			}
 		}
 
@@ -1448,9 +1498,9 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 			'store_id'      => $store_id,
 			'file_id'       => $file_id,
 			'title'         => $pdf_data['file_name'],
-			'type'          => 'PDF',
+			'type'          => $training_data_type,
 			'status'        => 'added',
-			'content_hash'  => $pdf_data['content_hash'],
+			'content_hash'  => $content_hash,
 			'url'           => $attachment_url ?: null,
 			'user_id'       => get_current_user_id(),
 			'last_synced'   => gmdate( 'Y-m-d H:i:s' ),
@@ -1458,21 +1508,85 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 
 		$insert_id = $training_data_db->insert_training_data( $training_data );
 		if ( is_wp_error( $insert_id ) ) {
+			$this->cleanup_failed_pdf_upload( $vector_store_handler, $store_id, $file_id, $collection_id, $provider, 'insert_failed' );
 			return $this->create_rest_response( [], 500, $insert_id );
 		}
 
 		return $this->create_rest_response( array(
 			'success' => true,
-			'message' => __( 'PDF uploaded successfully.', 'echo-knowledge-base' ),
+			'message' => $upload_mode === 'extract_pdf_text'
+				? __( 'PDF text extracted and uploaded successfully.', 'echo-knowledge-base' )
+				: __( 'PDF uploaded successfully.', 'echo-knowledge-base' ),
 			'record'  => array(
-				'id'        => $insert_id,
-				'title'     => $pdf_data['file_name'],
-				'type'      => 'PDF',
-				'status'    => 'added',
-				'file_id'   => $file_id,
-				'created'   => gmdate( 'Y-m-d H:i:s' ),
+				'id'          => $insert_id,
+				'title'       => $pdf_data['file_name'],
+				'type'        => $training_data_type,
+				'status'      => 'added',
+				'file_id'     => $file_id,
+				'upload_mode' => $upload_mode,
+				'created'     => gmdate( 'Y-m-d H:i:s' ),
 			),
 		) );
+	}
+
+	/**
+	 * Wrap sanitized HTML in a complete document before uploading it to AI storage.
+	 *
+	 * @param string $file_name Original PDF file name.
+	 * @param string $content Sanitized HTML fragment.
+	 * @return string
+	 */
+	private function build_html_document_for_vector_store_upload( $file_name, $content ) {
+
+		$document_title = sanitize_text_field( wp_strip_all_tags( pathinfo( (string) $file_name, PATHINFO_FILENAME ) ) );
+		if ( $document_title === '' ) {
+			$document_title = __( 'PDF Document', 'echo-knowledge-base' );
+		}
+
+		return "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>" . esc_html( $document_title ) . "</title>\n</head>\n<body>\n" . $content . "\n</body>\n</html>";
+	}
+
+	/**
+	 * Remove a PDF file from the provider when upload processing fails before DB insert.
+	 *
+	 * @param EPKB_AI_ChatGPT_Vector_Store|EPKB_AI_Gemini_Vector_Store $vector_store_handler Vector store handler.
+	 * @param string $store_id Store ID.
+	 * @param string $file_id File ID.
+	 * @param int $collection_id Collection ID.
+	 * @param string $provider Provider slug.
+	 * @param string $reason Cleanup reason.
+	 */
+	private function cleanup_failed_pdf_upload( $vector_store_handler, $store_id, $file_id, $collection_id, $provider, $reason ) {
+
+		if ( empty( $file_id ) ) {
+			return;
+		}
+
+		if ( ! empty( $store_id ) ) {
+			$remove_result = $vector_store_handler->remove_file_from_vector_store( $store_id, $file_id );
+			if ( is_wp_error( $remove_result ) && $remove_result->get_error_code() !== 'not_found' ) {
+				EPKB_AI_Log::add_log( $remove_result, array(
+					'collection_id' => $collection_id,
+					'provider'      => $provider,
+					'store_id'      => $store_id,
+					'file_id'       => $file_id,
+					'reason'        => $reason,
+					'message'       => 'Failed to remove PDF from vector store during cleanup'
+				) );
+			}
+		}
+
+		$delete_result = $vector_store_handler->delete_file_from_file_storage( $file_id, $store_id );
+		if ( is_wp_error( $delete_result ) && $delete_result->get_error_code() !== 'not_found' ) {
+			EPKB_AI_Log::add_log( $delete_result, array(
+				'collection_id' => $collection_id,
+				'provider'      => $provider,
+				'store_id'      => $store_id,
+				'file_id'       => $file_id,
+				'reason'        => $reason,
+				'message'       => 'Failed to delete PDF from AI storage during cleanup'
+			) );
+		}
 	}
 
 	/**********************************************************************
@@ -1505,6 +1619,8 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 
 		// Apply PDF formatting before storing note content.
 		if ( $note_type === 'pdf' ) {
+			EPKB_PDF_Utilities::setup_timeout_error_handling( 'rest' );
+
 			if ( $format_mode === 'ai' ) {
 				$pdf_data = EPKB_PDF_Utilities::decode_base64_pdf(
 					$request->get_param( 'pdf_base64' ),

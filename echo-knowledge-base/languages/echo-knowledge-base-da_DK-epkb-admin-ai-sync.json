@@ -16,9 +16,6 @@
             "OK": [
                 "OK"
             ],
-            "No posts found to sync": [
-                "Ingen indlæg fundet til synkronisering"
-            ],
             "No synced items found to verify": [
                 "Ingen synkroniserede elementer fundet til verifikation"
             ],
@@ -42,6 +39,9 @@
             ],
             "Sync canceled": [
                 "Synkronisering annulleret"
+            ],
+            "No posts found to sync": [
+                "Ingen indlæg fundet til synkronisering"
             ],
             "Failed to cancel sync": [
                 "Fejl ved annullering af synkronisering"
@@ -75,12 +75,6 @@
             ],
             "Select All Records": [
                 "Vælg alle poster"
-            ],
-            "Validate & Fix Synced Items": [
-                "Valider og ret synkroniserede elementer"
-            ],
-            "When enabled, after syncing completes, the system will automatically validate and fix only the synced items. Outdated or pending items will not be verified until they are synced.": [
-                "Når det er aktiveret, vil systemet efter gennemført synkronisering automatisk validere og rette kun de synkroniserede elementer. Forældede eller ventende elementer verificeres ikke, før de er synkroniseret."
             ],
             "Sync in Progress": [
                 "Synkronisering i gang"

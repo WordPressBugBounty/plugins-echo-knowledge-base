@@ -235,8 +235,17 @@
             "File Name:": [
                 "ファイル名："
             ],
-            "Unknown PDF": [
-                "不明な PDF"
+            "Unknown file": [
+                "不明なファイル"
+            ],
+            "Stored as:": [
+                "保存形式:"
+            ],
+            "HTML": [
+                "HTML"
+            ],
+            "PDF": [
+                "PDF"
             ],
             "Original PDF:": [
                 "元の PDF："
@@ -247,8 +256,8 @@
             "If this stored URL no longer works, the original PDF is no longer available from this training data record.": [
                 "この保存済み URL が機能しなくなった場合、元の PDF はこの機械学習データのレコードからは利用できなくなります。."
             ],
-            "No original URL is stored for this PDF upload. Only the saved file information is available here.": [
-                "この PDF アップロードには元の URL が保存されていません。ここでは保存済みのファイル情報のみ利用可能です。."
+            "No original URL is stored for this upload. Only the saved file information is available here.": [
+                "このアップロードには元のURLが保存されていません。ここでは保存されたファイル情報のみが利用可能です。."
             ],
             "Provider:": [
                 "提供元："

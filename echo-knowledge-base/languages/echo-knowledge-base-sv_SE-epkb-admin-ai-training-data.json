@@ -46,6 +46,9 @@
             "Error": [
                 "Fel"
             ],
+            "OK": [
+                "OK"
+            ],
             "Add Training Data": [
                 "Lägg till maskininlärningsdata"
             ],
@@ -54,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "Skicka data till AI"
+            ],
+            "Optional": [
+                "Valfri"
             ],
             "Collection name cannot be empty": [
                 "Samlingens namn får inte vara tomt"
@@ -76,14 +82,41 @@
             "Delete Selected": [
                 "Ta bort valda"
             ],
+            "of": [
+                "av"
+            ],
+            "Skipped": [
+                "Hoppade över"
+            ],
             "Failed to create collection": [
                 "Misslyckades med att skapa en insamling"
+            ],
+            "errors": [
+                "fel"
             ],
             "Outdated": [
                 "Föråldrad"
             ],
             "Added": [
                 "Tillagt"
+            ],
+            "Verifying": [
+                "Verifierar"
+            ],
+            "items": [
+                "objekt"
+            ],
+            "Verification complete:": [
+                "Verifiering slutförd:"
+            ],
+            "marked outdated": [
+                "markerad som föråldrad"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Kör synkronisering för att ladda upp föråldrade objekt igen."
+            ],
+            "Cancel Verify": [
+                "Avbryt verifiering"
             ],
             "Deleting...": [
                 "Raderar..."
@@ -157,6 +190,12 @@
             "Add Selected Items": [
                 "Lägg till valda objekt"
             ],
+            "Cannot change actions while sync is in progress": [
+                "Kan inte ändra åtgärder medan synkronisering pågår"
+            ],
+            "Cannot change actions while validation is in progress": [
+                "Kan inte ändra åtgärder medan validering pågår"
+            ],
             "Collection name updated successfully": [
                 "Namn på samlingen uppdaterades"
             ],
@@ -190,8 +229,8 @@
             "Choose an Action": [
                 "Välj en åtgärd"
             ],
-            "Cannot change actions while sync is in progress": [
-                "Kan inte ändra åtgärder medan synkronisering pågår"
+            "Validate & Fix Synced Items": [
+                "Verifiera och åtgärda synkroniserade objekt"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Välj innehållstyper (KB-artiklar, Inlägg, Sidor) som laddas in i tabellen. Detta skickar inget till AI än."
@@ -223,14 +262,11 @@
             "Content changed since last sync. Re-send to update.": [
                 "Innehållet har ändrats sedan senaste synkronisering. Skicka igen för att uppdatera."
             ],
+            "Could not be synced because the content is empty or the source no longer exists.": [
+                "Kunde inte synkroniseras eftersom innehållet är tomt eller källan inte längre existerar."
+            ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "Synkronisering misslyckades. Skicka igen för att försöka igen. Kontrollera att innehållet finns och inte är tomt."
-            ],
-            "Cannot navigate while sync is in progress": [
-                "Kan inte navigera medan synkronisering pågår"
-            ],
-            "Adding data to:": [
-                "Lägger till data till:"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Välj vilka innehållstyper du vill inkludera i din maskininlärningsdata."
@@ -297,6 +333,24 @@
             ],
             "Select items from the table and choose a sync method to update your AI training data.": [
                 "Välj objekt från tabellen och välj en synkroniseringsmetod för att uppdatera din maskininlärningsdata."
+            ],
+            "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
+                "Kör en extra valideringsomgång för att se till att den lokala databasen och AI-lagringen förblir synkroniserade. Om en fil saknas i AI-lagringen kommer den att markeras som inaktuell så att den kan skickas om."
+            ],
+            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
+                "Detta kontrollerar tillagda och uppdaterade objekt som redan spåras i denna samling, inklusive uppladdade PDF-filer."
+            ],
+            "Collection:": [
+                "Samling:"
+            ],
+            "synced items ready to validate": [
+                "synkroniserade objekt redo att valideras"
+            ],
+            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
+                "Inga tillagda eller uppdaterade objekt är tillgängliga ännu. Skicka innehåll till AI först och kör sedan validering vid behov."
+            ],
+            "Validation in Progress...": [
+                "Validering pågår..."
             ],
             "Manage your collection settings and data.": [
                 "Hantera dina samlingsinställningar och data."
