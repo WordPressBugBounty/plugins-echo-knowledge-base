@@ -37,6 +37,9 @@
             "OFF": [
                 "APAGADO"
             ],
+            "Optional": [
+                "Opcional"
+            ],
             "View Full Documentation": [
                 "Ver Documentación Completa"
             ],
@@ -57,9 +60,6 @@
             ],
             "Send Data to AI": [
                 "Enviar datos a la IA"
-            ],
-            "Optional": [
-                "Opcional"
             ],
             "Collection name cannot be empty": [
                 "El nombre de la colección no puede estar vacío"

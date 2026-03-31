@@ -106,9 +106,6 @@
             "Completed": [
                 "पूर्ण"
             ],
-            "An error occurred. Please try again.": [
-                "एक त्रुटि हुई है। कृपया पुनः प्रयास करें।."
-            ],
             "Outdated": [
                 "पुराना"
             ],
@@ -189,6 +186,9 @@
             ],
             "Failed to submit report.": [
                 "रिपोर्ट भेजने में विफल रहा।."
+            ],
+            "An error occurred. Please try again.": [
+                "एक त्रुटि हुई है। कृपया पुनः प्रयास करें।."
             ],
             "Submit this issue if you need help:": [
                 "यदि आपको मदद चाहिए, तो यह समस्या भेज दें:"

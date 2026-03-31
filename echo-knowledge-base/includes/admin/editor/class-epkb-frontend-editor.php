@@ -1100,6 +1100,17 @@ class EPKB_Frontend_Editor {
 
 		$new_config = array_merge( $orig_config, $new_config );
 
+		// sync font-size number settings into typography arrays for preview
+		if ( isset( $new_config['section_head_font_size'] ) ) {
+			$new_config['section_head_typography']['font-size'] = $new_config['section_head_font_size'];
+		}
+		if ( isset( $new_config['section_head_description_font_size'] ) ) {
+			$new_config['section_head_description_typography']['font-size'] = $new_config['section_head_description_font_size'];
+		}
+		if ( isset( $new_config['article_font_size'] ) ) {
+			$new_config['article_typography']['font-size'] = $new_config['article_font_size'];
+		}
+
 		$cached_kb_config = [ 'kb_id' => $kb_id, 'orig_config' => $orig_config, 'new_config' => $new_config, 'unmerged_new_config' => $unmerged_new_config ];
 
 		return $cached_kb_config;

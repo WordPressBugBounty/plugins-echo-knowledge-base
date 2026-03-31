@@ -37,6 +37,9 @@
             "OFF": [
                 "DISATTIVATO"
             ],
+            "Optional": [
+                "Opzionale"
+            ],
             "View Full Documentation": [
                 "Visualizza la documentazione completa"
             ],
@@ -57,9 +60,6 @@
             ],
             "Send Data to AI": [
                 "Invia dati all'IA"
-            ],
-            "Optional": [
-                "Opzionale"
             ],
             "Collection name cannot be empty": [
                 "Il nome della collezione non può essere vuoto"

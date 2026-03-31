@@ -40,6 +40,12 @@
             "OFF": [
                 "AV"
             ],
+            "Email": [
+                "E-post"
+            ],
+            "Feedback": [
+                "Tilbakemelding"
+            ],
             "Reset": [
                 "Tilbakestill"
             ],
@@ -55,17 +61,23 @@
             "API Configuration": [
                 "API-konfigurasjon"
             ],
-            "Feedback": [
-                "Tilbakemelding"
-            ],
             "AI Assistant": [
                 "AI-assistent"
+            ],
+            "Name": [
+                "Navn"
+            ],
+            "Message": [
+                "Melding"
             ],
             "Delete Selected": [
                 "Slett valgte"
             ],
             "of": [
                 "av"
+            ],
+            "Phone": [
+                "Telefon"
             ],
             "Requires AI Features PRO": [
                 "Krever AI-funksjoner PRO"
@@ -90,6 +102,9 @@
             ],
             "Agent handover request submitted": [
                 "Forespørsel om agentoverlevering sendt"
+            ],
+            "Trigger": [
+                "Utløser"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "Er du sikker på at du vil slette de valgte samtalene?"

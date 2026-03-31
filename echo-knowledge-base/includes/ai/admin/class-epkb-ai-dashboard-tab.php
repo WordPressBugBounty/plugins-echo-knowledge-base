@@ -7,8 +7,7 @@ class EPKB_AI_Dashboard_Tab {
 	
 	public function __construct() {
 		add_action( 'wp_ajax_epkb_get_ai_status', array( $this, 'ajax_get_ai_status' ) );
-		add_action( 'wp_ajax_epkb_vote_for_features', array( $this, 'ajax_vote_for_features' ) );
-		add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_training_data_sync' ) );
+add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_training_data_sync' ) );
 		add_action( 'wp_ajax_epkb_submit_empty_content_report', array( $this, 'ajax_submit_empty_content_report' ) );
 	}
 
@@ -25,14 +24,6 @@ class EPKB_AI_Dashboard_Tab {
 			'load_status_async' => true
 		);
 		
-		// Add current user info for prepopulating forms
-		$current_user = wp_get_current_user();
-		$config['current_user'] = array(
-			'first_name' => $current_user->first_name ?: $current_user->display_name,
-			'email' => $current_user->user_email,
-			'site_url' => get_site_url()
-		);
-		
 		// Do a quick status check for immediate display (no API calls)
 		$quick_status = self::get_ai_status( true );
 		$config['status'] = $quick_status;
@@ -42,7 +33,7 @@ class EPKB_AI_Dashboard_Tab {
 		// Show dashboard content
 		$config['dashboard_stats'] = self::get_dashboard_stats();
 		$config['news'] = self::get_news_items();
-		$config['upcoming_features'] = self::get_upcoming_features();
+		$config['ai_features'] = self::get_ai_features();
 		$config['tools_link'] = self::get_tools_link();
 		
 		return $config;
@@ -90,69 +81,6 @@ class EPKB_AI_Dashboard_Tab {
 		$result['has_synced_data'] = EPKB_AI_Utilities::is_ai_chat_or_search_enabled() && $has_provider_data;
 
 		wp_send_json_success( $result );
-	}
-
-	/**
-	 * AJAX handler to vote for features
-	 */
-	public function ajax_vote_for_features() {
-
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
-
-		// Get the submitted data
-		$first_name = isset( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : '';
-		$email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
-		$site_url = get_site_url(); // Always use the actual site URL
-		$features = isset( $_POST['features'] ) ? array_map( 'sanitize_text_field', $_POST['features'] ) : array();
-		$other_feature_text = isset( $_POST['other_feature_text'] ) ? sanitize_textarea_field( $_POST['other_feature_text'] ) : '';
-
-		// Validate required fields - only features are required now
-		if ( empty( $features ) ) {
-			wp_send_json_error( __( 'Please select at least one feature.', 'echo-knowledge-base' ) );
-		}
-
-		// Validate email only if provided
-		if ( ! empty( $email ) && ! is_email( $email ) ) {
-			wp_send_json_error( __( 'Please provide a valid email address.', 'echo-knowledge-base' ) );
-		}
-
-		// Build feedback message
-		$feedback_message = 'User voted for features: ' . implode( ', ', $features );
-		if ( ! empty( $other_feature_text ) && in_array( 'other-feature', $features ) ) {
-			$feedback_message .= "\nOther feature requested: " . $other_feature_text;
-		}
-
-		// send feedback to same endpoint as deactivation form
-		$vote_data = array(
-			'epkb_action'       => 'epkb_process_user_feedback',
-			'feedback_type'     => 'feature_vote',
-			'feedback_input'    => $feedback_message,
-			'plugin_name'       => 'AI',
-			'plugin_version'    => class_exists('Echo_Knowledge_Base') ? Echo_Knowledge_Base::$version : 'N/A',
-			'first_version'     => '',
-			'wp_version'        => '',
-			'theme_info'        => '',
-			'contact_user'      => $email . ' - ' . $first_name,
-			'first_name'        => $first_name,
-			'email_subject'     => 'Feature Vote',
-		);
-
-		// Call the API
-		$response = wp_remote_post(
-			esc_url_raw( add_query_arg( $vote_data, 'https://www.echoknowledgebase.com' ) ),
-			array(
-				'timeout'   => 15,
-				'body'      => $vote_data,
-				'sslverify' => false
-			)
-		);
-
-		// Check if the request was successful
-		if ( is_wp_error( $response ) ) {
-			wp_send_json_error( array( 'message' => __( 'Failed to submit vote. Please try again.', 'echo-knowledge-base' ) ) );
-		}
-
-		wp_send_json_success( array( 'message' => __( 'Thank you for voting! Your feedback helps us prioritize future features.', 'echo-knowledge-base' ) ) );
 	}
 
 	/**
@@ -1018,6 +946,13 @@ class EPKB_AI_Dashboard_Tab {
 	private static function get_news_items() {
 		return array(
 			array(
+				'date' => '2026-03-29',
+				'type' => 'feature',
+				'title' => __( 'AI-Generated Quizzes', 'echo-knowledge-base' ),
+				'description' => __( 'Generate quizzes from KB articles with AI and publish them below article content.', 'echo-knowledge-base' ),
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-quizzes' )
+			),
+			array(
 				'date' => '2026-03-09',
 				'type' => 'feature',
 				'title' => __( 'PDF to Articles (PRO)', 'echo-knowledge-base' ),
@@ -1052,78 +987,185 @@ class EPKB_AI_Dashboard_Tab {
 				'description' => __( 'Upload PDF files and convert them into AI training notes to expand your AI knowledge beyond KB articles.', 'echo-knowledge-base' ),
 				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=training-data' )
 			),
-			array(
-				'date' => '2026-02-01',
-				'type' => 'feature',
-				'title' => __( 'AI Chat with Sources', 'echo-knowledge-base' ),
-				'description' => __( 'AI Chat can now display source articles used to generate responses, helping users verify information.', 'echo-knowledge-base' ),
-				'link' => null
-			),
 		);
 	}
 	
 	/**
-	 * Get upcoming features
+	 * Get AI features for dashboard display
 	 *
 	 * @return array
 	 */
-	private static function get_upcoming_features() {
+	private static function get_ai_features() {
+		$has_ai_features_pro = EPKB_AI_Utilities::is_ai_features_pro_enabled();
+
 		return array(
-			array(
-				'id' => 'other-feature',
-				'icon' => 'epkbfa epkbfa-lightbulb-o',
-				'title' => __( 'Other Feature Not Listed', 'echo-knowledge-base' ),
-				'description' => __( 'Have a different feature in mind? Select this option and tell us what you would like to see added to the AI features.', 'echo-knowledge-base' ),
-				'requires_input' => true
-			),
-			array(
-				'id' => 'ai-content-analysis',
-				'icon' => 'epkbfa epkbfa-line-chart',
-				'title' => __( 'AI Content Analysis (Knowledge Base Audit)', 'echo-knowledge-base' ),
-				'description' => __( 'Advanced analysis with content gap alerts, outdated article flags, and pain-point analytics to focus documentation efforts.', 'echo-knowledge-base' ),
-				'released' => true,
-			),
-			array(
-				'id' => 'pdf-support',
-				'icon' => 'epkbfa epkbfa-file-pdf-o',
-				'title' => __( 'PDFs - Convert to Articles or Notes', 'echo-knowledge-base' ),
-				'description' => __( 'Convert PDFs into knowledge base articles or notes and include them in AI training data.', 'echo-knowledge-base' ),
-				'released' => true,
-			),
-			array(
-				'id' => 'ai-enriched-search',
-				'icon' => 'epkbfa epkbfa-search',
-				'title' => __( 'AI-Generated Enriched Search Results', 'echo-knowledge-base' ),
-				'description' => __( 'Search results with AI-generated snippets, glossary definitions, related articles, and relevant charts for more informative results.', 'echo-knowledge-base' ),
-				'released' => true,
-			),
-			array(
-				'id' => 'ai-human-handoff',
-				'icon' => 'epkbfa epkbfa-group',
-				'title' => __( 'AI Chat with Human Handoff', 'echo-knowledge-base' ),
-				'description' => __( 'Seamless handover from AI chatbot to human agent with conversation context preserved for frustration-free support.', 'echo-knowledge-base' ),
-				'released' => true,
-			),
-			array(
-				'id' => 'ai-tutorials-quizzes',
-				'icon' => 'epkbfa epkbfa-graduation-cap',
-				'title' => __( 'AI-Generated Tutorials & Quizzes', 'echo-knowledge-base' ),
-				'description' => __( 'Automatically generate step-by-step tutorials and interactive quizzes from your existing KB articles to enhance learning and engagement.', 'echo-knowledge-base' ),
-			),
-			array(
-				'id' => 'ai-glossary-terms',
-				'icon' => 'epkbfa epkbfa-book',
-				'title' => __( 'AI-Generated Glossary Terms', 'echo-knowledge-base' ),
-				'description' => __( 'Automatic suggestions and creation of glossary definitions with minimal manual effort for improved clarity.', 'echo-knowledge-base' ),
-				'released' => true,
-			),
-			array(
-				'id' => 'ai-category-icons',
-				'icon' => 'epkbfa epkbfa-picture-o',
-				'title' => __( 'AI-Generated Category Icons', 'echo-knowledge-base' ) . ' (PRO)',
-				'description' => __( 'Automatically generate unique icons for your KB categories using AI, giving your knowledge base a polished and consistent visual identity.', 'echo-knowledge-base' ),
-			),
+			array_merge( array(
+				'id'            => 'ai-chat',
+				'icon'          => 'epkbfa epkbfa-comments',
+				'title'         => __( 'AI Chat', 'echo-knowledge-base' ),
+				'is_pro'        => false,
+				'is_free'       => true,
+				'features'      => array(
+					__( 'Answer visitor questions instantly', 'echo-knowledge-base' ),
+					__( 'Use synced KB articles as training data', 'echo-knowledge-base' ),
+					__( 'Preview chat before enabling it publicly', 'echo-knowledge-base' ),
+					__( 'Customize widget display and behavior', 'echo-knowledge-base' ),
+				),
+			), self::get_ai_feature_action_links( self::get_ai_chat_settings_admin_url(), $has_ai_features_pro, true ) ),
+			array_merge( array(
+				'id'            => 'ai-search',
+				'icon'          => 'epkbfa epkbfa-search',
+				'title'         => __( 'AI Search', 'echo-knowledge-base' ),
+				'is_pro'        => false,
+				'is_free'       => true,
+				'features'      => array(
+					__( 'Show AI-powered answers from KB content', 'echo-knowledge-base' ),
+					__( 'Use synced KB articles as training data', 'echo-knowledge-base' ),
+					__( 'Preview search before enabling it publicly', 'echo-knowledge-base' ),
+					__( 'Configure search mode and result display', 'echo-knowledge-base' ),
+				),
+			), self::get_ai_feature_action_links( self::get_ai_search_settings_admin_url(), $has_ai_features_pro, true ) ),
+			array_merge( array(
+				'id'            => 'ai-tag-suggestions',
+				'icon'          => 'epkbfa epkbfa-tags',
+				'title'         => __( 'AI Tag Suggestions', 'echo-knowledge-base' ),
+				'is_pro'        => false,
+				'is_free'       => true,
+				'features'      => array(
+					__( 'AI-powered tag recommendations', 'echo-knowledge-base' ),
+					__( 'Broad and specific tag categories', 'echo-knowledge-base' ),
+					__( 'SEO-aware suggestions', 'echo-knowledge-base' ),
+				),
+			), self::get_ai_feature_action_links( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=content-analysis' ), $has_ai_features_pro, true ) ),
+			array_merge( array(
+				'id'            => 'ai-quizzes',
+				'icon'          => 'epkbfa epkbfa-graduation-cap',
+				'title'         => __( 'AI-Generated Quizzes', 'echo-knowledge-base' ),
+				'is_pro'        => ! $has_ai_features_pro,
+				'features'      => array(
+					__( 'Generate quizzes from KB articles', 'echo-knowledge-base' ),
+					__( 'Custom questions, answers, and explanations', 'echo-knowledge-base' ),
+					__( 'Step-by-step tutorials', 'echo-knowledge-base' ),
+					__( 'Show quizzes below article content', 'echo-knowledge-base' ),
+				),
+			), self::get_ai_feature_action_links( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-quizzes' ), $has_ai_features_pro ) ),
+			array_merge( array(
+				'id'            => 'ai-human-handoff',
+				'icon'          => 'epkbfa epkbfa-group',
+				'title'         => __( 'Human Handoff', 'echo-knowledge-base' ),
+				'is_pro'        => ! $has_ai_features_pro,
+				'features'      => array(
+					__( 'Seamless AI-to-human escalation', 'echo-knowledge-base' ),
+					__( 'Conversation context preserved', 'echo-knowledge-base' ),
+					__( 'Email and ticket integration', 'echo-knowledge-base' ),
+					__( 'Keyword-triggered handoff', 'echo-knowledge-base' ),
+				),
+			), self::get_ai_feature_action_links( self::get_ai_chat_settings_admin_url(), $has_ai_features_pro ) ),
+			array_merge( array(
+				'id'            => 'pdf-to-articles',
+				'icon'          => 'epkbfa epkbfa-file-pdf-o',
+				'title'         => __( 'PDF to Articles', 'echo-knowledge-base' ),
+				'is_pro'        => ! $has_ai_features_pro,
+				'features'      => array(
+					__( 'Convert PDFs to KB articles', 'echo-knowledge-base' ),
+					__( 'AI-powered formatting', 'echo-knowledge-base' ),
+					__( 'Preserve document structure', 'echo-knowledge-base' ),
+				),
+			), self::get_ai_feature_action_links( self::get_notes_and_pdfs_admin_url(), $has_ai_features_pro ) ),
+			array_merge( array(
+				'id'            => 'pdf-upload',
+				'icon'          => 'epkbfa epkbfa-cloud-upload',
+				'title'         => __( 'PDF Upload for AI Training', 'echo-knowledge-base' ),
+				'is_pro'        => ! $has_ai_features_pro,
+				'features'      => array(
+					__( 'Upload PDFs as AI training data', 'echo-knowledge-base' ),
+					__( 'AI-powered text extraction', 'echo-knowledge-base' ),
+					__( 'Multiple data collections', 'echo-knowledge-base' ),
+				),
+			), self::get_ai_feature_action_links( self::get_notes_and_pdfs_admin_url(), $has_ai_features_pro ) ),
+			array_merge( array(
+				'id'            => 'ai-glossary-generation',
+				'icon'          => 'epkbfa epkbfa-book',
+				'title'         => __( 'AI Glossary Generation', 'echo-knowledge-base' ),
+				'is_pro'        => ! $has_ai_features_pro,
+				'features'      => array(
+					__( 'Auto-scan articles for terms', 'echo-knowledge-base' ),
+					__( 'AI-generated definitions', 'echo-knowledge-base' ),
+					__( 'Review and approve workflow', 'echo-knowledge-base' ),
+					__( 'Tooltip auto-highlighting', 'echo-knowledge-base' ),
+				),
+			), self::get_ai_feature_action_links( self::get_glossary_admin_url( '#glossary-ai-generate' ), $has_ai_features_pro ) ),
 		);
+	}
+
+	/**
+	 * Get action links for an AI feature card.
+	 *
+	 * @param string $settings_link Feature settings URL.
+	 * @param bool   $has_ai_features_pro Whether AI Features PRO is active.
+	 * @param bool   $is_free Whether the feature is part of the free core set.
+	 * @return array
+	 */
+	private static function get_ai_feature_action_links( $settings_link, $has_ai_features_pro, $is_free = false ) {
+		if ( $is_free ) {
+			return array(
+				'settings_link'     => $settings_link,
+				'doc_link'          => '',
+				'doc_link_external' => false,
+			);
+		}
+
+		return array(
+			'settings_link'     => $has_ai_features_pro ? $settings_link : '',
+			'doc_link'          => $has_ai_features_pro ? '' : self::get_ai_pro_features_admin_url(),
+			'doc_link_external' => false,
+		);
+	}
+
+	/**
+	 * Get AI PRO Features admin URL.
+	 *
+	 * @return string
+	 */
+	private static function get_ai_pro_features_admin_url() {
+		return admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=pro-features' );
+	}
+
+	/**
+	 * Get AI Chat settings URL.
+	 *
+	 * @return string
+	 */
+	private static function get_ai_chat_settings_admin_url() {
+		return admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=chat&active_sub_tab=chat-settings' );
+	}
+
+	/**
+	 * Get AI Search settings URL.
+	 *
+	 * @return string
+	 */
+	private static function get_ai_search_settings_admin_url() {
+		return admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=search&active_sub_tab=search-settings' );
+	}
+
+	/**
+	 * Get Notes and PDFs admin URL.
+	 *
+	 * @return string
+	 */
+	private static function get_notes_and_pdfs_admin_url() {
+		return admin_url( 'admin.php?page=aipro-all-notes' );
+	}
+
+	/**
+	 * Get Glossary admin URL.
+	 *
+	 * @param string $hash Optional hash for a Glossary tab.
+	 * @return string
+	 */
+	private static function get_glossary_admin_url( $hash = '' ) {
+		return admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-glossary' ) . $hash;
 	}
 
 	/**

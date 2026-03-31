@@ -37,6 +37,9 @@
             "OFF": [
                 "オフ"
             ],
+            "Optional": [
+                "任意"
+            ],
             "View Full Documentation": [
                 "全ドキュメントを見る"
             ],
@@ -57,9 +60,6 @@
             ],
             "Send Data to AI": [
                 "データをAIに送信"
-            ],
-            "Optional": [
-                "任意"
             ],
             "Collection name cannot be empty": [
                 "コレクション名を空にすることはできません"

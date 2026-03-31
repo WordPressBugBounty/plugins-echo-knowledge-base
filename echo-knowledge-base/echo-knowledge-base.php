@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 17.1.2
+ * Version: 17.3.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '17.1.2';
+	public static $version = '17.3.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -108,6 +108,8 @@ final class Echo_Knowledge_Base {
 		new EPKB_Articles_CPT_Setup();
 		new EPKB_Articles_Admin();
 		new EPKB_FAQs_CPT_Setup();
+		new EPKB_Quizzes_CPT_Setup();
+		new EPKB_Quizzes_Setup();
 		new EPKB_Glossary_Taxonomy_Setup();
 		new EPKB_Glossary_Frontend();
 		new EPKB_Blocks_Setup();
@@ -224,6 +226,9 @@ final class Echo_Knowledge_Base {
 		} else if ( in_array( $action, array( 'epkb_save_faq', 'epkb_get_faq', 'epkb_delete_faq', 'epkb_save_faq_group', 'epkb_delete_faq_group' ) ) ) {
 			new EPKB_FAQs_Ctrl();
 			return;
+		} else if ( in_array( $action, array( 'epkb_save_quiz', 'epkb_get_quiz', 'epkb_get_quiz_by_article', 'epkb_delete_quiz', 'epkb_generate_quiz', 'epkb_submit_quiz_interest' ) ) ) {
+			new EPKB_Quizzes_Ctrl();
+			return;
 		} else if ( in_array( $action, array( 'epkb_glossary_save_term', 'epkb_glossary_delete_term', 'epkb_glossary_get_term', 'epkb_glossary_bulk_publish' ) ) ) {
 			new EPKB_Glossary_Ctrl();
 			return;
@@ -245,7 +250,7 @@ final class Echo_Knowledge_Base {
 		} else if ( in_array( $action, array( 'epkb_get_ai_status', 'epkb_vote_for_features', 'epkb_submit_empty_content_report' ) ) ) {
 			new EPKB_AI_Dashboard_Tab();
 			return;
-		} else if ( in_array( $action, array( 'epkb_kb_vote_for_features', 'epkb_enable_glossary' ) ) ) {
+		} else if ( in_array( $action, array( 'epkb_kb_vote_for_features', 'epkb_enable_glossary', 'epkb_enable_quizzes' ) ) ) {
 			new EPKB_Dashboard_Page();
 			return;
 		} else if ( $action == 'epkb_check_training_data_sync' ) {
@@ -424,4 +429,3 @@ function epkb_get_instance() {
 epkb_get_instance();
 
 endif; // end class_exists() check
-

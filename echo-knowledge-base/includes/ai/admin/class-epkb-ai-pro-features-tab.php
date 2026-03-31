@@ -157,32 +157,6 @@ class EPKB_AI_PRO_Features_Tab {
 				'image' => esc_url( Echo_Knowledge_Base::$plugin_url . 'img/ad/ai-pro-features-agent-handoff.jpg' )
 			),
 			array(
-				'id' => 'content-gaps-analysis',
-				'title' => __( 'Content Gaps Analysis', 'echo-knowledge-base' ),
-				'description' => __( 'AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage and what questions your users might ask that aren\'t addressed.', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-puzzle-piece',
-				'icon_color' => '#F39C12',
-				'benefits' => array(
-					__( 'Identifies unanswered user questions', 'echo-knowledge-base' ),
-					__( 'Detects missing or underdeveloped topics', 'echo-knowledge-base' ),
-					__( 'Provides actionable recommendations for improvement', 'echo-knowledge-base' )
-				),
-				'image' => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/10/Content-Gaps-Analysis.jpg'
-			),
-			array(
-				'id' => 'tag-suggestions',
-				'title' => __( 'AI-Powered Tag Suggestions', 'echo-knowledge-base' ),
-				'description' => __( 'AI analyzes your articles and intelligently suggests both broad and specific tags, helping you organize content more effectively and improve discoverability.', 'echo-knowledge-base' ),
-				'icon' => 'epkbfa epkbfa-tags',
-				'icon_color' => '#9B59B6',
-				'benefits' => array(
-					__( 'Automatic tag analysis for each article', 'echo-knowledge-base' ),
-					__( 'Broad category tags for general topics', 'echo-knowledge-base' ),
-					__( 'Specific tags for detailed content areas', 'echo-knowledge-base' )
-				),
-				'image' => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/10/AI-Powered-Tag-Suggestions.jpg'
-			),
-			array(
 				'id' => 'ai-smart-search',
 				'title' => __( 'AI Smart Search', 'echo-knowledge-base' ),
 				'description' => __( 'Display comprehensive AI search results in an organized, multi-section layout that can be embedded anywhere via shortcode.', 'echo-knowledge-base' ),
@@ -234,6 +208,44 @@ class EPKB_AI_PRO_Features_Tab {
 					__( 'AI automatically extracts and indexes PDF content', 'echo-knowledge-base' ),
 					__( 'Use PDF content alongside articles and notes for AI responses', 'echo-knowledge-base' ),
 				),
+			),
+			array(
+				'id' => 'ai-generated-quizzes',
+				'title' => __( 'AI-Generated Quizzes', 'echo-knowledge-base' ),
+				'description' => __( 'Generate quizzes from KB articles with AI and turn article content into interactive learning experiences.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-graduation-cap',
+				'icon_color' => '#7E5BEF',
+				'benefits' => array(
+					__( 'Generate quizzes from KB articles', 'echo-knowledge-base' ),
+					__( 'Custom questions, answers, and explanations', 'echo-knowledge-base' ),
+					__( 'Show quizzes below article content', 'echo-knowledge-base' )
+				),
+			),
+			array(
+				'id' => 'content-gaps-analysis',
+				'title' => __( 'Content Gaps Analysis', 'echo-knowledge-base' ),
+				'description' => __( 'AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage and what questions your users might ask that aren\'t addressed.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-puzzle-piece',
+				'icon_color' => '#F39C12',
+				'benefits' => array(
+					__( 'Identifies unanswered user questions', 'echo-knowledge-base' ),
+					__( 'Detects missing or underdeveloped topics', 'echo-knowledge-base' ),
+					__( 'Provides actionable recommendations for improvement', 'echo-knowledge-base' )
+				),
+				'image' => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/10/Content-Gaps-Analysis.jpg'
+			),
+			array(
+				'id' => 'tag-suggestions',
+				'title' => __( 'AI-Powered Tag Suggestions', 'echo-knowledge-base' ),
+				'description' => __( 'AI analyzes your articles and intelligently suggests both broad and specific tags, helping you organize content more effectively and improve discoverability.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-tags',
+				'icon_color' => '#9B59B6',
+				'benefits' => array(
+					__( 'Automatic tag analysis for each article', 'echo-knowledge-base' ),
+					__( 'Broad category tags for general topics', 'echo-knowledge-base' ),
+					__( 'Specific tags for detailed content areas', 'echo-knowledge-base' )
+				),
+				'image' => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/10/AI-Powered-Tag-Suggestions.jpg'
 			),
 			// array(
 			// 	'id' => 'articles-analysis',

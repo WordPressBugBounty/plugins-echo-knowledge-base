@@ -40,6 +40,12 @@
             "OFF": [
                 "AV"
             ],
+            "Email": [
+                "E-post"
+            ],
+            "Feedback": [
+                "Återkoppling"
+            ],
             "Reset": [
                 "Återställ"
             ],
@@ -55,17 +61,23 @@
             "API Configuration": [
                 "API-konfiguration"
             ],
-            "Feedback": [
-                "Återkoppling"
-            ],
             "AI Assistant": [
                 "AI-assistent"
+            ],
+            "Name": [
+                "Namn"
+            ],
+            "Message": [
+                "Meddelande"
             ],
             "Delete Selected": [
                 "Ta bort valda"
             ],
             "of": [
                 "av"
+            ],
+            "Phone": [
+                "Telefon"
             ],
             "Requires AI Features PRO": [
                 "Kräver AI-funktioner PRO"
@@ -90,6 +102,9 @@
             ],
             "Agent handover request submitted": [
                 "Överföringsförfrågan till agenten skickad"
+            ],
+            "Trigger": [
+                "Utlösare"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "Är du säker på att du vill ta bort de valda konversationerna?"

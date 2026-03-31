@@ -31,6 +31,9 @@
             "Previous": [
                 "Forrige"
             ],
+            "Feedback": [
+                "Feedback"
+            ],
             "Reset": [
                 "Nulstil"
             ],
@@ -54,9 +57,6 @@
             ],
             "Middle Column": [
                 "Midterkolonne"
-            ],
-            "Feedback": [
-                "Feedback"
             ],
             "AI Assistant": [
                 "AI-assistent"

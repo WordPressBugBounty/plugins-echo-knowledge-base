@@ -67,6 +67,8 @@ function epkb_load_admin_plugin_pages_resources() {
 		array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-admin-plugin-pages-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-plugin-pages' . $suffix . '.js',
 		array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable', 'wp-color-picker'), Echo_Knowledge_Base::$version );
+	wp_register_script( 'epkb-quizzes-admin', Echo_Knowledge_Base::$plugin_url . 'js/quizzes-admin' . $suffix . '.js',
+		array( 'epkb-admin-plugin-pages-scripts' ), Echo_Knowledge_Base::$version, true );
 
 	if ( EPKB_Utilities::is_advanced_search_enabled() ) {
 		$kb_config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
@@ -217,6 +219,43 @@ function epkb_load_admin_plugin_pages_resources() {
 		wp_enqueue_script( 'epkb-faq-shortcode-scripts' );
 		wp_enqueue_script( 'epkb-icon-fonts' );
 		wp_enqueue_style( 'epkb-shortcodes' );
+	} else if ( $page == 'epkb-quizzes' ) {
+		$current_user = wp_get_current_user();
+
+		wp_enqueue_script( 'epkb-quizzes-admin' );
+		wp_localize_script( 'epkb-quizzes-admin', 'epkbQuizAdmin', array(
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			'nonce'   => wp_create_nonce( '_wpnonce_epkb_ajax_action' ),
+			'currentUser' => array(
+				'firstName' => empty( $current_user->first_name ) ? $current_user->display_name : $current_user->first_name,
+				'email'     => $current_user->user_email,
+			),
+			'strings' => array(
+				'genericError'       => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
+				'discardChanges'     => esc_html__( 'You have unsaved changes. Discard them and continue?', 'echo-knowledge-base' ),
+				'published'          => esc_html__( 'Published', 'echo-knowledge-base' ),
+				'draft'              => esc_html__( 'Draft', 'echo-knowledge-base' ),
+				'choiceA'            => esc_html__( 'Choice A', 'echo-knowledge-base' ),
+				'choiceB'            => esc_html__( 'Choice B', 'echo-knowledge-base' ),
+				'choiceC'            => esc_html__( 'Choice C', 'echo-knowledge-base' ),
+				'choiceD'            => esc_html__( 'Choice D', 'echo-knowledge-base' ),
+				'multipleChoice'     => esc_html__( 'Multiple Choice', 'echo-knowledge-base' ),
+				'trueFalse'          => esc_html__( 'True / False', 'echo-knowledge-base' ),
+				'remove'             => esc_html__( 'Remove', 'echo-knowledge-base' ),
+				'questionText'       => esc_html__( 'Question', 'echo-knowledge-base' ),
+				'correctAnswer'      => esc_html__( 'Correct Answer', 'echo-knowledge-base' ),
+				'internalId'         => esc_html__( 'Question ID', 'echo-knowledge-base' ),
+				'explanation'        => esc_html__( 'Explanation', 'echo-knowledge-base' ),
+				'question'           => esc_html__( 'Question', 'echo-knowledge-base' ),
+				'deleteConfirm'      => esc_html__( 'Delete this quiz permanently?', 'echo-knowledge-base' ),
+				'noQuizzes'          => esc_html__( 'No quizzes yet.', 'echo-knowledge-base' ),
+				'newQuiz'            => esc_html__( 'New Quiz', 'echo-knowledge-base' ),
+				'openedExistingQuiz' => esc_html__( 'Opened the existing quiz for that article.', 'echo-knowledge-base' ),
+				'unavailableArticle' => esc_html__( 'Unavailable source article', 'echo-knowledge-base' ),
+				'success'            => esc_html__( 'Success', 'echo-knowledge-base' ),
+				'close'              => esc_html__( 'Close', 'echo-knowledge-base' ),
+			),
+		) );
 	}
 
 	// Help Resources page - setup steps script

@@ -31,6 +31,9 @@
             "Previous": [
                 "Poprzednie"
             ],
+            "Feedback": [
+                "Uwagi"
+            ],
             "Reset": [
                 "Resetuj"
             ],
@@ -54,9 +57,6 @@
             ],
             "Middle Column": [
                 "Środkowa kolumna"
-            ],
-            "Feedback": [
-                "Uwagi"
             ],
             "AI Assistant": [
                 "Asystent AI"

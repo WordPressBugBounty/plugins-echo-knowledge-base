@@ -106,9 +106,6 @@
             "Completed": [
                 "Completado"
             ],
-            "An error occurred. Please try again.": [
-                "Ocurrió un error. Por favor, inténtalo de nuevo."
-            ],
             "Outdated": [
                 "Desactualizado"
             ],
@@ -189,6 +186,9 @@
             ],
             "Failed to submit report.": [
                 "Error al enviar el informe."
+            ],
+            "An error occurred. Please try again.": [
+                "Ocurrió un error. Por favor, inténtalo de nuevo."
             ],
             "Submit this issue if you need help:": [
                 "Envíe este problema si necesita ayuda:"

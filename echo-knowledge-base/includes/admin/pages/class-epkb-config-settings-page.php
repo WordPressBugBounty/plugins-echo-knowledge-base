@@ -1250,12 +1250,14 @@ class EPKB_Config_Settings_Page {
 				'10' => esc_html__( 'Standard', 'echo-knowledge-base' ) . ' ' . '#3',
 				'12' => esc_html__( 'Spacious', 'echo-knowledge-base' ),
 				'14' => esc_html__( 'Large', 'echo-knowledge-base' ),
+				'20' => esc_html__( 'Extra Large', 'echo-knowledge-base' ),
 			);
 			$tooltip_body = esc_html__( 'Spacing between articles in a list', 'echo-knowledge-base' ) . ':<br>' .
 				__( 'Compact', 'echo-knowledge-base' ) . ' 8px' . '<br>' .
 				__( 'Standard', 'echo-knowledge-base' ) . ' 12/16/20px' . '<br>' .
 				__( 'Spacious', 'echo-knowledge-base' ) . ' 24px' . '<br>' .
-				__( 'Large', 'echo-knowledge-base' ) . ' 28px' . '<br>';
+				__( 'Large', 'echo-knowledge-base' ) . ' 28px' . '<br>' .
+				__( 'Extra Large', 'echo-knowledge-base' ) . ' 40px' . '<br>';
 			if ( ! key_exists( $this->kb_config[$setting_name], $spacing_range ) ) {
 				$spacing_range[$this->kb_config[$setting_name]] = esc_html__( 'Custom', 'echo-knowledge-base' ) . ' ' . ( 2 * $this->kb_config[$setting_name] );
 			}
@@ -1704,6 +1706,13 @@ class EPKB_Config_Settings_Page {
 					'data'      => [ 'target' => 'glossary' ],
 				),
 				array(
+					'title'     => esc_html__( 'Quizzes', 'echo-knowledge-base' ),
+					'fields'    => $this->kb_config['id'] == EPKB_KB_Config_DB::DEFAULT_KB_ID ? [
+						'quizzes_enable' => '',
+					] : [],
+					'data'      => [ 'target' => 'quizzes' ],
+				),
+				array(
 					'title'         => esc_html__( 'Widgets/Shortcodes', 'echo-knowledge-base' ),
 					'fields'        => [
 						'widg_search_results_limit' => 'widg',
@@ -2008,12 +2017,20 @@ class EPKB_Config_Settings_Page {
 				$field_specs['enable_on'] = ['on'];
 				break;
 
+			case 'article_list_hover_background_color':
+			case 'article_list_hover_font_color':
+				$field_specs['dependency'] = ['article_list_hover_toggle'];
+				$field_specs['enable_on'] = ['on'];
+				break;
+
 			case 'nav_sidebar_left':
 			case 'nav_sidebar_right':
 			case 'rating_mode':
 			case 'section_head_category_icon_location':
 			case 'section_desc_text_on':
 			case 'glossary_enable':
+			case 'article_list_hover_toggle':
+			case 'quizzes_enable':
 				$field_specs['input_group_class'] = 'eckb-conditional-setting-input' . ' ';
 				break;
 
@@ -2128,6 +2145,11 @@ class EPKB_Config_Settings_Page {
 			// Glossary
 			case 'glossary_enable':
 				$input_args['tooltip_body'] = esc_html__( 'Enable or disable the Glossary feature. When enabled, glossary terms will be highlighted in articles with tooltip definitions. When disabled, the Glossary menu is hidden; turn it back on here then save and reload the page to see the Glossary in the admin menu.', 'echo-knowledge-base' );
+				break;
+
+			// Quizzes
+			case 'quizzes_enable':
+				$input_args['tooltip_body'] = esc_html__( 'Enable or disable the Quizzes feature. When enabled, the Quizzes menu appears in the KB admin and published quizzes can render on article pages. When disabled, the Quizzes menu is hidden; turn it back on here in the default KB, then save and reload the page to see Quizzes in the admin menu.', 'echo-knowledge-base' );
 				break;
 
 			//Left Sidebar
@@ -2886,6 +2908,8 @@ class EPKB_Config_Settings_Page {
 					'section_border_width' => [ 'not_sidebar' ],
 					'section_border_color' => [ 'not_sidebar' ],
 					'section_border_radius' => [ 'not_sidebar' ],
+					'category_box_padding' => [ 'only_basic' ],
+					'section_box_gap' => [ 'only_basic' ],
 				],
 				'data'          => [ 'insert-box-after' => '.epkb-admin__form-tab-content--module-settings' ],
 			),
@@ -2919,6 +2943,8 @@ class EPKB_Config_Settings_Page {
 					'section_divider_color' => [ [ 'only_basic', 'only_tabs', 'only_categories', 'only_grid' ] ],
 					'section_head_background_color' => [ [ 'only_basic', 'only_tabs', 'only_categories', 'only_grid' ] ],
 					'ml_categories_articles_category_title_html_tag' => [ [ 'only_classic', 'only_drill_down' ] ],
+					'section_head_font_size' => [ 'only_basic' ],
+					'section_head_description_font_size' => [ 'only_basic' ],
 				],
 				'data'          => [ 'insert-box-after' => '.epkb-admin__form-tab-content--module-settings' ],
 			),
@@ -2979,6 +3005,10 @@ class EPKB_Config_Settings_Page {
 					'sidebar_article_list_margin' => [ 'elay', 'only_sidebar' ],
 					'ml_categories_articles_article_bg_color' => [ 'only_drill_down' ],
 					'article_list_spacing' => 'not_sidebar', // article spacing
+					'article_list_hover_toggle' => [ 'only_basic' ],
+					'article_list_hover_background_color' => [ 'only_basic' ],
+					'article_list_hover_font_color' => [ 'only_basic' ],
+					'article_font_size' => [ 'only_basic' ],
 					'collapse_articles_msg' => 'not_block_main_page',
 					'sidebar_show_sub_category_articles_msg' => '',
 					'show_all_articles_msg' => '',

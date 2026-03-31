@@ -352,6 +352,50 @@ class EPKB_ML_Articles_List {
 			$output .= '#epkb-ml__module-articles-list .epkb-ml-articles-list__title { text-align: ' . esc_attr( $kb_config['ml_articles_list_title_location'] ) . '!important; }';
 		}
 
+		// Article hover effect -----------------------------------------/
+		if ( ! empty( $kb_config['article_list_hover_toggle'] ) && $kb_config['article_list_hover_toggle'] == 'on' ) {
+			$spacing = intval( $kb_config['article_list_spacing'] );
+			$hover_bg = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_background_color'] );
+			$hover_text = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_font_color'] );
+			$output .= '
+				#epkb-ml__module-articles-list .epkb-ml-article-container {
+					padding: ' . $spacing . 'px !important;
+					border-radius: 6px !important;
+					transition: background-color 0.2s ease, color 0.2s ease !important;
+				}
+				#epkb-ml__module-articles-list .epkb-ml-article-container:hover {
+					background-color: ' . $hover_bg . ' !important;
+				}
+				#epkb-ml__module-articles-list .epkb-ml-article-container:hover .epkb-article-inner {
+					color: ' . $hover_text . ' !important;
+				}
+				#epkb-ml__module-articles-list .epkb-ml-article-container:hover .epkb-article__icon {
+					color: ' . $hover_text . ' !important;
+				}
+				#epkb-ml__module-articles-list .epkb-ml-article-container:hover .epkb-article__text {
+					color: ' . $hover_text . ' !important;
+				}
+				#epkb-ml__module-articles-list .epkb-ml-articles-list li {
+					padding-top: 0px !important;
+					padding-bottom: 0px !important;
+				}';
+		}
+
+		// Space between article sections -----------------------------------------/
+		$section_gap = isset( $kb_config['section_box_gap'] ) ? intval( $kb_config['section_box_gap'] ) : 20;
+		$output .= '
+			#epkb-ml__module-articles-list .epkb-ml-articles-list__row {
+				gap: ' . $section_gap . 'px !important;
+			}';
+
+		// Section padding -----------------------------------------/
+		if ( ! empty( $kb_config['category_box_padding'] ) ) {
+			$output .= '
+				#epkb-ml__module-articles-list .epkb-ml-article-section {
+					padding: ' . intval( $kb_config['category_box_padding'] ) . 'px !important;
+				}';
+		}
+
 		return $output;
 	}
 }

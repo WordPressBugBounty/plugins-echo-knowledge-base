@@ -106,9 +106,6 @@
             "Completed": [
                 "完了済み"
             ],
-            "An error occurred. Please try again.": [
-                "エラーが発生しました。もう一度お試しください。."
-            ],
             "Outdated": [
                 "時代遅れ"
             ],
@@ -189,6 +186,9 @@
             ],
             "Failed to submit report.": [
                 "レポートの送信に失敗しました。."
+            ],
+            "An error occurred. Please try again.": [
+                "エラーが発生しました。もう一度お試しください。."
             ],
             "Submit this issue if you need help:": [
                 "サポートが必要な場合は、この問題を送信してください："

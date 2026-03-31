@@ -106,9 +106,6 @@
             "Completed": [
                 "Slutfört"
             ],
-            "An error occurred. Please try again.": [
-                "Ett fel uppstod. Försök igen."
-            ],
             "Outdated": [
                 "Föråldrad"
             ],
@@ -189,6 +186,9 @@
             ],
             "Failed to submit report.": [
                 "Misslyckades med att skicka rapporten."
+            ],
+            "An error occurred. Please try again.": [
+                "Ett fel uppstod. Försök igen."
             ],
             "Submit this issue if you need help:": [
                 "Skicka in detta ärende om du behöver hjälp:"

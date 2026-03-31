@@ -25,6 +25,9 @@
             "Improve": [
                 "Förbättra"
             ],
+            "Remove": [
+                "Ta bort"
+            ],
             "Analyzing": [
                 "Analyserar"
             ],
@@ -102,9 +105,6 @@
             ],
             "Ignore": [
                 "Ignorera"
-            ],
-            "Remove": [
-                "Ta bort"
             ],
             "Loading articles...": [
                 "Laddar artiklar..."

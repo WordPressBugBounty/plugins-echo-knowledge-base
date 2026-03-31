@@ -25,6 +25,9 @@
             "Improve": [
                 "Forbedre"
             ],
+            "Remove": [
+                "Fjern"
+            ],
             "Analyzing": [
                 "Analyserer"
             ],
@@ -102,9 +105,6 @@
             ],
             "Ignore": [
                 "Ignorer"
-            ],
-            "Remove": [
-                "Fjern"
             ],
             "Loading articles...": [
                 "Laster artikler..."

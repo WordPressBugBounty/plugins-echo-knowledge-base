@@ -11,9 +11,10 @@ class EPKB_Glossary_Page {
 	 */
 	public static function add_menu_item( $parent_slug ) {
 
-		// Show Glossary menu only when glossary is enabled (when off, toggle is available in KB Configurations -> Other)
+		// Keep the menu hidden when disabled, but still register the page so direct links can open it.
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
-		if ( $kb_config['glossary_enable'] !== 'on' ) {
+		$current_page = EPKB_Utilities::get( 'page', '' );
+		if ( $kb_config['glossary_enable'] !== 'on' && $current_page !== 'epkb-glossary' ) {
 			return;
 		}
 

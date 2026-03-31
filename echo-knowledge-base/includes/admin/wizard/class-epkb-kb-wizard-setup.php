@@ -1016,8 +1016,23 @@ class EPKB_KB_Wizard_Setup {
 		$modules_presets_config['categories_articles']['Basic'] = [
 			'preselected' => $main_page_layout == 'Basic',
 			'presets' => [
-				'organized' => [
+				'airy' => [
 					'preselected'   => true,
+					'title'         => esc_html__( 'Airy', 'echo-knowledge-base' ),
+				],
+				'horizon' => [
+					'title'         => esc_html__( 'Horizon', 'echo-knowledge-base' ),
+				],
+				'canvas' => [
+					'title'         => esc_html__( 'Canvas', 'echo-knowledge-base' ),
+				],
+				'bloom' => [
+					'title'         => esc_html__( 'Bloom', 'echo-knowledge-base' ),
+				],
+				'ember' => [
+					'title'         => esc_html__( 'Ember', 'echo-knowledge-base' ),
+				],
+				'organized' => [
 					'title'         => esc_html__( 'Organized', 'echo-knowledge-base' ),
 				],
 				'office' => [

@@ -142,7 +142,8 @@ jQuery(document).ready(function($) {
 				admin_eckb_access_addons_news_read: $( '#admin_eckb_access_addons_news_read input[type="radio"]:checked' ).val(),
 				admin_eckb_access_order_articles_write: $( '#admin_eckb_access_order_articles_write input[type="radio"]:checked' ).val(),
 				admin_eckb_access_frontend_editor_write: $( '#admin_eckb_access_frontend_editor_write input[type="radio"]:checked' ).val(),
-				admin_eckb_access_faqs_write: $( '#admin_eckb_access_faqs_write input[type="radio"]:checked' ).val()
+				admin_eckb_access_faqs_write: $( '#admin_eckb_access_faqs_write input[type="radio"]:checked' ).val(),
+				admin_eckb_access_quizzes_write: $( '#admin_eckb_access_quizzes_write input[type="radio"]:checked' ).val()
 			},
 			function( response ) {
 				$( '.eckb-top-notice-message' ).remove();
@@ -2609,6 +2610,23 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	function get_dashboard_redirect_url_after_feature_disable( kb_config ) {
+
+		const current_url = new URL( window.location.href );
+		const current_page = current_url.searchParams.get( 'page' );
+		const is_glossary_disabled = current_page === 'epkb-glossary' && kb_config.glossary_enable === 'off';
+		const is_quizzes_disabled = current_page === 'epkb-quizzes' && kb_config.quizzes_enable === 'off';
+
+		if ( ! is_glossary_disabled && ! is_quizzes_disabled ) {
+			return '';
+		}
+
+		current_url.searchParams.set( 'page', 'epkb-dashboard' );
+		current_url.hash = '';
+
+		return current_url.toString();
+	}
+
 	/**
 	 * Save button for config tabs
 	 */
@@ -2674,6 +2692,7 @@ jQuery(document).ready(function($) {
 		}
 
 		kb_config.epkb_kb_id = $( '#epkb-list-of-kbs' ).val();
+		let redirect_url = get_dashboard_redirect_url_after_feature_disable( kb_config );
 
 		// Force reload page if:
 		// - Main Page search module is not present
@@ -2681,6 +2700,8 @@ jQuery(document).ready(function($) {
 		if ( ! $( '.epkb-admin__form-tab-content--module-selection [data-value="search"].epkb-input-custom-dropdown__option--selected' ).length && $( '[name="article_search_sync_toggle"]:checked' ).length ) {
 			reload_page = true;
 		}
+
+		const keep_loader_until_reload = reload_page && ! redirect_url.length;
 
 		epkb_send_ajax(
 			{
@@ -2696,7 +2717,9 @@ jQuery(document).ready(function($) {
 					$( '#epkb-list-of-kbs option[value="' + kb_config.epkb_kb_id + '"]' ).html( kb_config.kb_name );
 				}
 
-				if ( reload_page ) {
+				if ( redirect_url.length ) {
+					window.location.href = redirect_url;
+				} else if ( reload_page ) {
 					location.reload();
 				} else {
 					if ( typeof response.message !== 'undefined' ) {
@@ -2705,7 +2728,7 @@ jQuery(document).ready(function($) {
 				}
 			},
 			undefined,
-			reload_page
+			keep_loader_until_reload
 		);
 
 		return false;
@@ -3982,39 +4005,110 @@ jQuery(document).ready(function($) {
 	
 	/*********************************************************************************************
 	 *
-	 * Dashboard Page - Enable Glossary
+	 * Dashboard Page - Enable Shared Feature
 	 *
 	 *********************************************************************************************/
 
-	$(".epkb-btn-glossary-enable").on("click", function() {
-		const $btn = $(this);
-		const $card = $("#epkb-card--glossary-promo");
-		const $message = $card.find(".epkb-glossary-promo-message");
+	function epkb_escape_dashboard_dialog_text( value ) {
+		return $( "<div>" ).text( value || "" ).html();
+	}
 
-		$btn.prop("disabled", true).html("<span class=\"epkbfa epkbfa-spinner epkb-icon-spin\"></span> Enabling...");
-		$message.hide().removeClass("epkb-glossary-promo-success epkb-glossary-promo-error");
+	function epkb_close_dashboard_feature_dialog() {
+		$( "#epkb-dashboard-feature-enabled-dialog, .epkb-dialog-box-form-black-background--dashboard-feature" ).remove();
+	}
+
+	function epkb_show_dashboard_feature_dialog( dialogArgs ) {
+		const title = epkb_escape_dashboard_dialog_text( dialogArgs.title );
+		const message = epkb_escape_dashboard_dialog_text( dialogArgs.message );
+		const openLabel = epkb_escape_dashboard_dialog_text( dialogArgs.openLabel );
+		const cancelLabel = epkb_escape_dashboard_dialog_text( dialogArgs.cancelLabel || "Close" );
+		let dialogHtml = "";
+
+		epkb_close_dashboard_feature_dialog();
+
+		dialogHtml += '<div id="epkb-dashboard-feature-enabled-dialog" class="epkb-dialog-box-form epkb-dialog-box-form--active">';
+		dialogHtml += '<div class="epkb-dbf__header"><h4>' + title + "</h4></div>";
+		dialogHtml += '<div class="epkb-dbf__body"><p>' + message + "</p></div>";
+		dialogHtml += '<div class="epkb-dbf__footer">';
+		dialogHtml += '<div class="epkb-dbf__footer__accept epkb-dbf__footer__accept--success">';
+		dialogHtml += '<span class="epkb-accept-button epkb-dbf__footer__accept__btn">' + openLabel + "</span>";
+		dialogHtml += "</div>";
+		dialogHtml += '<div class="epkb-dbf__footer__cancel">';
+		dialogHtml += '<span class="epkb-dbf__footer__cancel__btn">' + cancelLabel + "</span>";
+		dialogHtml += "</div>";
+		dialogHtml += "</div>";
+		dialogHtml += '<div class="epkb-dbf__close epkbfa epkbfa-times"></div>';
+		dialogHtml += "</div>";
+		dialogHtml += '<div class="epkb-dialog-box-form-black-background epkb-dialog-box-form-black-background--dashboard-feature"></div>';
+
+		$( "body" ).append( dialogHtml );
+
+		$( "#epkb-dashboard-feature-enabled-dialog .epkb-dbf__footer__accept__btn" ).on( "click", function() {
+			if ( dialogArgs.openUrl ) {
+				window.location.href = dialogArgs.openUrl;
+				return;
+			}
+
+			epkb_close_dashboard_feature_dialog();
+		} );
+
+		$( "#epkb-dashboard-feature-enabled-dialog .epkb-dbf__footer__cancel__btn, #epkb-dashboard-feature-enabled-dialog .epkb-dbf__close, .epkb-dialog-box-form-black-background--dashboard-feature" ).on( "click", function() {
+			epkb_close_dashboard_feature_dialog();
+		} );
+	}
+
+	$(".epkb-btn-dashboard-feature-enable").on("click", function() {
+		const $btn = $(this);
+		const $card = $btn.closest(".epkb-dashboard-feature-promo");
+		const $message = $card.find(".epkb-dashboard-feature-promo__message");
+		const action = $btn.data("action");
+		const featureLabel = $btn.data("featureLabel") || "";
+		const buttonLabel = $btn.data("buttonLabel") || $btn.text();
+		const loadingLabel = $btn.data("loadingLabel") || "Enabling...";
+		const dialogTitle = $btn.data("dialogTitle") || ( featureLabel + " enabled" );
+		const dialogMessage = $btn.data("dialogMessage") || ( featureLabel + " is now available in the admin menu." );
+		const dialogOpenLabel = $btn.data("dialogOpenLabel") || ( "Open " + featureLabel );
+		const dialogCancelLabel = $btn.data("dialogCancelLabel") || "Close";
+		const dialogOpenUrl = $btn.data("dialogOpenUrl") || "";
+
+		if ( ! action ) {
+			return;
+		}
+
+		$btn.prop("disabled", true).html("<span class=\"epkbfa epkbfa-spinner epkb-icon-spin\"></span> " + loadingLabel);
+		$message.hide().removeClass("epkb-dashboard-feature-promo__message--success epkb-dashboard-feature-promo__message--error");
 
 		$.ajax({
 			url: ajaxurl,
 			type: "POST",
 			data: {
-				action: "epkb_enable_glossary",
+				action: action,
 				_wpnonce_epkb_ajax_action: epkb_vars.nonce
 			},
 			success: function(response) {
 				if (response.success) {
-					$message.addClass("epkb-glossary-promo-success").html(response.data.message).fadeIn();
-					setTimeout(function() {
-						location.reload();
-					}, 1500);
+					$card.slideUp( 200, function() {
+						$( this ).remove();
+					} );
+					var openUrl = dialogOpenUrl;
+					if ( response.data && response.data.show_interest_modal && openUrl ) {
+						openUrl += ( openUrl.indexOf( '?' ) > -1 ? '&' : '?' ) + 'epkb_show_feedback=1';
+					}
+					epkb_show_dashboard_feature_dialog( {
+						title: dialogTitle,
+						message: dialogMessage,
+						openLabel: dialogOpenLabel,
+						cancelLabel: dialogCancelLabel,
+						openUrl: openUrl
+					} );
 				} else {
-					$message.addClass("epkb-glossary-promo-error").html(response.data || "An error occurred. Please try again.").fadeIn();
-					$btn.prop("disabled", false).html("Enable Glossary");
+					$message.addClass("epkb-dashboard-feature-promo__message--error").html(response.data || "Failed to enable " + featureLabel + ". Please try again.").fadeIn();
+					$btn.prop("disabled", false).html(buttonLabel);
 				}
 			},
 			error: function() {
-				$message.addClass("epkb-glossary-promo-error").html("Failed to enable Glossary. Please try again.").fadeIn();
-				$btn.prop("disabled", false).html("Enable Glossary");
+				$message.addClass("epkb-dashboard-feature-promo__message--error").html("Failed to enable " + featureLabel + ". Please try again.").fadeIn();
+				$btn.prop("disabled", false).html(buttonLabel);
 			}
 		});
 	});

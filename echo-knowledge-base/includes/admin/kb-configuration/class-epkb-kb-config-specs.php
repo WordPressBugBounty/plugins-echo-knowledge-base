@@ -211,6 +211,25 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::NUMBER,
 				'default'     => 10
 			),
+			'article_list_hover_toggle' => array(
+				'name'        => 'article_list_hover_toggle',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'off'
+			),
+			'article_list_hover_background_color' => array(
+				'name'        => 'article_list_hover_background_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#f5f5f5'
+			),
+			'article_list_hover_font_color' => array(
+				'name'        => 'article_list_hover_font_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#000000'
+			),
 
 
 			/******************************************************************************
@@ -2714,6 +2733,11 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'off'
 			),
+			'quizzes_enable' => array(
+				'name'        => 'quizzes_enable',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'off'
+			),
 			'glossary_tooltip_text_color' => array(
 				'name'        => 'glossary_tooltip_text_color',
 				'max'         => '7',
@@ -2905,6 +2929,16 @@ class EPKB_KB_Config_Specs {
 			// Access to FAQs
 			'admin_eckb_access_faqs_write' => array(
 				'name'        => 'admin_eckb_access_faqs_write',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'max'         => '60',
+				'min'         => '3',
+				'allowed_access'  => array( EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY, EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
+				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
+			),
+
+			// Access to Quizzes
+			'admin_eckb_access_quizzes_write' => array(
+				'name'        => 'admin_eckb_access_quizzes_write',
 				'type'        => EPKB_Input_Filter::TEXT,
 				'max'         => '60',
 				'min'         => '3',
@@ -3777,6 +3811,41 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'on'
 			),
+			'section_head_font_size' => array(
+				'name'        => 'section_head_font_size',
+				'max'         => 100,
+				'min'         => 8,
+				'type'        => EPKB_Input_Filter::NUMBER,
+				'default'     => 21
+			),
+			'section_head_description_font_size' => array(
+				'name'        => 'section_head_description_font_size',
+				'max'         => 100,
+				'min'         => 8,
+				'type'        => EPKB_Input_Filter::NUMBER,
+				'default'     => 14
+			),
+			'article_font_size' => array(
+				'name'        => 'article_font_size',
+				'max'         => 100,
+				'min'         => 8,
+				'type'        => EPKB_Input_Filter::NUMBER,
+				'default'     => 14
+			),
+			'section_box_gap' => array(
+				'name'        => 'section_box_gap',
+				'max'         => 100,
+				'min'         => 0,
+				'type'        => EPKB_Input_Filter::NUMBER,
+				'default'     => 20
+			),
+			'category_box_padding' => array(
+				'name'        => 'category_box_padding',
+				'max'         => 100,
+				'min'         => 0,
+				'type'        => EPKB_Input_Filter::NUMBER,
+				'default'     => 0
+			),
 			'section_body_background_color' => array(
 				'name'        => 'section_body_background_color',
 				'max'         => '7',
@@ -4014,6 +4083,14 @@ class EPKB_KB_Config_Specs {
 			'article-left-sidebar-toggle' => is_rtl() ? esc_html__( 'Right Sidebar', 'echo-knowledge-base' ) : esc_html__( 'Left Sidebar', 'echo-knowledge-base' ),
 			'article-right-sidebar-toggle' => is_rtl() ? esc_html__( 'Left Sidebar', 'echo-knowledge-base' ) : esc_html__( 'Right Sidebar', 'echo-knowledge-base' ),
 			'article_list_spacing' => esc_html__( 'Space Between Articles', 'echo-knowledge-base' ),
+			'article_list_hover_toggle' => esc_html__( 'Article Hover Effect', 'echo-knowledge-base' ),
+			'article_list_hover_background_color' => esc_html__( 'Hover: Background', 'echo-knowledge-base' ),
+			'article_list_hover_font_color' => esc_html__( 'Hover: Text', 'echo-knowledge-base' ),
+			'section_head_font_size' => esc_html__( 'Category Name Font Size', 'echo-knowledge-base' ),
+			'section_head_description_font_size' => esc_html__( 'Category Description Font Size', 'echo-knowledge-base' ),
+			'article_font_size' => esc_html__( 'Article Font Size', 'echo-knowledge-base' ),
+			'section_box_gap' => esc_html__( 'Space Between Category Sections', 'echo-knowledge-base' ),
+			'category_box_padding' => esc_html__( 'Category Box Padding', 'echo-knowledge-base' ),
 			'categories_in_url_enabled' => esc_html__( 'Categories in URL', 'echo-knowledge-base' ),
 			'category_slug' => esc_html__( 'Category Slug', 'echo-knowledge-base' ),
 			'tag_slug' => esc_html__( 'Tag Slug', 'echo-knowledge-base' ),
@@ -4338,8 +4415,10 @@ class EPKB_KB_Config_Specs {
 			'admin_eckb_access_content_analysis' => esc_html__( 'Content Analysis', 'echo-knowledge-base' ),
 			'admin_eckb_access_addons_news_read' => esc_html__( 'Add-ons', 'echo-knowledge-base' ),
 			'admin_eckb_access_faqs_write' => esc_html__( 'FAQs', 'echo-knowledge-base' ),
+			'admin_eckb_access_quizzes_write' => esc_html__( 'Quizzes', 'echo-knowledge-base' ),
 			'admin_eckb_access_ai_feature' => esc_html__( 'AI Features', 'echo-knowledge-base' ),
 			'glossary_enable' => esc_html__( 'Glossary', 'echo-knowledge-base' ),
+			'quizzes_enable' => esc_html__( 'Quizzes', 'echo-knowledge-base' ),
 			'glossary_tooltip_text_color' => esc_html__( 'Tooltip Text', 'echo-knowledge-base' ),
 			'glossary_tooltip_background_color' => esc_html__( 'Tooltip Background', 'echo-knowledge-base' ),
 			'glossary_highlight_style' => esc_html__( 'Style', 'echo-knowledge-base' ),

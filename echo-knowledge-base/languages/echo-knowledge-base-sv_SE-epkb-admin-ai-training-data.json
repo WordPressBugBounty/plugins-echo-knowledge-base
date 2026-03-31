@@ -37,6 +37,9 @@
             "OFF": [
                 "AV"
             ],
+            "Optional": [
+                "Valfri"
+            ],
             "View Full Documentation": [
                 "Visa fullständig dokumentation"
             ],
@@ -57,9 +60,6 @@
             ],
             "Send Data to AI": [
                 "Skicka data till AI"
-            ],
-            "Optional": [
-                "Valfri"
             ],
             "Collection name cannot be empty": [
                 "Samlingens namn får inte vara tomt"

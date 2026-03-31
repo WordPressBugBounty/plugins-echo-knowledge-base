@@ -7,23 +7,17 @@
                 "lang": "it_IT",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
-            "Cancel": [
-                "Annulla"
+            "Settings": [
+                "Impostazioni"
+            ],
+            "Learn More": [
+                "Scopri di più"
+            ],
+            "AI Features": [
+                "Funzionalità IA"
             ],
             "General Settings": [
                 "Impostazioni Generali"
-            ],
-            "Failed to submit vote. Please try again.": [
-                "Impossibile inviare il voto. Per favore riprova."
-            ],
-            "Email": [
-                "E-mail"
-            ],
-            "First Name": [
-                "Nome"
-            ],
-            "Please enter a valid email address.": [
-                "Per favore inserisci un indirizzo email valido."
             ],
             "Warnings": [
                 "Avvertenze"
@@ -34,59 +28,20 @@
             "AI features are optional and turned off by default. AI will only work after you manually enable it and add your own API key in ": [
                 "Le funzionalità IA sono opzionali e disattivate per impostazione predefinita. L'IA funzionerà solo dopo averla attivata manualmente e aver inserito la tua chiave API in"
             ],
-            "Vote for Top 3 Features": [
-                "Vota per le prime 3 funzionalità"
-            ],
-            "Help us prioritize features by providing your information:": [
-                "Aiutaci a dare priorità alle funzionalità fornendo le tue informazioni:"
-            ],
-            "(optional)": [
-                "(facoltativo)"
-            ],
-            "Describe Your Feature Request": [
-                "Descrivi la tua richiesta di funzionalità"
-            ],
-            "Please describe the feature you would like to see...": [
-                "Per favore descrivi la funzionalità che vorresti vedere..."
-            ],
-            "Submit Vote": [
-                "Invia voto"
-            ],
-            "Please describe the feature you would like to see.": [
-                "Per favore descrivi la funzionalità che vorresti vedere."
-            ],
-            "Please select at least one feature to vote for.": [
-                "Seleziona almeno una funzionalità per votare."
-            ],
-            "Submitting your vote...": [
-                "Invio del tuo voto..."
-            ],
-            "Thank you for voting!": [
-                "Grazie per aver votato!"
-            ],
-            "An error occurred. Please try again.": [
-                "Si è verificato un errore. Per favore riprova."
-            ],
             "Latest AI Updates": [
                 "Ultimi aggiornamenti IA"
             ],
             "Learn more": [
                 "Scopri di più"
             ],
-            "Select the features you would like to see implemented:": [
-                "Seleziona le funzionalità che vorresti vedere implementate:"
+            "FREE": [
+                "GRATUITO"
             ],
-            "Released": [
-                "Rilasciato"
+            "Free Features": [
+                "Funzionalità gratuite"
             ],
-            "feature selected": [
-                "funzionalità selezionata"
-            ],
-            "features selected": [
-                "funzionalità selezionate"
-            ],
-            "Note: Your feedback helps us prioritize development. Features are subject to change.": [
-                "Nota: Il tuo feedback ci aiuta a dare priorità allo sviluppo. Le funzionalità sono soggette a modifiche."
+            "AI Feature Plugin": [
+                "Plugin funzionalità IA"
             ]
         }
     }

@@ -7,23 +7,17 @@
                 "lang": "nb_NO",
                 "plural-forms": "nplurals=2; plural=(n != 1);"
             },
-            "Cancel": [
-                "Avbryt"
+            "Settings": [
+                "Innstillinger"
+            ],
+            "Learn More": [
+                "Lær mer"
+            ],
+            "AI Features": [
+                "AI-funksjoner"
             ],
             "General Settings": [
                 "Generelle innstillinger"
-            ],
-            "Failed to submit vote. Please try again.": [
-                "Kunne ikke sende stemme. Vennligst prøv igjen."
-            ],
-            "Email": [
-                "E-post"
-            ],
-            "First Name": [
-                "Fornavn"
-            ],
-            "Please enter a valid email address.": [
-                "Vennligst oppgi en gyldig e-postadresse."
             ],
             "Warnings": [
                 "Advarsler"
@@ -34,59 +28,20 @@
             "AI features are optional and turned off by default. AI will only work after you manually enable it and add your own API key in ": [
                 "AI-funksjoner er valgfritt og slått av som standard. AI vil kun fungere etter at du manuelt aktiverer det og legger til din egen API-nøkkel i"
             ],
-            "Vote for Top 3 Features": [
-                "Stem på de tre beste funksjonene"
-            ],
-            "Help us prioritize features by providing your information:": [
-                "Hjelp oss med å prioritere funksjoner ved å oppgi informasjonen din:"
-            ],
-            "(optional)": [
-                "(valgfritt)"
-            ],
-            "Describe Your Feature Request": [
-                "Beskriv funksjonsforespørselen din"
-            ],
-            "Please describe the feature you would like to see...": [
-                "Vennligst beskriv funksjonen du ønsker å se..."
-            ],
-            "Submit Vote": [
-                "Send inn stemme"
-            ],
-            "Please describe the feature you would like to see.": [
-                "Beskriv funksjonen du ønsker å se."
-            ],
-            "Please select at least one feature to vote for.": [
-                "Vennligst velg minst en funksjon å stemme på."
-            ],
-            "Submitting your vote...": [
-                "Sender inn stemmen din..."
-            ],
-            "Thank you for voting!": [
-                "Takk for at du stemte!"
-            ],
-            "An error occurred. Please try again.": [
-                "En feil oppstod. Vennligst prøv igjen."
-            ],
             "Latest AI Updates": [
                 "Siste AI-oppdateringer"
             ],
             "Learn more": [
                 "Lær mer"
             ],
-            "Select the features you would like to see implemented:": [
-                "Velg funksjonene du ønsker å få implementert:"
+            "FREE": [
+                "GRATIS"
             ],
-            "Released": [
-                "Lansert"
+            "Free Features": [
+                "Gratisfunksjoner"
             ],
-            "feature selected": [
-                "funksjon valgt"
-            ],
-            "features selected": [
-                "funksjoner valgt"
-            ],
-            "Note: Your feedback helps us prioritize development. Features are subject to change.": [
-                "Merk: Tilbakemeldingene dine hjelper oss å prioritere utviklingen. Funksjoner kan endres."
+            "AI Feature Plugin": [
+                "AI-funksjonsutvidelse"
             ]
         }
     }

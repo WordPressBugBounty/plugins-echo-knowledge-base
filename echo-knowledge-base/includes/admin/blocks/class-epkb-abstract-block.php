@@ -515,6 +515,21 @@ abstract class EPKB_Abstract_Block {
 		$block_attributes['frontend_editor_switch_visibility_toggle'] = $kb_config['frontend_editor_switch_visibility_toggle'];
 		$block_attributes['frontend_editor_button_shown'] = $kb_config['frontend_editor_button_shown'];
 		$block_attributes['kb_ai_collection_id'] = $kb_config['kb_ai_collection_id'];
+		if ( ! array_key_exists( 'article_list_hover_toggle', $block_attributes ) ) {
+			$block_attributes['article_list_hover_toggle'] = isset( $kb_config['article_list_hover_toggle'] ) ? $kb_config['article_list_hover_toggle'] : 'off';
+		}
+		if ( ! array_key_exists( 'article_list_hover_background_color', $block_attributes ) ) {
+			$block_attributes['article_list_hover_background_color'] = isset( $kb_config['article_list_hover_background_color'] ) ? $kb_config['article_list_hover_background_color'] : '#f5f5f5';
+		}
+		if ( ! array_key_exists( 'article_list_hover_font_color', $block_attributes ) ) {
+			$block_attributes['article_list_hover_font_color'] = isset( $kb_config['article_list_hover_font_color'] ) ? $kb_config['article_list_hover_font_color'] : '#000000';
+		}
+		if ( ! array_key_exists( 'section_box_gap', $block_attributes ) ) {
+			$block_attributes['section_box_gap'] = isset( $kb_config['section_box_gap'] ) ? $kb_config['section_box_gap'] : 20;
+		}
+		if ( ! array_key_exists( 'category_box_padding', $block_attributes ) ) {
+			$block_attributes['category_box_padding'] = isset( $kb_config['category_box_padding'] ) ? $kb_config['category_box_padding'] : 0;
+		}
 
 		// let blocks to hard-code value of certain KB settings regardless of actual KB config value
 		$block_attributes = $this->add_this_block_required_kb_attributes( $block_attributes );

@@ -37,6 +37,9 @@
             "OFF": [
                 "FRA"
             ],
+            "Optional": [
+                "Valgfri"
+            ],
             "View Full Documentation": [
                 "Se fuld dokumentation"
             ],
@@ -57,9 +60,6 @@
             ],
             "Send Data to AI": [
                 "Send data til AI"
-            ],
-            "Optional": [
-                "Valgfri"
             ],
             "Collection name cannot be empty": [
                 "Samlingsnavnet må ikke være tomt"

@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chatbot, faq
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 17.1.2
+Stable tag: 17.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -331,6 +331,14 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 
 == Changelog ==
 
+= 17.3.0 =
+Release Date: Mar 31, 2026
+* New: Quizzes
+* New: Presets for Basic Layout
+* New: Layout settings
+* New: Agent Handover - added an optional contact number (PRO)
+* Fix: Cleanup and minor fixes
+
 = 17.1.2 =
 Release Date: Mar 22, 2026
 * Update: PDF improvements (PRO)
@@ -571,4 +579,3 @@ Release Date: Dec 7, 2024
 * Fix: Cleanup and minor fixes
 
 See [changelog.txt](https://plugins.svn.wordpress.org/echo-knowledge-base/tags/13.10.0/readme.txt) for older changelog
-

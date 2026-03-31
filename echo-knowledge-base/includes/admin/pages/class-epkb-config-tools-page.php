@@ -151,7 +151,7 @@ class EPKB_Config_Tools_Page {
 					<input class="epkb-form-label__input epkb-form-label__input--text" type="file" name="import_file"
 						   required><br>
 					<input type="button" class="epkb-kbnh-back-btn epkb-default-btn"
-						   value="< <?php esc_attr_e( 'Back', 'echo-knowledge-base' ); ?>"/>
+						   value="<?php echo esc_attr( '< ' . __( 'Back', 'echo-knowledge-base' ) ); ?>"/>
 					<input type="submit" class="epkb-primary-btn"
 						   value="<?php esc_attr_e( 'Import Configuration', 'echo-knowledge-base' ); ?>"/><br/>
 				</form>

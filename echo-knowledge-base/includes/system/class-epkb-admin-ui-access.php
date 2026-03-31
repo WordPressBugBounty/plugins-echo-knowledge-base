@@ -27,6 +27,7 @@ class EPKB_Admin_UI_Access {
 		'admin_eckb_access_content_analysis',
 		'admin_eckb_access_addons_news_read',
 		'admin_eckb_access_faqs_write',
+		'admin_eckb_access_quizzes_write',
 		'admin_eckb_access_ai_feature',
 	);
 
@@ -104,8 +105,8 @@ class EPKB_Admin_UI_Access {
 			return false;
 		}
 
-		// FAQs are not specific to KB so use default KB ID
-		if ( $context == 'admin_eckb_access_faqs_write' ) {
+		// FAQs and Quizzes are not specific to KB so use default KB ID
+		if ( in_array( $context, array( 'admin_eckb_access_faqs_write', 'admin_eckb_access_quizzes_write' ), true ) ) {
 			$config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
 			if ( empty( $config[$context] ) ) {
 				return false;
@@ -145,8 +146,8 @@ class EPKB_Admin_UI_Access {
 		$specs = EPKB_KB_Config_Specs::get_fields_specification( EPKB_KB_Config_DB::DEFAULT_KB_ID );
 		$kb_id = $config['id'];
 
-		// FAQs are not specific to KB so use default KB ID
-		if ( isset( $contexts[0] ) && $contexts[0] == 'admin_eckb_access_faqs_write' ) {
+		// FAQs and Quizzes are not specific to KB so use default KB ID
+		if ( isset( $contexts[0] ) && in_array( $contexts[0], array( 'admin_eckb_access_faqs_write', 'admin_eckb_access_quizzes_write' ), true ) ) {
 			$config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
 			$kb_id = EPKB_KB_Config_DB::DEFAULT_KB_ID;
 		}
@@ -335,6 +336,20 @@ class EPKB_Admin_UI_Access {
 					'return_html'   => true,
 					'value'         => self::is_capability_in_allowed_list( $kb_config['admin_eckb_access_faqs_write'], $kb_id )
 						? $kb_config['admin_eckb_access_faqs_write']
+						: self::get_admin_capability(),
+					'options'       => self::get_access_control_options( true ) ) ) ) : '';
+
+		// Box: Quizzes
+		$boxes_config[] = $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ?
+			array(
+				'title' => $kb_config_specs_labels['admin_eckb_access_quizzes_write'],
+				'description'   => esc_html__( 'The Quizzes feature is not linked to any specific KB; instead, access to it is defined within the default KB.', 'echo-knowledge-base' ),
+				'html' => self::radio_buttons_vertical_access_control( array(
+					'name'          => 'admin_eckb_access_quizzes_write',
+					'radio_class'   => 'epkb-admin__radio-button-wrap',
+					'return_html'   => true,
+					'value'         => self::is_capability_in_allowed_list( $kb_config['admin_eckb_access_quizzes_write'], $kb_id )
+						? $kb_config['admin_eckb_access_quizzes_write']
 						: self::get_admin_capability(),
 					'options'       => self::get_access_control_options( true ) ) ) ) : '';
 

@@ -25,6 +25,9 @@
             "Improve": [
                 "Mejorar"
             ],
+            "Remove": [
+                "Eliminar"
+            ],
             "Analyzing": [
                 "Analizando"
             ],
@@ -102,9 +105,6 @@
             ],
             "Ignore": [
                 "Ignorar"
-            ],
-            "Remove": [
-                "Eliminar"
             ],
             "Loading articles...": [
                 "Cargando artículos..."

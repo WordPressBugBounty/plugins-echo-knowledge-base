@@ -37,6 +37,9 @@
             "OFF": [
                 "ऑफ"
             ],
+            "Optional": [
+                "वैकल्पिक"
+            ],
             "View Full Documentation": [
                 "पूरा डॉक्यूमेंटेशन देखें"
             ],
@@ -57,9 +60,6 @@
             ],
             "Send Data to AI": [
                 "एआई में डेटा भेजें"
-            ],
-            "Optional": [
-                "वैकल्पिक"
             ],
             "Collection name cannot be empty": [
                 "संग्रह का नाम खाली नहीं हो सकता"

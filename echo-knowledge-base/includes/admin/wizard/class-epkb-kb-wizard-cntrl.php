@@ -266,6 +266,7 @@ class EPKB_KB_Wizard_Cntrl {
 		$new_kb_config['section_body_background_color'] = '#f5f5f5';
 		$new_kb_config['section_head_background_color'] = '#f5f5f5';
 		$new_kb_config['background_color'] = '';
+		$new_kb_config['article_list_hover_toggle'] = 'on';
 
 		$new_kb_config['ml_row_1_module'] = 'categories_articles';
 		$new_kb_config['ml_row_2_module'] = 'none';
@@ -851,13 +852,7 @@ class EPKB_KB_Wizard_Cntrl {
 			'epkbfa-cubes'
 		);
 
-		// map theme names that don't have explicit entries to their base themes
-		$theme_name_for_icons = $theme_name;
-		if ( in_array( $theme_name, array( 'office', 'modern', 'office_tabs', 'modern_tabs' ) ) ) {
-			$theme_name_for_icons = 'default';
-		}
-
-		$default_theme_image_icons = EPKB_Icons::get_theme_image_icons( $theme_name_for_icons );
+		$default_theme_image_icons = EPKB_Icons::get_theme_image_icons( $theme_name );
 		$is_photo_icons_preset = EPKB_Icons::is_theme_with_photo_icons( $theme_name );
 
 		// For Tabs layout, generate icons for both top categories (tabs) and sub-categories (boxes) - match frontend structure
@@ -868,24 +863,18 @@ class EPKB_KB_Wizard_Cntrl {
 			$category_ids = range( 2, 7 );
 		}
 
-		// Icon mapping for demo categories to match frontend demo data
-		// For non-tabs layouts: Sales and Marketing, Operations and Logistics, Human Resources, Finance and Expenses, IT Support, Professional Development
-		// Icon theme mapping: 1=Finance, 2=HR, 3=IT, 4=Operations, 5=ProfDev, 6=Sales
-		$icon_mapping = array(
-			2 => 6,  // Sales and Marketing => employee-onboarding
-			3 => 4,  // Operations and Logistics => feedback-form
-			4 => 2,  // Human Resources => task-assignment
-			5 => 1,  // Finance and Expenses => budget
-			6 => 3,  // IT Support => api-integration
-			7 => 5,  // Professional Development => performance-metrics
-			// For Tabs layout subcategories under Department Resources
-			10 => 6, // Sales and Marketing
-			11 => 4, // Operations and Logistics
-			12 => 2, // Human Resources => task-assignment
-			13 => 1, // Finance and Expenses => budget
-			14 => 3, // IT Support => api-integration
-			15 => 5, // Professional Development => performance-metrics
-		);
+		// Keep the special tab preview mapping. Non-tab layouts follow the preset category sequence.
+		$icon_mapping = $layout_name === 'Tabs' ? array(
+			2 => 6,
+			3 => 4,
+			4 => 2,
+			10 => 6,
+			11 => 4,
+			12 => 2,
+			13 => 1,
+			14 => 3,
+			15 => 5,
+		) : array();
 
 		$category_icons = array();
 		foreach ( $category_ids as $index => $category_id ) {

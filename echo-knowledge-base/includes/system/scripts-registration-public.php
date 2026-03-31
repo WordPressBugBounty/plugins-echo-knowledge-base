@@ -56,9 +56,15 @@ function epkb_load_public_resources() {
 	wp_register_script( 'epkb-glossary-tooltips', Echo_Knowledge_Base::$plugin_url . 'js/glossary-tooltips' . $suffix . '.js', array(), Echo_Knowledge_Base::$version, true );
 
 	wp_register_script( 'epkb-public-scripts', Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
+	wp_register_script( 'epkb-quizzes-frontend', Echo_Knowledge_Base::$plugin_url . 'js/quizzes-frontend' . $suffix . '.js', array( 'jquery' ), Echo_Knowledge_Base::$version, true );
 	wp_register_script( 'epkb-faq-shortcode-scripts', Echo_Knowledge_Base::$plugin_url . 'js/faq-shortcode-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-admin-form-controls-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-form-controls' . $suffix . '.js', array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-frontend-editor', Echo_Knowledge_Base::$plugin_url . 'js/frontend-editor' . $suffix . '.js', array('jquery', 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-ui-widget', 'wp-i18n', 'iris', 'wp-color-picker'), Echo_Knowledge_Base::$version, true );
+	wp_localize_script( 'epkb-quizzes-frontend', 'epkbQuizFrontend', array(
+		'correct'       => esc_html__( 'Correct', 'echo-knowledge-base' ),
+		'incorrect'     => esc_html__( 'Incorrect', 'echo-knowledge-base' ),
+		'summaryPrefix' => esc_html__( 'Your score:', 'echo-knowledge-base' ),
+	) );
 
 	// AI Chat Widget resources
 	wp_register_style( 'epkb-ai-chat-widget', Echo_Knowledge_Base::$plugin_url . 'css/ai-chat-widget' . $suffix . '.css', array( 'epkb-icon-fonts' ), Echo_Knowledge_Base::$version );
@@ -180,15 +186,16 @@ function epkb_load_public_resources() {
 
 		// Get widget configuration
 		$widget_config = EPKB_AI_Chat_Widget_Config_Specs::get_widget_config( EPKB_AI_Chat_Widget_Config_Specs::DEFAULT_WIDGET_ID );
-		$handoff_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_enabled', 'off' );
-		$feedback_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_feedback_enabled', 'off' );
-		$feedback_with_handoff = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_feedback_with_handoff', 'off' );
-		$handoff_method = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_method', 'email' );
-		$handoff_button_display = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_button_display', 'always' );
-		$handoff_button_text = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_button_text', __( 'Contact an Agent', 'echo-knowledge-base' ) );
-		$handoff_heading = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_heading', __( 'Contact an Agent', 'echo-knowledge-base' ) );
-		$handoff_keywords = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_keywords', '' );
-		$handoff_consent_text = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_consent_text', __( 'By submitting this form, you agree that your contact details and chat transcript will be shared with our support team.', 'echo-knowledge-base' ) );
+	$handoff_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_enabled', 'off' );
+	$handoff_phone_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_phone_enabled', 'off' );
+	$feedback_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_feedback_enabled', 'off' );
+	$feedback_with_handoff = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_feedback_with_handoff', 'off' );
+	$handoff_method = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_method', 'email' );
+	$handoff_button_display = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_button_display', 'always' );
+	$handoff_button_text = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_button_text', __( 'Contact an Agent', 'echo-knowledge-base' ) );
+	$handoff_heading = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_heading', __( 'Contact an Agent', 'echo-knowledge-base' ) );
+	$handoff_keywords = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_keywords', '' );
+	$handoff_consent_text = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_consent_text', __( 'By submitting this form, you agree that your contact details and chat transcript will be shared with our support team.', 'echo-knowledge-base' ) );
 
 		wp_localize_script( 'epkb-ai-chat', 'epkbAIChat', array(
 			'rest_url'                        => esc_url_raw( rest_url() ),
@@ -212,6 +219,7 @@ function epkb_load_public_resources() {
 			'error_timeout_message'           => esc_html( $widget_config['error_timeout_message'] ),
 			'error_rate_limit_message'        => esc_html( $widget_config['error_rate_limit_message'] ),
 			'handoff_enabled'                 => $handoff_enabled,
+			'handoff_phone_enabled'           => $handoff_phone_enabled,
 			'feedback_enabled'                => $feedback_enabled,
 			'feedback_with_handoff'           => $feedback_with_handoff,
 			'handoff_method'                  => $handoff_method,
@@ -226,6 +234,7 @@ function epkb_load_public_resources() {
 				'form_title'          => esc_html( $handoff_heading ),
 				'first_name_label'    => esc_html__( 'First Name', 'echo-knowledge-base' ),
 				'email_label'         => esc_html__( 'Email', 'echo-knowledge-base' ),
+				'phone_label'         => esc_html__( 'Phone', 'echo-knowledge-base' ),
 				'message_label'       => esc_html__( 'Message', 'echo-knowledge-base' ),
 				'close_label'         => esc_html__( 'Close', 'echo-knowledge-base' ),
 				'submit_label'        => esc_html__( 'Submit', 'echo-knowledge-base' ),

@@ -40,6 +40,12 @@
             "OFF": [
                 "オフ"
             ],
+            "Email": [
+                "メール"
+            ],
+            "Feedback": [
+                "フィードバック"
+            ],
             "Reset": [
                 "リセット"
             ],
@@ -55,17 +61,23 @@
             "API Configuration": [
                 "API 設定"
             ],
-            "Feedback": [
-                "フィードバック"
-            ],
             "AI Assistant": [
                 "AIアシスタント"
+            ],
+            "Name": [
+                "名前"
+            ],
+            "Message": [
+                "メッセージ"
             ],
             "Delete Selected": [
                 "選択した項目を削除"
             ],
             "of": [
                 "の"
+            ],
+            "Phone": [
+                "電話"
             ],
             "Requires AI Features PRO": [
                 "AI機能 PRO が必要です"
@@ -90,6 +102,9 @@
             ],
             "Agent handover request submitted": [
                 "エージェントへの引継ぎ依頼を送信しました"
+            ],
+            "Trigger": [
+                "トリガー"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "選択した会話を削除してもよろしいですか？"

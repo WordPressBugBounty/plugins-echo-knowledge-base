@@ -37,6 +37,9 @@
             "OFF": [
                 "WYŁ"
             ],
+            "Optional": [
+                "Opcjonalny"
+            ],
             "View Full Documentation": [
                 "Zobacz pełną dokumentację"
             ],
@@ -57,9 +60,6 @@
             ],
             "Send Data to AI": [
                 "Wyślij dane do SI"
-            ],
-            "Optional": [
-                "Opcjonalny"
             ],
             "Collection name cannot be empty": [
                 "Nazwa kolekcji nie może być pusta"

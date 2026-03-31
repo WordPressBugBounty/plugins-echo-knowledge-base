@@ -106,9 +106,6 @@
             "Completed": [
                 "Fuldført"
             ],
-            "An error occurred. Please try again.": [
-                "Der opstod en fejl. Prøv igen."
-            ],
             "Outdated": [
                 "Forældet"
             ],
@@ -189,6 +186,9 @@
             ],
             "Failed to submit report.": [
                 "Det lykkedes ikke at indsende rapporten."
+            ],
+            "An error occurred. Please try again.": [
+                "Der opstod en fejl. Prøv igen."
             ],
             "Submit this issue if you need help:": [
                 "Indsend dette problem, hvis du har brug for hjælp:"

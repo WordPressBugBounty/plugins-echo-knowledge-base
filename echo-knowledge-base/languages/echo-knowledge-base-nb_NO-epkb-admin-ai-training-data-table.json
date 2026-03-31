@@ -106,9 +106,6 @@
             "Completed": [
                 "Fullført"
             ],
-            "An error occurred. Please try again.": [
-                "En feil oppstod. Vennligst prøv igjen."
-            ],
             "Outdated": [
                 "Utdatert"
             ],
@@ -189,6 +186,9 @@
             ],
             "Failed to submit report.": [
                 "Kunne ikke sende inn rapport."
+            ],
+            "An error occurred. Please try again.": [
+                "En feil oppstod. Vennligst prøv igjen."
             ],
             "Submit this issue if you need help:": [
                 "Send inn denne saken hvis du trenger hjelp:"

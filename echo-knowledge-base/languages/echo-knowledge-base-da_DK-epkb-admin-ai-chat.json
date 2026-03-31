@@ -40,6 +40,12 @@
             "OFF": [
                 "FRA"
             ],
+            "Email": [
+                "E-mail"
+            ],
+            "Feedback": [
+                "Feedback"
+            ],
             "Reset": [
                 "Nulstil"
             ],
@@ -55,17 +61,23 @@
             "API Configuration": [
                 "API-konfiguration"
             ],
-            "Feedback": [
-                "Feedback"
-            ],
             "AI Assistant": [
                 "AI-assistent"
+            ],
+            "Name": [
+                "Navn"
+            ],
+            "Message": [
+                "Besked"
             ],
             "Delete Selected": [
                 "Slet valgte"
             ],
             "of": [
                 "af"
+            ],
+            "Phone": [
+                "Telefon"
             ],
             "Requires AI Features PRO": [
                 "AI-funktioner PRO kræves"
@@ -90,6 +102,9 @@
             ],
             "Agent handover request submitted": [
                 "Overdragelsesforespørgsel til agent indsendt"
+            ],
+            "Trigger": [
+                "Udløser"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "Er du sikker på, at du vil slette de valgte samtaler?"

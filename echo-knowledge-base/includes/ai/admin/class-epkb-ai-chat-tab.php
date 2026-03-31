@@ -538,6 +538,12 @@ class EPKB_AI_Chat_Tab {
 					'value' => $ai_config['ai_chat_handoff_enabled'],
 					'description' => __( 'Allow visitors to request a human agent from the AI chat widget.', 'echo-knowledge-base' )
 				),
+				'ai_chat_handoff_phone_enabled' => array(
+					'type' => 'toggle',
+					'label' => __( 'Enable Phone Field', 'echo-knowledge-base' ),
+					'value' => $ai_config['ai_chat_handoff_phone_enabled'],
+					'description' => __( 'Show an optional phone field on the handoff form.', 'echo-knowledge-base' )
+				),
 				/* TODO FUTURE 'ai_chat_handoff_method' => array(
 					'type' => 'select',
 					'label' => __( 'Handoff Method', 'echo-knowledge-base' ),

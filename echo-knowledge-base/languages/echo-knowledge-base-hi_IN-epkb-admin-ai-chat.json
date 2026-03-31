@@ -40,6 +40,12 @@
             "OFF": [
                 "ऑफ"
             ],
+            "Email": [
+                "ईमेल"
+            ],
+            "Feedback": [
+                "प्रतिक्रिया"
+            ],
             "Reset": [
                 "रीसेट"
             ],
@@ -55,17 +61,23 @@
             "API Configuration": [
                 "API विन्यास"
             ],
-            "Feedback": [
-                "प्रतिक्रिया"
-            ],
             "AI Assistant": [
                 "एआई सहायक"
+            ],
+            "Name": [
+                "नाम"
+            ],
+            "Message": [
+                "संदेश"
             ],
             "Delete Selected": [
                 "चयनित को हटाएं"
             ],
             "of": [
                 "में से"
+            ],
+            "Phone": [
+                "फ़ोन"
             ],
             "Requires AI Features PRO": [
                 "एआई फीचर्स PRO आवश्यक हैं"
@@ -90,6 +102,9 @@
             ],
             "Agent handover request submitted": [
                 "एजेंट हैंडओवर अनुरोध जमा किया गया"
+            ],
+            "Trigger": [
+                "ट्रिगर"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "क्या आप चयनित वार्तालाप हटाना चाहते हैं?"

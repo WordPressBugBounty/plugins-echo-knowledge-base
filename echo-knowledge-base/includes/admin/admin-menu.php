@@ -175,6 +175,7 @@ function epkb_add_page_tabs() {
 
 		case 'EKB_SCREEN_page_epkb-dashboard':          // Dashboard page
 		case 'EKB_SCREEN_page_epkb-faqs':               // FAQs page
+		case 'EKB_SCREEN_page_epkb-quizzes':            // Quizzes page
 		case 'EKB_SCREEN_page_epkb-glossary':           // Glossary page
 		case 'EKB_SCREEN_page_epkb-kb-configuration':   // KB Configuration page
 		case 'EKB_SCREEN_page_epkb-kb-ai-features':     // AI page

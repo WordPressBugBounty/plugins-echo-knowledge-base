@@ -1942,13 +1942,8 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
 }
 #epkb-ml__module-categories-articles #epkb-ml-basic-layout .eckb-categories-list .epkb-ml__module-categories-articles__row {
   display: flex;
-  gap: 20px;
   justify-content: center;
   align-items: flex-start;
-  margin-bottom: 20px;
-}
-#epkb-ml__module-categories-articles #epkb-ml-basic-layout .eckb-categories-list .epkb-ml__module-categories-articles__row:last-child {
-  margin-bottom: 0 !important;
 }
 #epkb-ml__module-categories-articles #epkb-ml-basic-layout .section-head {
   padding: 1em;
@@ -2057,7 +2052,7 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
 #epkb-ml__module-categories-articles #epkb-ml-basic-layout .epkb-sub-category .epkb-category-level-2-3 .epkb-category-level-2-3__cat-icon {
   font-size: 0.8em;
   position: absolute;
-  top: 0.3em !important;
+  top: 0.3em;
   left: 0;
 }
 #epkb-ml__module-categories-articles #epkb-ml-basic-layout .epkb-sub-category .epkb-category-level-2-3 .epkb-category-level-2-3__cat-name {

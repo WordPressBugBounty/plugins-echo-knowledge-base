@@ -93,6 +93,13 @@ class EPKB_Autoloader {
 				'epkb_glossary_page'                =>  'includes/admin/glossary/class-epkb-glossary-page.php',
 				'epkb_glossary_ctrl'                =>  'includes/admin/glossary/class-epkb-glossary-ctrl.php',
 
+				// Quizzes
+				'epkb_quizzes_page'                 =>  'includes/admin/quizzes/class-epkb-quizzes-page.php',
+				'epkb_quizzes_ctrl'                 =>  'includes/admin/quizzes/class-epkb-quizzes-ctrl.php',
+				'epkb_quizzes_cpt_setup'            =>  'includes/features/quizzes/class-epkb-quizzes-cpt-setup.php',
+				'epkb_quizzes_setup'                =>  'includes/features/quizzes/class-epkb-quizzes-setup.php',
+				'epkb_quizzes_utilities'            =>  'includes/features/quizzes/class-epkb-quizzes-utilities.php',
+
 				// WIZARDS
 				'epkb_kb_wizard_setup'              =>  'includes/admin/wizard/class-epkb-kb-wizard-setup.php',
 				'epkb_kb_wizard_cntrl'              =>  'includes/admin/wizard/class-epkb-kb-wizard-cntrl.php',

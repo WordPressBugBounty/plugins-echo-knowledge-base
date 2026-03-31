@@ -37,6 +37,9 @@
             "OFF": [
                 "AV"
             ],
+            "Optional": [
+                "Valgfritt"
+            ],
             "View Full Documentation": [
                 "Vis fullstendig dokumentasjon"
             ],
@@ -57,9 +60,6 @@
             ],
             "Send Data to AI": [
                 "Send data til KI"
-            ],
-            "Optional": [
-                "Valgfritt"
             ],
             "Collection name cannot be empty": [
                 "Samlingens navn kan ikke være tomt"

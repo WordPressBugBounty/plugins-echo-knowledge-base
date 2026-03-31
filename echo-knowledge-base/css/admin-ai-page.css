@@ -10377,100 +10377,171 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
 .epkb-ai-dashboard-beta .epkb-ai-news-section .epkb-ai-news-items .epkb-ai-news-item .epkb-ai-news-link:hover {
   text-decoration: underline;
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features {
+.epkb-ai-dashboard-beta .epkb-ai-features-section {
   background: #FFFFFF;
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features h3 {
+.epkb-ai-dashboard-beta .epkb-ai-features-section h3 {
   font-size: 20px;
   margin: 0 0 20px 0;
   color: #1F2937;
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+.epkb-ai-dashboard-beta .epkb-ai-features-section .epkb-ai-features-group {
+  margin-top: 24px;
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card {
-  padding: 20px;
-  background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%);
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+.epkb-ai-dashboard-beta .epkb-ai-features-section .epkb-ai-features-group:first-of-type {
+  margin-top: 0;
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card.epkb-ai-feature-selected {
-  background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
-  border-color: #0073AA;
-  box-shadow: 0 4px 12px rgba(0, 115, 170, 0.15);
-}
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card input[type=checkbox] {
-  margin: 0;
-  flex-shrink: 0;
-}
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 10px;
-  gap: 12px;
-}
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header .epkb-ai-feature-icon {
-  font-size: 24px;
-  color: #667EEA;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header .epkb-ai-feature-content {
-  flex: 1;
-}
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header .epkb-ai-feature-content .epkb-ai-feature-title-row {
+.epkb-ai-dashboard-beta .epkb-ai-features-section .epkb-ai-features-group__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header .epkb-ai-feature-content .epkb-ai-feature-title-row h4 {
-  font-size: 16px;
+.epkb-ai-dashboard-beta .epkb-ai-features-section .epkb-ai-features-group__title {
   margin: 0;
-  color: #1F2937;
-  line-height: 1.2;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #475569;
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header .epkb-ai-feature-content .epkb-ai-feature-title-row .epkb-ai-status-badge {
-  font-size: 10px;
-  padding: 3px 8px;
+.epkb-ai-dashboard-beta .epkb-ai-features-section .epkb-ai-features-group__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #667EEA, #5B67D8);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.epkb-ai-dashboard-beta .epkb-ai-features-section .epkb-ai-features-group__link:hover {
+  background: linear-gradient(135deg, #5B67D8, #4F5BD0);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.28);
+  color: #FFFFFF;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+.epkb-ai-dashboard-beta .epkb-ai-features-section .epkb-ai-features-group--pro {
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 1px solid #E5E7EB;
+}
+.epkb-ai-dashboard-beta .epkb-ai-features-section .epkb-ai-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card {
+  padding: 22px;
+  background: #FFFFFF;
   border-radius: 12px;
-  background: #E5E7EB;
-  color: #6B7280;
-  font-weight: 600;
-  flex-shrink: 0;
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header .epkb-ai-feature-content .epkb-ai-feature-title-row .epkb-ai-status-coming_soon {
-  background: #DCFCE7;
-  color: #166534;
+.epkb-ai-dashboard-beta .epkb-ai-feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #667EEA;
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header .epkb-ai-feature-content .epkb-ai-feature-title-row .epkb-ai-status-in_development {
-  background: #FEF3C7;
-  color: #92400E;
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #F0F0F0;
 }
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header .epkb-ai-feature-content .epkb-ai-feature-title-row .epkb-ai-status-planned {
-  background: #EDE9FE;
-  color: #5B21B6;
-}
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card .epkb-ai-feature-header input[type=checkbox] {
-  flex-shrink: 0;
-  margin-top: 3px;
-}
-.epkb-ai-dashboard-beta .epkb-ai-upcoming-features .epkb-ai-features-grid .epkb-ai-feature-card p {
-  font-size: 13px;
-  color: #6B7280;
-  line-height: 1.5;
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__header h4 {
   margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1F2937;
+  line-height: 1.3;
+  flex: 1;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__icon {
+  font-size: 20px;
+  color: #667EEA;
+  line-height: 1;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__free-badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__free-badge {
+  background: linear-gradient(135deg, #22C55E, #16A34A);
+  color: #FFFFFF;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #2C3E50;
+  list-style: none;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__checklist li:last-child {
+  margin-bottom: 0;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__checklist .epkbfa-check {
+  color: #10B981;
+  font-size: 14px;
+  line-height: 1.45;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__links {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #F0F0F0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__links a {
+  color: #667EEA;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__links a:hover {
+  text-decoration: underline;
+}
+.epkb-ai-dashboard-beta .epkb-ai-feature-card__separator {
+  color: #D1D5DB;
+  font-size: 13px;
 }
 .epkb-ai-dashboard-beta .epkb-ai-quick-links {
   background: #FFFFFF;
@@ -10620,18 +10691,6 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   max-width: 200px !important;
   width: auto !important;
   min-width: 150px !important;
-}
-
-.epkb-ai-upcoming-features-disclaimer {
-  text-align: center;
-}
-
-.epkb-ai-vote-button-container .epkb-ai-button-large {
-  font-size: 16px;
-  padding: 12px 30px;
-}
-.epkb-ai-vote-button-container .epkb-ai-button-large .epkbfa {
-  margin-right: 8px;
 }
 
 .epkb-image-overlay {
@@ -11096,6 +11155,9 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   .epkb-ai-dashboard-beta .epkb-ai-dashboard-columns {
     grid-template-columns: 1fr;
   }
+  .epkb-ai-features-section .epkb-ai-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media (max-width: 768px) {
   .epkb-two-column-checkboxes .epkb-field-checkboxes {
@@ -11156,7 +11218,7 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   .epkb-ai-pro-features-tab .epkb-ai-pro-cta h2 {
     font-size: 28px;
   }
-  .epkb-ai-upcoming-features .epkb-ai-features-grid {
+  .epkb-ai-features-section .epkb-ai-features-grid {
     grid-template-columns: 1fr;
   }
   .epkb-ai-tutorial-box {

@@ -304,6 +304,17 @@ class EPKB_Core_Utilities {
 			// $new_config = self::adjust_topography( $orig_config, $new_config );
 		}
 
+		// sync font-size number settings into typography arrays
+		if ( isset( $new_config['section_head_font_size'] ) ) {
+			$new_config['section_head_typography']['font-size'] = $new_config['section_head_font_size'];
+		}
+		if ( isset( $new_config['section_head_description_font_size'] ) ) {
+			$new_config['section_head_description_typography']['font-size'] = $new_config['section_head_description_font_size'];
+		}
+		if ( isset( $new_config['article_font_size'] ) ) {
+			$new_config['article_typography']['font-size'] = $new_config['article_font_size'];
+		}
+
 		// apply Advanced Search presets (ensure all settings of selected preset are applied, including those settings which are not listed in the Settings UI)
 		$new_config = self::advanced_search_presets( $new_config, $orig_config, 'mp' );
 		$new_config = self::advanced_search_presets( $new_config, $orig_config, 'ap' );

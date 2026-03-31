@@ -400,6 +400,11 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'off'
 			),
+			'ai_chat_handoff_phone_enabled' => array(
+				'name'        => 'ai_chat_handoff_phone_enabled',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'off'
+			),
 			'ai_chat_handoff_method' => array(
 				'name'        => 'ai_chat_handoff_method',
 				'type'        => EPKB_Input_Filter::SELECTION,
@@ -817,7 +822,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	 */
 	public static function get_ai_config_value( $field_name, $default = null ) {
 
-		if ( in_array( $field_name, array( 'ai_chat_handoff_enabled', 'ai_chat_feedback_enabled', 'ai_chat_feedback_with_handoff' ), true ) && ! EPKB_Utilities::is_ai_features_pro_enabled() ) {
+		if ( in_array( $field_name, array( 'ai_chat_handoff_enabled', 'ai_chat_handoff_phone_enabled', 'ai_chat_feedback_enabled', 'ai_chat_feedback_with_handoff' ), true ) && ! EPKB_Utilities::is_ai_features_pro_enabled() ) {
 			return 'off';
 		}
 

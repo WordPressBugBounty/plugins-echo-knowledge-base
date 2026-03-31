@@ -37,6 +37,9 @@
             "OFF": [
                 "AUS"
             ],
+            "Optional": [
+                "Optional"
+            ],
             "View Full Documentation": [
                 "Vollständige Dokumentation anzeigen"
             ],
@@ -57,9 +60,6 @@
             ],
             "Send Data to AI": [
                 "Daten an KI senden"
-            ],
-            "Optional": [
-                "Optional"
             ],
             "Collection name cannot be empty": [
                 "Der Sammlungsname darf nicht leer sein"

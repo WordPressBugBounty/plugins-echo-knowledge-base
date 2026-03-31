@@ -40,6 +40,12 @@
             "OFF": [
                 "AUS"
             ],
+            "Email": [
+                "E-Mail"
+            ],
+            "Feedback": [
+                "Feedback"
+            ],
             "Reset": [
                 "Zurücksetzen"
             ],
@@ -55,17 +61,23 @@
             "API Configuration": [
                 "API-Konfiguration"
             ],
-            "Feedback": [
-                "Feedback"
-            ],
             "AI Assistant": [
                 "KI-Assistent"
+            ],
+            "Name": [
+                "Name"
+            ],
+            "Message": [
+                "Nachricht"
             ],
             "Delete Selected": [
                 "Auswahl löschen"
             ],
             "of": [
                 "von"
+            ],
+            "Phone": [
+                "Telefon"
             ],
             "Requires AI Features PRO": [
                 "Erfordert KI-Funktionen PRO"
@@ -90,6 +102,9 @@
             ],
             "Agent handover request submitted": [
                 "Anfrage zur Agenten-Übergabe eingereicht"
+            ],
+            "Trigger": [
+                "Auslöser"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "Möchten Sie die ausgewählten Konversationen wirklich löschen?"
