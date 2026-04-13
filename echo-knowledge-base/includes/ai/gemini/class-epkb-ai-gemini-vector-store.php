@@ -455,9 +455,9 @@ class EPKB_AI_Gemini_Vector_Store {
 		$resource_name = $this->get_resource_name( $store_id );
 		$doc_ids = array();
 		$page_token = '';
-		$max_docs = 500;
+		$seen_page_tokens = array();
 
-		while ( count( $doc_ids ) < $max_docs ) {
+		while ( true ) {
 			$params = array( 'pageSize' => 20 );
 			if ( ! empty( $page_token ) ) {
 				$params['pageToken'] = $page_token;
@@ -484,10 +484,38 @@ class EPKB_AI_Gemini_Vector_Store {
 				break;
 			}
 
-			$page_token = $response['nextPageToken'];
+			$next_page_token = (string) $response['nextPageToken'];
+			if ( isset( $seen_page_tokens[ $next_page_token ] ) ) {
+				return new WP_Error( 'invalid_pagination_cursor', __( 'Vector store pagination cursor repeated while listing files', 'echo-knowledge-base' ) );
+			}
+
+			$seen_page_tokens[ $next_page_token ] = true;
+			$page_token = $next_page_token;
 		}
 
 		return $doc_ids;
+	}
+
+	/**
+	 * Get file details from file storage
+	 *
+	 * In Gemini, "file storage" is the file search store, so this proxies to the document lookup.
+	 *
+	 * @param string $file_id Document ID
+	 * @param string $store_id Store ID
+	 * @return array|bool|WP_Error Document details, false if not found, or error
+	 */
+	public function get_file_details_from_file_storage( $file_id, $store_id = '' ) {
+
+		if ( empty( $file_id ) ) {
+			return new WP_Error( 'missing_id', __( 'File ID is required', 'echo-knowledge-base' ) );
+		}
+
+		if ( empty( $store_id ) ) {
+			return new WP_Error( 'missing_store_id', __( 'Store ID is required for Gemini', 'echo-knowledge-base' ) );
+		}
+
+		return $this->get_file_details_from_vector_store( $store_id, $file_id );
 	}
 
 	/**
@@ -509,7 +537,7 @@ class EPKB_AI_Gemini_Vector_Store {
 			return new WP_Error( 'missing_store_id', __( 'Store ID is required for Gemini', 'echo-knowledge-base' ) );
 		}
 
-		$result = $this->get_file_details_from_vector_store( $store_id, $file_id );
+		$result = $this->get_file_details_from_file_storage( $file_id, $store_id );
 		if ( is_wp_error( $result ) ) {
 			return $result;
 		}

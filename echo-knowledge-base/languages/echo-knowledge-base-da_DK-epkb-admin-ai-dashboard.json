@@ -34,8 +34,14 @@
             "Learn more": [
                 "Læs mere"
             ],
+            "Failed to enable feature.": [
+                "Kunne ikke aktivere funktionen."
+            ],
             "FREE": [
                 "GRATIS"
+            ],
+            "Enabling...": [
+                "Aktiverer..."
             ],
             "Free Features": [
                 "Gratis funktioner"

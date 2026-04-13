@@ -58,6 +58,15 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 				'permission_callback' => array( $this, 'check_admin_permission' ),
 			)
 		) );
+
+		// Get verify progress
+		register_rest_route( $this->admin_namespace, '/verify-progress', array(
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_verify_progress' ),
+				'permission_callback' => array( $this, 'check_admin_permission' ),
+			)
+		) );
 		
 		// Process next post (for direct sync)
 		register_rest_route( $this->admin_namespace, '/process-next', array(
@@ -217,6 +226,36 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 								)
 		) );
 	}
+
+	/**
+	 * Get verify progress
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function get_verify_progress( $request ) {
+
+		$job = EPKB_AI_Sync_Job_Manager::get_verify_job();
+
+		return $this->create_rest_response( array(
+			'success' => true,
+			'progress' => array(
+				'status' => $job['status'],
+				'total' => $job['total'],
+				'processed' => $job['processed'],
+				'percent' => $job['percent'],
+				'verified_ok' => isset( $job['verified_ok'] ) ? $job['verified_ok'] : 0,
+				'marked_outdated' => isset( $job['marked_outdated'] ) ? $job['marked_outdated'] : 0,
+				'removed_orphan_files' => isset( $job['removed_orphan_files'] ) ? $job['removed_orphan_files'] : 0,
+				'removed_orphan_posts' => isset( $job['removed_orphan_posts'] ) ? $job['removed_orphan_posts'] : 0,
+				'removed_orphan_pdfs' => isset( $job['removed_orphan_pdfs'] ) ? $job['removed_orphan_pdfs'] : 0,
+				'removed_orphan_notes' => isset( $job['removed_orphan_notes'] ) ? $job['removed_orphan_notes'] : 0,
+				'errors' => isset( $job['errors'] ) ? $job['errors'] : 0,
+				'cancel_requested' => isset( $job['cancel_requested'] ) ? $job['cancel_requested'] : false,
+				'collection_id' => $job['collection_id']
+			)
+		) );
+	}
 	
 	/**
 	 * Process next post for direct sync
@@ -322,6 +361,10 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 			'percent' => isset( $result['percent'] ) ? $result['percent'] : 0,
 			'verified_ok' => isset( $result['verified_ok'] ) ? $result['verified_ok'] : 0,
 			'marked_outdated' => isset( $result['marked_outdated'] ) ? $result['marked_outdated'] : 0,
+			'removed_orphan_files' => isset( $result['removed_orphan_files'] ) ? $result['removed_orphan_files'] : 0,
+			'removed_orphan_posts' => isset( $result['removed_orphan_posts'] ) ? $result['removed_orphan_posts'] : 0,
+			'removed_orphan_pdfs' => isset( $result['removed_orphan_pdfs'] ) ? $result['removed_orphan_pdfs'] : 0,
+			'removed_orphan_notes' => isset( $result['removed_orphan_notes'] ) ? $result['removed_orphan_notes'] : 0,
 			'errors' => isset( $result['errors'] ) ? $result['errors'] : 0,
 			'updated_post' => isset( $result['updated_post'] ) ? $result['updated_post'] : null
 		) );

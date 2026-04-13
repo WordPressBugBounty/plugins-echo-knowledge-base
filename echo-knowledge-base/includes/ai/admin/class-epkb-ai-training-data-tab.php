@@ -8,6 +8,8 @@
  */
 class EPKB_AI_Training_Data_Tab {
 
+	const TAB_RECONCILE_COOLDOWN = 300; // 5 minutes.
+
 	/**
 	 * Get the configuration for the Training Data tab
 	 * @return array
@@ -97,11 +99,18 @@ class EPKB_AI_Training_Data_Tab {
 		}
 
 		$active_provider = EPKB_AI_Provider::get_active_provider();
+		$active_collection_id = self::get_requested_active_collection_id( $collections );
+		$should_reconcile_active_collection = self::should_reconcile_active_collection_on_tab_load( $active_collection_id );
 		
 		$formatted_collections = array();
 		$training_data_db = new EPKB_AI_Training_Data_DB();
 
 		foreach ( $collections as $collection_id => $collection_config ) {
+
+			if ( $should_reconcile_active_collection && $collection_id === $active_collection_id ) {
+				EPKB_AI_Utilities::reconcile_collection_source_updates( $collection_id, $training_data_db );
+				self::mark_collection_reconciled_on_tab_load( $collection_id );
+			}
 
 			$db_stats = $training_data_db->get_status_statistics( $collection_id );
 			$last_sync_date = $training_data_db->get_last_sync_date( $collection_id );
@@ -140,6 +149,84 @@ class EPKB_AI_Training_Data_Tab {
 			'collections' => $formatted_collections,
 			'error' => $has_error
 		);
+	}
+
+	/**
+	 * Determine whether the active collection should be reconciled during tab load.
+	 *
+	 * Manual refresh bypasses this cooldown through the REST endpoint.
+	 *
+	 * @param int $collection_id Collection ID.
+	 * @return bool
+	 */
+	private static function should_reconcile_active_collection_on_tab_load( $collection_id ) {
+
+		$collection_id = absint( $collection_id );
+		if ( empty( $collection_id ) ) {
+			return false;
+		}
+
+		if ( EPKB_Utilities::get( 'active_tab', 'dashboard' ) !== 'training-data' ) {
+			return false;
+		}
+
+		return get_transient( self::get_collection_reconcile_cooldown_key( $collection_id ) ) === false;
+	}
+
+	/**
+	 * Store the last Training Data tab reconciliation time for a collection.
+	 *
+	 * @param int $collection_id Collection ID.
+	 * @return void
+	 */
+	private static function mark_collection_reconciled_on_tab_load( $collection_id ) {
+
+		$collection_id = absint( $collection_id );
+		if ( empty( $collection_id ) ) {
+			return;
+		}
+
+		set_transient(
+			self::get_collection_reconcile_cooldown_key( $collection_id ),
+			time(),
+			self::TAB_RECONCILE_COOLDOWN
+		);
+	}
+
+	/**
+	 * Get the cooldown transient key for a Training Data collection.
+	 *
+	 * @param int $collection_id Collection ID.
+	 * @return string
+	 */
+	private static function get_collection_reconcile_cooldown_key( $collection_id ) {
+		return 'epkb_ai_td_tab_reconcile_' . sanitize_key( EPKB_AI_Provider::get_active_provider() ) . '_' . absint( $collection_id );
+	}
+
+	/**
+	 * Get the collection that is active in the current request.
+	 *
+	 * @param array $collections Available collections keyed by collection ID.
+	 * @return int
+	 */
+	private static function get_requested_active_collection_id( $collections ) {
+
+		if ( empty( $collections ) || ! is_array( $collections ) ) {
+			return 0;
+		}
+
+		if ( ! empty( $_GET['active_sub_tab'] ) ) {
+			$active_sub_tab = sanitize_text_field( wp_unslash( $_GET['active_sub_tab'] ) );
+			if ( preg_match( '/^collection-(\d+)$/', $active_sub_tab, $matches ) ) {
+				$collection_id = absint( $matches[1] );
+				if ( isset( $collections[ $collection_id ] ) ) {
+					return $collection_id;
+				}
+			}
+		}
+
+		$collection_ids = array_keys( $collections );
+		return (int) reset( $collection_ids );
 	}
 	
 	/**

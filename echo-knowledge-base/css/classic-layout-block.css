@@ -1166,7 +1166,9 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
   margin-bottom: 0 !important;
 }
 #epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-icon-top-row-adj {
-  margin: 0 0 60px 0;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
 }
 #epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-icon-left-row-adj {
   margin: 0 0 20px 0;

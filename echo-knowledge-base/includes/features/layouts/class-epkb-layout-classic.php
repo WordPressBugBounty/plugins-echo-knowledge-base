@@ -658,6 +658,71 @@ class EPKB_Layout_Classic extends EPKB_Layout {
 			padding-left: ' . ( $kb_config['sub_article_list_margin'] + 10 ) . 'px !important;
 		}	';
 
+		// Articles typography  -----------------------------------------/
+		$output .= '
+			#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-article-inner .epkb-article__text {
+				font-size: ' . ( ! empty( $kb_config['article_typography']['font-size'] ) ? $kb_config['article_typography']['font-size'] . 'px !important' : 'inherit !important' ) . ';
+				font-weight: ' . ( ! empty( $kb_config['article_typography']['font-weight'] ) ? $kb_config['article_typography']['font-weight'] : 'inherit !important' ) . ';
+			}';
+
+		$article_spacing = intval( $kb_config['article_list_spacing'] );
+		$output .= '
+			#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-ml-articles-coming-soon {
+				font-size: ' . ( ! empty( $kb_config['article_typography']['font-size'] ) ? $kb_config['article_typography']['font-size'] . 'px !important' : 'inherit !important' ) . ';
+				font-weight: ' . ( ! empty( $kb_config['article_typography']['font-weight'] ) ? $kb_config['article_typography']['font-weight'] : 'inherit !important' ) . ';
+				padding-top: ' . $article_spacing . 'px !important;
+				padding-bottom: ' . $article_spacing . 'px !important;
+			}';
+
+		// Article hover effect -----------------------------------------/
+		if ( ! empty( $kb_config['article_list_hover_toggle'] ) && $kb_config['article_list_hover_toggle'] == 'on' ) {
+			$spacing = intval( $kb_config['article_list_spacing'] );
+			$hover_bg = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_background_color'] );
+			$hover_text = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_font_color'] );
+			$output .= '
+				#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-ml-article-container {
+					padding: ' . $spacing . 'px !important;
+					border-radius: 6px !important;
+					transition: background-color 0.2s ease, color 0.2s ease !important;
+				}
+				#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-ml-article-container:hover {
+					background-color: ' . $hover_bg . ' !important;
+				}
+				#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-ml-article-container:hover .epkb-article__text {
+					color: ' . $hover_text . ' !important;
+				}
+				#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-ml-article-container:hover .epkb-article__icon {
+					color: ' . $hover_text . ' !important;
+				}';
+			$output .= '
+				#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-category-section__body li {
+					padding-bottom: 0px !important;
+				}';
+		}
+
+		// Space between category sections -----------------------------------------/
+		$section_gap = isset( $kb_config['section_box_gap'] ) ? intval( $kb_config['section_box_gap'] ) : 20;
+		$top_icon_row_margin_bottom = max( 60, $section_gap + 20 );
+		$output .= '
+			#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-ml__module-categories-articles__row {
+				gap: ' . $section_gap . 'px !important;
+				margin-bottom: ' . $section_gap . 'px !important;
+			}
+			#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-ml__module-categories-articles__row.epkb-icon-top-row-adj {
+				margin-bottom: ' . $top_icon_row_margin_bottom . 'px !important;
+			}
+			#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-ml__module-categories-articles__row:last-child {
+				margin-bottom: 0 !important;
+			}';
+
+		// Category box padding -----------------------------------------/
+		if ( ! empty( $kb_config['category_box_padding'] ) ) {
+			$output .= '
+				#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-category-section {
+					padding: ' . intval( $kb_config['category_box_padding'] ) . 'px !important;
+				}';
+		}
+
 		return $output;
 	}
 }

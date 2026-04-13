@@ -2738,6 +2738,146 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'off'
 			),
+			'quizzes_eyebrow_text' => array(
+				'name'        => 'quizzes_eyebrow_text',
+				'max'         => '80',
+				'min'         => '1',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => esc_html__( 'Knowledge Check', 'echo-knowledge-base' ),
+			),
+			'quizzes_start_button_text' => array(
+				'name'        => 'quizzes_start_button_text',
+				'max'         => '80',
+				'min'         => '1',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => esc_html__( 'Take Quiz', 'echo-knowledge-base' ),
+			),
+			'quizzes_question_label_text' => array(
+				'name'        => 'quizzes_question_label_text',
+				'max'         => '40',
+				'min'         => '1',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => esc_html__( 'Question', 'echo-knowledge-base' ),
+			),
+			'quizzes_summary_title_text' => array(
+				'name'        => 'quizzes_summary_title_text',
+				'max'         => '80',
+				'min'         => '1',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => esc_html__( 'Quiz Complete', 'echo-knowledge-base' ),
+			),
+			'quizzes_correct_text' => array(
+				'name'        => 'quizzes_correct_text',
+				'max'         => '40',
+				'min'         => '1',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => esc_html__( 'Correct', 'echo-knowledge-base' ),
+			),
+			'quizzes_incorrect_text' => array(
+				'name'        => 'quizzes_incorrect_text',
+				'max'         => '40',
+				'min'         => '1',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => esc_html__( 'Incorrect', 'echo-knowledge-base' ),
+			),
+			'quizzes_score_prefix_text' => array(
+				'name'        => 'quizzes_score_prefix_text',
+				'max'         => '80',
+				'min'         => '1',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => esc_html__( 'Your score:', 'echo-knowledge-base' ),
+			),
+			'quizzes_accent_color' => array(
+				'name'        => 'quizzes_accent_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#1e73be'
+			),
+			'quizzes_button_text_color' => array(
+				'name'        => 'quizzes_button_text_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#FFFFFF'
+			),
+			'quizzes_card_border_color' => array(
+				'name'        => 'quizzes_card_border_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#d8e6f3'
+			),
+			'quizzes_card_background_color' => array(
+				'name'        => 'quizzes_card_background_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#FFFFFF'
+			),
+			'quizzes_heading_text_color' => array(
+				'name'        => 'quizzes_heading_text_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#102a43'
+			),
+			'quizzes_body_text_color' => array(
+				'name'        => 'quizzes_body_text_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#1f2937'
+			),
+			'quizzes_intro_background_color' => array(
+				'name'        => 'quizzes_intro_background_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#eff6ff'
+			),
+			'quizzes_correct_background_color' => array(
+				'name'        => 'quizzes_correct_background_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#f0fdf4'
+			),
+			'quizzes_correct_border_color' => array(
+				'name'        => 'quizzes_correct_border_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#86efac'
+			),
+			'quizzes_incorrect_background_color' => array(
+				'name'        => 'quizzes_incorrect_background_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#fff7ed'
+			),
+			'quizzes_incorrect_border_color' => array(
+				'name'        => 'quizzes_incorrect_border_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#fdba74'
+			),
+			'quizzes_summary_background_color' => array(
+				'name'        => 'quizzes_summary_background_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#102a43'
+			),
+			'quizzes_summary_text_color' => array(
+				'name'        => 'quizzes_summary_text_color',
+				'max'         => '7',
+				'min'         => '7',
+				'type'        => EPKB_Input_Filter::COLOR_HEX,
+				'default'     => '#FFFFFF'
+			),
 			'glossary_tooltip_text_color' => array(
 				'name'        => 'glossary_tooltip_text_color',
 				'max'         => '7',
@@ -4419,6 +4559,26 @@ class EPKB_KB_Config_Specs {
 			'admin_eckb_access_ai_feature' => esc_html__( 'AI Features', 'echo-knowledge-base' ),
 			'glossary_enable' => esc_html__( 'Glossary', 'echo-knowledge-base' ),
 			'quizzes_enable' => esc_html__( 'Quizzes', 'echo-knowledge-base' ),
+			'quizzes_eyebrow_text' => esc_html__( 'Eyebrow Text', 'echo-knowledge-base' ),
+			'quizzes_start_button_text' => esc_html__( 'Start Button Text', 'echo-knowledge-base' ),
+			'quizzes_question_label_text' => esc_html__( 'Question Label', 'echo-knowledge-base' ),
+			'quizzes_summary_title_text' => esc_html__( 'Summary Title', 'echo-knowledge-base' ),
+			'quizzes_correct_text' => esc_html__( 'Correct Text', 'echo-knowledge-base' ),
+			'quizzes_incorrect_text' => esc_html__( 'Incorrect Text', 'echo-knowledge-base' ),
+			'quizzes_score_prefix_text' => esc_html__( 'Score Prefix', 'echo-knowledge-base' ),
+			'quizzes_accent_color' => esc_html__( 'Accent', 'echo-knowledge-base' ),
+			'quizzes_button_text_color' => esc_html__( 'Button Text', 'echo-knowledge-base' ),
+			'quizzes_card_border_color' => esc_html__( 'Card Border', 'echo-knowledge-base' ),
+			'quizzes_card_background_color' => esc_html__( 'Card Background', 'echo-knowledge-base' ),
+			'quizzes_heading_text_color' => esc_html__( 'Heading Text', 'echo-knowledge-base' ),
+			'quizzes_body_text_color' => esc_html__( 'Body Text', 'echo-knowledge-base' ),
+			'quizzes_intro_background_color' => esc_html__( 'Intro Background', 'echo-knowledge-base' ),
+			'quizzes_correct_background_color' => esc_html__( 'Correct Background', 'echo-knowledge-base' ),
+			'quizzes_correct_border_color' => esc_html__( 'Correct Border', 'echo-knowledge-base' ),
+			'quizzes_incorrect_background_color' => esc_html__( 'Incorrect Background', 'echo-knowledge-base' ),
+			'quizzes_incorrect_border_color' => esc_html__( 'Incorrect Border', 'echo-knowledge-base' ),
+			'quizzes_summary_background_color' => esc_html__( 'Summary Background', 'echo-knowledge-base' ),
+			'quizzes_summary_text_color' => esc_html__( 'Summary Text', 'echo-knowledge-base' ),
 			'glossary_tooltip_text_color' => esc_html__( 'Tooltip Text', 'echo-knowledge-base' ),
 			'glossary_tooltip_background_color' => esc_html__( 'Tooltip Background', 'echo-knowledge-base' ),
 			'glossary_highlight_style' => esc_html__( 'Style', 'echo-knowledge-base' ),

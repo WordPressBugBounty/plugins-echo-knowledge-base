@@ -475,6 +475,8 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 				EPKB_Layout::BASIC_LAYOUT,
 				EPKB_Layout::TABS_LAYOUT,
 				EPKB_Layout::CATEGORIES_LAYOUT,
+				EPKB_Layout::CLASSIC_LAYOUT,
+				EPKB_Layout::DRILL_DOWN_LAYOUT,
 				EPKB_Layout::SIDEBAR_LAYOUT,
 				EPKB_Layout::GRID_LAYOUT,
 			];
@@ -591,7 +593,9 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 			    }';
 
 			// Article hover effect -----------------------------------------/
-			if ( ! empty( $kb_config['article_list_hover_toggle'] ) && $kb_config['article_list_hover_toggle'] == 'on' ) {
+			$hover_on = ( ! empty( $kb_config['article_list_hover_toggle'] ) && $kb_config['article_list_hover_toggle'] == 'on' )
+				|| ( isset( $kb_config['kb_main_page_layout'] ) && $kb_config['kb_main_page_layout'] === EPKB_Layout::DRILL_DOWN_LAYOUT );
+			if ( $hover_on ) {
 				$spacing = intval( $kb_config['article_list_spacing'] );
 				$hover_bg = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_background_color'] );
 				$hover_text = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_font_color'] );

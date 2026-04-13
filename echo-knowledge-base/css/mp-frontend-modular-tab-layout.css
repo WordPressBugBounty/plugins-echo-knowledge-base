@@ -2198,7 +2198,7 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
   line-height: 1.5;
 }
 #epkb-ml__module-categories-articles #epkb-ml-tabs-layout .epkb-section-body {
-  padding: 1em 1em 2em;
+  padding: 1em;
 }
 #epkb-ml__module-categories-articles #epkb-ml-tabs-layout .epkb-section-body:before {
   content: "";

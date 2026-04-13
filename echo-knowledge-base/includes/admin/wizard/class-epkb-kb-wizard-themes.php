@@ -405,25 +405,15 @@ class EPKB_KB_Wizard_Themes {
 	// reuse some themes in multiple layouts
 	private static function copy_themes( $all_themes ) {
 
-		// Tabs Layout
-		$all_themes['office_tabs'] = $all_themes['office'];
-		$all_themes['office_tabs']['kb_main_page_layout'] = 'Tabs';
-		$all_themes['organized_tabs'] = $all_themes['organized'];
-		$all_themes['organized_tabs']['kb_main_page_layout'] = 'Tabs';
-		$all_themes['organized_tabs']['section_desc_text_on'] = 'off';
+		$basic_layout_theme_names = array( 'horizon', 'bloom', 'ember', 'organized', 'airy', 'office', 'creative', 'image', 'informative', 'canvas', 'formal', 'elegant', 'icon_focused', 'bright', 'compact', 'sharp', 'simple', 'modern', 'teal' );
 
-		$all_themes['elegant_tabs'] = $all_themes['elegant'];
-		$all_themes['elegant_tabs']['kb_main_page_layout'] = 'Tabs';
-		$all_themes['modern_tabs'] = $all_themes['modern'];
-		$all_themes['modern_tabs']['kb_main_page_layout'] = 'Tabs';
-		$all_themes['image_tabs'] = $all_themes['image'];
-		$all_themes['image_tabs']['kb_main_page_layout'] = 'Tabs';
-		$all_themes['informative_tabs'] = $all_themes['informative'];
-		$all_themes['informative_tabs']['kb_main_page_layout'] = 'Tabs';
-		$all_themes['formal_tabs'] = $all_themes['formal'];
-		$all_themes['formal_tabs']['kb_main_page_layout'] = 'Tabs';
-		$all_themes['compact_tabs'] = $all_themes['compact'];
-		$all_themes['compact_tabs']['kb_main_page_layout'] = 'Tabs';
+		// Tabs Layout
+		foreach ( $basic_layout_theme_names as $theme_name ) {
+			$all_themes[ $theme_name . '_tabs' ] = $all_themes[ $theme_name ];
+			$all_themes[ $theme_name . '_tabs' ]['kb_main_page_layout'] = 'Tabs';
+		}
+
+		$all_themes['organized_tabs']['section_desc_text_on'] = 'off';
 
 		$all_themes['sharp_tabs'] = $all_themes['sharp'];
 		$all_themes['sharp_tabs']['kb_main_page_layout'] = 'Tabs';
@@ -441,14 +431,6 @@ class EPKB_KB_Wizard_Themes {
 		$all_themes['sharp_tabs']['sidebar_section_category_font_color'] = '#6C3CBA';
 		$all_themes['sharp_tabs']['sidebar_article_font_color'] = '#000000';
 		$all_themes['sharp_tabs']['sidebar_article_active_background_color'] = '#ce6bcb';
-		
-
-		$all_themes['simple_tabs'] = $all_themes['simple'];
-		$all_themes['simple_tabs']['kb_main_page_layout'] = 'Tabs';
-		$all_themes['creative_tabs'] = $all_themes['creative'];
-		$all_themes['creative_tabs']['kb_main_page_layout'] = 'Tabs';
-		$all_themes['icon_focused_tabs'] = $all_themes['icon_focused'];
-		$all_themes['icon_focused_tabs']['kb_main_page_layout'] = 'Tabs';
 
 		// Basic Layout
 		$all_themes['sharp_basic'] = $all_themes['sharp'];
@@ -461,6 +443,11 @@ class EPKB_KB_Wizard_Themes {
 		$all_themes['organized_basic']['kb_main_page_layout'] = 'Basic';
 
 		// Categories Layout
+		foreach ( $basic_layout_theme_names as $theme_name ) {
+			$all_themes[ $theme_name . '_categories' ] = $all_themes[ $theme_name ];
+			$all_themes[ $theme_name . '_categories' ]['kb_main_page_layout'] = 'Categories';
+		}
+
 		$all_themes['sharp_categories'] = $all_themes['sharp'];
 		$all_themes['sharp_categories']['kb_main_page_layout'] = 'Categories';
 		$all_themes['sharp_categories']['section_head_font_color'] = '#6C3CBA';
@@ -476,20 +463,12 @@ class EPKB_KB_Wizard_Themes {
 		$all_themes['sharp_categories']['sidebar_article_font_color'] = '#000000';
 		$all_themes['sharp_categories']['sidebar_article_active_background_color'] = '#ce6bcb';
 
-		$all_themes['office_categories'] = $all_themes['office'];
-		$all_themes['office_categories']['kb_main_page_layout'] = 'Categories';
-		$all_themes['compact_categories'] = $all_themes['compact'];
-		$all_themes['compact_categories']['kb_main_page_layout'] = 'Categories';
-		$all_themes['simple_categories'] = $all_themes['simple'];
-		$all_themes['simple_categories']['kb_main_page_layout'] = 'Categories';
-		$all_themes['creative_categories'] = $all_themes['creative'];
-		$all_themes['creative_categories']['kb_main_page_layout'] = 'Categories';
-		$all_themes['formal_categories'] = $all_themes['formal'];
-		$all_themes['formal_categories']['kb_main_page_layout'] = 'Categories';
-		$all_themes['icon_focused_categories'] = $all_themes['icon_focused'];
-		$all_themes['icon_focused_categories']['kb_main_page_layout'] = 'Categories';
-
 		// Classic Layout
+		foreach ( $basic_layout_theme_names as $theme_name ) {
+			$all_themes[ $theme_name . '_classic' ] = $all_themes[ $theme_name ];
+			$all_themes[ $theme_name . '_classic' ]['kb_main_page_layout'] = 'Classic';
+		}
+
 		$all_themes['sharp_classic'] = $all_themes['sharp'];
 		$all_themes['sharp_classic']['kb_main_page_layout'] = 'Classic';
 		$all_themes['sharp_classic']['section_head_font_color'] = '#6C3CBA';
@@ -514,6 +493,11 @@ class EPKB_KB_Wizard_Themes {
 		$all_themes['icon_focused_classic']['kb_main_page_layout'] = 'Classic';
 
 		// Drill Down Layout
+		foreach ( $basic_layout_theme_names as $theme_name ) {
+			$all_themes[ $theme_name . '_drill_down' ] = $all_themes[ $theme_name ];
+			$all_themes[ $theme_name . '_drill_down' ]['kb_main_page_layout'] = 'Drill-Down';
+		}
+
 		$all_themes['sharp_drill_down'] = $all_themes['sharp'];
 		$all_themes['sharp_drill_down']['kb_main_page_layout'] = 'Drill-Down';
 		$all_themes['sharp_drill_down']['section_head_font_color'] = '#6C3CBA';

@@ -100,24 +100,6 @@
             "Added": [
                 "जोड़ा गया"
             ],
-            "Verifying": [
-                "जाँच किया जा रहा है"
-            ],
-            "items": [
-                "आइटम"
-            ],
-            "Verification complete:": [
-                "जाँच पूरी:"
-            ],
-            "marked outdated": [
-                "पुराने के रूप में चिह्नित"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "पुराने आइटमों को पुनः अपलोड करने के लिए सिंक चलाएं."
-            ],
-            "Cancel Verify": [
-                "जाँच रद्द करें"
-            ],
             "Deleting...": [
                 "हटाया जा रहा है..."
             ],
@@ -225,6 +207,30 @@
             ],
             "Failed to add data": [
                 "डेटा जोड़ना विफल रहा"
+            ],
+            "Checking AI store for orphaned files...": [
+                "अनाथ फ़ाइलों के लिए AI स्टोर की जाँच की जा रही है..."
+            ],
+            "Verifying": [
+                "जाँच किया जा रहा है"
+            ],
+            "items": [
+                "आइटम"
+            ],
+            "Verification complete:": [
+                "जाँच पूरी:"
+            ],
+            "marked outdated": [
+                "पुराने के रूप में चिह्नित"
+            ],
+            "PDFs removed from AI store": [
+                "AI स्टोर से PDF हटा दिए गए"
+            ],
+            "AI Notes removed from AI store": [
+                "AI स्टोर से AI नोट्स हटा दिए गए"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "पुराने आइटमों को पुनः अपलोड करने के लिए सिंक चलाएं."
             ],
             "Choose an Action": [
                 "क्रिया चुनें"
@@ -337,8 +343,8 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "यह सुनिश्चित करने के लिए एक अतिरिक्त सत्यापन पास चलाएँ कि स्थानीय डेटाबेस और AI स्टोर सिंक में रहें। यदि AI स्टोर से कोई फ़ाइल गायब है, तो उसे पुराना चिह्नित किया जाएगा ताकि उसे फिर से भेजा जा सके।."
             ],
-            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
-                "यह इस संग्रह में पहले से ट्रैक किए गए जोड़े गए और अपडेट किए गए आइटम की जांच करता है, जिसमें अपलोड किए गए PDF भी शामिल हैं।."
+            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
+                "यह इस संग्रह में पहले से ट्रैक किए गए 'जोड़े गए' और 'अपडेट किए गए' आइटम की जाँच करता है और केवल AI स्टोर में मौजूद अनाथ PDF और AI नोट्स को हटा देता है। कोई भी स्थानीय डेटाबेस आइटम नहीं हटाया जाता है।."
             ],
             "Collection:": [
                 "संग्रह:"
@@ -346,8 +352,11 @@
             "synced items ready to validate": [
                 "सिंक किए गए आइटम सत्यापन के लिए तैयार हैं"
             ],
-            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
-                "अभी तक कोई जोड़ा गया या अपडेट किया गया आइटम उपलब्ध नहीं है। पहले सामग्री को AI को भेजें, फिर आवश्यकता होने पर सत्यापन चलाएँ।."
+            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
+                "अभी तक कोई 'जोड़े गए' या 'अपडेट किए गए' आइटम उपलब्ध नहीं हैं। सत्यापन अभी भी केवल AI स्टोर में बचे अनाथ PDF और AI नोट्स को हटा सकता है।."
+            ],
+            "Cancel Verify": [
+                "जाँच रद्द करें"
             ],
             "Validation in Progress...": [
                 "सत्यापन प्रगति पर है..."

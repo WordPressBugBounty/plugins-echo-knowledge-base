@@ -100,24 +100,6 @@
             "Added": [
                 "Añadido"
             ],
-            "Verifying": [
-                "Verificando"
-            ],
-            "items": [
-                "elementos"
-            ],
-            "Verification complete:": [
-                "Verificación completa:"
-            ],
-            "marked outdated": [
-                "marcado como desactualizado"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "Ejecute la sincronización para volver a subir los elementos desactualizados."
-            ],
-            "Cancel Verify": [
-                "Cancelar verificación"
-            ],
             "Deleting...": [
                 "Eliminando..."
             ],
@@ -225,6 +207,30 @@
             ],
             "Failed to add data": [
                 "Error al añadir datos"
+            ],
+            "Checking AI store for orphaned files...": [
+                "Comprobando el almacenamiento de IA en busca de archivos huérfanos..."
+            ],
+            "Verifying": [
+                "Verificando"
+            ],
+            "items": [
+                "elementos"
+            ],
+            "Verification complete:": [
+                "Verificación completa:"
+            ],
+            "marked outdated": [
+                "marcado como desactualizado"
+            ],
+            "PDFs removed from AI store": [
+                "PDFs eliminados del almacenamiento de IA"
+            ],
+            "AI Notes removed from AI store": [
+                "Notas de IA eliminadas del almacenamiento de IA"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Ejecute la sincronización para volver a subir los elementos desactualizados."
             ],
             "Choose an Action": [
                 "Elegir una acción"
@@ -337,8 +343,8 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Ejecuta un paso de validación adicional para asegurarte de que la base de datos local y el almacenamiento de IA se mantengan sincronizados. Si falta un archivo en el almacenamiento de IA, se marcará como desactualizado para que pueda volver a enviarse."
             ],
-            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
-                "Esto comprueba los elementos añadidos y actualizados que ya se rastrean en esta colección, incluidos los PDF subidos."
+            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
+                "Esto comprueba los elementos Añadidos y Actualizados que ya se rastrean en esta colección y elimina los PDFs y Notas de IA huérfanos que solo se encuentran en el almacenamiento de IA. No se elimina ningún elemento de la base de datos local."
             ],
             "Collection:": [
                 "Colección:"
@@ -346,8 +352,11 @@
             "synced items ready to validate": [
                 "elementos sincronizados listos para validar"
             ],
-            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
-                "Aún no hay elementos añadidos o actualizados disponibles. Envía primero el contenido a la IA y, a continuación, ejecuta la validación si es necesario."
+            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
+                "Aún no hay elementos Añadidos o Actualizados disponibles. La validación todavía puede eliminar los PDFs y Notas de IA huérfanos que solo quedan en el almacenamiento de IA."
+            ],
+            "Cancel Verify": [
+                "Cancelar verificación"
             ],
             "Validation in Progress...": [
                 "Validación en curso..."

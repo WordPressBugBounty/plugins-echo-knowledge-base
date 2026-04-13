@@ -31162,6 +31162,51 @@ html:not(:lang(en)) #ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-ad
     flex-direction: column;
   }
 }
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__text-fields,
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__color-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__text-fields .epkb-input-group,
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__color-fields .epkb-input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__text-fields .epkb-input-group > label,
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__color-fields .epkb-input-group > label {
+  min-width: 160px;
+  margin-right: 12px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__text-fields .epkb-input-group {
+  width: calc(50% - 12px);
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__text-fields .epkb-input-group .input_container {
+  flex: 1;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__text-fields .epkb-input-group .input_container input {
+  width: 100%;
+  max-width: 280px;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__text-fields .epkb-input-group .epkb-input-desc {
+  margin: 4px 0 0 0;
+}
+@media screen and (max-width: 900px) {
+  #ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__text-fields .epkb-input-group {
+    width: 100%;
+  }
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__color-fields .epkb-input-group {
+  width: calc(50% - 12px);
+}
+@media screen and (max-width: 900px) {
+  #ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quizzes-settings__color-fields .epkb-input-group {
+    width: 100%;
+  }
+}
 #ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin__boxes-list__box {
   background-color: transparent;
   border: none;
@@ -31305,6 +31350,10 @@ html:not(:lang(en)) #ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-ad
   display: block;
 }
 #ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
   margin: 20px 0;
 }
 #ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-btn {
@@ -31332,6 +31381,14 @@ html:not(:lang(en)) #ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-ad
 }
 #ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-btn.epkb-success-btn:hover {
   background-color: #43A047;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-btn.epkb-error-btn {
+  background-color: #DC3545;
+  border-color: #C82333;
+  color: white;
+}
+#ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-btn.epkb-error-btn:hover {
+  background-color: #C82333;
 }
 #ekb-admin-page-wrap #epkb-kb-glossary-page-container #epkb-glossary-top-buttons-container .epkb-glossary-form-buttons {
   display: flex;

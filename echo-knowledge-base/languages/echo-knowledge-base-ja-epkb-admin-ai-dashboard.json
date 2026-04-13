@@ -34,8 +34,14 @@
             "Learn more": [
                 "詳しく見る"
             ],
+            "Failed to enable feature.": [
+                "機能の有効化に失敗しました。."
+            ],
             "FREE": [
                 "無料"
+            ],
+            "Enabling...": [
+                "有効化しています..."
             ],
             "Free Features": [
                 "無料機能"

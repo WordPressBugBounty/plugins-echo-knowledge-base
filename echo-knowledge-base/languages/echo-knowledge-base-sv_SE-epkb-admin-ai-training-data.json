@@ -100,24 +100,6 @@
             "Added": [
                 "Tillagt"
             ],
-            "Verifying": [
-                "Verifierar"
-            ],
-            "items": [
-                "objekt"
-            ],
-            "Verification complete:": [
-                "Verifiering slutförd:"
-            ],
-            "marked outdated": [
-                "markerad som föråldrad"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "Kör synkronisering för att ladda upp föråldrade objekt igen."
-            ],
-            "Cancel Verify": [
-                "Avbryt verifiering"
-            ],
             "Deleting...": [
                 "Raderar..."
             ],
@@ -225,6 +207,30 @@
             ],
             "Failed to add data": [
                 "Misslyckades med att lägga till data"
+            ],
+            "Checking AI store for orphaned files...": [
+                "Kontrollerar AI-lagringen efter övergivna filer..."
+            ],
+            "Verifying": [
+                "Verifierar"
+            ],
+            "items": [
+                "objekt"
+            ],
+            "Verification complete:": [
+                "Verifiering slutförd:"
+            ],
+            "marked outdated": [
+                "markerad som föråldrad"
+            ],
+            "PDFs removed from AI store": [
+                "PDF-filer borttagna från AI-lagringen"
+            ],
+            "AI Notes removed from AI store": [
+                "AI-anteckningar borttagna från AI-lagringen"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Kör synkronisering för att ladda upp föråldrade objekt igen."
             ],
             "Choose an Action": [
                 "Välj en åtgärd"
@@ -337,8 +343,8 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Kör en extra valideringsomgång för att se till att den lokala databasen och AI-lagringen förblir synkroniserade. Om en fil saknas i AI-lagringen kommer den att markeras som inaktuell så att den kan skickas om."
             ],
-            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
-                "Detta kontrollerar tillagda och uppdaterade objekt som redan spåras i denna samling, inklusive uppladdade PDF-filer."
+            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
+                "Detta kontrollerar tillagda och uppdaterade objekt som redan spåras i denna samling och tar bort övergivna PDF-filer och AI-anteckningar som endast finns i AI-lagringen. Inga lokala databasobjekt raderas."
             ],
             "Collection:": [
                 "Samling:"
@@ -346,8 +352,11 @@
             "synced items ready to validate": [
                 "synkroniserade objekt redo att valideras"
             ],
-            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
-                "Inga tillagda eller uppdaterade objekt är tillgängliga ännu. Skicka innehåll till AI först och kör sedan validering vid behov."
+            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
+                "Inga tillagda eller uppdaterade objekt är tillgängliga ännu. Valideringen kan fortfarande ta bort övergivna PDF-filer och AI-anteckningar som endast finns kvar i AI-lagringen."
+            ],
+            "Cancel Verify": [
+                "Avbryt verifiering"
             ],
             "Validation in Progress...": [
                 "Validering pågår..."

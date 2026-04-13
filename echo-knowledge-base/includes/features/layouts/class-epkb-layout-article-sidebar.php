@@ -275,7 +275,12 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 			$sub_category_styles .= is_rtl() ? 'padding-right:: sidebar_article_list_margin,' : 'padding-left:: sidebar_article_list_margin';
 		}
 
-		$class = ( $level == 1 ? 'epkb-sidebar__body__main-cat ' : '' ) . 'epkb-articles eckb-articles-ordering'; ?>
+		$class = ( $level == 1 ? 'epkb-sidebar__body__main-cat ' : '' ) . 'epkb-articles eckb-articles-ordering';
+
+		$hover_toggle = empty( $this->kb_config['article_list_hover_toggle'] ) ? 'off' : $this->kb_config['article_list_hover_toggle'];
+		$article_li_style = $hover_toggle == 'on'
+			? ''
+			: $this->get_inline_style( 'padding-bottom:: article_list_spacing,padding-top::article_list_spacing' ); ?>
 
 		<ul class="<?php echo esc_attr( $class ); ?>" <?php echo $this->get_inline_style( $sub_category_styles ); ?>> <?php
 
@@ -297,7 +302,7 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 				$style2 = 'sidebar_link_' . $article_id . ( $seq_no > 1 ? '_' . $seq_no : '' );
 
 				/** DISPLAY ARTICLE LINK */ ?>
-				<li class="<?php echo esc_attr( $hide_class . ' ' . $on_active_bold ); ?>" id="<?php echo esc_attr( $style2 ); ?>" <?php echo $this->get_inline_style( 'padding-bottom:: article_list_spacing,padding-top::article_list_spacing' ); ?> >   <?php
+				<li class="<?php echo esc_attr( $hide_class . ' ' . $on_active_bold ); ?>" id="<?php echo esc_attr( $style2 ); ?>" <?php echo $article_li_style; ?> >   <?php
 					$this->single_article_link( $article_title, $article_id, 'Article_Sidebar' ); ?>
 				</li> <?php
 			}
@@ -457,6 +462,29 @@ class EPKB_Layout_Article_Sidebar extends EPKB_Layout {
 			.epkb-sidebar__cat__top-cat__body-container .epkb-articles .active .eckb-article-title {
 				color: ' . $article_Font_Active_color . '!important;
 			} ';
+
+		// Article hover effect -----------------------------------------/
+		if ( ! empty( $kb_config['article_list_hover_toggle'] ) && $kb_config['article_list_hover_toggle'] == 'on' ) {
+			$hover_spacing = intval( $kb_config['article_list_spacing'] );
+			$hover_bg = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_background_color'] );
+			$hover_text = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_font_color'] );
+			$output .= '
+				#epkb-sidebar-container-v2 .epkb-sidebar-article {
+					display: block !important;
+					padding: ' . $hover_spacing . 'px !important;
+					border-radius: 6px !important;
+					transition: background-color 0.2s ease, color 0.2s ease !important;
+				}
+				#epkb-sidebar-container-v2 .epkb-sidebar-article:hover {
+					background-color: ' . $hover_bg . ' !important;
+				}
+				#epkb-sidebar-container-v2 .epkb-sidebar-article:hover .eckb-article-title {
+					color: ' . $hover_text . ' !important;
+				}
+				#epkb-sidebar-container-v2 .epkb-sidebar-article:hover .eckb-article-title__icon {
+					color: ' . $hover_text . ' !important;
+				}';
+		}
 
 		return $output;
 	}

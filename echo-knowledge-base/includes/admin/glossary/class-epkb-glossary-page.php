@@ -279,9 +279,13 @@ class EPKB_Glossary_Page {
 
 		<!-- Buttons -->
 		<div id="epkb-glossary-top-buttons-container">
-			<button id="epkb-glossary-create-term" class="epkb-btn epkb-success-btn">
+			<button type="button" id="epkb-glossary-create-term" class="epkb-btn epkb-success-btn">
 				<span class="epkb-btn-icon epkbfa epkbfa-plus-circle"></span>
 				<span class="epkb-btn-text"><?php esc_html_e( 'Add Term', 'echo-knowledge-base' ); ?></span>
+			</button>
+			<button type="button" id="epkb-glossary-bulk-delete" class="epkb-btn epkb-error-btn" style="display:none;">
+				<span class="epkb-btn-icon epkbfa epkbfa-trash"></span>
+				<span class="epkb-btn-text"><?php esc_html_e( 'Delete Terms', 'echo-knowledge-base' ); ?></span>
 			</button>
 			<div class="epkb-glossary-form-buttons" style="display:none;">
 				<button class="epkb-glossary-form__save epkb-success-btn"><?php esc_html_e( 'Save', 'echo-knowledge-base' ); ?></button>

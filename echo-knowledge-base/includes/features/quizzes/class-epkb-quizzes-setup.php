@@ -27,6 +27,7 @@ class EPKB_Quizzes_Setup {
 			return;
 		}
 
+		$frontend_settings = EPKB_Quizzes_Utilities::get_frontend_settings();
 		wp_enqueue_script( 'epkb-quizzes-frontend' );
 
 		$intro_content = empty( $quiz['intro'] ) ? '' : $quiz['intro'];
@@ -36,10 +37,10 @@ class EPKB_Quizzes_Setup {
 		<div class="epkb-article-quiz" id="epkb-article-quiz-<?php echo esc_attr( $quiz['quiz_id'] ); ?>" data-quiz-id="<?php echo esc_attr( $quiz['quiz_id'] ); ?>">
 			<div class="epkb-article-quiz__card">
 				<div class="epkb-article-quiz__header">
-					<div class="epkb-article-quiz__eyebrow"><?php esc_html_e( 'Knowledge Check', 'echo-knowledge-base' ); ?></div>
+					<div class="epkb-article-quiz__eyebrow"><?php echo esc_html( $frontend_settings['eyebrow_text'] ); ?></div>
 					<h2 class="epkb-article-quiz__title"><?php echo esc_html( $quiz['title'] ); ?></h2>
 					<button type="button" id="<?php echo esc_attr( $toggle_id ); ?>" class="epkb-article-quiz__toggle" aria-expanded="false" aria-controls="<?php echo esc_attr( $panel_id ); ?>">
-						<span class="epkb-article-quiz__toggle-text"><?php esc_html_e( 'Take Quiz', 'echo-knowledge-base' ); ?></span>
+						<span class="epkb-article-quiz__toggle-text"><?php echo esc_html( $frontend_settings['start_button_text'] ); ?></span>
 						<span class="epkb-article-quiz__toggle-icon epkbfa epkbfa-angle-down" aria-hidden="true"></span>
 					</button>
 				</div>
@@ -54,7 +55,7 @@ class EPKB_Quizzes_Setup {
 							$question_number = $index + 1;
 							$question_name = 'epkb-quiz-question-' . $quiz['quiz_id'] . '-' . $question['id']; ?>
 							<div class="epkb-article-quiz__question" data-question-id="<?php echo esc_attr( $question['id'] ); ?>" data-correct-choice="<?php echo esc_attr( $question['correct_choice'] ); ?>">
-								<div class="epkb-article-quiz__question-number"><?php echo esc_html( sprintf( __( 'Question %d', 'echo-knowledge-base' ), $question_number ) ); ?></div>
+								<div class="epkb-article-quiz__question-number"><?php echo esc_html( trim( $frontend_settings['question_label_text'] . ' ' . $question_number ) ); ?></div>
 								<div class="epkb-article-quiz__question-text"><?php echo esc_html( $question['question'] ); ?></div>
 								<div class="epkb-article-quiz__choices">
 									<?php foreach ( $question['choices'] as $choice_index => $choice ) { ?>
@@ -75,7 +76,7 @@ class EPKB_Quizzes_Setup {
 					</div>
 
 					<div class="epkb-article-quiz__summary" hidden>
-						<div class="epkb-article-quiz__summary-title"><?php esc_html_e( 'Quiz Complete', 'echo-knowledge-base' ); ?></div>
+						<div class="epkb-article-quiz__summary-title"><?php echo esc_html( $frontend_settings['summary_title_text'] ); ?></div>
 						<div class="epkb-article-quiz__summary-score"></div>
 					</div>
 				</div>

@@ -100,24 +100,6 @@
             "Added": [
                 "Dodano"
             ],
-            "Verifying": [
-                "Weryfikacja w toku"
-            ],
-            "items": [
-                "elementy"
-            ],
-            "Verification complete:": [
-                "Weryfikacja zakończona:"
-            ],
-            "marked outdated": [
-                "oznaczono jako przestarzałe"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "Uruchom synchronizację, aby ponownie przesłać przestarzałe elementy."
-            ],
-            "Cancel Verify": [
-                "Anuluj weryfikację"
-            ],
             "Deleting...": [
                 "Usuwanie..."
             ],
@@ -225,6 +207,30 @@
             ],
             "Failed to add data": [
                 "Nie udało się dodać danych"
+            ],
+            "Checking AI store for orphaned files...": [
+                "Sprawdzanie magazynu AI pod kątem osieroconych plików..."
+            ],
+            "Verifying": [
+                "Weryfikacja w toku"
+            ],
+            "items": [
+                "elementy"
+            ],
+            "Verification complete:": [
+                "Weryfikacja zakończona:"
+            ],
+            "marked outdated": [
+                "oznaczono jako przestarzałe"
+            ],
+            "PDFs removed from AI store": [
+                "Pliki PDF usunięte z magazynu AI"
+            ],
+            "AI Notes removed from AI store": [
+                "Notatki AI usunięte z magazynu AI"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Uruchom synchronizację, aby ponownie przesłać przestarzałe elementy."
             ],
             "Choose an Action": [
                 "Wybierz akcję"
@@ -337,8 +343,8 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Uruchom dodatkowy przebieg walidacji, aby upewnić się, że lokalna baza danych i magazyn AI są zsynchronizowane. Jeśli w magazynie AI brakuje pliku, zostanie on oznaczony jako nieaktualny, aby można go było wysłać ponownie."
             ],
-            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
-                "Sprawdza to Dodane i Zaktualizowane elementy już śledzone w tej kolekcji, w tym przesłane pliki PDF."
+            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
+                "Ta funkcja sprawdza Dodane i Zaktualizowane elementy, które są już śledzone w tej kolekcji, i usuwa osierocone pliki PDF oraz Notatki AI znajdujące się wyłącznie w magazynie AI. Żadne elementy z lokalnej bazy danych nie zostaną usunięte."
             ],
             "Collection:": [
                 "Kolekcja:"
@@ -346,8 +352,11 @@
             "synced items ready to validate": [
                 "zsynchronizowane elementy gotowe do walidacji"
             ],
-            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
-                "Żadne Dodane ani Zaktualizowane elementy nie są jeszcze dostępne. Najpierw wyślij treść do AI, a następnie w razie potrzeby uruchom walidację."
+            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
+                "Brak jeszcze Dodanych lub Zaktualizowanych elementów. Walidacja nadal może usunąć osierocone pliki PDF i Notatki AI pozostawione tylko w magazynie AI."
+            ],
+            "Cancel Verify": [
+                "Anuluj weryfikację"
             ],
             "Validation in Progress...": [
                 "Walidacja w toku..."

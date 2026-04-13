@@ -457,6 +457,21 @@ function epkb_get_block_attributes( $block_name ) {
 			'article_list_spacing' => [
 				'type' => 'number'
 			],
+			'article_list_hover_toggle' => [
+				'type' => 'string'
+			],
+			'article_list_hover_background_color' => [
+				'type' => 'string'
+			],
+			'article_list_hover_font_color' => [
+				'type' => 'string'
+			],
+			'section_box_gap' => [
+				'type' => 'number'
+			],
+			'category_box_padding' => [
+				'type' => 'number'
+			],
 			'article_font_color' => [
 				'type' => 'string'
 			],
@@ -684,6 +699,21 @@ function epkb_get_block_attributes( $block_name ) {
 			'article_list_spacing' => [
 				'type' => 'number'
 			],
+			'article_list_hover_toggle' => [
+				'type' => 'string'
+			],
+			'article_list_hover_background_color' => [
+				'type' => 'string'
+			],
+			'article_list_hover_font_color' => [
+				'type' => 'string'
+			],
+			'section_box_gap' => [
+				'type' => 'number'
+			],
+			'category_box_padding' => [
+				'type' => 'number'
+			],
 			'article_font_color' => [
 				'type' => 'string'
 			],
@@ -819,6 +849,21 @@ function epkb_get_block_attributes( $block_name ) {
 				'type' => 'number'
 			],
 			'article_list_spacing' => [
+				'type' => 'number'
+			],
+			'article_list_hover_toggle' => [
+				'type' => 'string'
+			],
+			'article_list_hover_background_color' => [
+				'type' => 'string'
+			],
+			'article_list_hover_font_color' => [
+				'type' => 'string'
+			],
+			'section_box_gap' => [
+				'type' => 'number'
+			],
+			'category_box_padding' => [
 				'type' => 'number'
 			],
 			'article_font_color' => [
@@ -959,6 +1004,21 @@ function epkb_get_block_attributes( $block_name ) {
 				'type' => 'string'
 			],
 			'article_list_spacing' => [
+				'type' => 'number'
+			],
+			'article_list_hover_toggle' => [
+				'type' => 'string'
+			],
+			'article_list_hover_background_color' => [
+				'type' => 'string'
+			],
+			'article_list_hover_font_color' => [
+				'type' => 'string'
+			],
+			'section_box_gap' => [
+				'type' => 'number'
+			],
+			'category_box_padding' => [
 				'type' => 'number'
 			],
 			'article_font_color' => [

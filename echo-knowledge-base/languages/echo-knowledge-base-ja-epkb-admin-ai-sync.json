@@ -13,9 +13,6 @@
             "Error": [
                 "エラー"
             ],
-            "OK": [
-                "OK"
-            ],
             "No synced items found to verify": [
                 "検証する同期済みアイテムが見つかりません。"
             ],
@@ -118,21 +115,6 @@
             "Sync scheduled, waiting to start...": [
                 "同期がスケジュールされています。開始を待機しています..."
             ],
-            "Verifying": [
-                "検証中"
-            ],
-            "items": [
-                "アイテム"
-            ],
-            "Verification complete:": [
-                "検証完了:"
-            ],
-            "marked outdated": [
-                "時代遅れとしてマークされました"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "時代遅れのアイテムを再アップロードするには同期を実行してください。."
-            ],
             "Upload completed, but the number of items doesn't match:": [
                 "アップロードが完了しましたが、アイテムの数が一致しません:"
             ],
@@ -153,9 +135,6 @@
             ],
             "Verify & Fix": [
                 "検証と修正"
-            ],
-            "Cancel Verify": [
-                "検証をキャンセル"
             ]
         }
     }

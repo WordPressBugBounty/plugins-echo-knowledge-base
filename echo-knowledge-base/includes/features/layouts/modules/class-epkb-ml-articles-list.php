@@ -237,6 +237,8 @@ class EPKB_ML_Articles_List {
 			EPKB_Layout::BASIC_LAYOUT,
 			EPKB_Layout::TABS_LAYOUT,
 			EPKB_Layout::CATEGORIES_LAYOUT,
+			EPKB_Layout::CLASSIC_LAYOUT,
+			EPKB_Layout::DRILL_DOWN_LAYOUT,
 			EPKB_Layout::SIDEBAR_LAYOUT,
 			EPKB_Layout::GRID_LAYOUT,
 		];
@@ -352,30 +354,33 @@ class EPKB_ML_Articles_List {
 			$output .= '#epkb-ml__module-articles-list .epkb-ml-articles-list__title { text-align: ' . esc_attr( $kb_config['ml_articles_list_title_location'] ) . '!important; }';
 		}
 
-		// Article hover effect -----------------------------------------/
-		if ( ! empty( $kb_config['article_list_hover_toggle'] ) && $kb_config['article_list_hover_toggle'] == 'on' ) {
+		// Article hover effect (only under shortcode modular wrapper — Gutenberg Featured block reuses #epkb-ml__module-articles-list outside this container).
+		$ml_art_list_modular = '#epkb-modular-main-page-container #epkb-ml__module-articles-list';
+		$hover_on = ( ! empty( $kb_config['article_list_hover_toggle'] ) && $kb_config['article_list_hover_toggle'] == 'on' )
+			|| ( isset( $kb_config['kb_main_page_layout'] ) && $kb_config['kb_main_page_layout'] === EPKB_Layout::DRILL_DOWN_LAYOUT );
+		if ( $hover_on ) {
 			$spacing = intval( $kb_config['article_list_spacing'] );
 			$hover_bg = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_background_color'] );
 			$hover_text = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_font_color'] );
 			$output .= '
-				#epkb-ml__module-articles-list .epkb-ml-article-container {
+				' . $ml_art_list_modular . ' .epkb-ml-article-container {
 					padding: ' . $spacing . 'px !important;
 					border-radius: 6px !important;
 					transition: background-color 0.2s ease, color 0.2s ease !important;
 				}
-				#epkb-ml__module-articles-list .epkb-ml-article-container:hover {
+				' . $ml_art_list_modular . ' .epkb-ml-article-container:hover {
 					background-color: ' . $hover_bg . ' !important;
 				}
-				#epkb-ml__module-articles-list .epkb-ml-article-container:hover .epkb-article-inner {
+				' . $ml_art_list_modular . ' .epkb-ml-article-container:hover .epkb-article-inner {
 					color: ' . $hover_text . ' !important;
 				}
-				#epkb-ml__module-articles-list .epkb-ml-article-container:hover .epkb-article__icon {
+				' . $ml_art_list_modular . ' .epkb-ml-article-container:hover .epkb-article__icon {
 					color: ' . $hover_text . ' !important;
 				}
-				#epkb-ml__module-articles-list .epkb-ml-article-container:hover .epkb-article__text {
+				' . $ml_art_list_modular . ' .epkb-ml-article-container:hover .epkb-article__text {
 					color: ' . $hover_text . ' !important;
 				}
-				#epkb-ml__module-articles-list .epkb-ml-articles-list li {
+				' . $ml_art_list_modular . ' .epkb-ml-articles-list li {
 					padding-top: 0px !important;
 					padding-bottom: 0px !important;
 				}';

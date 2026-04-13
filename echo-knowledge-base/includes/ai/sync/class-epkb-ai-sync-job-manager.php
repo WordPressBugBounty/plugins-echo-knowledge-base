@@ -586,16 +586,22 @@ class EPKB_AI_Sync_Job_Manager {
 		$updated_items = $training_data_db->get_training_data_by_collection( $collection_id, array( 'status' => 'updated' ) );
 		$synced_items = array_merge( $added_items, $updated_items );
 
-		if ( empty( $synced_items ) ) {
-			return new WP_Error( 'no_items', __( 'No synced items found to verify', 'echo-knowledge-base' ) );
-		}
-
 		$items = array();
 		foreach ( $synced_items as $item ) {
 			$items[] = array(
 				'id' => $item->item_id,
 				'type' => empty( $item->type ) ? 'post' : $item->type
 			);
+		}
+
+		$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( $collection_id );
+		if ( is_wp_error( $collection_config ) ) {
+			return $collection_config;
+		}
+
+		$vector_store_id = isset( $collection_config['ai_training_data_store_id'] ) ? (string) $collection_config['ai_training_data_store_id'] : '';
+		if ( empty( $items ) && $vector_store_id === '' ) {
+			return new WP_Error( 'no_items', __( 'No synced items found to verify', 'echo-knowledge-base' ) );
 		}
 
 		$job_data = array(
@@ -607,6 +613,10 @@ class EPKB_AI_Sync_Job_Manager {
 			'percent' => 0,
 			'verified_ok' => 0,
 			'marked_outdated' => 0,
+			'removed_orphan_files' => 0,
+			'removed_orphan_posts' => 0,
+			'removed_orphan_pdfs' => 0,
+			'removed_orphan_notes' => 0,
 			'errors' => 0,
 			'start_time' => gmdate( 'Y-m-d H:i:s' ),
 			'last_update' => gmdate( 'Y-m-d H:i:s' ),
@@ -638,24 +648,11 @@ class EPKB_AI_Sync_Job_Manager {
 		// Get next unprocessed item
 		$item = isset( $job['items'][ $job['processed'] ] ) ? $job['items'][ $job['processed'] ] : null;
 
-		if ( empty( $item ) ) {
-			$job['status'] = 'completed';
-			$job['percent'] = 100;
-			$job['last_update'] = gmdate( 'Y-m-d H:i:s' );
-			update_option( self::VERIFY_OPTION_NAME, $job, false );
-
-			EPKB_AI_Log::add_log( 'Validate & Fix completed: ' . $job['verified_ok'] . ' OK, ' . $job['marked_outdated'] . ' marked outdated, ' . $job['errors'] . ' errors (total: ' . $job['total'] . ')' );
-
-			return array(
-				'status' => 'completed',
-				'verified_ok' => $job['verified_ok'],
-				'marked_outdated' => $job['marked_outdated'],
-				'errors' => $job['errors']
-			);
-		}
-
 		// Verify the item
 		$sync_manager = new EPKB_AI_Sync_Manager();
+		if ( empty( $item ) ) {
+			return self::complete_verify_job( $job, $sync_manager );
+		}
 
 		try {
 			$result = $sync_manager->verify_item( $item['id'], $job['collection_id'] );
@@ -694,9 +691,7 @@ class EPKB_AI_Sync_Job_Manager {
 
 		// Check if complete
 		if ( $job['processed'] >= $job['total'] ) {
-			$job['status'] = 'completed';
-			$job['percent'] = 100;
-			EPKB_AI_Log::add_log( 'Validate & Fix completed: ' . $job['verified_ok'] . ' OK, ' . $job['marked_outdated'] . ' marked outdated, ' . $job['errors'] . ' errors (total: ' . $job['total'] . ')' );
+			return self::complete_verify_job( $job, $sync_manager, $updated_post );
 		}
 
 		update_option( self::VERIFY_OPTION_NAME, $job, false );
@@ -708,6 +703,10 @@ class EPKB_AI_Sync_Job_Manager {
 			'percent' => $job['percent'],
 			'verified_ok' => $job['verified_ok'],
 			'marked_outdated' => $job['marked_outdated'],
+			'removed_orphan_files' => $job['removed_orphan_files'],
+			'removed_orphan_posts' => $job['removed_orphan_posts'],
+			'removed_orphan_pdfs' => $job['removed_orphan_pdfs'],
+			'removed_orphan_notes' => $job['removed_orphan_notes'],
 			'errors' => $job['errors'],
 			'updated_post' => $updated_post
 		);
@@ -731,6 +730,10 @@ class EPKB_AI_Sync_Job_Manager {
 			'percent' => 0,
 			'verified_ok' => 0,
 			'marked_outdated' => 0,
+			'removed_orphan_files' => 0,
+			'removed_orphan_posts' => 0,
+			'removed_orphan_pdfs' => 0,
+			'removed_orphan_notes' => 0,
 			'errors' => 0,
 			'start_time' => '',
 			'last_update' => '',
@@ -756,6 +759,63 @@ class EPKB_AI_Sync_Job_Manager {
 		update_option( self::VERIFY_OPTION_NAME, $job, false );
 
 		return true;
+	}
+
+	/**
+	 * Complete verify job and perform orphaned vector store cleanup.
+	 *
+	 * @param array $job Verify job data.
+	 * @param EPKB_AI_Sync_Manager $sync_manager Sync manager instance.
+	 * @param array|null $updated_post Last updated post payload.
+	 * @return array
+	 */
+	private static function complete_verify_job( $job, $sync_manager, $updated_post = null ) {
+
+		$cleanup_result = $sync_manager->cleanup_orphaned_vector_store_files( $job['collection_id'] );
+		if ( isset( $cleanup_result['status'] ) && $cleanup_result['status'] === 'error' ) {
+			$job['errors']++;
+			EPKB_AI_Log::add_log( 'Validate & Fix orphan cleanup failed: ' . $cleanup_result['message'], array( 'collection_id' => $job['collection_id'] ) );
+		} else {
+			$job['removed_orphan_files'] = isset( $cleanup_result['removed_orphan_files'] ) ? (int) $cleanup_result['removed_orphan_files'] : 0;
+			$job['removed_orphan_posts'] = isset( $cleanup_result['removed_orphan_posts'] ) ? (int) $cleanup_result['removed_orphan_posts'] : 0;
+			$job['removed_orphan_pdfs'] = isset( $cleanup_result['removed_orphan_pdfs'] ) ? (int) $cleanup_result['removed_orphan_pdfs'] : 0;
+			$job['removed_orphan_notes'] = isset( $cleanup_result['removed_orphan_notes'] ) ? (int) $cleanup_result['removed_orphan_notes'] : 0;
+			if ( ! empty( $cleanup_result['errors'] ) ) {
+				$job['errors'] += (int) $cleanup_result['errors'];
+			}
+		}
+
+		$job['status'] = 'completed';
+		$job['percent'] = 100;
+		$job['last_update'] = gmdate( 'Y-m-d H:i:s' );
+
+		update_option( self::VERIFY_OPTION_NAME, $job, false );
+
+		EPKB_AI_Log::add_log(
+			'Validate & Fix completed: ' .
+			$job['verified_ok'] . ' OK, ' .
+			$job['marked_outdated'] . ' marked outdated, ' .
+			$job['removed_orphan_files'] . ' orphan files removed from vector store (' .
+			$job['removed_orphan_posts'] . ' WordPress items, ' .
+			$job['removed_orphan_pdfs'] . ' PDFs, ' .
+			$job['removed_orphan_notes'] . ' AI Notes), ' .
+			$job['errors'] . ' errors (total: ' . $job['total'] . ')'
+		);
+
+		return array(
+			'status' => 'completed',
+			'processed' => $job['processed'],
+			'total' => $job['total'],
+			'percent' => $job['percent'],
+			'verified_ok' => $job['verified_ok'],
+			'marked_outdated' => $job['marked_outdated'],
+			'removed_orphan_files' => $job['removed_orphan_files'],
+			'removed_orphan_posts' => $job['removed_orphan_posts'],
+			'removed_orphan_pdfs' => $job['removed_orphan_pdfs'],
+			'removed_orphan_notes' => $job['removed_orphan_notes'],
+			'errors' => $job['errors'],
+			'updated_post' => $updated_post
+		);
 	}
 
 	/**

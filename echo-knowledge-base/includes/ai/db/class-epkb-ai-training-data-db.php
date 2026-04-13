@@ -251,14 +251,14 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		global $wpdb;
 		
 		$where = array();
-		$where[] = $wpdb->prepare( "collection_id = %d", $collection_id );
+		$where[] = $this->prepare_column_value( 'collection_id', $collection_id );
 		
 		if ( ! empty( $filters['status'] ) ) {
-			$where[] = $wpdb->prepare( "status = %s", $filters['status'] );
+			$where[] = $this->get_status_where_clause( $filters['status'] );
 		}
 		
 		if ( ! empty( $filters['type'] ) ) {
-			$where[] = $wpdb->prepare( "type = %s", $filters['type'] );
+			$where[] = $this->prepare_column_value( 'type', $filters['type'] );
 		}
 		
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where contains prepared values
@@ -306,7 +306,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		}
 		
 		if ( ! empty( $args['status'] ) ) {
-			$where[] = $this->prepare_column_value( 'status', $args['status'] );
+			$where[] = $this->get_status_where_clause( $args['status'] );
 		}
 		
 		// Add search condition if search term is provided
@@ -376,7 +376,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		}
 		
 		if ( ! empty( $args['status'] ) ) {
-			$where[] = $this->prepare_column_value( 'status', $args['status'] );
+			$where[] = $this->get_status_where_clause( $args['status'] );
 		}
 		
 		// Add search condition if search term is provided
@@ -442,7 +442,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			$data['content_hash'] = $sync_data['content_hash'];
 		}
 		if ( isset( $sync_data['title'] ) ) {
-			$data['title'] = $sync_data['title'];
+			$data['title'] = EPKB_AI_Validation::validate_title( $sync_data['title'] );
 		}
 		if ( isset( $sync_data['url'] ) ) {
 			$data['url'] = $sync_data['url'];
@@ -810,8 +810,12 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		
 		// Add status filter if provided
 		if ( ! empty( $status ) && $status !== 'all' ) {
-			$sql .= " AND status = %s";
-			$params[] = $status;
+			if ( $status === 'pending' ) {
+				$sql .= " AND status IN ('pending', 'adding', 'updating', 'outdated')";
+			} else {
+				$sql .= " AND status = %s";
+				$params[] = $status;
+			}
 		}
 		
 		$sql .= " ORDER BY type ASC";
@@ -849,6 +853,27 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		}
 		
 		return $formatted_types;
+	}
+
+	/**
+	 * Get the WHERE clause for a status filter.
+	 *
+	 * The Pending tab is an aggregate view of all items that still need syncing.
+	 *
+	 * @param string|array $status Status filter.
+	 * @return string
+	 */
+	private function get_status_where_clause( $status ) {
+
+		if ( is_array( $status ) ) {
+			return $this->prepare_column_value( 'status', array_values( array_unique( array_filter( $status ) ) ) );
+		}
+
+		if ( $status === 'pending' ) {
+			return "status IN ('pending', 'adding', 'updating', 'outdated')";
+		}
+
+		return $this->prepare_column_value( 'status', $status );
 	}
 
 	/**

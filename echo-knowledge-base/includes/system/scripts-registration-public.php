@@ -60,11 +60,7 @@ function epkb_load_public_resources() {
 	wp_register_script( 'epkb-faq-shortcode-scripts', Echo_Knowledge_Base::$plugin_url . 'js/faq-shortcode-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-admin-form-controls-scripts', Echo_Knowledge_Base::$plugin_url . 'js/admin-form-controls' . $suffix . '.js', array('jquery', 'jquery-ui-core','jquery-ui-dialog','jquery-effects-core','jquery-effects-bounce', 'jquery-ui-sortable'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-frontend-editor', Echo_Knowledge_Base::$plugin_url . 'js/frontend-editor' . $suffix . '.js', array('jquery', 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-ui-widget', 'wp-i18n', 'iris', 'wp-color-picker'), Echo_Knowledge_Base::$version, true );
-	wp_localize_script( 'epkb-quizzes-frontend', 'epkbQuizFrontend', array(
-		'correct'       => esc_html__( 'Correct', 'echo-knowledge-base' ),
-		'incorrect'     => esc_html__( 'Incorrect', 'echo-knowledge-base' ),
-		'summaryPrefix' => esc_html__( 'Your score:', 'echo-knowledge-base' ),
-	) );
+	wp_localize_script( 'epkb-quizzes-frontend', 'epkbQuizFrontend', EPKB_Quizzes_Utilities::get_frontend_script_data() );
 
 	// AI Chat Widget resources
 	wp_register_style( 'epkb-ai-chat-widget', Echo_Knowledge_Base::$plugin_url . 'css/ai-chat-widget' . $suffix . '.css', array( 'epkb-icon-fonts' ), Echo_Knowledge_Base::$version );
@@ -415,6 +411,10 @@ function epkb_enqueue_public_resources( $kb_id=0 ) {
 			wp_enqueue_style( 'epkb-glossary' );
 			wp_enqueue_script( 'epkb-glossary-tooltips' );
 			wp_add_inline_style( 'epkb-glossary', EPKB_Glossary_Frontend::get_glossary_color_css( $kb_config ) );
+		}
+
+		if ( $one_slug === 'ap-frontend-layout' && EPKB_Quizzes_Utilities::is_feature_enabled() ) {
+			wp_add_inline_style( 'epkb-' . $one_slug, EPKB_Quizzes_Utilities::get_frontend_color_css() );
 		}
 	}
 

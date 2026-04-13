@@ -1048,7 +1048,17 @@ add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_t
 					__( 'Step-by-step tutorials', 'echo-knowledge-base' ),
 					__( 'Show quizzes below article content', 'echo-knowledge-base' ),
 				),
-			), self::get_ai_feature_action_links( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-quizzes' ), $has_ai_features_pro ) ),
+			), EPKB_Quizzes_Utilities::is_feature_enabled()
+				? self::get_ai_feature_action_links( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-quizzes' ), $has_ai_features_pro )
+				: array(
+					'settings_link'     => '',
+					'doc_link'          => $has_ai_features_pro ? '' : self::get_ai_pro_features_admin_url(),
+					'doc_link_external' => false,
+					'enable_action'     => $has_ai_features_pro ? 'epkb_enable_quizzes' : '',
+					'enable_label'      => __( 'Enable Quizzes', 'echo-knowledge-base' ),
+					'enable_done_url'   => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-quizzes' ),
+				)
+			),
 			array_merge( array(
 				'id'            => 'ai-human-handoff',
 				'icon'          => 'epkbfa epkbfa-group',

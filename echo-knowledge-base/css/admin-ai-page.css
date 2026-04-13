@@ -8980,7 +8980,7 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
 }
 .epkb-ai-content-tabs-header {
   display: flex;
-  background: #F5F5F5;
+  background: #F9F9F9;
   border-bottom: 1px solid #E0E0E0;
 }
 .epkb-ai-content-tabs-header .epkb-ai-content-tab-button {
@@ -8988,6 +8988,7 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   padding: 12px 20px;
   background: none;
   border: none;
+  border-bottom: 3px solid transparent;
   cursor: pointer;
   font-size: 14px;
   color: #666666;
@@ -8995,12 +8996,14 @@ body:not(.is-fullscreen-mode) .epkb-ai-help-sidebar {
   transition: all 0.2s;
 }
 .epkb-ai-content-tabs-header .epkb-ai-content-tab-button:hover {
-  background: #EEEEEE;
+  background: aliceblue;
+  color: #0073AA;
 }
 .epkb-ai-content-tabs-header .epkb-ai-content-tab-button.active {
-  background: #FFFFFF;
-  color: #333333;
-  border-bottom: 2px solid #0073AA;
+  background: aliceblue;
+  color: #0073AA;
+  border-bottom-color: #0073AA;
+  font-weight: 600;
 }
 .epkb-ai-content-tabs-content {
   background: #FFFFFF;

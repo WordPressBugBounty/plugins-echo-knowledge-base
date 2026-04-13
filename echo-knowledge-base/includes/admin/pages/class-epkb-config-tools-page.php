@@ -1509,19 +1509,8 @@ class EPKB_Config_Tools_Page {
 			}
 			$output .= "\n\n";
 
-			$specs = EPKB_KB_Config_Specs::get_fields_specification( $kb_id );
 			$output .= '- KB URL  = ' . EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) . "\n";
-			foreach( $kb_config as $name => $value ) {
-
-				if ( is_array( $value ) ) {
-					$value = EPKB_Utilities::get_variable_string( $value );
-					$value = str_replace( "=>", "=", $value );
-				}
-				$label = EPKB_KB_Config_Specs::get_field_label( $name ) ?: 'unknown';
-				$output .= '- ' . $label . ' [' . $name . ']' . ' = ' . $value . "\n";
-			}
-
-			$output .= "\n\n";
+			$output .= "/* KB settings output disabled. */\n\n";
 
 			// Add multilang debug info for this KB if WPML is enabled
 			if ( EPKB_Utilities::is_wpml_enabled( $kb_config ) ) {
@@ -1529,6 +1518,9 @@ class EPKB_Config_Tools_Page {
 				$output .= "\n\n";
 			}
 		}
+
+		// retrieve feature usage data
+		$output .= self::get_feature_usage_debug_data();
 
 		// retrieve Setup Steps debug data
 		$output .= EPKB_Setup_Steps::get_debug_data( EPKB_KB_Config_DB::DEFAULT_KB_ID );
@@ -1538,6 +1530,103 @@ class EPKB_Config_Tools_Page {
 		$output .= is_string( $add_on_output ) ? $add_on_output : '';
 
 		$output .= '</textarea>';
+
+		return $output;
+	}
+
+	/**
+	 * Get Glossary and Quizzes usage stats for debug output.
+	 *
+	 * @return string
+	 */
+	private static function get_feature_usage_debug_data() {
+		global $wpdb;
+
+		$all_kb_ids = epkb_get_instance()->kb_config_obj->get_kb_ids( true );
+		$total_kbs = count( $all_kb_ids );
+		$glossary_enabled_kb_ids = array();
+		$quizzes_enabled_kb_ids = array();
+
+		foreach ( $all_kb_ids as $kb_id ) {
+			$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
+
+			if ( ! empty( $kb_config['glossary_enable'] ) && $kb_config['glossary_enable'] === 'on' ) {
+				$glossary_enabled_kb_ids[] = $kb_id;
+			}
+
+			if ( ! empty( $kb_config['quizzes_enable'] ) && $kb_config['quizzes_enable'] === 'on' ) {
+				$quizzes_enabled_kb_ids[] = $kb_id;
+			}
+		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Internal table names from $wpdb.
+		$glossary_stats = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT COUNT(*) AS total_count,
+						SUM( CASE WHEN COALESCE( glossary_terms.status_value, 'publish' ) = 'publish' THEN 1 ELSE 0 END ) AS published_count,
+						SUM( CASE WHEN glossary_terms.status_value = 'draft' THEN 1 ELSE 0 END ) AS draft_count,
+						SUM( CASE WHEN COALESCE( glossary_terms.sort_key_value, '' ) <> '' THEN 1 ELSE 0 END ) AS sort_key_count
+				 FROM (
+					SELECT tt.term_id,
+						   MAX( CASE WHEN tm.meta_key = 'epkb_glossary_status' THEN tm.meta_value END ) AS status_value,
+						   MAX( CASE WHEN tm.meta_key = 'epkb_glossary_sort_key' THEN tm.meta_value END ) AS sort_key_value
+					FROM {$wpdb->term_taxonomy} tt
+					LEFT JOIN {$wpdb->termmeta} tm ON tm.term_id = tt.term_id AND tm.meta_key IN ( 'epkb_glossary_status', 'epkb_glossary_sort_key' )
+					WHERE tt.taxonomy = %s
+					GROUP BY tt.term_id
+				) glossary_terms",
+				EPKB_Glossary_Taxonomy_Setup::GLOSSARY_TAXONOMY
+			)
+		);
+
+		$quiz_count_obj = wp_count_posts( EPKB_Quizzes_CPT_Setup::QUIZ_POST_TYPE );
+		$quizzes = EPKB_Quizzes_Utilities::get_quizzes();
+		$quiz_source_article_ids = array();
+		$quiz_total_questions = 0;
+		$quiz_ai_generated_count = 0;
+		$quiz_renderable_published_count = 0;
+
+		foreach ( $quizzes as $quiz ) {
+			$source_article_id = absint( get_post_meta( $quiz->ID, EPKB_Quizzes_Utilities::META_SOURCE_ARTICLE_ID, true ) );
+			if ( ! empty( $source_article_id ) ) {
+				$quiz_source_article_ids[ $source_article_id ] = $source_article_id;
+			}
+
+			$quiz_total_questions += count( EPKB_Quizzes_Utilities::get_quiz_questions( $quiz->ID ) );
+
+			$generation_meta = get_post_meta( $quiz->ID, EPKB_Quizzes_Utilities::META_GENERATION_META, true );
+			if ( ! empty( $generation_meta['generated_at'] ) ) {
+				$quiz_ai_generated_count++;
+			}
+
+			if ( $quiz->post_status === 'publish' ) {
+				$source_state = EPKB_Quizzes_Utilities::get_source_article_state( $source_article_id );
+				if ( $source_state['is_renderable'] ) {
+					$quiz_renderable_published_count++;
+				}
+			}
+		}
+
+		$output = "\n\nFeature Usage:\n";
+		$output .= "==================\n";
+
+		$output .= "\nGlossary Feature:\n";
+		$output .= "------------------\n";
+		$output .= "Glossary Terms Total: " . absint( $glossary_stats->total_count ) . "\n";
+		$output .= "Glossary Terms Published: " . absint( $glossary_stats->published_count ) . "\n";
+		$output .= "Glossary Terms Draft: " . absint( $glossary_stats->draft_count ) . "\n";
+		$output .= "Glossary Terms With Sort Key: " . absint( $glossary_stats->sort_key_count ) . "\n";
+
+		$output .= "\nQuizzes Feature:\n";
+		$output .= "------------------\n";
+		$output .= "Quizzes Total: " . count( $quizzes ) . "\n";
+		$output .= "Quizzes Published: " . absint( isset( $quiz_count_obj->publish ) ? $quiz_count_obj->publish : 0 ) . "\n";
+		$output .= "Quizzes Draft: " . absint( isset( $quiz_count_obj->draft ) ? $quiz_count_obj->draft : 0 ) . "\n";
+		$output .= "Quizzes Trashed: " . absint( isset( $quiz_count_obj->trash ) ? $quiz_count_obj->trash : 0 ) . "\n";
+		$output .= "Distinct Source Articles Used: " . count( $quiz_source_article_ids ) . "\n";
+		$output .= "Published Quizzes Renderable on Frontend: " . $quiz_renderable_published_count . "\n";
+		$output .= "Quiz Questions Total: " . $quiz_total_questions . "\n";
+		$output .= "AI-Generated Quizzes: " . $quiz_ai_generated_count . "\n";
 
 		return $output;
 	}

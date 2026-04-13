@@ -34,8 +34,14 @@
             "Learn more": [
                 "Dowiedz się więcej"
             ],
+            "Failed to enable feature.": [
+                "Nie udało się włączyć funkcji."
+            ],
             "FREE": [
                 "BEZPŁATNE"
+            ],
+            "Enabling...": [
+                "Włączanie..."
             ],
             "Free Features": [
                 "Bezpłatne funkcje"

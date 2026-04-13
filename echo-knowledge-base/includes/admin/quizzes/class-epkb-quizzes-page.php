@@ -113,7 +113,7 @@ class EPKB_Quizzes_Page {
 					<li><?php esc_html_e( 'Published quizzes appear only on their source article page, below the article content.', 'echo-knowledge-base' ); ?></li>
 				</ul>
 				<p>
-					<button type="button" class="epkb-btn epkb-secondary-btn epkb-quiz-feedback-trigger"><?php esc_html_e( 'Give Us Feedback', 'echo-knowledge-base' ); ?></button>
+					<button type="button" class="epkb-btn epkb-secondary-btn epkb-quiz-feedback-trigger"><?php esc_html_e( 'Suggest a New Quiz Feature', 'echo-knowledge-base' ); ?></button>
 				</p>
 			</div>
 		</div>
@@ -339,6 +339,7 @@ class EPKB_Quizzes_Page {
 	private static function settings_tab() {
 
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+		$quiz_dependency_attrs = ' data-dependency-ids="quizzes_enable" data-enable-on-values="on"';
 
 		ob_start(); ?>
 
@@ -361,6 +362,150 @@ class EPKB_Quizzes_Page {
 						'text'              => esc_html__( 'Quizzes Enabled', 'echo-knowledge-base' ),
 						'checked'           => $kb_config['quizzes_enable'] === 'on',
 						'input_group_class' => 'eckb-conditional-setting-input epkb-quizzes-settings-toggle ',
+					) ); ?>
+				</div>
+			</div>
+
+			<div class="epkb-admin-info-box eckb-condition-depend__quizzes_enable"<?php echo $quiz_dependency_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+				<div class="epkb-admin-info-box__header">
+					<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-font"></div>
+					<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'Frontend Text', 'echo-knowledge-base' ); ?></div>
+				</div>
+				<div class="epkb-admin-info-box__body epkb-quizzes-settings__text-fields"> <?php
+					EPKB_HTML_Elements::text( array(
+						'name'  => 'quizzes_eyebrow_text',
+						'label' => esc_html__( 'Eyebrow Text', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_eyebrow_text'],
+						'max'   => 80,
+					) );
+
+					EPKB_HTML_Elements::text( array(
+						'name'  => 'quizzes_start_button_text',
+						'label' => esc_html__( 'Start Button Text', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_start_button_text'],
+						'max'   => 80,
+					) );
+
+					EPKB_HTML_Elements::text( array(
+						'name'  => 'quizzes_question_label_text',
+						'label' => esc_html__( 'Question Label', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_question_label_text'],
+						'max'   => 40,
+						'desc'  => esc_html__( 'Displayed before the number, for example: Question 1', 'echo-knowledge-base' ),
+					) );
+
+					EPKB_HTML_Elements::text( array(
+						'name'  => 'quizzes_summary_title_text',
+						'label' => esc_html__( 'Summary Title', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_summary_title_text'],
+						'max'   => 80,
+					) );
+
+					EPKB_HTML_Elements::text( array(
+						'name'  => 'quizzes_correct_text',
+						'label' => esc_html__( 'Correct Text', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_correct_text'],
+						'max'   => 40,
+					) );
+
+					EPKB_HTML_Elements::text( array(
+						'name'  => 'quizzes_incorrect_text',
+						'label' => esc_html__( 'Incorrect Text', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_incorrect_text'],
+						'max'   => 40,
+					) );
+
+					EPKB_HTML_Elements::text( array(
+						'name'  => 'quizzes_score_prefix_text',
+						'label' => esc_html__( 'Score Prefix', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_score_prefix_text'],
+						'max'   => 80,
+					) ); ?>
+				</div>
+			</div>
+
+			<div class="epkb-admin-info-box eckb-condition-depend__quizzes_enable"<?php echo $quiz_dependency_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+				<div class="epkb-admin-info-box__header">
+					<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-paint-brush"></div>
+					<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'Frontend Colors', 'echo-knowledge-base' ); ?></div>
+				</div>
+				<div class="epkb-admin-info-box__body epkb-quizzes-settings__color-fields"> <?php
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_accent_color',
+						'label' => esc_html__( 'Accent', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_accent_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_button_text_color',
+						'label' => esc_html__( 'Button Text', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_button_text_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_card_border_color',
+						'label' => esc_html__( 'Card Border', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_card_border_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_card_background_color',
+						'label' => esc_html__( 'Card Background', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_card_background_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_heading_text_color',
+						'label' => esc_html__( 'Heading Text', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_heading_text_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_body_text_color',
+						'label' => esc_html__( 'Body Text', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_body_text_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_intro_background_color',
+						'label' => esc_html__( 'Intro Background', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_intro_background_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_correct_background_color',
+						'label' => esc_html__( 'Correct Background', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_correct_background_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_correct_border_color',
+						'label' => esc_html__( 'Correct Border', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_correct_border_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_incorrect_background_color',
+						'label' => esc_html__( 'Incorrect Background', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_incorrect_background_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_incorrect_border_color',
+						'label' => esc_html__( 'Incorrect Border', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_incorrect_border_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_summary_background_color',
+						'label' => esc_html__( 'Summary Background', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_summary_background_color'],
+					) );
+
+					EPKB_HTML_Elements::color( array(
+						'name'  => 'quizzes_summary_text_color',
+						'label' => esc_html__( 'Summary Text', 'echo-knowledge-base' ),
+						'value' => $kb_config['quizzes_summary_text_color'],
 					) ); ?>
 				</div>
 			</div>

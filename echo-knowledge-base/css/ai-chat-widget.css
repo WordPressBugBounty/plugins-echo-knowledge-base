@@ -410,27 +410,47 @@
   background-color: #F3F4F6;
   border-color: #C7CDD4;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-form {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(17, 24, 39, 0.28);
+  backdrop-filter: blur(2px);
+}
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-dialog {
+  width: min(100%, 360px);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-form,
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-success {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #E5E7EB;
-  background-color: #F9FAFB;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-header {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-title {
-  font-size: 13px;
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-title {
+  font-size: 15px;
   font-weight: 600;
   color: #111827;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-close {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-close {
   width: fit-content;
   max-width: 100%;
   padding: 4px 8px;
@@ -443,22 +463,31 @@
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-close:hover {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-close:hover {
   background-color: #F3F4F6;
   border-color: #C7CDD4;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-field {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-intro {
+  font-size: 13px;
+  color: #4B5563;
+  line-height: 1.5;
+}
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-intro--success {
+  color: #166534;
+  font-weight: 500;
+}
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-field {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-label {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-label {
   font-size: 12px;
   font-weight: 500;
   color: #374151;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-input,
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-textarea {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-input,
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-textarea {
   width: 100%;
   padding: 8px 10px;
   border-radius: 6px;
@@ -468,24 +497,24 @@
   outline: none;
   transition: border-color 0.2s ease;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-input:focus,
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-textarea:focus {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-input:focus,
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-textarea:focus {
   border-color: #0066CC;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-textarea {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-textarea {
   resize: vertical;
-  min-height: 70px;
+  min-height: 90px;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-consent {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-consent {
   font-size: 12px;
   color: #6B7280;
   line-height: 1.4;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-error {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-error {
   font-size: 12px;
   color: #B91C1C;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-submit {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-submit {
   width: 100%;
   padding: 9px 12px;
   border-radius: 6px;
@@ -497,28 +526,38 @@
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-handoff-submit:disabled {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-handoff-submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-input-wrapper {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-wrapper {
   display: flex;
+  align-items: flex-end;
   gap: 8px;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-input-wrapper .epkb-ai-chat-input {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-wrapper .epkb-ai-chat-input {
   flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  max-height: 140px;
   padding: 10px 14px;
   border: 1px solid #E0E0E0;
-  border-radius: 24px;
+  border-radius: 20px;
   font-size: 14px;
+  line-height: 1.45;
   outline: none;
   transition: border-color 0.2s;
   font-family: inherit;
+  resize: none;
+  overflow-y: hidden;
+  white-space: pre-wrap;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-input-wrapper .epkb-ai-chat-input:focus {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-wrapper .epkb-ai-chat-input:focus {
   border-color: #0066CC;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-input-wrapper .epkb-ai-chat-send {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-wrapper .epkb-ai-chat-send {
+  flex-shrink: 0;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -532,11 +571,11 @@
   transition: opacity 0.2s;
   font-size: 16px;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-input-wrapper .epkb-ai-chat-send:disabled {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-wrapper .epkb-ai-chat-send:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-container .epkb-ai-chat-input-wrapper .epkb-ai-chat-send--loading {
+#epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-window .epkb-ai-chat-input-wrapper .epkb-ai-chat-send--loading {
   animation: epkb-rotate 1s linear infinite;
 }
 #epkb-ai-chat-widget-root .epkb-ai-chat-widget .epkb-ai-chat-toggle {

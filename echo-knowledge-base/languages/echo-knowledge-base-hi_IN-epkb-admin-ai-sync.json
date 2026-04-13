@@ -13,9 +13,6 @@
             "Error": [
                 "त्रुटि"
             ],
-            "OK": [
-                "ठीक है"
-            ],
             "No synced items found to verify": [
                 "सत्यापन के लिए कोई सिंक किए गए आइटम नहीं मिले।"
             ],
@@ -118,21 +115,6 @@
             "Sync scheduled, waiting to start...": [
                 "सिंक निर्धारित है, शुरू होने के लिए प्रतीक्षा कर रहा है..."
             ],
-            "Verifying": [
-                "जाँच किया जा रहा है"
-            ],
-            "items": [
-                "आइटम"
-            ],
-            "Verification complete:": [
-                "जाँच पूरी:"
-            ],
-            "marked outdated": [
-                "पुराने के रूप में चिह्नित"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "पुराने आइटमों को पुनः अपलोड करने के लिए सिंक चलाएं."
-            ],
             "Upload completed, but the number of items doesn't match:": [
                 "अपलोड पूर्ण हो गया, लेकिन आइटमों की संख्या मेल नहीं खाती:"
             ],
@@ -153,9 +135,6 @@
             ],
             "Verify & Fix": [
                 "जाँच करें & ठीक करें"
-            ],
-            "Cancel Verify": [
-                "जाँच रद्द करें"
             ]
         }
     }

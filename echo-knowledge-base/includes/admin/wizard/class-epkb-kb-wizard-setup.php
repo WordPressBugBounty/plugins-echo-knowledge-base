@@ -1012,207 +1012,135 @@ class EPKB_KB_Wizard_Setup {
 			],
 		];
 
+		$basic_categories_articles_presets = [
+			'horizon' => [
+				'preselected'   => true,
+				'title'         => esc_html__( 'Horizon', 'echo-knowledge-base' ),
+			],
+			'bloom' => [
+				'title'         => esc_html__( 'Bloom', 'echo-knowledge-base' ),
+			],
+			'ember' => [
+				'title'         => esc_html__( 'Ember', 'echo-knowledge-base' ),
+			],
+			'organized' => [
+				'title'         => esc_html__( 'Organized', 'echo-knowledge-base' ),
+			],
+			'airy' => [
+				'title'         => esc_html__( 'Airy', 'echo-knowledge-base' ),
+			],
+			'office' => [
+				'title'         => esc_html__( 'Office', 'echo-knowledge-base' ),
+			],
+			'creative' => [
+				'title'         => esc_html__( 'Creative', 'echo-knowledge-base' ),
+			],
+			'image' => [
+				'title'         => esc_html__( 'Image', 'echo-knowledge-base' ),
+			],
+			'informative' => [
+				'title'         => esc_html__( 'Informative', 'echo-knowledge-base' ),
+			],
+			'canvas' => [
+				'title'         => esc_html__( 'Canvas', 'echo-knowledge-base' ),
+			],
+			'formal' => [
+				'title'         => esc_html__( 'Formal', 'echo-knowledge-base' ),
+			],
+			'elegant' => [
+				'title'         => esc_html__( 'Elegant', 'echo-knowledge-base' ),
+			],
+			'icon_focused' => [
+				'title'         => esc_html__( 'No Article Icons', 'echo-knowledge-base' ),
+			],
+			'bright' => [
+				'title'         => esc_html__( 'Bright', 'echo-knowledge-base' ),
+			],
+			'compact' => [
+				'title'         => esc_html__( 'Compact', 'echo-knowledge-base' ),
+			],
+			'sharp' => [
+				'title'         => esc_html__( 'Sharp', 'echo-knowledge-base' ),
+			],
+			'simple' => [
+				'title'         => esc_html__( 'Simple', 'echo-knowledge-base' ),
+			],
+			'modern' => [
+				'title'         => esc_html__( 'Modern', 'echo-knowledge-base' ),
+			],
+			'teal' => [
+				'title'         => esc_html__( 'Teal', 'echo-knowledge-base' ),
+			],
+		];
+
 		// Categories & Articles Module Presets: Basic
 		$modules_presets_config['categories_articles']['Basic'] = [
 			'preselected' => $main_page_layout == 'Basic',
-			'presets' => [
-				'airy' => [
-					'preselected'   => true,
-					'title'         => esc_html__( 'Airy', 'echo-knowledge-base' ),
-				],
-				'horizon' => [
-					'title'         => esc_html__( 'Horizon', 'echo-knowledge-base' ),
-				],
-				'canvas' => [
-					'title'         => esc_html__( 'Canvas', 'echo-knowledge-base' ),
-				],
-				'bloom' => [
-					'title'         => esc_html__( 'Bloom', 'echo-knowledge-base' ),
-				],
-				'ember' => [
-					'title'         => esc_html__( 'Ember', 'echo-knowledge-base' ),
-				],
-				'organized' => [
-					'title'         => esc_html__( 'Organized', 'echo-knowledge-base' ),
-				],
-				'office' => [
-					'title'         => esc_html__( 'Office', 'echo-knowledge-base' ),
-				],
-				'creative' => [
-					'title'         => esc_html__( 'Creative', 'echo-knowledge-base' ),
-				],
-				'image' => [
-					'title'         => esc_html__( 'Image', 'echo-knowledge-base' ),
-				],
-				'informative' => [
-					'title'         => esc_html__( 'Informative', 'echo-knowledge-base' ),
-				],
-				'formal' => [
-					'title'         => esc_html__( 'Formal', 'echo-knowledge-base' ),
-				],
-				'elegant' => [
-					'title'         => esc_html__( 'Elegant', 'echo-knowledge-base' ),
-				],
-				'icon_focused' => [
-					'title'         => esc_html__( 'No Article Icons', 'echo-knowledge-base' ),
-				],
-				'bright' => [
-					'title'         => esc_html__( 'Bright', 'echo-knowledge-base' ),
-				],
-				'compact' => [
-					'title'         => esc_html__( 'Compact', 'echo-knowledge-base' ),
-				],
-				'sharp' => [
-					'title'         => esc_html__( 'Sharp', 'echo-knowledge-base' ),
-				],
-				'simple' => [
-					'title'         => esc_html__( 'Simple', 'echo-knowledge-base' ),
-				],
-				'modern' => [
-					'title'         => esc_html__( 'Modern', 'echo-knowledge-base' ),
-				],
-				'teal' => [
-					'title'         => esc_html__( 'Teal', 'echo-knowledge-base' ),
-				],
-			],
+			'presets' => $basic_categories_articles_presets,
 		];
+
+		$tabs_categories_articles_presets = [];
+		foreach ( $basic_categories_articles_presets as $preset_name => $preset_config ) {
+			$tabs_categories_articles_presets[ $preset_name . '_tabs' ] = [
+				'title' => $preset_config['title'],
+			];
+			if ( ! empty( $preset_config['preselected'] ) ) {
+				$tabs_categories_articles_presets[ $preset_name . '_tabs' ]['preselected'] = true;
+			}
+		}
+
+		$drill_down_categories_articles_presets = [];
+		foreach ( $basic_categories_articles_presets as $preset_name => $preset_config ) {
+			$drill_down_categories_articles_presets[ $preset_name . '_drill_down' ] = [
+				'title' => $preset_config['title'],
+			];
+			if ( ! empty( $preset_config['preselected'] ) ) {
+				$drill_down_categories_articles_presets[ $preset_name . '_drill_down' ]['preselected'] = true;
+			}
+		}
+
+		$categories_categories_articles_presets = [];
+		foreach ( $basic_categories_articles_presets as $preset_name => $preset_config ) {
+			$categories_categories_articles_presets[ $preset_name . '_categories' ] = [
+				'title' => $preset_config['title'],
+			];
+			if ( ! empty( $preset_config['preselected'] ) ) {
+				$categories_categories_articles_presets[ $preset_name . '_categories' ]['preselected'] = true;
+			}
+		}
+
+		$classic_categories_articles_presets = [];
+		foreach ( $basic_categories_articles_presets as $preset_name => $preset_config ) {
+			$classic_categories_articles_presets[ $preset_name . '_classic' ] = [
+				'title' => $preset_config['title'],
+			];
+			if ( ! empty( $preset_config['preselected'] ) ) {
+				$classic_categories_articles_presets[ $preset_name . '_classic' ]['preselected'] = true;
+			}
+		}
 
 		// Categories & Articles Module Presets: Tabs
 		$modules_presets_config['categories_articles']['Tabs'] = [
 			'preselected' => $main_page_layout == 'Tabs',
-			'presets' => [
-
-				'organized_tabs' => [
-					'preselected'   => true,
-					'title'         => esc_html__( 'Organized', 'echo-knowledge-base' ),
-				],
-				'office_tabs' => [
-					'title'         => esc_html__( 'Office', 'echo-knowledge-base' ),
-				],
-				'modern_tabs' => [
-					'title'         => esc_html__( 'Modern', 'echo-knowledge-base' ),
-				],
-				'image_tabs' => [
-					'title'         => esc_html__( 'Image', 'echo-knowledge-base' ),
-				],
-				'informative_tabs' => [
-					'title'         => esc_html__( 'Informative', 'echo-knowledge-base' ),
-				],
-				'creative_tabs' => [
-					'title'         => esc_html__( 'Creative', 'echo-knowledge-base' ),
-				],
-				'formal_tabs' => [
-					'title'         => esc_html__( 'Formal', 'echo-knowledge-base' ),
-				],
-				'compact_tabs' => [
-					'title'         => esc_html__( 'Compact', 'echo-knowledge-base' ),
-				],
-				'sharp_tabs' => [
-					'title'         => esc_html__( 'Sharp', 'echo-knowledge-base' ),
-				],
-				'elegant_tabs' => [
-					'title'         => esc_html__( 'Elegant', 'echo-knowledge-base' ),
-				],
-				'icon_focused_tabs' => [
-					'title'         => esc_html__( 'No Article Icons', 'echo-knowledge-base' ),
-				],
-				'simple_tabs' => [
-					'title'         => esc_html__( 'Simple', 'echo-knowledge-base' ),
-				],
-				'clean' => [
-					'title'         => esc_html__( 'Clean', 'echo-knowledge-base' ),
-				],
-			],
+			'presets' => $tabs_categories_articles_presets,
 		];
 
 		// Categories & Articles Module Presets: Categories
 		$modules_presets_config['categories_articles']['Categories'] = [
 			'preselected' => $main_page_layout == 'Categories',
-			'presets' => [
-				'office_categories' => [
-					'preselected'   => true,
-					'title'         => esc_html__( 'Office', 'echo-knowledge-base' ),
-				],
-				'corporate' => [
-					'title'         => esc_html__( 'Corporate', 'echo-knowledge-base' ),
-				],
-				'creative_categories' => [
-					'title'         => esc_html__( 'Creative', 'echo-knowledge-base' ),
-				],
-				'business' => [
-					'title'         => esc_html__( 'Business', 'echo-knowledge-base' ),
-				],
-				'minimalistic' => [
-					'title'         => esc_html__( 'Minimalistic', 'echo-knowledge-base' ),
-				],
-				'sharp_categories' => [
-					'title'         => esc_html__( 'Sharp', 'echo-knowledge-base' ),
-				],
-				'icon_focused_categories' => [
-					'title'         => esc_html__( 'No Article Icons', 'echo-knowledge-base' ),
-				],
-				'compact_categories' => [
-					'title'         => esc_html__( 'Compact', 'echo-knowledge-base' ),
-				],
-				'formal_categories' => [
-					'title'         => esc_html__( 'Formal', 'echo-knowledge-base' ),
-				],
-				'simple_categories' => [
-					'title'         => esc_html__( 'Simple', 'echo-knowledge-base' ),
-				],
-			],
+			'presets' => $categories_categories_articles_presets,
 		];
 
 		// Categories & Articles Module Presets: Classic
 		$modules_presets_config['categories_articles']['Classic'] = [
 			'preselected' => $main_page_layout == 'Classic',
-			'presets' => [
-				'organized_classic' => [
-					'preselected'   => true,
-					'title'         => esc_html__( 'Organized', 'echo-knowledge-base' ),
-				],
-				'standard_classic' => [
-					'title'         => esc_html__( 'Standard', 'echo-knowledge-base' ),
-				],
-				'sharp_classic' => [
-					'title'         => esc_html__( 'Sharp', 'echo-knowledge-base' ),
-				],
-				'creative_classic' => [
-					'title'         => esc_html__( 'Creative', 'echo-knowledge-base' ),
-				],
-				'simple_classic' => [
-					'title'         => esc_html__( 'Simple', 'echo-knowledge-base' ),
-				],
-				'icon_focused_classic' => [
-					'title'         => esc_html__( 'No Article Icons', 'echo-knowledge-base' ),
-				],
-			],
+			'presets' => $classic_categories_articles_presets,
 		];
 
 		// Categories & Articles Module Presets: Drill-Down
 		$modules_presets_config['categories_articles']['Drill-Down'] = [
 			'preselected' => $main_page_layout == 'Drill-Down',
-			'presets' => [
-				'organized_drill_down' => [
-					'preselected'   => true,
-					'title'         => esc_html__( 'Organized', 'echo-knowledge-base' ),
-				],
-				'standard_drill_down' => [
-					'title'         => esc_html__( 'Standard', 'echo-knowledge-base' ),
-				],
-				'sharp_drill_down' => [
-					'title'         => esc_html__( 'Sharp', 'echo-knowledge-base' ),
-				],
-				'creative_drill_down' => [
-					'title'         => esc_html__( 'Creative', 'echo-knowledge-base' ),
-				],
-				'simple_drill_down' => [
-					'title'         => esc_html__( 'Simple', 'echo-knowledge-base' ),
-				],
-				'icon_focused_drill_down' => [
-					'title'         => esc_html__( 'No Article Icons', 'echo-knowledge-base' ),
-				],
-			],
+			'presets' => $drill_down_categories_articles_presets,
 		];
 
 		// Categories & Articles Module Add-ons Presets

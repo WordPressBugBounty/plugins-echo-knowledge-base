@@ -2317,41 +2317,33 @@ class EPKB_Icons {
 	 * @return bool
 	 */
 	public static function is_theme_with_image_icons( $kb_config ) {
-		$is_basic_set2_theme = ! empty( $kb_config['theme_name'] ) &&
-			! empty( $kb_config['kb_main_page_layout'] ) &&
-			$kb_config['kb_main_page_layout'] === 'Basic' &&
-			in_array( $kb_config['theme_name'], array( 'informative', 'simple' ), true );
+		if ( empty( $kb_config['theme_name'] ) ) {
+			return false;
+		}
 
-		return $is_basic_set2_theme || ( ! empty( $kb_config['theme_name'] ) && in_array( $kb_config['theme_name'], array(
-				'modern',
-				'modern_tabs',
-				'image',
-				'image_tabs',
-				'office',
-				'organized',
-				'organized_classic',
-				'organized_drill_down',
-				'organized_tabs',
-				'teal',
-				'sharp',
-				'office_tabs',
-				'office_categories',
-				'elegant',
-				'elegant_tabs',
-				'creative',
-				'creative_tabs',
-				'creative_categories',
-				'creative_classic',
-				'creative_drill_down',
-				'bright',
-				'formal',
-				'formal_tabs',
-				'formal_categories',
-				'standard_classic',
-				'standard_drill_down',
-				'grid_basic',
-				'grid_demo_9'
-			), true ) );
+		$image_icon_themes = array(
+			'modern',
+			'image',
+			'office',
+			'organized',
+			'teal',
+			'sharp',
+			'elegant',
+			'creative',
+			'creative_classic',
+			'bright',
+			'formal',
+			'informative',
+			'simple',
+			'standard_classic',
+			'standard_drill_down',
+			'grid_basic',
+			'grid_demo_9',
+		);
+
+		$theme_name = self::resolve_theme_image_icon_name( $kb_config['theme_name'], $image_icon_themes );
+
+		return in_array( $theme_name, $image_icon_themes, true );
 	}
 
 	/**
@@ -2361,10 +2353,51 @@ class EPKB_Icons {
 	 * @return bool
 	 */
 	public static function is_theme_with_photo_icons( $theme_name ) {
+		$theme_name = self::resolve_theme_image_icon_name( $theme_name, array( 'image', 'image_tabs' ) );
+
 		return ! empty( $theme_name ) && in_array( $theme_name, array(
 				'image',
 				'image_tabs',
 			) );
+	}
+
+	/**
+	 * Resolve layout-specific preset aliases to their underlying icon theme.
+	 *
+	 * @param string $theme_name
+	 * @param array  $known_themes
+	 * @return string
+	 */
+	private static function resolve_theme_image_icon_name( $theme_name, $known_themes = array() ) {
+
+		if ( empty( $theme_name ) ) {
+			return 'default';
+		}
+
+		$theme_aliases = array(
+			'creative_drill_down' => 'creative_classic',
+		);
+
+		if ( isset( $theme_aliases[ $theme_name ] ) ) {
+			return $theme_aliases[ $theme_name ];
+		}
+
+		if ( in_array( $theme_name, $known_themes, true ) ) {
+			return $theme_name;
+		}
+
+		foreach ( array( '_tabs', '_categories', '_classic', '_drill_down', '_basic' ) as $suffix ) {
+			if ( substr( $theme_name, - strlen( $suffix ) ) !== $suffix ) {
+				continue;
+			}
+
+			$base_theme_name = substr( $theme_name, 0, - strlen( $suffix ) );
+			if ( in_array( $base_theme_name, $known_themes, true ) ) {
+				return $base_theme_name;
+			}
+		}
+
+		return $theme_name;
 	}
 
 	/**
@@ -2505,16 +2538,7 @@ class EPKB_Icons {
 			),
 		);
 
-		// made duplicates of the following:
-		$theme_icons['image_tabs'] = $theme_icons['image'];
-		$theme_icons['creative_drill_down'] = $theme_icons['creative_classic'];
-		$theme_icons['creative_tabs'] = $theme_icons['creative'];
-		$theme_icons['creative_categories'] = $theme_icons['creative'];
-		$theme_icons['formal_tabs'] = $theme_icons['formal'];
-		$theme_icons['formal_categories'] = $theme_icons['formal'];
-		$theme_icons['organized_classic'] = $theme_icons['organized'];
-		$theme_icons['organized_tabs'] = $theme_icons['organized'];
-		$theme_icons['organized_drill_down'] = $theme_icons['organized'];	
+		$theme_name = self::resolve_theme_image_icon_name( $theme_name, array_keys( $theme_icons ) );
 
 		return isset( $theme_icons[$theme_name] ) ? $theme_icons[$theme_name] : $theme_icons['default'];
 	}

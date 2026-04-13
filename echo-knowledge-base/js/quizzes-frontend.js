@@ -52,8 +52,9 @@ jQuery( document ).ready( function( $ ) {
 
 		const correctCount = $questions.filter( '.epkb-article-quiz__question--correct' ).length;
 		const $summary = $quiz.find( '.epkb-article-quiz__summary' );
+		const summaryPrefix = epkbQuizFrontend.summaryPrefix ? epkbQuizFrontend.summaryPrefix + ' ' : '';
 		$summary.find( '.epkb-article-quiz__summary-score' ).text(
-			epkbQuizFrontend.summaryPrefix + ' ' + correctCount + '/' + totalCount
+			summaryPrefix + correctCount + '/' + totalCount
 		);
 		$summary.prop( 'hidden', false );
 	}

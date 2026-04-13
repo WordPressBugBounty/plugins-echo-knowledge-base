@@ -431,11 +431,84 @@ class EPKB_Layout_Drill_Down extends EPKB_Layout {
 			}';
 
 		$output .= '
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-top-categories-button-container .epkb-ml-top__cat-title,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-2-lvl__cat-title,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-3-lvl__cat-title,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-4-lvl__cat-title,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-5-lvl__cat-title {
+				font-size: ' . ( ! empty( $kb_config['section_head_typography']['font-size'] ) ? $kb_config['section_head_typography']['font-size'] . 'px !important' : 'inherit !important' ) . ';
+				font-weight: ' . ( ! empty( $kb_config['section_head_typography']['font-weight'] ) ? $kb_config['section_head_typography']['font-weight'] : 'inherit !important' ) . ';
+			}
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-1-lvl__desc,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-2-lvl__desc,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-3-lvl__desc,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-4-lvl__desc,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-5-lvl__desc {
+				font-size: ' . ( ! empty( $kb_config['section_head_description_typography']['font-size'] ) ? $kb_config['section_head_description_typography']['font-size'] . 'px !important' : 'inherit !important' ) . ';
+				font-weight: ' . ( ! empty( $kb_config['section_head_description_typography']['font-weight'] ) ? $kb_config['section_head_description_typography']['font-weight'] : 'inherit !important' ) . ';
+			}';
+
+		// Article typography -----------------------------------------/
+		$output .= '
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-article-inner .epkb-article__text {
+				font-size: ' . ( ! empty( $kb_config['article_typography']['font-size'] ) ? $kb_config['article_typography']['font-size'] . 'px !important' : 'inherit !important' ) . ';
+				font-weight: ' . ( ! empty( $kb_config['article_typography']['font-weight'] ) ? $kb_config['article_typography']['font-weight'] : 'inherit !important' ) . ';
+			}';
+
+		$article_spacing = intval( $kb_config['article_list_spacing'] );
+		$output .= '
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-articles-coming-soon {
+				font-size: ' . ( ! empty( $kb_config['article_typography']['font-size'] ) ? $kb_config['article_typography']['font-size'] . 'px !important' : 'inherit !important' ) . ';
+				font-weight: ' . ( ! empty( $kb_config['article_typography']['font-weight'] ) ? $kb_config['article_typography']['font-weight'] : 'inherit !important' ) . ';
+				padding-top: ' . $article_spacing . 'px !important;
+				padding-bottom: ' . $article_spacing . 'px !important;
+			}';
+
+		// Article list spacing -----------------------------------------/
+		$output .= '
 		    #epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-articles-list li {
-		        padding-top: ' . $kb_config['article_list_spacing'] . 'px !important;
-		        padding-bottom: ' . $kb_config['article_list_spacing'] . 'px !important;
+		        padding-top: ' . $article_spacing . 'px !important;
+		        padding-bottom: ' . $article_spacing . 'px !important;
 	            line-height: 1 !important;
 		    }';
+
+		// Article hover effect (always on for Drill Down; static layout CSS also styles list item hover)
+		$spacing = intval( $kb_config['article_list_spacing'] );
+		$hover_bg = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_background_color'] );
+		$hover_text = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_font_color'] );
+		$output .= '
+				#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-articles-list li {
+					padding: 0 !important;
+				}
+				#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-article-container {
+					padding: ' . $spacing . 'px !important;
+					border-radius: 6px !important;
+					transition: background-color 0.2s ease, color 0.2s ease !important;
+				}
+				#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-article-container:hover {
+					background-color: ' . $hover_bg . ' !important;
+				}
+				#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-article-container:hover .epkb-article__text {
+					color: ' . $hover_text . ' !important;
+				}
+				#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-article-container:hover .epkb-article__icon {
+					color: ' . $hover_text . ' !important;
+				}';
+
+		// Space between category sections -----------------------------------------/
+		$section_gap = isset( $kb_config['section_box_gap'] ) ? intval( $kb_config['section_box_gap'] ) : 20;
+		$output .= '
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-top-categories-button-container {
+				gap: ' . $section_gap . 'px !important;
+			}';
+
+		// Category box padding -----------------------------------------/
+		if ( ! empty( $kb_config['category_box_padding'] ) ) {
+			$output .= '
+				#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-top__cat-container {
+					padding: ' . intval( $kb_config['category_box_padding'] ) . 'px !important;
+				}';
+		}
 
 		return $output;
 	}

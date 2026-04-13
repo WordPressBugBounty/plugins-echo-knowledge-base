@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 17.3.0
+ * Version: 17.4.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '17.3.0';
+	public static $version = '17.4.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -229,7 +229,7 @@ final class Echo_Knowledge_Base {
 		} else if ( in_array( $action, array( 'epkb_save_quiz', 'epkb_get_quiz', 'epkb_get_quiz_by_article', 'epkb_delete_quiz', 'epkb_generate_quiz', 'epkb_submit_quiz_interest' ) ) ) {
 			new EPKB_Quizzes_Ctrl();
 			return;
-		} else if ( in_array( $action, array( 'epkb_glossary_save_term', 'epkb_glossary_delete_term', 'epkb_glossary_get_term', 'epkb_glossary_bulk_publish' ) ) ) {
+		} else if ( in_array( $action, array( 'epkb_glossary_save_term', 'epkb_glossary_delete_term', 'epkb_glossary_get_term', 'epkb_glossary_bulk_publish', 'epkb_glossary_bulk_delete' ) ) ) {
 			new EPKB_Glossary_Ctrl();
 			return;
 		} else if ( in_array( $action, array( 'epkb_faq_get_shortcode' ) ) ) {

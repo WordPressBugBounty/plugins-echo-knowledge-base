@@ -100,24 +100,6 @@
             "Added": [
                 "Hinzugefügt"
             ],
-            "Verifying": [
-                "Verifizierung läuft"
-            ],
-            "items": [
-                "Elemente"
-            ],
-            "Verification complete:": [
-                "Verifizierung abgeschlossen:"
-            ],
-            "marked outdated": [
-                "als veraltet markiert"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "Synchronisieren Sie, um veraltete Elemente erneut hochzuladen."
-            ],
-            "Cancel Verify": [
-                "Überprüfung abbrechen"
-            ],
             "Deleting...": [
                 "Löschen..."
             ],
@@ -225,6 +207,30 @@
             ],
             "Failed to add data": [
                 "Daten konnten nicht hinzugefügt werden"
+            ],
+            "Checking AI store for orphaned files...": [
+                "Überprüfe KI-Speicher auf verwaiste Dateien..."
+            ],
+            "Verifying": [
+                "Verifizierung läuft"
+            ],
+            "items": [
+                "Elemente"
+            ],
+            "Verification complete:": [
+                "Verifizierung abgeschlossen:"
+            ],
+            "marked outdated": [
+                "als veraltet markiert"
+            ],
+            "PDFs removed from AI store": [
+                "PDFs aus dem KI-Speicher entfernt"
+            ],
+            "AI Notes removed from AI store": [
+                "KI-Notizen aus dem KI-Speicher entfernt"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Synchronisieren Sie, um veraltete Elemente erneut hochzuladen."
             ],
             "Choose an Action": [
                 "Aktion auswählen"
@@ -337,8 +343,8 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Führen Sie einen zusätzlichen Validierungsdurchlauf aus, um sicherzustellen, dass die lokale Datenbank und der KI-Speicher synchron bleiben. Wenn eine Datei im KI-Speicher fehlt, wird sie als veraltet markiert, damit sie erneut gesendet werden kann."
             ],
-            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
-                "Dies überprüft hinzugefügte und aktualisierte Elemente, die bereits in dieser Sammlung erfasst sind, einschließlich hochgeladener PDFs."
+            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
+                "Dies überprüft hinzugefügte und aktualisierte Elemente, die bereits in dieser Sammlung erfasst werden, und entfernt verwaiste PDFs und KI-Notizen, die sich nur im KI-Speicher befinden. Es werden keine lokalen Datenbankelemente gelöscht."
             ],
             "Collection:": [
                 "Sammlung:"
@@ -346,8 +352,11 @@
             "synced items ready to validate": [
                 "synchronisierte Elemente bereit zur Validierung"
             ],
-            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
-                "Es sind noch keine hinzugefügten oder aktualisierten Elemente verfügbar. Senden Sie zuerst Inhalte an die KI und führen Sie dann bei Bedarf eine Validierung durch."
+            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
+                "Es sind noch keine hinzugefügten oder aktualisierten Elemente verfügbar. Die Validierung kann dennoch verwaiste PDFs und KI-Notizen entfernen, die nur im KI-Speicher verblieben sind."
+            ],
+            "Cancel Verify": [
+                "Überprüfung abbrechen"
             ],
             "Validation in Progress...": [
                 "Validierung läuft..."

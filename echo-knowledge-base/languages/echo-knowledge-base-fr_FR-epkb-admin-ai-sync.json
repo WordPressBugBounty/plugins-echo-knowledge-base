@@ -13,9 +13,6 @@
             "Error": [
                 "Erreur"
             ],
-            "OK": [
-                "OK"
-            ],
             "No synced items found to verify": [
                 "Aucun élément synchronisé à vérifier"
             ],
@@ -118,21 +115,6 @@
             "Sync scheduled, waiting to start...": [
                 "Synchronisation planifiée, en attente de démarrage..."
             ],
-            "Verifying": [
-                "Vérification en cours"
-            ],
-            "items": [
-                "éléments"
-            ],
-            "Verification complete:": [
-                "Vérification terminée :"
-            ],
-            "marked outdated": [
-                "marqué comme obsolète"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "Exécutez la synchronisation pour téléverser à nouveau les éléments obsolètes."
-            ],
             "Upload completed, but the number of items doesn't match:": [
                 "Téléversement terminé, mais le nombre d'éléments ne correspond pas :"
             ],
@@ -153,9 +135,6 @@
             ],
             "Verify & Fix": [
                 "Vérifier et corriger"
-            ],
-            "Cancel Verify": [
-                "Annuler la vérification"
             ]
         }
     }

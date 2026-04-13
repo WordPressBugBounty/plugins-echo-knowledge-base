@@ -348,9 +348,6 @@ final class EPKB_Advanced_Search_Block extends EPKB_Abstract_Block {
 							'advanced_search_mp_show_top_category'                          => array(
 								'setting_type' => 'toggle'
 							),
-							'advanced_search_context_enabled'                          => array(
-								'setting_type' => 'toggle'
-							),
 							'advanced_search_context_characters'                          => array(
 								'setting_type' => 'range',
 							),

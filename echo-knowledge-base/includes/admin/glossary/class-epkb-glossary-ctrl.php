@@ -14,6 +14,9 @@ class EPKB_Glossary_Ctrl {
 
 		add_action( 'wp_ajax_epkb_glossary_bulk_publish', array( $this, 'bulk_publish' ) );
 		add_action( 'wp_ajax_nopriv_epkb_glossary_bulk_publish', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+
+		add_action( 'wp_ajax_epkb_glossary_bulk_delete', array( $this, 'bulk_delete' ) );
+		add_action( 'wp_ajax_nopriv_epkb_glossary_bulk_delete', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 	}
 
 	/**
@@ -148,6 +151,47 @@ class EPKB_Glossary_Ctrl {
 			'status'  => 'success',
 			'message' => esc_html__( 'Term(s) published', 'echo-knowledge-base' ),
 			'data'    => array( 'count' => $count ),
+		) ) );
+	}
+
+	/**
+	 * Bulk delete glossary terms
+	 */
+	public function bulk_delete() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die( EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY );
+
+		$term_ids = EPKB_Utilities::post( 'term_ids' );
+		if ( empty( $term_ids ) || ! is_array( $term_ids ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 767 ) );
+		}
+
+		$deleted_term_ids = array();
+		foreach ( $term_ids as $term_id ) {
+			$term_id = (int) $term_id;
+			if ( empty( $term_id ) ) {
+				continue;
+			}
+
+			$result = wp_delete_term( $term_id, EPKB_Glossary_Taxonomy_Setup::GLOSSARY_TAXONOMY );
+			if ( empty( $result ) || is_wp_error( $result ) ) {
+				continue;
+			}
+
+			$deleted_term_ids[] = $term_id;
+		}
+
+		if ( empty( $deleted_term_ids ) ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 768 ) );
+		}
+
+		wp_die( wp_json_encode( array(
+			'status'  => 'success',
+			'message' => esc_html__( 'Terms deleted', 'echo-knowledge-base' ),
+			'data'    => array(
+				'count'    => count( $deleted_term_ids ),
+				'term_ids' => $deleted_term_ids,
+			),
 		) ) );
 	}
 }

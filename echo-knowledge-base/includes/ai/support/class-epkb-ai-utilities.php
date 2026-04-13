@@ -367,11 +367,277 @@ class EPKB_AI_Utilities {
 			return false;
 		}
 
-		if ( $type === 'epkb_kb_files' || $type === self::AI_PRO_NOTES_POST_TYPE || $type === 'epkb_ai_note' ) {
+		if ( $type === self::AI_PRO_NOTES_POST_TYPE || $type === 'epkb_ai_note' ) {
 			return true;
 		}
 
 		return (bool) get_post_type_object( $type );
+	}
+
+	/**
+	 * Check whether auto-sync is enabled.
+	 *
+	 * @return bool
+	 */
+	public static function is_auto_sync_enabled() {
+		return EPKB_AI_Config_Specs::get_ai_config_value( 'ai_auto_sync_enabled', 'off' ) === 'on';
+	}
+
+	/**
+	 * Reconcile post-backed training data rows with their source posts.
+	 *
+	 * Used when the Training Data UI is refreshed or opened.
+	 * Missing or no-longer-eligible sources are marked as skipped.
+	 * Synced items whose source changed are marked as outdated.
+	 *
+	 * @param int                      $collection_id Collection ID.
+	 * @param EPKB_AI_Training_Data_DB $training_data_db Optional DB instance.
+	 * @return void
+	 */
+	public static function reconcile_collection_source_updates( $collection_id, $training_data_db = null ) {
+
+		$collection_id = absint( $collection_id );
+		if ( empty( $collection_id ) ) {
+			return;
+		}
+
+		if ( ! $training_data_db ) {
+			$training_data_db = new EPKB_AI_Training_Data_DB();
+		}
+
+		$reconcilable_types = self::get_refresh_reconcilable_training_types();
+		if ( empty( $reconcilable_types ) ) {
+			return;
+		}
+
+		$training_rows = $training_data_db->get_training_data_by_collection( $collection_id, array(
+			'status' => self::get_refresh_reconcilable_training_statuses(),
+			'type'   => $reconcilable_types,
+		) );
+		if ( empty( $training_rows ) || is_wp_error( $training_rows ) ) {
+			return;
+		}
+
+		foreach ( $training_rows as $training_row ) {
+			if ( ! self::is_refresh_reconcilable_training_row( $training_row ) ) {
+				continue;
+			}
+
+			$post = get_post( absint( $training_row->item_id ) );
+			$unavailable_source_code = self::get_training_row_unavailable_source_code( $post );
+			if ( ! empty( $unavailable_source_code ) ) {
+				self::mark_unavailable_training_row_as_skipped( $training_row, $unavailable_source_code, $training_data_db );
+				continue;
+			}
+
+			if ( ! in_array( $training_row->status, array( 'added', 'updated' ), true ) ) {
+				continue;
+			}
+
+			if ( ! self::did_training_source_change_since_sync( $training_row, $post ) ) {
+				continue;
+			}
+
+			$training_data_db->update_training_data( $training_row->id, array( 'status' => 'outdated' ) );
+		}
+	}
+
+	/**
+	 * Determine whether a training row can be reconciled against a WordPress post.
+	 *
+	 * @param object $training_row Training data row.
+	 * @return bool
+	 */
+	private static function is_refresh_reconcilable_training_row( $training_row ) {
+
+		if ( empty( $training_row ) || ! is_object( $training_row ) || empty( $training_row->id ) ) {
+			return false;
+		}
+
+		if ( ! in_array( $training_row->status, self::get_refresh_reconcilable_training_statuses(), true ) ) {
+			return false;
+		}
+
+		if ( empty( $training_row->item_id ) || ! ctype_digit( (string) $training_row->item_id ) ) {
+			return false;
+		}
+
+		if ( empty( $training_row->type ) || $training_row->type === 'PDF' || $training_row->type === 'HTML' ) {
+			return false;
+		}
+
+		return self::is_post_backed_training_data_type( $training_row->type );
+	}
+
+	/**
+	 * Mark an unavailable training row as skipped after cleaning up stale provider files.
+	 *
+	 * @param object                    $training_row Training data row.
+	 * @param string                    $unavailable_source_code Source unavailability code.
+	 * @param EPKB_AI_Training_Data_DB  $training_data_db Training data DB instance.
+	 * @return bool|WP_Error
+	 */
+	private static function mark_unavailable_training_row_as_skipped( $training_row, $unavailable_source_code, $training_data_db ) {
+
+		if ( ! empty( $training_row->file_id ) ) {
+			$cleanup_result = self::cleanup_training_data_record_from_provider( $training_row, 'refresh_reconcile_unavailable_source' );
+			if ( is_wp_error( $cleanup_result ) ) {
+				return $cleanup_result;
+			}
+		}
+
+		return $training_data_db->update_training_data( $training_row->id, array(
+			'status'        => 'skipped',
+			'error_code'    => $unavailable_source_code === 'post_not_found' ? 404 : 400,
+			'error_message' => $unavailable_source_code,
+			'file_id'       => '',
+			'store_id'      => '',
+		) );
+	}
+
+	/**
+	 * Get the refresh reconciliation error code for an unavailable source post.
+	 *
+	 * @param WP_Post|null $post Source post.
+	 * @return string Empty string when the post is available.
+	 */
+	private static function get_training_row_unavailable_source_code( $post ) {
+
+		if ( empty( $post ) || ! is_object( $post ) || empty( $post->ID ) ) {
+			return 'post_not_found';
+		}
+
+		$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
+		if ( ! is_wp_error( $eligibility_check ) ) {
+			return '';
+		}
+
+		if ( $eligibility_check->get_error_code() === 'post_not_published' && isset( $post->post_status ) && $post->post_status === 'trash' ) {
+			return 'post_not_found';
+		}
+
+		return (string) $eligibility_check->get_error_code();
+	}
+
+	/**
+	 * Get the training data types that can be reconciled during refresh.
+	 *
+	 * @return array
+	 */
+	private static function get_refresh_reconcilable_training_types() {
+
+		$types = get_post_types();
+		if ( ! is_array( $types ) ) {
+			$types = array();
+		}
+
+		$types[] = self::AI_PRO_NOTES_POST_TYPE;
+		$types[] = 'epkb_ai_note';
+
+		return array_values( array_unique( array_filter( $types ) ) );
+	}
+
+	/**
+	 * Get the statuses that refresh reconciliation can safely process.
+	 *
+	 * @return array
+	 */
+	private static function get_refresh_reconcilable_training_statuses() {
+		return array( 'pending', 'added', 'updated', 'outdated' );
+	}
+
+	/**
+	 * Delete provider-side file references for a training data record.
+	 *
+	 * @param object $record Training data record.
+	 * @param string $reason Cleanup reason for logs.
+	 * @return bool|WP_Error
+	 */
+	public static function cleanup_training_data_record_from_provider( $record, $reason = 'training_data_delete' ) {
+
+		if ( empty( $record ) || empty( $record->file_id ) ) {
+			return true;
+		}
+
+		$provider = ! empty( $record->provider ) ? sanitize_key( (string) $record->provider ) : '';
+		if ( $provider === '' && ! empty( $record->collection_id ) ) {
+			$collection_config = EPKB_AI_Training_Data_Config_Specs::get_training_data_collection( (int) $record->collection_id );
+			if ( ! is_wp_error( $collection_config ) && ! empty( $collection_config['ai_training_data_provider'] ) ) {
+				$provider = sanitize_key( (string) $collection_config['ai_training_data_provider'] );
+			}
+		}
+		if ( $provider === '' ) {
+			$provider = EPKB_AI_Provider::get_active_provider();
+		}
+
+		$vector_store_handler = EPKB_AI_Provider::get_vector_store_handler( $provider );
+		$log_context = array(
+			'training_data_id' => isset( $record->id ) ? (int) $record->id : 0,
+			'item_id'          => isset( $record->item_id ) ? (string) $record->item_id : '',
+			'collection_id'    => isset( $record->collection_id ) ? (int) $record->collection_id : 0,
+			'provider'         => $provider,
+			'store_id'         => isset( $record->store_id ) ? (string) $record->store_id : '',
+			'file_id'          => (string) $record->file_id,
+			'reason'           => $reason,
+		);
+		$cleanup_error = null;
+
+		if ( ! empty( $record->store_id ) ) {
+			$remove_result = $vector_store_handler->remove_file_from_vector_store( $record->store_id, $record->file_id );
+			if ( is_wp_error( $remove_result ) && $remove_result->get_error_code() !== 'not_found' ) {
+				EPKB_AI_Log::add_log( $remove_result, array_merge( $log_context, array(
+					'message' => 'Failed to remove training data file from vector store during cleanup',
+				) ) );
+				$cleanup_error = $remove_result;
+			}
+		}
+
+		$delete_result = $vector_store_handler->delete_file_from_file_storage( $record->file_id, $record->store_id );
+		if ( is_wp_error( $delete_result ) && $delete_result->get_error_code() !== 'not_found' ) {
+			EPKB_AI_Log::add_log( $delete_result, array_merge( $log_context, array(
+				'message' => 'Failed to delete training data file from AI provider during cleanup',
+			) ) );
+			if ( ! is_wp_error( $cleanup_error ) ) {
+				$cleanup_error = $delete_result;
+			}
+		}
+
+		return is_wp_error( $cleanup_error ) ? $cleanup_error : true;
+	}
+
+	/**
+	 * Determine whether the source post changed after the last successful sync.
+	 *
+	 * @param object  $training_row Training data row.
+	 * @param WP_Post $post Source post.
+	 * @return bool
+	 */
+	private static function did_training_source_change_since_sync( $training_row, $post ) {
+
+		if ( empty( $training_row->last_synced ) ) {
+			return true;
+		}
+
+		$post_modified_gmt = ! empty( $post->post_modified_gmt ) && $post->post_modified_gmt !== '0000-00-00 00:00:00'
+			? $post->post_modified_gmt
+			: get_gmt_from_date( $post->post_modified );
+
+		if ( ! empty( $post_modified_gmt ) && strtotime( $post_modified_gmt ) > strtotime( $training_row->last_synced ) ) {
+			return true;
+		}
+
+		return self::normalize_training_data_title_for_comparison( isset( $training_row->title ) ? $training_row->title : '' )
+			!== self::normalize_training_data_title_for_comparison( $post->post_title );
+	}
+
+	/**
+	 * Normalize a training data title for storage-compatible comparisons.
+	 *
+	 * @param string $title Training data title.
+	 * @return string
+	 */
+	private static function normalize_training_data_title_for_comparison( $title ) {
+		return EPKB_AI_Validation::validate_title( $title );
 	}
 
 	/**
@@ -1166,6 +1432,73 @@ class EPKB_AI_Utilities {
 	}
 
 	/**
+	 * Normalize chat message HTML into readable plain text for handoff emails.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	private static function normalize_handoff_message_content( $content ) {
+		if ( ! is_string( $content ) ) {
+			return '';
+		}
+
+		$content = preg_replace(
+			array(
+				'/<br\s*\/?>/i',
+				'/<\/p>/i',
+				'/<li[^>]*>/i',
+				'/<\/li>/i',
+				'/<\/(div|ul|ol|h[1-6]|blockquote)>/i',
+				'/<p[^>]*>/i',
+				'/<(div|ul|ol|h[1-6]|blockquote)[^>]*>/i',
+			),
+			array(
+				"\n",
+				"\n\n",
+				'- ',
+				"\n",
+				"\n",
+				'',
+				"\n",
+			),
+			$content
+		);
+
+		if ( ! is_string( $content ) ) {
+			return '';
+		}
+
+		$content = html_entity_decode( wp_strip_all_tags( $content ), ENT_QUOTES, 'UTF-8' );
+		$content = preg_replace( '/\r\n|\r/', "\n", $content );
+		$content = preg_replace( "/\n{3,}/", "\n\n", $content );
+
+		if ( ! is_string( $content ) ) {
+			return '';
+		}
+
+		$lines = array_filter(
+			array_map( 'trim', explode( "\n", $content ) ),
+			static function( $line ) {
+				return $line !== '';
+			}
+		);
+
+		return implode( "\n", $lines );
+	}
+
+	/**
+	 * Build one separator-style transcript block for a single message.
+	 *
+	 * @param string $role
+	 * @param string $content
+	 * @return string
+	 */
+	private static function format_handoff_transcript_block( $role, $content ) {
+		$label = $role === 'user' ? 'USER' : 'AI';
+		return '---- ' . $label . " ----\n" . $content;
+	}
+
+	/**
 	 * Build a plain-text chat transcript for handoff requests.
 	 *
 	 * @param array $messages
@@ -1198,21 +1531,19 @@ class EPKB_AI_Utilities {
 				continue;
 			}
 
-			$content = trim( wp_strip_all_tags( $content ) );
+			$content = self::normalize_handoff_message_content( $content );
 			if ( $content === '' ) {
 				continue;
 			}
 
-			if ( $role === 'user' ) {
-				$blocks[] = ">> " . __( 'USER', 'echo-knowledge-base' ) . ":\n" . $content;
-			} elseif ( $role === 'assistant' ) {
-				$blocks[] = __( 'AI ASSISTANT', 'echo-knowledge-base' ) . ":\n" . $content;
-			} else {
-				$blocks[] = __( 'MESSAGE', 'echo-knowledge-base' ) . ":\n" . $content;
-			}
+			$blocks[] = self::format_handoff_transcript_block( $role, $content );
 		}
 
-		$transcript = implode( "\n\n" . str_repeat( '-', 40 ) . "\n\n", $blocks );
+		if ( empty( $blocks ) ) {
+			return '';
+		}
+
+		$transcript = "\n\n" . implode( "\n\n", $blocks );
 		return self::redact_pii_from_text( $transcript );
 	}
 }

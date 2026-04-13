@@ -32,6 +32,84 @@ class EPKB_Quizzes_Utilities {
 	}
 
 	/**
+	 * Get shared frontend settings used by quiz rendering.
+	 *
+	 * @return array
+	 */
+	public static function get_frontend_settings() {
+
+		$config = self::get_shared_config();
+
+		return array(
+			'eyebrow_text'               => $config['quizzes_eyebrow_text'],
+			'start_button_text'          => $config['quizzes_start_button_text'],
+			'question_label_text'        => $config['quizzes_question_label_text'],
+			'summary_title_text'         => $config['quizzes_summary_title_text'],
+			'correct_text'               => $config['quizzes_correct_text'],
+			'incorrect_text'             => $config['quizzes_incorrect_text'],
+			'score_prefix_text'          => $config['quizzes_score_prefix_text'],
+			'accent_color'               => $config['quizzes_accent_color'],
+			'button_text_color'          => $config['quizzes_button_text_color'],
+			'card_border_color'          => $config['quizzes_card_border_color'],
+			'card_background_color'      => $config['quizzes_card_background_color'],
+			'heading_text_color'         => $config['quizzes_heading_text_color'],
+			'body_text_color'            => $config['quizzes_body_text_color'],
+			'intro_background_color'     => $config['quizzes_intro_background_color'],
+			'correct_background_color'   => $config['quizzes_correct_background_color'],
+			'correct_border_color'       => $config['quizzes_correct_border_color'],
+			'incorrect_background_color' => $config['quizzes_incorrect_background_color'],
+			'incorrect_border_color'     => $config['quizzes_incorrect_border_color'],
+			'summary_background_color'   => $config['quizzes_summary_background_color'],
+			'summary_text_color'         => $config['quizzes_summary_text_color'],
+		);
+	}
+
+	/**
+	 * Get quiz frontend script strings.
+	 *
+	 * @return array
+	 */
+	public static function get_frontend_script_data() {
+
+		$settings = self::get_frontend_settings();
+
+		return array(
+			'correct'       => $settings['correct_text'],
+			'incorrect'     => $settings['incorrect_text'],
+			'summaryPrefix' => $settings['score_prefix_text'],
+		);
+	}
+
+	/**
+	 * Get inline CSS overrides for frontend quiz colors.
+	 *
+	 * @return string
+	 */
+	public static function get_frontend_color_css() {
+
+		$settings = self::get_frontend_settings();
+		$selector = '#eckb-article-page-container-v2 #eckb-article-body #eckb-article-content #eckb-article-content-footer .epkb-article-quiz';
+
+		return EPKB_Utilities::minify_css(
+			$selector . ' {' .
+				'--epkb-quiz-accent-color: ' . sanitize_hex_color( $settings['accent_color'] ) . ';' .
+				'--epkb-quiz-button-text-color: ' . sanitize_hex_color( $settings['button_text_color'] ) . ';' .
+				'--epkb-quiz-card-border-color: ' . sanitize_hex_color( $settings['card_border_color'] ) . ';' .
+				'--epkb-quiz-card-background-color: ' . sanitize_hex_color( $settings['card_background_color'] ) . ';' .
+				'--epkb-quiz-heading-text-color: ' . sanitize_hex_color( $settings['heading_text_color'] ) . ';' .
+				'--epkb-quiz-body-text-color: ' . sanitize_hex_color( $settings['body_text_color'] ) . ';' .
+				'--epkb-quiz-intro-background-color: ' . sanitize_hex_color( $settings['intro_background_color'] ) . ';' .
+				'--epkb-quiz-correct-background-color: ' . sanitize_hex_color( $settings['correct_background_color'] ) . ';' .
+				'--epkb-quiz-correct-border-color: ' . sanitize_hex_color( $settings['correct_border_color'] ) . ';' .
+				'--epkb-quiz-incorrect-background-color: ' . sanitize_hex_color( $settings['incorrect_background_color'] ) . ';' .
+				'--epkb-quiz-incorrect-border-color: ' . sanitize_hex_color( $settings['incorrect_border_color'] ) . ';' .
+				'--epkb-quiz-summary-background-color: ' . sanitize_hex_color( $settings['summary_background_color'] ) . ';' .
+				'--epkb-quiz-summary-text-color: ' . sanitize_hex_color( $settings['summary_text_color'] ) . ';' .
+			'}'
+		);
+	}
+
+	/**
 	 * Get article post types for all KBs.
 	 *
 	 * @return array

@@ -450,9 +450,9 @@ class EPKB_AI_ChatGPT_Vector_Store {
 
 		$file_ids = array();
 		$after = '';
-		$max_files = 5000;
+		$seen_cursors = array();
 
-		while ( count( $file_ids ) < $max_files ) {
+		while ( true ) {
 			$params = array( 'limit' => 100 );
 			if ( ! empty( $after ) ) {
 				$params['after'] = $after;
@@ -480,13 +480,44 @@ class EPKB_AI_ChatGPT_Vector_Store {
 
 			// Get the last file ID for cursor pagination
 			$last_file = end( $response['data'] );
-			$after = isset( $last_file['id'] ) ? $last_file['id'] : '';
-			if ( empty( $after ) ) {
+			$next_after = isset( $last_file['id'] ) ? (string) $last_file['id'] : '';
+			if ( $next_after === '' ) {
 				break;
 			}
+
+			if ( isset( $seen_cursors[ $next_after ] ) ) {
+				return new WP_Error( 'invalid_pagination_cursor', __( 'Vector store pagination cursor repeated while listing files', 'echo-knowledge-base' ) );
+			}
+
+			$seen_cursors[ $next_after ] = true;
+			$after = $next_after;
 		}
 
 		return $file_ids;
+	}
+
+	/**
+	 * Get file details from file storage
+	 *
+	 * @param string $file_id File ID
+	 * @param string $store_id Store ID (ignored for ChatGPT - files exist independently of stores)
+	 * @return array|bool|WP_Error File details, false if not found, or error
+	 */
+	public function get_file_details_from_file_storage( $file_id, $store_id = '' ) {
+
+		if ( empty( $file_id ) ) {
+			return new WP_Error( 'missing_id', __( 'File ID is required', 'echo-knowledge-base' ) );
+		}
+
+		$response = $this->client->request( self::FILES_ENDPOINT . '/' . $file_id, array(), 'GET', 'file_storage' );
+		if ( is_wp_error( $response ) ) {
+			if ( $response->get_error_code() === 'not_found' ) {
+				return false;
+			}
+			return $response;
+		}
+
+		return $response;
 	}
 
 	/**
@@ -502,16 +533,11 @@ class EPKB_AI_ChatGPT_Vector_Store {
 			return new WP_Error( 'missing_id', __( 'File ID is required', 'echo-knowledge-base' ) );
 		}
 
-		$response = $this->client->request( self::FILES_ENDPOINT . '/' . $file_id, array(), 'GET', 'file_storage' );
+		$response = $this->get_file_details_from_file_storage( $file_id, $store_id );
 		if ( is_wp_error( $response ) ) {
-			if ( $response->get_error_code() === 'not_found' ) {
-				return false;
-			}
-			// Other errors (auth, network, etc.) should be returned
 			return $response;
 		}
 
-		// File exists and is accessible
-		return true;
+		return $response !== false;
 	}
 }

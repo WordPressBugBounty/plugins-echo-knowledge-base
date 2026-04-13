@@ -39,9 +39,9 @@ jQuery(document).ready(function($) {
 		$( 'body' ).append( dialogHtml );
 		
 		// Handle Accept button
-		$( '#epkb-no-kb-main-page-dialog .epkb-dbf__footer__accept__btn' ).on( 'click', function() {
-			window.location.href = setupWizardUrl;
-		});
+			$( '#epkb-no-kb-main-page-dialog .epkb-dbf__footer__accept__btn' ).on( 'click', function() {
+				window.location.href = setupWizardUrl;
+			});
 		
 		// Handle Cancel and Close buttons
 		$( '#epkb-no-kb-main-page-dialog .epkb-dbf__footer__cancel__btn, #epkb-no-kb-main-page-dialog .epkb-dbf__close' ).on( 'click', function() {
@@ -86,16 +86,16 @@ jQuery(document).ready(function($) {
 
 		let selected_option = $( this ).find( 'option:selected' );
 
-		// Do nothing for options added by hook (they should execute their own JS)
-		if ( selected_option.attr( 'data-plugin' ) !== 'core' ) {
-			return;
-		}
+			// Do nothing for options added by hook (they should execute their own JS)
+			if ( selected_option.attr( 'data-plugin' ) !== 'core' ) {
+				return;
+			}
 
 		// Redirect if user does not have access for the current page in the selected KB
-		if ( selected_option.val() === 'closed' ) {
-			window.location = selected_option.attr( 'data-target' );
-			return;
-		}
+			if ( selected_option.val() === 'closed' ) {
+				window.location = selected_option.attr( 'data-target' );
+				return;
+			}
 
 		let current_location_href = window.location.href;
 
@@ -3626,6 +3626,7 @@ jQuery(document).ready(function($) {
 		$( '.epkb-glossary-form-buttons' ).show();
 		$( '#epkb-glossary-form' ).slideDown( 200 );
 		$( '#epkb-glossary-term-name' ).focus();
+		glossary_update_bulk_button();
 	});
 
 	// Cancel form
@@ -3633,6 +3634,7 @@ jQuery(document).ready(function($) {
 		$( '#epkb-glossary-form' ).slideUp( 200 );
 		$( '.epkb-glossary-form-buttons' ).hide();
 		$( '#epkb-glossary-create-term' ).show();
+		glossary_update_bulk_button();
 	});
 
 	// Save term (Add Term form only)
@@ -3694,6 +3696,7 @@ jQuery(document).ready(function($) {
 				$( '#epkb-glossary-form' ).slideUp( 200 );
 				$( '.epkb-glossary-form-buttons' ).hide();
 				$( '#epkb-glossary-create-term' ).show();
+				glossary_update_bulk_button();
 			}
 		});
 	});
@@ -3848,7 +3851,7 @@ jQuery(document).ready(function($) {
 
 				if ( ! $( '.epkb-glossary-term-row' ).length ) {
 					$( '.epkb-glossary-terms-table tbody' ).append(
-						'<tr class="epkb-glossary-empty-row"><td colspan="5">No glossary terms found. Click "Add Term" to create one.</td></tr>'
+						'<tr class="epkb-glossary-empty-row"><td colspan="5">' + ( epkb_vars.glossary_no_terms_found || 'No glossary terms found. Click "Add Term" to create one.' ) + '</td></tr>'
 					);
 				}
 
@@ -3904,8 +3907,19 @@ jQuery(document).ready(function($) {
 		glossary_update_bulk_button();
 	});
 
-	// Show/hide bulk publish button based on selected draft terms
+	function glossary_get_selected_term_ids() {
+		let term_ids = [];
+		$( '.epkb-glossary-term-row' ).each( function() {
+			if ( $( this ).find( '.epkb-glossary-term-select' ).is( ':checked' ) ) {
+				term_ids.push( $( this ).data( 'term-id' ) );
+			}
+		});
+		return term_ids;
+	}
+
+	// Show/hide bulk action buttons based on selected terms
 	function glossary_update_bulk_button() {
+		let selected_term_ids = glossary_get_selected_term_ids();
 		let has_draft_checked = false;
 		$( '.epkb-glossary-term-row' ).each( function() {
 			if ( $( this ).attr( 'data-status' ) === 'draft' && $( this ).find( '.epkb-glossary-term-select' ).is( ':checked' ) ) {
@@ -3914,7 +3928,49 @@ jQuery(document).ready(function($) {
 			}
 		});
 		$( '.epkb-glossary-bulk-actions' ).toggle( has_draft_checked );
+		$( '#epkb-glossary-bulk-delete' ).toggle( selected_term_ids.length > 1 && $( '#epkb-glossary-create-term' ).is( ':visible' ) );
 	}
+
+	// Bulk delete
+	$( document ).on( 'click', '#epkb-glossary-bulk-delete', function() {
+
+		let term_ids = glossary_get_selected_term_ids();
+		if ( term_ids.length < 2 ) {
+			return;
+		}
+
+		if ( ! confirm( epkb_vars.glossary_bulk_delete_confirm || 'Are you sure you want to delete the selected terms?' ) ) {
+			return;
+		}
+
+		let postData = {
+			action: 'epkb_glossary_bulk_delete',
+			_wpnonce_epkb_ajax_action: epkb_vars.nonce,
+			term_ids: term_ids
+		};
+
+		epkb_send_ajax( postData, function( response ) {
+			if ( ! response.error && typeof response.message !== 'undefined' ) {
+				epkb_show_success_notification( response.message || epkb_vars.glossary_terms_deleted || 'Terms deleted' );
+
+				let deleted_term_ids = response.data && Array.isArray( response.data.term_ids ) ? response.data.term_ids : term_ids;
+				deleted_term_ids.forEach( function( id ) {
+					$( '.epkb-glossary-term-row[data-term-id="' + id + '"]' ).remove();
+				});
+
+				$( '.epkb-glossary-term-select, #epkb-glossary-select-all' ).prop( 'checked', false );
+
+				if ( ! $( '.epkb-glossary-term-row' ).length ) {
+					$( '.epkb-glossary-terms-table tbody' ).append(
+						'<tr class="epkb-glossary-empty-row"><td colspan="5">' + ( epkb_vars.glossary_no_terms_found || 'No glossary terms found. Click "Add Term" to create one.' ) + '</td></tr>'
+					);
+				}
+
+				glossary_update_bulk_button();
+				glossary_apply_filters();
+			}
+		});
+	});
 
 	// Bulk publish
 	$( document ).on( 'click', '#epkb-glossary-bulk-publish', function() {

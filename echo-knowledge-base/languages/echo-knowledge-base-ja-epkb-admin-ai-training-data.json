@@ -100,24 +100,6 @@
             "Added": [
                 "追加済み"
             ],
-            "Verifying": [
-                "検証中"
-            ],
-            "items": [
-                "アイテム"
-            ],
-            "Verification complete:": [
-                "検証完了:"
-            ],
-            "marked outdated": [
-                "時代遅れとしてマークされました"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "時代遅れのアイテムを再アップロードするには同期を実行してください。."
-            ],
-            "Cancel Verify": [
-                "検証をキャンセル"
-            ],
             "Deleting...": [
                 "削除中..."
             ],
@@ -225,6 +207,30 @@
             ],
             "Failed to add data": [
                 "データの追加に失敗しました。"
+            ],
+            "Checking AI store for orphaned files...": [
+                "AIストアの孤立したファイルをチェックしています..."
+            ],
+            "Verifying": [
+                "検証中"
+            ],
+            "items": [
+                "アイテム"
+            ],
+            "Verification complete:": [
+                "検証完了:"
+            ],
+            "marked outdated": [
+                "時代遅れとしてマークされました"
+            ],
+            "PDFs removed from AI store": [
+                "AIストアから削除されたPDF"
+            ],
+            "AI Notes removed from AI store": [
+                "AIストアから削除されたAIノート"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "時代遅れのアイテムを再アップロードするには同期を実行してください。."
             ],
             "Choose an Action": [
                 "アクションを選択してください。"
@@ -337,8 +343,8 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "ローカルデータベースとAIストアの同期を確実にするため、追加の検証パスを実行します。AIストアからファイルが欠落している場合、再送信できるように古いファイルとしてマークされます。."
             ],
-            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
-                "これにより、アップロードされたPDFを含む、このコレクションで既に追跡されている追加および更新されたアイテムがチェックされます。."
+            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
+                "これにより、このコレクションで既に追跡されている追加済みおよび更新済みの項目をチェックし、AIストアにのみ存在する孤立したPDFとAIノートを削除します。ローカルデータベースの項目は削除されません。."
             ],
             "Collection:": [
                 "コレクション:"
@@ -346,8 +352,11 @@
             "synced items ready to validate": [
                 "検証の準備ができている同期済みアイテム"
             ],
-            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
-                "追加または更新されたアイテムはまだありません。まずコンテンツをAIに送信し、必要に応じて検証を実行してください。."
+            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
+                "追加済みまたは更新済みの項目はまだありません。それでも検証を行うことで、AIストアにのみ残っている孤立したPDFやAIノートを削除できます。."
+            ],
+            "Cancel Verify": [
+                "検証をキャンセル"
             ],
             "Validation in Progress...": [
                 "検証中..."

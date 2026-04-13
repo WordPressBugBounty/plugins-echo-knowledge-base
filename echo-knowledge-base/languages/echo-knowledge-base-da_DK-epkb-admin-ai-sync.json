@@ -13,9 +13,6 @@
             "Error": [
                 "Fejl"
             ],
-            "OK": [
-                "OK"
-            ],
             "No synced items found to verify": [
                 "Ingen synkroniserede elementer fundet til verifikation"
             ],
@@ -118,21 +115,6 @@
             "Sync scheduled, waiting to start...": [
                 "Planlagt synkronisering, venter på at starte..."
             ],
-            "Verifying": [
-                "Verificerer"
-            ],
-            "items": [
-                "elementer"
-            ],
-            "Verification complete:": [
-                "Verifikation afsluttet:"
-            ],
-            "marked outdated": [
-                "markeret forældet"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "Kør synkronisering for at uploade forældede elementer igen."
-            ],
             "Upload completed, but the number of items doesn't match:": [
                 "Upload fuldført, men antallet af elementer stemmer ikke overens:"
             ],
@@ -153,9 +135,6 @@
             ],
             "Verify & Fix": [
                 "Kontroller og ret"
-            ],
-            "Cancel Verify": [
-                "Annuller kontrol"
             ]
         }
     }

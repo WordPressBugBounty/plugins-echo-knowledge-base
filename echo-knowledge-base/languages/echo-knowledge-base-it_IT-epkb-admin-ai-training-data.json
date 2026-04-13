@@ -100,24 +100,6 @@
             "Added": [
                 "Aggiunto"
             ],
-            "Verifying": [
-                "Verifica in corso"
-            ],
-            "items": [
-                "elementi"
-            ],
-            "Verification complete:": [
-                "Verifica completata:"
-            ],
-            "marked outdated": [
-                "Contrassegnato come obsoleto"
-            ],
-            "Run sync to re-upload outdated items.": [
-                "Esegui la sincronizzazione per ri-caricare gli elementi obsoleti."
-            ],
-            "Cancel Verify": [
-                "Annulla verifica"
-            ],
             "Deleting...": [
                 "Eliminazione in corso..."
             ],
@@ -225,6 +207,30 @@
             ],
             "Failed to add data": [
                 "Errore nell'aggiunta dei dati"
+            ],
+            "Checking AI store for orphaned files...": [
+                "Controllo dell'archivio IA per file orfani..."
+            ],
+            "Verifying": [
+                "Verifica in corso"
+            ],
+            "items": [
+                "elementi"
+            ],
+            "Verification complete:": [
+                "Verifica completata:"
+            ],
+            "marked outdated": [
+                "Contrassegnato come obsoleto"
+            ],
+            "PDFs removed from AI store": [
+                "PDF rimossi dall'archivio IA"
+            ],
+            "AI Notes removed from AI store": [
+                "Note IA rimosse dall'archivio IA"
+            ],
+            "Run sync to re-upload outdated items.": [
+                "Esegui la sincronizzazione per ri-caricare gli elementi obsoleti."
             ],
             "Choose an Action": [
                 "Scegli un'azione"
@@ -337,8 +343,8 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Esegui un passaggio di validazione aggiuntivo per assicurarti che il database locale e l'archivio IA rimangano sincronizzati. Se un file manca dall'archivio IA, verrà contrassegnato come obsoleto in modo da poter essere inviato nuovamente."
             ],
-            "This checks Added and Updated items already tracked in this collection, including uploaded PDFs.": [
-                "Questo controlla gli elementi Aggiunti e Aggiornati già tracciati in questa raccolta, inclusi i PDF caricati."
+            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
+                "Questo controlla gli elementi Aggiunti e Aggiornati già tracciati in questa raccolta e rimuove i PDF e le Note IA orfani trovati solo nell'archivio IA. Nessun elemento del database locale viene eliminato."
             ],
             "Collection:": [
                 "Raccolta:"
@@ -346,8 +352,11 @@
             "synced items ready to validate": [
                 "elementi sincronizzati pronti per la validazione"
             ],
-            "No Added or Updated items are available yet. Send content to AI first, then run validation if needed.": [
-                "Non ci sono ancora elementi Aggiunti o Aggiornati disponibili. Invia prima il contenuto all'IA, quindi esegui la validazione se necessario."
+            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
+                "Non sono ancora disponibili elementi Aggiunti o Aggiornati. La convalida può comunque rimuovere i PDF e le Note IA orfani rimasti solo nell'archivio IA."
+            ],
+            "Cancel Verify": [
+                "Annulla verifica"
             ],
             "Validation in Progress...": [
                 "Validazione in corso..."
