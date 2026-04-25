@@ -24,7 +24,7 @@ class EPKB_Glossary_Ctrl {
 	 */
 	public function save_term() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die( EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY );
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_glossary_write' );
 
 		$term_id    = (int) EPKB_Utilities::post( 'term_id', 0 );
 		$term_name  = sanitize_text_field( EPKB_Utilities::post( 'term_name' ) );
@@ -101,7 +101,7 @@ class EPKB_Glossary_Ctrl {
 	 */
 	public function delete_term() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die( EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY );
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_glossary_write' );
 
 		$term_id = (int) EPKB_Utilities::post( 'term_id', 0 );
 		if ( empty( $term_id ) ) {
@@ -124,7 +124,7 @@ class EPKB_Glossary_Ctrl {
 	 */
 	public function bulk_publish() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die( EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY );
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_glossary_write' );
 
 		$term_ids = EPKB_Utilities::post( 'term_ids' );
 		if ( empty( $term_ids ) || ! is_array( $term_ids ) ) {
@@ -159,7 +159,7 @@ class EPKB_Glossary_Ctrl {
 	 */
 	public function bulk_delete() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die( EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY );
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_glossary_write' );
 
 		$term_ids = EPKB_Utilities::post( 'term_ids' );
 		if ( empty( $term_ids ) || ! is_array( $term_ids ) ) {

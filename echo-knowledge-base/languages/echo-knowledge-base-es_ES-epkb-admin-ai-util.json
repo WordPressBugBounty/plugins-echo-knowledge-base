@@ -43,8 +43,8 @@
             "Loading...": [
                 "Cargando..."
             ],
-            "General Settings": [
-                "Ajustes generales"
+            "Go to General Settings": [
+                "Ir a la Configuración General"
             ],
             "Go to Settings": [
                 "Ir a Ajustes"
@@ -70,8 +70,8 @@
             "Setup Steps": [
                 "Pasos de configuración"
             ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
-                "Para utilizar las funciones de IA, configure su clave de API y acepte el acuerdo de privacidad de datos en"
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings.": [
+                "Para usar las funciones de IA, configura tu clave API y acepta el acuerdo de privacidad de datos en los Ajustes generales."
             ],
             "Session Expired": [
                 "Sesión expirada"

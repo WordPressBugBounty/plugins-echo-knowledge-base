@@ -40,6 +40,9 @@
             "OFF": [
                 "ऑफ"
             ],
+            "Errors": [
+                "त्रुटियाँ"
+            ],
             "Email": [
                 "ईमेल"
             ],
@@ -51,6 +54,9 @@
             ],
             "Saving...": [
                 "सहेजा जा रहा है..."
+            ],
+            "Error": [
+                "त्रुटि"
             ],
             "Go to General Settings": [
                 "सामान्य सेटिंग्स पर जाएँ"
@@ -105,6 +111,9 @@
             ],
             "Trigger": [
                 "ट्रिगर"
+            ],
+            "AI error recorded in this conversation": [
+                "इस बातचीत में AI त्रुटि दर्ज की गई"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "क्या आप चयनित वार्तालाप हटाना चाहते हैं?"
@@ -183,6 +192,18 @@
             ],
             "Agent Handover": [
                 "एजेंट हैंडओवर"
+            ],
+            "The most recent AI request failed for this conversation": [
+                "इस बातचीत के लिए सबसे हालिया AI अनुरोध विफल रहा"
+            ],
+            "An earlier AI request failed during this conversation": [
+                "इस बातचीत के दौरान एक पिछला AI अनुरोध विफल रहा"
+            ],
+            "Failed": [
+                "विफल"
+            ],
+            "Error Logged": [
+                "त्रुटि लॉग की गई"
             ],
             "Number of messages": [
                 "संदेशों की संख्या"

@@ -101,7 +101,7 @@ class EPKB_AI_Admin_Page {
 		$tabs = $this->top_tabs;
 		
 		// Hide PRO Features tab if AI Features Pro plugin is active
-		if ( defined( 'AI_FEATURES_PRO_PLUGIN_NAME' ) && ! defined( 'ECHO_WP_RELEASE_VERSION' ) ) {
+		if ( EPKB_AI_Utilities::is_ai_features_pro_enabled() && ! defined( 'ECHO_WP_RELEASE_VERSION' ) ) {
 			unset( $tabs['pro-features'] );
 		}
 		
@@ -177,14 +177,15 @@ class EPKB_AI_Admin_Page {
 			'tabs_data' => $this->get_all_tabs_data( $active_tab ),  // Pre-load tab settings
 			'are_settings_configured' => EPKB_AI_General_Settings_Tab::are_settings_configured(),
 			'show_get_started' => $show_get_started,  // Pre-calculated for immediate display
-			'discount_coupon' => EPKB_AI_PRO_Features_Tab::get_discount_coupon(),
-			'legacy_models_notice_active' => ! empty( EPKB_AI_Config_Specs::get_legacy_model_updates() )
+			'discount_coupon' => EPKB_AI_PRO_Features_Tab::get_discount_coupon()
 		);
 
 		// Start the page output
 		echo '<div class="wrap" id="epkb-admin-ai-page-wrap">'; ?>
 
 		<h1></h1> <!-- This is here for WP admin consistency -->
+
+		<?php EPKB_AI_Utilities::display_ai_pro_version_mismatch_notice(); ?>
 
 		<div class="epkb-wrap">
 			<div id="epkb-ai-admin-react-root" class="epkb-ai-config-page-react" data-epkb-ai-settings='<?php echo esc_attr( wp_json_encode( $react_data ) ); ?>'>
@@ -357,6 +358,32 @@ class EPKB_AI_Admin_Page {
 	}
 
 	/**
+	 * Get the active Training Data collection ID from the current request.
+	 *
+	 * @param array $collections Available collections keyed by collection ID.
+	 * @return int
+	 */
+	private static function get_requested_training_data_collection_id( $collections ) {
+
+		if ( empty( $collections ) || ! is_array( $collections ) ) {
+			return 0;
+		}
+
+		if ( ! empty( $_GET['active_sub_tab'] ) ) {
+			$active_sub_tab = sanitize_text_field( wp_unslash( $_GET['active_sub_tab'] ) );
+			if ( preg_match( '/^collection-(\d+)$/', $active_sub_tab, $matches ) ) {
+				$collection_id = absint( $matches[1] );
+				if ( isset( $collections[ $collection_id ] ) ) {
+					return $collection_id;
+				}
+			}
+		}
+
+		$collection_ids = array_keys( $collections );
+		return (int) reset( $collection_ids );
+	}
+
+	/**
 	 * Get setup steps configuration for a specific tab
 	 *
 	 * @param string $tab_id Tab identifier: 'chat', 'search', or 'general-settings'
@@ -373,11 +400,22 @@ class EPKB_AI_Admin_Page {
 		// Check if at least one collection has data synced to vector store for the current provider
 		$collections = EPKB_AI_Training_Data_Config_Specs::get_training_data_collections();
 		$collection_ids_with_store = array();
+		$active_training_collection_id = 0;
+		$active_collection_has_data = false;
+		$active_collection_has_synced_data = false;
 		if ( ! is_wp_error( $collections ) ) {
 			foreach ( $collections as $collection_id => $collection ) {
 				if ( ! empty( $collection['ai_training_data_store_id'] ) ) {
 					$collection_ids_with_store[] = $collection_id;
 				}
+			}
+
+			$active_training_collection_id = self::get_requested_training_data_collection_id( $collections );
+			if ( ! empty( $active_training_collection_id ) ) {
+				$training_data_db = new EPKB_AI_Training_Data_DB();
+				$active_collection_stats = $training_data_db->get_status_statistics( $active_training_collection_id );
+				$active_collection_has_data = ! empty( $active_collection_stats['total'] );
+				$active_collection_has_synced_data = ! empty( $active_collection_stats['synced'] );
 			}
 		}
 		$has_synced_data = ! empty( $collection_ids_with_store ) && EPKB_AI_Training_Data_DB::count_synced_data( $collection_ids_with_store ) > 0;
@@ -554,7 +592,7 @@ class EPKB_AI_Admin_Page {
 
 			case 'training-data':
 				// Hide setup steps if active collection has synced data
-				if ( $has_synced_data ) {
+				if ( $active_collection_has_synced_data ) {
 					return array(
 						'all_completed' => true,
 						'steps'         => array(),
@@ -578,7 +616,7 @@ class EPKB_AI_Admin_Page {
 					array(
 						'title'           => __( 'Choose Training Data', 'echo-knowledge-base' ),
 						'description'     => __( 'Select which content to include in your collection.', 'echo-knowledge-base' ),
-						'completed'       => false,
+						'completed'       => $active_collection_has_data,
 						'disabled'        => ! $has_collection,
 						'doc_link'        => 'https://www.echoknowledgebase.com/documentation/step-2-add-ai-training-data/',
 						'pointer_target'  => '.epkb-ai-action-choose-data',
@@ -588,8 +626,8 @@ class EPKB_AI_Admin_Page {
 					array(
 						'title'           => __( 'Send Data to AI', 'echo-knowledge-base' ),
 						'description'     => __( 'Sync your training data to the AI provider.', 'echo-knowledge-base' ),
-						'completed'       => $has_synced_data,
-						'disabled'        => ! $has_collection,
+						'completed'       => $active_collection_has_synced_data,
+						'disabled'        => ! $active_collection_has_data,
 						'doc_link'        => 'https://www.echoknowledgebase.com/documentation/step-2-add-ai-training-data/',
 						'pointer_target'  => '.epkb-ai-action-sync-data',
 						'pointer_title'   => __( 'Send Data to AI', 'echo-knowledge-base' ),

@@ -49,6 +49,9 @@
             "Tag updated successfully": [
                 "Étiquette mise à jour avec succès"
             ],
+            "Get AI Features PRO": [
+                "Obtenir les fonctionnalités IA PRO"
+            ],
             "Add New Tag": [
                 "Ajouter une nouvelle étiquette"
             ],
@@ -141,9 +144,6 @@
             ],
             "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
                 "L'IA identifie les informations manquantes et les questions sans réponse dans vos articles. Découvrez quels sujets nécessitent une couverture plus approfondie."
-            ],
-            "Get AI Features PRO": [
-                "Obtenir les fonctionnalités IA PRO"
             ],
             "Analyzing article for content gaps...": [
                 "Analyse en cours de la page de documentation pour les lacunes de contenu..."

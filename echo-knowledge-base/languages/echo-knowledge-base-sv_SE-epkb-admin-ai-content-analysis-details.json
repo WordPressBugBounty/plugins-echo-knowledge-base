@@ -49,6 +49,9 @@
             "Tag updated successfully": [
                 "Tagg uppdaterades framgångsrikt"
             ],
+            "Get AI Features PRO": [
+                "Få AI-funktioner PRO"
+            ],
             "Add New Tag": [
                 "Lägg till ny etikett"
             ],
@@ -141,9 +144,6 @@
             ],
             "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
                 "AI identifierar saknad information och obesvarade frågor i dina artiklar. Upptäck vilka ämnen som behöver mer täckning."
-            ],
-            "Get AI Features PRO": [
-                "Få AI-funktioner PRO"
             ],
             "Analyzing article for content gaps...": [
                 "Analyserar artikel för innehållsgap..."

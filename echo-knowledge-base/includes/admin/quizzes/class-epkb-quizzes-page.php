@@ -112,6 +112,7 @@ class EPKB_Quizzes_Page {
 					<li><?php esc_html_e( 'Review and edit the title, intro, questions, answers, and explanations before publishing.', 'echo-knowledge-base' ); ?></li>
 					<li><?php esc_html_e( 'Published quizzes appear only on their source article page, below the article content.', 'echo-knowledge-base' ); ?></li>
 				</ul>
+				<?php self::display_demo_quiz_cta(); ?>
 				<p>
 					<button type="button" class="epkb-btn epkb-secondary-btn epkb-quiz-feedback-trigger"><?php esc_html_e( 'Suggest a New Quiz Feature', 'echo-knowledge-base' ); ?></button>
 				</p>
@@ -161,6 +162,7 @@ class EPKB_Quizzes_Page {
 					</div>
 					<div class="epkb-admin-info-box__body">
 						<p><?php esc_html_e( 'Enable the Quizzes feature in the Settings tab to manage quizzes here.', 'echo-knowledge-base' ); ?></p>
+						<?php self::display_demo_quiz_cta(); ?>
 					</div>
 				</div>
 			</div> <?php
@@ -191,6 +193,8 @@ class EPKB_Quizzes_Page {
 								</a>
 							</div>
 						</div>
+
+						<?php self::display_demo_quiz_cta(); ?>
 
 						<div id="epkb-quiz-editor-notice" class="epkb-quizzes-admin__notice" hidden></div>
 						<div id="epkb-quiz-editor-warning" class="epkb-quizzes-admin__warning" hidden></div>
@@ -340,7 +344,8 @@ class EPKB_Quizzes_Page {
 
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
 		$quiz_dependency_attrs = ' data-dependency-ids="quizzes_enable" data-enable-on-values="on"';
-
+		$active_provider = EPKB_AI_Provider::get_active_provider();
+		$active_provider_label = EPKB_AI_Provider::get_provider_label( $active_provider );
 		ob_start(); ?>
 
 		<input id="epkb-list-of-kbs" type="hidden" value="<?php echo esc_attr( EPKB_KB_Config_DB::DEFAULT_KB_ID ); ?>">
@@ -362,9 +367,27 @@ class EPKB_Quizzes_Page {
 						'text'              => esc_html__( 'Quizzes Enabled', 'echo-knowledge-base' ),
 						'checked'           => $kb_config['quizzes_enable'] === 'on',
 						'input_group_class' => 'eckb-conditional-setting-input epkb-quizzes-settings-toggle ',
-					) ); ?>
+					) );
+
+					self::display_demo_quiz_cta(); ?>
 				</div>
 			</div>
+
+			<div class="epkb-admin-info-box eckb-condition-depend__quizzes_enable"<?php echo $quiz_dependency_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+				<div class="epkb-admin-info-box__header">
+					<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-magic"></div>
+					<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'AI Generation', 'echo-knowledge-base' ); ?></div>
+				</div>
+					<div class="epkb-admin-info-box__body">
+						<p>
+							<?php
+							echo esc_html(
+								sprintf( __( 'Quiz drafts use your active AI provider: %s.', 'echo-knowledge-base' ), $active_provider_label )
+							);
+							?>
+						</p>
+					</div>
+				</div>
 
 			<div class="epkb-admin-info-box eckb-condition-depend__quizzes_enable"<?php echo $quiz_dependency_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 				<div class="epkb-admin-info-box__header">
@@ -392,6 +415,26 @@ class EPKB_Quizzes_Page {
 						'value' => $kb_config['quizzes_question_label_text'],
 						'max'   => 40,
 						'desc'  => esc_html__( 'Displayed before the number, for example: Question 1', 'echo-knowledge-base' ),
+					) );
+
+					EPKB_HTML_Elements::horizontal_text_inputs( array(
+						'name'              => 'quizzes_true_false_text',
+						'label'             => esc_html__( 'True / False Text', 'echo-knowledge-base' ),
+						'input_group_class' => 'epkb-quizzes-settings__true-false-pair',
+						'inputs'            => array(
+							array(
+								'name'  => 'quizzes_true_text',
+								'label' => esc_html__( 'True', 'echo-knowledge-base' ),
+								'value' => $kb_config['quizzes_true_text'],
+								'max'   => 40,
+							),
+							array(
+								'name'  => 'quizzes_false_text',
+								'label' => esc_html__( 'False', 'echo-knowledge-base' ),
+								'value' => $kb_config['quizzes_false_text'],
+								'max'   => 40,
+							),
+						),
 					) );
 
 					EPKB_HTML_Elements::text( array(
@@ -512,6 +555,22 @@ class EPKB_Quizzes_Page {
 		</div> <?php
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Display demo quiz CTA.
+	 */
+	private static function display_demo_quiz_cta() { ?>
+		<div class="epkb-quizzes-admin__demo-cta">
+			<div class="epkb-quizzes-admin__demo-cta-copy">
+				<div class="epkb-quizzes-admin__demo-cta-label"><?php esc_html_e( 'See the Demo Quiz', 'echo-knowledge-base' ); ?></div>
+				<p><?php esc_html_e( 'Open our live demo quiz to see how the quiz experience looks for your readers.', 'echo-knowledge-base' ); ?></p>
+			</div>
+			<a href="<?php echo esc_url( EPKB_Quizzes_Utilities::get_demo_quiz_url() ); ?>" class="epkb-btn epkb-primary-btn" target="_blank" rel="noopener noreferrer">
+				<span class="epkbfa epkbfa-external-link"></span>
+				<?php esc_html_e( 'See Demo Quiz', 'echo-knowledge-base' ); ?>
+			</a>
+		</div> <?php
 	}
 
 	/**

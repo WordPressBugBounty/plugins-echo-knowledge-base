@@ -57,6 +57,7 @@ class EPKB_KB_Config_Category {
 	public function display_category_fields( $category ) {
 
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $this->kb_id );
+		$generate_icon_url = 'https://www.echoknowledgebase.com/documentation/generate-category-icons/';
 
 		$current_main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config );
 		$current_main_page = empty( $current_main_page_id) ? '' : get_post( $current_main_page_id );
@@ -118,7 +119,7 @@ class EPKB_KB_Config_Category {
 			<<?php echo $is_new_category ? 'div' : 'td'; ?>>				<?php
 
 				self::category_icon_message( 'epkb-icons-are-enabled', $category_icon_message, '', '');        ?>
-                
+
 				<div class="epkb-categories-icons epkb-categories-icons--visible">
 					<div class="epkb-categories-icons__tabs-header">
 						<div class="epkb-categories-icons__button <?php echo ( $active_icon_type == 'font' ) ? 'epkb-categories-icons__button--active' : ''; ?>" id="epkb_font_icon" data-type="font">
@@ -127,6 +128,10 @@ class EPKB_KB_Config_Category {
 							<div class="epkb-categories-icons__button <?php echo ( $active_icon_type == 'image' ) ? 'epkb-categories-icons__button--active' : ''; ?>" id="epkb_image_icon"
 							    data-type="image"><?php esc_html_e( 'Image Icon', 'echo-knowledge-base' ); ?>
 							</div>
+							<a class="epkb-categories-icons__link" href="<?php echo esc_url( $generate_icon_url ); ?>" target="_blank" rel="noopener noreferrer">
+								<span><?php esc_html_e( 'Generate Icon', 'echo-knowledge-base' ); ?></span>
+								<span class="epkbfa epkbfa-external-link" aria-hidden="true"></span>
+							</a>
 					</div>
 					<div class="epkb-categories-icons__tab-body epkb-categories-icons__tab-body--font
 					  <?php echo ( $active_icon_type == 'font' ) ? 'epkb-categories-icons__tab-body--active' : ''; ?>"><?php EPKB_Icons::get_icons_pack_html( true, $active_icon_name ); ?></div>

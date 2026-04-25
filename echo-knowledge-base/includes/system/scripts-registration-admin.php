@@ -224,6 +224,7 @@ function epkb_load_admin_plugin_pages_resources() {
 		wp_enqueue_style( 'epkb-shortcodes' );
 	} else if ( $page == 'epkb-quizzes' ) {
 		$current_user = wp_get_current_user();
+		$true_false_choices = EPKB_Quizzes_Utilities::get_true_false_choices();
 
 		wp_enqueue_script( 'epkb-quizzes-admin' );
 		wp_localize_script( 'epkb-quizzes-admin', 'epkbQuizAdmin', array(
@@ -244,6 +245,8 @@ function epkb_load_admin_plugin_pages_resources() {
 				'choiceD'            => esc_html__( 'Choice D', 'echo-knowledge-base' ),
 				'multipleChoice'     => esc_html__( 'Multiple Choice', 'echo-knowledge-base' ),
 				'trueFalse'          => esc_html__( 'True / False', 'echo-knowledge-base' ),
+				'trueText'           => $true_false_choices[0],
+				'falseText'          => $true_false_choices[1],
 				'remove'             => esc_html__( 'Remove', 'echo-knowledge-base' ),
 				'questionText'       => esc_html__( 'Question', 'echo-knowledge-base' ),
 				'correctAnswer'      => esc_html__( 'Correct Answer', 'echo-knowledge-base' ),
@@ -393,84 +396,29 @@ function epkb_load_admin_plugin_pages_resources() {
 		wp_set_script_translations( 'epkb-admin-ai-pro-features', 'echo-knowledge-base', Echo_Knowledge_Base::$plugin_dir . 'languages' );
 		wp_set_script_translations( 'epkb-admin-ai-app', 'echo-knowledge-base', Echo_Knowledge_Base::$plugin_dir . 'languages' );
 
-		// Set up API Fetch middleware and AI presets
-		$ai_presets = array();
-		$chat_presets = EPKB_AI_Provider::get_model_presets( 'chat' );
-		$search_presets = EPKB_AI_Provider::get_model_presets( 'search' );
-		$layout_presets = EPKB_AI_Search_Tab::get_search_results_presets();
+			// Set up API Fetch middleware and search layout presets
+			$ai_presets = array(
+				'search_layout' => array(),
+			);
+			$layout_presets = EPKB_AI_Search_Tab::get_search_results_presets();
 
-		// Convert presets to simpler format for JS (removing label and description)
-		foreach ( $chat_presets as $key => $preset ) {
-			// Skip custom preset as it doesn't have actual values
-			if ( $key === 'custom' ) {
-				continue;
+			// Add layout presets for search results
+			foreach ( $layout_presets as $key => $preset ) {
+				// Skip custom preset
+				if ( $key === 'custom' ) {
+					continue;
+				}
+				$ai_presets['search_layout'][ $key ] = $preset['settings'];
 			}
-			$ai_presets['chat'][$key] = array();
-			// Only include parameters that actually exist in the preset
-			if ( isset( $preset['model'] ) ) {
-				$ai_presets['chat'][$key]['model'] = $preset['model'];
-			}
-			if ( isset( $preset['verbosity'] ) ) {
-				$ai_presets['chat'][$key]['verbosity'] = $preset['verbosity'];
-			}
-			if ( isset( $preset['reasoning'] ) ) {
-				$ai_presets['chat'][$key]['reasoning'] = $preset['reasoning'];
-			}
-			if ( isset( $preset['temperature'] ) ) {
-				$ai_presets['chat'][$key]['temperature'] = $preset['temperature'];
-			}
-			if ( isset( $preset['max_output_tokens'] ) ) {
-				$ai_presets['chat'][$key]['max_output_tokens'] = $preset['max_output_tokens'];
-			}
-			if ( isset( $preset['top_p'] ) ) {
-				$ai_presets['chat'][$key]['top_p'] = $preset['top_p'];
-			}
-		}
 
-		foreach ( $search_presets as $key => $preset ) {
-			// Skip custom preset as it doesn't have actual values
-			if ( $key === 'custom' ) {
-				continue;
-			}
-			$ai_presets['search'][$key] = array();
-			// Only include parameters that actually exist in the preset
-			if ( isset( $preset['model'] ) ) {
-				$ai_presets['search'][$key]['model'] = $preset['model'];
-			}
-			if ( isset( $preset['verbosity'] ) ) {
-				$ai_presets['search'][$key]['verbosity'] = $preset['verbosity'];
-			}
-			if ( isset( $preset['reasoning'] ) ) {
-				$ai_presets['search'][$key]['reasoning'] = $preset['reasoning'];
-			}
-			if ( isset( $preset['temperature'] ) ) {
-				$ai_presets['search'][$key]['temperature'] = $preset['temperature'];
-			}
-			if ( isset( $preset['max_output_tokens'] ) ) {
-				$ai_presets['search'][$key]['max_output_tokens'] = $preset['max_output_tokens'];
-			}
-			if ( isset( $preset['top_p'] ) ) {
-				$ai_presets['search'][$key]['top_p'] = $preset['top_p'];
-			}
-		}
-
-		// Add layout presets for search results
-		foreach ( $layout_presets as $key => $preset ) {
-			// Skip custom preset
-			if ( $key === 'custom' ) {
-				continue;
-			}
-			$ai_presets['search_layout'][$key] = $preset['settings'];
-		}
-
-		wp_localize_script( 'epkb-admin-ai-util', 'epkb_ai_api', array(
-			'nonce' => wp_create_nonce( 'wp_rest' ),
-			'rest_url' => esc_url_raw( rest_url() ),
-			'admin_url' => esc_url_raw( admin_url() ),
-			'presets' => $ai_presets,
-			'timezone_string' => wp_timezone_string(),
-			'gmt_offset' => get_option( 'gmt_offset', 0 )
-		) );
+			wp_localize_script( 'epkb-admin-ai-util', 'epkb_ai_api', array(
+				'nonce' => wp_create_nonce( 'wp_rest' ),
+				'rest_url' => esc_url_raw( rest_url() ),
+				'admin_url' => esc_url_raw( admin_url() ),
+				'presets' => $ai_presets,
+				'timezone_string' => wp_timezone_string(),
+				'gmt_offset' => get_option( 'gmt_offset', 0 )
+			) );
 
 		// Initialize nonce middleware
 		wp_add_inline_script( 'epkb-admin-ai-util', sprintf( 'wp.apiFetch.use( wp.apiFetch.createNonceMiddleware( "%s" ) );', wp_create_nonce( 'wp_rest' ) ), 'after' );
@@ -543,13 +491,13 @@ function epkb_load_admin_plugin_pages_resources() {
 		wp_set_script_translations( 'epkb-admin-ai-content-analysis-app', 'echo-knowledge-base', Echo_Knowledge_Base::$plugin_dir . 'languages' );
 
 		// Set up API Fetch middleware
-		wp_localize_script( 'epkb-admin-ai-util', 'epkb_ai_api', array(
-			'nonce' => wp_create_nonce( 'wp_rest' ),
-			'rest_url' => esc_url_raw( rest_url() ),
-			'admin_url' => esc_url_raw( admin_url() ),
-			'timezone_string' => wp_timezone_string(),
-			'gmt_offset' => get_option( 'gmt_offset', 0 )
-		) );
+			wp_localize_script( 'epkb-admin-ai-util', 'epkb_ai_api', array(
+				'nonce' => wp_create_nonce( 'wp_rest' ),
+				'rest_url' => esc_url_raw( rest_url() ),
+				'admin_url' => esc_url_raw( admin_url() ),
+				'timezone_string' => wp_timezone_string(),
+				'gmt_offset' => get_option( 'gmt_offset', 0 )
+			) );
 
 		// Initialize nonce middleware
 		wp_add_inline_script( 'epkb-admin-ai-util', sprintf( 'wp.apiFetch.use( wp.apiFetch.createNonceMiddleware( "%s" ) );', wp_create_nonce( 'wp_rest' ) ), 'after' );

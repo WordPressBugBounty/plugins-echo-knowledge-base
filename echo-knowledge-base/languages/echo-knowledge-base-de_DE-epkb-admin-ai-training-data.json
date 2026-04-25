@@ -223,20 +223,14 @@
             "marked outdated": [
                 "als veraltet markiert"
             ],
-            "PDFs removed from AI store": [
-                "PDFs aus dem KI-Speicher entfernt"
-            ],
-            "AI Notes removed from AI store": [
-                "KI-Notizen aus dem KI-Speicher entfernt"
-            ],
             "Run sync to re-upload outdated items.": [
                 "Synchronisieren Sie, um veraltete Elemente erneut hochzuladen."
             ],
             "Choose an Action": [
                 "Aktion auswählen"
             ],
-            "Validate & Fix Synced Items": [
-                "Synchronisierte Elemente validieren und reparieren"
+            "Dismiss": [
+                "Schließen"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Wählen Sie Inhaltstypen (KB-Artikel, Beiträge, Seiten) aus, die in die Tabelle geladen werden sollen. Dies sendet noch nichts an KI."
@@ -273,6 +267,9 @@
             ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "Synchronisierung fehlgeschlagen. Erneut senden, um es erneut zu versuchen. Prüfen Sie, dass der Inhalt vorhanden ist und nicht leer ist."
+            ],
+            "Validate & Fix Synced Items": [
+                "Synchronisierte Elemente validieren und reparieren"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Wählen Sie aus, welche Inhaltstypen Sie in Ihre KI-Trainingsdaten aufnehmen möchten."
@@ -343,17 +340,11 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Führen Sie einen zusätzlichen Validierungsdurchlauf aus, um sicherzustellen, dass die lokale Datenbank und der KI-Speicher synchron bleiben. Wenn eine Datei im KI-Speicher fehlt, wird sie als veraltet markiert, damit sie erneut gesendet werden kann."
             ],
-            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
-                "Dies überprüft hinzugefügte und aktualisierte Elemente, die bereits in dieser Sammlung erfasst werden, und entfernt verwaiste PDFs und KI-Notizen, die sich nur im KI-Speicher befinden. Es werden keine lokalen Datenbankelemente gelöscht."
-            ],
             "Collection:": [
                 "Sammlung:"
             ],
             "synced items ready to validate": [
                 "synchronisierte Elemente bereit zur Validierung"
-            ],
-            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
-                "Es sind noch keine hinzugefügten oder aktualisierten Elemente verfügbar. Die Validierung kann dennoch verwaiste PDFs und KI-Notizen entfernen, die nur im KI-Speicher verblieben sind."
             ],
             "Cancel Verify": [
                 "Überprüfung abbrechen"

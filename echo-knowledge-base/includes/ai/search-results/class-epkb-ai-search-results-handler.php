@@ -67,7 +67,7 @@ class EPKB_AI_Search_Results_Handler {
 					'details'    => $result->get_error_message(),
 				) );
 			}
-			return self::get_empty_response( $section_name );
+			return self::get_ai_error_response( $section_name, $result );
 		}
 
 		// Check if we have a valid response
@@ -90,7 +90,7 @@ class EPKB_AI_Search_Results_Handler {
 
 		return array(
 			'has_content' => true,
-			'html' => self::get_section_wrapper( $html, 'ai-answer', $section_name, true ),
+			'html' => self::get_section_wrapper( $html, 'ai-answer', $section_name, true, $query ),
 			'data' => array(
 				'query' => $query,
 				'chat_id' => $chat_id
@@ -136,7 +136,7 @@ class EPKB_AI_Search_Results_Handler {
 				'id' => $post->ID,
 				'title' => $post->post_title,
 				'url' => $article_url,
-				'excerpt' => ! empty( $post->post_excerpt ) ? $post->post_excerpt : wp_trim_words( $post->post_content, 25 )
+				'excerpt' => EPKB_Utilities::is_link_editor( $post ) ? '' : ( ! empty( $post->post_excerpt ) ? $post->post_excerpt : wp_trim_words( $post->post_content, 25 ) )
 			);
 		}
 
@@ -146,7 +146,9 @@ class EPKB_AI_Search_Results_Handler {
 			$html .= '<li class="epkb-ai-sr-article-item">';
 			$html .= '<a href="' . esc_url( $article['url'] ) . '" class="epkb-ai-sr-article-link" data-kb-article-id="' . esc_attr( $article['id'] ) . '">';
 			$html .= '<h4 class="epkb-ai-sr-article-title">' . esc_html( $article['title'] ) . '</h4>';
-			$html .= '<p class="epkb-ai-sr-article-excerpt">' . esc_html( $article['excerpt'] ) . '</p>';
+			if ( ! empty( $article['excerpt'] ) ) {
+				$html .= '<p class="epkb-ai-sr-article-excerpt">' . esc_html( $article['excerpt'] ) . '</p>';
+			}
 			$html .= '</a>';
 			$html .= '</li>';
 		}
@@ -169,18 +171,26 @@ class EPKB_AI_Search_Results_Handler {
 	 * @param string $section_id Section ID
 	 * @param string $section_name Custom section name from config
 	 * @param bool $show_copy_button Whether to show copy to clipboard button
+	 * @param string $continue_chat_query When non-empty and AI Chat is enabled, render an "Open in AI Chat" button carrying this query
 	 * @return string Complete section HTML
 	 */
-	public static function get_section_wrapper( $inner_html, $section_id, $section_name = '', $show_copy_button = false ) {
+	public static function get_section_wrapper( $inner_html, $section_id, $section_name = '', $show_copy_button = false, $continue_chat_query = '' ) {
 		$section_class = 'epkb-ai-sr-section epkb-ai-sr-section--' . esc_attr( $section_id );
+
+		$show_continue_chat_button = ! empty( $continue_chat_query )
+			&& EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_results_continue_in_chat', 'on' ) === 'on'
+			&& EPKB_AI_Chat_Frontend::can_display_chat_widget();
 
 		$output = '<div class="' . $section_class . '" data-section-id="' . esc_attr( $section_id ) . '">';
 
-		// Section header with title and optional copy button
-		if ( ! empty( $section_name ) || $show_copy_button ) {
+		// Section header with title and optional action buttons
+		if ( ! empty( $section_name ) || $show_copy_button || $show_continue_chat_button ) {
 			$output .= '<div class="epkb-ai-sr-section__header">';
 			if ( ! empty( $section_name ) ) {
 				$output .= '<h3 class="epkb-ai-sr-section__title">' . esc_html( $section_name ) . '</h3>';
+			}
+			if ( $show_continue_chat_button ) {
+				$output .= self::get_continue_chat_button_html( $continue_chat_query );
 			}
 			if ( $show_copy_button ) {
 				$output .= self::get_copy_button_html();
@@ -207,6 +217,19 @@ class EPKB_AI_Search_Results_Handler {
 	}
 
 	/**
+	 * Get "Open in AI Chat" button HTML
+	 *
+	 * @param string $query User's original search query, passed via data attribute to pre-fill the chat input
+	 * @return string
+	 */
+	public static function get_continue_chat_button_html( $query ) {
+		return '<button class="epkb-ai-sr-continue-chat-btn" type="button" title="' . esc_attr__( 'Open in AI Chat', 'echo-knowledge-base' ) . '" data-query="' . esc_attr( $query ) . '">' .
+			'<span class="epkb-ai-sr-continue-chat-btn__icon epkbfa epkbfa-comments"></span>' .
+			'<span class="epkb-ai-sr-continue-chat-btn__text">' . esc_html__( 'Open in AI Chat', 'echo-knowledge-base' ) . '</span>' .
+		'</button>';
+	}
+
+	/**
 	 * Get empty response (no content available)
 	 *
 	 * @param string $section_name Optional section name/title
@@ -217,6 +240,36 @@ class EPKB_AI_Search_Results_Handler {
 			'has_content' => false,
 			'html' => '',
 			'title' => $section_name
+		);
+	}
+
+	/**
+	 * Get section response for an AI error.
+	 *
+	 * Admins should see the full AI error in Smart Search results, matching AI Chat behavior.
+	 * Regular users keep the existing empty-state flow.
+	 *
+	 * @param string   $section_name Optional section name/title.
+	 * @param WP_Error $error        AI request error.
+	 * @return array
+	 */
+	private static function get_ai_error_response( $section_name, $error ) {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return self::get_empty_response( $section_name );
+		}
+
+		$processed_error = EPKB_AI_Log::rest_process_wp_error( $error, EPKB_AI_Log::get_error_status_code( $error->get_error_code() ) );
+		$error_data = empty( $processed_error['data'] ) || ! is_array( $processed_error['data'] ) ? array() : $processed_error['data'];
+		$error_message = empty( $error_data['admin_message'] ) ? $error->get_error_message() : $error_data['admin_message'];
+
+		return array(
+			'has_content'      => false,
+			'html'             => '',
+			'title'            => $section_name,
+			'error'            => $error_message,
+			'error_type'       => empty( $error_data['error_type'] ) ? 'unknown' : $error_data['error_type'],
+			'display_as_error' => true,
 		);
 	}
 }

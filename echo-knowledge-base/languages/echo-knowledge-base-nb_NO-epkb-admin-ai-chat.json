@@ -40,6 +40,9 @@
             "OFF": [
                 "AV"
             ],
+            "Errors": [
+                "Feil"
+            ],
             "Email": [
                 "E-post"
             ],
@@ -51,6 +54,9 @@
             ],
             "Saving...": [
                 "Lagrer..."
+            ],
+            "Error": [
+                "Feil"
             ],
             "Go to General Settings": [
                 "Gå til Generelle innstillinger"

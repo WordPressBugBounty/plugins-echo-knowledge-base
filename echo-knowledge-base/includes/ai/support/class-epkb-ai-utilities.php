@@ -5,6 +5,11 @@ class EPKB_AI_Utilities {
 	const AI_PRO_NOTES_POST_TYPE = 'aipro_ai_note';
 	const DEFAULT_TIMEOUT = 300;
 	const DEFAULT_MINIMUM_EXECUTION_TIME_LIMIT = 60; // seconds
+	const AI_PRO_PLUGIN_BASENAME = 'ai-features-pro/ai-features-pro.php';
+	const AI_PRO_VERSION_MISMATCH_OPTION = 'epkb_ai_pro_version_mismatch';
+
+	// Minimum AI Features Pro version compatible with the current KB version.
+	const MIN_AI_PRO_VERSION = '6.2.0';
 
 	/**
 	 * Generate uuid v4 output.
@@ -139,12 +144,191 @@ class EPKB_AI_Utilities {
 	}
 
 	/**
+	 * Register AI PRO compatibility hooks.
+	 */
+	public static function register_ai_pro_version_guard() {
+		add_action( 'plugins_loaded', array( __CLASS__, 'maybe_disable_incompatible_ai_pro' ), 1 );
+		add_action( 'admin_notices', array( __CLASS__, 'display_ai_pro_version_mismatch_admin_notice' ) );
+		add_action( 'network_admin_notices', array( __CLASS__, 'display_ai_pro_version_mismatch_admin_notice' ) );
+	}
+
+	/**
 	 * Check if AI Features Pro is enabled
 	 *
 	 * @return bool True if AI Features Pro is enabled
 	 */
 	public static function is_ai_features_pro_enabled() {
-		return defined( 'AI_FEATURES_PRO_PLUGIN_NAME' );
+		return defined( 'AI_FEATURES_PRO_PLUGIN_NAME' ) && ! self::is_ai_pro_version_outdated();
+	}
+
+	/**
+	 * Check whether the active AI Features Pro version is older than the minimum required by KB.
+	 *
+	 * @return bool True if AI PRO is active and its version is below MIN_AI_PRO_VERSION.
+	 */
+	public static function is_ai_pro_version_outdated() {
+		if ( ! defined( 'AI_FEATURES_PRO_PLUGIN_NAME' ) || ! class_exists( 'AI_Features_Pro' ) || empty( AI_Features_Pro::$version ) ) {
+			return false;
+		}
+		return version_compare( AI_Features_Pro::$version, self::MIN_AI_PRO_VERSION, '<' );
+	}
+
+	/**
+	 * Prevent incompatible AI PRO from bootstrapping and disable it when core can own the notice.
+	 */
+	public static function maybe_disable_incompatible_ai_pro() {
+
+		if ( ! defined( 'AI_FEATURES_PRO_PLUGIN_NAME' ) ) {
+			return;
+		}
+
+		if ( ! self::is_ai_pro_version_outdated() ) {
+			self::clear_ai_pro_version_mismatch_notice_if_resolved();
+			return;
+		}
+
+		remove_action( 'plugins_loaded', 'aipro_get_instance' );
+
+		$mismatch = array(
+			'kb_version' => Echo_Knowledge_Base::$version,
+			'ai_pro_version' => AI_Features_Pro::$version,
+			'required_ai_pro_version' => self::MIN_AI_PRO_VERSION,
+		);
+
+		update_option( self::AI_PRO_VERSION_MISMATCH_OPTION, $mismatch, false );
+
+		if ( ! is_admin() || ! current_user_can( 'activate_plugins' ) ) {
+			return;
+		}
+
+		if ( ! function_exists( 'deactivate_plugins' ) || ! function_exists( 'is_plugin_active_for_network' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$autoloader_file = WP_PLUGIN_DIR . '/ai-features-pro/includes/system/class-aipro-autoloader.php';
+		if ( ! class_exists( 'AIPRO_AI_Email_Notifications_Handler' ) && file_exists( $autoloader_file ) ) {    /* @disregard PREFIX */
+			require_once $autoloader_file;
+		}
+
+		deactivate_plugins(
+			self::AI_PRO_PLUGIN_BASENAME,
+			true,
+			is_multisite() && is_plugin_active_for_network( self::AI_PRO_PLUGIN_BASENAME )
+		);
+	}
+
+	/**
+	 * Render a persistent, non-dismissible admin notice when core disabled an incompatible AI PRO build.
+	 */
+	public static function display_ai_pro_version_mismatch_admin_notice() {
+
+		if ( ! current_user_can( EPKB_Utilities::ADMIN_CAPABILITY ) ) {
+			return;
+		}
+
+		if ( ! EPKB_KB_Handler::is_kb_request() ) {
+			return;
+		}
+
+		$notice = get_option( self::AI_PRO_VERSION_MISMATCH_OPTION, array() );
+		if ( empty( $notice ) || empty( $notice['required_ai_pro_version'] ) ) {
+			return;
+		}
+
+		$installed_version = self::get_installed_ai_pro_version();
+		if ( empty( $installed_version ) || version_compare( $installed_version, self::MIN_AI_PRO_VERSION, '>=' ) ) {
+			delete_option( self::AI_PRO_VERSION_MISMATCH_OPTION );
+			return;
+		}
+
+		$plugins_url = is_network_admin() ? network_admin_url( 'plugins.php' ) : admin_url( 'plugins.php' );
+		?>
+		<div class="notice notice-error">
+			<p>
+				<strong><?php esc_html_e( 'AI Features could not be loaded.', 'echo-knowledge-base' ); ?></strong>
+				<?php
+				if ( defined( 'AMAG_PLUGIN_NAME' ) ) {
+					printf(
+						/* translators: 1: installed AI Features version, 2: current Access Manager version, 3: required AI Features version */
+						esc_html__( 'AI Features %1$s is incompatible with Access Manager %2$s. Access Manager %2$s requires AI Features %3$s or later. Update AI Features, then activate it again.', 'echo-knowledge-base' ),
+						esc_html( $installed_version ),
+						esc_html( Echo_Knowledge_Base::$amag_version ),
+						esc_html( self::MIN_AI_PRO_VERSION )
+					);
+				} else {
+					printf(
+						/* translators: 1: installed AI Features version, 2: current Knowledge Base version, 3: required AI Features version */
+						esc_html__( 'AI Features %1$s is incompatible with Knowledge Base %2$s. Knowledge Base %2$s requires AI Features %3$s or later. Update AI Features, then activate it again.', 'echo-knowledge-base' ),
+						esc_html( $installed_version ),
+						esc_html( Echo_Knowledge_Base::$version ),
+						esc_html( self::MIN_AI_PRO_VERSION )
+					);
+				}
+				?>
+				<a href="<?php echo esc_url( $plugins_url ); ?>"><?php esc_html_e( 'Go to Plugins', 'echo-knowledge-base' ); ?></a>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Clear the stored mismatch notice once AI PRO is removed or updated to a compatible version.
+	 */
+	private static function clear_ai_pro_version_mismatch_notice_if_resolved() {
+		$notice = get_option( self::AI_PRO_VERSION_MISMATCH_OPTION, array() );
+		if ( empty( $notice ) ) {
+			return;
+		}
+
+		$installed_version = self::get_installed_ai_pro_version();
+		if ( empty( $installed_version ) || version_compare( $installed_version, self::MIN_AI_PRO_VERSION, '>=' ) ) {
+			delete_option( self::AI_PRO_VERSION_MISMATCH_OPTION );
+		}
+	}
+
+	/**
+	 * Read the installed AI PRO version directly from the plugin header.
+	 *
+	 * @return string
+	 */
+	private static function get_installed_ai_pro_version() {
+		$plugin_file = WP_PLUGIN_DIR . '/' . self::AI_PRO_PLUGIN_BASENAME;
+		if ( ! file_exists( $plugin_file ) ) {
+			return '';
+		}
+
+		$file_data = get_file_data( $plugin_file, array( 'Version' => 'Version' ) );
+		return empty( $file_data['Version'] ) ? '' : $file_data['Version'];
+	}
+
+	/**
+	 * Render a large, non-dismissible notice when AI PRO is older than required by KB.
+	 * Intended to be called at the top of AI admin pages.
+	 */
+	public static function display_ai_pro_version_mismatch_notice() {
+
+		if ( ! self::is_ai_pro_version_outdated() ) {
+			return;
+		}   ?>
+
+		<div class="epkb-ai-version-mismatch-notice" role="alert">
+			<h2 class="epkb-ai-version-mismatch-notice__title">
+				<span class="epkbfa epkbfa-exclamation-triangle" aria-hidden="true"></span>
+				<?php esc_html_e( 'AI Features Plugin Update Required', 'echo-knowledge-base' ); ?>
+			</h2>
+			<p class="epkb-ai-version-mismatch-notice__message">				<?php
+				printf(
+					/* translators: 1: Knowledge Base version 2: Required AI Features Pro version 3: Currently installed AI Features Pro version */
+					esc_html__( 'Knowledge Base %1$s requires the AI Features plugin %2$s or later. You are currently running AI Features %3$s. Please update the AI Features plugin to ensure compatibility.', 'echo-knowledge-base' ),
+					esc_html( Echo_Knowledge_Base::$version ),
+					esc_html( self::MIN_AI_PRO_VERSION ),
+					esc_html( AI_Features_Pro::$version )
+				);				?>
+			</p>
+			<p class="epkb-ai-version-mismatch-notice__action">
+				<a class="button button-primary" href="<?php echo esc_url( admin_url( 'plugins.php' ) ); ?>"><?php esc_html_e( 'Go to Plugins', 'echo-knowledge-base' ); ?></a>
+			</p>
+		</div>			<?php
 	}
 
 	/**
@@ -1329,221 +1513,4 @@ class EPKB_AI_Utilities {
 		return $safe_timeout;
 	}
 
-	/**
-	 * Redact common PII from text (email, phone, IP, payment card, SSN, SIN).
-	 *
-	 * @param string $text
-	 * @return string
-	 */
-	public static function redact_pii_from_text( $text ) {
-		if ( empty( $text ) || ! is_string( $text ) ) {
-			return '';
-		}
-
-		$redacted = $text;
-		$card_placeholder = __( '[redacted card]', 'echo-knowledge-base' );
-		$ssn_placeholder = __( '[redacted ssn]', 'echo-knowledge-base' );
-		$sin_placeholder = __( '[redacted sin]', 'echo-knowledge-base' );
-
-		$redacted = preg_replace_callback(
-			'/\b(?:\d[ -]*?){13,19}\b/',
-			static function( $matches ) use ( $card_placeholder ) {
-				$candidate = preg_replace( '/\D+/', '', $matches[0] );
-				$length = strlen( $candidate );
-				if ( $length < 13 || $length > 19 ) {
-					return $matches[0];
-				}
-
-				if ( ! EPKB_AI_Utilities::is_luhn_valid( $candidate ) ) {
-					return $matches[0];
-				}
-
-				return $card_placeholder;
-			},
-			$redacted
-		);
-
-		$redacted = preg_replace(
-			'/\b(?!000|666|9\d\d)\d{3}[- ]?(?!00)\d{2}[- ]?(?!0000)\d{4}\b/',
-			$ssn_placeholder,
-			$redacted
-		);
-
-		$redacted = preg_replace_callback(
-			'/\b\d{3}[- ]?\d{3}[- ]?\d{3}\b/',
-			static function( $matches ) use ( $sin_placeholder ) {
-				$candidate = preg_replace( '/\D+/', '', $matches[0] );
-				if ( strlen( $candidate ) !== 9 ) {
-					return $matches[0];
-				}
-
-				if ( ! EPKB_AI_Utilities::is_luhn_valid( $candidate ) ) {
-					return $matches[0];
-				}
-
-				return $sin_placeholder;
-			},
-			$redacted
-		);
-
-		$patterns = array(
-			'/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i' => __( '[redacted email]', 'echo-knowledge-base' ),
-			'/\b\d{1,3}(?:\.\d{1,3}){3}\b/' => __( '[redacted ip]', 'echo-knowledge-base' ),
-			'/\+?\d[\d\s().-]{7,}\d/' => __( '[redacted phone]', 'echo-knowledge-base' ),
-		);
-
-		foreach ( $patterns as $pattern => $replacement ) {
-			$redacted = preg_replace( $pattern, $replacement, $redacted );
-		}
-
-		return $redacted;
-	}
-
-	/**
-	 * Validate a numeric string with the Luhn checksum.
-	 *
-	 * @param string $number
-	 * @return bool
-	 */
-	private static function is_luhn_valid( $number ) {
-		if ( empty( $number ) || ! is_string( $number ) ) {
-			return false;
-		}
-
-		if ( preg_match( '/\D/', $number ) ) {
-			return false;
-		}
-
-		$sum = 0;
-		$alternate = false;
-		for ( $i = strlen( $number ) - 1; $i >= 0; $i-- ) {
-			$digit = intval( $number[ $i ] );
-			if ( $alternate ) {
-				$digit *= 2;
-				if ( $digit > 9 ) {
-					$digit -= 9;
-				}
-			}
-			$sum += $digit;
-			$alternate = ! $alternate;
-		}
-
-		return ( $sum % 10 ) === 0;
-	}
-
-	/**
-	 * Normalize chat message HTML into readable plain text for handoff emails.
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	private static function normalize_handoff_message_content( $content ) {
-		if ( ! is_string( $content ) ) {
-			return '';
-		}
-
-		$content = preg_replace(
-			array(
-				'/<br\s*\/?>/i',
-				'/<\/p>/i',
-				'/<li[^>]*>/i',
-				'/<\/li>/i',
-				'/<\/(div|ul|ol|h[1-6]|blockquote)>/i',
-				'/<p[^>]*>/i',
-				'/<(div|ul|ol|h[1-6]|blockquote)[^>]*>/i',
-			),
-			array(
-				"\n",
-				"\n\n",
-				'- ',
-				"\n",
-				"\n",
-				'',
-				"\n",
-			),
-			$content
-		);
-
-		if ( ! is_string( $content ) ) {
-			return '';
-		}
-
-		$content = html_entity_decode( wp_strip_all_tags( $content ), ENT_QUOTES, 'UTF-8' );
-		$content = preg_replace( '/\r\n|\r/', "\n", $content );
-		$content = preg_replace( "/\n{3,}/", "\n\n", $content );
-
-		if ( ! is_string( $content ) ) {
-			return '';
-		}
-
-		$lines = array_filter(
-			array_map( 'trim', explode( "\n", $content ) ),
-			static function( $line ) {
-				return $line !== '';
-			}
-		);
-
-		return implode( "\n", $lines );
-	}
-
-	/**
-	 * Build one separator-style transcript block for a single message.
-	 *
-	 * @param string $role
-	 * @param string $content
-	 * @return string
-	 */
-	private static function format_handoff_transcript_block( $role, $content ) {
-		$label = $role === 'user' ? 'USER' : 'AI';
-		return '---- ' . $label . " ----\n" . $content;
-	}
-
-	/**
-	 * Build a plain-text chat transcript for handoff requests.
-	 *
-	 * @param array $messages
-	 * @return string
-	 */
-	public static function format_chat_transcript_for_handoff( $messages ) {
-		if ( empty( $messages ) || ! is_array( $messages ) ) {
-			return '';
-		}
-
-		$blocks = array();
-		foreach ( $messages as $message ) {
-			if ( ! is_array( $message ) ) {
-				continue;
-			}
-
-			$role = isset( $message['role'] ) ? sanitize_key( $message['role'] ) : '';
-			if ( empty( $role ) && isset( $message['isUser'] ) ) {
-				$role = $message['isUser'] ? 'user' : 'assistant';
-			}
-
-			$content = '';
-			if ( isset( $message['content'] ) ) {
-				$content = $message['content'];
-			} elseif ( isset( $message['text'] ) ) {
-				$content = $message['text'];
-			}
-
-			if ( ! is_string( $content ) ) {
-				continue;
-			}
-
-			$content = self::normalize_handoff_message_content( $content );
-			if ( $content === '' ) {
-				continue;
-			}
-
-			$blocks[] = self::format_handoff_transcript_block( $role, $content );
-		}
-
-		if ( empty( $blocks ) ) {
-			return '';
-		}
-
-		$transcript = "\n\n" . implode( "\n\n", $blocks );
-		return self::redact_pii_from_text( $transcript );
-	}
 }

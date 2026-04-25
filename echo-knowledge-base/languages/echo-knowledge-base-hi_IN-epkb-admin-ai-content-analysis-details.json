@@ -49,6 +49,9 @@
             "Tag updated successfully": [
                 "टैग सफलतापूर्वक अपडेट किया गया।"
             ],
+            "Get AI Features PRO": [
+                "AI फीचर्स PRO प्राप्त करें"
+            ],
             "Add New Tag": [
                 "नया टैग जोड़ें"
             ],
@@ -141,9 +144,6 @@
             ],
             "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
                 "AI आपके लेखों में गायब जानकारी और अनुत्तरित प्रश्न पहचान लेता है। जानें किन विषयों को और अधिक कवरेज की आवश्यकता है।."
-            ],
-            "Get AI Features PRO": [
-                "AI फीचर्स PRO प्राप्त करें"
             ],
             "Analyzing article for content gaps...": [
                 "डॉक्यूमेंटेशन पेज के लिए सामग्री के अंतर का विश्लेषण किया जा रहा है..."

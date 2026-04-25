@@ -1601,7 +1601,7 @@ class EPKB_Config_Settings_Page {
 						'article-content-padding-v2' => '',
 						'article-content-background-color-v2' => '',
 					],
-                    'data'      => [ 'target' => 'article_content' ],
+					'data'      => [ 'target' => 'article_content' ],
 				),
 				array(
 					'title'     => esc_html__( 'Article Page Spacing', 'echo-knowledge-base' ),
@@ -1621,7 +1621,7 @@ class EPKB_Config_Settings_Page {
 						'article_views_counter_text' => '',
 					],
 					'data'      => [ 'target' => 'article_views_counter' ],
-					'desc' => esc_html__( 'The counter provides an approximate measure of user views, but bot-generated views cannot be fully filtered out. Comparing view counts between articles can be more practical than relying on absolute view counts.', 'echo-knowledge-base' ),
+					'desc'      => esc_html__( 'The counter provides an approximate measure of user views, but bot-generated views cannot be fully filtered out. Comparing view counts between articles can be more practical than relying on absolute view counts.', 'echo-knowledge-base' ),
 				),
 				array(
 					'title'     => esc_html__( 'Article Features - Top', 'echo-knowledge-base' ),
@@ -1636,7 +1636,7 @@ class EPKB_Config_Settings_Page {
 						'last_updated_on_text' => '',
 						'author_text' => '',
 					],
-                    'data'      => [ 'target' => 'article_features_top' ],
+					'data'      => [ 'target' => 'article_features_top' ],
 				),
 				array(
 					'title'     => esc_html__( 'Article Features - Bottom', 'echo-knowledge-base' ),
@@ -1699,25 +1699,11 @@ class EPKB_Config_Settings_Page {
 					'data'      => [ 'target' => 'print_button' ]
 				),
 				array(
-					'title'     => esc_html__( 'Glossary', 'echo-knowledge-base' ),
-					'fields'    => [
-						'glossary_enable' => '',
-					],
-					'data'      => [ 'target' => 'glossary' ],
-				),
-				array(
-					'title'     => esc_html__( 'Quizzes', 'echo-knowledge-base' ),
-					'fields'    => $this->kb_config['id'] == EPKB_KB_Config_DB::DEFAULT_KB_ID ? [
-						'quizzes_enable' => '',
-					] : [],
-					'data'      => [ 'target' => 'quizzes' ],
-				),
-				array(
-					'title'         => esc_html__( 'Widgets/Shortcodes', 'echo-knowledge-base' ),
-					'fields'        => [
+					'title'       => esc_html__( 'Widgets/Shortcodes', 'echo-knowledge-base' ),
+					'fields'      => [
 						'widg_search_results_limit' => 'widg',
 					],
-					'requirement'     => 'widg',
+					'requirement' => 'widg',
 				)
 			],
 			'article-page-sidebar' => [

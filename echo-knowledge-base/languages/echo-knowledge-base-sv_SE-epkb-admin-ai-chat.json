@@ -40,6 +40,9 @@
             "OFF": [
                 "AV"
             ],
+            "Errors": [
+                "Fel"
+            ],
             "Email": [
                 "E-post"
             ],
@@ -51,6 +54,9 @@
             ],
             "Saving...": [
                 "Sparar …"
+            ],
+            "Error": [
+                "Fel"
             ],
             "Go to General Settings": [
                 "Gå till allmänna inställningar"
@@ -105,6 +111,9 @@
             ],
             "Trigger": [
                 "Utlösare"
+            ],
+            "AI error recorded in this conversation": [
+                "AI-fel registrerat i denna konversation"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "Är du säker på att du vill ta bort de valda konversationerna?"
@@ -184,6 +193,18 @@
             "Agent Handover": [
                 "Agentöverföring"
             ],
+            "The most recent AI request failed for this conversation": [
+                "Den senaste AI-begäran misslyckades för denna konversation"
+            ],
+            "An earlier AI request failed during this conversation": [
+                "En tidigare AI-begäran misslyckades under denna konversation"
+            ],
+            "Failed": [
+                "Misslyckades"
+            ],
+            "Error Logged": [
+                "Fel loggat"
+            ],
             "Number of messages": [
                 "Antal meddelanden"
             ],
@@ -210,6 +231,9 @@
             ],
             "Full Conversation": [
                 "Hela konversationen"
+            ],
+            "AI Error": [
+                "AI-fel"
             ],
             "No messages in this conversation.": [
                 "Inga meddelanden i denna konversation."

@@ -42,6 +42,8 @@ class EPKB_AI_Content_Analysis_Page {
 
 		<h1></h1> <!-- This is here for WP admin consistency -->
 
+		<?php EPKB_AI_Utilities::display_ai_pro_version_mismatch_notice(); ?>
+
 		<div class="epkb-wrap">
 			<div class="epkb-content-analysis-layout">
 				<div id="epkb-content-analysis-react-root"

@@ -220,6 +220,20 @@ class EPKB_AI_PRO_Features_Tab {
 					__( 'Custom questions, answers, and explanations', 'echo-knowledge-base' ),
 					__( 'Show quizzes below article content', 'echo-knowledge-base' )
 				),
+				'link_url' => EPKB_Quizzes_Utilities::get_demo_quiz_url(),
+				'link_label' => __( 'See Demo Quiz', 'echo-knowledge-base' ),
+			),
+			array(
+				'id' => 'ai-glossary-term-generator',
+				'title' => __( 'AI Glossary Term Generator', 'echo-knowledge-base' ),
+				'description' => __( 'Let AI scan your Knowledge Base articles and automatically suggest glossary terms with definitions.', 'echo-knowledge-base' ),
+				'icon' => 'epkbfa epkbfa-magic',
+				'icon_color' => '#9B59B6',
+				'benefits' => array(
+					__( 'AI discovers glossary-worthy terms from your articles', 'echo-knowledge-base' ),
+					__( 'Review, edit, and approve suggested terms before adding', 'echo-knowledge-base' ),
+					__( 'Customize AI guidance with optional prompts', 'echo-knowledge-base' )
+				),
 			),
 			array(
 				'id' => 'content-gaps-analysis',

@@ -242,11 +242,20 @@ jQuery( document ).ready( function( $ ) {
 		$questionsEmpty.prop( 'hidden', hasQuestions );
 	}
 
+	function getTrueFalseLabels() {
+		return {
+			trueText: String( $( '#quizzes_true_text' ).val() || epkbQuizAdmin.strings.trueText || '' ),
+			falseText: String( $( '#quizzes_false_text' ).val() || epkbQuizAdmin.strings.falseText || '' )
+		};
+	}
+
 	function buildCorrectChoiceOptions( type ) {
 		if ( type === 'true_false' ) {
+			const labels = getTrueFalseLabels();
+
 			return [
-				{ value: 0, label: 'True' },
-				{ value: 1, label: 'False' }
+				{ value: 0, label: labels.trueText },
+				{ value: 1, label: labels.falseText }
 			];
 		}
 
@@ -264,8 +273,10 @@ jQuery( document ).ready( function( $ ) {
 		const $correctSelect = $row.find( '.epkb-quiz-question__correct-choice' );
 
 		if ( type === 'true_false' ) {
-			$choiceInputs.eq( 0 ).val( 'True' ).prop( 'readonly', true );
-			$choiceInputs.eq( 1 ).val( 'False' ).prop( 'readonly', true );
+			const labels = getTrueFalseLabels();
+
+			$choiceInputs.eq( 0 ).val( labels.trueText ).prop( 'readonly', true );
+			$choiceInputs.eq( 1 ).val( labels.falseText ).prop( 'readonly', true );
 			$choiceInputs.eq( 2 ).val( '' ).prop( 'readonly', true );
 			$choiceInputs.eq( 3 ).val( '' ).prop( 'readonly', true );
 			$row.find( '.epkb-quiz-question__choice' ).eq( 2 ).prop( 'hidden', true );
@@ -661,6 +672,10 @@ jQuery( document ).ready( function( $ ) {
 		$questions.append( createQuestionRow() );
 		refreshQuestionRows();
 		setDirty( true );
+	} );
+
+	$( document ).on( 'input change', '#quizzes_true_text, #quizzes_false_text', function() {
+		refreshQuestionRows();
 	} );
 
 	$( document ).on( 'change', '.epkb-quiz-question__type', function() {

@@ -86,17 +86,20 @@ class EPKB_AI_Search_Results_Display {
 	 * Sets up window.epkbAISearchResults and window.epkbAISearchResultsShortcode
 	 */
 	public static function output_inline_script_data() {
-		$script_data = self::get_script_data();		?>
+		$script_data = self::get_script_data();
+		$is_admin = current_user_can( 'manage_options' );		?>
 		<script type="text/javascript">
 			window.epkbAISearchResults = window.epkbAISearchResults || {};
 			window.epkbAISearchResults.rest_url = <?php echo wp_json_encode( esc_url_raw( rest_url() ) ); ?>;
 			window.epkbAISearchResults.rest_nonce = <?php echo wp_json_encode( epkb_get_instance()->security_obj->get_nonce() ); ?>;
 			window.epkbAISearchResults.i18n = <?php echo wp_json_encode( $script_data ); ?>;
+			window.epkbAISearchResults.is_admin = <?php echo wp_json_encode( $is_admin ); ?>;
 
 			window.epkbAISearchResultsShortcode = window.epkbAISearchResultsShortcode || {};
 			window.epkbAISearchResultsShortcode.rest_url = window.epkbAISearchResults.rest_url;
 			window.epkbAISearchResultsShortcode.rest_nonce = window.epkbAISearchResults.rest_nonce;
 			window.epkbAISearchResultsShortcode.i18n = window.epkbAISearchResults.i18n;
+			window.epkbAISearchResultsShortcode.is_admin = window.epkbAISearchResults.is_admin;
 		</script>		<?php
 	}
 

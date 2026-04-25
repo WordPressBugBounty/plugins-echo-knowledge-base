@@ -15,6 +15,14 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	const OPTION_NAME = 'epkb_ai_configuration';
 
 	/**
+	 * Clear cached AI configuration plus any derived caches.
+	 */
+	public static function clear_cache() {
+		parent::clear_cache();
+		EPKB_AI_Provider::clear_cache();
+	}
+
+	/**
 	 * Get AI refusal message (translatable)
 	 *
 	 * @return string
@@ -38,10 +46,6 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	 * @return array
 	 */
 	public static function get_config_fields_specifications() {
-
-		// Get default model specs for default values
-		$default_model_spec = EPKB_ChatGPT_Client::get_models_and_default_params( EPKB_ChatGPT_Client::DEFAULT_MODEL );
-		$default_params = $default_model_spec['default_params'];
 
 		// translators: %s is the AI refusal prompt message
 		$default_instructions = sprintf( __( 'You may ONLY answer using information from the vector store. Do not mention references, documents, files, or sources. Do not reveal retrieval, guess, speculate, or use outside knowledge. If no relevant information is found, reply exactly: %s If relevant information is found, you may give structured explanations, including comparisons, pros and cons, or decision factors, but only if they are in the data. Answer only what the data supports; when unsure, leave it out.', 'echo-knowledge-base' ), self::get_ai_refusal_prompt() );
@@ -109,76 +113,22 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			'ai_chat_preset' => array(
 				'name'        => 'ai_chat_preset',
 				'type'        => EPKB_Input_Filter::TEXT,
-				'default'     => EPKB_AI_Provider::FASTEST_MODEL,
+				'default'     => EPKB_AI_Provider::BALANCED_PRESET,
 				'min'         => 0,
 				'max'         => 50
 			),
-			'ai_chat_widgets' => array(
-				'name'        => 'ai_chat_widgets',
-				'type'        => EPKB_Input_Filter::INTERNAL_ARRAY,
-				'default'     => array( 1 ),
-			),
-			'ai_chatgpt_chat_model' => array(
-				'name'         => 'ai_chatgpt_chat_model',
-				'type'         => EPKB_Input_Filter::SELECTION,
-				'options'      => [],
-				'default'      => EPKB_ChatGPT_Client::DEFAULT_MODEL
-			),
-			'ai_gemini_chat_model' => array(
-				'name'         => 'ai_gemini_chat_model',
-				'type'         => EPKB_Input_Filter::SELECTION,
-				'options'      => [],
-				'default'      => EPKB_Gemini_Client::DEFAULT_MODEL
-			),
-			'ai_chat_instructions' => array(
-				'name'        => 'ai_chat_instructions',
-				'type'        => EPKB_Input_Filter::AI_PROMPT,
-				'default'     => $default_instructions,
-				'min'         => 0,
-				'max'         => 10000
-			),
-			// Chat-specific tuning parameters
-			'ai_chat_temperature' => array(
-				'name'        => 'ai_chat_temperature',
-				'type'        => EPKB_Input_Filter::FLOAT_NUMBER,
-				'default'     => isset( $default_params['temperature'] ) ? $default_params['temperature'] : 0.2,
-				'min'         => 0.0,
-				'max'         => 2.0
-			),
-			'ai_chat_top_p' => array(
-				'name'        => 'ai_chat_top_p',
-				'type'        => EPKB_Input_Filter::FLOAT_NUMBER,
-				'default'     => isset( $default_params['top_p'] ) ? $default_params['top_p'] : 1.0,
-				'min'         => 0.0,
-				'max'         => 1.0
-			),
-			'ai_chat_max_output_tokens' => array(
-				'name'        => 'ai_chat_max_output_tokens',
-				'type'        => EPKB_Input_Filter::NUMBER,
-				'default'     => isset( $default_params['max_output_tokens'] ) ? $default_params['max_output_tokens'] : EPKB_ChatGPT_Client::DEFAULT_MAX_OUTPUT_TOKENS,
-				'min'         => 500,
-				'max'         => 16384
-			),
-			'ai_chat_verbosity' => array(
-				'name'        => 'ai_chat_verbosity',
-				'type'        => EPKB_Input_Filter::SELECTION,
-				'options'     => array(
-					'low'    => __( 'Low', 'echo-knowledge-base' ),
-					'medium' => __( 'Medium', 'echo-knowledge-base' ),
-					'high'   => __( 'High', 'echo-knowledge-base' ),
+				'ai_chat_widgets' => array(
+					'name'        => 'ai_chat_widgets',
+					'type'        => EPKB_Input_Filter::INTERNAL_ARRAY,
+					'default'     => array( 1 ),
 				),
-				'default'     => 'low'
-			),
-			'ai_chat_reasoning' => array(
-				'name'        => 'ai_chat_reasoning',
-				'type'        => EPKB_Input_Filter::SELECTION,
-				'options'     => array(
-					'low'    => __( 'Low', 'echo-knowledge-base' ),
-					'medium' => __( 'Medium', 'echo-knowledge-base' ),
-					'high'   => __( 'High', 'echo-knowledge-base' ),
+				'ai_chat_instructions' => array(
+					'name'        => 'ai_chat_instructions',
+					'type'        => EPKB_Input_Filter::AI_PROMPT,
+					'default'     => $default_instructions,
+					'min'         => 0,
+					'max'         => 10000
 				),
-				'default'     => 'low'
-			),
 
 			/***  AI Chat Display Settings ***/
 			'ai_chat_display_mode' => array(
@@ -480,7 +430,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			'ai_search_preset' => array(
 				'name'        => 'ai_search_preset',
 				'type'        => EPKB_Input_Filter::TEXT,
-				'default'     => EPKB_AI_Provider::FASTEST_MODEL,
+				'default'     => EPKB_AI_Provider::BALANCED_PRESET,
 				'min'         => 0,
 				'max'         => 50
 			),
@@ -494,62 +444,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'default'     => 'simple_search'
 			),
 
-			/**   AI Search Model */
-			'ai_chatgpt_search_model' => array(
-				'name'        => 'ai_chatgpt_search_model',
-				'type'        => EPKB_Input_Filter::SELECTION,
-				'options'     => [],
-				'default'     => EPKB_ChatGPT_Client::DEFAULT_MODEL
-			),
-			'ai_gemini_search_model' => array(
-				'name'        => 'ai_gemini_search_model',
-				'type'        => EPKB_Input_Filter::SELECTION,
-				'options'     => [],
-				'default'     => EPKB_Gemini_Client::DEFAULT_MODEL
-			),
-			'ai_search_temperature' => array(
-				'name'        => 'ai_search_temperature',
-				'type'        => EPKB_Input_Filter::FLOAT_NUMBER,
-				'default'     => isset( $default_params['temperature'] ) ? $default_params['temperature'] : 0.2,
-				'min'         => 0.0,
-				'max'         => 2.0
-			),
-			'ai_search_top_p' => array(
-				'name'        => 'ai_search_top_p',
-				'type'        => EPKB_Input_Filter::FLOAT_NUMBER,
-				'default'     => isset( $default_params['top_p'] ) ? $default_params['top_p'] : 1.0,
-				'min'         => 0.0,
-				'max'         => 1.0
-			),
-			'ai_search_max_output_tokens' => array(
-				'name'        => 'ai_search_max_output_tokens',
-				'type'        => EPKB_Input_Filter::NUMBER,
-				'default'     => isset( $default_params['max_output_tokens'] ) ? $default_params['max_output_tokens'] : EPKB_ChatGPT_Client::DEFAULT_MAX_OUTPUT_TOKENS,
-				'min'         => 500,
-				'max'         => 16384
-			),
-			'ai_search_verbosity' => array(
-				'name'        => 'ai_search_verbosity',
-				'type'        => EPKB_Input_Filter::SELECTION,
-				'options'     => array(
-					'low'    => __( 'Low', 'echo-knowledge-base' ),
-					'medium' => __( 'Medium', 'echo-knowledge-base' ),
-					'high'   => __( 'High', 'echo-knowledge-base' ),
-				),
-				'default'     => 'low'
-			),
-			'ai_search_reasoning' => array(
-				'name'        => 'ai_search_reasoning',
-				'type'        => EPKB_Input_Filter::SELECTION,
-				'options'     => array(
-					'low'    => __( 'Low', 'echo-knowledge-base' ),
-					'medium' => __( 'Medium', 'echo-knowledge-base' ),
-					'high'   => __( 'High', 'echo-knowledge-base' ),
-				),
-				'default'     => 'low'
-			),
-
-			/**   AI Search - Ask AI */
+				/**   AI Search - Ask AI */
 			'ai_search_instructions' => array(
 				'name'        => 'ai_search_instructions',
 				'type'        => EPKB_Input_Filter::AI_PROMPT,
@@ -626,6 +521,11 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'default'     => 5,
 				'min'         => 1,
 				'max'         => 20
+			),
+			'ai_search_results_continue_in_chat' => array(
+				'name'        => 'ai_search_results_continue_in_chat',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'off'
 			),
 
 			/***  AI Search Results - Section Names ***/
@@ -875,6 +775,11 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	 */
 	public static function update_ai_config( $original_config, $new_config ) {
 
+		$original_config['ai_provider'] = EPKB_AI_Provider::normalize_provider( isset( $original_config['ai_provider'] ) ? $original_config['ai_provider'] : '' );
+		if ( isset( $new_config['ai_provider'] ) ) {
+			$new_config['ai_provider'] = EPKB_AI_Provider::normalize_provider( $new_config['ai_provider'] );
+		}
+
 		if ( ! EPKB_Utilities::is_ai_features_pro_enabled() && isset( $new_config['ai_search_mode'] ) && $new_config['ai_search_mode'] === 'smart_search' ) {
 			return new WP_Error( 'validation_failed', __( 'Smart Search requires AI Features PRO.', 'echo-knowledge-base' ) );
 		}
@@ -884,11 +789,7 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			$new_config = self::reset_inactive_provider_collections( $original_config, $new_config );
 		}
 
-		$new_config = array_merge(
-			self::get_legacy_model_updates( $original_config ),
-			$new_config,
-			self::get_legacy_model_updates( $new_config )
-		);
+		$new_config = EPKB_AI_Provider::migrate_ai_config( array_merge( $original_config, $new_config ) );
 
 		$new_config = parent::update_config( $new_config );
 		if ( is_wp_error( $new_config ) ) {
@@ -943,46 +844,6 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 	}
 
 	/**
-	 * Get legacy model updates for the provided AI config.
-	 *
-	 * @param array|null $config
-	 * @return array
-	 */
-	public static function get_legacy_model_updates( $config = null ) {
-		if ( $config === null ) {
-			$config = self::get_ai_config();
-		}
-
-		if ( empty( $config ) || ! is_array( $config ) ) {
-			return array();
-		}
-
-		$legacy_model_map = array(
-			'ai_gemini_chat_model' => array(
-				'gemini-2.5-flash-lite' => 'gemini-3.1-flash-lite-preview',
-				'gemini-3-pro-preview'  => 'gemini-3.1-pro-preview',
-			),
-			'ai_gemini_search_model' => array(
-				'gemini-2.5-flash-lite' => 'gemini-3.1-flash-lite-preview',
-				'gemini-3-pro-preview'  => 'gemini-3.1-pro-preview',
-			),
-		);
-		$updates = array();
-
-		foreach ( $legacy_model_map as $field_name => $field_map ) {
-			if ( empty( $config[ $field_name ] ) || ! is_string( $config[ $field_name ] ) ) {
-				continue;
-			}
-
-			if ( isset( $field_map[ $config[ $field_name ] ] ) ) {
-				$updates[ $field_name ] = $field_map[ $config[ $field_name ] ];
-			}
-		}
-
-		return $updates;
-	}
-
-	/**
 	 * Reset collection settings that belong to the now-inactive provider when provider changes
 	 *
 	 * @param array $original_config Original configuration before the update
@@ -1021,9 +882,10 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				continue;
 			}
 
-			$collection_provider = isset( $all_collections[$collection_id]['ai_training_data_provider'] )
-				? $all_collections[$collection_id]['ai_training_data_provider']
-				: EPKB_AI_Provider::PROVIDER_GEMINI;
+			$collection_provider = self::get_collection_provider_for_provider_switch( $all_collections[$collection_id] );
+			if ( empty( $collection_provider ) ) {
+				continue;
+			}
 
 			// If collection belongs to the old provider, reset it to 0
 			if ( $collection_provider === $old_provider ) {
@@ -1031,6 +893,45 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 			}
 		}
 
+		// Reset kb_ai_collection_id in any KB config whose selected collection belongs to the old provider
+		$kb_config_obj = new EPKB_KB_Config_DB();
+		$all_kb_configs = $kb_config_obj->get_kb_configs();
+		foreach ( $all_kb_configs as $kb_id => $kb_config ) {
+			$kb_collection_id = isset( $kb_config['kb_ai_collection_id'] ) ? absint( $kb_config['kb_ai_collection_id'] ) : 0;
+			if ( empty( $kb_collection_id ) || ! isset( $all_collections[$kb_collection_id] ) ) {
+				continue;
+			}
+
+			$kb_collection_provider = self::get_collection_provider_for_provider_switch( $all_collections[$kb_collection_id] );
+			if ( empty( $kb_collection_provider ) ) {
+				continue;
+			}
+
+			if ( $kb_collection_provider !== $old_provider ) {
+				continue;
+			}
+
+			$kb_config['kb_ai_collection_id'] = 0;
+			$update_result = $kb_config_obj->update_kb_configuration( $kb_id, $kb_config );
+			if ( is_wp_error( $update_result ) ) {
+				EPKB_AI_Log::add_log( 'Failed to reset kb_ai_collection_id on provider switch - KB ID: ' . $kb_id . ' - Collection ID: ' . $kb_collection_id . ' - ' . $update_result->get_error_message() );
+			}
+		}
+
 		return $new_config;
+	}
+
+	/**
+	 * Resolve one collection provider for provider-switch cleanup.
+	 *
+	 * @param array $collection_config
+	 * @return string
+	 */
+	private static function get_collection_provider_for_provider_switch( $collection_config ) {
+		if ( empty( $collection_config['ai_training_data_provider'] ) ) {
+			return '';
+		}
+
+		return EPKB_AI_Provider::normalize_provider( $collection_config['ai_training_data_provider'] );
 	}
 }

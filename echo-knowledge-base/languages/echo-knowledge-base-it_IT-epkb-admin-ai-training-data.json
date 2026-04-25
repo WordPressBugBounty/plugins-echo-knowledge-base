@@ -223,20 +223,14 @@
             "marked outdated": [
                 "Contrassegnato come obsoleto"
             ],
-            "PDFs removed from AI store": [
-                "PDF rimossi dall'archivio IA"
-            ],
-            "AI Notes removed from AI store": [
-                "Note IA rimosse dall'archivio IA"
-            ],
             "Run sync to re-upload outdated items.": [
                 "Esegui la sincronizzazione per ri-caricare gli elementi obsoleti."
             ],
             "Choose an Action": [
                 "Scegli un'azione"
             ],
-            "Validate & Fix Synced Items": [
-                "Convalida e ripara gli elementi sincronizzati"
+            "Dismiss": [
+                "Chiudi"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Scegli i tipi di contenuto (Articoli KB, Post, Pagine) da caricare nella tabella. Questo non invia ancora nulla all'IA."
@@ -273,6 +267,9 @@
             ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "Sincronizzazione fallita. Invia di nuovo per riprovare. Verifica che il contenuto esista e non sia vuoto."
+            ],
+            "Validate & Fix Synced Items": [
+                "Convalida e ripara gli elementi sincronizzati"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Scegli quali tipi di contenuto vuoi includere nei tuoi dati di addestramento per l'IA."
@@ -343,17 +340,11 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Esegui un passaggio di validazione aggiuntivo per assicurarti che il database locale e l'archivio IA rimangano sincronizzati. Se un file manca dall'archivio IA, verrà contrassegnato come obsoleto in modo da poter essere inviato nuovamente."
             ],
-            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
-                "Questo controlla gli elementi Aggiunti e Aggiornati già tracciati in questa raccolta e rimuove i PDF e le Note IA orfani trovati solo nell'archivio IA. Nessun elemento del database locale viene eliminato."
-            ],
             "Collection:": [
                 "Raccolta:"
             ],
             "synced items ready to validate": [
                 "elementi sincronizzati pronti per la validazione"
-            ],
-            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
-                "Non sono ancora disponibili elementi Aggiunti o Aggiornati. La convalida può comunque rimuovere i PDF e le Note IA orfani rimasti solo nell'archivio IA."
             ],
             "Cancel Verify": [
                 "Annulla verifica"

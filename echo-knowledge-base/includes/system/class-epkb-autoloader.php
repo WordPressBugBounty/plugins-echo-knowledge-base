@@ -195,10 +195,12 @@ class EPKB_Autoloader {
 				'epkb_ai_content_analysis_db'       =>  'includes/ai/db/class-epkb-ai-content-analysis-db.php',
 
 				// AI ChatGPT
+				'epkb_chatgpt_model_catalog'        =>  'includes/ai/chatgpt/class-epkb-chatgpt-model-catalog.php',
 				'epkb_chatgpt_client'               =>  'includes/ai/chatgpt/class-epkb-chatgpt-client.php',
 				'epkb_ai_chatgpt_vector_store'	    =>  'includes/ai/chatgpt/class-epkb-ai-chatgpt-vector-store.php',
 
 				// AI Gemini
+				'epkb_gemini_model_catalog'         =>  'includes/ai/gemini/class-epkb-gemini-model-catalog.php',
 				'epkb_gemini_client'                =>  'includes/ai/gemini/class-epkb-gemini-client.php',
 				'epkb_ai_gemini_vector_store'	    =>  'includes/ai/gemini/class-epkb-ai-gemini-vector-store.php',
 
@@ -219,6 +221,7 @@ class EPKB_Autoloader {
 				'epkb_ai_chat_handler'              	=>  'includes/ai/services/class-epkb-ai-chat-handler.php',
 				'epkb_ai_search_handler'            	=>  'includes/ai/services/class-epkb-ai-search-handler.php',
 				'epkb_ai_provider'				        =>  'includes/ai/services/class-epkb-ai-provider.php',
+				'epkb_ai_model_catalog_interface'       =>  'includes/ai/services/class-epkb-ai-model-catalog-interface.php',
 				'epkb_ai_pdf_extractor'                 =>  'includes/ai/services/class-epkb-ai-pdf-extractor.php',
 
 				// AI Support

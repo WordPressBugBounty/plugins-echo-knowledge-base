@@ -8,6 +8,7 @@ class EPKB_Quizzes_Utilities {
 	const META_SOURCE_ARTICLE_ID = 'source_article_id';
 	const META_QUESTIONS = 'epkb_quiz_questions';
 	const META_GENERATION_META = 'epkb_quiz_generation_meta';
+	const DEMO_QUIZ_URL = 'https://www.echoknowledgebase.com/documentation/quizzes/';
 
 	const OPTION_INTEREST_SUBMITTED = 'epkb_quizzes_interest_form_submitted';
 	const OPTION_INTEREST_LAST_SUBMITTED_AT = 'epkb_quizzes_interest_last_submitted_at';
@@ -19,6 +20,36 @@ class EPKB_Quizzes_Utilities {
 	 */
 	public static function get_shared_config() {
 		return epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+	}
+
+	/**
+	 * Get demo quiz URL.
+	 *
+	 * @return string
+	 */
+	public static function get_demo_quiz_url() {
+		return self::DEMO_QUIZ_URL;
+	}
+
+	/**
+	 * Get the internal quiz generation runtime profile.
+	 *
+	 * @param string|null $provider
+	 * @return array
+	 */
+	public static function get_quiz_runtime_profile( $provider = null ) {
+		return EPKB_AI_Provider::get_runtime_profile( 'quiz', $provider );
+	}
+
+	/**
+	 * Get the quiz generation model for a provider.
+	 *
+	 * @param string|null $provider
+	 * @return string
+	 */
+	public static function get_quiz_model( $provider = null ) {
+		$runtime_profile = self::get_quiz_runtime_profile( $provider );
+		return $runtime_profile['model'];
 	}
 
 	/**
@@ -44,6 +75,8 @@ class EPKB_Quizzes_Utilities {
 			'eyebrow_text'               => $config['quizzes_eyebrow_text'],
 			'start_button_text'          => $config['quizzes_start_button_text'],
 			'question_label_text'        => $config['quizzes_question_label_text'],
+			'true_text'                  => $config['quizzes_true_text'],
+			'false_text'                 => $config['quizzes_false_text'],
 			'summary_title_text'         => $config['quizzes_summary_title_text'],
 			'correct_text'               => $config['quizzes_correct_text'],
 			'incorrect_text'             => $config['quizzes_incorrect_text'],
@@ -61,6 +94,21 @@ class EPKB_Quizzes_Utilities {
 			'incorrect_border_color'     => $config['quizzes_incorrect_border_color'],
 			'summary_background_color'   => $config['quizzes_summary_background_color'],
 			'summary_text_color'         => $config['quizzes_summary_text_color'],
+		);
+	}
+
+	/**
+	 * Get shared True / False labels.
+	 *
+	 * @return array
+	 */
+	public static function get_true_false_choices() {
+
+		$config = self::get_shared_config();
+
+		return array(
+			$config['quizzes_true_text'],
+			$config['quizzes_false_text'],
 		);
 	}
 
@@ -437,7 +485,7 @@ class EPKB_Quizzes_Utilities {
 					return new WP_Error( 'invalid_true_false_answer', sprintf( __( 'Question %d must use True or False as the correct answer.', 'echo-knowledge-base' ), $index + 1 ) );
 				}
 
-				$choices = array( 'True', 'False' );
+				$choices = self::get_true_false_choices();
 			} else {
 				$choices = array();
 				$raw_choices = empty( $question['choices'] ) || ! is_array( $question['choices'] ) ? array() : $question['choices'];
@@ -604,7 +652,7 @@ Requirements:
 - Every question object must contain exactly these keys: "id", "type", "question", "choices", "correct_choice", "explanation".
 - "type" must be either "multiple_choice" or "true_false".
 - For "multiple_choice", "choices" must contain exactly 4 short answer strings.
-- For "true_false", "choices" must be exactly ["True","False"].
+- For "true_false", "choices" must be exactly ["True","False"] as the canonical storage order.
 - "correct_choice" must always be a zero-based index into the "choices" array.
 - "explanation" must briefly explain why the correct answer is correct.
 - Make every question answerable from the article alone.
@@ -616,58 +664,39 @@ Article Content:
 ' . $content_for_analysis;
 
 		$instructions = 'You create concise learner quizzes for knowledge base articles and must return strict JSON only.';
-		$fastest_preset = EPKB_AI_Provider::get_preset_parameters( EPKB_AI_Provider::FASTEST_MODEL, 'chat' );
-		$model = $fastest_preset['model'];
-		$model_spec = EPKB_AI_Provider::get_models_and_default_params( $model );
-		$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : 16384;
-		$model_params = array(
-			'verbosity'         => isset( $fastest_preset['verbosity'] ) ? $fastest_preset['verbosity'] : null,
-			'reasoning'         => isset( $fastest_preset['reasoning'] ) ? $fastest_preset['reasoning'] : null,
-			'temperature'       => 0.2,
-			'top_p'             => isset( $fastest_preset['top_p'] ) ? $fastest_preset['top_p'] : null,
-			'max_output_tokens' => min( 9000, $max_limit ),
-		);
-
-		$provider = EPKB_AI_Provider::get_active_provider();
-		$client = EPKB_AI_Provider::get_client();
-
-		if ( $provider === EPKB_AI_Provider::PROVIDER_GEMINI ) {
-			$request = array(
-				'contents' => array(
-					array(
-						'parts' => array(
-							array( 'text' => $prompt ),
+		$response_format = array(
+			'type'   => 'json_schema',
+			'name'   => 'quiz_generation',
+			'schema' => array(
+				'type'                 => 'object',
+				'additionalProperties' => false,
+				'properties'           => array(
+					'title'     => array( 'type' => 'string' ),
+					'intro'     => array( 'type' => 'string' ),
+					'questions' => array(
+						'type'  => 'array',
+						'items' => array(
+							'type'                 => 'object',
+							'additionalProperties' => false,
+							'properties'           => array(
+								'id'             => array( 'type' => 'string' ),
+								'type'           => array( 'type' => 'string', 'enum' => array( 'multiple_choice', 'true_false' ) ),
+								'question'       => array( 'type' => 'string' ),
+								'choices'        => array(
+									'type'  => 'array',
+									'items' => array( 'type' => 'string' ),
+								),
+								'correct_choice' => array( 'type' => 'integer' ),
+								'explanation'    => array( 'type' => 'string' ),
+							),
+							'required'             => array( 'id', 'type', 'question', 'choices', 'correct_choice', 'explanation' ),
 						),
 					),
 				),
-				'system_instruction' => array(
-					'parts' => array(
-						array( 'text' => $instructions ),
-					),
-				),
-			);
-			$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
-			$response = $client->request( '/models/' . $model . ':generateContent', $request, 'POST', 'quiz_generation' );
-		} else {
-			$request = array(
-				'model'        => $model,
-				'instructions' => $instructions,
-				'input'        => array(
-					array(
-						'role'    => 'user',
-						'content' => $prompt,
-					),
-				),
-			);
-			$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
-			$response = $client->request( '/responses', $request, 'POST', 'quiz_generation' );
-		}
-
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-
-		$response_text = EPKB_AI_Provider::extract_response_content( $response );
+				'required'             => array( 'title', 'intro', 'questions' ),
+			),
+		);
+		$response_text = EPKB_AI_Provider::send_prompt_request( $prompt, $instructions, 'quiz_generation', 'quiz', null, array(), array(), $response_format );
 		if ( is_wp_error( $response_text ) ) {
 			return $response_text;
 		}

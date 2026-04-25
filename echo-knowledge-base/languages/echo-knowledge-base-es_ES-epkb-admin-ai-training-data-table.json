@@ -265,14 +265,14 @@
             "Last Synced:": [
                 "Última sincronización:"
             ],
+            "AI-Ready Content": [
+                "Contenido listo para IA"
+            ],
             "Original Content": [
                 "Contenido original"
             ],
-            "Processed Content": [
-                "Contenido procesado"
-            ],
-            "No processed content available": [
-                "No hay contenido procesado disponible"
+            "No AI-ready content available": [
+                "No hay contenido listo para IA disponible"
             ]
         }
     }

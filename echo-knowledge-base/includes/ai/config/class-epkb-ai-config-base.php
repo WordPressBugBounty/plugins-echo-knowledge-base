@@ -182,9 +182,10 @@ abstract class EPKB_AI_Config_Base {
 		// Clear WordPress object cache
 		wp_cache_delete( $option_name, 'options' );
 
-		// Update our static cache with the new validated config
+		// Let subclasses invalidate any caches that derive from this option, then seed the fresh value.
+		static::clear_cache();
 		self::$cached_config[ $option_name ] = $validated_config;
-		
+
 		return $validated_config;
 	}
 

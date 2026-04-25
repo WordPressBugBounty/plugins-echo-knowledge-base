@@ -43,8 +43,8 @@
             "Loading...": [
                 "Wird geladen..."
             ],
-            "General Settings": [
-                "Allgemeine Einstellungen"
+            "Go to General Settings": [
+                "Gehen Sie zu den allgemeinen Einstellungen"
             ],
             "Go to Settings": [
                 "Zu den Einstellungen"
@@ -69,9 +69,6 @@
             ],
             "Setup Steps": [
                 "Einrichtungsschritte"
-            ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
-                "Um KI-Funktionen zu verwenden, konfigurieren Sie bitte Ihren API-Schlüssel und akzeptieren Sie die Datenschutzvereinbarung in"
             ],
             "Session Expired": [
                 "Sitzung abgelaufen"

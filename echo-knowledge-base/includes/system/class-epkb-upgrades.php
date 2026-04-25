@@ -98,7 +98,7 @@ class EPKB_Upgrades {
 		$last_version = EPKB_Utilities::get_wp_option( 'epkb_version', null );
 		if ( empty( $last_version ) ) {
 			EPKB_Utilities::save_wp_option( 'epkb_version', Echo_Knowledge_Base::$version );
-			epkb_get_instance()->kb_config_obj->set_value( EPKB_KB_Config_DB::DEFAULT_KB_ID, 'first_plugin_version', Echo_Knowledge_Base::$version ); // TODO 2025 remove and in the specs
+			epkb_get_instance()->kb_config_obj->set_value( EPKB_KB_Config_DB::DEFAULT_KB_ID, 'first_plugin_version', Echo_Knowledge_Base::$version );
 			return;
 		}
 
@@ -139,6 +139,8 @@ class EPKB_Upgrades {
 	 * @param $last_version
 	 */
 	private static function invoke_upgrades( $last_version ) {
+
+		self::maybe_upgrade_ai_configuration();
 
 		// update all KBs
 		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs();
@@ -225,6 +227,7 @@ class EPKB_Upgrades {
 		if ( version_compare( $last_version, '17.1.0', '<' ) ) {
 			self::upgrade_to_v17_1_0();
 		}
+
 	}
 
 	/**
@@ -242,6 +245,82 @@ class EPKB_Upgrades {
 
 		$training_data_db = new EPKB_AI_Training_Data_DB();
 		$training_data_db->migrate_error_to_skipped();
+	}
+
+	/**
+	 * AI configuration migrations. Runs on every admin_init; idempotent via static flag.
+	 *
+	 * =========================================================================
+	 * AI Provider/Model Maintenance Playbooks
+	 * =========================================================================
+	 *
+		 * Architecture notes:
+		 *  - Model IDs, aliases, defaults, supported params, and request formatting live in the
+		 *    provider model catalogs:
+		 *    class-epkb-chatgpt-model-catalog.php and class-epkb-gemini-model-catalog.php.
+		 *  - EPKB_AI_Provider resolves provider + feature + preset into one runtime profile.
+		 *    Stable preset routing is derived from each catalog's preset_key metadata, and
+		 *    quizzes use the provider default model. Features and clients should consume the
+		 *    runtime profile instead of hardcoding model logic.
+		 *  - Chat and Search expose stable presets only. Quizzes use one internal runtime profile.
+		 *
+		 * Playbook A — Add a new model (no migration; catalog-first change):
+		 *  1. Add the model entry to get_models() in the provider model catalog with:
+		 *     name, type, description, default_params, supports_* flags, parameters,
+		 *     option lists, and max_output_tokens_limit.
+		 *  2. If it should back a stable Chat/Search preset, set or update its preset_key in
+		 *     the catalog model entry.
+		 *  3. If it should become the provider default (and therefore the quiz model), update
+		 *     the catalog DEFAULT_MODEL constant.
+		 *  4. Verify runtime resolution still matches the intended preset contract.
+	 *
+	 * Playbook B — Retire or rename a model (runs via maybe_upgrade_ai_configuration()):
+	 *  1. Add 'old-id' => 'new-id' to the provider catalog DEPRECATED_MODELS constant.
+	 *     That covers legacy stored model IDs when provider preset migration resolves them and
+	 *     also covers runtime resolution.
+	 *  2. If the replacement model needs preset or stored-config rewrites, add that logic to
+	 *     EPKB_AI_Provider::migrate_ai_config(). Keep these migrations idempotent.
+	 *  3. If the old ID appears outside the catalogs, remove or update those literals. In the
+	 *     base plugin, remaining non-catalog literals should usually be limited to migration code.
+	 *
+	 * Playbook C — Add a brand-new generic parameter (not just a new model option):
+	 *  1. Add support to the relevant model catalog:
+	 *     supports_* flag, default_params, parameters list, options list, normalize_parameters(),
+	 *     and apply_model_parameters().
+	 *  2. Decide whether the parameter is internal-only or part of the stable preset contract.
+	 *  3. If presets need different values, wire them into EPKB_AI_Provider runtime profiles.
+	 *  4. If ai-features-pro is installed, keep AIPRO KB_Core request wrappers in sync so they
+	 *     pass the new parameter through EPKB_AI_Provider::apply_model_parameters().
+	 *
+	 * Playbook D — Change the default provider (no migration; existing users keep their choice):
+	 *  1. class-epkb-ai-config-specs.php — 'ai_provider' field 'default' in get_ai_config_specs().
+	 *  2. class-epkb-ai-provider.php — normalize_provider() unknown-value fallback.
+	 *  3. class-epkb-ai-provider.php — get_provider_label() else-branch (cosmetic).
+	 *  4. class-epkb-ai-provider.php — get_provider_options() order (new default listed first).
+	 *  5. class-epkb-ai-general-settings-tab.php — settings tab display order.
+	 *  6. class-epkb-ai-training-data-config-specs.php — 'ai_training_data_provider' default.
+	 *  7. class-epkb-ai-config-specs.php — collection fallback provider.
+	 */
+	private static function maybe_upgrade_ai_configuration() {
+		static $ai_config_migration_done = false;
+
+		if ( $ai_config_migration_done ) {
+			return;
+		}
+		$ai_config_migration_done = true;
+
+		$ai_config = get_option( 'epkb_ai_configuration', array() );
+		if ( empty( $ai_config ) || ! is_array( $ai_config ) ) {
+			return;
+		}
+
+		$migrated_config = EPKB_AI_Provider::migrate_ai_config( $ai_config );
+		if ( maybe_serialize( $migrated_config ) === maybe_serialize( $ai_config ) ) {
+			return;
+		}
+
+		update_option( 'epkb_ai_configuration', $migrated_config, true );
+		EPKB_AI_Config_Specs::clear_cache();
 	}
 
 	/**
@@ -294,35 +373,33 @@ class EPKB_Upgrades {
 		}
 
 		$updates = array();
+		$use_cases = array( 'chat', 'search' );
 
 		// Migrate ai_key to ai_chatgpt_key (all existing users are ChatGPT/OpenAI)
 		if ( ! empty( $raw_config['ai_key'] ) && empty( $raw_config['ai_chatgpt_key'] ) ) {
 			$updates['ai_chatgpt_key'] = $raw_config['ai_key'];
 		}
 
-		// Migrate ai_chat_model to ai_chatgpt_chat_model (use raw_config because ai_chatgpt_chat_model has a non-empty default)
-		if ( ! empty( $raw_config['ai_chat_model'] ) && ! isset( $raw_config['ai_chatgpt_chat_model'] ) ) {
-			$updates['ai_chatgpt_chat_model'] = $raw_config['ai_chat_model'];
-		}
+		foreach ( $use_cases as $use_case ) {
+			$preset_field = 'ai_' . $use_case . '_preset';
+			if ( ! empty( $raw_config[ $preset_field ] ) ) {
+				continue;
+			}
 
-		// Migrate ai_search_model to ai_chatgpt_search_model (use raw_config because ai_chatgpt_search_model has a non-empty default)
-		if ( ! empty( $raw_config['ai_search_model'] ) && ! isset( $raw_config['ai_chatgpt_search_model'] ) ) {
-			$updates['ai_chatgpt_search_model'] = $raw_config['ai_search_model'];
-		}
+			$provider_model_field = 'ai_' . EPKB_AI_Provider::PROVIDER_CHATGPT . '_' . $use_case . '_model';
+			$shared_model_field = 'ai_' . $use_case . '_model';
+			$legacy_model = ! empty( $raw_config[ $provider_model_field ] ) ? $raw_config[ $provider_model_field ] : ( ! empty( $raw_config[ $shared_model_field ] ) ? $raw_config[ $shared_model_field ] : '' );
 
-		// Set ai_chat_preset from existing model if not already set
-		if ( empty( $raw_config['ai_chat_preset'] ) ) {
-			$chat_model = ! empty( $raw_config['ai_chatgpt_chat_model'] ) ? $raw_config['ai_chatgpt_chat_model'] : ( ! empty( $raw_config['ai_chat_model'] ) ? $raw_config['ai_chat_model'] : '' );
-			if ( ! empty( $chat_model ) ) {
-				$updates['ai_chat_preset'] = EPKB_AI_Provider::get_preset_key_for_model( $chat_model, 'chatgpt' );
+			if ( $legacy_model !== '' ) {
+				$updates[ $preset_field ] = EPKB_AI_Provider::get_preset_key_for_model( $legacy_model, EPKB_AI_Provider::PROVIDER_CHATGPT );
 			}
 		}
 
-		// Set ai_search_preset from existing model if not already set
-		if ( empty( $raw_config['ai_search_preset'] ) ) {
-			$search_model = ! empty( $raw_config['ai_chatgpt_search_model'] ) ? $raw_config['ai_chatgpt_search_model'] : ( ! empty( $raw_config['ai_search_model'] ) ? $raw_config['ai_search_model'] : '' );
-			if ( ! empty( $search_model ) ) {
-				$updates['ai_search_preset'] = EPKB_AI_Provider::get_preset_key_for_model( $search_model, 'chatgpt' );
+		foreach ( $use_cases as $use_case ) {
+			unset( $raw_config[ 'ai_' . $use_case . '_model' ] );
+
+			foreach ( EPKB_AI_Provider::get_supported_providers() as $provider ) {
+				unset( $raw_config[ 'ai_' . $provider . '_' . $use_case . '_model' ] );
 			}
 		}
 

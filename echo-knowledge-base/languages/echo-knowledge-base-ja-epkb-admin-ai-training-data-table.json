@@ -265,14 +265,14 @@
             "Last Synced:": [
                 "最終同期日時："
             ],
+            "AI-Ready Content": [
+                "AI対応コンテンツ"
+            ],
             "Original Content": [
                 "元のコンテンツ"
             ],
-            "Processed Content": [
-                "処理済みコンテンツ"
-            ],
-            "No processed content available": [
-                "処理済みのコンテンツはありません"
+            "No AI-ready content available": [
+                "利用可能なAI対応コンテンツはありません"
             ]
         }
     }

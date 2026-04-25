@@ -23,11 +23,6 @@ class EPKB_AI_Search_Tab {
 		$has_ai_features_pro = EPKB_Utilities::is_ai_features_pro_enabled();
 		$ai_config['ai_search_mode'] = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_mode', 'simple_search' );
 
-		// Get provider-specific model field and validate it
-		$search_model_field = EPKB_AI_Provider::get_search_model_field();
-		$ai_config['search_model_field'] = $search_model_field;
-		$ai_config[$search_model_field] = EPKB_AI_Provider::get_search_model();
-
 		$config = array(
 			'tab_id' => 'search',
 			'title' => __( 'Search', 'echo-knowledge-base' ),
@@ -84,7 +79,6 @@ class EPKB_AI_Search_Tab {
 		}
 
 		$preset_options = EPKB_AI_Provider::get_preset_options( 'search' );
-		$custom_param_fields = EPKB_AI_Provider::get_model_parameter_fields( 'search', $ai_config );
 
 		// Build layout preset options
 		$layout_preset_options = array();
@@ -100,10 +94,6 @@ class EPKB_AI_Search_Tab {
 				'icon' => 'epkbfa epkbfa-cog',
 				'sub_tab' => 'search-settings',
 				'fields' => array(
-					/* 'ai_search_collection_info' => array(
-						'type' => 'html',
-						'html' => self::get_search_settings_info_box()
-					), */
 					'ai_search_enabled' => array(
 						'type' => 'radio',
 						'label' => __( 'Enable AI Search', 'echo-knowledge-base' ),
@@ -160,6 +150,13 @@ class EPKB_AI_Search_Tab {
 						'max' => 20,
 						'field_class' => 'epkb-ai-mode-simple_search'
 					),
+					'ai_search_results_continue_in_chat' => array(
+						'type' => 'checkbox',
+						'label' => __( 'Show "Continue in AI Chat" Button', 'echo-knowledge-base' ),
+						'value' => $ai_config['ai_search_results_continue_in_chat'],
+						'description' => __( 'Show a button on the AI Answer that opens the AI Chat widget with the search query pre-filled, so users can ask follow-up questions. Only appears when AI Chat is enabled on the current page.', 'echo-knowledge-base' ),
+						'field_class' => 'epkb-ai-mode-simple_search'
+					),
 					'ai_search_instructions' => array(
 						'type' => 'textarea',
 						'label' => __( 'AI Search Instructions', 'echo-knowledge-base' ),
@@ -186,16 +183,16 @@ class EPKB_AI_Search_Tab {
 						'collection_options' => EPKB_AI_Training_Data_Config_Specs::get_active_provider_collection_options(),
 						'description' => __( 'Select which Training Data Collection each Knowledge Base should use for AI Search.', 'echo-knowledge-base' )
 					),
-					'ai_search_preset' => array(
-						'type' => 'select',
-						'label' => __( 'Choose AI Behavior', 'echo-knowledge-base' ),
-						'value' => self::get_stored_preset( $ai_config ),
-						'options' => $preset_options,
-						'description' => __( 'Select a preset or customize parameters below.', 'echo-knowledge-base' ),
-						'field_class' => 'epkb-ai-behavior-preset-select' . ( ! $has_ai_features_pro ? ' epkb-ai-mode-simple_search' : '' )
+						'ai_search_preset' => array(
+							'type' => 'select',
+							'label' => __( 'Choose AI Behavior', 'echo-knowledge-base' ),
+							'value' => EPKB_AI_Provider::get_feature_preset( 'search', $ai_config ),
+							'options' => $preset_options,
+							'description' => __( 'Choose whether AI Search should prioritize speed, balance, or answer quality.', 'echo-knowledge-base' ),
+							'field_class' => 'epkb-ai-behavior-preset-select' . ( ! $has_ai_features_pro ? ' epkb-ai-mode-simple_search' : '' )
+						)
 					)
-				) + $custom_param_fields
-			),
+				),
 
 			'search_results_columns' => array(
 				'id' => 'search_results_columns',
@@ -358,21 +355,6 @@ class EPKB_AI_Search_Tab {
 						'value' => $ai_config['ai_search_results_related_keywords_name'],
 						'description' => __( 'Display keywords related to the search query', 'echo-knowledge-base' )
 					),
-					/* Disabled for now
-					'ai_search_results_custom_prompt_name' => array(
-						'type' => 'text',
-						'label' => __( 'Custom Section - Section Name', 'echo-knowledge-base' ),
-						'value' => $ai_config['ai_search_results_custom_prompt_name'],
-						'description' => __( 'Display response from a custom AI prompt', 'echo-knowledge-base' )
-					),
-					'ai_search_results_custom_prompt_text' => array(
-						'type' => 'textarea',
-						'label' => __( 'Custom Prompt - Prompt Text', 'echo-knowledge-base' ),
-						'value' => $ai_config['ai_search_results_custom_prompt_text'],
-						'description' => __( 'Enter the custom prompt that AI will use to generate a response', 'echo-knowledge-base' ),
-						'rows' => 5
-					),
-					*/
 					'ai_search_results_feedback_name' => array(
 						'type' => 'text',
 						'label' => __( 'Feedback - Section Name', 'echo-knowledge-base' ),
@@ -742,22 +724,6 @@ class EPKB_AI_Search_Tab {
 		}
 
 		return EPKB_AI_Training_Data_Config_Specs::get_default_collection_name( $collection_id );
-	}
-
-	/**
-	 * Get stored preset value, defaulting to model-based detection if not set
-	 *
-	 * @param array $ai_config
-	 * @return string
-	 */
-	private static function get_stored_preset( $ai_config ) {
-		// If user has explicitly saved a preset choice, use it
-		if ( ! empty( $ai_config['ai_search_preset'] ) ) {
-			return $ai_config['ai_search_preset'];
-		}
-
-		// Otherwise, derive from model (backward compatibility)
-		return EPKB_AI_Provider::get_preset_key_for_model( EPKB_AI_Provider::get_search_model() );
 	}
 
 	/**

@@ -897,6 +897,25 @@ class EPKB_KB_Wizard_Setup {
 							}   ?>
 						</div>
 
+						<?php
+						$colors_edit_url = self::get_kb_main_page_edit_url( $this->kb_config );
+						if ( empty( $colors_edit_url ) ) {
+							$colors_note_text = esc_html__( 'You can change colors later in the Frontend Editor or the Main Page block.', 'echo-knowledge-base' );
+						} else {
+							$colors_link_label = EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $this->kb_config )
+								? esc_html__( 'Main Page block', 'echo-knowledge-base' )
+								: esc_html__( 'Frontend Editor', 'echo-knowledge-base' );
+							$colors_note_text = sprintf(
+								/* translators: %s: link to the Frontend Editor or the Main Page block */
+								__( 'You can change colors later in the %s.', 'echo-knowledge-base' ),
+								'<a href="' . esc_url( $colors_edit_url ) . '" target="_blank" rel="noopener">' . $colors_link_label . '</a>'
+							);
+						}   ?>
+						<div class="epkb-setup-wizard-preset-colors-note">
+							<span class="epkbfa epkbfa-info-circle"></span>
+							<span><?php echo wp_kses( $colors_note_text, [ 'a' => [ 'href' => [], 'target' => [], 'rel' => [] ] ] ); ?></span>
+						</div>
+
 					</div>
 
 				</div>
@@ -986,6 +1005,38 @@ class EPKB_KB_Wizard_Setup {
 	}
 
 	/**
+	 * Return the URL where the user can edit the KB Main Page's design/colors.
+	 * Block-based Main Page -> block editor; shortcode-based Main Page -> Frontend Editor.
+	 * Empty string when no Main Page exists yet (first-time setup).
+	 */
+	private static function get_kb_main_page_edit_url( $kb_config ) {
+
+		if ( ! is_array( $kb_config ) || empty( $kb_config['kb_main_pages'] ) || ! is_array( $kb_config['kb_main_pages'] ) ) {
+			return '';
+		}
+
+		$main_page_id = EPKB_KB_Handler::get_first_kb_main_page_id( $kb_config );
+		if ( empty( $main_page_id ) ) {
+			return '';
+		}
+
+		if ( EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config ) ) {
+			$edit_url = get_edit_post_link( $main_page_id, 'raw' );
+			return empty( $edit_url ) ? '' : $edit_url;
+		}
+
+		$main_page_url = EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config );
+		if ( empty( $main_page_url ) || empty( $kb_config['id'] ) ) {
+			return '';
+		}
+
+		return add_query_arg( [
+			'action' => 'epkb_load_editor',
+			'epkb_kb_id' => $kb_config['id'],
+		], $main_page_url );
+	}
+
+	/**
 	 * Return array of Presets for each Module
 	 *
 	 * @return array
@@ -1042,7 +1093,7 @@ class EPKB_KB_Wizard_Setup {
 				'title'         => esc_html__( 'Informative', 'echo-knowledge-base' ),
 			],
 			'canvas' => [
-				'title'         => esc_html__( 'Canvas', 'echo-knowledge-base' ),
+				'title'         => esc_html__( 'One Column', 'echo-knowledge-base' ),
 			],
 			'formal' => [
 				'title'         => esc_html__( 'Formal', 'echo-knowledge-base' ),

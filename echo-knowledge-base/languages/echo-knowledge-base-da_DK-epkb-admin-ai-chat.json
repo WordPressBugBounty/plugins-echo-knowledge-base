@@ -40,6 +40,9 @@
             "OFF": [
                 "FRA"
             ],
+            "Errors": [
+                "Fejl"
+            ],
             "Email": [
                 "E-mail"
             ],
@@ -51,6 +54,9 @@
             ],
             "Saving...": [
                 "Gemmer..."
+            ],
+            "Error": [
+                "Fejl"
             ],
             "Go to General Settings": [
                 "Gå til Generelle indstillinger"

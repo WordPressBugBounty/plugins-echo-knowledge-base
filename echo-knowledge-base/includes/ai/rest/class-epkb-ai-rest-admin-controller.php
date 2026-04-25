@@ -19,14 +19,6 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			)
 		) );
 
-		register_rest_route( $this->admin_namespace, '/ai/migrate-legacy-models', array(
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'migrate_legacy_models' ),
-				'permission_callback' => array( $this, 'check_admin_permission' ),
-			)
-		) );
-
 		// Load AI tab data on demand (currently used for dashboard)
 		register_rest_route( $this->admin_namespace, '/ai/(?P<tab>[a-z0-9\\-]+)', array(
 			array(
@@ -222,11 +214,6 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 
 		// Update only the provided fields (partial update)
 		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
-		$legacy_model_updates = array_merge(
-			EPKB_AI_Config_Specs::get_legacy_model_updates( $orig_config ),
-			EPKB_AI_Config_Specs::get_legacy_model_updates( $new_config )
-		);
-
 		$result = EPKB_AI_Config_Specs::update_ai_config( $orig_config, $new_config );
 		if ( is_wp_error( $result ) ) {
 			$status_code = $result->get_error_code() == 'validation_failed' ? 400 : 500;
@@ -295,8 +282,6 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			'message' => __( 'Settings saved successfully.', 'echo-knowledge-base' ),
 			'settings' => $updated_ai_config,
 			'ai_config' => $updated_ai_config,
-			'legacy_models_notice_active' => ! empty( EPKB_AI_Config_Specs::get_legacy_model_updates( $updated_ai_config ) ),
-			'legacy_models_migrated' => ! empty( $legacy_model_updates )
 		);
 		
 		if ( $widget_config !== null ) {
@@ -308,41 +293,5 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 		}
 
 		return $this->create_rest_response( $response_data );
-	}
-
-	/**
-	 * Migrate legacy AI model values in the current AI configuration.
-	 *
-	 * @return WP_REST_Response
-	 */
-	public function migrate_legacy_models() {
-		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
-		$legacy_model_updates = EPKB_AI_Config_Specs::get_legacy_model_updates( $orig_config );
-
-		if ( empty( $legacy_model_updates ) ) {
-			return $this->create_rest_response( array(
-				'success' => true,
-				'message' => __( 'AI configuration is already up to date.', 'echo-knowledge-base' ),
-				'ai_config' => $orig_config,
-				'legacy_models_notice_active' => false,
-			) );
-		}
-
-		$result = EPKB_AI_Config_Specs::update_ai_config( $orig_config, $legacy_model_updates );
-		if ( is_wp_error( $result ) ) {
-			$status_code = $result->get_error_code() == 'validation_failed' ? 400 : 500;
-			return $this->create_rest_response( array(
-				'success' => false,
-				'error' => $result->get_error_code(),
-				'message' => sprintf( __( 'Error saving settings: %s', 'echo-knowledge-base' ), $result->get_error_message() )
-			), $status_code );
-		}
-
-		return $this->create_rest_response( array(
-			'success' => true,
-			'message' => __( 'AI configuration updated successfully.', 'echo-knowledge-base' ),
-			'ai_config' => EPKB_AI_Config_Specs::get_ai_config(),
-			'legacy_models_notice_active' => false,
-		) );
 	}
 }

@@ -71,7 +71,8 @@ class EPKB_AI_Training_Data_Tab {
 			'is_access_manager_active' => EPKB_Utilities::is_amag_on(),
 			'active_provider' => EPKB_AI_Provider::get_active_provider(),
 			'active_provider_label' => EPKB_AI_Provider::get_provider_label(),
-			'setup_steps' => EPKB_AI_Admin_Page::get_setup_steps_for_tab( 'training-data' )
+			'setup_steps' => EPKB_AI_Admin_Page::get_setup_steps_for_tab( 'training-data' ),
+			'show_validate_fix_notice' => ! EPKB_Core_Utilities::is_kb_flag_set( 'ai_validate_fix_notice_dismissed' )
 		);
 		
 		// Add error information if collections couldn't be retrieved

@@ -592,6 +592,7 @@ class EPKB_Dashboard_Page {
 
 					<?php
 					$shared_kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+					$quizzes_demo_url = EPKB_Quizzes_Utilities::get_demo_quiz_url();
 
 					if ( $shared_kb_config['glossary_enable'] !== 'on' ) {
 						$this->display_feature_promo_card( array(
@@ -632,6 +633,8 @@ class EPKB_Dashboard_Page {
 							'dialog_open_label' => esc_html__( 'Open Quizzes', 'echo-knowledge-base' ),
 							'dialog_cancel_label' => esc_html__( 'Stay on Dashboard', 'echo-knowledge-base' ),
 							'dialog_open_url' => admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-quizzes#quizzes-editor' ),
+							'secondary_link_label' => esc_html__( 'See Demo Quiz', 'echo-knowledge-base' ),
+							'secondary_link_url' => $quizzes_demo_url,
 						) );
 					} ?>
 
@@ -654,7 +657,10 @@ class EPKB_Dashboard_Page {
 									<span class="epkb-whatsnew-date"><?php esc_html_e( 'March 29, 2026', 'echo-knowledge-base' ); ?></span>
 									<strong><?php esc_html_e( 'Quizzes', 'echo-knowledge-base' ); ?></strong>
 									<span><?php esc_html_e( 'Create quizzes linked to KB articles and generate quiz drafts with AI when available.', 'echo-knowledge-base' ); ?></span>
-									<a class="epkb-whatsnew-link" href="<?php echo esc_url( $quizzes_dashboard_url ); ?>"><?php esc_html_e( 'Open Quizzes', 'echo-knowledge-base' ); ?></a>
+									<div class="epkb-whatsnew-links">
+										<a class="epkb-whatsnew-link" href="<?php echo esc_url( $quizzes_dashboard_url ); ?>"><?php esc_html_e( 'Open Quizzes', 'echo-knowledge-base' ); ?></a>
+										<a class="epkb-whatsnew-link" href="<?php echo esc_url( $quizzes_demo_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'See Demo Quiz', 'echo-knowledge-base' ); ?></a>
+									</div>
 								</div>
 							</li>
 							<li class="epkb-whatsnew-item epkb-whatsnew-item--new">
@@ -776,6 +782,8 @@ class EPKB_Dashboard_Page {
 		$dialog_open_label = empty( $args['dialog_open_label'] ) ? '' : $args['dialog_open_label'];
 		$dialog_cancel_label = empty( $args['dialog_cancel_label'] ) ? '' : $args['dialog_cancel_label'];
 		$dialog_open_url = empty( $args['dialog_open_url'] ) ? '' : $args['dialog_open_url'];
+		$secondary_link_label = empty( $args['secondary_link_label'] ) ? '' : $args['secondary_link_label'];
+		$secondary_link_url = empty( $args['secondary_link_url'] ) ? '' : $args['secondary_link_url'];
 
 		if ( empty( $feature_key ) || empty( $feature_name ) || empty( $title ) || empty( $button_label ) ) {
 			return;
@@ -808,6 +816,12 @@ class EPKB_Dashboard_Page {
 					data-dialog-cancel-label="<?php echo esc_attr( $dialog_cancel_label ); ?>"
 					data-dialog-open-url="<?php echo esc_url( $dialog_open_url ); ?>"
 				><?php echo esc_html( $button_label ); ?></button>
+				<?php if ( ! empty( $secondary_link_label ) && ! empty( $secondary_link_url ) ) { ?>
+					<a href="<?php echo esc_url( $secondary_link_url ); ?>" class="epkb-btn-link epkb-dashboard-feature-promo__link" target="_blank" rel="noopener noreferrer">
+						<?php echo esc_html( $secondary_link_label ); ?>
+						<span class="epkbfa epkbfa-external-link"></span>
+					</a>
+				<?php } ?>
 				<div class="epkb-dashboard-feature-promo__message" style="display: none;"></div>
 			</div>
 		</aside> <?php

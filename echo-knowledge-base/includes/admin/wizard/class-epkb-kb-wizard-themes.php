@@ -22,7 +22,7 @@ class EPKB_KB_Wizard_Themes {
 							9 => esc_html__('Office', 'echo-knowledge-base' ), 10 => esc_html__('Organized', 'echo-knowledge-base' ), 11 => esc_html__('Office', 'echo-knowledge-base' ), 12 => esc_html__('Teal', 'echo-knowledge-base' ),
 							13 => esc_html__('Clean', 'echo-knowledge-base' ), 14 => esc_html__('Corporate', 'echo-knowledge-base' ), 15 => esc_html__('Icon Focused', 'echo-knowledge-base' ), 16 => esc_html__('Business', 'echo-knowledge-base' ),
 							17 => esc_html__('Minimalistic', 'echo-knowledge-base' ), 18 => esc_html__('Sharp', 'echo-knowledge-base' ), 19 => esc_html__('Standard', 'echo-knowledge-base' ), 20 => esc_html__('Standard', 'echo-knowledge-base' ),
-							22 => esc_html__('Airy', 'echo-knowledge-base' ), 23 => esc_html__('Horizon', 'echo-knowledge-base' ), 24 => esc_html__('Canvas', 'echo-knowledge-base' ),
+							22 => esc_html__('Airy', 'echo-knowledge-base' ), 23 => esc_html__('Horizon', 'echo-knowledge-base' ), 24 => esc_html__('One Column', 'echo-knowledge-base' ),
 							26 => esc_html__('Bloom', 'echo-knowledge-base' ), 28 => esc_html__('Ember', 'echo-knowledge-base' )],
 
 			'kb_main_page_layout' => [1 => 'Basic', 2 => 'Basic', 3 => 'Basic', 4 => 'Basic', 5 => 'Basic', 6 => 'Basic', 7 => 'Basic', 8 => 'Basic', 9 => 'Basic', 10 => 'Basic', 11 => 'Tabs', 12 => 'Basic',

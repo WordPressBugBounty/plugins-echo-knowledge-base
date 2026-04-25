@@ -2343,15 +2343,24 @@ class EPKB_Utilities {
 		return $post_type_object->label;
 	}
 
-	public static function is_article_search_synced( $kb_config ) {
+	public static function use_main_page_search_settings_on_article_page( $kb_config ) {
 
 		if ( ! isset( $kb_config['article_search_sync_toggle'] ) ) {
+			return false;
+		}
+
+		if ( is_archive() ) {
 			return false;
 		}
 
 		// if KB Main Page uses blocks then do not sync articles
 		if ( EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config ) ) {
 			return false;
+		}
+
+		// if KB Main Page is Sidebar Layout (and not block) do not use article page search settings
+		if ( $kb_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT ) {
+			return true;
 		}
 
 		// if KB Main Page uses shortcode then sync articles
@@ -2538,6 +2547,6 @@ class EPKB_Utilities {
 	 * @return bool True if AI Features Pro is active
 	 */
 	public static function is_ai_features_pro_enabled() {
-		return defined( 'AI_FEATURES_PRO_PLUGIN_NAME' );
+		return defined( 'AI_FEATURES_PRO_PLUGIN_NAME' ) && ! EPKB_AI_Utilities::is_ai_pro_version_outdated();
 	}
 }

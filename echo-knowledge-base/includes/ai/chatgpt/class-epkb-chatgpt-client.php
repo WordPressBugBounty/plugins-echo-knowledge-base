@@ -10,13 +10,11 @@ class EPKB_ChatGPT_Client {
 
 	const API_BASE_URL = 'https://api.openai.com';
 	const API_VERSION = 'v1';
-	const DEFAULT_UPLOAD_TIMEOUT = 300;
+	// TODO AI PRO LEGACY: Remove after AI PRO and other add-ons stop reading EPKB_ChatGPT_Client::DEFAULT_MODEL directly.
+	const DEFAULT_MODEL = 'gpt-5.4'; // Keep in sync with EPKB_ChatGPT_Model_Catalog::DEFAULT_MODEL.
 	const DEFAULT_MAX_RETRIES = 3;
 	const DEFAULT_CONVERSATION_EXPIRY_DAYS = 29; // 29 days
 	const MAX_FILE_SIZE = 51380224; // 49 MB.
-	const DEFAULT_MODEL = 'gpt-5-nano';
-	const DEFAULT_MAX_OUTPUT_TOKENS = 5000;
-	const DEFAULT_MAX_NUM_RESULTS = 10;
 
 	/**
 	 * Make a request to the ChatGPT API with automatic retry logic
@@ -39,6 +37,11 @@ class EPKB_ChatGPT_Client {
 		$api_key_check = $this->check_api_key();
 		if ( is_wp_error( $api_key_check ) ) {
 			return $api_key_check;
+		}
+
+		// TODO AI PRO LEGACY: Remove after legacy add-ons stop sending old ChatGPT model IDs through the client directly.
+		if ( ! empty( $data['model'] ) && is_string( $data['model'] ) ) {
+			$data['model'] = EPKB_AI_Provider::resolve_model_name( $data['model'], EPKB_AI_Provider::PROVIDER_CHATGPT );
 		}
 
 		$last_error = null;
@@ -73,13 +76,13 @@ class EPKB_ChatGPT_Client {
 			// 4. Handle error response
 
 			// log error details
-			$parsed->add_data( $data );
 			$log_context = $parsed->get_error_data();
+			$log_context = is_array( $log_context ) ? $log_context : array();
 			$log_context['purpose'] = $purpose;
 			$log_context['request_endpoint'] = $endpoint;
 			$log_context['model'] = isset( $data['model'] ) ? $data['model'] : $purpose;
-			$log_context['request_method'] = $method;
 			$log_context['elapsed_seconds'] = round( $request_duration, 3 );
+			$log_context['request_contents_count'] = isset( $data['contents'] ) && is_array( $data['contents'] ) ? count( $data['contents'] ) : 0;
 			EPKB_AI_Log::add_log( 'API request error: ' . $parsed->get_error_message(), $log_context );
 
 			// Warn if execution time limit is too low
@@ -466,6 +469,31 @@ class EPKB_ChatGPT_Client {
 	}
 
 	/**
+	 * Apply ChatGPT model parameters.
+	 *
+	 * Kept as a wrapper so older add-ons can still call the legacy client API.
+	 *
+	 * @param array $request
+	 * @param string $model
+	 * @param array $params
+	 * @return array
+	 */
+	public static function apply_model_parameters( $request, $model, $params = array() ) {
+		// TODO AI PRO LEGACY: Remove after add-ons call EPKB_AI_Provider::apply_model_parameters() directly.
+		return EPKB_AI_Provider::apply_model_parameters( $request, $model, $params, EPKB_AI_Provider::PROVIDER_CHATGPT );
+	}
+
+	/**
+	 * Get the default ChatGPT model.
+	 *
+	 * @return string
+	 */
+	public static function get_default_model() {
+		// TODO AI PRO LEGACY: Remove after add-ons stop calling EPKB_ChatGPT_Client::get_default_model().
+		return EPKB_AI_Provider::get_default_model( EPKB_AI_Provider::PROVIDER_CHATGPT );
+	}
+
+	/**
 	 * Get API key from configuration
 	 *
 	 * @return string
@@ -508,238 +536,4 @@ class EPKB_ChatGPT_Client {
 		return true;
 	}
 
-	/**
-	 * Get models and their default parameters
-	 *
-	 * Models are ordered by capability (fastest first, smartest last).
-	 * Preset metadata is included for models that should appear in presets.
-	 *
-	 * @param string|null $model_name Optional specific model name to retrieve
-	 * @return array Model(s) with default parameters
-	 */
-	public static function get_models_and_default_params( $model_name = null ) {
-
-		$models = array(
-			'gpt-5-nano' => array(
-				'name'                       => 'GPT-5 nano',
-				'type'                       => 'gpt5',
-				'preset_key'                 => EPKB_AI_Provider::FASTEST_MODEL,
-				'preset_label'               => __( 'Fastest', 'echo-knowledge-base' ),
-				'default_params'             => array(
-					'reasoning'         => 'low',
-					'verbosity'         => 'low',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => false,
-				'supports_top_p'             => false,
-				'supports_verbosity'         => true,
-				'supports_reasoning'         => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 8192,
-				'parameters'                 => array( 'verbosity', 'reasoning', 'max_output_tokens' )
-			),
-			'gpt-4.1-mini' => array(
-				'name'                       => 'GPT-4.1 mini',
-				'type'                       => 'gpt4',
-				'default_params'             => array(
-					'temperature'       => 0.2,
-					'top_p'             => 1.0,
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => true,
-				'supports_top_p'             => true,
-				'supports_verbosity'         => false,
-				'supports_reasoning'         => false,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 16384,
-				'parameters'                 => array( 'temperature', 'top_p', 'max_output_tokens' )
-			),
-			'gpt-5' => array(
-				'name'                       => 'GPT-5',
-				'type'                       => 'gpt5',
-				'default_params'             => array(
-					'reasoning'         => 'medium',
-					'verbosity'         => 'medium',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => false,
-				'supports_top_p'             => false,
-				'supports_verbosity'         => true,
-				'supports_reasoning'         => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 16384,
-				'parameters'                 => array( 'verbosity', 'reasoning', 'max_output_tokens' )
-			),
-			'gpt-5.1' => array(
-				'name'                       => 'GPT-5.1',
-				'type'                       => 'gpt5',
-				'default_params'             => array(
-					'reasoning'         => 'medium',
-					'verbosity'         => 'medium',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => false,
-				'supports_top_p'             => false,
-				'supports_verbosity'         => true,
-				'supports_reasoning'         => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 16384,
-				'parameters'                 => array( 'verbosity', 'reasoning', 'max_output_tokens' )
-			),
-			'gpt-5.2' => array(
-				'name'                       => 'GPT-5.2',
-				'type'                       => 'gpt5',
-				'default_params'             => array(
-					'reasoning'         => 'medium',
-					'verbosity'         => 'medium',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => false,
-				'supports_top_p'             => false,
-				'supports_verbosity'         => true,
-				'supports_reasoning'         => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 16384,
-				'parameters'                 => array( 'verbosity', 'reasoning', 'max_output_tokens' )
-			),
-			'gpt-5.4' => array(
-				'name'                       => 'GPT-5.4',
-				'type'                       => 'gpt5',
-				'default_params'             => array(
-					'reasoning'         => 'medium',
-					'verbosity'         => 'medium',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => false,
-				'supports_top_p'             => false,
-				'supports_verbosity'         => true,
-				'supports_reasoning'         => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 16384,
-				'parameters'                 => array( 'verbosity', 'reasoning', 'max_output_tokens' )
-			),
-			'gpt-5.2-chat-latest' => array(
-				'name'                       => 'GPT-5.2 Chat Latest',
-				'type'                       => 'gpt5',
-				'preset_key'                 => 'balanced',
-				'preset_label'               => __( 'Balanced', 'echo-knowledge-base' ),
-				'default_params'             => array(
-					'reasoning'         => 'medium',
-					'verbosity'         => 'medium',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => false,
-				'supports_top_p'             => false,
-				'supports_verbosity'         => true,
-				'supports_reasoning'         => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 16384,
-				'parameters'                 => array( 'verbosity', 'reasoning', 'max_output_tokens' )
-			),
-			'gpt-5.2-pro' => array(
-				'name'                       => 'GPT-5.2 Pro',
-				'type'                       => 'gpt5',
-				'preset_key'                 => 'smartest',
-				'preset_label'               => __( 'Smartest', 'echo-knowledge-base' ),
-				'default_params'             => array(
-					'reasoning'         => 'medium',
-					'verbosity'         => 'medium',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => false,
-				'supports_top_p'             => false,
-				'supports_verbosity'         => true,
-				'supports_reasoning'         => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 16384,
-				'parameters'                 => array( 'verbosity', 'reasoning', 'max_output_tokens' )
-			)
-		);
-
-		// Return specific model if requested
-		if ( ! empty( $model_name ) ) {
-			return isset( $models[$model_name] ) ? $models[$model_name] : $models[self::DEFAULT_MODEL];
-		}
-
-		return $models;
-	}
-
-	/**
-	 * Apply model-specific parameters to a request (Responses API only)
-	 *
-	 * This method adds applicable parameters based on the model being used:
-	 * - Non-GPT-5 models: temperature OR top_p (mutually exclusive)
-	 * - GPT-5 models: verbosity and reasoning (no temperature/top_p)
-	 * - All models: max_output_tokens for output length control
-	 *
-	 * @param array $request The request array to modify
-	 * @param string $model The model name
-	 * @param array $params Optional parameters to apply (can include temperature, top_p, verbosity, reasoning, max_output_tokens)
-	 * @return array Modified request with model-specific parameters
-	 */
-	public static function apply_model_parameters( $request, $model, $params = array() ) {
-
-		// Validate model
-		if ( empty( $model ) || ! is_string( $model ) ) {
-			return $request;
-		}
-
-		// Get model specifications - will return default model if not found
-		$model_spec = self::get_models_and_default_params( $model );
-
-		// Get default parameters if no params provided
-		if ( empty( $params ) ) {
-			$params = $model_spec['default_params'];
-		}
-
-		// Apply temperature or top_p for models that support them (mutually exclusive)
-		if ( $model_spec['supports_temperature'] ) {
-			if ( isset( $params['temperature'] ) ) {
-				// Validate and apply temperature
-				$temperature = floatval( $params['temperature'] );
-				if ( $temperature >= 0.0 && $temperature <= 2.0 ) {
-					$request['temperature'] = $temperature;
-				}
-			} elseif ( isset( $params['top_p'] ) && $model_spec['supports_top_p'] ) {
-				// Apply top_p as alternative to temperature
-				$top_p = floatval( $params['top_p'] );
-				if ( $top_p >= 0.0 && $top_p <= 1.0 ) {
-					$request['top_p'] = $top_p;
-				}
-			} elseif ( ! isset( $request['temperature'] ) && ! isset( $request['top_p'] ) ) {
-				// Apply default temperature from model spec if neither is set
-				if ( isset( $model_spec['default_params']['temperature'] ) ) {
-					$request['temperature'] = $model_spec['default_params']['temperature'];
-				}
-			}
-		}
-
-		// Apply GPT-5 specific parameters
-		// For Responses API, verbosity needs to be nested under 'text', but reasoning stays at root level
-		if ( $model_spec['supports_verbosity'] && ! empty( $params['verbosity'] ) ) {
-			if ( ! isset( $request['text'] ) ) {
-				$request['text'] = array();
-			}
-			$request['text']['verbosity'] = $params['verbosity'];
-		}
-
-		if ( $model_spec['supports_reasoning'] && ! empty( $params['reasoning'] ) ) {
-			// reasoning needs to be an object with 'effort' property in Responses API
-			$request['reasoning'] = array(
-				'effort' => $params['reasoning']
-			);
-		}
-
-		// Apply max_output_tokens if specified
-		if ( $model_spec['supports_max_output_tokens'] && isset( $params['max_output_tokens'] ) ) {
-			$max_output_tokens = intval( $params['max_output_tokens'] );
-			$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : 16384;
-			if ( $max_output_tokens > 0 && $max_output_tokens <= $max_limit ) {
-				// Responses API uses max_output_tokens
-				$request['max_output_tokens'] = $max_output_tokens;
-			}
-		}
-
-		return $request;
-	}
 }

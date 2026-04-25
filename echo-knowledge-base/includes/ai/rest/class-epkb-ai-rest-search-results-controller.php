@@ -169,6 +169,12 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 		if ( ! empty( $section_data['error'] ) ) {
 			$response_data['error'] = $section_data['error'];
 		}
+		if ( ! empty( $section_data['error_type'] ) ) {
+			$response_data['error_type'] = $section_data['error_type'];
+		}
+		if ( ! empty( $section_data['display_as_error'] ) ) {
+			$response_data['display_as_error'] = true;
+		}
 
 		return $this->create_rest_response( $response_data );
 	}

@@ -27,11 +27,6 @@ class EPKB_AI_Chat_Tab {
 			$ai_config['ai_chat_handoff_enabled'] = 'off';
 		}
 
-		// Get provider-specific model field and validate it
-		$chat_model_field = EPKB_AI_Provider::get_chat_model_field();
-		$ai_config['chat_model_field'] = $chat_model_field;
-		$ai_config[$chat_model_field] = EPKB_AI_Provider::get_chat_model();
-
 		// Get default widget configuration
 		$default_widget_config = EPKB_AI_Chat_Widget_Config_Specs::get_widget_config( 1 );
 
@@ -78,7 +73,6 @@ class EPKB_AI_Chat_Tab {
 	private static function get_settings_sections( $ai_config ) {
 
 		$preset_options = EPKB_AI_Provider::get_preset_options( 'chat' );
-		$custom_param_fields = EPKB_AI_Provider::get_model_parameter_fields( 'chat', $ai_config );
 
 		return array(
 			'chat_settings' => array(
@@ -86,7 +80,7 @@ class EPKB_AI_Chat_Tab {
 				'title' => __( 'AI Chat Settings', 'echo-knowledge-base' ),
 				'icon' => 'epkbfa epkbfa-comments',
 				'sub_tab' => 'chat-settings',
-				'fields' => array_merge( array(
+					'fields' => array(
 					'ai_chat_enabled' => array(
 						'type' => 'radio',
 						'label' => __( 'AI Chat Mode', 'echo-knowledge-base' ),
@@ -108,23 +102,23 @@ class EPKB_AI_Chat_Tab {
 						'default' => EPKB_AI_Config_Specs::get_default_value( 'ai_chat_instructions' ),
 						'show_reset' => true
 					),
-					'ai_chat_preset' => array(
-						'type' => 'select',
-						'label' => __( 'Choose AI Behavior', 'echo-knowledge-base' ),
-						'value' => self::get_stored_preset( $ai_config ),
-						'options' => $preset_options,
-						'description' => __( 'Select a preset or customize parameters below.', 'echo-knowledge-base' ),
-						'field_class' => 'epkb-ai-behavior-preset-select'
-					),
+						'ai_chat_preset' => array(
+							'type' => 'select',
+							'label' => __( 'Choose AI Behavior', 'echo-knowledge-base' ),
+							'value' => EPKB_AI_Provider::get_feature_preset( 'chat', $ai_config ),
+							'options' => $preset_options,
+							'description' => __( 'Choose whether AI Chat should prioritize speed, balance, or answer quality.', 'echo-knowledge-base' ),
+							'field_class' => 'epkb-ai-behavior-preset-select'
+						),
 					'ai_show_sources' => array(
 						'type' => 'checkbox',
 						'label' => __( 'Show Source References', 'echo-knowledge-base' ),
 						'value' => $ai_config['ai_show_sources'],
-						'description' => __( 'Display links to source articles that were used to generate the AI answer', 'echo-knowledge-base' ),
-						'field_class' => 'epkb-ai-show-sources'
-					)
-				), $custom_param_fields )
-			),
+							'description' => __( 'Display links to source articles that were used to generate the AI answer', 'echo-knowledge-base' ),
+							'field_class' => 'epkb-ai-show-sources'
+						)
+						)
+					),
 			'display_settings' => self::get_display_settings_section( $ai_config ),
 			'handoff_settings' => self::get_handoff_settings_section( $ai_config ),
 			'default_chat_widget' => self::get_widget_settings_section()
@@ -207,18 +201,6 @@ class EPKB_AI_Chat_Tab {
 			'icon' => 'epkbfa epkbfa-paint-brush',
 			'sub_tab' => 'chat-settings',
 			'fields' => array(
-				/* 'widget_enabled' => array(
-					'type' => 'toggle',
-					'label' => __( 'Enable This Widget', 'echo-knowledge-base' ),
-					'value' => isset( $widget_config['widget_enabled'] ) ? $widget_config['widget_enabled'] : 'on',
-					'description' => __( 'Enable or disable this chat widget', 'echo-knowledge-base' )
-				), 
-				'widget_name' => array(
-					'type' => 'text',
-					'label' => __( 'Widget Name', 'echo-knowledge-base' ),
-					'value' => $widget_config['widget_name'],
-					'description' => __( 'Internal name for this chat widget configuration', 'echo-knowledge-base' )
-				), */
 				
 				// Text Customization
 				'text_section' => array(
@@ -283,33 +265,6 @@ class EPKB_AI_Chat_Tab {
 					'value' => $widget_config['ai_message_background_color'],
 					'description' => __( 'Background color of AI response message bubbles', 'echo-knowledge-base' )
 				),
-
-				// Error Messages
-				/* 'errors_section' => array(
-					'type' => 'section_header',
-					'label' => __( 'Error Messages', 'echo-knowledge-base' ),
-					'description' => __( 'Customize error messages shown to users', 'echo-knowledge-base' )
-				),
-				'error_generic_message' => array(
-					'type' => 'text',
-					'label' => __( 'Generic Error', 'echo-knowledge-base' ),
-					'value' => $widget_config['error_generic_message']
-				),
-				'error_network_message' => array(
-					'type' => 'text',
-					'label' => __( 'Network Error', 'echo-knowledge-base' ),
-					'value' => $widget_config['error_network_message']
-				),
-				'error_timeout_message' => array(
-					'type' => 'text',
-					'label' => __( 'Timeout Error', 'echo-knowledge-base' ),
-					'value' => $widget_config['error_timeout_message']
-				),
-				'error_rate_limit_message' => array(
-					'type' => 'text',
-					'label' => __( 'Rate Limit Error', 'echo-knowledge-base' ),
-					'value' => $widget_config['error_rate_limit_message']
-				), */
 				
 				// Reset Button
 				'reset_widget_settings' => array(
@@ -408,14 +363,15 @@ class EPKB_AI_Chat_Tab {
 				),
 				'pro_feature' => ! $has_ai_features_pro,
 			);
-		$tab_fields["ai_chat_access_roles{$suffix}"] = array(
-			'type' => 'checkboxes',
-			'label' => __( 'Allowed Roles', 'echo-knowledge-base' ),
-			'value' => isset( $ai_config["ai_chat_access_roles{$suffix}"] ) ? $ai_config["ai_chat_access_roles{$suffix}"] : array(),
-			'options' => $wp_roles_options,
-			'pro_feature' => ! $has_ai_features_pro,
-			'field_class' => 'epkb-ai-chat-access-roles',
-		);
+
+			$tab_fields["ai_chat_access_roles{$suffix}"] = array(
+				'type' => 'checkboxes',
+				'label' => __( 'Allowed Roles', 'echo-knowledge-base' ),
+				'value' => isset( $ai_config["ai_chat_access_roles{$suffix}"] ) ? $ai_config["ai_chat_access_roles{$suffix}"] : array(),
+				'options' => $wp_roles_options,
+				'pro_feature' => ! $has_ai_features_pro,
+				'field_class' => 'epkb-ai-chat-access-roles',
+			);
 
 			$location_tabs[$tab_id] = array(
 				'id' => $tab_id,
@@ -463,15 +419,16 @@ class EPKB_AI_Chat_Tab {
 			'pro_feature' => ! $has_ai_features_pro,
 			'hidden' => $ai_config['ai_chat_display_mode'] !== 'all_pages'
 		);
-	$global_fields['ai_chat_access_roles'] = array(
-		'type' => 'checkboxes',
-		'label' => __( 'Allowed Roles', 'echo-knowledge-base' ),
-		'value' => isset( $ai_config['ai_chat_access_roles'] ) ? $ai_config['ai_chat_access_roles'] : array(),
-		'options' => $wp_roles_options,
-		'pro_feature' => ! $has_ai_features_pro,
-		'hidden' => $ai_config['ai_chat_display_mode'] !== 'all_pages',
-		'field_class' => 'epkb-ai-chat-access-roles',
-	);
+
+		$global_fields['ai_chat_access_roles'] = array(
+			'type' => 'checkboxes',
+			'label' => __( 'Allowed Roles', 'echo-knowledge-base' ),
+			'value' => isset( $ai_config['ai_chat_access_roles'] ) ? $ai_config['ai_chat_access_roles'] : array(),
+			'options' => $wp_roles_options,
+			'pro_feature' => ! $has_ai_features_pro,
+			'hidden' => $ai_config['ai_chat_display_mode'] !== 'all_pages',
+			'field_class' => 'epkb-ai-chat-access-roles',
+		);
 
 		$global_fields['collection_tabs_description'] = array(
 			'type' => 'html',
@@ -544,15 +501,6 @@ class EPKB_AI_Chat_Tab {
 					'value' => $ai_config['ai_chat_handoff_phone_enabled'],
 					'description' => __( 'Show an optional phone field on the handoff form.', 'echo-knowledge-base' )
 				),
-				/* TODO FUTURE 'ai_chat_handoff_method' => array(
-					'type' => 'select',
-					'label' => __( 'Handoff Method', 'echo-knowledge-base' ),
-					'value' => isset( $ai_config['ai_chat_handoff_method'] ) ? $ai_config['ai_chat_handoff_method'] : 'email',
-					'options' => array(
-						'email' => __( 'Email (Contact Form)', 'echo-knowledge-base' )
-					),
-					'description' => __( 'Choose how handoff requests are delivered to your team.', 'echo-knowledge-base' )
-				), */
 				'ai_chat_handoff_keywords' => array(
 					'type' => 'textarea',
 					'label' => __( 'Human Handoff Triggers', 'echo-knowledge-base' ),
@@ -684,19 +632,4 @@ class EPKB_AI_Chat_Tab {
 		wp_send_json_success( $result );
 	}
 
-	/**
-	 * Get stored preset value, defaulting to model-based detection if not set
-	 *
-	 * @param array $ai_config
-	 * @return string
-	 */
-	private static function get_stored_preset( $ai_config ) {
-		// If user has explicitly saved a preset choice, use it
-		if ( ! empty( $ai_config['ai_chat_preset'] ) ) {
-			return $ai_config['ai_chat_preset'];
-		}
-
-		// Otherwise, derive from model (backward compatibility)
-		return EPKB_AI_Provider::get_preset_key_for_model( EPKB_AI_Provider::get_chat_model() );
-	}
 }

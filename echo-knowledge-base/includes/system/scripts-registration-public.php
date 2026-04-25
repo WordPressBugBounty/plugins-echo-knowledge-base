@@ -79,16 +79,21 @@ function epkb_load_public_resources() {
 
 	// Pre-attach inline script data for AI search
 	if ( EPKB_AI_Utilities::is_ai_search_enabled() ) {
+		$continue_chat_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_results_continue_in_chat', 'on' ) === 'on'
+			&& EPKB_AI_Chat_Frontend::can_display_chat_widget();
+
 		$ai_search_data = array(
-			'rest_url'        => esc_url_raw( rest_url() ),
-			'rest_nonce'      => epkb_get_instance()->security_obj->get_nonce(),
-			'search_endpoint' => 'epkb-public/v1/ai-search/search',
-			'msg_loading'     => esc_html__( 'Searching...', 'echo-knowledge-base' ),
-			'msg_error'       => esc_html__( 'Sorry, an error occurred during search. Please try again.', 'echo-knowledge-base' ),
-			'msg_no_results'  => esc_html__( 'No results found. Please try a different search term.', 'echo-knowledge-base' ),
-			'msg_try_again'   => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
-			'is_admin'        => current_user_can( 'manage_options' ),
-			'sources_label'   => esc_html__( 'Sources', 'echo-knowledge-base' ),
+			'rest_url'              => esc_url_raw( rest_url() ),
+			'rest_nonce'            => epkb_get_instance()->security_obj->get_nonce(),
+			'search_endpoint'       => 'epkb-public/v1/ai-search/search',
+			'msg_loading'           => esc_html__( 'Searching...', 'echo-knowledge-base' ),
+			'msg_error'             => esc_html__( 'Sorry, an error occurred during search. Please try again.', 'echo-knowledge-base' ),
+			'msg_no_results'        => esc_html__( 'No results found. Please try a different search term.', 'echo-knowledge-base' ),
+			'msg_try_again'         => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
+			'is_admin'              => current_user_can( 'manage_options' ),
+			'sources_label'         => esc_html__( 'Sources', 'echo-knowledge-base' ),
+			'continue_chat_enabled' => $continue_chat_enabled,
+			'continue_chat_label'   => esc_html__( 'Open in AI Chat', 'echo-knowledge-base' ),
 		);
 		wp_add_inline_script( 'epkb-ai-search', 'var epkbAISearch = ' . wp_json_encode( $ai_search_data ) . ';', 'before' );
 	}
@@ -102,6 +107,7 @@ function epkb_load_public_resources() {
 		$ai_search_results_data = array(
 			'rest_url'   => esc_url_raw( rest_url() ),
 			'rest_nonce' => epkb_get_instance()->security_obj->get_nonce(),
+			'is_admin'   => current_user_can( 'manage_options' ),
 			'i18n'       => EPKB_AI_Search_Results_Display::get_script_data(),
 		);
 		wp_add_inline_script( 'epkb-ai-search-results', 'var epkbAISearchResults = ' . wp_json_encode( $ai_search_results_data ) . ';', 'before' );

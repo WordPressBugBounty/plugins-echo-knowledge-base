@@ -40,6 +40,9 @@
             "OFF": [
                 "Désactivé"
             ],
+            "Errors": [
+                "Erreurs"
+            ],
             "Email": [
                 "E-mail"
             ],
@@ -51,6 +54,9 @@
             ],
             "Saving...": [
                 "Sauvegarde en cours..."
+            ],
+            "Error": [
+                "Erreur"
             ],
             "Go to General Settings": [
                 "Aller dans les Paramètres généraux"
@@ -105,6 +111,9 @@
             ],
             "Trigger": [
                 "Déclencheur"
+            ],
+            "AI error recorded in this conversation": [
+                "Erreur d'IA enregistrée dans cette conversation"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "Voulez-vous vraiment supprimer les conversations sélectionnées ?"
@@ -184,6 +193,18 @@
             "Agent Handover": [
                 "Transfert à l'agent"
             ],
+            "The most recent AI request failed for this conversation": [
+                "La demande d'IA la plus récente a échoué pour cette conversation"
+            ],
+            "An earlier AI request failed during this conversation": [
+                "Une demande d'IA précédente a échoué au cours de cette conversation"
+            ],
+            "Failed": [
+                "Échec"
+            ],
+            "Error Logged": [
+                "Erreur enregistrée"
+            ],
             "Number of messages": [
                 "Nombre de messages"
             ],
@@ -210,6 +231,9 @@
             ],
             "Full Conversation": [
                 "Conversation complète"
+            ],
+            "AI Error": [
+                "Erreur de l'IA"
             ],
             "No messages in this conversation.": [
                 "Aucun message dans cette conversation."

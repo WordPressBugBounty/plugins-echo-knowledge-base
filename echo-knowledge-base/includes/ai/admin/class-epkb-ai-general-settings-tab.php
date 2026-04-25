@@ -13,14 +13,31 @@ class EPKB_AI_General_Settings_Tab {
 	public static function get_tab_config() {
 
 		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
+		$ai_config['ai_provider'] = EPKB_AI_Provider::normalize_provider( isset( $ai_config['ai_provider'] ) ? $ai_config['ai_provider'] : '' );
 
 		return array(
 			'tab_id' => 'general-settings',
 			'title' => __( 'General Settings', 'echo-knowledge-base' ),
 			'settings_sections' => self::get_settings_sections( $ai_config ),
 			'ai_config' => $ai_config,
+			'has_kb_ai_collection' => self::any_kb_has_ai_collection(),
 			'setup_steps' => EPKB_AI_Admin_Page::get_setup_steps_for_tab( 'general-settings' )
 		);
+	}
+
+	/**
+	 * Return true if at least one KB config has kb_ai_collection_id set.
+	 *
+	 * @return bool
+	 */
+	private static function any_kb_has_ai_collection() {
+		$kb_config_obj = new EPKB_KB_Config_DB();
+		foreach ( $kb_config_obj->get_kb_configs() as $kb_config ) {
+			if ( ! empty( $kb_config['kb_ai_collection_id'] ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -153,9 +170,10 @@ class EPKB_AI_General_Settings_Tab {
 	 */
 	public static function are_settings_configured() {
 		$ai_config = EPKB_AI_Config_Specs::get_ai_config();
+		$provider = EPKB_AI_Provider::normalize_provider( isset( $ai_config['ai_provider'] ) ? $ai_config['ai_provider'] : '' );
 
 		// Check if API key is set for the active provider and disclaimer accepted
-		$api_key_field = EPKB_AI_Provider::get_api_key_field( $ai_config['ai_provider'] );
+		$api_key_field = EPKB_AI_Provider::get_api_key_field( $provider );
 		$api_key_set = ! empty( $ai_config[$api_key_field] );
 		$disclaimer_set = ! empty( $ai_config['ai_disclaimer_accepted'] ) && $ai_config['ai_disclaimer_accepted'] === 'on';
 

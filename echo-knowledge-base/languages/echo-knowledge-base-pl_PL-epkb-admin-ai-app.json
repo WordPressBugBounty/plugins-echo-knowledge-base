@@ -31,26 +31,8 @@
             "Configure API Key": [
                 "Skonfiguruj klucz API"
             ],
-            "Legacy AI Models Detected": [
-                "Wykryto przestarzałe modele AI"
-            ],
-            "Your AI configuration still uses legacy Gemini model names. Update the AI configuration to save the current model names.": [
-                "Twoja konfiguracja AI nadal używa przestarzałych nazw modeli Gemini. Zaktualizuj konfigurację AI, aby zapisać bieżące nazwy modeli."
-            ],
-            "Updating...": [
-                "Aktualizowanie..."
-            ],
-            "Update AI Configuration": [
-                "Zaktualizuj konfigurację AI"
-            ],
             "Failed to load tab data": [
                 "Nie udało się załadować danych zakładki"
-            ],
-            "AI configuration updated successfully": [
-                "Konfiguracja AI została pomyślnie zaktualizowana"
-            ],
-            "Failed to update AI configuration": [
-                "Nie udało się zaktualizować konfiguracji AI"
             ],
             "Failed to load dashboard data. Please reload the page.": [
                 "Nie udało się załadować danych pulpitu. Proszę ponownie załadować stronę."

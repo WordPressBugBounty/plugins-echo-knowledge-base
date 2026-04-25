@@ -635,6 +635,7 @@ class EPKB_AI_Log {
 			'user_rate_limit'     => 429,
 			'global_rate_limit'   => 429,
 			'insufficient_quota'  => 429,
+			'max_retries_exceeded' => 503,
 			'version_conflict'    => 409,
 			'server_error'        => 500,
 			'db_error'           => 500,
@@ -691,6 +692,7 @@ class EPKB_AI_Log {
 			'service_unavailable',
 			'empty_response',
 			'rate_limit_exceeded',
+			'max_retries_exceeded',
 			'file_processing_timeout'
 		);
 		

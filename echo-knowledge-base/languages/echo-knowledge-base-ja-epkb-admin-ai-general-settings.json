@@ -40,6 +40,12 @@
             "Change AI Provider?": [
                 "AIプロバイダを変更しますか？"
             ],
+            "Before you switch:": [
+                "切り替える前に:"
+            ],
+            "Read the Switching AI Providers guide →": [
+                "AIプロバイダーの切り替えガイドを読む →"
+            ],
             "Switching AI providers will affect your AI Search and AI Chat settings:": [
                 "AIプロバイダを切り替えると、AI検索とAIチャットの設定に影響します："
             ],

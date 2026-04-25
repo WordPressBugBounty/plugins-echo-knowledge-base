@@ -944,13 +944,18 @@ add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_t
 	 * @return array
 	 */
 	private static function get_news_items() {
+		$quiz_demo_url = EPKB_Quizzes_Utilities::get_demo_quiz_url();
+
 		return array(
 			array(
 				'date' => '2026-03-29',
 				'type' => 'feature',
 				'title' => __( 'AI-Generated Quizzes', 'echo-knowledge-base' ),
 				'description' => __( 'Generate quizzes from KB articles with AI and publish them below article content.', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-quizzes' )
+				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-quizzes' ),
+				'link_label' => __( 'Open Quizzes', 'echo-knowledge-base' ),
+				'secondary_link' => $quiz_demo_url,
+				'secondary_link_label' => __( 'See Demo Quiz', 'echo-knowledge-base' )
 			),
 			array(
 				'date' => '2026-03-09',
@@ -997,6 +1002,7 @@ add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_t
 	 */
 	private static function get_ai_features() {
 		$has_ai_features_pro = EPKB_AI_Utilities::is_ai_features_pro_enabled();
+		$quiz_demo_url = EPKB_Quizzes_Utilities::get_demo_quiz_url();
 
 		return array(
 			array_merge( array(
@@ -1048,6 +1054,8 @@ add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_t
 					__( 'Step-by-step tutorials', 'echo-knowledge-base' ),
 					__( 'Show quizzes below article content', 'echo-knowledge-base' ),
 				),
+				'secondary_link'       => $quiz_demo_url,
+				'secondary_link_label' => __( 'See Demo Quiz', 'echo-knowledge-base' ),
 			), EPKB_Quizzes_Utilities::is_feature_enabled()
 				? self::get_ai_feature_action_links( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-quizzes' ), $has_ai_features_pro )
 				: array(

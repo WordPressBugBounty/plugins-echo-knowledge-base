@@ -13,7 +13,7 @@ class EPKB_ML_Search {
 
 	function __construct( $kb_config, $is_kb_block = false ) {
 		$this->kb_config = $kb_config;
-		$this->setting_prefix = EPKB_Core_Utilities::is_main_page_search( $kb_config ) || $is_kb_block ? '' : 'article_';
+		$this->setting_prefix = EPKB_Core_Utilities::is_main_page_search( $kb_config ) || $is_kb_block || EPKB_Utilities::use_main_page_search_settings_on_article_page( $kb_config ) ? '' : 'article_';
 		$this->is_kb_block = $is_kb_block;
 
 		// Mark that search box is rendered for AI search results dialog output
@@ -125,7 +125,7 @@ class EPKB_ML_Search {
 		if ( $is_article ) {
 
 			// still check prefix because Sidebar layout uses Main Page search for Article Page
-			$prefix = EPKB_Core_Utilities::is_main_page_search( $kb_config ) ? '' : 'article_';
+			$prefix = EPKB_Core_Utilities::is_main_page_search( $kb_config ) || EPKB_Utilities::use_main_page_search_settings_on_article_page( $kb_config )  ? '' : 'article_';
 
 			$output .= '
 				#eckb-article-header #epkb-ml__module-search {
@@ -166,7 +166,7 @@ class EPKB_ML_Search {
 
 		} else if ( is_archive() ) {
 
-			$prefix = EPKB_Core_Utilities::is_main_page_search( $kb_config ) ? '' : 'article_';
+			$prefix = EPKB_Core_Utilities::is_main_page_search( $kb_config ) || EPKB_Utilities::use_main_page_search_settings_on_article_page( $kb_config ) ? '' : 'article_';
 
 			$output .= '
 				#eckb-archive-page-container #eckb-archive-header #epkb-ml__module-search {

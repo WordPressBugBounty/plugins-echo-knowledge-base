@@ -1322,7 +1322,7 @@ class EPKB_KB_Config_Specs {
 				'default'     => '#FFFFFF'
 			),
 
-			// ARCHIVE PAGE - TODO FUTURE Settings Position Settings
+			// ARCHIVE PAGE
 			/***
 			'archive-left-sidebar-position-2' => array(
 				'name'        => 'archive-left-sidebar-position-2',
@@ -2733,14 +2733,14 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::CHECKBOX,
 				'default'     => 'off'
 			),
-			'quizzes_enable' => array(
-				'name'        => 'quizzes_enable',
-				'type'        => EPKB_Input_Filter::CHECKBOX,
-				'default'     => 'off'
-			),
-			'quizzes_eyebrow_text' => array(
-				'name'        => 'quizzes_eyebrow_text',
-				'max'         => '80',
+				'quizzes_enable' => array(
+					'name'        => 'quizzes_enable',
+					'type'        => EPKB_Input_Filter::CHECKBOX,
+					'default'     => 'off'
+				),
+				'quizzes_eyebrow_text' => array(
+					'name'        => 'quizzes_eyebrow_text',
+					'max'         => '80',
 				'min'         => '1',
 				'type'        => EPKB_Input_Filter::TEXT,
 				'default'     => esc_html__( 'Knowledge Check', 'echo-knowledge-base' ),
@@ -2758,6 +2758,20 @@ class EPKB_KB_Config_Specs {
 				'min'         => '1',
 				'type'        => EPKB_Input_Filter::TEXT,
 				'default'     => esc_html__( 'Question', 'echo-knowledge-base' ),
+			),
+			'quizzes_true_text' => array(
+				'name'        => 'quizzes_true_text',
+				'max'         => '40',
+				'min'         => '1',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => esc_html__( 'True', 'echo-knowledge-base' ),
+			),
+			'quizzes_false_text' => array(
+				'name'        => 'quizzes_false_text',
+				'max'         => '40',
+				'min'         => '1',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'default'     => esc_html__( 'False', 'echo-knowledge-base' ),
 			),
 			'quizzes_summary_title_text' => array(
 				'name'        => 'quizzes_summary_title_text',
@@ -3073,7 +3087,7 @@ class EPKB_KB_Config_Specs {
 				'max'         => '60',
 				'min'         => '3',
 				'allowed_access'  => array( EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY, EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
-				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
+				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
 			),
 
 			// Access to Quizzes
@@ -3083,7 +3097,17 @@ class EPKB_KB_Config_Specs {
 				'max'         => '60',
 				'min'         => '3',
 				'allowed_access'  => array( EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY, EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
-				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
+				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
+			),
+
+			// Access to Glossary
+			'admin_eckb_access_glossary_write' => array(
+				'name'        => 'admin_eckb_access_glossary_write',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'max'         => '60',
+				'min'         => '3',
+				'allowed_access'  => array( EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY, EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
+				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
 			),
 
 			// Access to AI Features
@@ -4556,12 +4580,15 @@ class EPKB_KB_Config_Specs {
 			'admin_eckb_access_addons_news_read' => esc_html__( 'Add-ons', 'echo-knowledge-base' ),
 			'admin_eckb_access_faqs_write' => esc_html__( 'FAQs', 'echo-knowledge-base' ),
 			'admin_eckb_access_quizzes_write' => esc_html__( 'Quizzes', 'echo-knowledge-base' ),
-			'admin_eckb_access_ai_feature' => esc_html__( 'AI Features', 'echo-knowledge-base' ),
-			'glossary_enable' => esc_html__( 'Glossary', 'echo-knowledge-base' ),
-			'quizzes_enable' => esc_html__( 'Quizzes', 'echo-knowledge-base' ),
-			'quizzes_eyebrow_text' => esc_html__( 'Eyebrow Text', 'echo-knowledge-base' ),
-			'quizzes_start_button_text' => esc_html__( 'Start Button Text', 'echo-knowledge-base' ),
+			'admin_eckb_access_glossary_write' => esc_html__( 'Glossary', 'echo-knowledge-base' ),
+				'admin_eckb_access_ai_feature' => esc_html__( 'AI Features', 'echo-knowledge-base' ),
+				'glossary_enable' => esc_html__( 'Glossary', 'echo-knowledge-base' ),
+				'quizzes_enable' => esc_html__( 'Quizzes', 'echo-knowledge-base' ),
+				'quizzes_eyebrow_text' => esc_html__( 'Eyebrow Text', 'echo-knowledge-base' ),
+				'quizzes_start_button_text' => esc_html__( 'Start Button Text', 'echo-knowledge-base' ),
 			'quizzes_question_label_text' => esc_html__( 'Question Label', 'echo-knowledge-base' ),
+			'quizzes_true_text' => esc_html__( 'True Text', 'echo-knowledge-base' ),
+			'quizzes_false_text' => esc_html__( 'False Text', 'echo-knowledge-base' ),
 			'quizzes_summary_title_text' => esc_html__( 'Summary Title', 'echo-knowledge-base' ),
 			'quizzes_correct_text' => esc_html__( 'Correct Text', 'echo-knowledge-base' ),
 			'quizzes_incorrect_text' => esc_html__( 'Incorrect Text', 'echo-knowledge-base' ),

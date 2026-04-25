@@ -29,6 +29,15 @@ abstract class EPKB_AI_Base_Handler {
 	}
 
 	/**
+	 * Get the collection validation context for handler-specific error messages.
+	 *
+	 * @return string
+	 */
+	protected function get_collection_validation_context() {
+		return '';
+	}
+
+	/**
 	 * Call AI API with messages
 	 *
 	 * @param String $message
@@ -41,12 +50,16 @@ abstract class EPKB_AI_Base_Handler {
 	protected function get_ai_response( $message, $model, $previous_response_id, $collection_id, $conversation_history = array() ) {
 
 		// Validate model exists for current provider, fallback to default if not
-		$model = EPKB_AI_Provider::get_valid_model_for_provider( $model );
+		$model = EPKB_AI_Provider::resolve_model_name( $model );
 
 		// Get vector store ID - required for both providers
-		$vector_store_id = EPKB_AI_Training_Data_Config_Specs::get_vector_store_id_by_collection( $collection_id );
+		$vector_store_id = EPKB_AI_Training_Data_Config_Specs::get_active_provider_vector_store_id_by_collection( $collection_id );
 		if ( is_wp_error( $vector_store_id ) ) {
-			return $vector_store_id;  // Return the specific error (provider_mismatch, collection_not_found, no_vector_store, etc.)
+			return EPKB_AI_Validation::translate_collection_error_for_context(
+				$vector_store_id,
+				$collection_id,
+				$this->get_collection_validation_context()
+			);
 		}
 
 		// Get context-specific parameters
@@ -93,10 +106,11 @@ abstract class EPKB_AI_Base_Handler {
 		$sources = EPKB_AI_Provider::extract_response_sources( $response );
 
 		return array(
-			'content'     => $content,
-			'response_id' => isset( $response['id'] ) ? $response['id'] : '',
-			'usage'       => EPKB_AI_Provider::extract_response_usage( $response ),
-			'sources'     => $sources
+			'content'           => $content,
+			'response_id'       => isset( $response['id'] ) ? $response['id'] : '',
+			'sources'           => $sources,
+			'thought_signature' => $provider === EPKB_AI_Provider::PROVIDER_GEMINI ? EPKB_Gemini_Client::extract_thought_signature( $response ) : '',
+			'response_parts'    => $provider === EPKB_AI_Provider::PROVIDER_GEMINI ? EPKB_Gemini_Client::extract_response_parts( $response ) : array()
 		);
 	}
 
@@ -123,7 +137,7 @@ abstract class EPKB_AI_Base_Handler {
 			),
 		);
 
-		$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $params );
+		$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $params, EPKB_AI_Provider::PROVIDER_CHATGPT );
 
 		if ( ! empty( $previous_response_id ) ) {
 			$request['previous_response_id'] = $previous_response_id;
@@ -133,7 +147,7 @@ abstract class EPKB_AI_Base_Handler {
 			array(
 				'type'             => 'file_search',
 				'vector_store_ids' => array( $vector_store_id ),
-				'max_num_results'  => EPKB_AI_Provider::get_default_max_results()
+				'max_num_results'  => EPKB_AI_Provider::get_default_max_results( EPKB_AI_Provider::PROVIDER_CHATGPT )
 			)
 		);
 
@@ -153,21 +167,10 @@ abstract class EPKB_AI_Base_Handler {
 	private function get_gemini_response( $message, $model, $vector_store_id, $params, $conversation_history = array() ) {
 
 		$options = array(
-			'system_instruction' => $this->get_instructions()
+			'system_instruction' => $this->get_instructions(),
+			'model_parameters'   => $params,
 		);
 
-		if ( isset( $params['temperature'] ) ) {
-			$options['temperature'] = $params['temperature'];
-		}
-		if ( isset( $params['top_p'] ) ) {
-			$options['top_p'] = $params['top_p'];
-		}
-		if ( isset( $params['max_output_tokens'] ) ) {
-			$options['max_output_tokens'] = $params['max_output_tokens'];
-		}
-		if ( isset( $params['thinking_level'] ) ) {
-			$options['thinking_level'] = $params['thinking_level'];
-		}
 		if ( ! empty( $conversation_history ) ) {
 			$options['conversation_history'] = $conversation_history;
 		}
@@ -183,77 +186,18 @@ abstract class EPKB_AI_Base_Handler {
 	 */
 	protected function get_model_parameters( $model ) {
 
-		// Determine context - search or chat
-		$is_search = $this instanceof EPKB_AI_Search_Handler;
-		$prefix = $is_search ? 'ai_search_' : 'ai_chat_';
-		
-		// Get model specifications to determine which parameters are applicable
+		$use_case = $this instanceof EPKB_AI_Search_Handler ? 'search' : 'chat';
+		$runtime_profile = EPKB_AI_Provider::get_runtime_profile( $use_case );
 		$model_spec = EPKB_AI_Provider::get_models_and_default_params( $model );
+		$params = empty( $runtime_profile['params'] ) ? array() : $runtime_profile['params'];
+		$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? intval( $model_spec['max_output_tokens_limit'] ) : 16384;
 
-		$params = array();
-
-		// Add max_output_tokens
-		$max_output_tokens_key = $prefix . 'max_output_tokens';
-		$max_output_tokens = EPKB_AI_Config_Specs::get_ai_config_value( $max_output_tokens_key );
-		if ( ! empty( $max_output_tokens ) ) {
-			$max_output_tokens = intval( $max_output_tokens );
-			$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : 16384;
-			if ( $max_output_tokens > 0 && $max_output_tokens <= $max_limit ) {
-				$params['max_output_tokens'] = $max_output_tokens;
-			}
-		}
-
-		// Add temperature for models that support it
-		if ( ! empty( $model_spec['supports_temperature'] ) ) {
-			$temperature_key = $prefix . 'temperature';
-			$temperature = EPKB_AI_Config_Specs::get_ai_config_value( $temperature_key );
-			if ( $temperature !== null ) {
-				$temperature = floatval( $temperature );
-				if ( $temperature >= 0.0 && $temperature <= 2.0 ) {
-					$params['temperature'] = $temperature;
-				}
-			}
-		}
-
-		// Add top_p for models that support it (alternative to temperature)
-		if ( ! empty( $model_spec['supports_top_p'] ) && ! isset( $params['temperature'] ) ) {
-			$top_p_key = $prefix . 'top_p';
-			$top_p = EPKB_AI_Config_Specs::get_ai_config_value( $top_p_key );
-			if ( $top_p !== null ) {
-				$top_p = floatval( $top_p );
-				if ( $top_p >= 0.0 && $top_p <= 1.0 ) {
-					$params['top_p'] = $top_p;
-				}
-			}
-		}
-
-		// Add verbosity for models that support it (ChatGPT only)
-		if ( ! empty( $model_spec['supports_verbosity'] ) ) {
-			$verbosity_key = $prefix . 'verbosity';
-			$verbosity = EPKB_AI_Config_Specs::get_ai_config_value( $verbosity_key );
-			if ( ! empty( $verbosity ) ) {
-				$params['verbosity'] = $verbosity;
-			}
-		}
-
-		// Add reasoning for models that support it (ChatGPT only)
-		if ( ! empty( $model_spec['supports_reasoning'] ) ) {
-			$reasoning_key = $prefix . 'reasoning';
-			$reasoning = EPKB_AI_Config_Specs::get_ai_config_value( $reasoning_key );
-			if ( ! empty( $reasoning ) ) {
-				$params['reasoning'] = $reasoning;
-			}
-		}
-
-		// Add thinking_level for models that support it (Gemini 2.5+/3.0+)
-		if ( ! empty( $model_spec['supports_thinking_level'] ) ) {
-			$thinking_level_key = $prefix . 'thinking_level';
-			$thinking_level = EPKB_AI_Config_Specs::get_ai_config_value( $thinking_level_key );
-			if ( ! empty( $thinking_level ) ) {
-				$params['thinking_level'] = $thinking_level;
-			} elseif ( ! empty( $model_spec['default_params']['thinking_level'] ) ) {
-				// Use model default if no config setting
-				$params['thinking_level'] = $model_spec['default_params']['thinking_level'];
+		if ( isset( $params['max_output_tokens'] ) ) {
+			$params['max_output_tokens'] = intval( $params['max_output_tokens'] );
+			if ( $params['max_output_tokens'] <= 0 ) {
+				unset( $params['max_output_tokens'] );
+			} else {
+				$params['max_output_tokens'] = min( $params['max_output_tokens'], $max_limit );
 			}
 		}
 
@@ -273,43 +217,6 @@ abstract class EPKB_AI_Base_Handler {
 			$instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_instructions' );
 			return apply_filters( 'epkb_ai_chat_instructions', $instructions );
 		}
-	}
-
-	/**
-	 * Record API usage for tracking
-	 *
-	 * @param array $usage Usage data from API response
-	 * @return void
-	 */
-	protected function record_usage( $usage ) {
-
-		if ( empty( $usage ) ) {
-			return;
-		}
-		
-		// Get current month's usage
-		$month_key = 'epkb_ai_usage_' . gmdate( 'Y_m' );
-		$monthly_usage = get_option( $month_key, array(
-			'prompt_tokens' => 0,
-			'completion_tokens' => 0,
-			'total_tokens' => 0,
-			'requests' => 0
-		) );
-		
-		// Update usage
-		if ( isset( $usage['prompt_tokens'] ) ) {
-			$monthly_usage['prompt_tokens'] += intval( $usage['prompt_tokens'] );
-		}
-		if ( isset( $usage['completion_tokens'] ) ) {
-			$monthly_usage['completion_tokens'] += intval( $usage['completion_tokens'] );
-		}
-		if ( isset( $usage['total_tokens'] ) ) {
-			$monthly_usage['total_tokens'] += intval( $usage['total_tokens'] );
-		}
-		$monthly_usage['requests']++;
-		
-		// Save updated usage
-		update_option( $month_key, $monthly_usage, false );
 	}
 
 	/**

@@ -49,6 +49,9 @@
             "Tag updated successfully": [
                 "タグを正常に更新しました。"
             ],
+            "Get AI Features PRO": [
+                "AI 機能 PRO を入手"
+            ],
             "Add New Tag": [
                 "新規タグを追加"
             ],
@@ -141,9 +144,6 @@
             ],
             "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
                 "AI は記事の不足情報と未回答の質問を特定します。より多く取り上げるべきトピックを確認しましょう。."
-            ],
-            "Get AI Features PRO": [
-                "AI 機能 PRO を入手"
             ],
             "Analyzing article for content gaps...": [
                 "記事のコンテンツギャップを分析中..."

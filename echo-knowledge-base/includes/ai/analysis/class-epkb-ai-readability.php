@@ -199,68 +199,40 @@ Content:
 {$content_for_analysis}";
 
 		$instructions = 'You are a knowledge base content expert specializing in readability analysis and content optimization.';
-
-		// Get the fastest model preset for content analysis
-		$fastest_preset = EPKB_AI_Provider::get_preset_parameters( EPKB_AI_Provider::FASTEST_MODEL, 'chat' );
-		$model = $fastest_preset['model'];
-
-		// Get model spec to check max_output_tokens limit
-		$model_spec = EPKB_AI_Provider::get_models_and_default_params( $model );
-		$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : 16384;
-
-		// Use higher max_output_tokens for readability analysis to accommodate many issues with detailed explanations
-		$readability_max_tokens = min( 12000, $max_limit );
-
-		$model_params = array(
-			'verbosity' => isset( $fastest_preset['verbosity'] ) ? $fastest_preset['verbosity'] : null,
-			'reasoning' => isset( $fastest_preset['reasoning'] ) ? $fastest_preset['reasoning'] : null,
-			'temperature' => isset( $fastest_preset['temperature'] ) ? $fastest_preset['temperature'] : 0.3,
-			'top_p' => isset( $fastest_preset['top_p'] ) ? $fastest_preset['top_p'] : null,
-			'max_output_tokens' => $readability_max_tokens
-		);
-
-		$provider = EPKB_AI_Provider::get_active_provider();
-		$client = EPKB_AI_Provider::get_client();
-
-		// Build provider-specific request
-		if ( $provider === EPKB_AI_Provider::PROVIDER_GEMINI ) {
-			$request = array(
-				'contents' => array(
-					array(
-						'parts' => array(
-							array( 'text' => $prompt )
-						)
-					)
+		$response_format = array(
+			'type'   => 'json_schema',
+			'name'   => 'readability_analysis',
+			'schema' => array(
+				'type'                 => 'object',
+				'additionalProperties' => false,
+				'properties'           => array(
+					'issues' => array(
+						'type'  => 'array',
+						'items' => array(
+							'type'                 => 'object',
+							'additionalProperties' => false,
+							'properties'           => array(
+								'issue_type'       => array( 'type' => 'string' ),
+								'problematic_text' => array( 'type' => 'string' ),
+								'explanation'      => array( 'type' => 'string' ),
+							),
+							'required'             => array( 'issue_type', 'problematic_text', 'explanation' ),
+						),
+					),
 				),
-				'system_instruction' => array(
-					'parts' => array(
-						array( 'text' => $instructions )
-					)
-				)
-			);
-			$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
-			$response = $client->request( '/models/' . $model . ':generateContent', $request, 'POST', 'content_analysis_readability' );
-		} else {
-			$request = array(
-				'model' => $model,
-				'instructions' => $instructions,
-				'input' => array(
-					array(
-						'role' => 'user',
-						'content' => $prompt
-					)
-				)
-			);
-			$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
-			$response = $client->request( '/responses', $request, 'POST', 'content_analysis_readability' );
-		}
-
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-
-		// Extract content from AI response
-		$response_text = EPKB_AI_Provider::extract_response_content( $response );
+				'required'             => array( 'issues' ),
+			),
+		);
+		$response_text = EPKB_AI_Provider::send_prompt_request(
+			$prompt,
+			$instructions,
+			'content_analysis_readability',
+			'content_analysis',
+			null,
+			array(),
+			array(),
+			$response_format
+		);
 		if ( is_wp_error( $response_text ) ) {
 			return $response_text;
 		}

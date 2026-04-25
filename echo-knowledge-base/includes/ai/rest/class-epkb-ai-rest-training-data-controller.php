@@ -361,6 +361,23 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 				)
 			)
 		) );
+
+		// Dismiss the Validate & Fix recommendation notice
+		register_rest_route( $this->admin_namespace, '/training-data/dismiss-validate-fix-notice', array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => array( $this, 'dismiss_validate_fix_notice' ),
+			'permission_callback' => array( $this, 'check_admin_permission' ),
+		) );
+	}
+
+	/**
+	 * Persist the user's dismissal of the Validate & Fix recommendation notice.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function dismiss_validate_fix_notice() {
+		EPKB_Core_Utilities::add_kb_flag( 'ai_validate_fix_notice_dismissed' );
+		return $this->create_rest_response( array( 'success' => true ) );
 	}
 
 	/**

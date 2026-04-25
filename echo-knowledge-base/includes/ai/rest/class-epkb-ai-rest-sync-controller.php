@@ -335,6 +335,8 @@ class EPKB_AI_REST_Sync_Controller extends EPKB_AI_REST_Base_Controller {
 			return $this->create_rest_response( array( 'success' => false, 'error' => $result->get_error_code(), 'message' => $result->get_error_message() ), 400 );
 		}
 
+		EPKB_Core_Utilities::add_kb_flag( 'ai_validate_fix_notice_dismissed' );
+
 		return $this->create_rest_response( array( 'success' => true, 'total' => $result['total'] ) );
 	}
 

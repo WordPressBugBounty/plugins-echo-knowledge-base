@@ -19,7 +19,7 @@ class EPKB_Glossary_Page {
 		}
 
 		add_submenu_page( $parent_slug, esc_html__( 'Glossary - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'Glossary', 'echo-knowledge-base' ),
-			EPKB_Admin_UI_Access::get_editor_capability(), 'epkb-glossary', array( new self(), 'display_glossary_page' ) );
+			EPKB_Admin_UI_Access::get_context_required_capability( array( 'admin_eckb_access_glossary_write' ) ), 'epkb-glossary', array( new self(), 'display_glossary_page' ) );
 	}
 
 	/**
@@ -66,7 +66,7 @@ class EPKB_Glossary_Page {
 
 		// Introduction tab
 		$views_config[] = array(
-			'minimum_required_capability' => EPKB_Admin_UI_Access::get_editor_capability(),
+			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( array( 'admin_eckb_access_glossary_write' ) ),
 			'list_key'   => 'glossary-introduction',
 			'label_text' => esc_html__( 'Introduction', 'echo-knowledge-base' ),
 			'icon_class' => 'epkbfa epkbfa-home',
@@ -79,7 +79,7 @@ class EPKB_Glossary_Page {
 
 		// Glossary Terms tab
 		$views_config[] = array(
-			'minimum_required_capability' => EPKB_Admin_UI_Access::get_editor_capability(),
+			'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( array( 'admin_eckb_access_glossary_write' ) ),
 			'list_key'   => 'glossary-terms',
 			'label_text' => esc_html__( 'Glossary Terms', 'echo-knowledge-base' ),
 			'icon_class' => 'epkbfa epkbfa-book',
@@ -114,7 +114,7 @@ class EPKB_Glossary_Page {
 
 		if ( ! empty( $ai_generate_html ) ) {
 			$views_config[] = array(
-				'minimum_required_capability' => EPKB_Admin_UI_Access::get_editor_capability(),
+				'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( array( 'admin_eckb_access_glossary_write' ) ),
 				'list_key'   => 'glossary-ai-generate',
 				'label_text' => esc_html__( 'AI Generate Terms', 'echo-knowledge-base' ),
 				'icon_class' => 'epkbfa epkbfa-magic',
@@ -442,7 +442,7 @@ class EPKB_Glossary_Page {
 	private static function ai_generate_configure_tab() {
 
 		ob_start(); ?>
-		<div class="epkb-admin-info-box">
+		<div class="epkb-admin-info-box epkb-admin-info-box--ai-required">
 			<div class="epkb-admin-info-box__header">
 				<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-exclamation-triangle"></div>
 				<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'AI Features Required', 'echo-knowledge-base' ); ?></div>

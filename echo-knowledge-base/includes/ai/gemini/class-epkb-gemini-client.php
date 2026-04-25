@@ -12,9 +12,6 @@ class EPKB_Gemini_Client {
 	const API_VERSION = 'v1beta';
 	const DEFAULT_MAX_RETRIES = 3;
 	const MAX_FILE_SIZE = 51380224; // 49 MB.
-	const DEFAULT_MODEL = 'gemini-3.1-flash-lite-preview';
-	const DEFAULT_MAX_OUTPUT_TOKENS = 8192;
-	const DEFAULT_MAX_NUM_RESULTS = 10;
 
 	/**
 	 * Make a request to the Gemini API with automatic retry logic
@@ -71,13 +68,13 @@ class EPKB_Gemini_Client {
 			// 4. Handle error response
 
 			// log error details
-			$parsed->add_data( $data );
 			$log_context = $parsed->get_error_data();
+			$log_context = is_array( $log_context ) ? $log_context : array();
 			$log_context['purpose'] = $purpose;
 			$log_context['request_endpoint'] = $endpoint;
 			$log_context['model'] = isset( $data['model'] ) ? $data['model'] : $purpose;
-			$log_context['request_method'] = $method;
 			$log_context['elapsed_seconds'] = round( $request_duration, 3 );
+			$log_context['request_contents_count'] = isset( $data['contents'] ) && is_array( $data['contents'] ) ? count( $data['contents'] ) : 0;
 			EPKB_AI_Log::add_log( 'API request error: ' . $parsed->get_error_message(), $log_context );
 
 			// Warn if execution time limit is too low
@@ -577,7 +574,7 @@ class EPKB_Gemini_Client {
 	 * @param string $model Model name (e.g., 'gemini-2.5-flash')
 	 * @param string $prompt User prompt/question
 	 * @param string $store_id File Search Store ID
-	 * @param array $options Additional options (system_instruction, temperature, etc.)
+	 * @param array $options Additional options (system_instruction, model_parameters, etc.)
 	 * @return array|WP_Error Response data or error
 	 */
 	public function generate_content_with_file_search( $model, $prompt, $store_id, $options = array() ) {
@@ -613,31 +610,8 @@ class EPKB_Gemini_Client {
 			);
 		}
 
-		// Add generation config for model parameters
-		$generation_config = array();
-		if ( isset( $options['temperature'] ) ) {
-			$generation_config['temperature'] = floatval( $options['temperature'] );
-		}
-		if ( isset( $options['top_p'] ) ) {
-			$generation_config['topP'] = floatval( $options['top_p'] );
-		}
-		if ( isset( $options['max_output_tokens'] ) ) {
-			$generation_config['maxOutputTokens'] = intval( $options['max_output_tokens'] );
-		}
-		if ( ! empty( $generation_config ) ) {
-			$request_body['generationConfig'] = $generation_config;
-		}
-
-		// Add thinking config for Gemini 2.5+/3.0+ models (must be inside generationConfig)
-		if ( ! empty( $options['thinking_level'] ) ) {
-			$thinking_config = self::get_thinking_config( $model, $options['thinking_level'] );
-			if ( ! empty( $thinking_config ) ) {
-				if ( ! isset( $request_body['generationConfig'] ) ) {
-					$request_body['generationConfig'] = array();
-				}
-				$request_body['generationConfig']['thinkingConfig'] = $thinking_config;
-			}
-		}
+		$model_parameters = isset( $options['model_parameters'] ) && is_array( $options['model_parameters'] ) ? $options['model_parameters'] : array();
+		$request_body = EPKB_Gemini_Model_Catalog::apply_model_parameters( $request_body, $model, $model_parameters );
 
 		// Make request to generateContent endpoint
 		$endpoint = '/models/' . $model . ':generateContent';
@@ -645,191 +619,42 @@ class EPKB_Gemini_Client {
 	}
 
 	/**
-	 * Get models and their default parameters
+	 * Extract a Gemini thought signature from the first candidate.
 	 *
-	 * Models are ordered by capability (fastest first, smartest last).
-	 * Preset metadata is included for models that should appear in presets.
-	 *
-	 * @param string|null $model_name Optional specific model name to retrieve
-	 * @return array Model(s) with default parameters
+	 * @param array $response
+	 * @return string
 	 */
-	public static function get_models_and_default_params( $model_name = null ) {
+	public static function extract_thought_signature( $response ) {
 
-		$models = array(
-			'gemini-3.1-flash-lite-preview' => array(
-				'name'                       => 'Gemini 3.1 Flash-Lite Preview',
-				'type'                       => 'gemini',
-				'preset_key'                 => EPKB_AI_Provider::FASTEST_MODEL,
-				'preset_label'               => __( 'Fastest', 'echo-knowledge-base' ),
-				'default_params'             => array(
-					'temperature'       => 1,
-					'top_p'             => 0.95,
-					'thinking_level'    => 'low',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => true,
-				'supports_top_p'             => true,
-				'supports_thinking_level'    => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 65536,
-				'parameters'                 => array( 'temperature', 'top_p', 'thinking_level', 'max_output_tokens' )
-			),
-			'gemini-2.5-flash' => array(
-				'name'                       => 'Gemini 2.5 Flash',
-				'type'                       => 'gemini',
-				'default_params'             => array(
-					'temperature'       => 1,
-					'top_p'             => 0.95,
-					'thinking_level'    => 'low',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => true,
-				'supports_top_p'             => true,
-				'supports_thinking_level'    => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 65536,
-				'parameters'                 => array( 'temperature', 'top_p', 'thinking_level', 'max_output_tokens' )
-			),
-			'gemini-3-flash-preview' => array(
-				'name'                       => 'Gemini 3 Flash',
-				'type'                       => 'gemini',
-				'preset_key'                 => 'balanced',
-				'preset_label'               => __( 'Balanced', 'echo-knowledge-base' ),
-				'default_params'             => array(
-					'temperature'       => 0.4,
-					'top_p'             => 0.95,
-					'thinking_level'    => 'low',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => true,
-				'supports_top_p'             => true,
-				'supports_thinking_level'    => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 65536,
-				'parameters'                 => array( 'temperature', 'top_p', 'thinking_level', 'max_output_tokens' )
-			),
-			'gemini-2.5-pro' => array(
-				'name'                       => 'Gemini 2.5 Pro',
-				'type'                       => 'gemini',
-				'default_params'             => array(
-					'temperature'       => 1.0,
-					'top_p'             => 0.95,
-					'thinking_level'    => 'low',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => true,
-				'supports_top_p'             => true,
-				'supports_thinking_level'    => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 65536,
-				'parameters'                 => array( 'temperature', 'top_p', 'thinking_level', 'max_output_tokens' )
-			),
-			'gemini-3.1-pro-preview' => array(
-				'name'                       => 'Gemini 3.1 Pro Preview',
-				'type'                       => 'gemini',
-				'preset_key'                 => 'smartest',
-				'preset_label'               => __( 'Smartest', 'echo-knowledge-base' ),
-				'default_params'             => array(
-					'temperature'       => 1.0,
-					'top_p'             => 0.95,
-					'thinking_level'    => 'low',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => true,
-				'supports_top_p'             => true,
-				'supports_thinking_level'    => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 65536,
-				'parameters'                 => array( 'temperature', 'top_p', 'thinking_level', 'max_output_tokens' )
-			)
-		);
-
-		// Return specific model if requested
-		if ( ! empty( $model_name ) ) {
-			return isset( $models[$model_name] ) ? $models[$model_name] : $models[self::DEFAULT_MODEL];
+		if ( empty( $response['candidates'][0]['content']['parts'] ) || ! is_array( $response['candidates'][0]['content']['parts'] ) ) {
+			return '';
 		}
 
-		return $models;
+		$thought_signature = '';
+		foreach ( $response['candidates'][0]['content']['parts'] as $part ) {
+			if ( empty( $part['thoughtSignature'] ) || ! is_string( $part['thoughtSignature'] ) ) {
+				continue;
+			}
+
+			$thought_signature = $part['thoughtSignature'];
+		}
+
+		return $thought_signature;
 	}
 
 	/**
-	 * Apply model-specific parameters to a request
+	 * Extract the raw response parts from the first candidate.
 	 *
-	 * @param array $request
-	 * @param string $model
-	 * @param array $params
+	 * @param array $response
 	 * @return array
 	 */
-	public static function apply_model_parameters( $request, $model, $params = array() ) {
+	public static function extract_response_parts( $response ) {
 
-		$model_spec = self::get_models_and_default_params( $model );
-
-		if ( empty( $params ) ) {
-			$params = $model_spec['default_params'];
-		}
-
-		// Build generationConfig for Gemini API (parameters must be nested inside generationConfig)
-		$generation_config = isset( $request['generationConfig'] ) ? $request['generationConfig'] : array();
-
-		if ( $model_spec['supports_temperature'] && isset( $params['temperature'] ) ) {
-			$generation_config['temperature'] = floatval( $params['temperature'] );
-		}
-
-		if ( $model_spec['supports_top_p'] && isset( $params['top_p'] ) ) {
-			$generation_config['topP'] = floatval( $params['top_p'] );
-		}
-
-		if ( $model_spec['supports_max_output_tokens'] && isset( $params['max_output_tokens'] ) ) {
-			$max_output = intval( $params['max_output_tokens'] );
-			$limit      = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : self::DEFAULT_MAX_OUTPUT_TOKENS;
-			if ( $max_output > 0 && $max_output <= $limit ) {
-				$generation_config['maxOutputTokens'] = $max_output;
-			}
-		}
-
-		// Apply thinking config for models that support it (Gemini 2.5+/3.0+)
-		if ( ! empty( $model_spec['supports_thinking_level'] ) && ! empty( $params['thinking_level'] ) ) {
-			$thinking_config = self::get_thinking_config( $model, $params['thinking_level'] );
-			if ( ! empty( $thinking_config ) ) {
-				$generation_config['thinkingConfig'] = $thinking_config;
-			}
-		}
-
-		if ( ! empty( $generation_config ) ) {
-			$request['generationConfig'] = $generation_config;
-		}
-
-		return $request;
-	}
-
-	/**
-	 * Get thinking config based on model and level
-	 * - Gemini 2.5 models use thinkingBudget (integer tokens)
-	 * - Gemini 3+ models use thinkingLevel (LOW, MEDIUM, HIGH)
-	 *
-	 * @param string $model
-	 * @param string $level 'low' or 'high'
-	 * @return array
-	 */
-	private static function get_thinking_config( $model, $level ) {
-
-		$valid_levels = array( 'low', 'high' );
-		if ( ! in_array( $level, $valid_levels, true ) ) {
+		if ( empty( $response['candidates'][0]['content']['parts'] ) || ! is_array( $response['candidates'][0]['content']['parts'] ) ) {
 			return array();
 		}
 
-		// Gemini 3+ models use thinkingLevel
-		if ( strpos( $model, 'gemini-3' ) === 0 ) {
-			return array( 'thinkingLevel' => strtoupper( $level ) );
-		}
-
-		// Gemini 2.5 models use thinkingBudget (token count)
-		$budget_map = array(
-			'low'  => 2048,
-			'high' => 8192
-		);
-
-		return array( 'thinkingBudget' => $budget_map[ $level ] );
+		return $response['candidates'][0]['content']['parts'];
 	}
 
 	/**
@@ -854,14 +679,32 @@ class EPKB_Gemini_Client {
 					continue;
 				}
 
+				// Skip error stubs from failed prior turns so the model is not told it previously said the fallback text
+				if ( ! empty( $message['metadata']['error'] ) ) {
+					continue;
+				}
+
 				// Map 'assistant' role to 'model' for Gemini API
 				$role = isset( $message['role'] ) && $message['role'] === 'assistant' ? 'model' : 'user';
 
+				$parts = array(
+					array( 'text' => $message['content'] )
+				);
+				if ( $role === 'model' ) {
+					$stored_parts = empty( $message['metadata']['gemini_parts'] ) || ! is_array( $message['metadata']['gemini_parts'] ) ? array() : $message['metadata']['gemini_parts'];
+					if ( ! empty( $stored_parts ) ) {
+						$parts = $stored_parts;
+					} else {
+						$thought_signature = empty( $message['metadata']['thought_signature'] ) ? '' : strval( $message['metadata']['thought_signature'] );
+						if ( ! empty( $thought_signature ) ) {
+							$parts[0]['thoughtSignature'] = $thought_signature;
+						}
+					}
+				}
+
 				$contents[] = array(
 					'role' => $role,
-					'parts' => array(
-						array( 'text' => $message['content'] )
-					)
+					'parts' => $parts
 				);
 			}
 		}

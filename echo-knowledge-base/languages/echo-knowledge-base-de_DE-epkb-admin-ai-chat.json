@@ -40,6 +40,9 @@
             "OFF": [
                 "AUS"
             ],
+            "Errors": [
+                "Fehler"
+            ],
             "Email": [
                 "E-Mail"
             ],
@@ -51,6 +54,9 @@
             ],
             "Saving...": [
                 "Speichern..."
+            ],
+            "Error": [
+                "Fehler"
             ],
             "Go to General Settings": [
                 "Gehen Sie zu den allgemeinen Einstellungen"

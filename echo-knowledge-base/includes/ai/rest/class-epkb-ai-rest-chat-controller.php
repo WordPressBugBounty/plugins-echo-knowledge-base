@@ -245,7 +245,9 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			$this->message_handler = new EPKB_AI_Chat_Handler();
 			$result = $this->message_handler->process_message( $result['request_data']['message'], $conversation_obj, $result['request_data']['collection_id'] );
 			if ( is_wp_error( $result ) ) {
-				return $this->create_rest_response( array(), 400, $result );
+				// Include chat_id so the frontend can attach the retry to the same conversation the user message was recorded in
+				$error_payload = $conversation_obj->get_chat_id() ? array( 'chat_id' => $conversation_obj->get_chat_id() ) : array();
+				return $this->create_rest_response( $error_payload, EPKB_AI_Log::get_error_status_code( $result->get_error_code() ), $result );
 			}
 			
 			// Return successful response
@@ -483,7 +485,8 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 							'id'        => isset( $message['id'] ) ? $message['id'] : '',
 							'role'      => $message['role'],
 							'content'   => $message['content'],
-							'timestamp' => isset( $message['timestamp'] ) ? $message['timestamp'] : ''
+							'timestamp' => isset( $message['timestamp'] ) ? $message['timestamp'] : '',
+							'metadata'  => isset( $message['metadata'] ) && is_array( $message['metadata'] ) ? $message['metadata'] : null
 						);
 					}
 				}
@@ -644,16 +647,17 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 	 */
 	private function format_messages_for_response( $messages ) {
 		$formatted = array();
-		
+
 		foreach ( $messages as $message ) {
 			$formatted[] = array(
 				'id'        => isset( $message['id'] ) ? $message['id'] : '',
 				'role'      => $message['role'],
 				'content'   => EPKB_AI_Security::sanitize_output( $message['content'] ),
-				'timestamp' => isset( $message['timestamp'] ) ? $message['timestamp'] : ''
+				'timestamp' => isset( $message['timestamp'] ) ? $message['timestamp'] : '',
+				'metadata'  => isset( $message['metadata'] ) && is_array( $message['metadata'] ) ? $message['metadata'] : null
 			);
 		}
-		
+
 		return $formatted;
 	}
 

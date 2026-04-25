@@ -43,8 +43,8 @@
             "Loading...": [
                 "Laddar in …"
             ],
-            "General Settings": [
-                "Allmänna inställningar"
+            "Go to General Settings": [
+                "Gå till allmänna inställningar"
             ],
             "Go to Settings": [
                 "Gå till Inställningar"
@@ -70,8 +70,8 @@
             "Setup Steps": [
                 "Installationssteg"
             ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
-                "För att använda AI-funktioner, vänligen konfigurera din API-nyckel och acceptera dataskyddsavtalet i"
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings.": [
+                "För att använda AI-funktioner, vänligen konfigurera din API-nyckel och godkänn datasekretessavtalet i Allmänna inställningar."
             ],
             "Session Expired": [
                 "Sessionen har gått ut"

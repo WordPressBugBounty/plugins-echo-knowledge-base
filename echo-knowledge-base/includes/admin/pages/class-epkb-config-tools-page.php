@@ -1339,6 +1339,13 @@ class EPKB_Config_Tools_Page {
 					</section>
 					<input type="hidden" name="epkb_debug_box" value="main">
 					<input type="hidden" name="kb_id" value="<?php echo esc_attr( $kb_config['id'] ); ?>">
+				</form>
+
+				<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . '1&page=epkb-add-ons' ) ); ?>" method="post" dir="ltr">
+					<section class="save-settings checkbox-input"><?php
+						EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Export AI Configuration', 'echo-knowledge-base' ), 'epkb_download_ai_config', 'epkb_download_ai_config', '', true, '' , 'epkb-primary-btn' ); ?>
+					</section>
+					<input type="hidden" name="kb_id" value="<?php echo esc_attr( $kb_config['id'] ); ?>">
 				</form>     <?php
 			}   ?>
 

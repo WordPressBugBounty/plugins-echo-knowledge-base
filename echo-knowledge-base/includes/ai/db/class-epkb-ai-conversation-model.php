@@ -44,7 +44,7 @@ class EPKB_AI_Conversation_Model {
 	public $row_version;
 
 	/**
-	 * Mode (search or chat)
+	 * Mode (search, smart search, chat, or support)
 	 * @var string
 	 */
 	protected $mode;
@@ -130,10 +130,30 @@ class EPKB_AI_Conversation_Model {
 
 	public function set_chat_id( $chat_id ) {
 		$this->chat_id = $this->validate_id( $chat_id, 'chat' );
-	}	
+	}
+
+	public function set_id( $id ) {
+		$this->id = absint( $id );
+	}
 
 	public function set_session_id( $session_id ) {
 		$this->session_id = $this->validate_id( $session_id, 'session' );
+	}
+
+	public function set_mode( $mode ) {
+		$this->mode = $this->validate_mode( $mode );
+	}
+
+	public function set_title( $title ) {
+		$this->title = EPKB_AI_Validation::validate_title( $title );
+	}
+
+	public function set_language( $language ) {
+		$this->language = EPKB_AI_Validation::validate_language( $language );
+	}
+
+	public function set_ip( $ip ) {
+		$this->ip = sanitize_text_field( $ip );
 	}
 
 	/**
@@ -221,7 +241,7 @@ class EPKB_AI_Conversation_Model {
 	 * @return string
 	 */
 	protected function validate_mode( $mode ) {
-		$valid_modes = array( 'search', 'chat', 'smart_search', 'advanced_search' ); // TODO: remove 'advanced_search' after v16
+		$valid_modes = array( 'search', 'chat', 'support', 'smart_search', 'advanced_search' ); // TODO: remove 'advanced_search' after v16
 		return in_array( $mode, $valid_modes ) ? $mode : 'search';
 	}
 
@@ -356,7 +376,7 @@ class EPKB_AI_Conversation_Model {
 	/**
 	 * Create from database row
 	 *
-	 * @param object $row
+	 * @param array $row
 	 * @return self
 	 */
 	public static function from_db_row( $row ) {

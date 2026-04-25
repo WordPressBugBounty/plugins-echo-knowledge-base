@@ -326,6 +326,49 @@ class EPKB_AI_Validation {
 	}
 
 	/**
+	 * Convert collection configuration errors into context-aware messages.
+	 *
+	 * @param WP_Error $collection_error Collection error to translate.
+	 * @param int      $collection_id Collection ID related to the error.
+	 * @param string   $context Optional context for custom error messages: 'chat' or empty for generic.
+	 * @return WP_Error
+	 */
+	public static function translate_collection_error_for_context( $collection_error, $collection_id, $context = '' ) {
+
+		if ( ! is_wp_error( $collection_error ) ) {
+			return $collection_error;
+		}
+
+		$error_code = $collection_error->get_error_code();
+		$error_data = $collection_error->get_error_data();
+
+		if ( $error_code === 'provider_mismatch' ) {
+			$message = $context === 'chat'
+				? __( 'The selected AI Chat collection belongs to a different AI provider. Go to AI Chat Settings and select a Training Data Collection for the active provider.', 'echo-knowledge-base' )
+				: $collection_error->get_error_message();
+			return new WP_Error( 'provider_mismatch', $message, $error_data );
+		}
+
+		if ( $error_code === 'collection_not_found' ) {
+			// translators: %d is the collection ID
+			$message = $context === 'chat'
+				? __( 'The selected AI Chat collection no longer exists. Go to AI Chat Settings and select a Training Data Collection, or create one first in Training Data.', 'echo-knowledge-base' )
+				: sprintf( __( 'Collection %d does not exist. Please create the collection first in Training Data.', 'echo-knowledge-base' ), $collection_id );
+			return new WP_Error( 'collection_not_found', $message, $error_data );
+		}
+
+		if ( $error_code === 'no_vector_store' ) {
+			// translators: %d is the collection ID
+			$message = $context === 'chat'
+				? __( 'The selected AI Chat collection has not been synced yet. Go to Training Data and sync the collection before using AI Chat.', 'echo-knowledge-base' )
+				: sprintf( __( 'Collection %d does not have a vector store configured. Please sync content in Training Data first.', 'echo-knowledge-base' ), $collection_id );
+			return new WP_Error( 'no_vector_store', $message, $error_data );
+		}
+
+		return $collection_error;
+	}
+
+	/**
 	 * Validate that a collection exists and has a vector store with valid content
 	 * Consolidated method used by both AI Chat and KB Config validation
 	 *
@@ -336,38 +379,9 @@ class EPKB_AI_Validation {
 	public static function validate_collection_has_vector_store( $collection_id, $context = '' ) {
 
 		// Check if collection exists and has vector store
-		$vector_store_id = EPKB_AI_Training_Data_Config_Specs::get_vector_store_id_by_collection( $collection_id );
+		$vector_store_id = EPKB_AI_Training_Data_Config_Specs::get_active_provider_vector_store_id_by_collection( $collection_id );
 		if ( is_wp_error( $vector_store_id ) ) {
-			$error_code = $vector_store_id->get_error_code();
-
-			// Provider mismatch - collection belongs to a different AI provider
-			if ( $error_code === 'provider_mismatch' ) {
-				$message = $context === 'chat'
-					? __( 'The selected collection belongs to a different AI provider. Please switch to the correct provider or select a different collection.', 'echo-knowledge-base' )
-					: $vector_store_id->get_error_message();
-				return new WP_Error( 'provider_mismatch', $message );
-			}
-
-			// Collection not found
-			if ( $error_code === 'collection_not_found' ) {
-				// translators: %d is the collection ID
-				$message = $context === 'chat'
-					? __( 'The selected collection does not exist. Please go to the Training Data tab to create it first.', 'echo-knowledge-base' )
-					: sprintf( __( 'Collection %d does not exist. Please create the collection first in Training Data.', 'echo-knowledge-base' ), $collection_id );
-				return new WP_Error( 'collection_not_found', $message );
-			}
-
-			// No vector store (collection exists but not synced)
-			if ( $error_code === 'no_vector_store' ) {
-				// translators: %d is the collection ID
-				$message = $context === 'chat'
-					? __( 'The selected collection has not been synced yet. Please go to the Training Data tab and sync the collection before using it for chat.', 'echo-knowledge-base' )
-					: sprintf( __( 'Collection %d does not have a vector store configured. Please sync content in Training Data first.', 'echo-knowledge-base' ), $collection_id );
-				return new WP_Error( 'vector_store_not_configured', $message );
-			}
-
-			// Invalid collection ID or other error
-			return $vector_store_id;
+			return self::translate_collection_error_for_context( $vector_store_id, $collection_id, $context );
 		}
 
 		// Get vector store info to check if it has content

@@ -664,9 +664,9 @@ class EPKB_PDF_Utilities {
 	 */
 	private static function get_ai_structuring_model_name() {
 
-		$fastest_preset = EPKB_AI_Provider::get_preset_parameters( EPKB_AI_Provider::FASTEST_MODEL, 'chat' );
+		$runtime_profile = EPKB_AI_Provider::get_runtime_profile( 'pdf' );
 
-		return isset( $fastest_preset['model'] ) ? $fastest_preset['model'] : 'unknown';
+		return isset( $runtime_profile['model'] ) ? $runtime_profile['model'] : 'unknown';
 	}
 
 	/**
@@ -707,91 +707,7 @@ class EPKB_PDF_Utilities {
 	 * @return string|WP_Error
 	 */
 	public static function send_ai_request( $prompt, $instructions, $label = 'ai_request', $attachment = array() ) {
-
-		$provider = EPKB_AI_Provider::get_active_provider();
-		$client = EPKB_AI_Provider::get_client();
-		if ( is_wp_error( $client ) ) {
-			return $client;
-		}
-
-		$model = $provider === EPKB_AI_Provider::PROVIDER_GEMINI ? 'gemini-3-flash-preview' : 'gpt-5.2';
-		$model_spec = EPKB_AI_Provider::get_models_and_default_params( $model );
-		$default_params = isset( $model_spec['default_params'] ) ? $model_spec['default_params'] : array();
-		$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : 16384;
-
-		$model_params = array(
-			'verbosity'         => isset( $default_params['verbosity'] ) ? $default_params['verbosity'] : null,
-			'reasoning'         => isset( $default_params['reasoning'] ) ? $default_params['reasoning'] : null,
-			'temperature'       => isset( $default_params['temperature'] ) ? $default_params['temperature'] : 0.3,
-			'top_p'             => isset( $default_params['top_p'] ) ? $default_params['top_p'] : null,
-			'max_output_tokens' => $max_limit,
-		);
-
-		$uploaded_attachment = array();
-		if ( ! empty( $attachment['file_content'] ) ) {
-			$uploaded_attachment = EPKB_AI_Provider::upload_prompt_attachment(
-				$attachment['file_content'],
-				isset( $attachment['file_name'] ) ? $attachment['file_name'] : 'document',
-				isset( $attachment['mime_type'] ) ? $attachment['mime_type'] : 'application/octet-stream'
-			);
-			if ( is_wp_error( $uploaded_attachment ) ) {
-				return $uploaded_attachment;
-			}
-		}
-
-		try {
-			if ( $provider === EPKB_AI_Provider::PROVIDER_GEMINI ) {
-				$parts = array( array( 'text' => $prompt ) );
-				if ( ! empty( $uploaded_attachment ) ) {
-					$parts[] = EPKB_AI_Provider::build_prompt_attachment_content( $uploaded_attachment, $provider );
-				}
-
-				$request = array(
-					'contents' => array(
-						array( 'parts' => $parts )
-					),
-					'system_instruction' => array(
-						'parts' => array(
-							array( 'text' => $instructions )
-						)
-					)
-				);
-				$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
-				$response = $client->request( '/models/' . $model . ':generateContent', $request, 'POST', $label );
-			} else {
-				if ( ! empty( $uploaded_attachment ) ) {
-					$content = array(
-						array( 'type' => 'input_text', 'text' => $prompt ),
-						EPKB_AI_Provider::build_prompt_attachment_content( $uploaded_attachment, $provider ),
-					);
-				} else {
-					$content = $prompt;
-				}
-
-				$request = array(
-					'model'        => $model,
-					'instructions' => $instructions,
-					'input'        => array(
-						array(
-							'role'    => 'user',
-							'content' => $content,
-						)
-					)
-				);
-				$request = EPKB_AI_Provider::apply_model_parameters( $request, $model, $model_params );
-				$response = $client->request( '/responses', $request, 'POST', $label );
-			}
-		} finally {
-			if ( ! empty( $uploaded_attachment ) ) {
-				EPKB_AI_Provider::delete_prompt_attachment( $uploaded_attachment, $provider );
-			}
-		}
-
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-
-		return EPKB_AI_Provider::extract_response_content( $response );
+		return EPKB_AI_Provider::send_prompt_request( $prompt, $instructions, $label, 'pdf', null, $attachment );
 	}
 
 	/**

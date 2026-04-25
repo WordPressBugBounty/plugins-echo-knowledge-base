@@ -3164,6 +3164,46 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
   border-radius: 5px;
   padding: 10px;
 }
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__actions {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #E6E6E6;
+  display: flex;
+  justify-content: flex-start;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer__actions + .epkb-ai-search-sources {
+  margin-top: 16px;
+  padding-top: 0;
+  border-top: 0;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer .epkb-ml-ai-search-continue-chat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  min-height: 44px;
+  background: #EAF2FB;
+  border: 1px solid #C7DCF2;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #1A5A8F;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer .epkb-ml-ai-search-continue-chat-btn:hover {
+  background: #D7E7F7;
+  border-color: #A8C7E8;
+  color: #134875;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer .epkb-ml-ai-search-continue-chat-btn:active {
+  background: #C4DBEF;
+}
+#epkb-ml__module-search .epkb-ml-ai-search-section .epkb-ml-ai-search-answer .epkb-ml-ai-search-continue-chat-btn__icon {
+  font-size: 16px;
+}
 
 @media only screen and (max-width: 981px) {
   .epkb-ml__row #epkb-ml__module-search,

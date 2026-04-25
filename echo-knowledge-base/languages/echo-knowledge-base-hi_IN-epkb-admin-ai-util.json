@@ -43,8 +43,8 @@
             "Loading...": [
                 "लोड हो रहा है..."
             ],
-            "General Settings": [
-                "सामान्य सेटिंग्स"
+            "Go to General Settings": [
+                "सामान्य सेटिंग्स पर जाएँ"
             ],
             "Go to Settings": [
                 "सेटिंग्स पर जाएँ"
@@ -69,9 +69,6 @@
             ],
             "Setup Steps": [
                 "सेटअप चरण"
-            ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
-                "AI सुविधाओं का उपयोग करने के लिए, कृपया अपनी API कुंजी कॉन्फ़िगर करें और डेटा गोपनीयता समझौता स्वीकार करें"
             ],
             "Session Expired": [
                 "सत्र समाप्त"

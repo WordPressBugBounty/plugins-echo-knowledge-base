@@ -43,8 +43,8 @@
             "Loading...": [
                 "読み込み中…"
             ],
-            "General Settings": [
-                "一般設定"
+            "Go to General Settings": [
+                "一般設定へ移動"
             ],
             "Go to Settings": [
                 "設定へ移動"
@@ -70,8 +70,8 @@
             "Setup Steps": [
                 "セットアップ手順"
             ],
-            "To use AI features, please configure your API key and accept the data privacy agreement in ": [
-                "AI機能を使用するには、APIキーを設定し、データプライバシー規約に同意してください。"
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings.": [
+                "AI機能を使用するには、一般設定でAPIキーを設定し、データプライバシー合意に同意してください。."
             ],
             "Session Expired": [
                 "セッションが期限切れです。"

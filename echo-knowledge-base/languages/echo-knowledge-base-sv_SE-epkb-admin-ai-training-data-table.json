@@ -265,14 +265,14 @@
             "Last Synced:": [
                 "Senast synkroniserad:"
             ],
+            "AI-Ready Content": [
+                "AI-redo innehåll"
+            ],
             "Original Content": [
                 "Originalinnehåll"
             ],
-            "Processed Content": [
-                "Bearbetat innehåll"
-            ],
-            "No processed content available": [
-                "Inget bearbetat innehåll tillgängligt"
+            "No AI-ready content available": [
+                "Inget AI-redo innehåll tillgängligt"
             ]
         }
     }

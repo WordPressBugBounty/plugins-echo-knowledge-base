@@ -31,26 +31,8 @@
             "Configure API Key": [
                 "Konfigurer API-nøkkel"
             ],
-            "Legacy AI Models Detected": [
-                "Eldre AI-modeller oppdaget"
-            ],
-            "Your AI configuration still uses legacy Gemini model names. Update the AI configuration to save the current model names.": [
-                "AI-konfigurasjonen din bruker fortsatt gamle Gemini-modellnavn. Oppdater AI-konfigurasjonen for å lagre de nåværende modellnavnene."
-            ],
-            "Updating...": [
-                "Oppdaterer..."
-            ],
-            "Update AI Configuration": [
-                "Oppdater AI-konfigurasjonen"
-            ],
             "Failed to load tab data": [
                 "Kunne ikke laste inn faneinformasjon"
-            ],
-            "AI configuration updated successfully": [
-                "AI-konfigurasjonen ble oppdatert"
-            ],
-            "Failed to update AI configuration": [
-                "Kunne ikke oppdatere AI-konfigurasjonen"
             ],
             "Failed to load dashboard data. Please reload the page.": [
                 "Kunne ikke laste inn data fra kontrollpanelet. Last siden på nytt."

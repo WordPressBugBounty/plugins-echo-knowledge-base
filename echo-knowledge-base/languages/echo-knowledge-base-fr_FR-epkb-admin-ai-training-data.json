@@ -178,6 +178,21 @@
             "Cannot change actions while validation is in progress": [
                 "Impossible de modifier les actions pendant que la validation est en cours"
             ],
+            "Checking available WordPress items...": [
+                "Vérification des éléments WordPress disponibles..."
+            ],
+            "Unable to load available WordPress items": [
+                "Impossible de charger les éléments WordPress disponibles"
+            ],
+            "Click Refresh to try again.": [
+                "Cliquez sur Actualiser pour réessayer."
+            ],
+            "Available WordPress items to add: %s": [
+                "Éléments WordPress disponibles à ajouter : %s"
+            ],
+            "Created in WordPress and not yet added to this collection.": [
+                "Créé dans WordPress et pas encore ajouté à cette collection."
+            ],
             "Collection name updated successfully": [
                 "Le nom de la collection a été mis à jour avec succès"
             ],
@@ -223,11 +238,20 @@
             "marked outdated": [
                 "marqué comme obsolète"
             ],
-            "PDFs removed from AI store": [
-                "PDF supprimés du stockage de l'IA"
+            "WordPress items": [
+                "Éléments WordPress"
             ],
-            "AI Notes removed from AI store": [
-                "Notes d'IA supprimées du stockage de l'IA"
+            "PDFs": [
+                "PDF"
+            ],
+            "AI Notes": [
+                "Notes de l'IA"
+            ],
+            "other files": [
+                "autres fichiers"
+            ],
+            "orphan files removed from AI store": [
+                "fichiers orphelins supprimés du stockage de l'IA"
             ],
             "Run sync to re-upload outdated items.": [
                 "Exécutez la synchronisation pour téléverser à nouveau les éléments obsolètes."
@@ -235,8 +259,17 @@
             "Choose an Action": [
                 "Choisir une action"
             ],
-            "Validate & Fix Synced Items": [
-                "Valider et corriger les éléments synchronisés"
+            "Recommended: Validate & Fix Synced Items": [
+                "Recommandé : Valider et corriger les éléments synchronisés"
+            ],
+            "Recent plugin updates fixed issues that may have left orphan files in your AI Vector Store. Run the \"Validate & Fix\" option below once to reconcile synced items with what is stored in the AI.": [
+                "Les récentes mises à jour de l'extension ont corrigé des problèmes qui auraient pu laisser des fichiers orphelins dans votre stockage vectoriel d'IA. Exécutez l'option « Valider et corriger » ci-dessous une fois pour réconcilier les éléments synchronisés avec ce qui est stocké dans l'IA."
+            ],
+            "Dismiss": [
+                "Fermer"
+            ],
+            "Validate & Fix": [
+                "Valider et corriger"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Choisissez les types de contenu (Articles KB, Articles, Pages) à charger dans le tableau. Cela n'envoie encore rien à l'IA."
@@ -273,6 +306,9 @@
             ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "Échec de la synchronisation. Renvoyez pour réessayer. Vérifiez que le contenu existe et n'est pas vide."
+            ],
+            "Validate & Fix Synced Items": [
+                "Valider et corriger les éléments synchronisés"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Choisissez les types de contenu que vous souhaitez inclure dans vos données d'apprentissage pour l'IA."
@@ -343,8 +379,8 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Exécutez une passe de validation supplémentaire pour vous assurer que la base de données locale et le stockage de l'IA restent synchronisés. Si un fichier est manquant dans le stockage de l'IA, il sera marqué comme obsolète afin de pouvoir être renvoyé."
             ],
-            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
-                "Ceci vérifie les éléments Ajoutés et Mis à jour déjà suivis dans cette collection et supprime les PDF et les Notes d'IA orphelins trouvés uniquement dans le stockage de l'IA. Aucun élément de la base de données locale n'est supprimé."
+            "This checks Added and Updated items already tracked in this collection and removes orphaned WordPress items, PDFs, and AI Notes found only in the AI store. No local database items are deleted.": [
+                "Ceci vérifie les éléments ajoutés et mis à jour déjà suivis dans cette collection et supprime les éléments WordPress, les PDF et les notes de l'IA orphelins trouvés uniquement dans le stockage de l'IA. Aucun élément de la base de données locale n'est supprimé."
             ],
             "Collection:": [
                 "Collection :"
@@ -352,8 +388,8 @@
             "synced items ready to validate": [
                 "éléments synchronisés prêts à être validés"
             ],
-            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
-                "Aucun élément Ajouté ou Mis à jour n'est encore disponible. La validation peut toujours supprimer les PDF et les Notes d'IA orphelins laissés uniquement dans le stockage de l'IA."
+            "No Added or Updated items are available yet. Validation can still remove orphaned WordPress items, PDFs, and AI Notes left only in the AI store.": [
+                "Aucun élément ajouté ou mis à jour n'est encore disponible. La validation peut tout de même supprimer les éléments WordPress, les PDF et les notes de l'IA orphelins restés uniquement dans le stockage de l'IA."
             ],
             "Cancel Verify": [
                 "Annuler la vérification"

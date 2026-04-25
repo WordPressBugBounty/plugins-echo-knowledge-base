@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUndefinedMethodInspection */
 
 /**
  * AI Provider helper
@@ -10,7 +10,9 @@ class EPKB_AI_Provider {
 
 	const PROVIDER_CHATGPT = 'chatgpt';	// do not modify
 	const PROVIDER_GEMINI = 'gemini';	// do not modify
-	const FASTEST_MODEL = 'fastest';
+	const FASTEST_PRESET = 'fastest';
+	const BALANCED_PRESET = 'balanced';
+	const SMARTEST_PRESET = 'smartest';
 
 	private static $cached_active_provider = null;
 
@@ -24,6 +26,13 @@ class EPKB_AI_Provider {
 	}
 
 	/**
+	 * Reset the cached active provider so the next lookup re-reads config.
+	 */
+	public static function clear_cache() {
+		self::$cached_active_provider = null;
+	}
+
+	/**
 	 * Normalize provider slug
 	 *
 	 * @param string $provider
@@ -31,12 +40,11 @@ class EPKB_AI_Provider {
 	 */
 	public static function normalize_provider( $provider ) {
 
-		// TODO remove legacy 'openai' mapping in future version
-		if ( $provider === 'openai' ) {
-			$provider = EPKB_AI_Provider::PROVIDER_CHATGPT;
-		}
-
 		$provider = strtolower( trim( (string) $provider ) );
+		// TODO AI PRO LEGACY: Remove after old AI PRO and stored configs no longer use the legacy "openai" provider slug.
+		if ( $provider === 'openai' ) {
+			return self::PROVIDER_CHATGPT;
+		}
 
 		return in_array( $provider, self::get_supported_providers(), true ) ? $provider : self::PROVIDER_GEMINI;
 	}
@@ -49,25 +57,18 @@ class EPKB_AI_Provider {
 	 */
 	public static function get_active_provider( $config = null ) {
 
-		if ( $config === null && self::$cached_active_provider !== null ) {
+		if ( $config !== null ) {
+			return self::normalize_provider( isset( $config['ai_provider'] ) ? $config['ai_provider'] : '' );
+		}
+
+		if ( self::$cached_active_provider !== null ) {
 			return self::$cached_active_provider;
 		}
 
-		if ( $config === null ) {
-			$config = EPKB_AI_Config_Specs::get_ai_config();
-		}
+		$config = EPKB_AI_Config_Specs::get_ai_config();
+		self::$cached_active_provider = self::normalize_provider( isset( $config['ai_provider'] ) ? $config['ai_provider'] : '' );
 
-		$original_provider = $config['ai_provider'];
-		$normalized_provider = self::normalize_provider( $original_provider );
-
-		// Update stored value if it was an old provider name
-		if ( $original_provider !== $normalized_provider ) {
-			EPKB_AI_Config_Specs::update_ai_config_value( 'ai_provider', $normalized_provider );
-		}
-
-		self::$cached_active_provider = $normalized_provider;
-
-		return $normalized_provider;
+		return self::$cached_active_provider;
 	}
 
 	/**
@@ -119,6 +120,17 @@ class EPKB_AI_Provider {
 	}
 
 	/**
+	 * Get model catalog class for provider.
+	 *
+	 * @param string|null $provider
+	 * @return string
+	 */
+	private static function get_catalog_class( $provider = null ) {
+		$provider = $provider ? self::normalize_provider( $provider ) : self::get_active_provider();
+		return $provider === self::PROVIDER_GEMINI ? 'EPKB_Gemini_Model_Catalog' : 'EPKB_ChatGPT_Model_Catalog';
+	}
+
+	/**
 	 * Get models and defaults for provider
 	 *
 	 * @param string|null $model_name
@@ -126,103 +138,343 @@ class EPKB_AI_Provider {
 	 * @return array
 	 */
 	public static function get_models_and_default_params( $model_name = null, $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-
-		if ( $provider === self::PROVIDER_GEMINI ) {
-			return EPKB_Gemini_Client::get_models_and_default_params( $model_name );
-		}
-
-		return EPKB_ChatGPT_Client::get_models_and_default_params( $model_name );
+		$catalog_class = self::get_catalog_class( $provider );
+		return $catalog_class::get_models( $model_name );
 	}
 
 	/**
-	 * Get available models formatted for select fields
-	 *
-	 * @param string|null $provider
-	 * @return array
-	 */
-	public static function get_model_options( $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		$models = self::get_models_and_default_params( null, $provider );
-		$options = array();
-
-		foreach ( $models as $model_key => $model_spec ) {
-			$options[ $model_key ] = isset( $model_spec['name'] ) ? $model_spec['name'] : $model_key;
-		}
-
-		return $options;
-	}
-
-	/**
-	 * Ensure selected model exists for the provider, fallback to default
+	 * Resolve a provider model name, including legacy aliases.
 	 *
 	 * @param string $model
 	 * @param string|null $provider
 	 * @return string
 	 */
-	public static function get_valid_model_for_provider( $model, $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		$model_options = self::get_model_options( $provider );
-
-		if ( isset( $model_options[ $model ] ) ) {
-			return $model;
-		}
-
-		$default_model = self::get_default_model( $provider );
-		if ( isset( $model_options[ $default_model ] ) ) {
-			return $default_model;
-		}
-
-		if ( empty( $model_options ) ) {
-			return '';
-		}
-
-		reset( $model_options );
-
-		return key( $model_options );
+	public static function resolve_model_name( $model, $provider = null ) {
+		$catalog_class = self::get_catalog_class( $provider );
+		return $catalog_class::resolve_model_name( $model );
 	}
 
 	/**
-	 * Get model presets derived from model definitions
+	 * Get user-facing preset definitions.
 	 *
-	 * Builds presets from models that have preset_key defined, plus adds 'custom' preset.
+	 * @return array
+	 */
+	private static function get_preset_definitions() {
+		return array(
+			self::FASTEST_PRESET   => array(
+				'label'       => __( 'Fastest', 'echo-knowledge-base' ),
+				'description' => __( 'Fastest responses for lightweight questions.', 'echo-knowledge-base' ),
+			),
+			self::BALANCED_PRESET => array(
+				'label'       => __( 'Balanced', 'echo-knowledge-base' ),
+				'description' => __( 'Best default for most sites.', 'echo-knowledge-base' ),
+			),
+			self::SMARTEST_PRESET => array(
+				'label'       => __( 'Smartest', 'echo-knowledge-base' ),
+				'description' => __( 'Smarter than Balanced for harder questions while keeping response times practical.', 'echo-knowledge-base' ),
+			),
+		);
+	}
+
+	/**
+	 * Get the stored preset field name for a feature.
 	 *
-	 * @param string $use_case Not currently used, kept for API compatibility
+	 * @param string $use_case
+	 * @return string
+	 */
+	private static function get_preset_field_name( $use_case ) {
+		if ( $use_case === 'chat' ) {
+			return 'ai_chat_preset';
+		}
+
+		if ( $use_case === 'search' ) {
+			return 'ai_search_preset';
+		}
+
+		return '';
+	}
+
+	/**
+	 * Get the default preset for one use case.
+	 *
+	 * @param string $use_case
+	 * @return string
+	 */
+	private static function get_default_preset_for_use_case( $use_case ) {
+
+		if ( $use_case === 'content_analysis' ) {
+			return self::FASTEST_PRESET;
+		}
+
+		return self::BALANCED_PRESET;
+	}
+
+	/**
+	 * Get runtime preset profiles for one provider.
+	 *
+	 * Preset profiles decouple user-facing behavior from provider model IDs so
+	 * multiple presets can share the same underlying model with different defaults.
+	 *
+	 * @param string $provider
+	 * @return array
+	 */
+	private static function get_preset_profiles( $provider ) {
+
+		$provider = self::normalize_provider( $provider );
+
+		if ( $provider === self::PROVIDER_CHATGPT ) {
+			return array(
+				self::FASTEST_PRESET => array(
+					'model' => 'gpt-5.4-mini',
+				),
+				self::BALANCED_PRESET => array(
+					'model' => 'gpt-5.4',
+				),
+				self::SMARTEST_PRESET => array(
+					'model'  => 'gpt-5.4',
+					'params' => array(
+						'reasoning'         => 'high',
+						'verbosity'         => 'medium',
+						'max_output_tokens' => 3500,
+					),
+				),
+			);
+		}
+
+		return array(
+			self::FASTEST_PRESET => array(
+				'model' => 'gemini-2.5-flash',
+			),
+			self::BALANCED_PRESET => array(
+				'model' => 'gemini-3-flash-preview',
+			),
+			self::SMARTEST_PRESET => array(
+				'model'  => 'gemini-3-flash-preview',
+				'params' => array(
+					'thinking_level'    => 'high',
+					'max_output_tokens' => 4096,
+				),
+			),
+		);
+	}
+
+	/**
+	 * Map legacy stored model IDs to stable preset behavior.
+	 *
+	 * This preserves the intent of old saved "pro" selections without keeping
+	 * the retired model definitions active in the runtime catalog.
+	 *
+	 * @param string $provider
+	 * @return array
+	 */
+	private static function get_legacy_model_preset_map( $provider ) {
+
+		$provider = self::normalize_provider( $provider );
+
+		if ( $provider === self::PROVIDER_CHATGPT ) {
+			return array(
+				'gpt-5.2-pro' => self::SMARTEST_PRESET,
+				'gpt-5.4-pro' => self::SMARTEST_PRESET,
+			);
+		}
+
+		return array(
+			'gemini-2.5-pro'        => self::SMARTEST_PRESET,
+			'gemini-3-pro-preview'  => self::SMARTEST_PRESET,
+			'gemini-3.1-pro'        => self::SMARTEST_PRESET,
+			'gemini-3.1-pro-preview' => self::SMARTEST_PRESET,
+		);
+	}
+
+	/**
+	 * Normalize a stored preset key to one of the supported values.
+	 *
+	 * @param string $preset_key
+	 * @return string
+	 */
+	public static function normalize_preset_key( $preset_key ) {
+
+		$preset_key = strtolower( trim( (string) $preset_key ) );
+		if ( $preset_key === '' || $preset_key === 'custom' ) {
+			return self::BALANCED_PRESET;
+		}
+
+		$preset_definitions = self::get_preset_definitions();
+		return isset( $preset_definitions[ $preset_key ] ) ? $preset_key : self::BALANCED_PRESET;
+	}
+
+	/**
+	 * Get the active preset for a feature.
+	 *
+	 * @param string $use_case
+	 * @param array|null $config
+	 * @param string|null $provider
+	 * @return string
+	 */
+	public static function get_feature_preset( $use_case = 'chat', $config = null, $provider = null ) {
+
+		if ( $config === null ) {
+			$config = EPKB_AI_Config_Specs::get_ai_config();
+		}
+
+		$provider = $provider
+			? self::normalize_provider( $provider )
+			: ( ! empty( $config['ai_provider'] ) ? self::normalize_provider( $config['ai_provider'] ) : self::get_active_provider() );
+		$preset_field = self::get_preset_field_name( $use_case );
+		if ( $preset_field !== '' && ! empty( $config[ $preset_field ] ) ) {
+			return self::normalize_preset_key( $config[ $preset_field ] );
+		}
+
+		return self::get_default_preset_for_use_case( $use_case );
+	}
+
+	/**
+	 * Build the resolved preset-to-model map for one provider.
+	 *
+	 * @param string $provider
+	 * @return array
+	 */
+	private static function get_runtime_preset_models( $provider ) {
+
+		$provider = self::normalize_provider( $provider );
+		$preset_profiles = self::get_preset_profiles( $provider );
+		$model_map = array();
+
+		foreach ( $preset_profiles as $preset_key => $preset_profile ) {
+			if ( empty( $preset_profile['model'] ) ) {
+				continue;
+			}
+
+			$model_map[ $preset_key ] = self::resolve_model_name( $preset_profile['model'], $provider );
+		}
+
+		if ( empty( $model_map[ self::BALANCED_PRESET ] ) ) {
+			$model_map[ self::BALANCED_PRESET ] = self::get_default_model( $provider );
+		}
+
+		if ( empty( $model_map[ self::FASTEST_PRESET ] ) ) {
+			$model_map[ self::FASTEST_PRESET ] = $model_map[ self::BALANCED_PRESET ];
+		}
+
+		if ( empty( $model_map[ self::SMARTEST_PRESET ] ) ) {
+			$model_map[ self::SMARTEST_PRESET ] = $model_map[ self::BALANCED_PRESET ];
+		}
+
+		return $model_map;
+	}
+
+	/**
+	 * Apply use-case-specific parameter overrides.
+	 *
+	 * @param string $use_case
+	 * @param array $params
+	 * @param array $model_spec
+	 * @return array
+	 */
+	private static function apply_use_case_runtime_overrides( $use_case, $params, $model_spec ) {
+
+		$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? intval( $model_spec['max_output_tokens_limit'] ) : 16384;
+
+		if ( $use_case === 'quiz' ) {
+			if ( ! empty( $model_spec['supports_temperature'] ) ) {
+				$params['temperature'] = 0.2;
+			} else {
+				if ( ! empty( $model_spec['supports_reasoning'] ) ) {
+					$params['reasoning'] = 'low';
+				}
+				if ( ! empty( $model_spec['supports_verbosity'] ) ) {
+					$params['verbosity'] = 'low';
+				}
+			}
+			$params['max_output_tokens'] = min( 9000, $max_limit );
+		}
+
+		if ( $use_case === 'content_analysis' ) {
+			$params['max_output_tokens'] = min( 12000, $max_limit );
+		}
+
+		if ( $use_case === 'pdf' ) {
+			$params['max_output_tokens'] = $max_limit;
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Build one internal runtime profile.
+	 *
+	 * @param string $use_case
+	 * @param string $provider
+	 * @param string|null $preset_key
+	 * @return array
+	 */
+	private static function build_runtime_profile( $use_case, $provider, $preset_key = null ) {
+
+		$provider = self::normalize_provider( $provider );
+		$preset_key = self::normalize_preset_key( $preset_key );
+		$preset_profiles = self::get_preset_profiles( $provider );
+		$model_map = self::get_runtime_preset_models( $provider );
+		if ( empty( $model_map[ $preset_key ] ) ) {
+			$preset_key = self::BALANCED_PRESET;
+		}
+
+		$model = empty( $model_map[ $preset_key ] ) ? self::get_default_model( $provider ) : $model_map[ $preset_key ];
+		$preset_profile = empty( $preset_profiles[ $preset_key ] ) ? array() : $preset_profiles[ $preset_key ];
+		$model_spec = self::get_models_and_default_params( $model, $provider );
+		$params = empty( $model_spec['default_params'] ) ? array() : $model_spec['default_params'];
+		$preset_params = empty( $preset_profile['params'] ) || ! is_array( $preset_profile['params'] ) ? array() : $preset_profile['params'];
+		$params = array_merge( $params, $preset_params );
+		$params = self::apply_use_case_runtime_overrides( $use_case, $params, $model_spec );
+
+		return array(
+			'preset' => $preset_key,
+			'model'  => $model,
+			'params' => $params,
+		);
+	}
+
+	/**
+	 * Get the resolved runtime profile for a feature.
+	 *
+	 * @param string $use_case
+	 * @param string|null $provider
+	 * @param array|null $config
+	 * @return array
+	 */
+	public static function get_runtime_profile( $use_case = 'chat', $provider = null, $config = null ) {
+
+		$provider = $provider
+			? self::normalize_provider( $provider )
+			: ( ! empty( $config['ai_provider'] ) ? self::normalize_provider( $config['ai_provider'] ) : self::get_active_provider() );
+		$preset_key = self::get_feature_preset( $use_case, $config, $provider );
+		return self::build_runtime_profile( $use_case, $provider, $preset_key );
+	}
+
+	/**
+	 * Get model presets from internal runtime profiles.
+	 *
+	 * @param string $use_case
 	 * @param string|null $provider
 	 * @return array
 	 */
 	public static function get_model_presets( $use_case = 'chat', $provider = null ) {
 		$provider = $provider ?: self::get_active_provider();
-		$models = self::get_models_and_default_params( null, $provider );
-
 		$presets = array();
-		foreach ( $models as $model_id => $model_spec ) {
-			if ( empty( $model_spec['preset_key'] ) ) {
-				continue;
-			}
 
+		foreach ( self::get_preset_definitions() as $preset_key => $preset_definition ) {
+			$profile = self::build_runtime_profile( $use_case, $provider, $preset_key );
 			$preset = array(
-				'label'       => $model_spec['preset_label'],
-				'description' => $model_spec['name'],
-				'model'       => $model_id
+				'label'       => $preset_definition['label'],
+				'description' => $preset_definition['description'],
+				'model'       => $profile['model'],
 			);
 
-			// Add all default params to the preset
-			if ( ! empty( $model_spec['default_params'] ) ) {
-				foreach ( $model_spec['default_params'] as $param => $value ) {
-					$preset[$param] = $value;
-				}
+			foreach ( $profile['params'] as $param => $value ) {
+				$preset[ $param ] = $value;
 			}
 
-			$presets[$model_spec['preset_key']] = $preset;
+			$presets[ $preset_key ] = $preset;
 		}
-
-		// Add custom preset at the end
-		$presets['custom'] = array(
-			'label'       => __( 'Custom', 'echo-knowledge-base' ),
-			'description' => __( 'Model parameters can be customized.', 'echo-knowledge-base' ),
-			'model'       => null
-		);
 
 		return $presets;
 	}
@@ -237,19 +489,92 @@ class EPKB_AI_Provider {
 	 */
 	public static function get_preset_parameters( $preset_key, $use_case = 'chat', $provider = null ) {
 		$presets = self::get_model_presets( $use_case, $provider );
-		return isset( $presets[$preset_key] ) ? $presets[$preset_key] : reset( $presets );
+		$preset_key = self::normalize_preset_key( $preset_key );
+		return isset( $presets[ $preset_key ] ) ? $presets[ $preset_key ] : reset( $presets );
 	}
 
 	/**
 	 * Get the preset key for a given model
 	 *
+	 * Legacy pro models map to Smartest explicitly. Active shared models resolve to
+	 * the first matching preset profile, which keeps the balanced model pinned to
+	 * Balanced during reverse migration.
+	 *
 	 * @param string $model Model ID
 	 * @param string|null $provider
-	 * @return string Preset key or 'custom' if model has no preset
+	 * @return string
 	 */
 	public static function get_preset_key_for_model( $model, $provider = null ) {
-		$model_spec = self::get_models_and_default_params( $model, $provider );
-		return ! empty( $model_spec['preset_key'] ) ? $model_spec['preset_key'] : 'custom';
+
+		$model = trim( (string) $model );
+		if ( $model === '' ) {
+			return self::BALANCED_PRESET;
+		}
+
+		$provider = $provider ? self::normalize_provider( $provider ) : self::get_active_provider();
+		$legacy_model_preset_map = self::get_legacy_model_preset_map( $provider );
+		if ( isset( $legacy_model_preset_map[ $model ] ) ) {
+			return $legacy_model_preset_map[ $model ];
+		}
+
+		$model = self::resolve_model_name( $model, $provider );
+		foreach ( self::get_preset_profiles( $provider ) as $preset_key => $preset_profile ) {
+			if ( empty( $preset_profile['model'] ) ) {
+				continue;
+			}
+
+			if ( self::resolve_model_name( $preset_profile['model'], $provider ) === $model ) {
+				return $preset_key;
+			}
+		}
+
+		return self::BALANCED_PRESET;
+	}
+
+	/**
+	 * Normalize AI config and migrate legacy stored model values to presets.
+	 *
+	 * @param array $config
+	 * @return array
+	 */
+	public static function migrate_ai_config( $config ) {
+
+		if ( empty( $config ) || ! is_array( $config ) ) {
+			return $config;
+		}
+
+		$provider = self::get_active_provider( $config );
+		$config['ai_provider'] = $provider;
+
+		if ( empty( $config['ai_chat_preset'] ) ) {
+			$provider_model_field = 'ai_' . $provider . '_chat_model';
+			$legacy_model = ! empty( $config[ $provider_model_field ] ) ? $config[ $provider_model_field ] : ( ! empty( $config['ai_chat_model'] ) ? $config['ai_chat_model'] : '' );
+
+			if ( $legacy_model !== '' ) {
+				$config['ai_chat_preset'] = self::get_preset_key_for_model( $legacy_model, $provider );
+			}
+		}
+
+		$config['ai_chat_preset'] = self::get_feature_preset( 'chat', $config, $provider );
+
+		if ( empty( $config['ai_search_preset'] ) ) {
+			$provider_model_field = 'ai_' . $provider . '_search_model';
+			$legacy_model = ! empty( $config[ $provider_model_field ] ) ? $config[ $provider_model_field ] : ( ! empty( $config['ai_search_model'] ) ? $config['ai_search_model'] : '' );
+
+			if ( $legacy_model !== '' ) {
+				$config['ai_search_preset'] = self::get_preset_key_for_model( $legacy_model, $provider );
+			}
+		}
+
+		$config['ai_search_preset'] = self::get_feature_preset( 'search', $config, $provider );
+
+		unset( $config['ai_chat_model'], $config['ai_search_model'] );
+
+		foreach ( self::get_supported_providers() as $supported_provider ) {
+			unset( $config[ 'ai_' . $supported_provider . '_chat_model' ], $config[ 'ai_' . $supported_provider . '_search_model' ] );
+		}
+
+		return $config;
 	}
 
 	/**
@@ -262,12 +587,8 @@ class EPKB_AI_Provider {
 	 * @return array
 	 */
 	public static function apply_model_parameters( $request, $model, $params = array(), $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		if ( $provider === self::PROVIDER_GEMINI ) {
-			return EPKB_Gemini_Client::apply_model_parameters( $request, $model, $params );
-		}
-
-		return EPKB_ChatGPT_Client::apply_model_parameters( $request, $model, $params );
+		$catalog_class = self::get_catalog_class( $provider );
+		return $catalog_class::apply_model_parameters( $request, $model, $params );
 	}
 
 	/**
@@ -277,8 +598,136 @@ class EPKB_AI_Provider {
 	 * @return string
 	 */
 	public static function get_default_model( $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		return $provider === self::PROVIDER_GEMINI ? EPKB_Gemini_Client::DEFAULT_MODEL : EPKB_ChatGPT_Client::DEFAULT_MODEL;
+		$catalog_class = self::get_catalog_class( $provider );
+		return $catalog_class::get_default_model();
+	}
+
+	/**
+	 * Send one prompt request for the resolved use-case runtime profile.
+	 *
+	 * @param string $prompt
+	 * @param string $instructions
+	 * @param string $purpose
+	 * @param string $use_case
+	 * @param string|null $provider
+	 * @param array $attachment
+	 * @param array $model_params
+	 * @param array $response_format
+	 * @return string|WP_Error
+	 */
+	public static function send_prompt_request( $prompt, $instructions, $purpose = 'general', $use_case = 'chat', $provider = null, $attachment = array(), $model_params = array(), $response_format = array() ) {
+
+		$provider = $provider ? self::normalize_provider( $provider ) : self::get_active_provider();
+		$client = self::get_client( $provider );
+		$runtime_profile = self::get_runtime_profile( $use_case, $provider );
+		$model = $runtime_profile['model'];
+		$model_params = array_merge(
+			empty( $runtime_profile['params'] ) ? array() : $runtime_profile['params'],
+			is_array( $model_params ) ? $model_params : array()
+		);
+
+		$uploaded_attachment = array();
+		if ( ! empty( $attachment['file_content'] ) ) {
+			$uploaded_attachment = self::upload_prompt_attachment(
+				$attachment['file_content'],
+				isset( $attachment['file_name'] ) ? $attachment['file_name'] : 'document',
+				isset( $attachment['mime_type'] ) ? $attachment['mime_type'] : 'application/octet-stream',
+				$provider
+			);
+			if ( is_wp_error( $uploaded_attachment ) ) {
+				return $uploaded_attachment;
+			}
+		}
+
+		try {
+			if ( $provider === self::PROVIDER_GEMINI ) {
+				$parts = array( array( 'text' => $prompt ) );
+				if ( ! empty( $uploaded_attachment ) ) {
+					$parts[] = self::build_prompt_attachment_content( $uploaded_attachment, $provider );
+				}
+
+				$request = array(
+					'contents' => array(
+						array( 'parts' => $parts )
+					),
+					'system_instruction' => array(
+						'parts' => array(
+							array( 'text' => $instructions )
+						)
+					)
+				);
+				$request = self::apply_model_parameters( $request, $model, $model_params, $provider );
+				$response = $client->request( '/models/' . $model . ':generateContent', $request, 'POST', $purpose );
+			} else {
+				$content = empty( $uploaded_attachment )
+					? $prompt
+					: array(
+						array( 'type' => 'input_text', 'text' => $prompt ),
+						self::build_prompt_attachment_content( $uploaded_attachment, $provider ),
+					);
+
+				$request = array(
+					'model'        => $model,
+					'instructions' => $instructions,
+					'input'        => array(
+						array(
+							'role'    => 'user',
+							'content' => $content,
+						)
+					)
+				);
+				$request = self::apply_model_parameters( $request, $model, $model_params, $provider );
+				$request = self::apply_response_format( $request, $response_format, $provider );
+				$response = $client->request( '/responses', $request, 'POST', $purpose );
+			}
+		} finally {
+			if ( ! empty( $uploaded_attachment ) ) {
+				self::delete_prompt_attachment( $uploaded_attachment, $provider );
+			}
+		}
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		return self::extract_response_content( $response, $provider );
+	}
+
+	/**
+	 * Apply one optional response format to the provider request.
+	 *
+	 * Only enforced for ChatGPT (Responses API json_schema). Gemini and Claude ignore the
+	 * hint and rely on prompt compliance plus the JSON recovery parser in the utilities layer.
+	 *
+	 * @param array $request
+	 * @param array $response_format
+	 * @param string|null $provider
+	 * @return array
+	 */
+	private static function apply_response_format( $request, $response_format, $provider = null ) {
+		$provider = $provider ? self::normalize_provider( $provider ) : self::get_active_provider();
+		if ( $provider !== self::PROVIDER_CHATGPT || empty( $response_format['type'] ) ) {
+			return $request;
+		}
+
+		if ( ! isset( $request['text'] ) || ! is_array( $request['text'] ) ) {
+			$request['text'] = array();
+		}
+
+		if ( $response_format['type'] === 'json_schema' ) {
+			if ( empty( $response_format['name'] ) || empty( $response_format['schema'] ) || ! is_array( $response_format['schema'] ) ) {
+				return $request;
+			}
+
+			$request['text']['format'] = array(
+				'type'   => 'json_schema',
+				'name'   => preg_replace( '/[^a-zA-Z0-9_-]/', '_', $response_format['name'] ),
+				'strict' => ! isset( $response_format['strict'] ) || ! empty( $response_format['strict'] ),
+				'schema' => $response_format['schema'],
+			);
+		}
+
+		return $request;
 	}
 
 	/**
@@ -304,10 +753,8 @@ class EPKB_AI_Provider {
 	 * @return string Valid model ID
 	 */
 	public static function get_chat_model( $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		$field = $provider === self::PROVIDER_GEMINI ? 'ai_gemini_chat_model' : 'ai_chatgpt_chat_model';
-		$model = EPKB_AI_Config_Specs::get_ai_config_value( $field );
-		return self::get_valid_model_for_provider( $model, $provider );
+		$runtime_profile = self::get_runtime_profile( 'chat', $provider );
+		return $runtime_profile['model'];
 	}
 
 	/**
@@ -317,10 +764,8 @@ class EPKB_AI_Provider {
 	 * @return string Valid model ID
 	 */
 	public static function get_search_model( $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		$field = $provider === self::PROVIDER_GEMINI ? 'ai_gemini_search_model' : 'ai_chatgpt_search_model';
-		$model = EPKB_AI_Config_Specs::get_ai_config_value( $field );
-		return self::get_valid_model_for_provider( $model, $provider );
+		$runtime_profile = self::get_runtime_profile( 'search', $provider );
+		return $runtime_profile['model'];
 	}
 
 	/**
@@ -335,36 +780,14 @@ class EPKB_AI_Provider {
 	}
 
 	/**
-	 * Get the config field name for chat model
-	 *
-	 * @param string|null $provider
-	 * @return string
-	 */
-	public static function get_chat_model_field( $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		return $provider === self::PROVIDER_GEMINI ? 'ai_gemini_chat_model' : 'ai_chatgpt_chat_model';
-	}
-
-	/**
-	 * Get the config field name for search model
-	 *
-	 * @param string|null $provider
-	 * @return string
-	 */
-	public static function get_search_model_field( $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		return $provider === self::PROVIDER_GEMINI ? 'ai_gemini_search_model' : 'ai_chatgpt_search_model';
-	}
-
-	/**
 	 * Get default max output tokens for provider
 	 *
 	 * @param string|null $provider
 	 * @return int
 	 */
 	public static function get_default_max_output_tokens( $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		return $provider === self::PROVIDER_GEMINI ? EPKB_Gemini_Client::DEFAULT_MAX_OUTPUT_TOKENS : EPKB_ChatGPT_Client::DEFAULT_MAX_OUTPUT_TOKENS;
+		$catalog_class = self::get_catalog_class( $provider );
+		return $catalog_class::get_default_max_output_tokens();
 	}
 
 	/**
@@ -374,8 +797,8 @@ class EPKB_AI_Provider {
 	 * @return int
 	 */
 	public static function get_default_max_results( $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-		return $provider === self::PROVIDER_GEMINI ? EPKB_Gemini_Client::DEFAULT_MAX_NUM_RESULTS : EPKB_ChatGPT_Client::DEFAULT_MAX_NUM_RESULTS;
+		$catalog_class = self::get_catalog_class( $provider );
+		return $catalog_class::get_default_max_results();
 	}
 
 	/**
@@ -390,20 +813,73 @@ class EPKB_AI_Provider {
 	}
 
 	/**
+	 * Get translated select options for a model parameter.
+	 *
+	 * @param string $parameter
+	 * @param string|null $model
+	 * @param string|null $provider
+	 * @return array
+	 */
+	public static function get_parameter_options( $parameter, $model = null, $provider = null ) {
+
+		$parameter_labels = array(
+			'verbosity' => array(
+				'low'    => __( 'Low', 'echo-knowledge-base' ),
+				'medium' => __( 'Medium', 'echo-knowledge-base' ),
+				'high'   => __( 'High', 'echo-knowledge-base' ),
+			),
+			'reasoning' => array(
+				'none'   => __( 'None', 'echo-knowledge-base' ),
+				'low'    => __( 'Low', 'echo-knowledge-base' ),
+				'medium' => __( 'Medium', 'echo-knowledge-base' ),
+				'high'   => __( 'High', 'echo-knowledge-base' ),
+				'xhigh'  => __( 'Extra High', 'echo-knowledge-base' ),
+			),
+			'thinking_level' => array(
+				'low'  => __( 'Low', 'echo-knowledge-base' ),
+				'high' => __( 'High', 'echo-knowledge-base' ),
+			),
+		);
+
+		if ( empty( $parameter_labels[ $parameter ] ) ) {
+			return array();
+		}
+
+		$provider = $provider ?: self::get_active_provider();
+		$model = $model ? self::resolve_model_name( $model, $provider ) : self::get_default_model( $provider );
+		$model_spec = self::get_models_and_default_params( $model, $provider );
+		if ( empty( $model_spec['parameters'] ) || ! in_array( $parameter, $model_spec['parameters'], true ) ) {
+			return array();
+		}
+		$option_key = $parameter . '_options';
+		$option_values = empty( $model_spec[ $option_key ] ) ? array_keys( $parameter_labels[ $parameter ] ) : $model_spec[ $option_key ];
+		$options = array();
+
+		foreach ( $option_values as $option_value ) {
+			if ( isset( $parameter_labels[ $parameter ][ $option_value ] ) ) {
+				$options[ $option_value ] = $parameter_labels[ $parameter ][ $option_value ];
+			}
+		}
+
+		return $options;
+	}
+
+	/**
 	 * Upload a temporary file for direct prompt input.
 	 *
 	 * @param string $file_content Raw file bytes.
 	 * @param string $file_name Original file name.
 	 * @param string $mime_type MIME type.
+	 * @param string|null $provider Provider override.
 	 * @return array|WP_Error Normalized attachment reference.
 	 */
-	public static function upload_prompt_attachment( $file_content, $file_name, $mime_type ) {
+	public static function upload_prompt_attachment( $file_content, $file_name, $mime_type, $provider = null ) {
 
 		if ( ! is_string( $file_content ) || $file_content === '' ) {
 			return new WP_Error( 'empty_file', __( 'File content is empty.', 'echo-knowledge-base' ) );
 		}
 
-		$provider = self::get_active_provider();
+		$provider = $provider ? self::normalize_provider( $provider ) : self::get_active_provider();
 		$file_name = sanitize_file_name( $file_name );
 		$file_name = empty( $file_name ) ? 'document' : $file_name;
 		$mime_type = empty( $mime_type ) ? 'application/octet-stream' : $mime_type;
@@ -663,31 +1139,76 @@ class EPKB_AI_Provider {
 	 * @return string
 	 */
 	private static function extract_chatgpt_response_content( $response ) {
+		if ( ! empty( $response['output_text'] ) && is_string( $response['output_text'] ) ) {
+			return EPKB_AI_Utilities::convert_kb_article_references_to_links( $response['output_text'] );
+		}
+
 		if ( empty( $response['output'] ) || ! is_array( $response['output'] ) ) {
 			return '';
 		}
 
-		// Primary structure for Responses API - output array with content array
-		$last_output = end( $response['output'] );
-		if ( empty( $last_output['content'] ) || ! is_array( $last_output['content'] ) ) {
-			return '';
+		$content_fragments = array();
+		$fallback_content = '';
+
+		foreach ( $response['output'] as $output_item ) {
+			if ( empty( $output_item['content'] ) || ! is_array( $output_item['content'] ) ) {
+				continue;
+			}
+
+			foreach ( $output_item['content'] as $content_item ) {
+				$text_fragment = self::extract_chatgpt_content_text_fragment( $content_item );
+				if ( $text_fragment !== '' ) {
+					$content_fragments[] = $text_fragment;
+					continue;
+				}
+
+				if ( $fallback_content === '' ) {
+					$fallback_content = self::stringify_chatgpt_content_fragment( $content_item );
+				}
+			}
 		}
 
-		$content = empty( $last_output['content'][0] ) ? '' : $last_output['content'][0];
-
-		// If content is an object with a 'text' property (from newer ChatGPT API), extract it
-		if ( is_array( $content ) && isset( $content['text'] ) ) {
-			$content = $content['text'];
-		}
-
-		// If content is an object/array, convert to string
-		if ( is_array( $content ) || is_object( $content ) ) {
-			$content = json_encode( $content );
-		}
+		$content = empty( $content_fragments ) ? $fallback_content : implode( '', $content_fragments );
 
 		// Convert kb_article patterns to links with article names
 		// This is done in the ChatGPT handler since it created these file names
 		return EPKB_AI_Utilities::convert_kb_article_references_to_links( $content );
+	}
+
+	/**
+	 * Extract a text fragment from one ChatGPT Responses API content item.
+	 *
+	 * @param mixed $content_item
+	 * @return string
+	 */
+	private static function extract_chatgpt_content_text_fragment( $content_item ) {
+		if ( is_string( $content_item ) ) {
+			return $content_item;
+		}
+
+		if ( ! is_array( $content_item ) ) {
+			return '';
+		}
+
+		return isset( $content_item['text'] ) && is_string( $content_item['text'] ) ? $content_item['text'] : '';
+	}
+
+	/**
+	 * Convert one ChatGPT Responses API content item to a string as a compatibility fallback.
+	 *
+	 * @param mixed $content_item
+	 * @return string
+	 */
+	private static function stringify_chatgpt_content_fragment( $content_item ) {
+		if ( is_string( $content_item ) ) {
+			return $content_item;
+		}
+
+		if ( is_array( $content_item ) || is_object( $content_item ) ) {
+			return wp_json_encode( $content_item );
+		}
+
+		return '';
 	}
 
 	/**
@@ -706,71 +1227,22 @@ class EPKB_AI_Provider {
 			return '';
 		}
 
-		$first_part = $candidate['content']['parts'][0];
-		if ( is_array( $first_part ) && isset( $first_part['text'] ) ) {
-			$content = $first_part['text'];
-		} else {
-			$content = is_string( $first_part ) ? $first_part : json_encode( $first_part );
+		$content = '';
+		foreach ( $candidate['content']['parts'] as $part ) {
+			if ( is_array( $part ) && isset( $part['text'] ) && $part['text'] !== '' ) {
+				$content = $part['text'];
+				break;
+			}
+		}
+
+		if ( $content === '' ) {
+			$first_part = $candidate['content']['parts'][0];
+			$content = is_string( $first_part ) ? $first_part : wp_json_encode( $first_part );
 		}
 
 		// Convert kb_article patterns to links with article names
 		// This is done in the ChatGPT handler since it created these file names
 		return EPKB_AI_Utilities::convert_kb_article_references_to_links( $content );
-	}
-
-	/**
-	 * Extract usage information from API response
-	 *
-	 * @param array $response
-	 * @param string|null $provider
-	 * @return array Normalized usage array with prompt_tokens, completion_tokens, total_tokens
-	 */
-	public static function extract_response_usage( $response, $provider = null ) {
-		$provider = $provider ?: self::get_active_provider();
-
-		if ( $provider === self::PROVIDER_GEMINI ) {
-			return self::extract_gemini_usage( $response );
-		}
-
-		return self::extract_chatgpt_usage( $response );
-	}
-
-	/**
-	 * Extract usage from ChatGPT response
-	 *
-	 * @param array $response
-	 * @return array
-	 */
-	private static function extract_chatgpt_usage( $response ) {
-		if ( empty( $response['usage'] ) ) {
-			return array();
-		}
-
-		return array(
-			'prompt_tokens'     => isset( $response['usage']['prompt_tokens'] ) ? intval( $response['usage']['prompt_tokens'] ) : 0,
-			'completion_tokens' => isset( $response['usage']['completion_tokens'] ) ? intval( $response['usage']['completion_tokens'] ) : 0,
-			'total_tokens'      => isset( $response['usage']['total_tokens'] ) ? intval( $response['usage']['total_tokens'] ) : 0
-		);
-	}
-
-	/**
-	 * Extract usage from Gemini response
-	 *
-	 * @param array $response
-	 * @return array
-	 */
-	private static function extract_gemini_usage( $response ) {
-		if ( empty( $response['usageMetadata'] ) ) {
-			return array();
-		}
-
-		$usage = $response['usageMetadata'];
-
-		return array(
-			'prompt_tokens'     => isset( $usage['promptTokenCount'] ) ? intval( $usage['promptTokenCount'] ) : 0,
-			'completion_tokens' => isset( $usage['candidatesTokenCount'] ) ? intval( $usage['candidatesTokenCount'] ) : 0,
-			'total_tokens'      => isset( $usage['totalTokenCount'] ) ? intval( $usage['totalTokenCount'] ) : 0
-		);
 	}
 
 	/**
@@ -798,89 +1270,20 @@ class EPKB_AI_Provider {
 	 * @return array
 	 */
 	public static function get_preset_options( $use_case = 'chat', $provider = null ) {
+		$provider = $provider ?: self::get_active_provider();
 		$presets = self::get_model_presets( $use_case, $provider );
+		$default_preset_key = self::get_default_preset_for_use_case( $use_case );
 		$options = array();
+
 		foreach ( $presets as $key => $preset ) {
-			if ( $key === 'fastest' ) {
-				$options[$key] = $preset['label'] . ': ' . $preset['description'] . ' ' . __( '(default)', 'echo-knowledge-base' );
+			if ( $key === $default_preset_key ) {
+				$options[ $key ] = $preset['label'] . ' - ' . $preset['description'] . ' ' . __( '(default)', 'echo-knowledge-base' );
 			} else {
-				$options[$key] = $preset['label'] . ': ' . $preset['description'];
+				$options[ $key ] = $preset['label'] . ' - ' . $preset['description'];
 			}
 		}
+
 		return $options;
-	}
-
-	/**
-	 * Get model parameter fields for settings UI
-	 *
-	 * @param string $use_case 'chat' or 'search'
-	 * @param array $config Current AI config
-	 * @return array Field definitions
-	 */
-	public static function get_model_parameter_fields( $use_case, $config ) {
-		$prefix = "ai_{$use_case}_";
-		$model_field = $use_case === 'chat' ? self::get_chat_model_field() : self::get_search_model_field();
-		$model = $use_case === 'chat' ? self::get_chat_model() : self::get_search_model();
-		$model_spec = self::get_models_and_default_params( $model );
-		$max_limit = isset( $model_spec['max_output_tokens_limit'] ) ? $model_spec['max_output_tokens_limit'] : self::get_default_max_output_tokens();
-		$label_model = $use_case === 'chat' ? __( 'Chat Model', 'echo-knowledge-base' ) : __( 'Search Model', 'echo-knowledge-base' );
-
-		return array(
-			$model_field => array(
-				'type' => 'select',
-				'label' => $label_model,
-				'value' => $model,
-				'options' => self::get_model_options()
-			),
-			$prefix . 'verbosity' => array(
-				'type' => 'select',
-				'label' => __( 'Verbosity', 'echo-knowledge-base' ),
-				'value' => $config[$prefix . 'verbosity'],
-				'options' => array(
-					'low' => __( 'Low', 'echo-knowledge-base' ),
-					'medium' => __( 'Medium', 'echo-knowledge-base' ),
-					'high' => __( 'High', 'echo-knowledge-base' ),
-				),
-				'description' => __( 'Controls response verbosity', 'echo-knowledge-base' ),
-			),
-			$prefix . 'reasoning' => array(
-				'type' => 'select',
-				'label' => __( 'Reasoning', 'echo-knowledge-base' ),
-				'value' => $config[$prefix . 'reasoning'],
-				'options' => array(
-					'low' => __( 'Low', 'echo-knowledge-base' ),
-					'medium' => __( 'Medium', 'echo-knowledge-base' ),
-					'high' => __( 'High', 'echo-knowledge-base' ),
-				),
-				'description' => __( 'Controls reasoning depth', 'echo-knowledge-base' ),
-			),
-			$prefix . 'temperature' => array(
-				'type' => 'number',
-				'label' => __( 'Temperature', 'echo-knowledge-base' ),
-				'value' => $config[$prefix . 'temperature'],
-				'min' => 0,
-				'max' => $use_case === 'chat' ? 2 : 1,
-				'step' => 0.1,
-				'description' => __( 'Controls response creativity', 'echo-knowledge-base' )
-			),
-			$prefix . 'top_p' => array(
-				'type' => 'number',
-				'label' => __( 'Top P', 'echo-knowledge-base' ),
-				'value' => $config[$prefix . 'top_p'],
-				'min' => 0,
-				'max' => 1,
-				'step' => 0.1,
-				'description' => __( 'Controls response diversity', 'echo-knowledge-base' )
-			),
-			$prefix . 'max_output_tokens' => array(
-				'type' => 'number',
-				'label' => __( 'Max Tokens', 'echo-knowledge-base' ),
-				'value' => $config[$prefix . 'max_output_tokens'],
-				'min' => 50,
-				'max' => $max_limit,
-				'description' => __( 'Maximum response length in tokens', 'echo-knowledge-base' )
-			)
-		);
 	}
 
 	/**
@@ -888,33 +1291,23 @@ class EPKB_AI_Provider {
 	 *
 	 * @param string $preset_key
 	 * @param string $use_case 'chat' or 'search'
+	 * @param string|null $provider
 	 * @return array Applied settings info
 	 */
-	public static function apply_preset( $preset_key, $use_case = 'chat' ) {
-		if ( $preset_key === 'custom' ) {
-			return array( 'message' => __( 'Custom preset selected.', 'echo-knowledge-base' ) );
-		}
+	public static function apply_preset( $preset_key, $use_case = 'chat', $provider = null ) {
+		$provider = $provider ?: self::get_active_provider();
+		$preset_key = self::normalize_preset_key( $preset_key );
+		$preset = self::get_preset_parameters( $preset_key, $use_case, $provider );
+		$preset_field = self::get_preset_field_name( $use_case );
 
-		$preset = self::get_preset_parameters( $preset_key, $use_case );
-		$prefix = "ai_{$use_case}_";
-		$model_field = $use_case === 'chat' ? self::get_chat_model_field() : self::get_search_model_field();
-
-		$applied = array();
-		if ( isset( $preset['model'] ) ) {
-			EPKB_AI_Config_Specs::update_ai_config_value( $model_field, $preset['model'] );
-			$applied['model'] = $preset['model'];
-		}
-		foreach ( array( 'verbosity', 'reasoning', 'temperature', 'max_output_tokens', 'top_p' ) as $param ) {
-			if ( isset( $preset[$param] ) ) {
-				EPKB_AI_Config_Specs::update_ai_config_value( $prefix . $param, $preset[$param] );
-				$applied[$param] = $preset[$param];
-			}
+		if ( $preset_field !== '' ) {
+			EPKB_AI_Config_Specs::update_ai_config_value( $preset_field, $preset_key );
 		}
 
 		// translators: %s is the preset name
 		return array(
 			'message' => sprintf( __( 'Applied "%s" preset', 'echo-knowledge-base' ), $preset['label'] ),
-			'applied_settings' => $applied
+			'applied_settings' => array( 'preset' => $preset_key )
 		);
 	}
 }

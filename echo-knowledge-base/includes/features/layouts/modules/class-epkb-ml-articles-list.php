@@ -358,7 +358,9 @@ class EPKB_ML_Articles_List {
 		$ml_art_list_modular = '#epkb-modular-main-page-container #epkb-ml__module-articles-list';
 		$hover_on = ( ! empty( $kb_config['article_list_hover_toggle'] ) && $kb_config['article_list_hover_toggle'] == 'on' )
 			|| ( isset( $kb_config['kb_main_page_layout'] ) && $kb_config['kb_main_page_layout'] === EPKB_Layout::DRILL_DOWN_LAYOUT );
-		if ( $hover_on ) {
+		$is_sidebar_or_grid = isset( $kb_config['kb_main_page_layout'] )
+			&& in_array( $kb_config['kb_main_page_layout'], [ EPKB_Layout::SIDEBAR_LAYOUT, EPKB_Layout::GRID_LAYOUT ], true );
+		if ( $hover_on && ! $is_sidebar_or_grid ) {
 			$spacing = intval( $kb_config['article_list_spacing'] );
 			$hover_bg = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_background_color'] );
 			$hover_text = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_font_color'] );

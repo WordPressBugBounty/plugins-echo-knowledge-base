@@ -73,7 +73,7 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 		) );
 
 		$conversation->add_message( 'user', $question );
-		$conversation->add_message( 'assistant', $ai_response['content'], array( 'usage' => $ai_response['usage'] ) );
+		$conversation->add_message( 'assistant', $ai_response['content'] );
 		
 		// Update conversation with response ID
 		$conversation->set_conversation_id( $ai_response['response_id'] );
@@ -84,9 +84,6 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 			return new WP_Error( 'save_failed', __( 'Failed to save conversation: ', 'echo-knowledge-base' ) . $message_id->get_error_message() );
 		}
 		
-		// Record usage for tracking
-		// TODO $this->record_usage( $response['usage'] );
-
 		// Check if source references should be included
 		$show_sources = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_show_sources' ) === 'on';
 		$sources = $show_sources && EPKB_AI_Utilities::should_show_sources_for_answer( $ai_response['content'] ) && ! empty( $ai_response['sources'] ) ? $ai_response['sources'] : array();

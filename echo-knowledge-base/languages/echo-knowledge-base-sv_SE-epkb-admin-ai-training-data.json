@@ -178,6 +178,21 @@
             "Cannot change actions while validation is in progress": [
                 "Kan inte ändra åtgärder medan validering pågår"
             ],
+            "Checking available WordPress items...": [
+                "Kontrollerar tillgängliga WordPress-objekt..."
+            ],
+            "Unable to load available WordPress items": [
+                "Kunde inte ladda tillgängliga WordPress-objekt"
+            ],
+            "Click Refresh to try again.": [
+                "Klicka på Uppdatera för att försöka igen."
+            ],
+            "Available WordPress items to add: %s": [
+                "Tillgängliga WordPress-objekt att lägga till: %s"
+            ],
+            "Created in WordPress and not yet added to this collection.": [
+                "Skapad i WordPress och ännu inte tillagd i denna samling."
+            ],
             "Collection name updated successfully": [
                 "Namn på samlingen uppdaterades"
             ],
@@ -223,11 +238,20 @@
             "marked outdated": [
                 "markerad som föråldrad"
             ],
-            "PDFs removed from AI store": [
-                "PDF-filer borttagna från AI-lagringen"
+            "WordPress items": [
+                "WordPress-objekt"
             ],
-            "AI Notes removed from AI store": [
-                "AI-anteckningar borttagna från AI-lagringen"
+            "PDFs": [
+                "PDF-filer"
+            ],
+            "AI Notes": [
+                "AI-anteckningar"
+            ],
+            "other files": [
+                "andra filer"
+            ],
+            "orphan files removed from AI store": [
+                "föräldralösa filer borttagna från AI-lagringen"
             ],
             "Run sync to re-upload outdated items.": [
                 "Kör synkronisering för att ladda upp föråldrade objekt igen."
@@ -235,8 +259,17 @@
             "Choose an Action": [
                 "Välj en åtgärd"
             ],
-            "Validate & Fix Synced Items": [
-                "Verifiera och åtgärda synkroniserade objekt"
+            "Recommended: Validate & Fix Synced Items": [
+                "Rekommenderas: Validera och åtgärda synkroniserade objekt"
+            ],
+            "Recent plugin updates fixed issues that may have left orphan files in your AI Vector Store. Run the \"Validate & Fix\" option below once to reconcile synced items with what is stored in the AI.": [
+                "Senaste uppdateringar av tillägget åtgärdade problem som kan ha lämnat kvar föräldralösa filer i din AI-vektorlagring. Kör alternativet ”Validera och åtgärda” nedan en gång för att stämma av synkroniserade objekt med det som lagras i AI:n."
+            ],
+            "Dismiss": [
+                "Stäng"
+            ],
+            "Validate & Fix": [
+                "Validera och åtgärda"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Välj innehållstyper (KB-artiklar, Inlägg, Sidor) som laddas in i tabellen. Detta skickar inget till AI än."
@@ -273,6 +306,9 @@
             ],
             "Sync failed. Re-send to retry. Check the content exists and is not empty.": [
                 "Synkronisering misslyckades. Skicka igen för att försöka igen. Kontrollera att innehållet finns och inte är tomt."
+            ],
+            "Validate & Fix Synced Items": [
+                "Verifiera och åtgärda synkroniserade objekt"
             ],
             "Choose which content types you want to include in your AI training data.": [
                 "Välj vilka innehållstyper du vill inkludera i din maskininlärningsdata."
@@ -343,8 +379,8 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Kör en extra valideringsomgång för att se till att den lokala databasen och AI-lagringen förblir synkroniserade. Om en fil saknas i AI-lagringen kommer den att markeras som inaktuell så att den kan skickas om."
             ],
-            "This checks Added and Updated items already tracked in this collection and removes orphaned PDFs and AI Notes found only in the AI store. No local database items are deleted.": [
-                "Detta kontrollerar tillagda och uppdaterade objekt som redan spåras i denna samling och tar bort övergivna PDF-filer och AI-anteckningar som endast finns i AI-lagringen. Inga lokala databasobjekt raderas."
+            "This checks Added and Updated items already tracked in this collection and removes orphaned WordPress items, PDFs, and AI Notes found only in the AI store. No local database items are deleted.": [
+                "Detta kontrollerar tillagda och uppdaterade objekt som redan spåras i denna samling och tar bort föräldralösa WordPress-objekt, PDF-filer och AI-anteckningar som endast finns i AI-lagringen. Inga lokala databasobjekt raderas."
             ],
             "Collection:": [
                 "Samling:"
@@ -352,8 +388,8 @@
             "synced items ready to validate": [
                 "synkroniserade objekt redo att valideras"
             ],
-            "No Added or Updated items are available yet. Validation can still remove orphaned PDFs and AI Notes left only in the AI store.": [
-                "Inga tillagda eller uppdaterade objekt är tillgängliga ännu. Valideringen kan fortfarande ta bort övergivna PDF-filer och AI-anteckningar som endast finns kvar i AI-lagringen."
+            "No Added or Updated items are available yet. Validation can still remove orphaned WordPress items, PDFs, and AI Notes left only in the AI store.": [
+                "Inga tillagda eller uppdaterade objekt är tillgängliga ännu. Validering kan fortfarande ta bort föräldralösa WordPress-objekt, PDF-filer och AI-anteckningar som finns kvar i AI-lagringen."
             ],
             "Cancel Verify": [
                 "Avbryt verifiering"

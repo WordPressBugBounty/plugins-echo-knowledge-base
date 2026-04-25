@@ -40,6 +40,9 @@
             "OFF": [
                 "オフ"
             ],
+            "Errors": [
+                "エラー"
+            ],
             "Email": [
                 "メール"
             ],
@@ -51,6 +54,9 @@
             ],
             "Saving...": [
                 "保存中..."
+            ],
+            "Error": [
+                "エラー"
             ],
             "Go to General Settings": [
                 "一般設定へ移動"
@@ -105,6 +111,9 @@
             ],
             "Trigger": [
                 "トリガー"
+            ],
+            "AI error recorded in this conversation": [
+                "この会話で AI エラーが記録されました"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "選択した会話を削除してもよろしいですか？"
@@ -184,6 +193,18 @@
             "Agent Handover": [
                 "エージェントへの引継ぎ"
             ],
+            "The most recent AI request failed for this conversation": [
+                "この会話の最新の AI リクエストが失敗しました"
+            ],
+            "An earlier AI request failed during this conversation": [
+                "この会話の途中で以前の AI リクエストが失敗しました"
+            ],
+            "Failed": [
+                "失敗"
+            ],
+            "Error Logged": [
+                "エラーが記録されました"
+            ],
             "Number of messages": [
                 "メッセージの総数"
             ],
@@ -210,6 +231,9 @@
             ],
             "Full Conversation": [
                 "全会話"
+            ],
+            "AI Error": [
+                "AIエラー"
             ],
             "No messages in this conversation.": [
                 "この会話にはメッセージがありません。."

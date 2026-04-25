@@ -1427,7 +1427,7 @@ class EPKB_Core_Utilities {
 	public static function is_main_page_search( $kb_config ) {
 		// $kb_config['article_search_sync_toggle'] == 'on' -> handled by copying Main Page search settings to Article Page on settings save operation
 		$is_archive_using_main_page_search = is_archive() && $kb_config['archive_search_source'] == 'main_page' && ! EPKB_Block_Utilities::kb_main_page_has_kb_blocks( $kb_config );
-		return $kb_config['kb_main_page_layout'] == EPKB_Layout::SIDEBAR_LAYOUT || EPKB_Utilities::is_kb_main_page() || EPKB_Utilities::get( 'is_kb_main_page' ) == 1 || $is_archive_using_main_page_search;
+		return EPKB_Utilities::is_kb_main_page() || EPKB_Utilities::get( 'is_kb_main_page' ) == 1 || $is_archive_using_main_page_search;
 	}
 
 	/**
@@ -1771,8 +1771,8 @@ class EPKB_Core_Utilities {
 
 		// sync Article Search with Main Search settings - Sidebar layout does not use Article Search settings, still keep the settings synced if required
 		$temp_config = array_merge( $orig_config, $new_config );
-		if ( EPKB_Utilities::is_article_search_synced( $temp_config ) ||
-			( empty( $new_config['article_search_sync_toggle'] ) && EPKB_Utilities::is_article_search_synced( $orig_config ) ) ) {
+		if ( EPKB_Utilities::use_main_page_search_settings_on_article_page( $temp_config ) ||
+			( empty( $new_config['article_search_sync_toggle'] ) && EPKB_Utilities::use_main_page_search_settings_on_article_page( $orig_config ) ) ) {
 
 			foreach ( $orig_config as $setting_name => $orig_setting_value ) {
 

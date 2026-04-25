@@ -78,17 +78,18 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 			return array();
 		}
 
-		$active_provider = EPKB_AI_Provider::get_active_provider();
 		$training_data_db = new EPKB_AI_Training_Data_DB();
 		$needs_update = false;
 
-		// Ensure provider is set for each collection (needed for legacy data) and update mismatched providers when filtering by active provider
+		// Ensure provider is set for each collection (needed for legacy data) and normalize legacy provider names.
 		foreach ( $collections as $collection_id => &$collection_config ) {
 			if ( ! isset( $collection_config['ai_training_data_provider'] ) ) {
 				$db_provider = self::get_provider_from_db_collection( $collection_id );
-				$collection_config['ai_training_data_provider'] = is_wp_error( $db_provider ) || empty( $db_provider ) ? self::get_field_default( 'ai_training_data_provider' ) : $db_provider;
-				$db_store_id = $training_data_db->get_store_id_by_collection( $collection_id, $active_provider );
+				$collection_provider = is_wp_error( $db_provider ) || empty( $db_provider ) ? self::get_field_default( 'ai_training_data_provider' ) : EPKB_AI_Provider::normalize_provider( $db_provider );
+				$collection_config['ai_training_data_provider'] = $collection_provider;
+				$db_store_id = $training_data_db->get_store_id_by_collection( $collection_id, $collection_provider );
 				$collection_config['ai_training_data_store_id'] = $db_store_id ?: '';
+				$needs_update = true;
 			} else if ( $collection_config['ai_training_data_provider'] === 'openai' ) {
 				$collection_config['ai_training_data_provider'] = EPKB_AI_Provider::PROVIDER_CHATGPT;
 				$needs_update = true;
@@ -161,6 +162,34 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 	}
 
 	/**
+	 * Get vector store ID for a collection that must belong to the active provider.
+	 *
+	 * @param int $collection_id Collection ID to get vector store from.
+	 * @return string|WP_Error Vector store ID or WP_Error if unavailable for the active provider.
+	 */
+	public static function get_active_provider_vector_store_id_by_collection( $collection_id ) {
+
+		if ( ! is_numeric( $collection_id ) || $collection_id <= 0 ) {
+			return new WP_Error( 'invalid_collection_id', __( 'Invalid collection ID', 'echo-knowledge-base' ) );
+		}
+
+		$provider_mismatch = self::get_active_and_selected_provider_if_mismatched( $collection_id );
+		if ( $provider_mismatch !== null ) {
+			return new WP_Error(
+				'provider_mismatch',
+				sprintf(
+					__( 'Selected AI data collection uses %1$s but the active provider is %2$s.', 'echo-knowledge-base' ),
+					$provider_mismatch['collection_provider'],
+					$provider_mismatch['active_provider']
+				),
+				$provider_mismatch
+			);
+		}
+
+		return self::get_vector_store_id_by_collection( $collection_id );
+	}
+
+	/**
 	 * Get collection IDs for a specific provider (defaults to the active provider)
 	 *
 	 * @param string|null $provider
@@ -168,12 +197,23 @@ class EPKB_AI_Training_Data_Config_Specs extends EPKB_AI_Config_Base {
 	 */
 	public static function get_collection_ids_by_provider( $provider = null ) {
 		$provider = $provider ? EPKB_AI_Provider::normalize_provider( $provider ) : EPKB_AI_Provider::get_active_provider();
-		$collections = self::get_training_data_collections( false, $provider );
+		$collections = self::get_training_data_collections( false, false );
 		if ( is_wp_error( $collections ) || empty( $collections ) ) {
 			return array();
 		}
 
-		return array_map( 'intval', array_keys( $collections ) );
+		$collection_ids = array();
+		foreach ( $collections as $collection_id => $collection_config ) {
+			$collection_provider = empty( $collection_config['ai_training_data_provider'] )
+				? self::get_field_default( 'ai_training_data_provider' )
+				: EPKB_AI_Provider::normalize_provider( $collection_config['ai_training_data_provider'] );
+
+			if ( $collection_provider === $provider ) {
+				$collection_ids[] = intval( $collection_id );
+			}
+		}
+
+		return $collection_ids;
 	}
 
 	/**

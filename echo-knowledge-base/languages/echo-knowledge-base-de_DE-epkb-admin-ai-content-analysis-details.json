@@ -49,6 +49,9 @@
             "Tag updated successfully": [
                 "Tag erfolgreich aktualisiert"
             ],
+            "Get AI Features PRO": [
+                "KI-Funktionen PRO erhalten"
+            ],
             "Add New Tag": [
                 "Neues Schlagwort hinzufügen"
             ],
@@ -141,9 +144,6 @@
             ],
             "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
                 "KI identifiziert fehlende Informationen und unbeantwortete Fragen in Ihren Artikeln. Finden Sie heraus, welche Themen noch stärker abgedeckt werden müssen."
-            ],
-            "Get AI Features PRO": [
-                "KI-Funktionen PRO erhalten"
             ],
             "Analyzing article for content gaps...": [
                 "Analysieren Sie den Artikel auf Inhaltslücken..."

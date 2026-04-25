@@ -479,37 +479,149 @@ class EPKB_AI_Content_Analysis_Utilities {
 	 */
 	public static function parse_json_response( $json_text, $context = 'ai_analysis' ) {
 
-		// Remove markdown code fences if present
-		$json_text = self::remove_markdown_code_fences( $json_text );
+		$json_text = is_string( $json_text ) ? $json_text : strval( $json_text );
+		$fence_stripped_text = self::remove_markdown_code_fences( $json_text );
+		$json_candidates = array();
 
-		// Parse JSON response
-		$parsed_response = json_decode( $json_text, true );
-		if ( json_last_error() !== JSON_ERROR_NONE ) {
+		self::add_json_candidate( $json_candidates, $json_text );
+		self::add_json_candidate( $json_candidates, $fence_stripped_text );
+		// Recovery should prefer later JSON blocks because models sometimes include an example before the real payload.
+		foreach ( array_reverse( self::extract_balanced_json_structures( $json_text ) ) as $json_candidate ) {
+			self::add_json_candidate( $json_candidates, $json_candidate );
+		}
+		foreach ( array_reverse( self::extract_balanced_json_structures( $fence_stripped_text ) ) as $json_candidate ) {
+			self::add_json_candidate( $json_candidates, $json_candidate );
+		}
+
+		foreach ( $json_candidates as $json_candidate ) {
+			$parsed_response = json_decode( $json_candidate, true );
+			if ( json_last_error() === JSON_ERROR_NONE ) {
+				return $parsed_response;
+			}
+		}
+
+		if ( ! empty( $json_candidates ) ) {
 			// Check if response appears to be truncated
 			$is_truncated = false;
 			$error_message = __( 'Failed to parse AI response as JSON', 'echo-knowledge-base' );
-			
+			$text_for_detection = rtrim( $fence_stripped_text );
+
 			// Detect truncation: valid JSON should end with } or ]
-			$trimmed = rtrim( $json_text );
-			if ( ! empty( $trimmed ) ) {
-				$last_char = substr( $trimmed, -1 );
+			if ( ! empty( $text_for_detection ) ) {
+				$last_char = substr( $text_for_detection, -1 );
 				// If JSON doesn't end with closing brace or bracket, it's likely truncated
 				// Also check if it looks like it was cut off mid-word or mid-string
 				if ( ! in_array( $last_char, array( '}', ']' ) ) && 
-				     ( strpos( $trimmed, '{' ) !== false || strpos( $trimmed, '[' ) !== false ) ) {
+				     ( strpos( $text_for_detection, '{' ) !== false || strpos( $text_for_detection, '[' ) !== false ) ) {
 					$is_truncated = true;
 					$error_message = __( 'AI response appears to be truncated. The response may have exceeded the maximum output length. Please try again.', 'echo-knowledge-base' );
 				}
 			}
-			
+
 			// Log the raw response for debugging (truncate if very long to avoid log bloat)
 			$log_text = strlen( $json_text ) > 5000 ? substr( $json_text, 0, 5000 ) . '...[truncated for logging]' : $json_text;
 			EPKB_AI_Log::add_log( 'Failed to parse AI response' . ( $is_truncated ? ' (truncated)' : '' ), $log_text );
-			
+
 			return new WP_Error( 'json_parse_error', $error_message, $json_text );
 		}
 
-		return $parsed_response;
+		return new WP_Error( 'json_parse_error', __( 'Failed to parse AI response as JSON', 'echo-knowledge-base' ), $json_text );
+	}
+
+	/**
+	 * Add one unique JSON candidate to the parsing queue.
+	 *
+	 * @param array  $json_candidates
+	 * @param string $json_candidate
+	 */
+	private static function add_json_candidate( &$json_candidates, $json_candidate ) {
+		$json_candidate = trim( strval( $json_candidate ) );
+		if ( $json_candidate === '' || in_array( $json_candidate, $json_candidates, true ) ) {
+			return;
+		}
+
+		$json_candidates[] = $json_candidate;
+	}
+
+	/**
+	 * Extract balanced JSON objects or arrays from surrounding prose.
+	 *
+	 * @param string $text
+	 * @return array
+	 */
+	private static function extract_balanced_json_structures( $text ) {
+		$text = trim( strval( $text ) );
+		if ( $text === '' ) {
+			return array();
+		}
+
+		$json_structures = array();
+		$start_index = null;
+		$stack = array();
+		$in_string = false;
+		$is_escaped = false;
+		$text_length = strlen( $text );
+
+		for ( $index = 0; $index < $text_length; $index++ ) {
+			$char = $text[ $index ];
+
+			if ( $start_index === null ) {
+				if ( $char === '{' ) {
+					$start_index = $index;
+					$stack[] = '}';
+				} elseif ( $char === '[' ) {
+					$start_index = $index;
+					$stack[] = ']';
+				}
+				continue;
+			}
+
+			if ( $in_string ) {
+				if ( $is_escaped ) {
+					$is_escaped = false;
+					continue;
+				}
+
+				if ( $char === '\\' ) {
+					$is_escaped = true;
+					continue;
+				}
+
+				if ( $char === '"' ) {
+					$in_string = false;
+				}
+				continue;
+			}
+
+			if ( $char === '"' ) {
+				$in_string = true;
+				continue;
+			}
+
+			if ( $char === '{' ) {
+				$stack[] = '}';
+				continue;
+			}
+
+			if ( $char === '[' ) {
+				$stack[] = ']';
+				continue;
+			}
+
+			if ( empty( $stack ) || $char !== end( $stack ) ) {
+				continue;
+			}
+
+			array_pop( $stack );
+			if ( empty( $stack ) ) {
+				$json_structures[] = substr( $text, $start_index, $index - $start_index + 1 );
+				$start_index = null;
+				$in_string = false;
+				$is_escaped = false;
+			}
+		}
+
+		return $json_structures;
 	}
 
 	/**

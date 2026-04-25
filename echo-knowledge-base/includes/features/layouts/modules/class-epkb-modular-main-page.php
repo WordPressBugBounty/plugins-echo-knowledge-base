@@ -90,8 +90,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 
 		EPKB_Core_Utilities::display_missing_css_message( $kb_config );
 
-		$is_main_page_search = EPKB_Core_Utilities::is_main_page_search( $kb_config );
-		$main_page_indicator = $is_main_page_search ? 'eckb_search_on_main_page' : '';  ?>
+		$main_page_indicator = EPKB_Core_Utilities::is_main_page_search( $kb_config ) ? 'eckb_search_on_main_page' : '';  ?>
 
 		<div id="epkb-ml__module-search" class="epkb-ml__module <?php echo esc_attr( $main_page_indicator ); ?>">   <?php
 
@@ -595,7 +594,9 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 			// Article hover effect -----------------------------------------/
 			$hover_on = ( ! empty( $kb_config['article_list_hover_toggle'] ) && $kb_config['article_list_hover_toggle'] == 'on' )
 				|| ( isset( $kb_config['kb_main_page_layout'] ) && $kb_config['kb_main_page_layout'] === EPKB_Layout::DRILL_DOWN_LAYOUT );
-			if ( $hover_on ) {
+			$is_sidebar_or_grid = isset( $kb_config['kb_main_page_layout'] )
+				&& in_array( $kb_config['kb_main_page_layout'], [ EPKB_Layout::SIDEBAR_LAYOUT, EPKB_Layout::GRID_LAYOUT ], true );
+			if ( $hover_on && ! $is_sidebar_or_grid ) {
 				$spacing = intval( $kb_config['article_list_spacing'] );
 				$hover_bg = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_background_color'] );
 				$hover_text = EPKB_Utilities::sanitize_hex_color( $kb_config['article_list_hover_font_color'] );
