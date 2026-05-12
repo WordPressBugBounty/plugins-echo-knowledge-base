@@ -70,6 +70,9 @@
             "Setup Steps": [
                 "Passaggi di configurazione"
             ],
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings.": [
+                "Per utilizzare le funzionalità IA, configura la tua chiave API e accetta l'informativa sulla privacy dei dati nelle Impostazioni generali."
+            ],
             "Session Expired": [
                 "Sessione scaduta"
             ],

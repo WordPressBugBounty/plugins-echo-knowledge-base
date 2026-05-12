@@ -452,7 +452,7 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 	 */
 	private function get_collection_configuration_error( $collection_id ) {
 
-		$is_admin = EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' );
+		$is_admin = EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' );
 
 		// Check for provider mismatch first
 		$provider_mismatch = EPKB_AI_Training_Data_Config_Specs::get_active_and_selected_provider_if_mismatched( $collection_id );

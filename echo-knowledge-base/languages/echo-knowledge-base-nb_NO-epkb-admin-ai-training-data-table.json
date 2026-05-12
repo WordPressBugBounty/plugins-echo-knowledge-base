@@ -127,6 +127,9 @@
             "Failed to delete items": [
                 "Mislyktes i å slette elementer"
             ],
+            "Sync failed": [
+                "Synkronisering mislyktes"
+            ],
             "Syncing": [
                 "Synkroniserer"
             ],
@@ -265,8 +268,14 @@
             "Last Synced:": [
                 "Sist synkronisert:"
             ],
+            "AI-Ready Content": [
+                "AI-klart innhold"
+            ],
             "Original Content": [
                 "Originalt innhold"
+            ],
+            "No AI-ready content available": [
+                "Ingen AI-klart innhold tilgjengelig"
             ]
         }
     }

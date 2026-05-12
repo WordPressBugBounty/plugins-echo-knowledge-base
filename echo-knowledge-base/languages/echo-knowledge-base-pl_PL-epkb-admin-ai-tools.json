@@ -31,9 +31,6 @@
             "Refresh": [
                 "Odśwież"
             ],
-            "Warnings": [
-                "Ostrzeżenia"
-            ],
             "Info": [
                 "Informacja"
             ],
@@ -138,6 +135,9 @@
             ],
             "Fatal Errors": [
                 "Błędy krytyczne"
+            ],
+            "Warnings": [
+                "Ostrzeżenia"
             ],
             "Notices": [
                 "Powiadomienia"

@@ -37,9 +37,6 @@
             "OFF": [
                 "DISATTIVATO"
             ],
-            "Optional": [
-                "Opzionale"
-            ],
             "View Full Documentation": [
                 "Visualizza la documentazione completa"
             ],
@@ -60,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "Invia dati all'IA"
+            ],
+            "Optional": [
+                "Opzionale"
             ],
             "Collection name cannot be empty": [
                 "Il nome della collezione non può essere vuoto"
@@ -178,6 +178,21 @@
             "Cannot change actions while validation is in progress": [
                 "Impossibile modificare le azioni mentre la validazione è in corso"
             ],
+            "Checking available WordPress items...": [
+                "Verifica degli elementi WordPress disponibili..."
+            ],
+            "Unable to load available WordPress items": [
+                "Impossibile caricare gli elementi WordPress disponibili"
+            ],
+            "Click Refresh to try again.": [
+                "Fai clic su Aggiorna per riprovare."
+            ],
+            "Available WordPress items to add: %s": [
+                "Elementi WordPress disponibili da aggiungere: %s"
+            ],
+            "Created in WordPress and not yet added to this collection.": [
+                "Creato in WordPress e non ancora aggiunto a questa collezione."
+            ],
             "Collection name updated successfully": [
                 "Nome della collezione aggiornato con successo"
             ],
@@ -223,14 +238,29 @@
             "marked outdated": [
                 "Contrassegnato come obsoleto"
             ],
+            "WordPress items": [
+                "Elementi WordPress"
+            ],
+            "PDFs": [
+                "PDF"
+            ],
+            "AI Notes": [
+                "Note IA"
+            ],
+            "other files": [
+                "altri file"
+            ],
+            "orphan files removed from AI store": [
+                "file orfani rimossi dall'archivio IA"
+            ],
             "Run sync to re-upload outdated items.": [
                 "Esegui la sincronizzazione per ri-caricare gli elementi obsoleti."
             ],
             "Choose an Action": [
                 "Scegli un'azione"
             ],
-            "Dismiss": [
-                "Chiudi"
+            "Validate & Fix": [
+                "Valida e correggi"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Scegli i tipi di contenuto (Articoli KB, Post, Pagine) da caricare nella tabella. Questo non invia ancora nulla all'IA."
@@ -280,8 +310,8 @@
             "Access Manager Notice": [
                 "Avviso del gestore degli accessi"
             ],
-            "Currently only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
-                "Attualmente possono essere caricati solo articoli pubblicamente accessibili all'IA. Articoli con restrizioni di accesso non saranno inclusi nei dati di addestramento."
+            "Only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
+                "Solo gli articoli accessibili pubblicamente possono essere caricati nell'IA. Gli articoli con restrizioni di accesso non saranno inclusi nei dati di addestramento."
             ],
             "Loading content types...": [
                 "Caricamento dei tipi di contenuto..."
@@ -340,11 +370,17 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Esegui un passaggio di validazione aggiuntivo per assicurarti che il database locale e l'archivio IA rimangano sincronizzati. Se un file manca dall'archivio IA, verrà contrassegnato come obsoleto in modo da poter essere inviato nuovamente."
             ],
+            "This checks Added and Updated items already tracked in this collection and removes orphaned WordPress items, PDFs, and AI Notes found only in the AI store. No local database items are deleted.": [
+                "Questo controlla gli elementi aggiunti e aggiornati già tracciati in questa collezione e rimuove gli elementi WordPress, i PDF e le Note IA orfani trovati solo nell'archivio IA. Nessun elemento del database locale viene eliminato."
+            ],
             "Collection:": [
                 "Raccolta:"
             ],
             "synced items ready to validate": [
                 "elementi sincronizzati pronti per la validazione"
+            ],
+            "No Added or Updated items are available yet. Validation can still remove orphaned WordPress items, PDFs, and AI Notes left only in the AI store.": [
+                "Non sono ancora disponibili elementi aggiunti o aggiornati. La convalida può comunque rimuovere elementi WordPress, PDF e Note IA orfani rimasti solo nell'archivio IA."
             ],
             "Cancel Verify": [
                 "Annulla verifica"

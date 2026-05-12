@@ -56,7 +56,7 @@ class EPKB_Upgrades {
 	}
 
 	/**
-	 * Trigger display of wizard setup screen on plugin first activation or upgrade; does NOT work if multiple plugins installed at the same time
+	 * Trigger display of wizard setup screen on plugin first activation.
 	 */
 	public static function initial_setup() {
 
@@ -65,22 +65,27 @@ class EPKB_Upgrades {
 			return;
 		}
 
-		// ignore if plugin not recently activated
-		$plugin_installed = get_transient( '_epkb_plugin_installed' );
-		if ( empty( $plugin_installed ) ) {
+		// return if this is not a regular admin page load
+		$request_method = isset( $_SERVER['REQUEST_METHOD'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) : '';
+		if ( $request_method != 'GET' || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || is_network_admin() || isset( $_GET['activate-multi'] ) ) {
 			return;
 		}
-
-		// return if activating from network or doing bulk activation
-		if ( is_network_admin() || isset($_GET['activate-multi']) ) {
-			return;
-		}
-
-		// Delete the redirect transient
-		delete_transient( '_epkb_plugin_installed' );
 
 		// if setup ran then do not proceed
 		if ( ! EPKB_Core_Utilities::run_setup_wizard_first_time() ) {
+			return;
+		}
+
+		// redirect only admins after installation; the wizard page still enforces its own access rules
+		if ( ! current_user_can( EPKB_Admin_UI_Access::get_admin_capability() ) ) {
+			return;
+		}
+
+		// Delete the legacy redirect transient if present; the setup flag is the durable source of truth.
+		delete_transient( '_epkb_plugin_installed' );
+
+		// avoid redirecting when already viewing the Setup Wizard
+		if ( EPKB_Utilities::request_key( 'page' ) == 'epkb-kb-configuration' && isset( $_GET['setup-wizard-on'] ) ) {
 			return;
 		}
 

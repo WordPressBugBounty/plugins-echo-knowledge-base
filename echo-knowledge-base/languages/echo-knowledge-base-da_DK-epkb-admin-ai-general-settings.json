@@ -22,6 +22,9 @@
             "Saving...": [
                 "Gemmer..."
             ],
+            "Open Admin UI Permissions": [
+                "Åbn tilladelser for administrator-brugerflade"
+            ],
             "Failed to save settings": [
                 "Kunne ikke gemme indstillinger"
             ],
@@ -39,6 +42,12 @@
             ],
             "Change AI Provider?": [
                 "Skift AI-udbyder?"
+            ],
+            "Before you switch:": [
+                "Før du skifter:"
+            ],
+            "Read the Switching AI Providers guide →": [
+                "Læs guiden om at skifte AI-udbyder →"
             ],
             "Switching AI providers will affect your AI Search and AI Chat settings:": [
                 "Når du skifter AI-udbydere, vil det påvirke dine AI Søg og AI chat-indstillinger:"

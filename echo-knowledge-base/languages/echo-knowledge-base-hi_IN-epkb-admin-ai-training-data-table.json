@@ -127,6 +127,9 @@
             "Failed to delete items": [
                 "आइटम हटाने में विफल"
             ],
+            "Sync failed": [
+                "सिंक विफल रहा"
+            ],
             "Syncing": [
                 "समन्वय हो रहा है"
             ],
@@ -265,8 +268,14 @@
             "Last Synced:": [
                 "आख़िरी समन्वय:"
             ],
+            "AI-Ready Content": [
+                "AI-तैयार सामग्री"
+            ],
             "Original Content": [
                 "मूल सामग्री"
+            ],
+            "No AI-ready content available": [
+                "कोई AI-तैयार सामग्री उपलब्ध नहीं है"
             ]
         }
     }

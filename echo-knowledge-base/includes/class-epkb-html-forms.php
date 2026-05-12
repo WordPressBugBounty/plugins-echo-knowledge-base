@@ -74,7 +74,8 @@ class EPKB_HTML_Forms {
 				if ( isset( $args['desc'] ) ) { ?>
 					<div class="epkb-notification-box-popup__body__desc"><?php echo wp_kses( $args['desc'], array( 'a' => array(
 							'href'  => array(),
-							'title' => array()
+							'title' => array(),
+							'class' => array()
 						),
 							'br'        => array(),
 							'em'        => array(),

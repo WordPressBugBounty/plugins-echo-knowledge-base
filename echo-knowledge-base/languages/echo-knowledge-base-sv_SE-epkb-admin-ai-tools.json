@@ -31,9 +31,6 @@
             "Refresh": [
                 "Uppdatera"
             ],
-            "Warnings": [
-                "Varningar"
-            ],
             "Info": [
                 "Info"
             ],
@@ -138,6 +135,9 @@
             ],
             "Fatal Errors": [
                 "Allvarliga fel"
+            ],
+            "Warnings": [
+                "Varningar"
             ],
             "Notices": [
                 "Meddelanden"

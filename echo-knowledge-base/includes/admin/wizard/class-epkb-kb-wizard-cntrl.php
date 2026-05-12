@@ -342,10 +342,12 @@ class EPKB_KB_Wizard_Cntrl {
 		// apply Categories & Articles module theme preset; set to 'current' if user did not select a new theme i.e. keep current settings
 		$is_theme_selected = false;
 		$categories_articles_preset_name = EPKB_Utilities::post( 'categories_articles_preset_name' );
-		if ( ! empty( $categories_articles_preset_name ) && $categories_articles_preset_name != 'current' ) {
+		$is_setup_default_preset = $this->is_setup_default_preset( $categories_articles_preset_name );
+		if ( ! empty( $categories_articles_preset_name ) && $categories_articles_preset_name != 'current' && ! $is_setup_default_preset ) {
 			$is_theme_selected = true;
 			$new_config = EPKB_KB_Wizard_Themes::get_theme( $categories_articles_preset_name, $orig_config );
 		}
+		$new_config = $this->preserve_search_titles_for_returning_users( $is_setup_run_first_time, $orig_config, $new_config );
 
 		// apply Layout Name
 		$new_config['kb_main_page_layout'] = empty( $layout_name ) ? $orig_config['kb_main_page_layout'] : $layout_name;
@@ -465,8 +467,12 @@ class EPKB_KB_Wizard_Cntrl {
 
 		EPKB_Core_Utilities::start_update_kb_configuration( $kb_id, $new_config, $is_theme_selected );
 
-		// update demo category icons if user chose another theme design
-		if ( $is_theme_selected ) {
+		// update demo category icons if user chose another theme design or the setup default preset
+		if ( $is_setup_default_preset ) {
+			$icon_config = $new_config;
+			$icon_config['theme_name'] = 'office';
+			EPKB_Core_Utilities::get_or_update_demo_category_icons( $icon_config, 'office', true );
+		} else if ( $is_theme_selected ) {
 			EPKB_Core_Utilities::get_or_update_demo_category_icons( $new_config, $categories_articles_preset_name, true );
 		}
 
@@ -550,6 +556,28 @@ class EPKB_KB_Wizard_Cntrl {
 	}
 
 	/**
+	 * Keep custom search title copy when returning users apply a visual preset.
+	 *
+	 * @param bool $is_setup_run_first_time
+	 * @param array $orig_config
+	 * @param array $new_config
+	 *
+	 * @return array
+	 */
+	private function preserve_search_titles_for_returning_users( $is_setup_run_first_time, $orig_config, $new_config ) {
+
+		if ( $is_setup_run_first_time ) {
+			return $new_config;
+		}
+
+		foreach ( array( 'search_title', 'article_search_title' ) as $setting_name ) {
+			$new_config[ $setting_name ] = $orig_config[ $setting_name ];
+		}
+
+		return $new_config;
+	}
+
+	/**
 	 * Add KB link to top menu
 	 *
 	 * @param $kb_main_pages
@@ -602,7 +630,10 @@ class EPKB_KB_Wizard_Cntrl {
 		$preview_type = EPKB_Utilities::post( 'preview_type', 'preset' );
 		$is_layout_preview = $preview_type === 'layout';
 		$is_preset_preview = $preview_type === 'preset';
-		$use_new_preset = $is_preset_preview && $preset_name != 'current';
+		$is_setup_default_preset = $this->is_setup_default_preset( $preset_name );
+		$use_new_preset = $is_preset_preview && $preset_name != 'current' && ! $is_setup_default_preset;
+		$is_setup_run_first_time = EPKB_Core_Utilities::run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
+		$use_setup_default_icons = ( $is_layout_preview && $is_setup_run_first_time ) || $is_setup_default_preset;
 
 		// set global vars that the layout classes expect (same as FE line 611)
 		$eckb_is_kb_main_page = true;
@@ -649,17 +680,16 @@ class EPKB_KB_Wizard_Cntrl {
 			);
 		}
 
-		// Set demo category icons only when preset is selected; otherwise layout fetches current icons from DB
-		if ( $use_new_preset && ! empty( $seq_meta ) ) {
+		// First-time Step 3 and the setup default preset use Office image icons; later Step 3 runs show configured KB icons.
+		if ( $use_setup_default_icons && ! empty( $seq_meta ) ) {
+			$icon_config = $new_config;
+			$icon_config['theme_name'] = 'office';
+			$seq_meta['category_icons'] = EPKB_Core_Utilities::get_or_update_demo_category_icons( $icon_config, 'office', false );
+		} else if ( $use_new_preset && ! empty( $seq_meta ) ) {
 			$seq_meta['category_icons'] = EPKB_Core_Utilities::get_or_update_demo_category_icons( $new_config, $preset_name, false );
 		}
 
-		// preserve search titles if not the first time
-		$is_setup_run_first_time = EPKB_Core_Utilities::run_setup_wizard_first_time() || EPKB_Utilities::post( 'emkb_admin_notice' ) == 'kb_add_success';
-		if ( ! $is_setup_run_first_time ) {
-			$new_config['search_title'] = $orig_config['search_title'];
-			$new_config['article_search_title'] = $orig_config['article_search_title'];
-		}
+		$new_config = $this->preserve_search_titles_for_returning_users( $is_setup_run_first_time, $orig_config, $new_config );
 
 		// define AMAG constant to bypass permission checks for demo articles
 		if ( ! defined( 'AMAG_PLUGIN_NAME' ) ) {
@@ -672,10 +702,16 @@ class EPKB_KB_Wizard_Cntrl {
 		// create and set up the handler
 		// Use current KB data when available; otherwise fall back to demo data (including demo icons)
 		if ( empty( $seq_meta ) ) {
+			$icon_config = $new_config;
+			$icon_preset_name = $preset_name;
+			if ( $use_setup_default_icons ) {
+				$icon_config['theme_name'] = 'office';
+				$icon_preset_name = 'office';
+			}
 			$seq_meta = array(
 				'articles_seq_meta'   => $this->get_demo_articles( $new_layout_name ),
 				'categories_seq_meta' => $this->get_demo_categories( $new_layout_name ),
-				'category_icons'      => $this->get_demo_category_icons( $new_config, $new_layout_name, $preset_name ),
+				'category_icons'      => $this->get_demo_category_icons( $icon_config, $new_layout_name, $icon_preset_name ),
 			);
 		}
 		$handler = new EPKB_Modular_Main_Page();
@@ -815,6 +851,16 @@ class EPKB_KB_Wizard_Cntrl {
 			case 'Basic':
 			default: return 'mp-frontend-modular-basic-layout';
 		}
+	}
+
+	/**
+	 * Detect the setup default preset and its layout-specific variants.
+	 *
+	 * @param string $preset_name
+	 * @return bool
+	 */
+	private function is_setup_default_preset( $preset_name ) {
+		return is_string( $preset_name ) && strpos( $preset_name, 'setup_default' ) === 0;
 	}
 
 	/**

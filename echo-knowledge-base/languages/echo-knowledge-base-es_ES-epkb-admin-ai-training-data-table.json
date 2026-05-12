@@ -127,6 +127,9 @@
             "Failed to delete items": [
                 "Error al eliminar elementos"
             ],
+            "Sync failed": [
+                "Sincronización fallida"
+            ],
             "Syncing": [
                 "Sincronizando"
             ],

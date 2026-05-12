@@ -68,12 +68,11 @@ class EPKB_AI_Training_Data_Tab {
 			'available_post_types' => EPKB_AI_Utilities::get_available_post_types_for_ai(),
             'is_wp_cron_disabled' => ( defined( 'DISABLE_WP_CRON' ) && constant( 'DISABLE_WP_CRON' ) ),
 			'is_ai_features_pro_enabled' => EPKB_Utilities::is_ai_features_pro_enabled(),
-			'is_access_manager_active' => EPKB_Utilities::is_amag_on(),
-			'active_provider' => EPKB_AI_Provider::get_active_provider(),
-			'active_provider_label' => EPKB_AI_Provider::get_provider_label(),
-			'setup_steps' => EPKB_AI_Admin_Page::get_setup_steps_for_tab( 'training-data' ),
-			'show_validate_fix_notice' => ! EPKB_Core_Utilities::is_kb_flag_set( 'ai_validate_fix_notice_dismissed' )
-		);
+				'is_access_manager_active' => EPKB_Utilities::is_amag_on(),
+				'active_provider' => EPKB_AI_Provider::get_active_provider(),
+				'active_provider_label' => EPKB_AI_Provider::get_provider_label(),
+				'setup_steps' => EPKB_AI_Admin_Page::get_setup_steps_for_tab( 'training-data' )
+			);
 		
 		// Add error information if collections couldn't be retrieved
 		if ( $collections_error ) {

@@ -137,13 +137,14 @@ jQuery(document).ready(function($) {
 				action: 'epkb_save_access_control',
 				_wpnonce_epkb_ajax_action: epkb_vars.nonce,
 				epkb_kb_id: $( '#epkb-list-of-kbs' ).val(),
-				admin_eckb_access_content_analysis: $( '#admin_eckb_access_content_analysis input[type="radio"]:checked' ).val(),
 				admin_eckb_access_search_analytics_read: $( '#admin_eckb_access_search_analytics_read input[type="radio"]:checked' ).val(),
 				admin_eckb_access_addons_news_read: $( '#admin_eckb_access_addons_news_read input[type="radio"]:checked' ).val(),
 				admin_eckb_access_order_articles_write: $( '#admin_eckb_access_order_articles_write input[type="radio"]:checked' ).val(),
 				admin_eckb_access_frontend_editor_write: $( '#admin_eckb_access_frontend_editor_write input[type="radio"]:checked' ).val(),
 				admin_eckb_access_faqs_write: $( '#admin_eckb_access_faqs_write input[type="radio"]:checked' ).val(),
-				admin_eckb_access_quizzes_write: $( '#admin_eckb_access_quizzes_write input[type="radio"]:checked' ).val()
+				admin_eckb_access_glossary_write: $( '#admin_eckb_access_glossary_write input[type="radio"]:checked' ).val(),
+				admin_eckb_access_quizzes_write: $( '#admin_eckb_access_quizzes_write input[type="radio"]:checked' ).val(),
+				admin_eckb_access_ai_feature: $( '#admin_eckb_access_ai_feature input[type="radio"]:checked' ).val()
 			},
 			function( response ) {
 				$( '.eckb-top-notice-message' ).remove();
@@ -4146,16 +4147,12 @@ jQuery(document).ready(function($) {
 					$card.slideUp( 200, function() {
 						$( this ).remove();
 					} );
-					var openUrl = dialogOpenUrl;
-					if ( response.data && response.data.show_interest_modal && openUrl ) {
-						openUrl += ( openUrl.indexOf( '?' ) > -1 ? '&' : '?' ) + 'epkb_show_feedback=1';
-					}
 					epkb_show_dashboard_feature_dialog( {
 						title: dialogTitle,
 						message: dialogMessage,
 						openLabel: dialogOpenLabel,
 						cancelLabel: dialogCancelLabel,
-						openUrl: openUrl
+						openUrl: dialogOpenUrl
 					} );
 				} else {
 					$message.addClass("epkb-dashboard-feature-promo__message--error").html(response.data || "Failed to enable " + featureLabel + ". Please try again.").fadeIn();

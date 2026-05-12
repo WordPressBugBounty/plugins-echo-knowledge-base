@@ -49,9 +49,6 @@
             "Tag updated successfully": [
                 "Tag opdateret"
             ],
-            "Get AI Features PRO": [
-                "Få AI-funktioner PRO"
-            ],
             "Add New Tag": [
                 "Tilføj nyt tag"
             ],
@@ -144,6 +141,9 @@
             ],
             "AI identifies missing information and unanswered questions in your articles. Discover what topics need more coverage.": [
                 "AI identificerer manglende information og ubesvarede spørgsmål i dine artikler. Find ud af, hvilke emner der mangler dækning."
+            ],
+            "Get AI Features PRO": [
+                "Få AI-funktioner PRO"
             ],
             "Analyzing article for content gaps...": [
                 "Analyserer artikel for indholdsgab..."

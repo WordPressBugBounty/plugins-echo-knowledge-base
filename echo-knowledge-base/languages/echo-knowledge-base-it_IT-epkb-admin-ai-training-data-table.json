@@ -127,6 +127,9 @@
             "Failed to delete items": [
                 "Impossibile eliminare gli elementi"
             ],
+            "Sync failed": [
+                "Sincronizzazione non riuscita"
+            ],
             "Syncing": [
                 "Sincronizzazione in corso"
             ],
@@ -265,8 +268,14 @@
             "Last Synced:": [
                 "Ultima sincronizzazione:"
             ],
+            "AI-Ready Content": [
+                "Contenuto pronto per l'IA"
+            ],
             "Original Content": [
                 "Contenuto originale"
+            ],
+            "No AI-ready content available": [
+                "Nessun contenuto pronto per l'IA disponibile"
             ]
         }
     }

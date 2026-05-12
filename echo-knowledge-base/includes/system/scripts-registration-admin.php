@@ -223,17 +223,12 @@ function epkb_load_admin_plugin_pages_resources() {
 		wp_enqueue_script( 'epkb-icon-fonts' );
 		wp_enqueue_style( 'epkb-shortcodes' );
 	} else if ( $page == 'epkb-quizzes' ) {
-		$current_user = wp_get_current_user();
 		$true_false_choices = EPKB_Quizzes_Utilities::get_true_false_choices();
 
 		wp_enqueue_script( 'epkb-quizzes-admin' );
 		wp_localize_script( 'epkb-quizzes-admin', 'epkbQuizAdmin', array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 			'nonce'   => wp_create_nonce( '_wpnonce_epkb_ajax_action' ),
-			'currentUser' => array(
-				'firstName' => empty( $current_user->first_name ) ? $current_user->display_name : $current_user->first_name,
-				'email'     => $current_user->user_email,
-			),
 			'strings' => array(
 				'genericError'       => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
 				'discardChanges'     => esc_html__( 'You have unsaved changes. Discard them and continue?', 'echo-knowledge-base' ),
@@ -258,6 +253,9 @@ function epkb_load_admin_plugin_pages_resources() {
 				'newQuiz'            => esc_html__( 'New Quiz', 'echo-knowledge-base' ),
 				'openedExistingQuiz' => esc_html__( 'Opened the existing quiz for that article.', 'echo-knowledge-base' ),
 				'unavailableArticle' => esc_html__( 'Unavailable source article', 'echo-knowledge-base' ),
+				'hasQuiz'            => esc_html__( 'Quiz Added', 'echo-knowledge-base' ),
+				'selectArticle'      => esc_html__( 'Select a source article', 'echo-knowledge-base' ),
+				'noArticles'         => esc_html__( 'No articles found.', 'echo-knowledge-base' ),
 				'success'            => esc_html__( 'Success', 'echo-knowledge-base' ),
 				'close'              => esc_html__( 'Close', 'echo-knowledge-base' ),
 			),

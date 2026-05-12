@@ -21,6 +21,7 @@ class EPKB_AI_General_Settings_Tab {
 			'settings_sections' => self::get_settings_sections( $ai_config ),
 			'ai_config' => $ai_config,
 			'has_kb_ai_collection' => self::any_kb_has_ai_collection(),
+			'permissions_box' => self::get_permissions_box_config(),
 			'setup_steps' => EPKB_AI_Admin_Page::get_setup_steps_for_tab( 'general-settings' )
 		);
 	}
@@ -38,6 +39,29 @@ class EPKB_AI_General_Settings_Tab {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Get AI permissions box configuration. Shows in KB Core only; AMGR keeps its own role model.
+	 *
+	 * @return array|null
+	 */
+	private static function get_permissions_box_config() {
+
+		if ( EPKB_Utilities::is_amag_on() ) {
+			return null;
+		}
+
+		$kb_id = EPKB_KB_Handler::get_relevant_kb_id();
+		$kb_id = empty( $kb_id ) ? EPKB_KB_Config_DB::DEFAULT_KB_ID : $kb_id;
+		$permissions_url = admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_id ) . '&page=epkb-kb-configuration#tools__access-control' );
+
+		return array(
+			'title'       => __( 'AI Permissions in KB Core', 'echo-knowledge-base' ),
+			'description' => __( 'In KB Core, WP Editors can be granted limited AI access from Tools > Menu Access Control. Editor access is limited to Content Analysis; Training Data, PDF and Notes screens, and all other AI admin endpoints remain administrator-only.', 'echo-knowledge-base' ),
+			'button_text' => __( 'Open Admin UI Permissions', 'echo-knowledge-base' ),
+			'url'         => esc_url_raw( $permissions_url ),
+		);
 	}
 
 	/**

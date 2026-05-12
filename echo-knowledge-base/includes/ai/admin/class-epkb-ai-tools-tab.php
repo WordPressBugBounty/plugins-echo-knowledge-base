@@ -108,7 +108,7 @@ class EPKB_AI_Tools_Tab {
 	public static function ajax_toggle_debug_mode() {
 
 		// Security check
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' ) ) {
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access denied', 'echo-knowledge-base' ) ) );
 			return;
 		}
@@ -355,7 +355,7 @@ class EPKB_AI_Tools_Tab {
 	public static function ajax_get_data_collections_info() {
 
 		// Security check
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' ) ) {
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access denied', 'echo-knowledge-base' ) ) );
 			return;
 		}
@@ -531,7 +531,7 @@ class EPKB_AI_Tools_Tab {
 		}
 		
 		// Security check
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' ) ) {
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
 			wp_die( esc_html__( 'Access denied', 'echo-knowledge-base' ) );
 		}
 		

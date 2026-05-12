@@ -127,6 +127,9 @@
             "Failed to delete items": [
                 "アイテムの削除に失敗しました"
             ],
+            "Sync failed": [
+                "同期に失敗しました"
+            ],
             "Syncing": [
                 "同期中"
             ],

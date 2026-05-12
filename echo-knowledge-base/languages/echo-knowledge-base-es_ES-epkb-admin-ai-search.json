@@ -31,9 +31,6 @@
             "Previous": [
                 "Anterior"
             ],
-            "Feedback": [
-                "Retroalimentación"
-            ],
             "Reset": [
                 "Restablecer"
             ],
@@ -57,6 +54,9 @@
             ],
             "Middle Column": [
                 "Columna central"
+            ],
+            "Feedback": [
+                "Retroalimentación"
             ],
             "AI Assistant": [
                 "Asistente de IA"

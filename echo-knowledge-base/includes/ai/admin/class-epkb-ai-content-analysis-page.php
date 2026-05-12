@@ -117,6 +117,10 @@ class EPKB_AI_Content_Analysis_Page {
 				continue;
 			}
 
+			if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'content-analysis', $one_kb_id ) ) {
+				continue;
+			}
+
 			$kb_list[] = array(
 				'id' => $one_kb_id,
 				'name' => $one_kb_config['kb_name']
@@ -313,5 +317,4 @@ class EPKB_AI_Content_Analysis_Page {
 		);
 	}
 }
-
 

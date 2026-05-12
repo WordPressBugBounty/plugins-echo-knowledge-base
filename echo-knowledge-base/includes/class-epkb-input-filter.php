@@ -111,6 +111,10 @@ class EPKB_Input_Filter {
 					$input_value = empty( $input_value ) || ! is_string( $input_value ) ? '' : trim( $input_value );
 					break;
 
+				case self::EMAIL:
+					$input_value = is_string( $input_value ) ? sanitize_email( $input_value ) : '';
+					break;
+
 				case self::TEXT:
 					if ( ! empty( $field_spec['allowed_tags'] ) ) {
 						$input_value = wp_kses( $input_value, $field_spec['allowed_tags'] );
@@ -161,9 +165,11 @@ class EPKB_Input_Filter {
 		// further sanitize the field
 		switch ( $field_spec['type'] ) {
 
+			case self::EMAIL:
+				return $this->filter_email( $value, $field_spec );
+
 			case self::TEXT:
 			case self::URL:
-			case self::EMAIL:
 				return $this->filter_text( $value, $field_spec );
 
 			case self::LICENSE_KEY:
@@ -248,6 +254,23 @@ class EPKB_Input_Filter {
 		}
 
 		return $text;
+	}
+
+	/**
+	 * Sanitize and validate an optional email address.
+	 *
+	 * @param string $email
+	 * @param array $field_spec
+	 * @return string|WP_Error
+	 */
+	private function filter_email( $email, $field_spec ) {
+
+		$email = is_string( $email ) ? trim( $email ) : '';
+		if ( $email !== '' && ! is_email( $email ) ) {
+			return new WP_Error( 'filter_email_invalid', esc_html__( 'Enter a valid email address.', 'echo-knowledge-base' ) );
+		}
+
+		return $email;
 	}
 
 	/**

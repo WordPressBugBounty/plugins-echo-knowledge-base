@@ -31,9 +31,6 @@
             "Refresh": [
                 "Oppdater"
             ],
-            "Warnings": [
-                "Advarsler"
-            ],
             "Info": [
                 "Informasjon"
             ],
@@ -138,6 +135,9 @@
             ],
             "Fatal Errors": [
                 "Fatale feil"
+            ],
+            "Warnings": [
+                "Advarsler"
             ],
             "Notices": [
                 "Varsler"

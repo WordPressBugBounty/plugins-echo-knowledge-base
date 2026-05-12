@@ -43,12 +43,6 @@
             "Errors": [
                 "Fel"
             ],
-            "Email": [
-                "E-post"
-            ],
-            "Feedback": [
-                "Återkoppling"
-            ],
             "Reset": [
                 "Återställ"
             ],
@@ -67,11 +61,17 @@
             "API Configuration": [
                 "API-konfiguration"
             ],
+            "Feedback": [
+                "Återkoppling"
+            ],
             "AI Assistant": [
                 "AI-assistent"
             ],
             "Name": [
                 "Namn"
+            ],
+            "Email": [
+                "E-post"
             ],
             "Message": [
                 "Meddelande"

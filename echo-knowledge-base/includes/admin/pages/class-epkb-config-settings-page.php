@@ -2972,6 +2972,50 @@ class EPKB_Config_Settings_Page {
 				'data'          => [ 'target' => 'category_icon', 'insert-box-after' => '.epkb-admin__form-tab-content--module-settings' ]
 			),
 			array(
+				'title'         => esc_html__( 'Category Header Padding', 'echo-knowledge-base' ),
+				'css_class'     => 'epkb-admin__form-tab-content--module-box epkb-admin__form-tab-content--categories_articles-box epkb-admin__form-tab-content--hide',
+				'fields'        => [
+					'grid_section_head_padding_top' => [ 'elay', 'only_grid' ],
+					'grid_section_head_padding_bottom' => [ 'elay', 'only_grid' ],
+					'grid_section_head_padding_left' => [ 'elay', 'only_grid' ],
+					'grid_section_head_padding_right' => [ 'elay', 'only_grid' ],
+				],
+				'data'          => [ 'insert-box-after' => '.epkb-admin__form-tab-content--module-settings' ],
+			),
+			array(
+				'title'         => esc_html__( 'Category Name Padding', 'echo-knowledge-base' ),
+				'css_class'     => 'epkb-admin__form-tab-content--module-box epkb-admin__form-tab-content--categories_articles-box epkb-admin__form-tab-content--hide',
+				'fields'        => [
+					'grid_section_cat_name_padding_top' => [ 'elay', 'only_grid' ],
+					'grid_section_cat_name_padding_bottom' => [ 'elay', 'only_grid' ],
+					'grid_section_cat_name_padding_left' => [ 'elay', 'only_grid' ],
+					'grid_section_cat_name_padding_right' => [ 'elay', 'only_grid' ],
+				],
+				'data'          => [ 'insert-box-after' => '.epkb-admin__form-tab-content--module-settings' ],
+			),
+			array(
+				'title'         => esc_html__( 'Category Description Padding', 'echo-knowledge-base' ),
+				'css_class'     => 'epkb-admin__form-tab-content--module-box epkb-admin__form-tab-content--categories_articles-box epkb-admin__form-tab-content--hide',
+				'fields'        => [
+					'grid_section_desc_padding_top' => [ 'elay', 'only_grid' ],
+					'grid_section_desc_padding_bottom' => [ 'elay', 'only_grid' ],
+					'grid_section_desc_padding_left' => [ 'elay', 'only_grid' ],
+					'grid_section_desc_padding_right' => [ 'elay', 'only_grid' ],
+				],
+				'data'          => [ 'insert-box-after' => '.epkb-admin__form-tab-content--module-settings' ],
+			),
+			array(
+				'title'         => esc_html__( 'Category Body Padding', 'echo-knowledge-base' ),
+				'css_class'     => 'epkb-admin__form-tab-content--module-box epkb-admin__form-tab-content--categories_articles-box epkb-admin__form-tab-content--hide',
+				'fields'        => [
+					'grid_section_body_padding_top' => [ 'elay', 'only_grid' ],
+					'grid_section_body_padding_bottom' => [ 'elay', 'only_grid' ],
+					'grid_section_body_padding_left' => [ 'elay', 'only_grid' ],
+					'grid_section_body_padding_right' => [ 'elay', 'only_grid' ],
+				],
+				'data'          => [ 'insert-box-after' => '.epkb-admin__form-tab-content--module-settings' ],
+			),
+			array(
 				'title'         => esc_html__( 'List of Articles', 'echo-knowledge-base' ),
 				'css_class'     => 'epkb-admin__form-tab-content--module-box epkb-admin__form-tab-content--categories_articles-box epkb-admin__form-tab-content--hide',
 				'fields'        => [

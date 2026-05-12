@@ -260,6 +260,10 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		if ( ! empty( $filters['type'] ) ) {
 			$where[] = $this->prepare_column_value( 'type', $filters['type'] );
 		}
+
+		if ( ! empty( $filters['search'] ) ) {
+			$where[] = $this->get_search_where_clause( $filters['search'] );
+		}
 		
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where contains prepared values
 		$sql = "SELECT * FROM {$this->table_name} WHERE " . implode( ' AND ', $where );
@@ -311,13 +315,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		
 		// Add search condition if search term is provided
 		if ( ! empty( $args['search'] ) ) {
-			$search_term = '%' . $wpdb->esc_like( $args['search'] ) . '%';
-			$search_conditions = array();
-			$search_conditions[] = $wpdb->prepare( 'title LIKE %s', $search_term );
-			$search_conditions[] = $wpdb->prepare( 'type LIKE %s', $search_term );
-			$search_conditions[] = $wpdb->prepare( 'url LIKE %s', $search_term );
-			$search_conditions[] = $wpdb->prepare( 'item_id LIKE %s', $search_term );
-			$where[] = '(' . implode( ' OR ', $search_conditions ) . ')';
+			$where[] = $this->get_search_where_clause( $args['search'] );
 		}
 		
 		// Calculate offset
@@ -381,13 +379,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		
 		// Add search condition if search term is provided
 		if ( ! empty( $args['search'] ) ) {
-			$search_term = '%' . $wpdb->esc_like( $args['search'] ) . '%';
-			$search_conditions = array();
-			$search_conditions[] = $wpdb->prepare( 'title LIKE %s', $search_term );
-			$search_conditions[] = $wpdb->prepare( 'type LIKE %s', $search_term );
-			$search_conditions[] = $wpdb->prepare( 'url LIKE %s', $search_term );
-			$search_conditions[] = $wpdb->prepare( 'item_id LIKE %s', $search_term );
-			$where[] = '(' . implode( ' OR ', $search_conditions ) . ')';
+			$where[] = $this->get_search_where_clause( $args['search'] );
 		}
 		
 		// Get count with search support
@@ -592,16 +584,26 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 * @param int $collection_id Optional collection ID filter
 	 * @return array
 	 */
-	public function get_status_statistics( $collection_id = 0 ) {
+	public function get_status_statistics( $collection_id = 0, $filters = array() ) {
 		global $wpdb;
 		
-		$where = '';
+		$where = array();
 		if ( $collection_id > 0 ) {
-			$where = $wpdb->prepare( ' WHERE collection_id = %d', $collection_id );
+			$where[] = $this->prepare_column_value( 'collection_id', $collection_id );
 		}
+
+		if ( ! empty( $filters['type'] ) ) {
+			$where[] = $this->prepare_column_value( 'type', $filters['type'] );
+		}
+
+		if ( ! empty( $filters['search'] ) ) {
+			$where[] = $this->get_search_where_clause( $filters['search'] );
+		}
+
+		$where_clause = empty( $where ) ? '' : ' WHERE ' . implode( ' AND ', $where );
 		
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is prepared above
-		$sql = "SELECT status, COUNT(*) as count FROM {$this->table_name} {$where} GROUP BY status";
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_clause contains prepared values
+		$sql = "SELECT status, COUNT(*) as count FROM {$this->table_name} {$where_clause} GROUP BY status";
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains prepared values
 		$results = $wpdb->get_results( $sql );
@@ -738,6 +740,25 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 		}
 		
 		return absint( $count );
+	}
+
+	/**
+	 * Get search WHERE clause for training data table queries.
+	 *
+	 * @param string $search Search text.
+	 * @return string
+	 */
+	private function get_search_where_clause( $search ) {
+		global $wpdb;
+
+		$search_term = '%' . $wpdb->esc_like( $search ) . '%';
+		$search_conditions = array();
+		$search_conditions[] = $wpdb->prepare( 'title LIKE %s', $search_term );
+		$search_conditions[] = $wpdb->prepare( 'type LIKE %s', $search_term );
+		$search_conditions[] = $wpdb->prepare( 'url LIKE %s', $search_term );
+		$search_conditions[] = $wpdb->prepare( 'item_id LIKE %s', $search_term );
+
+		return '(' . implode( ' OR ', $search_conditions ) . ')';
 	}
 	
 	/**

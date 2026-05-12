@@ -359,6 +359,23 @@ class EPKB_Utilities {
 	}
 
 	/**
+	 * wp_die with an error message if nonce invalid or user does not have AI admin permission.
+	 *
+	 * @param string $scope Use 'admin' for full AI admin, or an allowed limited tab key.
+	 */
+	public static function ajax_verify_nonce_and_ai_feature_permission_or_error_die( $scope='admin' ) {
+
+		$wp_nonce = self::post( '_wpnonce_epkb_ajax_action' );
+		if ( empty( $wp_nonce ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $wp_nonce ) ), '_wpnonce_epkb_ajax_action' ) ) {
+			self::ajax_show_error_die( esc_html__( 'Login or refresh this page to edit this knowledge base', 'echo-knowledge-base' ) . ' (E01)' );
+		}
+
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( $scope ) ) {
+			self::ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (E02)' );
+		}
+	}
+
+	/**
 	 * wp_die with an error message if nonce invalid or user does not have correct permission
 	 *
 	 * @param string $capability
@@ -1694,9 +1711,6 @@ class EPKB_Utilities {
 	 * @return bool
 	 */
 	public static function is_amag_on( $is_active_check_only=true ) {
-		/** @var $wpdb Wpdb */
-		global $wpdb;
-
 		if ( defined( 'AMAG_PLUGIN_NAME' ) ) {
 			return true;
 		}
@@ -1704,6 +1718,9 @@ class EPKB_Utilities {
 		if ( $is_active_check_only ) {
 			return false;
 		}
+
+		/** @var $wpdb Wpdb */
+		global $wpdb;
 
 		$table = $wpdb->prefix . 'am'.'gr_kb_groups';
 		$result = $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table ) );

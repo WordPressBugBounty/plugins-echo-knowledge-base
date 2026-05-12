@@ -43,12 +43,6 @@
             "Errors": [
                 "त्रुटियाँ"
             ],
-            "Email": [
-                "ईमेल"
-            ],
-            "Feedback": [
-                "प्रतिक्रिया"
-            ],
             "Reset": [
                 "रीसेट"
             ],
@@ -67,11 +61,17 @@
             "API Configuration": [
                 "API विन्यास"
             ],
+            "Feedback": [
+                "प्रतिक्रिया"
+            ],
             "AI Assistant": [
                 "एआई सहायक"
             ],
             "Name": [
                 "नाम"
+            ],
+            "Email": [
+                "ईमेल"
             ],
             "Message": [
                 "संदेश"
@@ -231,6 +231,9 @@
             ],
             "Full Conversation": [
                 "पूरा संवाद"
+            ],
+            "AI Error": [
+                "AI त्रुटि"
             ],
             "No messages in this conversation.": [
                 "इस संवाद में कोई संदेश नहीं है।."

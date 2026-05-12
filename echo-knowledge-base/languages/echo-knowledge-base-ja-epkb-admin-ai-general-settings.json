@@ -22,6 +22,9 @@
             "Saving...": [
                 "保存中..."
             ],
+            "Open Admin UI Permissions": [
+                "管理 UI 権限を開く"
+            ],
             "Failed to save settings": [
                 "設定の保存に失敗しました"
             ],

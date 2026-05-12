@@ -22,6 +22,9 @@
             "Saving...": [
                 "Guardando..."
             ],
+            "Open Admin UI Permissions": [
+                "Abrir permisos de la interfaz de administración"
+            ],
             "Failed to save settings": [
                 "Error al guardar la configuración"
             ],

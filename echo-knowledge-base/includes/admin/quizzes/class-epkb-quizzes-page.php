@@ -39,8 +39,7 @@ class EPKB_Quizzes_Page {
 			<div id="epkb-kb-quizzes-page-container"> <?php
 				EPKB_HTML_Admin::admin_header( array(), array(), 'logo' );
 				EPKB_HTML_Admin::admin_primary_tabs( $admin_page_views );
-				EPKB_HTML_Admin::admin_primary_tabs_content( $admin_page_views );
-				echo self::interest_modal(); ?>
+				EPKB_HTML_Admin::admin_primary_tabs_content( $admin_page_views ); ?>
 			</div>
 		</div> <?php
 	}
@@ -113,9 +112,6 @@ class EPKB_Quizzes_Page {
 					<li><?php esc_html_e( 'Published quizzes appear only on their source article page, below the article content.', 'echo-knowledge-base' ); ?></li>
 				</ul>
 				<?php self::display_demo_quiz_cta(); ?>
-				<p>
-					<button type="button" class="epkb-btn epkb-secondary-btn epkb-quiz-feedback-trigger"><?php esc_html_e( 'Suggest a New Quiz Feature', 'echo-knowledge-base' ); ?></button>
-				</p>
 			</div>
 		</div>
 
@@ -146,6 +142,8 @@ class EPKB_Quizzes_Page {
 	private static function quizzes_tab() {
 
 		$articles = EPKB_Quizzes_Utilities::get_selectable_articles();
+		$kbs = EPKB_Quizzes_Utilities::get_selectable_kbs();
+		$show_kb_select = count( $kbs ) > 1;
 		$generation_state = EPKB_Quizzes_Utilities::get_generation_state();
 		$show_upgrade_link = ! $generation_state['is_available'] && $generation_state['reason'] === 'upgrade' && ! empty( $generation_state['link_url'] ) && ! empty( $generation_state['link_label'] );
 		$is_feature_enabled = EPKB_Quizzes_Utilities::is_feature_enabled();
@@ -154,7 +152,7 @@ class EPKB_Quizzes_Page {
 
 		if ( ! $is_feature_enabled ) { ?>
 
-				<div class="epkb-quizzes-admin" data-interest-submitted="<?php echo esc_attr( EPKB_Quizzes_Utilities::should_show_interest_modal() ? '0' : '1' ); ?>">
+			<div class="epkb-quizzes-admin">
 				<div class="epkb-admin-info-box">
 					<div class="epkb-admin-info-box__header">
 						<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-info-circle"></div>
@@ -170,7 +168,7 @@ class EPKB_Quizzes_Page {
 			return ob_get_clean();
 		} ?>
 
-		<div class="epkb-quizzes-admin" data-interest-submitted="<?php echo esc_attr( EPKB_Quizzes_Utilities::should_show_interest_modal() ? '0' : '1' ); ?>">
+		<div class="epkb-quizzes-admin">
 			<div class="epkb-quizzes-admin__editor-tab">
 				<div class="epkb-quizzes-admin__editor">
 					<form id="epkb-quiz-editor-form">
@@ -205,14 +203,33 @@ class EPKB_Quizzes_Page {
 						</div>
 
 						<div class="epkb-quizzes-admin__field-grid">
+							<?php if ( $show_kb_select ) { ?>
+								<div class="epkb-quizzes-admin__field">
+									<label for="epkb-quiz-kb-select"><?php esc_html_e( 'Knowledge Base', 'echo-knowledge-base' ); ?></label>
+									<select id="epkb-quiz-kb-select" name="quiz_kb_id">
+										<option value="0"><?php esc_html_e( 'Select a Knowledge Base', 'echo-knowledge-base' ); ?></option>
+										<?php foreach ( $kbs as $kb ) { ?>
+											<option value="<?php echo esc_attr( $kb['id'] ); ?>" data-post-type="<?php echo esc_attr( $kb['post_type'] ); ?>"><?php echo esc_html( $kb['label'] ); ?></option>
+										<?php } ?>
+									</select>
+								</div>
+							<?php } ?>
+
 							<div class="epkb-quizzes-admin__field">
 								<label for="epkb-quiz-source-article"><?php esc_html_e( 'Article Selection', 'echo-knowledge-base' ); ?></label>
-								<select id="epkb-quiz-source-article" name="source_article_id">
-									<option value="0"><?php esc_html_e( 'Select a source article', 'echo-knowledge-base' ); ?></option>
-									<?php foreach ( $articles as $article ) { ?>
-										<option value="<?php echo esc_attr( $article['id'] ); ?>"><?php echo esc_html( $article['label'] ); ?></option>
-									<?php } ?>
-								</select>
+								<div class="epkb-quiz-article-picker">
+									<select id="epkb-quiz-source-article" class="epkb-quiz-source-article-native" name="source_article_id" hidden>
+										<option value="0"><?php esc_html_e( 'Select a source article', 'echo-knowledge-base' ); ?></option>
+										<?php foreach ( $articles as $article ) { ?>
+											<option value="<?php echo esc_attr( $article['id'] ); ?>" data-base-label="<?php echo esc_attr( $article['base_label'] ); ?>" data-has-quiz="<?php echo esc_attr( empty( $article['has_quiz'] ) ? '0' : '1' ); ?>" data-kb-id="<?php echo esc_attr( $article['kb_id'] ); ?>" data-post-type="<?php echo esc_attr( $article['post_type'] ); ?>"><?php echo esc_html( $article['label'] ); ?></option>
+										<?php } ?>
+									</select>
+									<button type="button" id="epkb-quiz-source-article-toggle" class="epkb-quiz-article-picker__toggle" aria-haspopup="listbox" aria-expanded="false" <?php disabled( $show_kb_select ); ?>>
+										<span id="epkb-quiz-source-article-selected" class="epkb-quiz-article-picker__selected"><?php esc_html_e( 'Select a source article', 'echo-knowledge-base' ); ?></span>
+										<span class="epkbfa epkbfa-chevron-down" aria-hidden="true"></span>
+									</button>
+									<div id="epkb-quiz-source-article-options" class="epkb-quiz-article-picker__options" role="listbox" hidden></div>
+								</div>
 							</div>
 
 							<div class="epkb-quizzes-admin__field">
@@ -288,54 +305,6 @@ class EPKB_Quizzes_Page {
 	}
 
 	/**
-	 * Shared quiz feedback modal.
-	 *
-	 * @return string
-	 */
-	private static function interest_modal() {
-
-		ob_start(); ?>
-
-		<div id="epkb-quiz-interest-modal" class="epkb-quiz-modal" hidden>
-			<div class="epkb-quiz-modal__backdrop"></div>
-			<div class="epkb-quiz-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="epkb-quiz-interest-title">
-				<button type="button" class="epkb-quiz-modal__close" id="epkb-quiz-interest-close" aria-label="<?php esc_attr_e( 'Close', 'echo-knowledge-base' ); ?>">
-					<span class="epkbfa epkbfa-times"></span>
-				</button>
-				<h3 id="epkb-quiz-interest-title"><?php esc_html_e( 'Quick Quiz Feedback', 'echo-knowledge-base' ); ?></h3>
-				<p><?php esc_html_e( 'You are one of the first admins using quizzes. Tell us what would make this feature more useful for your team.', 'echo-knowledge-base' ); ?></p>
-				<div class="epkb-quizzes-admin__field-grid">
-					<div class="epkb-quizzes-admin__field">
-						<label for="epkb-quiz-interest-first-name">
-							<?php esc_html_e( 'First Name', 'echo-knowledge-base' ); ?>
-							<span class="epkb-quizzes-admin__label-tag"><?php esc_html_e( 'Optional', 'echo-knowledge-base' ); ?></span>
-						</label>
-						<input type="text" id="epkb-quiz-interest-first-name" maxlength="100">
-					</div>
-					<div class="epkb-quizzes-admin__field">
-						<label for="epkb-quiz-interest-email">
-							<?php esc_html_e( 'Email', 'echo-knowledge-base' ); ?>
-							<span class="epkb-quizzes-admin__label-tag"><?php esc_html_e( 'Optional', 'echo-knowledge-base' ); ?></span>
-						</label>
-						<input type="email" id="epkb-quiz-interest-email" maxlength="190">
-					</div>
-				</div>
-				<div class="epkb-quizzes-admin__field">
-					<label for="epkb-quiz-interest-feedback"><?php esc_html_e( 'Feedback', 'echo-knowledge-base' ); ?></label>
-					<textarea id="epkb-quiz-interest-feedback" rows="5" placeholder="<?php esc_attr_e( 'What kind of quiz workflows or learner features would help most?', 'echo-knowledge-base' ); ?>"></textarea>
-				</div>
-				<div id="epkb-quiz-interest-message" class="epkb-quizzes-admin__notice" hidden></div>
-				<div class="epkb-quiz-modal__footer">
-					<button type="button" class="epkb-btn epkb-primary-btn epkb-quiz-modal__skip" id="epkb-quiz-interest-skip"><?php esc_html_e( 'Skip', 'echo-knowledge-base' ); ?></button>
-					<button type="button" class="epkb-btn epkb-success-btn" id="epkb-quiz-interest-submit"><?php esc_html_e( 'Send Feedback', 'echo-knowledge-base' ); ?></button>
-				</div>
-			</div>
-		</div> <?php
-
-		return ob_get_clean();
-	}
-
-	/**
 	 * Settings tab HTML.
 	 *
 	 * @return string
@@ -370,6 +339,22 @@ class EPKB_Quizzes_Page {
 					) );
 
 					self::display_demo_quiz_cta(); ?>
+				</div>
+			</div>
+
+			<div class="epkb-admin-info-box eckb-condition-depend__quizzes_enable"<?php echo $quiz_dependency_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+				<div class="epkb-admin-info-box__header">
+					<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-envelope-o"></div>
+					<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'Quiz Notifications', 'echo-knowledge-base' ); ?></div>
+				</div>
+				<div class="epkb-admin-info-box__body">
+					<div class="epkb-input-group epkb-admin__text-field" id="quizzes_notification_email_group">
+						<label for="quizzes_notification_email"><?php esc_html_e( 'Send Completed Quiz Details To', 'echo-knowledge-base' ); ?></label>
+						<div class="input_container">
+								<input type="email" class="epkb-input--medium" name="quizzes_notification_email" id="quizzes_notification_email" autocomplete="off" value="<?php echo esc_attr( $kb_config['quizzes_notification_email'] ); ?>" placeholder="<?php echo esc_attr( 'name@example.com' ); ?>" maxlength="190">
+							<div class="epkb-input-desc"><?php esc_html_e( 'Leave empty to disable quiz completion notifications.', 'echo-knowledge-base' ); ?></div>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -560,7 +545,12 @@ class EPKB_Quizzes_Page {
 	/**
 	 * Display demo quiz CTA.
 	 */
-	private static function display_demo_quiz_cta() { ?>
+	private static function display_demo_quiz_cta() {
+
+		if ( EPKB_Quizzes_Utilities::has_quizzes() ) {
+			return;
+		} ?>
+
 		<div class="epkb-quizzes-admin__demo-cta">
 			<div class="epkb-quizzes-admin__demo-cta-copy">
 				<div class="epkb-quizzes-admin__demo-cta-label"><?php esc_html_e( 'See the Demo Quiz', 'echo-knowledge-base' ); ?></div>

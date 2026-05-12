@@ -426,7 +426,7 @@ class EPKB_AI_Search_Tab {
 	 * AJAX handler to apply search preset
 	 */
 	public static function ajax_apply_search_preset() {
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_ai_feature' );
+		EPKB_Utilities::ajax_verify_nonce_and_ai_feature_permission_or_error_die();
 
 		$preset_key = EPKB_Utilities::post( 'preset', '', false );
 		if ( empty( $preset_key ) ) {

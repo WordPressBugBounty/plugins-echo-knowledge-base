@@ -22,6 +22,9 @@
             "Saving...": [
                 "Sauvegarde en cours..."
             ],
+            "Open Admin UI Permissions": [
+                "Ouvrir les permissions de l'interface d'administration"
+            ],
             "Failed to save settings": [
                 "Échec de l'enregistrement des paramètres"
             ],

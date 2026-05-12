@@ -22,6 +22,9 @@
             "Saving...": [
                 "सहेजा जा रहा है..."
             ],
+            "Open Admin UI Permissions": [
+                "एडमिन UI अनुमतियां खोलें"
+            ],
             "Failed to save settings": [
                 "सेटिंग्स सहेजने में असफल"
             ],
@@ -39,6 +42,12 @@
             ],
             "Change AI Provider?": [
                 "AI प्रदाता बदलें?"
+            ],
+            "Before you switch:": [
+                "बदलने से पहले:"
+            ],
+            "Read the Switching AI Providers guide →": [
+                "AI प्रदाता बदलने की मार्गदर्शिका पढ़ें →"
             ],
             "Switching AI providers will affect your AI Search and AI Chat settings:": [
                 "AI प्रदाता बदलने से आपकी AI खोज और AI चैट सेटिंग्स प्रभावित होंगी:"

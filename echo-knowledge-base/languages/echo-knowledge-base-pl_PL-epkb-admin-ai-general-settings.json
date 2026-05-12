@@ -22,6 +22,9 @@
             "Saving...": [
                 "Zapisywanie..."
             ],
+            "Open Admin UI Permissions": [
+                "Otwórz uprawnienia interfejsu administratora"
+            ],
             "Failed to save settings": [
                 "Nie udało się zapisać ustawień"
             ],
@@ -39,6 +42,12 @@
             ],
             "Change AI Provider?": [
                 "Zmień dostawcę AI?"
+            ],
+            "Before you switch:": [
+                "Zanim przełączysz:"
+            ],
+            "Read the Switching AI Providers guide →": [
+                "Przeczytaj przewodnik po zmianie dostawców AI →"
             ],
             "Switching AI providers will affect your AI Search and AI Chat settings:": [
                 "Przełączanie dostawców AI będzie miało wpływ na ustawienia AI Wyszukiwanie i AI Czat"

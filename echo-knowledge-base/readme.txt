@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chat, faq
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 17.111.0
+Stable tag: 17.200.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -349,6 +349,11 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 18. Glossary 
 
 == Changelog ==
+
+= 17.200.0 =
+Release Date: May 12, 2026
+* New: Quizes notification email
+* Fix: Cleanup and minor fixes
 
 = 17.111.0 =
 Release Date: Apr 25, 2026

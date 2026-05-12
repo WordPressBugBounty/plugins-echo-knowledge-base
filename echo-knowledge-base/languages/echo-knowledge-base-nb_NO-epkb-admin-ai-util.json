@@ -70,6 +70,9 @@
             "Setup Steps": [
                 "Oppsettstrinn"
             ],
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings.": [
+                "For å bruke AI-funksjoner må du konfigurere API-nøkkelen din og godta personvernavtalen i Generelle innstillinger."
+            ],
             "Session Expired": [
                 "Økten utløpt"
             ],

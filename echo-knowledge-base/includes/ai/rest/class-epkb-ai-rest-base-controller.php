@@ -24,6 +24,30 @@ abstract class EPKB_AI_REST_Base_Controller extends WP_REST_Controller {
 	}
 
 	/**
+	 * Check nonce and AI admin permission for a scoped admin REST endpoint.
+	 *
+	 * @param WP_REST_Request $request
+	 * @param string $scope Use 'admin' for full AI admin, or an allowed limited tab key.
+	 * @param string $message Error message for forbidden requests.
+	 * @param int|null $kb_id Specific KB ID, 0 for any accessible KB, or null for current KB.
+	 * @return true|WP_Error
+	 */
+	protected function check_ai_admin_permission( $request, $scope='admin', $message='', $kb_id=null ) {
+
+		$nonce_check = EPKB_AI_Security::check_rest_nonce( $request );
+		if ( is_wp_error( $nonce_check ) ) {
+			return $nonce_check;
+		}
+
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( $scope, $kb_id ) ) {
+			$message = empty( $message ) ? __( 'You do not have permission.', 'echo-knowledge-base' ) : $message;
+			return new WP_Error( 'rest_forbidden', $message, array( 'status' => 403 ) );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Helper method to create REST responses with automatic token refresh
 	 *
 	 * @param array $data The response data

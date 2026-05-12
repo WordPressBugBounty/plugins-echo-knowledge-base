@@ -37,9 +37,6 @@
             "OFF": [
                 "Désactivé"
             ],
-            "Optional": [
-                "Optionnel"
-            ],
             "View Full Documentation": [
                 "Voir la documentation complète"
             ],
@@ -60,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "Envoyer les données à l'IA"
+            ],
+            "Optional": [
+                "Optionnel"
             ],
             "Collection name cannot be empty": [
                 "Le nom de la collection ne peut pas être vide"
@@ -259,15 +259,6 @@
             "Choose an Action": [
                 "Choisir une action"
             ],
-            "Recommended: Validate & Fix Synced Items": [
-                "Recommandé : Valider et corriger les éléments synchronisés"
-            ],
-            "Recent plugin updates fixed issues that may have left orphan files in your AI Vector Store. Run the \"Validate & Fix\" option below once to reconcile synced items with what is stored in the AI.": [
-                "Les récentes mises à jour de l'extension ont corrigé des problèmes qui auraient pu laisser des fichiers orphelins dans votre stockage vectoriel d'IA. Exécutez l'option « Valider et corriger » ci-dessous une fois pour réconcilier les éléments synchronisés avec ce qui est stocké dans l'IA."
-            ],
-            "Dismiss": [
-                "Fermer"
-            ],
             "Validate & Fix": [
                 "Valider et corriger"
             ],
@@ -319,8 +310,8 @@
             "Access Manager Notice": [
                 "Avis du Gestionnaire d'accès"
             ],
-            "Currently only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
-                "Actuellement, seuls les articles accessibles publiquement peuvent être téléchargés pour l'IA. Les articles soumis à des restrictions d'accès ne seront pas inclus dans les données d'apprentissage."
+            "Only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
+                "Seuls les articles accessibles publiquement peuvent être téléversés vers l'IA. Les articles avec des restrictions d'accès ne seront pas inclus dans les données d'entraînement."
             ],
             "Loading content types...": [
                 "Chargement des types de contenu..."

@@ -46,26 +46,22 @@ class EPKB_AI_Sync_Job_Manager {
 			return $collection_id;
 		}
 		
-		// Always get all items from collection to have correct types
-		$all_items = self::get_all_posts_for_collection( $collection_id );
-		
 		// Filter items based on selection
 		$items = array();
 		if ( $selected_post_ids === 'ALL' ) {
-			$items = $all_items;
+			$items = self::get_all_posts_for_collection( $collection_id );
+		} elseif ( is_string( $selected_post_ids ) && strpos( $selected_post_ids, 'ALL_FILTERED:' ) === 0 ) {
+			$selection_filters = self::get_filters_from_all_selection_token( $selected_post_ids );
+			if ( is_wp_error( $selection_filters ) ) {
+				return $selection_filters;
+			}
+			$items = self::get_all_posts_for_collection( $collection_id, $selection_filters );
 		} elseif ( is_string( $selected_post_ids ) && strpos( $selected_post_ids, 'ALL_' ) === 0 ) {
 			// Handle status-filtered "ALL" requests (e.g., "ALL_PENDING", "ALL_ERROR")
 			$status_filter = strtolower( substr( $selected_post_ids, 4 ) ); // Extract status after "ALL_"
-			
-			// Filter items by status
-			$training_data_db = new EPKB_AI_Training_Data_DB();
-			foreach ( $all_items as $item ) {
-				$record = $training_data_db->get_training_data_record_by_item_id( $collection_id, $item['id'] );
-				if ( $record && isset( $record->status ) && $record->status === $status_filter ) {
-					$items[] = $item;
-				}
-			}
+			$items = self::get_all_posts_for_collection( $collection_id, array( 'status' => $status_filter ) );
 		} elseif ( is_array( $selected_post_ids ) ) {
+			$all_items = self::get_all_posts_for_collection( $collection_id );
 			foreach ( $all_items as $item ) {
 				if ( in_array( $item['id'], $selected_post_ids ) ) {
 					$items[] = $item;
@@ -824,12 +820,12 @@ class EPKB_AI_Sync_Job_Manager {
 	 * @param int $collection_id Collection ID
 	 * @return array Array of items with item ID, training data ID, and type
 	 */
-	private static function get_all_posts_for_collection( $collection_id ) {
+	private static function get_all_posts_for_collection( $collection_id, $filters = array() ) {
 		
 		// Get all items from the training data database for this collection.
 		// Uploaded PDF/HTML files are excluded because they are synced at upload time, not through this sync flow.
 		$training_data_db = new EPKB_AI_Training_Data_DB();
-		$training_items = $training_data_db->get_training_data_by_collection( $collection_id );
+		$training_items = $training_data_db->get_training_data_by_collection( $collection_id, $filters );
 
 		// Extract item IDs and types from the training data
 		$items = array();
@@ -846,5 +842,40 @@ class EPKB_AI_Sync_Job_Manager {
 		}
 		
 		return $items;
+	}
+
+	/**
+	 * Decode filtered "select all" token from the admin table.
+	 *
+	 * @param string $selection_token Selection token.
+	 * @return array|WP_Error
+	 */
+	private static function get_filters_from_all_selection_token( $selection_token ) {
+
+		$encoded_filters = substr( $selection_token, strlen( 'ALL_FILTERED:' ) );
+		$filters = json_decode( rawurldecode( $encoded_filters ), true );
+
+		if ( ! is_array( $filters ) ) {
+			return new WP_Error( 'invalid_post_ids', __( 'Invalid post IDs provided', 'echo-knowledge-base' ) );
+		}
+
+		$parsed_filters = array();
+		if ( ! empty( $filters['status'] ) && $filters['status'] !== 'all' ) {
+			$parsed_filters['status'] = sanitize_key( $filters['status'] );
+		}
+
+		if ( ! empty( $filters['type'] ) ) {
+			$type_filters = is_array( $filters['type'] ) ? $filters['type'] : explode( ',', $filters['type'] );
+			$type_filters = array_values( array_unique( array_filter( array_map( 'sanitize_key', $type_filters ) ) ) );
+			if ( ! empty( $type_filters ) ) {
+				$parsed_filters['type'] = $type_filters;
+			}
+		}
+
+		if ( ! empty( $filters['search'] ) ) {
+			$parsed_filters['search'] = sanitize_text_field( $filters['search'] );
+		}
+
+		return $parsed_filters;
 	}
 }

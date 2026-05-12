@@ -32,7 +32,7 @@ function epkb_add_plugin_menus() {
 		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_order_articles_write', 'admin_eckb_access_frontend_editor_write'] ), 'epkb-kb-configuration', array( new EPKB_Config_Page(), 'display_kb_config_page') );
 
 	add_submenu_page( $parent_slug, esc_html__( 'AI', 'echo-knowledge-base' ), esc_html__( 'AI', 'echo-knowledge-base' ),
-		'manage_options', 'epkb-kb-ai-features', array( new EPKB_AI_Admin_Page(), 'display_page' ) );
+		EPKB_Admin_UI_Access::get_ai_feature_menu_capability(), 'epkb-kb-ai-features', array( new EPKB_AI_Admin_Page(), 'display_page' ) );
 
 	do_action( 'eckb_add_kb_menu_item', $post_type_name );
 

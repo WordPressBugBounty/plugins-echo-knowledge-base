@@ -70,6 +70,9 @@
             "Setup Steps": [
                 "Kroki konfiguracji"
             ],
+            "To use AI features, please configure your API key and accept the data privacy agreement in General Settings.": [
+                "Aby korzystać z funkcji AI, skonfiguruj klucz API i zaakceptuj umowę o ochronie prywatności danych w Ustawieniach ogólnych."
+            ],
             "Session Expired": [
                 "Sesja wygasła"
             ],

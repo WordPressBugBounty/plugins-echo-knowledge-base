@@ -31,9 +31,6 @@
             "Previous": [
                 "前"
             ],
-            "Feedback": [
-                "フィードバック"
-            ],
             "Reset": [
                 "リセット"
             ],
@@ -57,6 +54,9 @@
             ],
             "Middle Column": [
                 "中央列"
+            ],
+            "Feedback": [
+                "フィードバック"
             ],
             "AI Assistant": [
                 "AIアシスタント"

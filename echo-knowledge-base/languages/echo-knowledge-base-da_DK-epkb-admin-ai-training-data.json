@@ -37,9 +37,6 @@
             "OFF": [
                 "FRA"
             ],
-            "Optional": [
-                "Valgfri"
-            ],
             "View Full Documentation": [
                 "Se fuld dokumentation"
             ],
@@ -60,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "Send data til AI"
+            ],
+            "Optional": [
+                "Valgfri"
             ],
             "Collection name cannot be empty": [
                 "Samlingsnavnet må ikke være tomt"
@@ -178,6 +178,9 @@
             "Cannot change actions while validation is in progress": [
                 "Kan ikke ændre handlinger, mens validering er i gang"
             ],
+            "Checking available WordPress items...": [
+                "Tjekker tilgængelige WordPress-elementer..."
+            ],
             "Collection name updated successfully": [
                 "Samlingens navn blev opdateret"
             ],
@@ -229,9 +232,6 @@
             "Choose an Action": [
                 "Vælg en handling"
             ],
-            "Dismiss": [
-                "Luk"
-            ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Vælg indholdstyper (KB-artikler, indlæg, sider) til at indlæses i tabellen. Dette sender endnu ikke noget til AI."
             ],
@@ -279,9 +279,6 @@
             ],
             "Access Manager Notice": [
                 "Adgangsmanager-meddelelse"
-            ],
-            "Currently only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
-                "I øjeblikket kan kun offentligt tilgængelige artikler uploades til AI. Artikler med adgangsbegrænsninger vil ikke blive inkluderet i AI-træningsdata."
             ],
             "Loading content types...": [
                 "Indlæser indholdstyper..."

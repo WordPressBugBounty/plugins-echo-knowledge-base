@@ -37,9 +37,6 @@
             "OFF": [
                 "ऑफ"
             ],
-            "Optional": [
-                "वैकल्पिक"
-            ],
             "View Full Documentation": [
                 "पूरा डॉक्यूमेंटेशन देखें"
             ],
@@ -60,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "एआई में डेटा भेजें"
+            ],
+            "Optional": [
+                "वैकल्पिक"
             ],
             "Collection name cannot be empty": [
                 "संग्रह का नाम खाली नहीं हो सकता"
@@ -178,6 +178,21 @@
             "Cannot change actions while validation is in progress": [
                 "सत्यापन प्रगति पर होने के दौरान कार्रवाइयां नहीं बदली जा सकतीं"
             ],
+            "Checking available WordPress items...": [
+                "उपलब्ध WordPress आइटम की जाँच की जा रही है..."
+            ],
+            "Unable to load available WordPress items": [
+                "उपलब्ध WordPress आइटम लोड करने में असमर्थ"
+            ],
+            "Click Refresh to try again.": [
+                "पुनः प्रयास करने के लिए रिफ्रेश पर क्लिक करें।."
+            ],
+            "Available WordPress items to add: %s": [
+                "जोड़ने के लिए उपलब्ध WordPress आइटम: %s"
+            ],
+            "Created in WordPress and not yet added to this collection.": [
+                "WordPress में बनाया गया और अभी तक इस संग्रह में नहीं जोड़ा गया।."
+            ],
             "Collection name updated successfully": [
                 "संग्रह का नाम सफलतापूर्वक अपडेट किया गया"
             ],
@@ -223,14 +238,29 @@
             "marked outdated": [
                 "पुराने के रूप में चिह्नित"
             ],
+            "WordPress items": [
+                "WordPress आइटम"
+            ],
+            "PDFs": [
+                "PDFs"
+            ],
+            "AI Notes": [
+                "AI नोट्स"
+            ],
+            "other files": [
+                "अन्य फ़ाइलें"
+            ],
+            "orphan files removed from AI store": [
+                "AI स्टोर से अनाथ फ़ाइलें हटा दी गईं"
+            ],
             "Run sync to re-upload outdated items.": [
                 "पुराने आइटमों को पुनः अपलोड करने के लिए सिंक चलाएं."
             ],
             "Choose an Action": [
                 "क्रिया चुनें"
             ],
-            "Dismiss": [
-                "खारिज करें"
+            "Validate & Fix": [
+                "सत्यापित करें और ठीक करें"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "टेबल में लोड करने के लिए सामग्री प्रकार चुनें (KB लेख, पोस्ट, पेज)। यह अभी AI को कुछ भी नहीं भेजता।."
@@ -280,8 +310,8 @@
             "Access Manager Notice": [
                 "एक्सेस मैनेजर सूचना"
             ],
-            "Currently only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
-                "वर्तमान में केवल सार्वजनिक रूप से सुलभ लेख एआई में अपलोड किए जा सकते हैं। एक्सेस प्रतिबंध वाले लेख मशीन लर्निंग डेटा में शामिल नहीं होंगे।."
+            "Only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
+                "केवल सार्वजनिक रूप से सुलभ लेख ही AI पर अपलोड किए जा सकते हैं। एक्सेस प्रतिबंधों वाले लेखों को मशीन लर्निंग डेटा में शामिल नहीं किया जाएगा।."
             ],
             "Loading content types...": [
                 "सामग्री प्रकार लोड हो रहा है..."
@@ -340,11 +370,17 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "यह सुनिश्चित करने के लिए एक अतिरिक्त सत्यापन पास चलाएँ कि स्थानीय डेटाबेस और AI स्टोर सिंक में रहें। यदि AI स्टोर से कोई फ़ाइल गायब है, तो उसे पुराना चिह्नित किया जाएगा ताकि उसे फिर से भेजा जा सके।."
             ],
+            "This checks Added and Updated items already tracked in this collection and removes orphaned WordPress items, PDFs, and AI Notes found only in the AI store. No local database items are deleted.": [
+                "यह इस संग्रह में पहले से ट्रैक किए गए जोड़े गए और अपडेट किए गए आइटम की जाँच करता है और केवल AI स्टोर में पाए जाने वाले अनाथ WordPress आइटम, PDF और AI नोट्स को हटा देता है। कोई भी स्थानीय डेटाबेस आइटम हटाया नहीं जाता है।."
+            ],
             "Collection:": [
                 "संग्रह:"
             ],
             "synced items ready to validate": [
                 "सिंक किए गए आइटम सत्यापन के लिए तैयार हैं"
+            ],
+            "No Added or Updated items are available yet. Validation can still remove orphaned WordPress items, PDFs, and AI Notes left only in the AI store.": [
+                "अभी तक कोई जोड़े गए या अपडेट किए गए आइटम उपलब्ध नहीं हैं। सत्यापन अभी भी केवल AI स्टोर में बचे अनाथ WordPress आइटम, PDF और AI नोट्स को हटा सकता है।."
             ],
             "Cancel Verify": [
                 "जाँच रद्द करें"

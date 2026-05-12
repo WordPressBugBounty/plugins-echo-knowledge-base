@@ -888,7 +888,7 @@ class EPKB_Config_Page {
 				EPKB_HTML_Forms::notification_box_popup( array(
 				'type'  => 'success',
 				'title' => $thanks_message . ' ' . esc_html__( 'Get started by running our Setup Wizard.', 'echo-knowledge-base' ),
-				'desc'  => '<span>' . EPKB_Core_Utilities::get_kb_admin_page_link( 'page=epkb-kb-configuration&setup-wizard-on', esc_html__( 'Start the Setup Wizard', 'echo-knowledge-base' ), false,'epkb-success-btn' ) . '</span>',
+				'desc'  => EPKB_Core_Utilities::get_kb_admin_page_link( 'page=epkb-kb-configuration&setup-wizard-on', esc_html__( 'Start the Setup Wizard', 'echo-knowledge-base' ), false, 'epkb-success-btn epkb-setup-wizard-start-btn' ),
 			) );   ?>
 
 		</div>      <?php

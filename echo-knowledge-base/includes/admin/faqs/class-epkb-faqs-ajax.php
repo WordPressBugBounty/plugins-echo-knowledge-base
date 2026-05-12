@@ -14,7 +14,7 @@ class EPKB_FAQs_AJAX {
      */
     public function epkb_handle_shortcode_preview() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_faqs_write' );
 
         // Get shortcode parameters
         $params = EPKB_Utilities::post( 'shortcode_params', array(), 'db-config' );

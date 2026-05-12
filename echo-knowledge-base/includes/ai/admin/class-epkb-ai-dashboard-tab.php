@@ -44,7 +44,7 @@ add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_t
 	 */
 	public function ajax_get_ai_status() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
+		EPKB_Utilities::ajax_verify_nonce_and_ai_feature_permission_or_error_die();
 
 		// Check for force refresh parameter
 		$force_refresh = isset( $_POST['force_refresh'] ) && $_POST['force_refresh'] === 'true';
@@ -73,7 +73,7 @@ add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_t
 	 */
 	public function ajax_check_training_data_sync() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
+		EPKB_Utilities::ajax_verify_nonce_and_ai_feature_permission_or_error_die();
 
 		// Check if training data table exists and has synced data
 		$provider_collections = EPKB_AI_Training_Data_Config_Specs::get_collection_ids_by_provider();
@@ -88,7 +88,7 @@ add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_t
 	 */
 	public function ajax_submit_empty_content_report() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
+		EPKB_Utilities::ajax_verify_nonce_and_ai_feature_permission_or_error_die();
 
 		$email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
 		$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
@@ -463,7 +463,8 @@ add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_t
 				'status' => 'warning',
 				'message' => __( 'No AI features are enabled', 'echo-knowledge-base' ),
 				'action' => __( 'Enable AI Chat or AI Search to use AI features', 'echo-knowledge-base' ),
-				'link' => admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-kb-ai-features&active_tab=general-settings' )
+				'link' => self::get_ai_chat_settings_admin_url(),
+				'action_class' => 'epkb-ai-button-primary'
 			);
 		}
 		

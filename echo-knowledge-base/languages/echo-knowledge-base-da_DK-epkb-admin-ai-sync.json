@@ -46,6 +46,9 @@
             "Failed to start verification": [
                 "Kunne ikke starte verifikation"
             ],
+            "Sync stopped. Please try again.": [
+                "Synkronisering stoppet. Prøv venligst igen."
+            ],
             "A sync job is already running.": [
                 "En synkroniseringsopgave kører allerede."
             ],

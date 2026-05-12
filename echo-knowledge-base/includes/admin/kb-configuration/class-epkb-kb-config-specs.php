@@ -2801,6 +2801,12 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::TEXT,
 				'default'     => esc_html__( 'Your score:', 'echo-knowledge-base' ),
 			),
+			'quizzes_notification_email' => array(
+				'name'        => 'quizzes_notification_email',
+				'max'         => '190',
+				'type'        => EPKB_Input_Filter::EMAIL,
+				'default'     => '',
+			),
 			'quizzes_accent_color' => array(
 				'name'        => 'quizzes_accent_color',
 				'max'         => '7',
@@ -3060,16 +3066,6 @@ class EPKB_KB_Config_Specs {
 				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
 			),
 
-			// Access to Content Analysis (read)
-			'admin_eckb_access_content_analysis' => array(
-				'name'        => 'admin_eckb_access_content_analysis',
-				'type'        => EPKB_Input_Filter::TEXT,
-				'max'         => '60',
-				'min'         => '3',
-				'allowed_access'  => array( EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY, EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
-				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
-			),
-
 			// Access to Add-ons (read)
 			'admin_eckb_access_addons_news_read' => array(
 				'name'        => 'admin_eckb_access_addons_news_read',
@@ -3090,16 +3086,6 @@ class EPKB_KB_Config_Specs {
 				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
 			),
 
-			// Access to Quizzes
-			'admin_eckb_access_quizzes_write' => array(
-				'name'        => 'admin_eckb_access_quizzes_write',
-				'type'        => EPKB_Input_Filter::TEXT,
-				'max'         => '60',
-				'min'         => '3',
-				'allowed_access'  => array( EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY, EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
-				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
-			),
-
 			// Access to Glossary
 			'admin_eckb_access_glossary_write' => array(
 				'name'        => 'admin_eckb_access_glossary_write',
@@ -3108,6 +3094,16 @@ class EPKB_KB_Config_Specs {
 				'min'         => '3',
 				'allowed_access'  => array( EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY, EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
 				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_AUTHOR_CAPABILITY
+			),
+
+			// Access to Quizzes
+			'admin_eckb_access_quizzes_write' => array(
+				'name'        => 'admin_eckb_access_quizzes_write',
+				'type'        => EPKB_Input_Filter::TEXT,
+				'max'         => '60',
+				'min'         => '3',
+				'allowed_access'  => EPKB_Utilities::is_amag_on() ? array( EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY ) : array( EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY ),
+				'default'     => EPKB_Utilities::is_amag_on() ? EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY : EPKB_Admin_UI_Access::EPKB_WP_EDITOR_CAPABILITY
 			),
 
 			// Access to AI Features
@@ -4576,7 +4572,6 @@ class EPKB_KB_Config_Specs {
 			'admin_eckb_access_frontend_editor_write' => esc_html__( 'Edit KB colors, fonts, labels and features', 'echo-knowledge-base' ),
 			'admin_eckb_access_order_articles_write' => esc_html__( 'Order Articles and Categories', 'echo-knowledge-base' ),
 			'admin_eckb_access_search_analytics_read' => esc_html__( 'KB Analytics', 'echo-knowledge-base' ),
-			'admin_eckb_access_content_analysis' => esc_html__( 'Content Analysis', 'echo-knowledge-base' ),
 			'admin_eckb_access_addons_news_read' => esc_html__( 'Add-ons', 'echo-knowledge-base' ),
 			'admin_eckb_access_faqs_write' => esc_html__( 'FAQs', 'echo-knowledge-base' ),
 			'admin_eckb_access_quizzes_write' => esc_html__( 'Quizzes', 'echo-knowledge-base' ),
@@ -4593,6 +4588,7 @@ class EPKB_KB_Config_Specs {
 			'quizzes_correct_text' => esc_html__( 'Correct Text', 'echo-knowledge-base' ),
 			'quizzes_incorrect_text' => esc_html__( 'Incorrect Text', 'echo-knowledge-base' ),
 			'quizzes_score_prefix_text' => esc_html__( 'Score Prefix', 'echo-knowledge-base' ),
+			'quizzes_notification_email' => esc_html__( 'Quiz Notification Email', 'echo-knowledge-base' ),
 			'quizzes_accent_color' => esc_html__( 'Accent', 'echo-knowledge-base' ),
 			'quizzes_button_text_color' => esc_html__( 'Button Text', 'echo-knowledge-base' ),
 			'quizzes_card_border_color' => esc_html__( 'Card Border', 'echo-knowledge-base' ),

@@ -10,9 +10,6 @@ class EPKB_Quizzes_Utilities {
 	const META_GENERATION_META = 'epkb_quiz_generation_meta';
 	const DEMO_QUIZ_URL = 'https://www.echoknowledgebase.com/documentation/quizzes/';
 
-	const OPTION_INTEREST_SUBMITTED = 'epkb_quizzes_interest_form_submitted';
-	const OPTION_INTEREST_LAST_SUBMITTED_AT = 'epkb_quizzes_interest_last_submitted_at';
-
 	/**
 	 * Get default KB config used by shared quiz feature.
 	 *
@@ -119,12 +116,16 @@ class EPKB_Quizzes_Utilities {
 	 */
 	public static function get_frontend_script_data() {
 
+		$config = self::get_shared_config();
 		$settings = self::get_frontend_settings();
 
 		return array(
-			'correct'       => $settings['correct_text'],
-			'incorrect'     => $settings['incorrect_text'],
-			'summaryPrefix' => $settings['score_prefix_text'],
+			'ajaxUrl'              => admin_url( 'admin-ajax.php' ),
+			'nonce'                => wp_create_nonce( '_wpnonce_epkb_ajax_action' ),
+			'notificationsEnabled' => empty( $config['quizzes_notification_email'] ) ? 'off' : 'on',
+			'correct'              => $settings['correct_text'],
+			'incorrect'            => $settings['incorrect_text'],
+			'summaryPrefix'        => $settings['score_prefix_text'],
 		);
 	}
 
@@ -174,6 +175,31 @@ class EPKB_Quizzes_Utilities {
 	}
 
 	/**
+	 * Get selectable KBs for quiz source filtering.
+	 *
+	 * @return array
+	 */
+	public static function get_selectable_kbs() {
+
+		$kbs = array();
+		foreach ( epkb_get_instance()->kb_config_obj->get_kb_ids( true ) as $kb_id ) {
+			$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
+			$post_type = EPKB_KB_Handler::get_post_type( $kb_id );
+			if ( empty( $post_type ) ) {
+				continue;
+			}
+
+			$kbs[] = array(
+				'id'        => (int) $kb_id,
+				'post_type' => $post_type,
+				'label'     => empty( $kb_config['kb_name'] ) ? sprintf( __( 'KB %d', 'echo-knowledge-base' ), $kb_id ) : $kb_config['kb_name'],
+			);
+		}
+
+		return $kbs;
+	}
+
+	/**
 	 * Get quizzes list.
 	 *
 	 * @param array|string $post_status
@@ -187,6 +213,31 @@ class EPKB_Quizzes_Utilities {
 			'orderby'        => 'modified',
 			'order'          => 'DESC',
 		) );
+	}
+
+	/**
+	 * Check if any quiz exists.
+	 *
+	 * @return bool
+	 */
+	public static function has_quizzes() {
+
+		static $has_quizzes = null;
+
+		if ( $has_quizzes !== null ) {
+			return $has_quizzes;
+		}
+
+		$quiz_ids = get_posts( array(
+			'post_type'      => EPKB_Quizzes_CPT_Setup::QUIZ_POST_TYPE,
+			'post_status'    => array( 'draft', 'publish' ),
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+		) );
+
+		$has_quizzes = ! empty( $quiz_ids );
+
+		return $has_quizzes;
 	}
 
 	/**
@@ -282,16 +333,20 @@ class EPKB_Quizzes_Utilities {
 	 */
 	public static function get_selectable_articles() {
 
-		$post_types = self::get_kb_article_post_types();
-		if ( empty( $post_types ) ) {
+		$kbs = self::get_selectable_kbs();
+		if ( empty( $kbs ) ) {
 			return array();
 		}
 
-		$kb_names = array();
-		foreach ( epkb_get_instance()->kb_config_obj->get_kb_ids( true ) as $kb_id ) {
-			$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
-			$kb_names[ EPKB_KB_Handler::get_post_type( $kb_id ) ] = empty( $kb_config['kb_name'] ) ? sprintf( __( 'KB %d', 'echo-knowledge-base' ), $kb_id ) : $kb_config['kb_name'];
+		$post_types = array();
+		$kb_ids_by_post_type = array();
+		foreach ( $kbs as $kb ) {
+			$post_types[] = $kb['post_type'];
+			$kb_ids_by_post_type[ $kb['post_type'] ] = $kb['id'];
 		}
+		$post_types = array_values( array_unique( array_filter( $post_types ) ) );
+
+		$quiz_source_article_ids = self::get_quiz_source_article_ids();
 
 		$articles = get_posts( array(
 			'post_type'      => $post_types,
@@ -309,14 +364,44 @@ class EPKB_Quizzes_Utilities {
 			}
 
 			$title = empty( $article->post_title ) ? __( '(no title)', 'echo-knowledge-base' ) : $article->post_title;
-			$kb_name = empty( $kb_names[ $article->post_type ] ) ? '' : $kb_names[ $article->post_type ];
+			$base_label = $title;
+			$has_quiz = isset( $quiz_source_article_ids[ $article->ID ] );
 			$options[] = array(
-				'id'    => (int) $article->ID,
-				'label' => empty( $kb_name ) ? $title : $title . ' [' . $kb_name . ']',
+				'id'         => (int) $article->ID,
+				'kb_id'      => empty( $kb_ids_by_post_type[ $article->post_type ] ) ? 0 : (int) $kb_ids_by_post_type[ $article->post_type ],
+				'post_type'  => $article->post_type,
+				'label'      => $base_label,
+				'base_label' => $base_label,
+				'has_quiz'   => $has_quiz,
 			);
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Get source article IDs that already have quizzes.
+	 *
+	 * @return array
+	 */
+	public static function get_quiz_source_article_ids() {
+
+		$quiz_ids = get_posts( array(
+			'post_type'      => EPKB_Quizzes_CPT_Setup::QUIZ_POST_TYPE,
+			'post_status'    => array( 'draft', 'publish' ),
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		) );
+
+		$source_article_ids = array();
+		foreach ( $quiz_ids as $quiz_id ) {
+			$source_article_id = absint( get_post_meta( $quiz_id, self::META_SOURCE_ARTICLE_ID, true ) );
+			if ( ! empty( $source_article_id ) ) {
+				$source_article_ids[ $source_article_id ] = true;
+			}
+		}
+
+		return $source_article_ids;
 	}
 
 	/**
@@ -537,7 +622,7 @@ class EPKB_Quizzes_Utilities {
 			return $state;
 		}
 
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' ) ) {
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_quizzes_write' ) ) {
 			return array(
 				'is_available' => false,
 				'reason'       => 'permission',
@@ -564,15 +649,6 @@ class EPKB_Quizzes_Utilities {
 			'link_url'     => '',
 			'link_label'   => '',
 		);
-	}
-
-	/**
-	 * Check whether interest modal should appear.
-	 *
-	 * @return bool
-	 */
-	public static function should_show_interest_modal() {
-		return get_option( self::OPTION_INTEREST_SUBMITTED, 'off' ) !== 'on';
 	}
 
 	/**

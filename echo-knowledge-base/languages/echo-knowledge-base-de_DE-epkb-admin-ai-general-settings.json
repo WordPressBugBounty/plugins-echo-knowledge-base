@@ -22,6 +22,9 @@
             "Saving...": [
                 "Speichern..."
             ],
+            "Open Admin UI Permissions": [
+                "Admin-UI-Berechtigungen öffnen"
+            ],
             "Failed to save settings": [
                 "Fehler beim Speichern der Einstellungen"
             ],
@@ -39,6 +42,12 @@
             ],
             "Change AI Provider?": [
                 "AI-Anbieter wechseln?"
+            ],
+            "Before you switch:": [
+                "Bevor Sie wechseln:"
+            ],
+            "Read the Switching AI Providers guide →": [
+                "Leitfaden zum Wechseln des AI-Anbieters lesen →"
             ],
             "Switching AI providers will affect your AI Search and AI Chat settings:": [
                 "Der Wechsel von AI-Anbietern wirkt sich auf Ihre AI-Suche- und AI-Chat-Einstellungen aus:"

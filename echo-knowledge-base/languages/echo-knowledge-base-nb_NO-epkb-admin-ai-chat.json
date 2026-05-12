@@ -43,12 +43,6 @@
             "Errors": [
                 "Feil"
             ],
-            "Email": [
-                "E-post"
-            ],
-            "Feedback": [
-                "Tilbakemelding"
-            ],
             "Reset": [
                 "Tilbakestill"
             ],
@@ -67,11 +61,17 @@
             "API Configuration": [
                 "API-konfigurasjon"
             ],
+            "Feedback": [
+                "Tilbakemelding"
+            ],
             "AI Assistant": [
                 "AI-assistent"
             ],
             "Name": [
                 "Navn"
+            ],
+            "Email": [
+                "E-post"
             ],
             "Message": [
                 "Melding"
@@ -111,6 +111,9 @@
             ],
             "Trigger": [
                 "Utløser"
+            ],
+            "AI error recorded in this conversation": [
+                "AI-feil registrert i denne samtalen"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "Er du sikker på at du vil slette de valgte samtalene?"
@@ -190,6 +193,18 @@
             "Agent Handover": [
                 "Overføring til agent"
             ],
+            "The most recent AI request failed for this conversation": [
+                "Den siste AI-forespørselen mislyktes for denne samtalen"
+            ],
+            "An earlier AI request failed during this conversation": [
+                "En tidligere AI-forespørsel mislyktes i løpet av denne samtalen"
+            ],
+            "Failed": [
+                "Mislyktes"
+            ],
+            "Error Logged": [
+                "Feil logget"
+            ],
             "Number of messages": [
                 "Antall meldinger"
             ],
@@ -216,6 +231,9 @@
             ],
             "Full Conversation": [
                 "Hele samtalen"
+            ],
+            "AI Error": [
+                "AI-feil"
             ],
             "No messages in this conversation.": [
                 "Ingen meldinger i denne samtalen."

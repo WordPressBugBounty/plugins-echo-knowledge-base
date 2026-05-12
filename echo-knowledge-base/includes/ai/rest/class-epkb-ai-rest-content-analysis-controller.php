@@ -814,6 +814,10 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 					continue;
 				}
 
+				if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'content-analysis', $one_kb_id ) ) {
+					continue;
+				}
+
 				$post_types[] = EPKB_KB_Handler::get_post_type( $one_kb_id );
 			}
 			$post_type = ! empty( $post_types ) ? $post_types : array( EPKB_KB_Handler::get_post_type( EPKB_KB_Config_DB::DEFAULT_KB_ID ) );
@@ -1429,16 +1433,59 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 	 * @return bool|WP_Error
 	 */
 	public function check_admin_permission( $request ) {
+		return $this->check_ai_admin_permission( $request, 'content-analysis', __( 'You do not have permission to perform this action.', 'echo-knowledge-base' ), $this->get_request_kb_id( $request ) );
+	}
 
-		// Check nonce
-		$nonce_check = EPKB_AI_Security::check_rest_nonce( $request );
-		if ( is_wp_error( $nonce_check ) ) {
-			return $nonce_check;
+	/**
+	 * Get the KB ID associated with a Content Analysis REST request.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return int|null
+	 */
+	private function get_request_kb_id( $request ) {
+
+		$article_id = absint( $request->get_param( 'article_id' ) );
+		if ( ! empty( $article_id ) ) {
+			return $this->get_article_kb_id( $article_id );
 		}
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return new WP_Error( 'rest_forbidden', __( 'You do not have permission to perform this action.', 'echo-knowledge-base' ), array( 'status' => 403 ) );
+		$article_ids = $request->get_param( 'article_ids' );
+		if ( is_array( $article_ids ) ) {
+			foreach ( $article_ids as $one_article_id ) {
+				$article_kb_id = $this->get_article_kb_id( $one_article_id );
+				if ( ! empty( $article_kb_id ) ) {
+					return $article_kb_id;
+				}
+			}
 		}
-		return true;
+
+		$kb_id = $request->get_param( 'kb_id' );
+		if ( $kb_id !== null && $kb_id !== '' ) {
+			return absint( $kb_id );
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get the KB ID for a KB article.
+	 *
+	 * @param int $article_id
+	 * @return int|null
+	 */
+	private function get_article_kb_id( $article_id ) {
+
+		$article_id = absint( $article_id );
+		if ( empty( $article_id ) ) {
+			return null;
+		}
+
+		$post = get_post( $article_id );
+		if ( empty( $post ) || ! EPKB_KB_Handler::is_kb_post_type( $post->post_type ) ) {
+			return null;
+		}
+
+		$kb_id = EPKB_KB_Handler::get_kb_id_from_post_type( $post->post_type );
+		return is_wp_error( $kb_id ) || empty( $kb_id ) ? null : absint( $kb_id );
 	}
 }

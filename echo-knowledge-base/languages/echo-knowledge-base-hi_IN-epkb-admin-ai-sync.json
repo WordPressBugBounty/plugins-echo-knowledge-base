@@ -46,6 +46,9 @@
             "Failed to start verification": [
                 "सत्यापन शुरू करने में विफल रहा"
             ],
+            "Sync stopped. Please try again.": [
+                "सिंक रुक गया। कृपया पुनः प्रयास करें।."
+            ],
             "A sync job is already running.": [
                 "एक सिंक जॉब पहले से चल रहा है।."
             ],

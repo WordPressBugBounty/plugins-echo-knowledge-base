@@ -90,7 +90,7 @@ function epkb_load_public_resources() {
 			'msg_error'             => esc_html__( 'Sorry, an error occurred during search. Please try again.', 'echo-knowledge-base' ),
 			'msg_no_results'        => esc_html__( 'No results found. Please try a different search term.', 'echo-knowledge-base' ),
 			'msg_try_again'         => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
-			'is_admin'              => current_user_can( 'manage_options' ),
+			'is_admin'              => EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ),
 			'sources_label'         => esc_html__( 'Sources', 'echo-knowledge-base' ),
 			'continue_chat_enabled' => $continue_chat_enabled,
 			'continue_chat_label'   => esc_html__( 'Open in AI Chat', 'echo-knowledge-base' ),
@@ -107,7 +107,7 @@ function epkb_load_public_resources() {
 		$ai_search_results_data = array(
 			'rest_url'   => esc_url_raw( rest_url() ),
 			'rest_nonce' => epkb_get_instance()->security_obj->get_nonce(),
-			'is_admin'   => current_user_can( 'manage_options' ),
+			'is_admin'   => EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ),
 			'i18n'       => EPKB_AI_Search_Results_Display::get_script_data(),
 		);
 		wp_add_inline_script( 'epkb-ai-search-results', 'var epkbAISearchResults = ' . wp_json_encode( $ai_search_results_data ) . ';', 'before' );

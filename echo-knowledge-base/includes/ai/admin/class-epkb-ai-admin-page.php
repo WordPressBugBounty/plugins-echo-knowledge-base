@@ -98,22 +98,10 @@ class EPKB_AI_Admin_Page {
 	 * @return array
 	 */
 	private function get_ordered_tabs() {
-		$tabs = $this->top_tabs;
-		
-		// Hide PRO Features tab if AI Features Pro plugin is active
-		if ( EPKB_AI_Utilities::is_ai_features_pro_enabled() && ! defined( 'ECHO_WP_RELEASE_VERSION' ) ) {
-			unset( $tabs['pro-features'] );
-		}
-		
-		// Remove hidden tabs from navigation display
-		foreach ( $tabs as $key => $tab ) {
-			if ( ! empty( $tab['hidden'] ) ) {
-				unset( $tabs[$key] );
-			}
-		}
+		$tabs = $this->get_current_user_tabs();
 		
 		// Always keep dashboard first, but prioritize general-settings as second if not configured
-		if ( ! EPKB_AI_General_Settings_Tab::are_settings_configured() ) {
+		if ( isset( $tabs['dashboard'] ) && isset( $tabs['general-settings'] ) && ! EPKB_AI_General_Settings_Tab::are_settings_configured() ) {
 			// Extract dashboard and general-settings
 			$dashboard = $tabs['dashboard'];
 			$general_settings = $tabs['general-settings'];
@@ -128,18 +116,57 @@ class EPKB_AI_Admin_Page {
 	}
 
 	/**
+	 * Get AI tabs available to the current user.
+	 *
+	 * @param bool $include_hidden True to include direct-link-only tabs.
+	 * @return array
+	 */
+	private function get_current_user_tabs( $include_hidden=false ) {
+		$tabs = $this->top_tabs;
+
+		// Core Editors configured for AI access can only use Content Analysis.
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
+			foreach ( array_keys( $tabs ) as $key ) {
+				if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( $key ) ) {
+					unset( $tabs[$key] );
+				}
+			}
+		}
+
+		// Hide PRO Features tab if AI Features Pro plugin is active
+		if ( EPKB_AI_Utilities::is_ai_features_pro_enabled() && ! defined( 'ECHO_WP_RELEASE_VERSION' ) ) {
+			unset( $tabs['pro-features'] );
+		}
+
+		if ( ! $include_hidden ) {
+			foreach ( $tabs as $key => $tab ) {
+				if ( ! empty( $tab['hidden'] ) ) {
+					unset( $tabs[$key] );
+				}
+			}
+		}
+
+		return $tabs;
+	}
+
+	/**
 	 * Display the admin page
 	 */
 	public function display_page() {
 
 		EPKB_Core_Utilities::display_missing_css_message();
 
+		$available_tabs = $this->get_current_user_tabs( true );
+		if ( empty( $available_tabs ) ) {
+			wp_die( esc_html__( 'You do not have permission.', 'echo-knowledge-base' ) );
+		}
+
 		// Get ordered tabs for display
 		$tabs = $this->get_ordered_tabs();
 		
 		// Get current tab - check against all tabs including hidden ones
 		$active_tab = EPKB_Utilities::get( 'active_tab', 'dashboard' );
-		$active_tab = isset( $this->top_tabs[$active_tab] ) ? $active_tab : 'dashboard';
+		$active_tab = isset( $available_tabs[$active_tab] ) ? $active_tab : key( $available_tabs );
 
 		// Pre-calculate show_get_started flag for immediate display
 		// Only check if AI is enabled to avoid DB errors
@@ -272,7 +299,7 @@ class EPKB_AI_Admin_Page {
 	private function get_all_tabs_data( $active_tab ) {
 		$tabs_data = array();
 		// Use top_tabs instead of get_ordered_tabs() to include hidden tabs
-		$tabs = $this->top_tabs;
+		$tabs = $this->get_current_user_tabs( true );
 		
 		foreach ( $tabs as $tab_key => $tab ) {
 			// Skip loading dashboard data unless it is the active tab
@@ -296,7 +323,11 @@ class EPKB_AI_Admin_Page {
 	private function get_tab_config( $tab_key, $tab ) {
 		// Check if this tab requires AI to be enabled
 		if ( $this->tab_requires_ai( $tab ) && ! EPKB_AI_Utilities::is_ai_configured() ) {
-			return $this->get_ai_disabled_config( $tab_key, $tab['title'] );
+			return $this->get_ai_disabled_config( $tab_key, $tab['title'], 'missing_ai_config' );
+		}
+
+		if ( $tab_key === 'training-data' && ! EPKB_AI_Utilities::is_ai_chat_or_search_enabled() ) {
+			return $this->get_ai_disabled_config( $tab_key, $tab['title'], 'missing_ai_feature' );
 		}
 
 		// Get the tab configuration from the tab class
@@ -334,21 +365,25 @@ class EPKB_AI_Admin_Page {
 	 *
 	 * @param string $tab_key
 	 * @param string $tab_title
+	 * @param string $disabled_reason
 	 * @return array
 	 */
-	private function get_ai_disabled_config( $tab_key, $tab_title ) {
+	private function get_ai_disabled_config( $tab_key, $tab_title, $disabled_reason = '' ) {
 		// Base config (avoid repeating the full array)
 		$base = array(
 			'tab_id' => $tab_key,
 			'title' => $tab_title,
 			'ai_disabled' => true,
+			'disabled_reason' => $disabled_reason,
 			'message' => __( 'AI Features Required', 'echo-knowledge-base' ),
 		);
 
 		// Custom instructions per tab
 		$instructions = __( 'To use AI features, please configure your API key and accept the data privacy agreement in General Settings, then enable AI Search or AI Chat.', 'echo-knowledge-base' );
 		if ( $tab_key === 'training-data' ) {
-			$instructions = __( 'To use Training Data, please enable either AI Chat or AI Search in their respective tabs.', 'echo-knowledge-base' );
+			$instructions = $disabled_reason === 'missing_ai_feature'
+				? __( 'To use Training Data, please enable either AI Chat or AI Search in their respective tabs.', 'echo-knowledge-base' )
+				: __( 'To use Training Data, please configure your API key and accept the data privacy agreement in General Settings.', 'echo-knowledge-base' );
 		} elseif ( $tab_key === 'content-analysis' ) {
 			$instructions = __( 'To use Content Analysis, please configure your API key and accept the data privacy agreement in General Settings.', 'echo-knowledge-base' );
 		}

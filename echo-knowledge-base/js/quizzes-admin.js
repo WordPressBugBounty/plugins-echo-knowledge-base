@@ -13,9 +13,12 @@ jQuery( document ).ready( function( $ ) {
 	const $quizzesList = $( '#epkb-quizzes-list' );
 	const $statusBadge = $( '#epkb-quiz-status-badge' );
 	const $editorTitle = $( '#epkb-quiz-editor-title' );
+	const $kbSelect = $( '#epkb-quiz-kb-select' );
 	const $sourceSelect = $( '#epkb-quiz-source-article' );
-	const $interestModal = $( '#epkb-quiz-interest-modal' );
-	const $interestMessage = $( '#epkb-quiz-interest-message' );
+	const $sourcePicker = $( '.epkb-quiz-article-picker' );
+	const $sourceToggle = $( '#epkb-quiz-source-article-toggle' );
+	const $sourceSelected = $( '#epkb-quiz-source-article-selected' );
+	const $sourceOptions = $( '#epkb-quiz-source-article-options' );
 	const $viewLink = $( '#epkb-quiz-view-link' );
 	const $editorTabTrigger = $page.find( '.epkb-admin__top-panel__item[data-target="quizzes-editor"]' );
 	const $editorAddBtn = $form.find( '.epkb-quiz-create-trigger' );
@@ -23,9 +26,14 @@ jQuery( document ).ready( function( $ ) {
 	let isDirty = false;
 	let isHydrating = false;
 	let lastSourceArticleId = '0';
+	let loadedQuizSourceArticleId = '0';
 
 	function getCurrentSourceArticleId() {
 		return String( $sourceSelect.val() || '0' );
+	}
+
+	function getCurrentKbId() {
+		return String( $kbSelect.val() || '0' );
 	}
 
 	function openEditorTab() {
@@ -221,18 +229,162 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
+	function getSourceOption( articleId ) {
+		return $sourceSelect.find( 'option[value="' + articleId + '"]' );
+	}
+
+	function appendSourceOptionLabel( $target, baseLabel, hasQuiz ) {
+		$target.empty().append(
+			$( '<span></span>' )
+				.addClass( 'epkb-quiz-article-picker__option-title' )
+				.text( baseLabel )
+		);
+
+		if ( hasQuiz ) {
+			$target.append(
+				$( '<span></span>' )
+					.addClass( 'epkb-quiz-article-picker__has-quiz' )
+					.append( $( '<span></span>' ).addClass( 'epkbfa epkbfa-check-circle' ).attr( 'aria-hidden', 'true' ) )
+					.append( $( '<span></span>' ).text( epkbQuizAdmin.strings.hasQuiz ) )
+			);
+		}
+	}
+
+	function getSourceOptionBaseLabel( $option ) {
+		return String( $option.attr( 'data-base-label' ) || $option.text() || '' );
+	}
+
+	function getSourceOptionKbId( articleId ) {
+		const $option = getSourceOption( articleId );
+		return $option.length ? String( $option.attr( 'data-kb-id' ) || '0' ) : '0';
+	}
+
+	function setKbSelectionForArticle( articleId ) {
+		if ( ! $kbSelect.length ) {
+			return;
+		}
+
+		const kbId = getSourceOptionKbId( articleId );
+		$kbSelect.val( kbId );
+	}
+
+	function sourceOptionMatchesSelectedKb( $option, selectedArticleId ) {
+		const articleId = String( $option.val() || '0' );
+		if ( articleId === '0' ) {
+			return false;
+		}
+
+		if ( articleId === selectedArticleId ) {
+			return true;
+		}
+
+		return ! $kbSelect.length || String( $option.attr( 'data-kb-id' ) || '0' ) === getCurrentKbId();
+	}
+
+	function setSourcePickerOpen( isOpen ) {
+		if ( ! $sourceToggle.length || ! $sourceOptions.length ) {
+			return;
+		}
+
+		$sourceToggle.attr( 'aria-expanded', isOpen ? 'true' : 'false' );
+		$sourceOptions.prop( 'hidden', ! isOpen );
+	}
+
+	function renderSourcePicker( keepOpen ) {
+		if ( ! $sourceToggle.length || ! $sourceOptions.length ) {
+			return;
+		}
+
+		const selectedArticleId = getCurrentSourceArticleId();
+		const currentKbId = getCurrentKbId();
+		const canSelectArticle = ! $kbSelect.length || currentKbId !== '0' || selectedArticleId !== '0';
+		const $selectedOption = getSourceOption( selectedArticleId );
+
+		$sourceToggle.prop( 'disabled', ! canSelectArticle );
+		$sourceSelected.toggleClass( 'epkb-quiz-article-picker__selected--placeholder', ! $selectedOption.length || selectedArticleId === '0' );
+
+		if ( $selectedOption.length && selectedArticleId !== '0' ) {
+			appendSourceOptionLabel( $sourceSelected, getSourceOptionBaseLabel( $selectedOption ), $selectedOption.attr( 'data-has-quiz' ) === '1' );
+		} else {
+			$sourceSelected.text( epkbQuizAdmin.strings.selectArticle );
+		}
+
+		$sourceOptions.empty();
+		$sourceSelect.find( 'option' ).each( function() {
+			const $option = $( this );
+			const articleId = String( $option.val() || '0' );
+			if ( ! sourceOptionMatchesSelectedKb( $option, selectedArticleId ) ) {
+				return;
+			}
+
+			const $item = $( '<button></button>' )
+				.attr( 'type', 'button' )
+				.attr( 'role', 'option' )
+				.attr( 'aria-selected', articleId === selectedArticleId ? 'true' : 'false' )
+				.addClass( 'epkb-quiz-article-picker__option' )
+				.toggleClass( 'epkb-quiz-article-picker__option--selected', articleId === selectedArticleId )
+				.data( 'source-article-id', articleId );
+
+			appendSourceOptionLabel( $item, getSourceOptionBaseLabel( $option ), $option.attr( 'data-has-quiz' ) === '1' );
+			$sourceOptions.append( $item );
+		} );
+
+		if ( ! $sourceOptions.children().length ) {
+			$sourceOptions.append( $( '<div></div>' ).addClass( 'epkb-quiz-article-picker__empty' ).text( epkbQuizAdmin.strings.noArticles ) );
+		}
+
+		setSourcePickerOpen( keepOpen && canSelectArticle );
+	}
+
+	function selectSourceArticle( articleId ) {
+		const previousSourceArticleId = getCurrentSourceArticleId();
+		$sourceSelect.val( articleId );
+		renderSourcePicker( false );
+
+		if ( previousSourceArticleId !== String( articleId ) ) {
+			$sourceSelect.trigger( 'change' );
+		}
+	}
+
+	function updateSourceOptionQuizState( articleId, hasQuiz ) {
+		if ( ! articleId || String( articleId ) === '0' ) {
+			return;
+		}
+
+		const $option = getSourceOption( articleId );
+		if ( ! $option.length ) {
+			return;
+		}
+
+		const baseLabel = String( $option.attr( 'data-base-label' ) || $option.text() || '' );
+		$option
+			.attr( 'data-base-label', baseLabel )
+			.attr( 'data-has-quiz', hasQuiz ? '1' : '0' )
+			.text( baseLabel );
+
+		renderSourcePicker( false );
+	}
+
 	function ensureSourceOption( articleId, label ) {
 		if ( ! articleId ) {
 			return;
 		}
 
-		if ( $sourceSelect.find( 'option[value="' + articleId + '"]' ).length ) {
+		const $option = getSourceOption( articleId );
+		if ( $option.length ) {
+			if ( ! $option.attr( 'data-base-label' ) ) {
+				$option.attr( 'data-base-label', $option.text() );
+			}
 			return;
 		}
 
 		$sourceSelect.append(
 			$( '<option></option>' )
 				.val( articleId )
+				.attr( 'data-base-label', label || epkbQuizAdmin.strings.unavailableArticle )
+				.attr( 'data-has-quiz', '0' )
+				.attr( 'data-kb-id', '0' )
+				.attr( 'data-post-type', '' )
 				.text( label || epkbQuizAdmin.strings.unavailableArticle )
 		);
 	}
@@ -426,6 +578,7 @@ jQuery( document ).ready( function( $ ) {
 		$form.trigger( 'reset' );
 		$( '#epkb-quiz-id' ).val( '0' );
 		$( '#epkb-quiz-title' ).val( '' );
+		$kbSelect.val( '0' );
 		$sourceSelect.val( '0' );
 		$( '#epkb-quiz-question-count' ).val( 'auto' );
 		$questions.empty();
@@ -438,6 +591,8 @@ jQuery( document ).ready( function( $ ) {
 		$quizzesList.find( '.epkb-quiz-list-row--active' ).removeClass( 'epkb-quiz-list-row--active' );
 		refreshQuestionRows();
 		lastSourceArticleId = getCurrentSourceArticleId();
+		loadedQuizSourceArticleId = '0';
+		renderSourcePicker( false );
 		isHydrating = false;
 		setDirty( false );
 	}
@@ -454,7 +609,10 @@ jQuery( document ).ready( function( $ ) {
 		$( '#epkb-quiz-title' ).val( quiz.title || '' );
 		$( '#epkb-quiz-question-count' ).val( quiz.question_count_mode || 'auto' );
 		ensureSourceOption( quiz.source_article_id, quiz.source_article_label );
+		updateSourceOptionQuizState( quiz.source_article_id, true );
+		setKbSelectionForArticle( quiz.source_article_id );
 		$sourceSelect.val( String( quiz.source_article_id || 0 ) );
+		renderSourcePicker( false );
 		setEditorContent( quiz.intro || '' );
 		updateStatusBadge( quiz.status || 'draft' );
 		updateViewLink( quiz );
@@ -470,6 +628,7 @@ jQuery( document ).ready( function( $ ) {
 		refreshQuestionRows();
 		updateQuizRow( quiz.quiz_id );
 		lastSourceArticleId = getCurrentSourceArticleId();
+		loadedQuizSourceArticleId = lastSourceArticleId;
 		isHydrating = false;
 		setDirty( false );
 	}
@@ -505,26 +664,33 @@ jQuery( document ).ready( function( $ ) {
 
 	function saveQuiz( postStatus ) {
 		hideNotice();
+		const previousSavedSourceArticleId = loadedQuizSourceArticleId;
 		sendAjax( 'epkb_save_quiz', collectFormPayload( postStatus ), function( data ) {
+			if ( previousSavedSourceArticleId !== String( data.quiz.source_article_id || 0 ) ) {
+				updateSourceOptionQuizState( previousSavedSourceArticleId, false );
+			}
+
 			loadQuizData( data.quiz );
 			updateQuizRow( data.quiz.quiz_id, data.quiz_row_html );
-			showSaveSuccessDialog( data.message, function() {
-				maybeShowInterestModal( data.show_interest_modal );
-			} );
+			showSaveSuccessDialog( data.message );
 		} );
 	}
 
 	function generateQuiz() {
 		hideNotice();
 		const $btn = $( '#epkb-quiz-generate' );
+		const previousSavedSourceArticleId = loadedQuizSourceArticleId;
 		$btn.prop( 'disabled', true ).find( '.epkbfa' ).removeClass( 'epkbfa-magic' ).addClass( 'epkbfa-spinner epkbfa-spin' );
 
 		sendAjax( 'epkb_generate_quiz', collectFormPayload( 'draft' ), function( data ) {
 			$btn.prop( 'disabled', false ).find( '.epkbfa' ).removeClass( 'epkbfa-spinner epkbfa-spin' ).addClass( 'epkbfa-magic' );
+			if ( previousSavedSourceArticleId !== String( data.quiz.source_article_id || 0 ) ) {
+				updateSourceOptionQuizState( previousSavedSourceArticleId, false );
+			}
+
 			loadQuizData( data.quiz );
 			updateQuizRow( data.quiz.quiz_id, data.quiz_row_html );
 			showNotice( data.message, false );
-			maybeShowInterestModal( data.show_interest_modal );
 		}, function( errorData ) {
 			$btn.prop( 'disabled', false ).find( '.epkbfa' ).removeClass( 'epkbfa-spinner epkbfa-spin' ).addClass( 'epkbfa-magic' );
 			handleAjaxError( errorData );
@@ -533,6 +699,7 @@ jQuery( document ).ready( function( $ ) {
 
 	function deleteQuiz() {
 		const quizId = $( '#epkb-quiz-id' ).val();
+		const sourceArticleId = loadedQuizSourceArticleId;
 		if ( ! quizId || quizId === '0' ) {
 			return;
 		}
@@ -543,6 +710,7 @@ jQuery( document ).ready( function( $ ) {
 
 		sendAjax( 'epkb_delete_quiz', { quiz_id: quizId }, function( data ) {
 			$quizzesList.find( '.epkb-quiz-list-row[data-quiz-id="' + data.quiz_id + '"]' ).remove();
+			updateSourceOptionQuizState( sourceArticleId, false );
 			if ( ! $quizzesList.find( '.epkb-quiz-list-row' ).length ) {
 				$quizzesList.html( '<div class="epkb-quizzes-list__empty">' + epkbQuizAdmin.strings.noQuizzes + '</div>' );
 			}
@@ -573,6 +741,7 @@ jQuery( document ).ready( function( $ ) {
 				isHydrating = true;
 				$sourceSelect.val( previousSourceArticleId );
 				lastSourceArticleId = previousSourceArticleId;
+				renderSourcePicker( false );
 				isHydrating = false;
 				return;
 			}
@@ -594,36 +763,41 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
-	function maybeShowInterestModal( showModal ) {
-		if ( ! showModal ) {
-			return;
-		}
-
-		if ( $page.find( '.epkb-quizzes-admin' ).data( 'interest-submitted' ) === 1 ) {
-			return;
-		}
-
-		if ( sessionStorage.getItem( 'epkbQuizInterestSkipped' ) === '1' ) {
-			return;
-		}
-
-		openInterestModal();
-	}
-
-	function openInterestModal() {
-		$( '#epkb-quiz-interest-first-name' ).val( epkbQuizAdmin.currentUser.firstName || '' );
-		$( '#epkb-quiz-interest-email' ).val( epkbQuizAdmin.currentUser.email || '' );
-		$interestMessage.prop( 'hidden', true ).html( '' );
-		$interestModal.prop( 'hidden', false );
-	}
-
-	function closeInterestModal() {
-		$interestModal.prop( 'hidden', true );
-	}
-
 	$form.on( 'input change', 'input, select, textarea', function() {
-		if ( ! isHydrating && this.id !== 'epkb-quiz-source-article' ) {
+		if ( ! isHydrating && this.id !== 'epkb-quiz-source-article' && this.id !== 'epkb-quiz-kb-select' ) {
 			setDirty( true );
+		}
+	} );
+
+	$( document ).on( 'change', '#epkb-quiz-kb-select', function() {
+		$sourceSelect.val( '0' );
+		lastSourceArticleId = '0';
+		renderSourcePicker( false );
+	} );
+
+	$( document ).on( 'click', '#epkb-quiz-source-article-toggle', function() {
+		if ( $sourceToggle.prop( 'disabled' ) ) {
+			return;
+		}
+
+		renderSourcePicker( $sourceToggle.attr( 'aria-expanded' ) !== 'true' );
+	} );
+
+	$( document ).on( 'click', '.epkb-quiz-article-picker__option', function() {
+		selectSourceArticle( String( $( this ).data( 'source-article-id' ) || '0' ) );
+	} );
+
+	$( document ).on( 'click', function( event ) {
+		if ( ! $sourcePicker.length || $( event.target ).closest( $sourcePicker ).length ) {
+			return;
+		}
+
+		setSourcePickerOpen( false );
+	} );
+
+	$( document ).on( 'keydown', function( event ) {
+		if ( event.key === 'Escape' ) {
+			setSourcePickerOpen( false );
 		}
 	} );
 
@@ -659,6 +833,8 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	$( document ).on( 'change', '#epkb-quiz-source-article', function() {
+		renderSourcePicker( false );
+
 		if ( isHydrating ) {
 			return;
 		}
@@ -705,82 +881,6 @@ jQuery( document ).ready( function( $ ) {
 		deleteQuiz();
 	} );
 
-	$( document ).on( 'click', '.epkb-quiz-feedback-trigger', function() {
-		openInterestModal();
-	} );
-
-	$( document ).on( 'click', '#epkb-quiz-interest-close, #epkb-quiz-interest-skip', function() {
-		sessionStorage.setItem( 'epkbQuizInterestSkipped', '1' );
-		closeInterestModal();
-	} );
-
-	$( document ).on( 'click', '#epkb-quiz-interest-submit', function() {
-		sendAjax( 'epkb_submit_quiz_interest', {
-			first_name: $( '#epkb-quiz-interest-first-name' ).val(),
-			email: $( '#epkb-quiz-interest-email' ).val(),
-			feedback: $( '#epkb-quiz-interest-feedback' ).val()
-		}, function( data ) {
-			$page.find( '.epkb-quizzes-admin' ).data( 'interest-submitted', 1 );
-			sessionStorage.removeItem( 'epkbQuizInterestSkipped' );
-			$interestMessage
-				.removeClass( 'epkb-quizzes-admin__notice--error' )
-				.addClass( 'epkb-quizzes-admin__notice--success' )
-				.html( data.message )
-				.prop( 'hidden', false );
-			window.setTimeout( closeInterestModal, 900 );
-		}, function( errorData ) {
-			$interestMessage
-				.removeClass( 'epkb-quizzes-admin__notice--success' )
-				.addClass( 'epkb-quizzes-admin__notice--error' )
-				.html( errorData && errorData.message ? errorData.message : epkbQuizAdmin.strings.genericError )
-				.prop( 'hidden', false );
-		} );
-	} );
-
 	initializeIntroEditorDirtyTracking();
 	resetForm();
-
-	// Show interest modal if redirected from feature enable on Dashboard
-	if ( new URLSearchParams( window.location.search ).get( 'epkb_show_feedback' ) === '1' ) {
-		var cleanUrl = new URL( window.location.href );
-		cleanUrl.searchParams.delete( 'epkb_show_feedback' );
-		window.history.replaceState( {}, '', cleanUrl.toString() );
-		maybeShowInterestModal( true );
-	}
-
-	// Show interest modal when Quizzes feature is enabled via Settings tab save
-	$( document ).ajaxComplete( function( event, jqXHR, settings ) {
-		if ( ! settings || ! settings.data ) {
-			return;
-		}
-
-		var isSettingsSaveRequest = false;
-		if ( typeof settings.data === 'string' ) {
-			isSettingsSaveRequest = settings.data.indexOf( 'action=epkb_apply_settings_changes' ) !== -1;
-		} else if ( typeof settings.data === 'object' ) {
-			isSettingsSaveRequest = settings.data.action === 'epkb_apply_settings_changes';
-		}
-
-		if ( ! isSettingsSaveRequest ) {
-			return;
-		}
-
-		var response = jqXHR.responseJSON;
-		if ( ! response ) {
-			try {
-				response = JSON.parse( jqXHR.responseText );
-			} catch ( e ) {
-				return;
-			}
-		}
-
-		if ( ! response || response.error ) {
-			return;
-		}
-
-		var $toggle = $( '#quizzes_enable input[type="checkbox"]' );
-		if ( $toggle.length && $toggle.prop( 'checked' ) ) {
-			maybeShowInterestModal( true );
-		}
-	} );
 } );

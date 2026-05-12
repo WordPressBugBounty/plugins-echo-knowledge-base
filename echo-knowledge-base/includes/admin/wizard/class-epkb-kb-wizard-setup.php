@@ -1064,8 +1064,11 @@ class EPKB_KB_Wizard_Setup {
 		];
 
 		$basic_categories_articles_presets = [
-			'horizon' => [
+			'setup_default' => [
 				'preselected'   => true,
+				'title'         => esc_html__( 'Default', 'echo-knowledge-base' ),
+			],
+			'horizon' => [
 				'title'         => esc_html__( 'Horizon', 'echo-knowledge-base' ),
 			],
 			'bloom' => [
@@ -1201,8 +1204,11 @@ class EPKB_KB_Wizard_Setup {
 			$modules_presets_config['categories_articles']['Grid'] = [
 				'preselected' => $main_page_layout == 'Grid',
 				'presets' => [
-					'grid_basic' => [
+					'setup_default_grid' => [
 						'preselected'   => true,
+						'title'         => esc_html__( 'Default', 'echo-knowledge-base' ),
+					],
+					'grid_basic' => [
 						'title'         => esc_html__( 'Basic', 'echo-knowledge-base' ),
 					],
 					'grid_demo_5' => [
@@ -1233,8 +1239,11 @@ class EPKB_KB_Wizard_Setup {
 			$modules_presets_config['categories_articles']['Sidebar'] = [
 				'preselected' => $main_page_layout == 'Sidebar',
 				'presets' => [
-					'sidebar_basic' => [
+					'setup_default_sidebar' => [
 						'preselected'   => true,
+						'title'         => esc_html__( 'Default', 'echo-knowledge-base' ),
+					],
+					'sidebar_basic' => [
 						'title'         => esc_html__( 'Basic', 'echo-knowledge-base' ),
 					],
 					'sidebar_colapsed' => [

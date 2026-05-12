@@ -31,9 +31,6 @@
             "Refresh": [
                 "Aktualisieren"
             ],
-            "Warnings": [
-                "Warnungen"
-            ],
             "Info": [
                 "Info"
             ],
@@ -138,6 +135,9 @@
             ],
             "Fatal Errors": [
                 "Schwerwiegende Fehler"
+            ],
+            "Warnings": [
+                "Warnungen"
             ],
             "Notices": [
                 "Hinweise"

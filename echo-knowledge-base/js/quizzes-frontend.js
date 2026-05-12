@@ -57,5 +57,51 @@ jQuery( document ).ready( function( $ ) {
 			summaryPrefix + correctCount + '/' + totalCount
 		);
 		$summary.prop( 'hidden', false );
+
+		submitQuizAttempt( $quiz, correctCount, totalCount );
+	}
+
+	function submitQuizAttempt( $quiz, correctCount, totalCount ) {
+		if ( $quiz.data( 'notificationSubmitted' ) === 1 || epkbQuizFrontend.notificationsEnabled !== 'on' || ! epkbQuizFrontend.ajaxUrl || ! epkbQuizFrontend.nonce ) {
+			return;
+		}
+
+		const answers = [];
+		let hasInvalidAnswer = false;
+
+		$quiz.find( '.epkb-article-quiz__question' ).each( function() {
+			const $question = $( this );
+			const questionId = String( $question.data( 'question-id' ) || '' );
+			const selectedChoice = parseInt( $question.find( 'input[type="radio"]:checked' ).val(), 10 );
+
+			if ( ! questionId || isNaN( selectedChoice ) ) {
+				hasInvalidAnswer = true;
+				return false;
+			}
+
+			answers.push( {
+				question_id: questionId,
+				selected_choice: selectedChoice
+			} );
+		} );
+
+		if ( hasInvalidAnswer ) {
+			return;
+		}
+
+		$quiz.data( 'notificationSubmitted', 1 );
+		$.ajax( {
+			url: epkbQuizFrontend.ajaxUrl,
+			method: 'POST',
+			dataType: 'json',
+			data: {
+				action: 'epkb_submit_quiz_attempt',
+				_wpnonce_epkb_ajax_action: epkbQuizFrontend.nonce,
+				quiz_id: $quiz.data( 'quiz-id' ),
+				correct_count: correctCount,
+				total_count: totalCount,
+				answers_json: JSON.stringify( answers )
+			}
+		} );
 	}
 } );

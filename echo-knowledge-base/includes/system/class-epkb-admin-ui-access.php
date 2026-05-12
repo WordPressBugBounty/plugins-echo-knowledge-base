@@ -18,17 +18,17 @@ class EPKB_Admin_UI_Access {
 
 	// Admin capability
 	const EPKB_ADMIN_CAPABILITY = 'manage_options';
+	const EPKB_KB_MANAGER_CAPABILITY = 'admin_eckb_access_manager_page';
 
 	// Allowed Contexts list
 	const ADMIN_UI_CONTEXTS = array(
 		'admin_eckb_access_frontend_editor_write',
 		'admin_eckb_access_search_analytics_read',
 		'admin_eckb_access_order_articles_write',
-		'admin_eckb_access_content_analysis',
 		'admin_eckb_access_addons_news_read',
 		'admin_eckb_access_faqs_write',
-		'admin_eckb_access_quizzes_write',
 		'admin_eckb_access_glossary_write',
+		'admin_eckb_access_quizzes_write',
 		'admin_eckb_access_ai_feature',
 	);
 
@@ -80,11 +80,12 @@ class EPKB_Admin_UI_Access {
 	/**
 	 * Check if the current user has access to the current context
 	 *
-	 * @param $context
+	 * @param string $context
+	 * @param int|null $kb_id Specific KB ID, or null for current KB.
 	 *
 	 * @return bool
 	 */
-	public static function is_user_access_to_context_allowed( $context ) {
+	public static function is_user_access_to_context_allowed( $context, $kb_id=null ) {
 
 		if ( ! function_exists( 'wp_get_current_user' ) ) {
 			return false;
@@ -101,7 +102,12 @@ class EPKB_Admin_UI_Access {
 		}
 
 		// retrieve access configuration
-		$config = epkb_get_instance()->kb_config_obj->get_current_kb_configuration();
+		$kb_id = EPKB_Utilities::is_positive_int( $kb_id ) ? absint( $kb_id ) : null;
+		$config = empty( $kb_id ) ? epkb_get_instance()->kb_config_obj->get_current_kb_configuration() : epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
+		if ( is_wp_error( $config ) || empty( $config ) || ! is_array( $config ) ) {
+			return false;
+		}
+
 		if ( empty( $config[$context] ) ) {
 			return false;
 		}
@@ -126,6 +132,81 @@ class EPKB_Admin_UI_Access {
 
 		// check if the current user has correct capability
 		return current_user_can( $config[$context] );
+	}
+
+	/**
+	 * Return capability needed to show the AI admin menu.
+	 *
+	 * @return string
+	 */
+	public static function get_ai_feature_menu_capability() {
+		if ( current_user_can( self::EPKB_ADMIN_CAPABILITY ) ) {
+			return self::EPKB_ADMIN_CAPABILITY;
+		}
+
+		return EPKB_Utilities::is_amag_on() ? self::EPKB_ADMIN_CAPABILITY : self::get_context_required_capability( 'admin_eckb_access_ai_feature' );
+	}
+
+	/**
+	 * Check if the current user can access AI administration for the requested scope.
+	 *
+	 * @param string $scope Use 'admin' for full AI admin, or an allowed limited tab key.
+	 * @param int|null $kb_id Specific KB ID, 0 for any accessible KB, or null for current KB.
+	 * @return bool
+	 */
+	public static function is_user_access_to_ai_feature_allowed( $scope='admin', $kb_id=null ) {
+
+		if ( ! function_exists( 'wp_get_current_user' ) ) {
+			return false;
+		}
+
+		if ( current_user_can( self::EPKB_ADMIN_CAPABILITY ) ) {
+			return true;
+		}
+
+		if ( EPKB_Utilities::is_amag_on() ) {
+			return false;
+		}
+
+		if ( ! in_array( $scope, array( 'content-analysis' ), true ) ) {
+			return false;
+		}
+
+		if ( $kb_id === 0 || $kb_id === '0' ) {
+			return self::is_user_access_to_ai_feature_allowed_for_any_kb();
+		}
+
+		return self::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature', $kb_id );
+	}
+
+	/**
+	 * Check if the current user can access Content Analysis for any active KB.
+	 *
+	 * @return bool
+	 */
+	private static function is_user_access_to_ai_feature_allowed_for_any_kb() {
+
+		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs();
+		if ( is_wp_error( $all_kb_configs ) || empty( $all_kb_configs ) || ! is_array( $all_kb_configs ) ) {
+			return false;
+		}
+
+		foreach ( $all_kb_configs as $one_kb_config ) {
+			$one_kb_id = empty( $one_kb_config['id'] ) ? 0 : absint( $one_kb_config['id'] );
+			if ( empty( $one_kb_id ) ) {
+				continue;
+			}
+
+			if ( $one_kb_id !== EPKB_KB_Config_DB::DEFAULT_KB_ID && EPKB_Core_Utilities::is_kb_archived( $one_kb_config['status'] ) ) {
+				continue;
+			}
+
+			if ( self::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature', $one_kb_id ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -300,32 +381,6 @@ class EPKB_Admin_UI_Access {
 						: EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY,
 					'options'       => self::get_access_control_options() ) ) );
 
-		// Box: KB Analytics
-		$boxes_config[] =
-			array(
-				'title' => $kb_config_specs_labels['admin_eckb_access_search_analytics_read'],
-				'html' => self::radio_buttons_vertical_access_control( array(
-					'name'          => 'admin_eckb_access_search_analytics_read',
-					'radio_class'   => 'epkb-admin__radio-button-wrap',
-					'return_html'   => true,
-					'value'       => self::is_capability_in_allowed_list( $kb_config['admin_eckb_access_search_analytics_read'], $kb_id )
-						? $kb_config['admin_eckb_access_search_analytics_read']
-						: self::get_admin_capability(),
-					'options'       => self::get_access_control_options( true ) ) ) );
-
-		// Box: Content Analysis
-		$boxes_config[] =
-			array(
-				'title' => $kb_config_specs_labels['admin_eckb_access_content_analysis'],
-				'html' => self::radio_buttons_vertical_access_control( array(
-					'name'          => 'admin_eckb_access_content_analysis',
-					'radio_class'   => 'epkb-admin__radio-button-wrap',
-					'return_html'   => true,
-					'value'       => self::is_capability_in_allowed_list( $kb_config['admin_eckb_access_content_analysis'], $kb_id )
-						? $kb_config['admin_eckb_access_content_analysis']
-						: self::get_admin_capability(),
-					'options'       => self::get_access_control_options( true ) ) ) );
-
 		// Box: FAQs
 		$boxes_config[] = $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ?
 			array(
@@ -337,20 +392,6 @@ class EPKB_Admin_UI_Access {
 					'return_html'   => true,
 					'value'         => self::is_capability_in_allowed_list( $kb_config['admin_eckb_access_faqs_write'], $kb_id )
 						? $kb_config['admin_eckb_access_faqs_write']
-						: self::get_admin_capability(),
-					'options'       => self::get_access_control_options( true ) ) ) ) : '';
-
-		// Box: Quizzes
-		$boxes_config[] = $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ?
-			array(
-				'title' => $kb_config_specs_labels['admin_eckb_access_quizzes_write'],
-				'description'   => esc_html__( 'The Quizzes feature is not linked to any specific KB; instead, access to it is defined within the default KB.', 'echo-knowledge-base' ),
-				'html' => self::radio_buttons_vertical_access_control( array(
-					'name'          => 'admin_eckb_access_quizzes_write',
-					'radio_class'   => 'epkb-admin__radio-button-wrap',
-					'return_html'   => true,
-					'value'         => self::is_capability_in_allowed_list( $kb_config['admin_eckb_access_quizzes_write'], $kb_id )
-						? $kb_config['admin_eckb_access_quizzes_write']
 						: self::get_admin_capability(),
 					'options'       => self::get_access_control_options( true ) ) ) ) : '';
 
@@ -367,6 +408,56 @@ class EPKB_Admin_UI_Access {
 						? $kb_config['admin_eckb_access_glossary_write']
 						: self::get_admin_capability(),
 					'options'       => self::get_access_control_options( true ) ) ) ) : '';
+
+		$quizzes_access_value = self::get_admin_capability();
+		$quizzes_access_options = self::get_admin_access_control_options();
+		if ( ! EPKB_Utilities::is_amag_on() ) {
+			$quizzes_access_value = $kb_config['admin_eckb_access_quizzes_write'] == self::get_editor_capability( $kb_id )
+				? self::get_editor_capability( $kb_id )
+				: self::get_admin_capability();
+			$quizzes_access_options = self::get_access_control_options();
+		}
+
+		// Box: Quizzes
+		$boxes_config[] = $kb_id == EPKB_KB_Config_DB::DEFAULT_KB_ID ?
+			array(
+				'title' => $kb_config_specs_labels['admin_eckb_access_quizzes_write'],
+				'description'   => esc_html__( 'The Quizzes feature is not linked to any specific KB; instead, access to it is defined within the default KB.', 'echo-knowledge-base' ),
+				'html' => self::radio_buttons_vertical_access_control( array(
+					'name'          => 'admin_eckb_access_quizzes_write',
+					'radio_class'   => 'epkb-admin__radio-button-wrap',
+					'return_html'   => true,
+					'value'         => $quizzes_access_value,
+					'options'       => $quizzes_access_options ) ) ) : '';
+
+		// Box: AI Features
+		if ( ! EPKB_Utilities::is_amag_on() ) {
+			$boxes_config[] =
+				array(
+					'title' => $kb_config_specs_labels['admin_eckb_access_ai_feature'],
+					'description' => esc_html__( 'Editors can access only the AI Content Analysis screen.', 'echo-knowledge-base' ),
+					'html' => self::radio_buttons_vertical_access_control( array(
+						'name'          => 'admin_eckb_access_ai_feature',
+						'radio_class'   => 'epkb-admin__radio-button-wrap',
+						'return_html'   => true,
+						'value'       => $kb_config['admin_eckb_access_ai_feature'] == self::get_editor_capability( $kb_id )
+							? self::get_editor_capability( $kb_id )
+							: self::get_admin_capability(),
+						'options'       => self::get_access_control_options() ) ) );
+		}
+
+		// Box: KB Analytics
+		$boxes_config[] =
+			array(
+				'title' => $kb_config_specs_labels['admin_eckb_access_search_analytics_read'],
+				'html' => self::radio_buttons_vertical_access_control( array(
+					'name'          => 'admin_eckb_access_search_analytics_read',
+					'radio_class'   => 'epkb-admin__radio-button-wrap',
+					'return_html'   => true,
+					'value'       => self::is_capability_in_allowed_list( $kb_config['admin_eckb_access_search_analytics_read'], $kb_id )
+						? $kb_config['admin_eckb_access_search_analytics_read']
+						: self::get_admin_capability(),
+					'options'       => self::get_access_control_options( true ) ) ) );
 
 		// Box: Add-ons
 		$boxes_config[] =
@@ -452,8 +543,21 @@ class EPKB_Admin_UI_Access {
 		EPKB_Utilities::ajax_show_info_die( esc_html__( 'Configuration saved', 'echo-knowledge-base' ) );
 	}
 
+	private static function get_admin_access_control_options() {
+		$admins_text = self::get_admins_distinct_box();
+		if ( EPKB_Utilities::is_amag_on() ) {
+			$admins_text .= self::get_kb_managers_distinct_box();
+		}
+
+		return array( self::get_admin_capability() => $admins_text );
+	}
+
 	private static function get_admins_distinct_box() {
 		return '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--high">' . esc_html__( 'Admins', 'echo-knowledge-base' ) . '</span>';
+	}
+
+	private static function get_kb_managers_distinct_box() {
+		return sprintf( __( '%sKB Managers%s', 'echo-knowledge-base' ), '<span class="epkb-admin__distinct-box epkb-admin__distinct-box--high">', '</span>' );
 	}
 
 	private static function get_editors_distinct_box() {

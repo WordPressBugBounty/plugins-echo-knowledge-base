@@ -43,12 +43,6 @@
             "Errors": [
                 "エラー"
             ],
-            "Email": [
-                "メール"
-            ],
-            "Feedback": [
-                "フィードバック"
-            ],
             "Reset": [
                 "リセット"
             ],
@@ -67,11 +61,17 @@
             "API Configuration": [
                 "API 設定"
             ],
+            "Feedback": [
+                "フィードバック"
+            ],
             "AI Assistant": [
                 "AIアシスタント"
             ],
             "Name": [
                 "名前"
+            ],
+            "Email": [
+                "メール"
             ],
             "Message": [
                 "メッセージ"

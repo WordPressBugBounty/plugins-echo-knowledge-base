@@ -24,8 +24,8 @@ class EPKB_Quizzes_Ctrl {
 		add_action( 'wp_ajax_epkb_generate_quiz', array( $this, 'generate_quiz' ) );
 		add_action( 'wp_ajax_nopriv_epkb_generate_quiz', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
-		add_action( 'wp_ajax_epkb_submit_quiz_interest', array( $this, 'submit_quiz_interest' ) );
-		add_action( 'wp_ajax_nopriv_epkb_submit_quiz_interest', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+		add_action( 'wp_ajax_epkb_submit_quiz_attempt', array( $this, 'submit_quiz_attempt' ) );
+		add_action( 'wp_ajax_nopriv_epkb_submit_quiz_attempt', array( $this, 'submit_quiz_attempt' ) );
 	}
 
 	/**
@@ -99,7 +99,6 @@ class EPKB_Quizzes_Ctrl {
 				'quiz'                => EPKB_Quizzes_Utilities::get_quiz_payload( $saved_quiz ),
 				'quiz_row_html'       => EPKB_Quizzes_Page::display_quiz_list_row( $saved_quiz, true ),
 				'is_new_quiz'         => $is_new_quiz,
-				'show_interest_modal' => EPKB_Quizzes_Utilities::should_show_interest_modal(),
 			);
 		} );
 
@@ -175,7 +174,7 @@ class EPKB_Quizzes_Ctrl {
 
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_quizzes_write' );
 
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' ) ) {
+		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_quizzes_write' ) ) {
 			wp_send_json_error( array( 'message' => __( 'You do not have permission to use AI quiz generation.', 'echo-knowledge-base' ) ) );
 		}
 
@@ -238,7 +237,6 @@ class EPKB_Quizzes_Ctrl {
 				'quiz'                => EPKB_Quizzes_Utilities::get_quiz_payload( $saved_quiz ),
 				'quiz_row_html'       => EPKB_Quizzes_Page::display_quiz_list_row( $saved_quiz, true ),
 				'is_new_quiz'         => $is_new_quiz,
-				'show_interest_modal' => EPKB_Quizzes_Utilities::should_show_interest_modal(),
 			);
 		} );
 
@@ -250,57 +248,57 @@ class EPKB_Quizzes_Ctrl {
 	}
 
 	/**
-	 * Submit quiz interest feedback.
+	 * Send quiz completion notification.
 	 */
-	public function submit_quiz_interest() {
+	public function submit_quiz_attempt() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_quizzes_write' );
-
-		$first_name = sanitize_text_field( EPKB_Utilities::post( 'first_name' ) );
-		$email = sanitize_email( EPKB_Utilities::post( 'email', '', 'email' ) );
-		$feedback = sanitize_textarea_field( EPKB_Utilities::post( 'feedback', '', 'text-area' ) );
-
-		if ( ! empty( $email ) && ! is_email( $email ) ) {
-			wp_send_json_error( array( 'message' => __( 'Please provide a valid email address.', 'echo-knowledge-base' ) ) );
+		$nonce_validation = $this->verify_public_quiz_nonce();
+		if ( is_wp_error( $nonce_validation ) ) {
+			wp_send_json_error( array( 'message' => $nonce_validation->get_error_message() ), 403 );
 		}
 
-		$feedback_message = "Quiz Interest Form\n";
-		$feedback_message .= 'Site URL: ' . get_site_url() . "\n";
-		$feedback_message .= 'Feedback: ' . ( $feedback === '' ? __( 'No additional feedback provided.', 'echo-knowledge-base' ) : $feedback );
-
-		$feedback_data = array(
-			'epkb_action'    => 'epkb_process_user_feedback',
-			'feedback_type'  => 'quiz_interest',
-			'feedback_input' => $feedback_message,
-			'plugin_name'    => 'KB',
-			'plugin_version' => class_exists( 'Echo_Knowledge_Base' ) ? Echo_Knowledge_Base::$version : 'N/A',
-			'first_version'  => '',
-			'wp_version'     => '',
-			'theme_info'     => '',
-			'contact_user'   => trim( $email . ' - ' . $first_name, ' -' ),
-			'first_name'     => $first_name,
-			'email_subject'  => 'Quiz Interest Form',
-		);
-
-		$response = wp_remote_post(
-			esc_url_raw( add_query_arg( $feedback_data, 'https://www.echoknowledgebase.com' ) ),
-			array(
-				'timeout'   => 15,
-				'body'      => $feedback_data,
-				'sslverify' => false,
-			)
-		);
-
-		if ( is_wp_error( $response ) ) {
-			wp_send_json_error( array( 'message' => __( 'Failed to submit feedback. Please try again.', 'echo-knowledge-base' ) ) );
+		if ( ! EPKB_Quizzes_Utilities::is_feature_enabled() ) {
+			wp_send_json_error( array( 'message' => __( 'Quizzes are disabled.', 'echo-knowledge-base' ) ), 400 );
 		}
 
-		update_option( EPKB_Quizzes_Utilities::OPTION_INTEREST_SUBMITTED, 'on', false );
-		update_option( EPKB_Quizzes_Utilities::OPTION_INTEREST_LAST_SUBMITTED_AT, current_time( 'mysql' ), false );
+		$kb_config = EPKB_Quizzes_Utilities::get_shared_config();
+		$to_email = empty( $kb_config['quizzes_notification_email'] ) ? '' : sanitize_email( $kb_config['quizzes_notification_email'] );
+		if ( empty( $to_email ) ) {
+			wp_send_json_success( array( 'email_sent' => false ) );
+		}
 
-		wp_send_json_success( array(
-			'message' => __( 'Thank you. Your feedback has been submitted.', 'echo-knowledge-base' ),
-		) );
+		if ( ! is_email( $to_email ) ) {
+			wp_send_json_error( array( 'message' => __( 'Quiz notification email is invalid.', 'echo-knowledge-base' ) ), 400 );
+		}
+
+		$quiz = EPKB_Quizzes_Utilities::get_quiz( absint( EPKB_Utilities::post( 'quiz_id', 0 ) ) );
+		if ( empty( $quiz ) || $quiz->post_status !== 'publish' ) {
+			wp_send_json_error( array( 'message' => __( 'Quiz not found.', 'echo-knowledge-base' ) ), 404 );
+		}
+
+		$quiz_payload = EPKB_Quizzes_Utilities::get_quiz_payload( $quiz );
+		$source_state = EPKB_Quizzes_Utilities::get_source_article_state( $quiz_payload['source_article_id'] );
+		if ( empty( $quiz_payload['questions'] ) || ! $source_state['is_renderable'] ) {
+			wp_send_json_error( array( 'message' => __( 'Quiz cannot be submitted.', 'echo-knowledge-base' ) ), 400 );
+		}
+
+		$answers = $this->decode_quiz_attempt_answers_from_request();
+		if ( is_wp_error( $answers ) ) {
+			wp_send_json_error( array( 'message' => $answers->get_error_message() ), 400 );
+		}
+
+		$attempt_result = $this->get_quiz_attempt_result( $quiz_payload, $answers );
+		if ( is_wp_error( $attempt_result ) ) {
+			wp_send_json_error( array( 'message' => $attempt_result->get_error_message() ), 400 );
+		}
+
+		$subject = sprintf( __( 'Quiz Taken: %s', 'echo-knowledge-base' ), $quiz_payload['title'] );
+		$email_error = EPKB_Utilities::send_email( $this->get_quiz_attempt_email_message( $quiz_payload, $attempt_result ), true, $to_email, '', '', $subject );
+		if ( ! empty( $email_error ) ) {
+			wp_send_json_error( array( 'message' => $email_error ), 500 );
+		}
+
+		wp_send_json_success( array( 'email_sent' => true ) );
 	}
 
 	/**
@@ -318,6 +316,154 @@ class EPKB_Quizzes_Ctrl {
 
 		$questions = EPKB_Quizzes_Utilities::normalize_questions( $decoded_questions );
 		return is_wp_error( $questions ) ? $questions : $questions;
+	}
+
+	/**
+	 * Verify public quiz AJAX nonce.
+	 *
+	 * @return true|WP_Error
+	 */
+	private function verify_public_quiz_nonce() {
+
+		$wp_nonce = EPKB_Utilities::post( '_wpnonce_epkb_ajax_action' );
+		if ( empty( $wp_nonce ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $wp_nonce ) ), '_wpnonce_epkb_ajax_action' ) ) {
+			return new WP_Error( 'invalid_nonce', __( 'Refresh the page and try again.', 'echo-knowledge-base' ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Decode completed quiz answers JSON from request.
+	 *
+	 * @return array|WP_Error
+	 */
+	private function decode_quiz_attempt_answers_from_request() {
+
+		$answers_json = isset( $_POST['answers_json'] ) ? wp_unslash( $_POST['answers_json'] ) : '[]'; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$decoded_answers = json_decode( $answers_json, true );
+		if ( json_last_error() !== JSON_ERROR_NONE || ! is_array( $decoded_answers ) ) {
+			return new WP_Error( 'invalid_answers_json', __( 'Quiz answers could not be read.', 'echo-knowledge-base' ) );
+		}
+
+		$answers = array();
+		foreach ( $decoded_answers as $answer ) {
+			if ( ! is_array( $answer ) ) {
+				return new WP_Error( 'invalid_answer', __( 'Quiz answers are invalid.', 'echo-knowledge-base' ) );
+			}
+
+			$question_id = empty( $answer['question_id'] ) ? '' : sanitize_key( $answer['question_id'] );
+			if ( $question_id === '' || ! isset( $answer['selected_choice'] ) || ! is_numeric( $answer['selected_choice'] ) ) {
+				return new WP_Error( 'invalid_answer', __( 'Quiz answers are invalid.', 'echo-knowledge-base' ) );
+			}
+
+			$answers[ $question_id ] = (int) $answer['selected_choice'];
+		}
+
+		return $answers;
+	}
+
+	/**
+	 * Build trusted quiz attempt result from stored quiz answers.
+	 *
+	 * @param array $quiz_payload
+	 * @param array $answers
+	 * @return array|WP_Error
+	 */
+	private function get_quiz_attempt_result( $quiz_payload, $answers ) {
+
+		$total_count = count( $quiz_payload['questions'] );
+		$correct_count = 0;
+		$rows = array();
+
+		foreach ( $quiz_payload['questions'] as $question ) {
+			if ( ! isset( $answers[ $question['id'] ] ) ) {
+				return new WP_Error( 'incomplete_answers', __( 'Answer every quiz question before submitting.', 'echo-knowledge-base' ) );
+			}
+
+			$selected_choice = (int) $answers[ $question['id'] ];
+			$correct_choice = (int) $question['correct_choice'];
+			if ( $selected_choice < 0 || ! isset( $question['choices'][ $selected_choice ] ) || ! isset( $question['choices'][ $correct_choice ] ) ) {
+				return new WP_Error( 'invalid_answer_choice', __( 'Quiz answers are invalid.', 'echo-knowledge-base' ) );
+			}
+
+			$is_correct = $selected_choice === $correct_choice;
+			$correct_count += $is_correct ? 1 : 0;
+			$rows[] = array(
+				'question'        => $question['question'],
+				'selected_answer' => $question['choices'][ $selected_choice ],
+				'correct_answer'  => $question['choices'][ $correct_choice ],
+				'is_correct'      => $is_correct,
+			);
+		}
+
+		return array(
+			'completed_at'  => wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
+			'user_label'    => $this->get_quiz_attempt_user_label(),
+			'correct_count' => $correct_count,
+			'total_count'   => $total_count,
+			'percent'       => $total_count === 0 ? 0 : round( ( $correct_count / $total_count ) * 100 ),
+			'rows'          => $rows,
+		);
+	}
+
+	/**
+	 * Get current quiz taker label.
+	 *
+	 * @return string
+	 */
+	private function get_quiz_attempt_user_label() {
+
+		$user = wp_get_current_user();
+		if ( $user instanceof WP_User && $user->exists() ) {
+			$user_name = empty( $user->display_name ) ? $user->user_login : $user->display_name;
+			return empty( $user->user_email ) ? $user_name : $user_name . ' <' . $user->user_email . '>';
+		}
+
+		return __( 'Anonymous visitor', 'echo-knowledge-base' );
+	}
+
+	/**
+	 * Build quiz attempt notification email.
+	 *
+	 * @param array $quiz_payload
+	 * @param array $attempt_result
+	 * @return string
+	 */
+	private function get_quiz_attempt_email_message( $quiz_payload, $attempt_result ) {
+
+		$article_link = empty( $quiz_payload['source_article_url'] )
+			? esc_html( $quiz_payload['source_article_label'] )
+			: '<a href="' . esc_url( $quiz_payload['source_article_url'] ) . '">' . esc_html( $quiz_payload['source_article_label'] ) . '</a>';
+
+		$rows_html = '';
+		foreach ( $attempt_result['rows'] as $row ) {
+			$rows_html .= '<tr>' .
+				'<td style="padding:8px;border:1px solid #ddd;">' . esc_html( $row['question'] ) . '</td>' .
+				'<td style="padding:8px;border:1px solid #ddd;">' . esc_html( $row['selected_answer'] ) . '</td>' .
+				'<td style="padding:8px;border:1px solid #ddd;">' . esc_html( $row['is_correct'] ? __( 'Correct', 'echo-knowledge-base' ) : __( 'Incorrect', 'echo-knowledge-base' ) ) . '</td>' .
+				'<td style="padding:8px;border:1px solid #ddd;">' . esc_html( $row['correct_answer'] ) . '</td>' .
+			'</tr>';
+		}
+
+		return '<html><body style="font-family:Arial,sans-serif;color:#222;">' .
+			'<h2>' . esc_html__( 'Quiz Taken', 'echo-knowledge-base' ) . '</h2>' .
+			'<p><strong>' . esc_html__( 'Article:', 'echo-knowledge-base' ) . '</strong> ' . $article_link . '</p>' .
+			'<p><strong>' . esc_html__( 'Quiz:', 'echo-knowledge-base' ) . '</strong> ' . esc_html( $quiz_payload['title'] ) . '</p>' .
+			'<p><strong>' . esc_html__( 'User:', 'echo-knowledge-base' ) . '</strong> ' . esc_html( $attempt_result['user_label'] ) . '</p>' .
+			'<p><strong>' . esc_html__( 'When Taken:', 'echo-knowledge-base' ) . '</strong> ' . esc_html( $attempt_result['completed_at'] ) . '</p>' .
+			'<p><strong>' . esc_html__( 'Result:', 'echo-knowledge-base' ) . '</strong> ' . esc_html( $attempt_result['correct_count'] . '/' . $attempt_result['total_count'] . ' (' . $attempt_result['percent'] . '%)' ) . '</p>' .
+			'<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;max-width:900px;">' .
+				'<thead><tr>' .
+					'<th style="padding:8px;border:1px solid #ddd;text-align:left;">' . esc_html__( 'Question', 'echo-knowledge-base' ) . '</th>' .
+					'<th style="padding:8px;border:1px solid #ddd;text-align:left;">' . esc_html__( 'Selected Answer', 'echo-knowledge-base' ) . '</th>' .
+					'<th style="padding:8px;border:1px solid #ddd;text-align:left;">' . esc_html__( 'Result', 'echo-knowledge-base' ) . '</th>' .
+					'<th style="padding:8px;border:1px solid #ddd;text-align:left;">' . esc_html__( 'Correct Answer', 'echo-knowledge-base' ) . '</th>' .
+				'</tr></thead>' .
+				'<tbody>' . $rows_html . '</tbody>' .
+			'</table>' .
+			'<p><strong>' . esc_html__( 'Site:', 'echo-knowledge-base' ) . '</strong> <a href="' . esc_url( home_url() ) . '">' . esc_html( get_bloginfo( 'name' ) ) . '</a></p>' .
+		'</body></html>';
 	}
 
 	/**

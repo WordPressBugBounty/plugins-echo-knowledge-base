@@ -46,6 +46,9 @@
             "Failed to start verification": [
                 "Verifizierung konnte nicht gestartet werden"
             ],
+            "Sync stopped. Please try again.": [
+                "Synchronisierung gestoppt. Bitte versuchen Sie es erneut."
+            ],
             "A sync job is already running.": [
                 "Eine Synchronisierungsaufgabe läuft bereits."
             ],

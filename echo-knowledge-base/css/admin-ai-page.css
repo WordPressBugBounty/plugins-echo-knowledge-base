@@ -2305,6 +2305,17 @@ button .epkb-ai-spinner {
   letter-spacing: 0.5px;
 }
 
+.epkb-ai-settings-section--ai_permissions .epkb-ai-core-permissions-box__description {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #50575E;
+}
+.epkb-ai-settings-section--ai_permissions .epkb-ai-core-permissions-box__button {
+  display: inline-flex;
+  align-items: center;
+}
+
 #ekb-admin-page-wrap.epkb-ai-admin-page .epkb-ai-general-settings-container {
   margin-top: 0;
 }
@@ -3930,57 +3941,6 @@ button .epkb-ai-spinner {
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   color: #FFFFFF;
-}
-.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-validate-fix-notice {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 14px 20px;
-  background: #EFF6FF;
-  border-bottom: 1px solid #BFDBFE;
-  color: #1E3A8A;
-}
-.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-validate-fix-notice__icon {
-  font-size: 20px;
-  color: #2563EB;
-  line-height: 1.4;
-  flex-shrink: 0;
-}
-.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-validate-fix-notice__body {
-  flex: 1;
-  min-width: 0;
-}
-.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-validate-fix-notice__title {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: #1E3A8A;
-  margin-bottom: 4px;
-}
-.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-validate-fix-notice__text {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #1E40AF;
-}
-.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-validate-fix-notice__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-validate-fix-notice__dismiss {
-  background: transparent;
-  border: none;
-  padding: 6px 8px;
-  cursor: pointer;
-  color: #1E3A8A;
-  font-size: 14px;
-  line-height: 1;
-  border-radius: 4px;
-}
-.epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-validate-fix-notice__dismiss:hover {
-  background: rgba(30, 58, 138, 0.08);
 }
 .epkb-ai-training-data-container .epkb-ai-data-source-settings .epkb-ai-help-section {
   margin: 0;

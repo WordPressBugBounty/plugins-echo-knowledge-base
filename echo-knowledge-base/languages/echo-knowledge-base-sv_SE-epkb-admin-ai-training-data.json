@@ -37,9 +37,6 @@
             "OFF": [
                 "AV"
             ],
-            "Optional": [
-                "Valfri"
-            ],
             "View Full Documentation": [
                 "Visa fullständig dokumentation"
             ],
@@ -60,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "Skicka data till AI"
+            ],
+            "Optional": [
+                "Valfri"
             ],
             "Collection name cannot be empty": [
                 "Samlingens namn får inte vara tomt"
@@ -259,15 +259,6 @@
             "Choose an Action": [
                 "Välj en åtgärd"
             ],
-            "Recommended: Validate & Fix Synced Items": [
-                "Rekommenderas: Validera och åtgärda synkroniserade objekt"
-            ],
-            "Recent plugin updates fixed issues that may have left orphan files in your AI Vector Store. Run the \"Validate & Fix\" option below once to reconcile synced items with what is stored in the AI.": [
-                "Senaste uppdateringar av tillägget åtgärdade problem som kan ha lämnat kvar föräldralösa filer i din AI-vektorlagring. Kör alternativet ”Validera och åtgärda” nedan en gång för att stämma av synkroniserade objekt med det som lagras i AI:n."
-            ],
-            "Dismiss": [
-                "Stäng"
-            ],
             "Validate & Fix": [
                 "Validera och åtgärda"
             ],
@@ -318,9 +309,6 @@
             ],
             "Access Manager Notice": [
                 "Åtkomsthanterarens meddelande"
-            ],
-            "Currently only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
-                "För närvarande kan endast artiklar som är offentligt tillgängliga laddas upp till AI. Artiklar med åtkomstbegränsningar kommer inte att ingå i maskininlärningsdata."
             ],
             "Loading content types...": [
                 "Laddar innehållstyper..."

@@ -43,12 +43,6 @@
             "Errors": [
                 "Errori"
             ],
-            "Email": [
-                "E-mail"
-            ],
-            "Feedback": [
-                "Feedback"
-            ],
             "Reset": [
                 "Ripristina"
             ],
@@ -67,11 +61,17 @@
             "API Configuration": [
                 "Configurazione API"
             ],
+            "Feedback": [
+                "Feedback"
+            ],
             "AI Assistant": [
                 "Assistente IA"
             ],
             "Name": [
                 "Nome"
+            ],
+            "Email": [
+                "E-mail"
             ],
             "Message": [
                 "Messaggio"
@@ -231,6 +231,9 @@
             ],
             "Full Conversation": [
                 "Conversazione completa"
+            ],
+            "AI Error": [
+                "Errore IA"
             ],
             "No messages in this conversation.": [
                 "Nessun messaggio in questa conversazione."

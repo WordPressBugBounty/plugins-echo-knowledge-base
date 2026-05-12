@@ -37,9 +37,6 @@
             "OFF": [
                 "AUS"
             ],
-            "Optional": [
-                "Optional"
-            ],
             "View Full Documentation": [
                 "Vollständige Dokumentation anzeigen"
             ],
@@ -60,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "Daten an KI senden"
+            ],
+            "Optional": [
+                "Optional"
             ],
             "Collection name cannot be empty": [
                 "Der Sammlungsname darf nicht leer sein"
@@ -178,6 +178,21 @@
             "Cannot change actions while validation is in progress": [
                 "Aktionen können während der laufenden Validierung nicht geändert werden"
             ],
+            "Checking available WordPress items...": [
+                "Verfügbare WordPress-Elemente werden geprüft..."
+            ],
+            "Unable to load available WordPress items": [
+                "Verfügbare WordPress-Elemente konnten nicht geladen werden"
+            ],
+            "Click Refresh to try again.": [
+                "Klicken Sie auf Aktualisieren, um es erneut zu versuchen."
+            ],
+            "Available WordPress items to add: %s": [
+                "Verfügbare WordPress-Elemente zum Hinzufügen: %s"
+            ],
+            "Created in WordPress and not yet added to this collection.": [
+                "In WordPress erstellt und noch nicht zu dieser Sammlung hinzugefügt."
+            ],
             "Collection name updated successfully": [
                 "Sammlungsname erfolgreich aktualisiert"
             ],
@@ -223,14 +238,29 @@
             "marked outdated": [
                 "als veraltet markiert"
             ],
+            "WordPress items": [
+                "WordPress-Elemente"
+            ],
+            "PDFs": [
+                "PDFs"
+            ],
+            "AI Notes": [
+                "KI-Notizen"
+            ],
+            "other files": [
+                "andere Dateien"
+            ],
+            "orphan files removed from AI store": [
+                "verwaiste Dateien aus dem KI-Speicher entfernt"
+            ],
             "Run sync to re-upload outdated items.": [
                 "Synchronisieren Sie, um veraltete Elemente erneut hochzuladen."
             ],
             "Choose an Action": [
                 "Aktion auswählen"
             ],
-            "Dismiss": [
-                "Schließen"
+            "Validate & Fix": [
+                "Validieren & Reparieren"
             ],
             "Choose content types (KB Articles, Posts, Pages) to load into the table. This does not send anything to AI yet.": [
                 "Wählen Sie Inhaltstypen (KB-Artikel, Beiträge, Seiten) aus, die in die Tabelle geladen werden sollen. Dies sendet noch nichts an KI."
@@ -280,8 +310,8 @@
             "Access Manager Notice": [
                 "Hinweis zum Zugriff-Manager"
             ],
-            "Currently only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
-                "Derzeit können nur öffentlich zugängliche Artikel in KI-Trainingsdaten hochgeladen werden. Artikel mit Zugriffsbeschränkungen werden nicht in die Trainingsdaten aufgenommen."
+            "Only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
+                "Nur öffentlich zugängliche Artikel können zur KI hochgeladen werden. Artikel mit Zugriffsbeschränkungen werden nicht in die Trainingsdaten aufgenommen."
             ],
             "Loading content types...": [
                 "Lade Inhaltstypen..."
@@ -340,11 +370,17 @@
             "Run an extra validation pass to make sure the local database and the AI store stay in sync. If a file is missing from the AI store, it will be marked as outdated so it can be re-sent.": [
                 "Führen Sie einen zusätzlichen Validierungsdurchlauf aus, um sicherzustellen, dass die lokale Datenbank und der KI-Speicher synchron bleiben. Wenn eine Datei im KI-Speicher fehlt, wird sie als veraltet markiert, damit sie erneut gesendet werden kann."
             ],
+            "This checks Added and Updated items already tracked in this collection and removes orphaned WordPress items, PDFs, and AI Notes found only in the AI store. No local database items are deleted.": [
+                "Dies überprüft hinzugefügte und aktualisierte Elemente, die bereits in dieser Sammlung verfolgt werden, und entfernt verwaiste WordPress-Elemente, PDFs und KI-Notizen, die nur im KI-Speicher gefunden wurden. Es werden keine lokalen Datenbankelemente gelöscht."
+            ],
             "Collection:": [
                 "Sammlung:"
             ],
             "synced items ready to validate": [
                 "synchronisierte Elemente bereit zur Validierung"
+            ],
+            "No Added or Updated items are available yet. Validation can still remove orphaned WordPress items, PDFs, and AI Notes left only in the AI store.": [
+                "Es sind noch keine hinzugefügten oder aktualisierten Elemente verfügbar. Die Validierung kann dennoch verwaiste WordPress-Elemente, PDFs und KI-Notizen entfernen, die nur im KI-Speicher verblieben sind."
             ],
             "Cancel Verify": [
                 "Überprüfung abbrechen"

@@ -1086,8 +1086,7 @@ class EPKB_Dashboard_Page {
 		}
 
 		wp_send_json_success( array(
-			'message'             => __( 'Quizzes have been enabled.', 'echo-knowledge-base' ),
-			'show_interest_modal' => EPKB_Quizzes_Utilities::should_show_interest_modal(),
+			'message' => __( 'Quizzes have been enabled.', 'echo-knowledge-base' ),
 		) );
 	}
 

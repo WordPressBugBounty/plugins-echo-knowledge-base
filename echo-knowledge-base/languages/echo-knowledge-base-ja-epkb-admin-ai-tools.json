@@ -31,9 +31,6 @@
             "Refresh": [
                 "更新"
             ],
-            "Warnings": [
-                "警告"
-            ],
             "Info": [
                 "情報"
             ],
@@ -138,6 +135,9 @@
             ],
             "Fatal Errors": [
                 "致命的エラー"
+            ],
+            "Warnings": [
+                "警告"
             ],
             "Notices": [
                 "通知"

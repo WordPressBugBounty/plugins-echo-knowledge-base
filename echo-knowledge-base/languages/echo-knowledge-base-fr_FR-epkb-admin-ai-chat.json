@@ -43,12 +43,6 @@
             "Errors": [
                 "Erreurs"
             ],
-            "Email": [
-                "E-mail"
-            ],
-            "Feedback": [
-                "Commentaires"
-            ],
             "Reset": [
                 "Réinitialiser"
             ],
@@ -67,11 +61,17 @@
             "API Configuration": [
                 "Configuration de l’API"
             ],
+            "Feedback": [
+                "Commentaires"
+            ],
             "AI Assistant": [
                 "Assistant IA"
             ],
             "Name": [
                 "Nom"
+            ],
+            "Email": [
+                "E-mail"
             ],
             "Message": [
                 "Message"

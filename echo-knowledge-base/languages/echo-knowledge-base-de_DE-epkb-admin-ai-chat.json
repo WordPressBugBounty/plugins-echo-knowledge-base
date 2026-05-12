@@ -43,12 +43,6 @@
             "Errors": [
                 "Fehler"
             ],
-            "Email": [
-                "E-Mail"
-            ],
-            "Feedback": [
-                "Feedback"
-            ],
             "Reset": [
                 "Zurücksetzen"
             ],
@@ -67,11 +61,17 @@
             "API Configuration": [
                 "API-Konfiguration"
             ],
+            "Feedback": [
+                "Feedback"
+            ],
             "AI Assistant": [
                 "KI-Assistent"
             ],
             "Name": [
                 "Name"
+            ],
+            "Email": [
+                "E-Mail"
             ],
             "Message": [
                 "Nachricht"
@@ -111,6 +111,9 @@
             ],
             "Trigger": [
                 "Auslöser"
+            ],
+            "AI error recorded in this conversation": [
+                "AI-Fehler in dieser Konversation aufgezeichnet"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "Möchten Sie die ausgewählten Konversationen wirklich löschen?"
@@ -190,6 +193,18 @@
             "Agent Handover": [
                 "Agenten-Übergabe"
             ],
+            "The most recent AI request failed for this conversation": [
+                "Die letzte AI-Anfrage für diese Konversation ist fehlgeschlagen"
+            ],
+            "An earlier AI request failed during this conversation": [
+                "Eine frühere AI-Anfrage ist während dieser Konversation fehlgeschlagen"
+            ],
+            "Failed": [
+                "Fehlgeschlagen"
+            ],
+            "Error Logged": [
+                "Fehler protokolliert"
+            ],
             "Number of messages": [
                 "Anzahl der Nachrichten"
             ],
@@ -216,6 +231,9 @@
             ],
             "Full Conversation": [
                 "Vollständige Konversation"
+            ],
+            "AI Error": [
+                "AI-Fehler"
             ],
             "No messages in this conversation.": [
                 "Keine Nachrichten in dieser Konversation."

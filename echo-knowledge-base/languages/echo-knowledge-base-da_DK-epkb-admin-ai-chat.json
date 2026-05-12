@@ -43,12 +43,6 @@
             "Errors": [
                 "Fejl"
             ],
-            "Email": [
-                "E-mail"
-            ],
-            "Feedback": [
-                "Feedback"
-            ],
             "Reset": [
                 "Nulstil"
             ],
@@ -67,11 +61,17 @@
             "API Configuration": [
                 "API-konfiguration"
             ],
+            "Feedback": [
+                "Feedback"
+            ],
             "AI Assistant": [
                 "AI-assistent"
             ],
             "Name": [
                 "Navn"
+            ],
+            "Email": [
+                "E-mail"
             ],
             "Message": [
                 "Besked"
@@ -111,6 +111,9 @@
             ],
             "Trigger": [
                 "Udløser"
+            ],
+            "AI error recorded in this conversation": [
+                "AI-fejl registreret i denne samtale"
             ],
             "Are you sure you want to delete the selected conversations?": [
                 "Er du sikker på, at du vil slette de valgte samtaler?"
@@ -190,6 +193,18 @@
             "Agent Handover": [
                 "Overdragelse til agent"
             ],
+            "The most recent AI request failed for this conversation": [
+                "Den seneste AI-anmodning mislykkedes for denne samtale"
+            ],
+            "An earlier AI request failed during this conversation": [
+                "En tidligere AI-anmodning mislykkedes under denne samtale"
+            ],
+            "Failed": [
+                "Mislykkedes"
+            ],
+            "Error Logged": [
+                "Fejl logget"
+            ],
             "Number of messages": [
                 "Antal beskeder"
             ],
@@ -216,6 +231,9 @@
             ],
             "Full Conversation": [
                 "Hele samtalen"
+            ],
+            "AI Error": [
+                "AI-fejl"
             ],
             "No messages in this conversation.": [
                 "Ingen beskeder i denne samtale."

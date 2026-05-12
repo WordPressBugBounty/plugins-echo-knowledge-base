@@ -362,26 +362,10 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 			)
 		) );
 
-		// Dismiss the Validate & Fix recommendation notice
-		register_rest_route( $this->admin_namespace, '/training-data/dismiss-validate-fix-notice', array(
-			'methods'             => WP_REST_Server::CREATABLE,
-			'callback'            => array( $this, 'dismiss_validate_fix_notice' ),
-			'permission_callback' => array( $this, 'check_admin_permission' ),
-		) );
-	}
+		}
 
-	/**
-	 * Persist the user's dismissal of the Validate & Fix recommendation notice.
-	 *
-	 * @return WP_REST_Response
-	 */
-	public function dismiss_validate_fix_notice() {
-		EPKB_Core_Utilities::add_kb_flag( 'ai_validate_fix_notice_dismissed' );
-		return $this->create_rest_response( array( 'success' => true ) );
-	}
-
-	/**
-	 * Get sync status
+		/**
+		 * Get sync status
 	 *
 	 * Returns comprehensive sync status information including progress tracking,
 	 * health checks, and recent sync history. This uses the get_status() method
@@ -500,8 +484,15 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 		// Calculate pagination
 		$total_pages = ceil( $total / $per_page );
 
-		// Get total status counts for the collection
-		$status_stats = $training_data_db->get_status_statistics( $collection_id );
+		// Get status counts for the active table filters. Status itself is intentionally omitted so tab totals stay available.
+		$stats_filters = array();
+		if ( ! empty( $type ) ) {
+			$stats_filters['type'] = $type;
+		}
+		if ( ! empty( $search ) ) {
+			$stats_filters['search'] = $search;
+		}
+		$status_stats = $training_data_db->get_status_statistics( $collection_id, $stats_filters );
 
 		// Get all available types for the current status filter
 		$available_types = $training_data_db->get_collection_types( $collection_id, $status );
@@ -1862,18 +1853,6 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 	 * @return bool|WP_Error
 	 */
 	public function check_admin_permission( $request ) {
-		
-		// Check nonce
-		$nonce_check = EPKB_AI_Security::check_rest_nonce( $request );
-		if ( is_wp_error( $nonce_check ) ) {
-			return $nonce_check;
-		}
-		
-		// Check user capability
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_ai_feature' ) ) {
-			return new WP_Error( 'rest_forbidden', __( 'You do not have permission to manage AI sync', 'echo-knowledge-base' ),	array( 'status' => 403 ) );
-		}
-		
-		return true;
+		return $this->check_ai_admin_permission( $request, 'admin', __( 'You do not have permission to manage AI training data.', 'echo-knowledge-base' ) );
 	}
 }

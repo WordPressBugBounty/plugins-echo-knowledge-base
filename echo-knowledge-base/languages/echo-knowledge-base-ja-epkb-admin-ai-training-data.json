@@ -37,9 +37,6 @@
             "OFF": [
                 "オフ"
             ],
-            "Optional": [
-                "任意"
-            ],
             "View Full Documentation": [
                 "全ドキュメントを見る"
             ],
@@ -60,6 +57,9 @@
             ],
             "Send Data to AI": [
                 "データをAIに送信"
+            ],
+            "Optional": [
+                "任意"
             ],
             "Collection name cannot be empty": [
                 "コレクション名を空にすることはできません"
@@ -259,15 +259,6 @@
             "Choose an Action": [
                 "アクションを選択してください。"
             ],
-            "Recommended: Validate & Fix Synced Items": [
-                "推奨: 同期済みアイテムの検証と修正"
-            ],
-            "Recent plugin updates fixed issues that may have left orphan files in your AI Vector Store. Run the \"Validate & Fix\" option below once to reconcile synced items with what is stored in the AI.": [
-                "最近のプラグインアップデートにより、AIベクターストアに孤立したファイルが残る可能性があった問題が修正されました。以下の「検証と修正」オプションを一度実行して、同期されたアイテムとAIに保存されている内容を照合してください。."
-            ],
-            "Dismiss": [
-                "閉じる"
-            ],
             "Validate & Fix": [
                 "検証と修正"
             ],
@@ -319,8 +310,8 @@
             "Access Manager Notice": [
                 "アクセスマネージャーのお知らせ"
             ],
-            "Currently only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
-                "現在、公開されている記事のみAIにアップロードできます。アクセス制限のある記事は機械学習データには含まれません。."
+            "Only publicly accessible articles can be uploaded to AI. Articles with access restrictions will not be included in the training data.": [
+                "公開されている記事のみを AI にアップロードできます。アクセス制限のある記事は学習データには含まれません。."
             ],
             "Loading content types...": [
                 "コンテンツタイプを読み込み中..."
