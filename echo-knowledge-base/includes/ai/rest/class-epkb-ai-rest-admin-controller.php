@@ -91,6 +91,7 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 
 		// Get tab context for validation (optional parameter: 'chat', 'search', etc.)
 		$tab_context = $request->get_param( 'tab_context' );
+		$is_chat_settings_context = isset( $settings['ai_chat_enabled'] ) || isset( $settings['ai_chat_display_mode'] ) || isset( $settings['ai_chat_display_collection'] );
 
 		// Prepare and sanitize settings based on specifications
 		$specs = EPKB_AI_Config_Specs::get_config_fields_specifications();
@@ -175,34 +176,24 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			}
 		}
 
+		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
+
 		// Validate AI Chat collection IDs if saving from AI Chat tab
 		// Note: AI Search collection validation is handled in KB settings controller
 		if ( $tab_context === 'chat' ) {
-			$chat_collection_fields = array(
-				'ai_chat_display_collection',
-				'ai_chat_display_collection_2',
-				'ai_chat_display_collection_3',
-				'ai_chat_display_collection_4',
-				'ai_chat_display_collection_5'
-			);
+			$collection_issues = EPKB_AI_Chat_Tab::get_collection_issues( array_merge( $orig_config, $new_config ) );
 
-			foreach ( $chat_collection_fields as $field ) {
-				if ( ! empty( $new_config[$field] ) ) {
-					$collection_id = absint( $new_config[$field] );
-					$validation_error = EPKB_AI_Validation::validate_collection_has_vector_store( $collection_id, 'chat' );
-					if ( is_wp_error( $validation_error ) ) {
-						return $this->create_rest_response( array(
-							'success' => false,
-							'error' => $validation_error->get_error_code(),
-							'message' => $validation_error->get_error_message()
-						), 400 );
-					}
-				}
+			if ( ! empty( $collection_issues ) ) {
+				$collection_issue = reset( $collection_issues );
+				return $this->create_rest_response( array(
+					'success' => false,
+					'error' => 'chat_collection_invalid',
+					'message' => $collection_issue['message']
+				), 400 );
 			}
 		}
 
 		// Update only the provided fields (partial update)
-		$orig_config = EPKB_AI_Config_Specs::get_ai_config();
 		$result = EPKB_AI_Config_Specs::update_ai_config( $orig_config, $new_config );
 		if ( is_wp_error( $result ) ) {
 			$status_code = $result->get_error_code() == 'validation_failed' ? 400 : 500;
@@ -272,6 +263,10 @@ class EPKB_AI_REST_Admin_Controller extends EPKB_AI_REST_Base_Controller {
 			'settings' => $updated_ai_config,
 			'ai_config' => $updated_ai_config,
 		);
+
+		if ( $is_chat_settings_context ) {
+			$response_data['collection_issues'] = EPKB_AI_Chat_Tab::get_collection_issues( $updated_ai_config );
+		}
 		
 		if ( $widget_config !== null ) {
 			$response_data['widget_config'] = $widget_config;

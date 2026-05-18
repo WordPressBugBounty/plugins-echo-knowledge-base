@@ -117,18 +117,23 @@ class EPKB_AI_Config_Specs extends EPKB_AI_Config_Base {
 				'min'         => 0,
 				'max'         => 50
 			),
-				'ai_chat_widgets' => array(
-					'name'        => 'ai_chat_widgets',
-					'type'        => EPKB_Input_Filter::INTERNAL_ARRAY,
-					'default'     => array( 1 ),
-				),
-				'ai_chat_instructions' => array(
-					'name'        => 'ai_chat_instructions',
-					'type'        => EPKB_Input_Filter::AI_PROMPT,
-					'default'     => $default_instructions,
-					'min'         => 0,
-					'max'         => 10000
-				),
+			'ai_chat_widgets' => array(
+				'name'        => 'ai_chat_widgets',
+				'type'        => EPKB_Input_Filter::INTERNAL_ARRAY,
+				'default'     => array( 1 ),
+			),
+			'ai_chat_instructions' => array(
+				'name'        => 'ai_chat_instructions',
+				'type'        => EPKB_Input_Filter::AI_PROMPT,
+				'default'     => $default_instructions,
+				'min'         => 0,
+				'max'         => 10000
+			),
+			'ai_chat_copy_button_enabled' => array(
+				'name'        => 'ai_chat_copy_button_enabled',
+				'type'        => EPKB_Input_Filter::CHECKBOX,
+				'default'     => 'off'
+			),
 
 			/***  AI Chat Display Settings ***/
 			'ai_chat_display_mode' => array(

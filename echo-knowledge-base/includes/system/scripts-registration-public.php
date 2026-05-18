@@ -198,6 +198,7 @@ function epkb_load_public_resources() {
 	$handoff_heading = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_heading', __( 'Contact an Agent', 'echo-knowledge-base' ) );
 	$handoff_keywords = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_keywords', '' );
 	$handoff_consent_text = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_handoff_consent_text', __( 'By submitting this form, you agree that your contact details and chat transcript will be shared with our support team.', 'echo-knowledge-base' ) );
+	$copy_button_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_copy_button_enabled', 'off' );
 
 		wp_localize_script( 'epkb-ai-chat', 'epkbAIChat', array(
 			'rest_url'                        => esc_url_raw( rest_url() ),
@@ -229,6 +230,12 @@ function epkb_load_public_resources() {
 			'handoff_button_text'             => esc_html( $handoff_button_text ),
 			'handoff_keywords'                => $handoff_keywords,
 			'handoff_consent_text'            => esc_html( $handoff_consent_text ),
+			'copy_button_enabled'             => $copy_button_enabled,
+			'copy_chat_label'                 => esc_html__( 'Copy chat', 'echo-knowledge-base' ),
+			'copy_chat_success_label'         => esc_html__( 'Copied', 'echo-knowledge-base' ),
+			'copy_chat_error_label'           => esc_html__( 'Copy failed', 'echo-knowledge-base' ),
+			'copy_user_label'                 => esc_html__( 'User', 'echo-knowledge-base' ),
+			'copy_ai_label'                   => esc_html__( 'AI', 'echo-knowledge-base' ),
 			'handoff_intro_message'           => esc_html__( 'Connecting you with a human agent now. Please provide your details below.', 'echo-knowledge-base' ),
 			'handoff_success_message'         => esc_html__( 'Thanks! Our team will reach out via email shortly.', 'echo-knowledge-base' ),
 			'handoff_error_message'           => esc_html__( 'Unable to submit your request. Please try again.', 'echo-knowledge-base' ),

@@ -286,12 +286,13 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												/>
 
 											case 'custom_toggle':
+												const customToggleValue = typeof attributes[field_name] !== 'undefined' ? attributes[field_name] : field_specs.default;
 												return <ToggleControl
 													key={field_name}
 													disabled={isDisabled}
 													__nextHasNoMarginBottom={true}
 													label={field_specs.label}
-													checked={attributes[field_name] === field_specs.options['on']}
+													checked={customToggleValue === field_specs.options['on']}
 													onChange={(value) => setAttributes({[field_name]: (value ? field_specs.options['on'] : field_specs.options['off'])})}
 													className="epkb-block-ui-toggle-control"
 												/>

@@ -67,7 +67,7 @@ abstract class EPKB_Abstract_Block {
 				'description' => '',
 				'keywords' => $this->keywords,	// is internally wrapped into _x() - see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#internationalization
 				'attributes' => $this->get_attribute_types_and_defaults(),
-				'supports' => ['html' => false, 'align' => true, 'reusable' => false, 'customClassName' => false ],
+				'supports' => ['html' => false, 'align' => true, 'reusable' => false, 'customClassName' => false, 'customCSS' => false ],
 				'editor_script_handles' => [ $this->get_the_block_script_handle_for_editor_only() ],
 		
 				// Front-end scripts: use the block shim handle that depends on the canonical 'epkb-public-scripts'
@@ -301,6 +301,12 @@ abstract class EPKB_Abstract_Block {
 		$block_attributes = epkb_get_block_attributes( $this->block_name );
 		foreach ( $block_attributes as $block_setting_name => $block_spec ) {
 
+			// These values must be serialized explicitly because save_post uses the raw block attributes.
+			if ( in_array( $block_setting_name, array( 'kb_block_template_toggle', 'templates_for_kb' ) ) ) {
+				unset( $block_attributes[ $block_setting_name ]['default'] );
+				continue;
+			}
+
 			// allow block config to set default value instead of KB config
 			if ( isset( $block_config_defaults[ $block_setting_name ] ) ) {
 
@@ -445,13 +451,18 @@ abstract class EPKB_Abstract_Block {
 			return;
 		}
 
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		// Skip post types not registered yet because edit_post capability mapping is not reliable for them.
+		if ( empty( $post->post_type ) || ! post_type_exists( $post->post_type ) ) {
 			return;
 		}
 
 		// if block is not present in the post, then do nothing
 		$block_attributes = EPKB_Block_Utilities::parse_block_attributes_from_post( $post, $this->block_name );
 		if ( ! is_array( $block_attributes ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
 		}
 
@@ -480,12 +491,20 @@ abstract class EPKB_Abstract_Block {
 		//    'kb_block_template_toggle' - internal temporary indicator of user intention to use KB Custom Block Template
 		//    'template_toggle' - used by JS when user toggles 'on' the kb_block_template_toggle' settings
 		if ( EPKB_Block_Utilities::is_block_theme() ) {
-			$templates_for_kb = isset( $block_attributes['kb_block_template_toggle'] ) && $block_attributes['kb_block_template_toggle'] == 'on' ? 'kb_templates' : 'current_theme_templates';
+			if ( ! isset( $block_attributes['kb_block_template_toggle'] ) ) {
+				return;
+			}
+
+			$templates_for_kb = $block_attributes['kb_block_template_toggle'] == 'on' ? 'kb_templates' : 'current_theme_templates';
 		} else {
-			$templates_for_kb = isset( $block_attributes['templates_for_kb'] ) ? $block_attributes['templates_for_kb'] : 'kb_templates';
+			if ( ! isset( $block_attributes['templates_for_kb'] ) ) {
+				return;
+			}
+
+			$templates_for_kb = $block_attributes['templates_for_kb'];
 		}
 
-		$updated_kb_config = epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'templates_for_kb', $templates_for_kb );
+		epkb_get_instance()->kb_config_obj->set_value( $kb_id, 'templates_for_kb', $templates_for_kb );
 	}
 
 	/**

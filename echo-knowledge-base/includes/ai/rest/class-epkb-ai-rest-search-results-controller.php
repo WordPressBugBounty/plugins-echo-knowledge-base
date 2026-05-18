@@ -26,7 +26,7 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'get_section_content' ),
-				'permission_callback' => array( $this, 'check_admin_permission' ),
+				'permission_callback' => array( $this, 'check_public_permission' ),
 				'args'                => $this->get_section_params(),
 			)
 		);
@@ -49,7 +49,7 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'record_feedback' ),
-				'permission_callback' => array( $this, 'check_admin_permission' ),
+				'permission_callback' => array( $this, 'check_public_permission' ),
 				'args'                => $this->get_feedback_params(),
 			)
 		) );
@@ -59,7 +59,7 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'submit_contact_support' ),
-				'permission_callback' => array( $this, 'check_admin_permission' ),
+				'permission_callback' => array( $this, 'check_public_permission' ),
 				'args'                => $this->get_contact_support_params(),
 			)
 		) );
@@ -135,14 +135,8 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 			'collection_id' => $collection_id,
 		);
 
-		// Get section data via filter hook or demo data
-			define( 'ECKB_AI_USE_DEMO_DATA', false );   // for testing only
-		if ( defined( 'EPCB_AI_USE_DEMO_DATA' ) && ECKB_AI_USE_DEMO_DATA && in_array( $section_id, ['ai-answer','matching-articles', 'contact-us', 'feedback'] ) ) {
-			$section_data = EPKB_KB_Demo_Data::get_ai_search_results_section_demo_data( $section_id, $data );
-		} else {
-			// This allows ai-features-pro or other plugins to provide section content
-			$section_data = apply_filters( 'epkb_ai_search_results_get_section', null, $section_id, $data );
-		}
+		// This allows ai-features-pro or other plugins to provide section content
+		$section_data = apply_filters( 'epkb_ai_search_results_get_section', null, $section_id, $data );
 
 		// Validate response
 		if ( empty( $section_data ) || ! is_array( $section_data ) ) {
@@ -423,13 +417,12 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 	}
 
 	/**
-	 * Check REST nonce and feature enabled
-	 * TODO: Rename to check_public_permission() - this is a public endpoint that does not check admin capability
+	 * Check REST nonce and feature state for public AI Search Results requests.
 	 *
 	 * @param WP_REST_Request $request
 	 * @return bool|WP_Error
 	 */
-	public function check_admin_permission( $request ) {
+	public function check_public_permission( $request ) {
 
 		// Check nonce
 		$nonce_check = EPKB_AI_Security::check_rest_nonce( $request );

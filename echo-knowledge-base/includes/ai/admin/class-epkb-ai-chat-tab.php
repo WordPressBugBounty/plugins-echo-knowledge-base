@@ -80,7 +80,7 @@ class EPKB_AI_Chat_Tab {
 				'title' => __( 'AI Chat Settings', 'echo-knowledge-base' ),
 				'icon' => 'epkbfa epkbfa-comments',
 				'sub_tab' => 'chat-settings',
-					'fields' => array(
+				'fields' => array(
 					'ai_chat_enabled' => array(
 						'type' => 'radio',
 						'label' => __( 'AI Chat Mode', 'echo-knowledge-base' ),
@@ -102,23 +102,30 @@ class EPKB_AI_Chat_Tab {
 						'default' => EPKB_AI_Config_Specs::get_default_value( 'ai_chat_instructions' ),
 						'show_reset' => true
 					),
-						'ai_chat_preset' => array(
-							'type' => 'select',
-							'label' => __( 'Choose AI Behavior', 'echo-knowledge-base' ),
-							'value' => EPKB_AI_Provider::get_feature_preset( 'chat', $ai_config ),
-							'options' => $preset_options,
-							'description' => __( 'Choose whether AI Chat should prioritize speed, balance, or answer quality.', 'echo-knowledge-base' ),
-							'field_class' => 'epkb-ai-behavior-preset-select'
-						),
+					'ai_chat_preset' => array(
+						'type' => 'select',
+						'label' => __( 'Choose AI Behavior', 'echo-knowledge-base' ),
+						'value' => EPKB_AI_Provider::get_feature_preset( 'chat', $ai_config ),
+						'options' => $preset_options,
+						'description' => __( 'Choose whether AI Chat should prioritize speed, balance, or answer quality.', 'echo-knowledge-base' ),
+						'field_class' => 'epkb-ai-behavior-preset-select'
+					),
 					'ai_show_sources' => array(
 						'type' => 'checkbox',
 						'label' => __( 'Show Source References', 'echo-knowledge-base' ),
 						'value' => $ai_config['ai_show_sources'],
-							'description' => __( 'Display links to source articles that were used to generate the AI answer', 'echo-knowledge-base' ),
-							'field_class' => 'epkb-ai-show-sources'
-						)
-						)
+						'description' => __( 'Display links to source articles that were used to generate the AI answer', 'echo-knowledge-base' ),
+						'field_class' => 'epkb-ai-show-sources'
 					),
+					'ai_chat_copy_button_enabled' => array(
+						'type' => 'checkbox',
+						'label' => __( 'Show Copy Chat Button', 'echo-knowledge-base' ),
+						'value' => $ai_config['ai_chat_copy_button_enabled'],
+						'description' => __( 'Display a button in the AI Chat window header that copies the visible chat transcript.', 'echo-knowledge-base' ),
+						'field_class' => 'epkb-ai-chat-copy-button'
+					)
+				)
+			),
 			'display_settings' => self::get_display_settings_section( $ai_config ),
 			'handoff_settings' => self::get_handoff_settings_section( $ai_config ),
 			'default_chat_widget' => self::get_widget_settings_section()
@@ -131,16 +138,9 @@ class EPKB_AI_Chat_Tab {
 	 * @param array $ai_config
 	 * @return array
 	 */
-	private static function get_collection_issues( $ai_config ) {
+	public static function get_collection_issues( $ai_config ) {
 		$issues = array();
-
-		$collection_fields = array(
-			'ai_chat_display_collection',
-			'ai_chat_display_collection_2',
-			'ai_chat_display_collection_3',
-			'ai_chat_display_collection_4',
-			'ai_chat_display_collection_5'
-		);
+		$collection_fields = self::get_collection_fields_to_validate( $ai_config );
 
 		$checked_collections = array();
 
@@ -167,6 +167,49 @@ class EPKB_AI_Chat_Tab {
 		}
 
 		return $issues;
+	}
+
+	/**
+	 * Get AI Chat collection fields that can be used with current display rules
+	 *
+	 * @param array $ai_config
+	 * @return array
+	 */
+	private static function get_collection_fields_to_validate( $ai_config ) {
+
+		$display_mode = isset( $ai_config['ai_chat_display_mode'] ) ? $ai_config['ai_chat_display_mode'] : 'all_pages';
+
+		if ( $display_mode === 'all_pages' ) {
+			return array( 'ai_chat_display_collection' );
+		}
+
+		$collection_fields = array();
+
+		for ( $slot_num = 1; $slot_num <= 5; $slot_num++ ) {
+			$suffix = $slot_num === 1 ? '' : "_{$slot_num}";
+			$collection_field = "ai_chat_display_collection{$suffix}";
+
+			if ( empty( $ai_config[ $collection_field ] ) ) {
+				continue;
+			}
+
+			$page_rules = isset( $ai_config["ai_chat_display_page_rules{$suffix}"] ) ? $ai_config["ai_chat_display_page_rules{$suffix}"] : array();
+			$post_types = isset( $ai_config["ai_chat_display_other_post_types{$suffix}"] ) ? $ai_config["ai_chat_display_other_post_types{$suffix}"] : array();
+			$url_patterns = isset( $ai_config["ai_chat_display_url_patterns{$suffix}"] ) ? $ai_config["ai_chat_display_url_patterns{$suffix}"] : '';
+			$has_rules = ! empty( $page_rules ) || ! empty( $post_types ) || ! empty( $url_patterns );
+
+			if ( $display_mode === 'selected_only' && ! $has_rules ) {
+				continue;
+			}
+
+			if ( $slot_num > 1 && ! $has_rules ) {
+				continue;
+			}
+
+			$collection_fields[] = $collection_field;
+		}
+
+		return $collection_fields;
 	}
 
 	/**
