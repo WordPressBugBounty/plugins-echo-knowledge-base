@@ -141,12 +141,65 @@ class EPKB_FAQs_Ctrl {
 		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_faqs_write' );
 
 		$faq_group_id = (int)EPKB_Utilities::post( 'faq_group_id', 0 );
-		$faq_group_name = stripslashes( EPKB_Utilities::post( 'faq_group_name' ) );
+		$faq_group_name = EPKB_Utilities::post( 'faq_group_name' );
+		$faq_group_name = is_string( $faq_group_name ) ? trim( stripslashes( $faq_group_name ) ) : '';
+		if ( $faq_group_name === '' ) {
+			EPKB_Utilities::ajax_show_error_die( esc_html__( 'FAQ Group name is required.', 'echo-knowledge-base' ) );
+		}
+
 		//$faq_group_status = EPKB_Utilities::post( 'faq_group_status' ) == 'publish' ? 'publish' : 'draft';
 		$faqs_order_sequence_raw = EPKB_Utilities::post( 'faqs_order_sequence', [] );
-		$faqs_order_sequence = is_array( $faqs_order_sequence_raw ) ? array_map( 'absint', $faqs_order_sequence_raw ) : [];
+		if ( ! is_array( $faqs_order_sequence_raw ) ) {
+			EPKB_Logging::add_log( 'FAQ Group save received invalid FAQ sequence format', array( 'faq_group_id' => $faq_group_id, 'faq_group_name' => $faq_group_name ) );
+		}
 
-		// create the FAQ Group if it does not exist yet
+		$faqs_order_sequence = is_array( $faqs_order_sequence_raw ) ? array_map( 'absint', $faqs_order_sequence_raw ) : [];
+		$faqs_order_sequence = array_values( array_unique( array_filter( $faqs_order_sequence ) ) );
+		$submitted_faqs_order_sequence = $faqs_order_sequence;
+		if ( ! empty( $faqs_order_sequence ) ) {
+			$valid_faq_ids = get_posts( [
+				'post_type'         => EPKB_FAQs_CPT_Setup::FAQS_POST_TYPE,
+				'post_status'       => 'any',
+				'fields'            => 'ids',
+				'posts_per_page'    => -1,
+				'post__in'          => $faqs_order_sequence,
+				'orderby'           => 'post__in',
+			] );
+			$faqs_order_sequence = array_map( 'absint', $valid_faq_ids );
+			$invalid_faq_ids = array_diff( $submitted_faqs_order_sequence, $faqs_order_sequence );
+			if ( ! empty( $invalid_faq_ids ) ) {
+				EPKB_Logging::add_log( 'FAQ Group save ignored invalid FAQ IDs', array( 'faq_group_id' => $faq_group_id, 'faq_group_name' => $faq_group_name, 'invalid_faq_ids' => array_values( $invalid_faq_ids ) ) );
+			}
+		}
+
+		if ( ! empty( $faq_group_id ) ) {
+			$faq_group = get_term( $faq_group_id, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY );
+			if ( is_wp_error( $faq_group ) ) {
+				EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 711, $faq_group ) );
+			}
+
+			if ( empty( $faq_group ) ) {
+				$submitted_faq_group_id = $faq_group_id;
+				$existing_faq_group = get_term_by( 'term_taxonomy_id', $submitted_faq_group_id, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY );
+				if ( is_wp_error( $existing_faq_group ) ) {
+					EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 711, $existing_faq_group ) );
+				}
+
+				if ( ! empty( $existing_faq_group ) && $existing_faq_group->taxonomy == EPKB_FAQs_CPT_Setup::FAQ_CATEGORY ) {
+					$faq_group_id = (int)$existing_faq_group->term_id;
+				} else {
+					$existing_faq_group = term_exists( $faq_group_name, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY );
+					if ( is_wp_error( $existing_faq_group ) ) {
+						EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 711, $existing_faq_group ) );
+					}
+					$faq_group_id = is_array( $existing_faq_group ) && ! empty( $existing_faq_group['term_id'] ) ? (int)$existing_faq_group['term_id'] : 0;
+				}
+
+				EPKB_Logging::add_log( 'FAQ Group save recovered stale FAQ group ID', array( 'submitted_faq_group_id' => $submitted_faq_group_id, 'resolved_faq_group_id' => $faq_group_id, 'faq_group_name' => $faq_group_name ) );
+			}
+		}
+
+		// create the FAQ Group if it does not exist
 		if ( empty( $faq_group_id ) ) {
 			$faq_group = wp_create_term( $faq_group_name, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY );
 			if ( is_wp_error( $faq_group ) ) {
@@ -189,13 +242,19 @@ class EPKB_FAQs_Ctrl {
 		// include new FAQs
 		$include_faqs_ids = array_diff( $faqs_order_sequence, $current_faqs_ids );
 		foreach ( $include_faqs_ids as $faq_id ) {
-			wp_set_object_terms( $faq_id, $faq_group_id, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY, true );
+			$result = wp_set_object_terms( $faq_id, $faq_group_id, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY, true );
+			if ( is_wp_error( $result ) ) {
+				EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 714, $result ) );
+			}
 		}
 
 		// exclude FAQs
 		$exclude_faqs_ids = array_diff( $current_faqs_ids, $faqs_order_sequence );
 		foreach ( $exclude_faqs_ids as $faq_id ) {
-			wp_remove_object_terms( $faq_id, $faq_group_id, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY );
+			$result = wp_remove_object_terms( $faq_id, $faq_group_id, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY );
+			if ( empty( $result ) || is_wp_error( $result ) ) {
+				EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 715, $result ) );
+			}
 		}
 
 		// update FAQs sequence
@@ -210,7 +269,7 @@ class EPKB_FAQs_Ctrl {
 			'status'                => 'success',
 			'message'               => esc_html__( 'FAQ Group Saved', 'echo-knowledge-base' ),
 			'faq_group_id'          => esc_attr( $faq_group_id ),
-			'faq_group_name'        => esc_attr( $faq_group_name ),
+			'faq_group_name'        => $faq_group_name,
 			'faq_group_html'        => wp_kses( $faq_group_html, EPKB_Utilities::get_admin_ui_extended_html_tags() )
 		) ) );
 	}

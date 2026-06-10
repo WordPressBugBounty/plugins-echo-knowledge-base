@@ -2254,6 +2254,16 @@ button .epkb-ai-spinner {
   text-decoration: underline;
 }
 
+.epkb-ai-field-soft-warning {
+  margin-top: 5px;
+  padding: 6px 10px;
+  color: #856404;
+  background-color: #FFF3CD;
+  border-left: 3px solid #FFC107;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .epkb-ai-settings-footer {
   margin-top: 30px;
   padding: 20px;

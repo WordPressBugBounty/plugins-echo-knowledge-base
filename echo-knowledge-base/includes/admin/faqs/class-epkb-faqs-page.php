@@ -479,8 +479,9 @@ class EPKB_FAQs_Page {
 				<div class="epkb-faq-settings">					<?php
 					EPKB_HTML_Elements::text( array(
 						'name'          => 'faq-group-name',
-						'label'         => 'Group Name',
-						'placeholder'   => ''
+						'label'         => esc_html__( 'Group Name', 'echo-knowledge-base' ),
+						'placeholder'   => esc_html__( 'Group Name', 'echo-knowledge-base' ),
+						'required'      => true
 					) );
 					/* EPKB_HTML_Elements::checkbox_toggle( array(
 						'name'          => 'faq-group-status',
@@ -996,5 +997,4 @@ class EPKB_FAQs_Page {
 		return ob_get_clean();
 	}
 }
-
 

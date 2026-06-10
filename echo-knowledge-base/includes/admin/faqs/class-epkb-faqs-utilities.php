@@ -692,15 +692,52 @@ class EPKB_FAQs_Utilities {
 
 	public static function get_faq_groups( $group_ids=[], $order_by='name' ) {
 
+		$group_ids = self::normalize_faq_group_ids( $group_ids );
 		$groups = get_terms( [
 			'taxonomy'      => EPKB_FAQs_CPT_Setup::FAQ_CATEGORY,
 			'include'       => $group_ids,
-			'fields'        => 'id=>name',
 			'hide_empty'    => false,
 			'orderby'       => $order_by,
 		] );
 
-		return $groups;
+		if ( is_wp_error( $groups ) ) {
+			return $groups;
+		}
+
+		$groups_by_id = [];
+		foreach ( $groups as $group ) {
+			if ( empty( $group->term_id ) ) {
+				continue;
+			}
+			$groups_by_id[ (int)$group->term_id ] = $group->name;
+		}
+
+		return $groups_by_id;
+	}
+
+	private static function normalize_faq_group_ids( $group_ids ) {
+
+		$group_ids = is_array( $group_ids ) ? array_map( 'absint', $group_ids ) : [];
+		$group_ids = array_values( array_unique( array_filter( $group_ids ) ) );
+		if ( empty( $group_ids ) ) {
+			return [];
+		}
+
+		$normalized_group_ids = [];
+		foreach ( $group_ids as $group_id ) {
+			$group = get_term( $group_id, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY );
+			if ( ! empty( $group ) && ! is_wp_error( $group ) ) {
+				$normalized_group_ids[] = (int)$group->term_id;
+				continue;
+			}
+
+			$group = get_term_by( 'term_taxonomy_id', $group_id, EPKB_FAQs_CPT_Setup::FAQ_CATEGORY );
+			if ( ! empty( $group ) && ! is_wp_error( $group ) && $group->taxonomy == EPKB_FAQs_CPT_Setup::FAQ_CATEGORY ) {
+				$normalized_group_ids[] = (int)$group->term_id;
+			}
+		}
+
+		return array_values( array_unique( $normalized_group_ids ) );
 	}
 
 	/**
@@ -722,12 +759,24 @@ class EPKB_FAQs_Utilities {
 			),
 		] );
 
+		if ( empty( $faqs ) ) {
+			return [];
+		}
+
 		$faq_ids = array_column( $faqs, 'ID' );
 		$faqs_order_sequence = get_term_meta( $faq_group_id, 'faqs_order_sequence', true );
+		$is_faqs_order_sequence_invalid = ! is_array( $faqs_order_sequence );
+		$is_faqs_order_sequence_empty = empty( $faqs_order_sequence );
+		$original_faqs_order_sequence = is_array( $faqs_order_sequence ) ? array_map( 'absint', $faqs_order_sequence ) : [];
 
 		// set unsorted sequence if the current sequence is empty but the Group has assigned FAQs (normally there is always user's defined sequence); ensure sequence type
 		if ( ( empty( $faqs_order_sequence ) && ! empty( $faq_ids ) ) || ! is_array( $faqs_order_sequence ) ) {
 			$faqs_order_sequence = $faq_ids;
+		}
+		$faqs_order_sequence = array_map( 'absint', $faqs_order_sequence );
+
+		if ( $is_faqs_order_sequence_invalid || $is_faqs_order_sequence_empty ) {
+			EPKB_Logging::add_log( 'FAQ Group display recovered missing or invalid FAQ sequence', array( 'faq_group_id' => $faq_group_id, 'assigned_faq_ids' => $faq_ids ) );
 		}
 
 		// set FAQ ID as key in FAQs array
@@ -741,6 +790,14 @@ class EPKB_FAQs_Utilities {
 			}
 			$sorted_faqs[] = $faqs[$faq_id];
 			unset( $faqs[$faq_id] );
+		}
+
+		if ( ! empty( $faqs ) && ! empty( $original_faqs_order_sequence ) ) {
+			EPKB_Logging::add_log( 'FAQ Group display appended assigned FAQs missing from sequence', array( 'faq_group_id' => $faq_group_id, 'missing_faq_ids' => array_keys( $faqs ), 'sequence_faq_ids' => $original_faqs_order_sequence ) );
+		}
+
+		foreach ( $faqs as $faq ) {
+			$sorted_faqs[] = $faq;
 		}
 
 		return $sorted_faqs;

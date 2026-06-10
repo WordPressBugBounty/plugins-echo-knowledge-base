@@ -212,6 +212,7 @@ abstract class EPKB_AI_Base_Handler {
 	private function get_instructions() {
 		if ( $this instanceof EPKB_AI_Search_Handler ) {
 			$instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_search_instructions' );
+			$instructions = empty( $instructions ) ? EPKB_AI_Config_Specs::get_default_value( 'ai_search_instructions' ) : $instructions;
 			return apply_filters( 'epkb_ai_search_instructions', $instructions );
 		} else {
 			$instructions = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_instructions' );

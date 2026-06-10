@@ -18,6 +18,8 @@ jQuery( document ).ready( function( $ ) {
 	const $sourcePicker = $( '.epkb-quiz-article-picker' );
 	const $sourceToggle = $( '#epkb-quiz-source-article-toggle' );
 	const $sourceSelected = $( '#epkb-quiz-source-article-selected' );
+	const $sourceDropdown = $( '#epkb-quiz-source-article-dropdown' );
+	const $sourceSearch = $( '#epkb-quiz-source-article-search' );
 	const $sourceOptions = $( '#epkb-quiz-source-article-options' );
 	const $viewLink = $( '#epkb-quiz-view-link' );
 	const $editorTabTrigger = $page.find( '.epkb-admin__top-panel__item[data-target="quizzes-editor"]' );
@@ -281,17 +283,36 @@ jQuery( document ).ready( function( $ ) {
 		return ! $kbSelect.length || String( $option.attr( 'data-kb-id' ) || '0' ) === getCurrentKbId();
 	}
 
+	function getSourceSearchTerm() {
+		return String( $sourceSearch.val() || '' ).toLowerCase().trim();
+	}
+
+	function resetSourceSearch() {
+		if ( $sourceSearch.length ) {
+			$sourceSearch.val( '' );
+		}
+	}
+
 	function setSourcePickerOpen( isOpen ) {
-		if ( ! $sourceToggle.length || ! $sourceOptions.length ) {
+		if ( ! $sourceToggle.length || ! $sourceDropdown.length ) {
 			return;
 		}
 
+		const wasOpen = $sourceToggle.attr( 'aria-expanded' ) === 'true';
 		$sourceToggle.attr( 'aria-expanded', isOpen ? 'true' : 'false' );
-		$sourceOptions.prop( 'hidden', ! isOpen );
+		$sourceDropdown.prop( 'hidden', ! isOpen );
+
+		if ( ! isOpen ) {
+			resetSourceSearch();
+		} else if ( ! wasOpen && $sourceSearch.length ) {
+			setTimeout( function() {
+				$sourceSearch.trigger( 'focus' );
+			}, 0 );
+		}
 	}
 
 	function renderSourcePicker( keepOpen ) {
-		if ( ! $sourceToggle.length || ! $sourceOptions.length ) {
+		if ( ! $sourceToggle.length || ! $sourceDropdown.length || ! $sourceOptions.length ) {
 			return;
 		}
 
@@ -299,6 +320,9 @@ jQuery( document ).ready( function( $ ) {
 		const currentKbId = getCurrentKbId();
 		const canSelectArticle = ! $kbSelect.length || currentKbId !== '0' || selectedArticleId !== '0';
 		const $selectedOption = getSourceOption( selectedArticleId );
+		const searchTerm = getSourceSearchTerm();
+		let hasKbArticles = false;
+		let hasMatchingArticles = false;
 
 		$sourceToggle.prop( 'disabled', ! canSelectArticle );
 		$sourceSelected.toggleClass( 'epkb-quiz-article-picker__selected--placeholder', ! $selectedOption.length || selectedArticleId === '0' );
@@ -317,6 +341,13 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 
+			const baseLabel = getSourceOptionBaseLabel( $option );
+			hasKbArticles = true;
+			if ( searchTerm && baseLabel.toLowerCase().indexOf( searchTerm ) === -1 ) {
+				return;
+			}
+
+			hasMatchingArticles = true;
 			const $item = $( '<button></button>' )
 				.attr( 'type', 'button' )
 				.attr( 'role', 'option' )
@@ -325,12 +356,14 @@ jQuery( document ).ready( function( $ ) {
 				.toggleClass( 'epkb-quiz-article-picker__option--selected', articleId === selectedArticleId )
 				.data( 'source-article-id', articleId );
 
-			appendSourceOptionLabel( $item, getSourceOptionBaseLabel( $option ), $option.attr( 'data-has-quiz' ) === '1' );
+			appendSourceOptionLabel( $item, baseLabel, $option.attr( 'data-has-quiz' ) === '1' );
 			$sourceOptions.append( $item );
 		} );
 
-		if ( ! $sourceOptions.children().length ) {
+		if ( ! hasKbArticles ) {
 			$sourceOptions.append( $( '<div></div>' ).addClass( 'epkb-quiz-article-picker__empty' ).text( epkbQuizAdmin.strings.noArticles ) );
+		} else if ( ! hasMatchingArticles ) {
+			$sourceOptions.append( $( '<div></div>' ).addClass( 'epkb-quiz-article-picker__empty' ).text( epkbQuizAdmin.strings.noMatchingArticles ) );
 		}
 
 		setSourcePickerOpen( keepOpen && canSelectArticle );
@@ -764,7 +797,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	$form.on( 'input change', 'input, select, textarea', function() {
-		if ( ! isHydrating && this.id !== 'epkb-quiz-source-article' && this.id !== 'epkb-quiz-kb-select' ) {
+		if ( ! isHydrating && this.id !== 'epkb-quiz-source-article' && this.id !== 'epkb-quiz-kb-select' && this.id !== 'epkb-quiz-source-article-search' ) {
 			setDirty( true );
 		}
 	} );
@@ -781,6 +814,10 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		renderSourcePicker( $sourceToggle.attr( 'aria-expanded' ) !== 'true' );
+	} );
+
+	$( document ).on( 'input', '#epkb-quiz-source-article-search', function() {
+		renderSourcePicker( true );
 	} );
 
 	$( document ).on( 'click', '.epkb-quiz-article-picker__option', function() {

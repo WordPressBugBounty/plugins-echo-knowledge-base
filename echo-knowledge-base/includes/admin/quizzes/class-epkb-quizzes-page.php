@@ -228,7 +228,13 @@ class EPKB_Quizzes_Page {
 										<span id="epkb-quiz-source-article-selected" class="epkb-quiz-article-picker__selected"><?php esc_html_e( 'Select a source article', 'echo-knowledge-base' ); ?></span>
 										<span class="epkbfa epkbfa-chevron-down" aria-hidden="true"></span>
 									</button>
-									<div id="epkb-quiz-source-article-options" class="epkb-quiz-article-picker__options" role="listbox" hidden></div>
+									<div id="epkb-quiz-source-article-dropdown" class="epkb-quiz-article-picker__dropdown" hidden>
+										<div class="epkb-quiz-article-picker__search-wrap">
+											<span class="epkbfa epkbfa-search" aria-hidden="true"></span>
+											<input type="search" id="epkb-quiz-source-article-search" class="epkb-quiz-article-picker__search" placeholder="<?php esc_attr_e( 'Search articles...', 'echo-knowledge-base' ); ?>" aria-label="<?php esc_attr_e( 'Search articles', 'echo-knowledge-base' ); ?>" autocomplete="off">
+										</div>
+										<div id="epkb-quiz-source-article-options" class="epkb-quiz-article-picker__options" role="listbox"></div>
+									</div>
 								</div>
 							</div>
 

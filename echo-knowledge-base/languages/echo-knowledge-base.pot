@@ -3916,7 +3916,7 @@ msgid "Browser Go Back Action"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:1992
-msgid "Redirect to KB Main Page"
+msgid "Link to KB Main Page"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2002

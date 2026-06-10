@@ -1989,9 +1989,9 @@ class EPKB_KB_Config_Specs {
 				'type'        => EPKB_Input_Filter::SELECTION,
 				'options'     => array(
 					'navigate_browser_back'   => esc_html__( 'Browser Go Back Action',   'echo-knowledge-base' ),
-					'navigate_kb_main_page'   => esc_html__( 'Redirect to KB Main Page', 'echo-knowledge-base' ),
+					'navigate_kb_main_page'   => esc_html__( 'Link to KB Main Page', 'echo-knowledge-base' ),
 				),
-				'default'     => 'navigate_browser_back'
+				'default'     => 'navigate_kb_main_page'
 			),
 			'back_navigation_text'          => array(
 				'name'        => 'back_navigation_text',

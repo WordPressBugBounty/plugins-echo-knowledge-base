@@ -1396,8 +1396,8 @@ jQuery(document).ready(function($) {
 		// Load default FAQ Group to form
 		let group_id = faqs_group_form.data( 'default-faq-group-id' );
 		let group_name = faqs_group_form.data( 'default-faq-group-name');
-		faqs_group_form.data( 'faq-group-id', group_id );
-		faqs_group_form.find( '.epkb-faq-group-form-head__title' ).html( group_name );
+		faqs_group_form.data( 'faq-group-id', group_id ).attr( 'data-faq-group-id', group_id );
+		faqs_group_form.find( '.epkb-faq-group-form-head__title' ).text( group_name );
 		faqs_group_form.find( '[name="faq-group-name"]' ).val( group_name );
 		faqs_group_form.find( '.epkb-faq-questions-list' ).html( '' );
 		//faqs_group_form.find( '[name="faq-group-status"]' ).prop( 'checked', false );
@@ -1459,10 +1459,10 @@ jQuery(document).ready(function($) {
 
 		// Load the current FAQ Group to form
 		let faq_group_id = current_faq_group_container.data( 'faq-group-id' );
-		let faq_group_name = current_faq_group_container.find( '.epkb-faq-group-head__title' ).html();
+		let faq_group_name = current_faq_group_container.find( '.epkb-faq-group-head__title' ).text();
 		//let faq_group_status = current_faq_group_container.data( 'faq-group-status' );
-		faqs_group_form.data( 'faq-group-id', faq_group_id );
-		faqs_group_form.find( '.epkb-faq-group-form-head__title' ).html( faq_group_name );
+		faqs_group_form.data( 'faq-group-id', faq_group_id ).attr( 'data-faq-group-id', faq_group_id );
+		faqs_group_form.find( '.epkb-faq-group-form-head__title' ).text( faq_group_name );
 		// faq_group_name = faq_group_name.replace("[Draft]", "");
 		faqs_group_form.find( '[name="faq-group-name"]' ).val( faq_group_name );
 		//faqs_group_form.find( '[name="faq-group-status"]' ).prop( 'checked', faq_group_status === 'publish' );
@@ -1513,13 +1513,20 @@ jQuery(document).ready(function($) {
 
 		// Set FAQ Group data in the way that allows to sanitize fields separately
 		postData.faq_group_id = faqs_group_form.data( 'faq-group-id' );
-		postData.faq_group_name = faqs_group_form.find( '[name="faq-group-name"]' ).val();
+		postData.faq_group_name = faqs_group_form.find( '[name="faq-group-name"]' ).val().trim();
+		if ( ! postData.faq_group_name.length ) {
+			epkb_show_error_notification( epkb_vars.faq_group_name_required || 'FAQ Group name is required.' );
+			return;
+		}
 		//postData.faq_group_status = faqs_group_form.find( '[name="faq-group-status"]' ).prop( 'checked' ) ? 'publish' : 'draft';
 
 		// Set FAQs in the current Group
 		postData.faqs_order_sequence = [];
 		faqs_group_form.find( '.epkb-faq-question' ).each( function() {
-			postData.faqs_order_sequence.push( $( this ).data( 'faq-id' ) );
+			let faq_id = parseInt( $( this ).attr( 'data-faq-id' ), 10 );
+			if ( faq_id > 0 && postData.faqs_order_sequence.indexOf( faq_id ) === -1 ) {
+				postData.faqs_order_sequence.push( faq_id );
+			}
 		} );
 
 		epkb_send_ajax( postData, function( response ) {
@@ -1547,9 +1554,9 @@ jQuery(document).ready(function($) {
 			}
 
 			// Update FAQ Group form
-			faqs_group_form.data( 'faq-group-id', response.faq_group_id );
+			faqs_group_form.data( 'faq-group-id', response.faq_group_id ).attr( 'data-faq-group-id', response.faq_group_id );
 			faqs_group_form.find( '[name="faq-group-name"]' ).val( response.faq_group_name );
-			faqs_group_form.find( '.epkb-faq-group-form-head__title' ).html( response.faq_group_name );
+			faqs_group_form.find( '.epkb-faq-group-form-head__title' ).text( response.faq_group_name );
 
 			sort_faq_groups_in_all_lists();
 			update_faq_shortcode_preview();
@@ -1605,7 +1612,7 @@ jQuery(document).ready(function($) {
 
 	// Update FAQ Group Name
 	$( document ).on( 'input', '#epkb-faq-group-form [name="faq-group-name"]', function () {
-		$( '#epkb-faq-group-form .epkb-faq-group-form-head__title' ).html( $( this ).val() );
+		$( '#epkb-faq-group-form .epkb-faq-group-form-head__title' ).text( $( this ).val() );
 	} );
 
 	// Create new FAQ

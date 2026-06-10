@@ -272,9 +272,10 @@ class EPKB_AI_Validation {
 	}
 		
 	/**
-	 * Validate API key format
+	 * Validate API key format.
 	 *
 	 * @param string $api_key
+	 * @param string|null $provider Unused; kept for backward compatibility.
 	 * @return bool
 	 */
 	public static function validate_api_key_format( $api_key, $provider = null ) {
@@ -283,19 +284,7 @@ class EPKB_AI_Validation {
 			return false;
 		}
 
-		$provider = $provider ?: EPKB_AI_Provider::get_active_provider();
-		if ( $provider === EPKB_AI_Provider::PROVIDER_GEMINI ) {
-			// Gemini API keys can start with AIza and are alphanumeric with length similar to Google API keys
-			return preg_match( '/^[A-Za-z0-9_\-]{20,500}$/', $api_key );
-		}
-
-		// OpenAI format
-		if ( ! preg_match( '/^sk-[\w\-]+$/i', $api_key ) ) {
-			return false;
-		}
-
-		$key_length = strlen( $api_key );
-		return $key_length >= 20 && $key_length <= 500;
+		return true;
 	}
 
 	/**

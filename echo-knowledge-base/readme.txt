@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chat, faq
 Requires at least: 5.3
 Tested up to: 7.0
 Requires PHP: 5.6
-Stable tag: 17.210.0
+Stable tag: 17.211.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -349,6 +349,11 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 18. Glossary 
 
 == Changelog ==
+
+= 17.211.0 =
+Release Date: June 09, 2026
+* Fix: Cleanup and minor fixes
+* Fix: Google API Key Change
 
 = 17.210.0 =
 Release Date: May 18, 2026

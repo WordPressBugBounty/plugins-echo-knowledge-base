@@ -396,6 +396,7 @@ class EPKB_AI_Search_Tab {
 						'description' => __( 'Select a section to customize its AI prompt. The default prompt is shown as placeholder.', 'echo-knowledge-base' ),
 						'sections' => self::get_sections_with_prompts(),
 						'prompts' => array(
+							'ai_answer' => $ai_config['ai_search_instructions'],
 							'tips' => $ai_config['ai_search_results_tips_prompt'],
 							'steps' => $ai_config['ai_search_results_steps_prompt'],
 							'glossary_terms' => $ai_config['ai_search_results_glossary_prompt'],
@@ -535,6 +536,7 @@ class EPKB_AI_Search_Tab {
 	 */
 	private static function get_sections_with_prompts() {
 		return array(
+			'ai_answer' => __( 'Answer', 'echo-knowledge-base' ),
 			'tips' => __( 'Helpful Tips', 'echo-knowledge-base' ),
 			'steps' => __( 'Step-by-Step Instructions', 'echo-knowledge-base' ),
 			'glossary_terms' => __( 'Glossary Terms', 'echo-knowledge-base' ),
@@ -550,7 +552,7 @@ class EPKB_AI_Search_Tab {
 	 * @return array
 	 */
 	private static function get_default_section_prompts() {
-		return apply_filters( 'epkb_ai_search_section_default_prompts', array(
+		$default_prompts = apply_filters( 'epkb_ai_search_section_default_prompts', array(
 			'tips' => '',
 			'steps' => '',
 			'glossary_terms' => '',
@@ -558,6 +560,10 @@ class EPKB_AI_Search_Tab {
 			'tasks_list' => '',
 			'related_keywords' => ''
 		) );
+
+		$default_prompts['ai_answer'] = EPKB_AI_Config_Specs::get_default_value( 'ai_search_instructions' );
+
+		return $default_prompts;
 	}
 
 	/**
