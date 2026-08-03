@@ -88,6 +88,12 @@ class EPKB_AI_Search_Results_Handler {
 		// Store the raw answer as text so frontend formatting can be applied safely after insertion.
 		$html = '<div class="epkb-ai-sr-ai-answer-text">' . esc_html( $ai_answer ) . '</div>';
 
+		// Add source references used to generate the AI answer; sources are already filtered by the "Show Source References" setting in the search handler
+		// Keep sources outside of the answer text div because the frontend replaces its inner HTML when applying formatting
+		if ( ! empty( $result['sources'] ) && is_array( $result['sources'] ) ) {
+			$html .= self::get_sources_html( $result['sources'] );
+		}
+
 		return array(
 			'has_content' => true,
 			'html' => self::get_section_wrapper( $html, 'ai-answer', $section_name, true, $query ),
@@ -123,6 +129,9 @@ class EPKB_AI_Search_Results_Handler {
 		if ( empty( $articles ) ) {
 			return self::get_empty_response( $section_name );
 		}
+
+		// Enforce the configured limit; add-ons hooking eckb_execute_search_filter (e.g. Links Editor) return results that bypass the posts_per_page limit in execute_search()
+		$articles = array_slice( $articles, 0, $results_page_size );
 
 		// Build articles data array
 		$articles_data = array();
@@ -162,6 +171,41 @@ class EPKB_AI_Search_Results_Handler {
 				'count' => count( $articles_data )
 			)
 		);
+	}
+
+	/**
+	 * Get HTML for source references used to generate the AI answer
+	 *
+	 * @param array $sources Array of sources with title and url
+	 * @return string
+	 */
+	private static function get_sources_html( $sources ) {
+
+		$items_html = '';
+		foreach ( $sources as $source ) {
+			if ( empty( $source['title'] ) ) {
+				continue;
+			}
+
+			$items_html .= '<li class="epkb-ai-sr-sources__item">';
+			if ( empty( $source['url'] ) ) {
+				$items_html .= '<span>' . esc_html( $source['title'] ) . '</span>';
+			} else {
+				$items_html .= '<a href="' . esc_url( $source['url'] ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $source['title'] ) . '</a>';
+			}
+			$items_html .= '</li>';
+		}
+
+		if ( empty( $items_html ) ) {
+			return '';
+		}
+
+		$html = '<div class="epkb-ai-sr-sources">';
+		$html .= '<div class="epkb-ai-sr-sources__label">' . esc_html__( 'Sources', 'echo-knowledge-base' ) . '</div>';
+		$html .= '<ul class="epkb-ai-sr-sources__list">' . $items_html . '</ul>';
+		$html .= '</div>';
+
+		return $html;
 	}
 
 	/**

@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chat, faq
 Requires at least: 5.3
 Tested up to: 7.0
 Requires PHP: 5.6
-Stable tag: 17.211.0
+Stable tag: 17.212.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -350,8 +350,16 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 
 == Changelog ==
 
+= 17.212.0 =
+Release Date: Aug 2, 2026
+* Update: Renamed "Search Box Width" setting to "Article Page Width" and moved it into the Article Content group
+* Fix: Table of Contents links now scroll to the correct heading when duplicate heading anchors are saved into article content by page builders like Divi
+* Fix: Glossary now works with Multiple Knowledge Bases on knowledge bases other than the first one
+* Fix: Security Enhancement
+* Fix: Cleanup and minor fixes
+
 = 17.211.0 =
-Release Date: June 09, 2026
+Release Date: May 31, 2026
 * Fix: Cleanup and minor fixes
 * Fix: Google API Key Change
 

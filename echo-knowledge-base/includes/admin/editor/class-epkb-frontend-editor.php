@@ -852,6 +852,12 @@ class EPKB_Frontend_Editor {
 			return $kb_config;
 		}
 
+		// SECURITY: preview config is user-supplied and unsanitized, so it can only be applied for logged-in users
+		// who are allowed to use the Frontend Editor - never for public/unauthenticated visitors
+		if ( ! is_user_logged_in() || ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
+			return $kb_config;
+		}
+
 		// use cache
 		static $cached_kb_config = null;
 		if ( ! empty( $cached_kb_config ) ) {

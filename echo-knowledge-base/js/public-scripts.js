@@ -1182,8 +1182,20 @@ jQuery(document).ready(function($) {
 		getArticleHeaders: function () {
 			let headers = [];
 			let that = this;
+			let usedHeaderIds = {};
+			let existingHeaderIds = {};
 			
-			$( '#eckb-article-content-body' ).find( that.searchStr ).each( function(){
+			let $articleHeaders = $( '#eckb-article-content-body' ).find( that.searchStr );
+			
+			// collect existing data-id values first so that newly generated ids never take over an anchor defined further down the page
+			$articleHeaders.each( function(){
+				let existingId = $(this).attr( 'data-id' );
+				if ( existingId ) {
+					existingHeaderIds[ existingId ] = true;
+				}
+			});
+			
+			$articleHeaders.each( function(){
 					
 				if ( $(this).text().length === 0 ) {
 					return;
@@ -1196,12 +1208,21 @@ jQuery(document).ready(function($) {
 				let tid;
 				let header = {};
 						
-				if ( $(this).data( 'id' ) ) {
+				// reuse existing data-id unless it duplicates one already used on this page; page builders like Divi Visual Builder
+				// can save generated data-id attributes into the post content and later duplicate them across headings
+				if ( $(this).data( 'id' ) && typeof usedHeaderIds[ $(this).data( 'id' ) ] === 'undefined' ) {
 					tid = $(this).data( 'id' );
 				} else {
 					tid = 'articleTOC_' + headers.length;
+					let suffix = 0;
+					while ( typeof usedHeaderIds[ tid ] !== 'undefined' || typeof existingHeaderIds[ tid ] !== 'undefined' ) {
+						suffix++;
+						tid = 'articleTOC_' + headers.length + '_' + suffix;
+					}
 					$(this).attr( 'data-id', tid );
 				}
+				
+				usedHeaderIds[ tid ] = true;
 
 				header.id = tid;
 				header.title = $(this).text();

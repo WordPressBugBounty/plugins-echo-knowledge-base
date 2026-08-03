@@ -4266,7 +4266,7 @@ class EPKB_KB_Config_Specs {
 			'template_widget_sidebar_defaults' => esc_html__( 'Widget Sidebar Styling', 'echo-knowledge-base' ),
 			'frontend_editor_switch_visibility_toggle' => esc_html__( 'Frontend Editor Toggle Visibility', 'echo-knowledge-base' ),
 			'frontend_editor_button_shown' => esc_html__( 'Frontend Editor Button Shown', 'echo-knowledge-base' ),
-			'article-container-desktop-width-v2' => esc_html__( 'Search Box Width', 'echo-knowledge-base' ),
+			'article-container-desktop-width-v2' => esc_html__( 'Article Page Width', 'echo-knowledge-base' ),
 			'article-container-desktop-width-units-v2' => esc_html__( 'Width - Units', 'echo-knowledge-base' ),
 			'article-container-tablet-width-v2' => esc_html__( 'Width (Tablets)', 'echo-knowledge-base' ),
 			'article-container-tablet-width-units-v2' => esc_html__( 'Width - Units(Tablets)', 'echo-knowledge-base' ),

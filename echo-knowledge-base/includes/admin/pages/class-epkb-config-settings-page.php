@@ -1597,6 +1597,7 @@ class EPKB_Config_Settings_Page {
 				array(
 					'title'     => esc_html__( 'Article Content', 'echo-knowledge-base' ),
 					'fields'    => [
+						'article-container-desktop-width-v2' => '',
 						'article-body-desktop-width-v2' => '',
 						'article-content-padding-v2' => '',
 						'article-content-background-color-v2' => '',
@@ -2073,6 +2074,15 @@ class EPKB_Config_Settings_Page {
 			case 'article-body-desktop-width-v2': // Article Body Width
 				$input_args['setting_help_text'] = [ [
 						'help_desc'         => esc_html__( "The article width varies based on the chosen template. With the KB template, the article can expand to the browser's maximum width if selected. With the theme template, however, the article width is dictated by the theme's overall settings.", 'echo-knowledge-base' ),
+						'link_text'         => esc_html__( 'Learn More', 'echo-knowledge-base' ),
+						'link_url'          => 'https://www.echoknowledgebase.com/documentation/article-page-width/',
+						'is_bottom_text'	=> true ] ];
+				break;
+
+			// Search
+			case 'article_search_toggle': // Article Page Search Box
+				$input_args['setting_help_text'] = [ [
+						'help_desc'         => esc_html__( "By default, the search box is full width (100%). Lowering the Article Page Width setting makes the whole article page narrower, including the search box.", 'echo-knowledge-base' ),
 						'link_text'         => esc_html__( 'Learn More', 'echo-knowledge-base' ),
 						'link_url'          => 'https://www.echoknowledgebase.com/documentation/article-page-width/',
 						'is_bottom_text'	=> true ] ];
@@ -3231,7 +3241,6 @@ class EPKB_Config_Settings_Page {
 						'fields'    => [
 							'article_search_toggle' => '',
 							'article_search_sync_toggle' => 'not_block_main_page',
-							'article-container-desktop-width-v2' => '',
 						],
                         'data'      => ['target' => 'search-settings-ap'],
 					),
@@ -3247,7 +3256,6 @@ class EPKB_Config_Settings_Page {
 					'fields'    => [
 						'article_search_toggle' => '',
 						'article_search_sync_toggle' => 'not_block_main_page',
-						'article-container-desktop-width-v2' => '',
 						'ml_article_search_layout' => 'not_asea',
 					],
                     'data'      => ['target' => 'search-settings-ap'],

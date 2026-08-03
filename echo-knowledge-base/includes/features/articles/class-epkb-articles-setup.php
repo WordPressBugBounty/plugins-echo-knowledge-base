@@ -1436,7 +1436,7 @@ class EPKB_Articles_Setup {
 				#eckb-article-page-container-v2 .eckb-article-toc .eckb-article-toc__level a,
 				#eckb-article-page-container-v2 .eckb-breadcrumb-nav,
 				#eckb-article-page-container-v2 #eckb-article-content-footer { 
-				    	font-family: ' . ( ! empty( $kb_config['general_typography']['font-family'] ) ? $kb_config['general_typography']['font-family'] .'!important' : 'inherit !important' ) . ';
+				    	font-family: ' . ( ! empty( $kb_config['general_typography']['font-family'] ) ? EPKB_Utilities::sanitize_css_value( $kb_config['general_typography']['font-family'] ) .' !important' : 'inherit !important' ) . ';
 				}';
 
 		// KB Container Spacing (ONLY for Current Theme Template)

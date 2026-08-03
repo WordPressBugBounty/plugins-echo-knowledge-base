@@ -1538,7 +1538,7 @@ class EPKB_Utilities {
 			return $font_param_name . ': inherit;';
 		}
 
-		$value = empty( $delta ) ? $kb_config[$config_name][$font_param_name] : intval( $kb_config[$config_name][$font_param_name] ) + $delta;
+		$value = empty( $delta ) ? self::sanitize_css_value( $kb_config[$config_name][$font_param_name] ) : intval( $kb_config[$config_name][$font_param_name] ) + $delta;
 
 		return $font_param_name . ': ' . $value . ( $font_param_name == 'font-size' ? 'px' : '' ) . ' !important;';
 	}
@@ -1551,22 +1551,42 @@ class EPKB_Utilities {
 		}
 
 		if ( ! empty( $typography['font-family'] ) ) {
-			$typography_styles .= 'font-family: ' . $typography['font-family'] . ' !important;';
+			$typography_styles .= 'font-family: ' . self::sanitize_css_value( $typography['font-family'] ) . ' !important;';
 		}
 
 		if ( ! empty( $typography['font-size'] ) && empty( $typography['font-size-units'] ) ) {
-			$typography_styles .= 'font-size: ' . $typography['font-size'] . 'px !important;';
+			$typography_styles .= 'font-size: ' . self::sanitize_css_value( $typography['font-size'] ) . 'px !important;';
 		}
 
 		if ( ! empty( $typography['font-size'] ) && ! empty( $typography['font-size-units'] ) ) {
-			$typography_styles .= 'font-size: ' . $typography['font-size'] . $typography['font-size-units'] . ' !important;';
+			$typography_styles .= 'font-size: ' . self::sanitize_css_value( $typography['font-size'] ) . self::sanitize_css_value( $typography['font-size-units'] ) . ' !important;';
 		}
 
 		if ( ! empty( $typography['font-weight'] ) ) {
-			$typography_styles .= 'font-weight: ' . $typography['font-weight'] . ' !important;';
+			$typography_styles .= 'font-weight: ' . self::sanitize_css_value( $typography['font-weight'] ) . ' !important;';
 		}
 
 		return $typography_styles;
+	}
+
+	/**
+	 * Sanitize a value that will be emitted inside a CSS declaration (e.g. inside a <style> block).
+	 * Removes characters that could break out of the CSS/style context such as tags, braces and semicolons,
+	 * preventing injection like 'x;}</style><svg onload=...>' from config-driven CSS values.
+	 *
+	 * @param string $value
+	 * @return string
+	 */
+	public static function sanitize_css_value( $value ) {
+
+		if ( is_array( $value ) ) {
+			return '';
+		}
+
+		// strip characters that allow escaping the CSS value / <style> context
+		$value = preg_replace( '/[<>{}();]|\/\*|\*\//', '', (string)$value );
+
+		return trim( $value );
 	}
 
 	public static function get_single_article_link( $kb_config, $title, $article_id, $type, $seq_no='' ) {

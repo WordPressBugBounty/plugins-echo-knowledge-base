@@ -399,6 +399,10 @@ class EPKB_HTML_Elements {
 
 			if ( ! empty( $bottomDesc ) ) {     ?>
 				<div class="epkb-settings-control__description"><?php echo wp_kses_post( $bottomDesc ); ?></div>  <?php
+			}
+
+			if ( ! empty( $args['setting_help_text'] ) ) {
+				self::display_input_bottom_external_links( $args['setting_help_text'], [ 'css_class' => 'epkb-input-desc--toggle' ] );
 			}   ?>
 
 		</div>		<?php

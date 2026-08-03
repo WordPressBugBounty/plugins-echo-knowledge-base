@@ -10,6 +10,16 @@ class EPKB_Glossary_Frontend {
 	}
 
 	/**
+	 * Glossary settings ( enable, highlight style, colors ) are shared across all KBs and stored in the Default KB config.
+	 * Always read them from there so highlighting works on every KB, not only the Default KB.
+	 *
+	 * @return array
+	 */
+	public static function get_glossary_config() {
+		return epkb_get_instance()->kb_config_obj->get_kb_config_or_default( EPKB_KB_Config_DB::DEFAULT_KB_ID );
+	}
+
+	/**
 	 * Return inline CSS for glossary colors from KB config. Single source of truth for color overrides.
 	 * Called from scripts-registration-public when enqueueing glossary assets (same place as ap-frontend-layout).
 	 *
@@ -43,12 +53,8 @@ class EPKB_Glossary_Frontend {
 			return $content;
 		}
 
-		// Check if glossary is enabled
-		$kb_config = isset( $args['config'] ) ? $args['config'] : array();
-		if ( empty( $kb_config ) ) {
-			$kb_id = isset( $args['id'] ) ? $args['id'] : EPKB_KB_Config_DB::DEFAULT_KB_ID;
-			$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
-		}
+		// Glossary settings are shared across all KBs and stored in the Default KB config.
+		$kb_config = self::get_glossary_config();
 		if ( empty( $kb_config['glossary_enable'] ) || $kb_config['glossary_enable'] !== 'on' ) {
 			return $content;
 		}
