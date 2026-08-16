@@ -176,7 +176,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <TextControl
 													key={field_name}
 													__nextHasNoMarginBottom={true}
-													__next40pxDefaultSize={true}
 													disabled={isDisabled}
 													label={field_specs.label}
 													value={attributes[field_name]}
@@ -188,7 +187,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 											case 'number':
 												return <NumberControl
 													key={field_name}
-													__next40pxDefaultSize={true}
 													disabled={isDisabled}
 													isShiftStepEnabled={true}
 													shiftStep={1}
@@ -217,7 +215,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <ToggleGroupControl
 													key={field_name}
 													__nextHasNoMarginBottom={true}
-													__next40pxDefaultSize={true}
 													isBlock
 													label={field_specs.label}
 													onChange={(value) => setAttributes({[field_name]: value})}
@@ -237,7 +234,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <ToggleGroupControl
 													key={field_name}
 													__nextHasNoMarginBottom={true}
-													__next40pxDefaultSize={true}
 													isBlock
 													label={field_specs.label}
 													onChange={(value) => setAttributes({[field_name]: value})}
@@ -258,7 +254,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <ToggleGroupControl
 													key={field_name}
 													__nextHasNoMarginBottom={true}
-													__next40pxDefaultSize={true}
 													isBlock
 													label={field_specs.label}
 													onChange={(value) => setAttributes({[field_name]: ensure_number(value)})}
@@ -325,7 +320,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <RangeControl
 													key={field_name}
 													__nextHasNoMarginBottom={true}
-													__next40pxDefaultSize={true}
 													disabled={isDisabled}
 													isShiftStepEnabled={true}
 													shiftStep={1}
@@ -345,7 +339,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <RangeControl
 													key={field_name}
 													__nextHasNoMarginBottom={true}
-													__next40pxDefaultSize={true}
 													disabled={isDisabled}
 													isShiftStepEnabled={true}
 													shiftStep={0.05}
@@ -370,7 +363,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <CustomSelectControl
 													key={field_name}
 													disabled={isDisabled}
-													__next40pxDefaultSize={true}
 													label={field_specs.label}
 													value={selectedOption}
 													onChange={(value) => setAttributes({[field_name]: value.selectedItem.key})}
@@ -388,7 +380,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <CustomSelectControl
 													key={field_name}
 													disabled={isDisabled}
-													__next40pxDefaultSize={true}
 													label={field_specs.label}
 													value={{
 														key: attributes[field_name] || field_specs.default,
@@ -430,7 +421,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												return <CustomSelectControl
 													key={field_name}
 													disabled={isDisabled}
-													__next40pxDefaultSize={true}
 													label={field_specs.label}
 													value={{
 														key: selectedPresetKey,
@@ -499,7 +489,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												const sideValues = {[field_specs.side]: attributes[field_name] === "" || Number.isNaN(parseInt(attributes[field_name])) ? field_specs.default : parseInt(attributes[field_name])};
 												return <BoxControl
 													key={field_name}
-													__next40pxDefaultSize={true}
 													label={field_specs.label}
 													sides={[field_specs.side]}
 													inputProps={{
@@ -535,7 +524,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 												);
 												return <BoxControl
 													key={field_name}
-													__next40pxDefaultSize={true}
 													label={field_specs.label}
 													sides={combinedSidesList}
 													resetValues={defaultSideValues}
@@ -592,7 +580,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 														<FontFamilyControl
 															key={field_name + '_font_family'}
 															__nextHasNoMarginBottom={true}
-															__next40pxDefaultSize={true}
 															fontFamilies={Object.entries(epkb_block_editor_vars.font_families).map(([option_index, options_value]) => {
 																return {
 																	fontFamily: options_value,
@@ -625,7 +612,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 													>
 														<FontSizePicker
 															key={field_name + '_font_size'}
-															__next40pxDefaultSize={true}
 															fontSizes={Object.entries(field_specs.controls.font_size.options).map(([option_slug, options_list]) => {
 																return {
 																	name: options_list.name,
@@ -661,7 +647,6 @@ export default function EpkbInspectorControls({ block_ui_config, attributes, set
 													>
 														<CustomSelectControl
 															key={field_name + '_font_appearance'}
-															__next40pxDefaultSize={true}
 															label={field_specs.controls.font_appearance.label}
 															value={(() => {
 																const selectedKey = attributes[field_name].font_appearance || field_specs.controls.font_appearance.default;

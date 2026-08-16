@@ -62,7 +62,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	function submitQuizAttempt( $quiz, correctCount, totalCount ) {
-		if ( $quiz.data( 'notificationSubmitted' ) === 1 || epkbQuizFrontend.notificationsEnabled !== 'on' || ! epkbQuizFrontend.ajaxUrl || ! epkbQuizFrontend.nonce ) {
+		if ( $quiz.data( 'notificationSubmitted' ) === 1 || ! epkbQuizFrontend.ajaxUrl || ! epkbQuizFrontend.nonce ) {
 			return;
 		}
 

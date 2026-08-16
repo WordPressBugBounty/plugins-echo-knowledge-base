@@ -261,6 +261,7 @@ function epkb_load_admin_plugin_pages_resources() {
 				'noMatchingArticles' => esc_html__( 'No matching articles found.', 'echo-knowledge-base' ),
 				'success'            => esc_html__( 'Success', 'echo-knowledge-base' ),
 				'close'              => esc_html__( 'Close', 'echo-knowledge-base' ),
+				'generateQuiz'       => esc_html__( 'Generate Quiz', 'echo-knowledge-base' ),
 			),
 		) );
 	}

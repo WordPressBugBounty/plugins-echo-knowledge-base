@@ -139,6 +139,46 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
+	function closeGenerationUnavailableDialog() {
+		$( '#epkb-quiz-generation-unavailable-dialog, .epkb-dialog-box-form-black-background--quiz-generation-unavailable' ).remove();
+	}
+
+	function showGenerationUnavailableDialog( $btn ) {
+		const message = $btn.data( 'generation-message' ) || epkbQuizAdmin.strings.genericError;
+		const linkUrl = $btn.data( 'generation-link-url' ) || '';
+		const linkLabel = $btn.data( 'generation-link-label' ) || '';
+
+		closeGenerationUnavailableDialog();
+
+		let dialogHtml = '';
+		dialogHtml += '<div id="epkb-quiz-generation-unavailable-dialog" class="epkb-dialog-box-form epkb-dialog-box-form--active">';
+		dialogHtml += '<div class="epkb-dbf__header"><h4>' + escapeDialogText( epkbQuizAdmin.strings.generateQuiz ) + '</h4></div>';
+		dialogHtml += '<div class="epkb-dbf__body"><p>' + escapeDialogText( message ) + '</p></div>';
+		dialogHtml += '<div class="epkb-dbf__footer">';
+		if ( linkUrl && linkLabel ) {
+			dialogHtml += '<div class="epkb-dbf__footer__accept epkb-dbf__footer__accept--warning">';
+			dialogHtml += '<a class="epkb-accept-button epkb-dbf__footer__accept__btn" target="_blank" rel="noopener noreferrer">' + escapeDialogText( linkLabel ) + '</a>';
+			dialogHtml += '</div>';
+		}
+		dialogHtml += '<div class="epkb-dbf__footer__cancel">';
+		dialogHtml += '<span class="epkb-cancel-button epkb-dbf__footer__cancel__btn">' + escapeDialogText( epkbQuizAdmin.strings.close ) + '</span>';
+		dialogHtml += '</div>';
+		dialogHtml += '</div>';
+		dialogHtml += '<div class="epkb-dbf__close epkbfa epkbfa-times"></div>';
+		dialogHtml += '</div>';
+		dialogHtml += '<div class="epkb-dialog-box-form-black-background epkb-dialog-box-form-black-background--quiz-generation-unavailable"></div>';
+
+		$( 'body' ).append( dialogHtml );
+
+		if ( linkUrl && linkLabel ) {
+			$( '#epkb-quiz-generation-unavailable-dialog .epkb-dbf__footer__accept__btn' ).attr( 'href', linkUrl );
+		}
+
+		$( '#epkb-quiz-generation-unavailable-dialog .epkb-dbf__footer__cancel__btn, #epkb-quiz-generation-unavailable-dialog .epkb-dbf__close, .epkb-dialog-box-form-black-background--quiz-generation-unavailable' ).on( 'click', function() {
+			closeGenerationUnavailableDialog();
+		} );
+	}
+
 	function showWarning( message ) {
 		if ( ! message ) {
 			$warning.prop( 'hidden', true ).html( '' );
@@ -911,12 +951,31 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	$( document ).on( 'click', '#epkb-quiz-generate', function() {
+		const $btn = $( this );
+		if ( String( $btn.data( 'generation-available' ) ) !== '1' ) {
+			showGenerationUnavailableDialog( $btn );
+			return;
+		}
+
 		generateQuiz();
 	} );
 
 	$( document ).on( 'click', '#epkb-quiz-delete', function() {
 		deleteQuiz();
 	} );
+
+	// Highlight the quiz attempt linked from the notification email
+	const highlightedAttemptKey = new URLSearchParams( window.location.search ).get( 'epkb-attempt' );
+	if ( highlightedAttemptKey ) {
+		const $attemptRow = $page.find( '.epkb-quiz-results-table tr[data-attempt-key="' + $.escapeSelector( highlightedAttemptKey ) + '"]' );
+		if ( $attemptRow.length ) {
+			$attemptRow.addClass( 'epkb-quiz-results-row--highlighted' );
+			// Delay scroll until the hash-selected Quiz Results tab is visible
+			setTimeout( function () {
+				$attemptRow[0].scrollIntoView( { behavior: 'smooth', block: 'center' } );
+			}, 300 );
+		}
+	}
 
 	initializeIntroEditorDirtyTracking();
 	resetForm();

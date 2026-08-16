@@ -1589,6 +1589,49 @@ class EPKB_Utilities {
 		return trim( $value );
 	}
 
+	/**
+	 * Load all KB Main Page posts and category terms into the object cache in bulk so that get_permalink()
+	 * and get_term_link() calls in layout loops do not hit the database once per article/category.
+	 *
+	 * Why: the KB Main Page renders entirely from the articles sequence option (IDs and titles), so no posts or
+	 * terms are in the object cache when the layouts run. Every article link then calls get_permalink(), which
+	 * loads the post via get_post() - one SELECT per article; same for category links via get_term_link().
+	 * A KB with hundreds of articles paid hundreds of single-row queries just to build URLs.
+	 *
+	 * _prime_post_caches() / _prime_term_caches() are WP core bulk loaders: one "WHERE ID IN (...)" query each,
+	 * after which the later get_post()/get_term() calls are object cache hits. Page cost stays flat as the KB grows.
+	 * Post term caches are primed too because article permalinks can include %category% (categories_in_url setting).
+	 *
+	 * @param array $articles_seq_data
+	 */
+	public static function prime_main_page_caches( $articles_seq_data ) {
+
+		if ( empty( $articles_seq_data ) || ! is_array( $articles_seq_data ) ) {
+			return;
+		}
+
+		$article_ids = array();
+		foreach ( $articles_seq_data as $category_articles ) {
+			if ( ! is_array( $category_articles ) ) {
+				continue;
+			}
+			foreach ( $category_articles as $article_id => $article_title ) {
+				if ( is_numeric( $article_id ) && $article_id > 1 ) {   // keys 0 and 1 hold category name and description
+					$article_ids[] = (int)$article_id;
+				}
+			}
+		}
+
+		if ( ! empty( $article_ids ) ) {
+			_prime_post_caches( $article_ids, true, false );
+		}
+
+		$category_ids = array_filter( array_map( 'intval', array_keys( $articles_seq_data ) ) );
+		if ( ! empty( $category_ids ) ) {
+			_prime_term_caches( $category_ids );
+		}
+	}
+
 	public static function get_single_article_link( $kb_config, $title, $article_id, $type, $seq_no='' ) {
 		static $epkb_single_article_link = null;
 		static $epkb_block_name = null;

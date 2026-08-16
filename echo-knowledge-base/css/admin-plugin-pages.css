@@ -31452,6 +31452,74 @@ html:not(:lang(en)) #ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-ad
     width: 100%;
   }
 }
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background-color: #FFFFFF;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-table th, #ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-table td {
+  padding: 10px 12px;
+  border: 1px solid #E2E8F0;
+  text-align: left;
+  vertical-align: top;
+  font-size: 13px;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-table th {
+  background-color: #F8FAFC;
+  font-weight: 600;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-table td:first-child {
+  white-space: nowrap;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-row--highlighted td {
+  background-color: #FFF8E1;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-row--highlighted td:first-child {
+  box-shadow: inset 3px 0 0 #F0A92E;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-details summary {
+  cursor: pointer;
+  color: #2271B1;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-details ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-details li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 4px;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-details li .epkbfa {
+  margin-right: 4px;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-answer--correct {
+  background-color: #F0F9F1;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-answer--correct .epkbfa {
+  color: #2E7D32;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-answer--incorrect {
+  background-color: #FDF3F3;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-answer--incorrect .epkbfa {
+  color: #C62828;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-answer__question {
+  font-weight: 600;
+}
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-answer__selected,
+#ekb-admin-page-wrap #epkb-kb-quizzes-page-container .epkb-quiz-results-answer__correct {
+  font-size: 12px;
+  color: #50575E;
+}
 #ekb-admin-page-wrap #epkb-kb-glossary-page-container .epkb-admin__boxes-list__box {
   background-color: transparent;
   border: none;

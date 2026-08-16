@@ -74,6 +74,17 @@ class EPKB_Quizzes_Page {
 				),
 			),
 			array(
+				'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( array( 'admin_eckb_access_quizzes_write' ) ),
+				'list_key'                    => 'quizzes-results',
+				'label_text'                  => esc_html__( 'Quiz Results', 'echo-knowledge-base' ),
+				'icon_class'                  => 'epkbfa epkbfa-bar-chart',
+				'boxes_list'                  => array(
+					array(
+						'html' => self::results_tab(),
+					),
+				),
+			),
+			array(
 				'minimum_required_capability' => EPKB_Admin_UI_Access::get_admin_capability(),
 				'list_key'                    => 'quizzes-settings',
 				'label_text'                  => esc_html__( 'Settings', 'echo-knowledge-base' ),
@@ -268,7 +279,11 @@ class EPKB_Quizzes_Page {
 									<?php if ( $show_upgrade_link ) { ?>
 										<a href="<?php echo esc_url( $generation_state['link_url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $generation_state['link_label'] ); ?></a>
 									<?php } else { ?>
-										<button type="button" id="epkb-quiz-generate" class="epkb-btn epkb-primary-btn" <?php disabled( ! $generation_state['is_available'] ); ?>>
+										<button type="button" id="epkb-quiz-generate" class="epkb-btn epkb-primary-btn"
+												data-generation-available="<?php echo esc_attr( $generation_state['is_available'] ? '1' : '0' ); ?>"
+												data-generation-message="<?php echo esc_attr( $generation_state['message'] ); ?>"
+												data-generation-link-url="<?php echo esc_attr( $generation_state['link_url'] ); ?>"
+												data-generation-link-label="<?php echo esc_attr( $generation_state['link_label'] ); ?>">
 											<span class="epkbfa epkbfa-magic"></span>
 										<span><?php esc_html_e( 'Generate Quiz', 'echo-knowledge-base' ); ?></span>
 									</button>
@@ -308,6 +323,107 @@ class EPKB_Quizzes_Page {
 		</div> <?php
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Quiz Results tab HTML.
+	 *
+	 * @return string
+	 */
+	private static function results_tab() {
+
+		$is_feature_enabled = EPKB_Quizzes_Utilities::is_feature_enabled();
+		$attempts = $is_feature_enabled ? EPKB_Quizzes_Utilities::get_all_quiz_attempts() : array();
+		$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+
+		ob_start(); ?>
+
+		<div class="epkb-quizzes-admin">
+			<div class="epkb-admin-info-box">
+				<div class="epkb-admin-info-box__header">
+					<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-bar-chart"></div>
+					<div class="epkb-admin-info-box__header__title"><?php esc_html_e( 'Quiz Results', 'echo-knowledge-base' ); ?></div>
+				</div>
+				<div class="epkb-admin-info-box__body"> <?php
+
+					if ( ! $is_feature_enabled ) { ?>
+						<p><?php esc_html_e( 'Turn on the Quizzes feature in the Settings tab to record and view quiz results here.', 'echo-knowledge-base' ); ?></p> <?php
+					} else if ( empty( $attempts ) ) { ?>
+						<p><?php esc_html_e( 'No quiz results yet. Completed quizzes will appear here automatically.', 'echo-knowledge-base' ); ?></p> <?php
+					} else { ?>
+						<p><?php esc_html_e( 'Most recent quiz completions are listed first. Expand a row to see the answers.', 'echo-knowledge-base' ); ?></p>
+						<table class="epkb-quiz-results-table">
+							<thead>
+								<tr>
+									<th><?php esc_html_e( 'When Taken', 'echo-knowledge-base' ); ?></th>
+									<th><?php esc_html_e( 'Quiz', 'echo-knowledge-base' ); ?></th>
+									<th><?php esc_html_e( 'User', 'echo-knowledge-base' ); ?></th>
+									<th><?php esc_html_e( 'Score', 'echo-knowledge-base' ); ?></th>
+									<th><?php esc_html_e( 'Answers', 'echo-knowledge-base' ); ?></th>
+								</tr>
+							</thead>
+							<tbody> <?php
+								foreach ( $attempts as $attempt ) {
+									self::display_quiz_attempt_row( $attempt, $date_time_format );
+								} ?>
+							</tbody>
+						</table> <?php
+					} ?>
+				</div>
+			</div>
+		</div> <?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render one quiz attempt row.
+	 *
+	 * @param array $attempt
+	 * @param string $date_time_format
+	 */
+	private static function display_quiz_attempt_row( $attempt, $date_time_format ) {
+
+		$completed_at = empty( $attempt['timestamp'] )
+			? ( empty( $attempt['completed_at'] ) ? '' : $attempt['completed_at'] )
+			: wp_date( $date_time_format, (int) $attempt['timestamp'] );
+		$correct_count = empty( $attempt['correct_count'] ) ? 0 : (int) $attempt['correct_count'];
+		$total_count = empty( $attempt['total_count'] ) ? 0 : (int) $attempt['total_count'];
+		$percent = empty( $attempt['percent'] ) ? 0 : (int) $attempt['percent'];
+		$rows = empty( $attempt['rows'] ) || ! is_array( $attempt['rows'] ) ? array() : $attempt['rows'];
+		$attempt_key = ( empty( $attempt['quiz_id'] ) ? 0 : (int) $attempt['quiz_id'] ) . '-' . ( empty( $attempt['timestamp'] ) ? 0 : (int) $attempt['timestamp'] ); ?>
+
+		<tr data-attempt-key="<?php echo esc_attr( $attempt_key ); ?>">
+			<td><?php echo esc_html( $completed_at ); ?></td>
+			<td><?php echo esc_html( empty( $attempt['quiz_title'] ) ? __( '(no title)', 'echo-knowledge-base' ) : $attempt['quiz_title'] ); ?></td>
+			<td><?php echo esc_html( empty( $attempt['user_label'] ) ? __( 'Anonymous visitor', 'echo-knowledge-base' ) : $attempt['user_label'] ); ?></td>
+			<td><?php echo esc_html( $correct_count . '/' . $total_count . ' (' . $percent . '%)' ); ?></td>
+			<td> <?php
+				if ( empty( $rows ) ) {
+					echo esc_html( '—' );
+				} else { ?>
+					<details class="epkb-quiz-results-details">
+						<summary><?php esc_html_e( 'Show answers', 'echo-knowledge-base' ); ?></summary>
+						<ul> <?php
+							foreach ( $rows as $row ) {
+								if ( ! is_array( $row ) ) {
+									continue;
+								}
+								$is_correct = ! empty( $row['is_correct'] ); ?>
+								<li class="<?php echo $is_correct ? 'epkb-quiz-results-answer--correct' : 'epkb-quiz-results-answer--incorrect'; ?>">
+									<span class="epkbfa <?php echo $is_correct ? 'epkbfa-check-circle' : 'epkbfa-times-circle'; ?>"></span>
+									<span class="epkb-quiz-results-answer__question"><?php echo esc_html( empty( $row['question'] ) ? '' : $row['question'] ); ?></span>
+									<span class="epkb-quiz-results-answer__selected"><?php echo esc_html( sprintf( __( 'Selected: %s', 'echo-knowledge-base' ), empty( $row['selected_answer'] ) ? '' : $row['selected_answer'] ) ); ?></span> <?php
+									if ( ! $is_correct ) { ?>
+										<span class="epkb-quiz-results-answer__correct"><?php echo esc_html( sprintf( __( 'Correct: %s', 'echo-knowledge-base' ), empty( $row['correct_answer'] ) ? '' : $row['correct_answer'] ) ); ?></span> <?php
+									} ?>
+								</li> <?php
+							} ?>
+						</ul>
+					</details> <?php
+				} ?>
+			</td>
+		</tr> <?php
 	}
 
 	/**

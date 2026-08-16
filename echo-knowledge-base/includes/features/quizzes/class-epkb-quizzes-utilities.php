@@ -8,6 +8,8 @@ class EPKB_Quizzes_Utilities {
 	const META_SOURCE_ARTICLE_ID = 'source_article_id';
 	const META_QUESTIONS = 'epkb_quiz_questions';
 	const META_GENERATION_META = 'epkb_quiz_generation_meta';
+	const META_ATTEMPT = 'epkb_quiz_attempt';
+	const MAX_STORED_ATTEMPTS_PER_QUIZ = 100;
 	const DEMO_QUIZ_URL = 'https://www.echoknowledgebase.com/documentation/quizzes/';
 
 	/**
@@ -116,16 +118,14 @@ class EPKB_Quizzes_Utilities {
 	 */
 	public static function get_frontend_script_data() {
 
-		$config = self::get_shared_config();
 		$settings = self::get_frontend_settings();
 
 		return array(
-			'ajaxUrl'              => admin_url( 'admin-ajax.php' ),
-			'nonce'                => wp_create_nonce( '_wpnonce_epkb_ajax_action' ),
-			'notificationsEnabled' => empty( $config['quizzes_notification_email'] ) ? 'off' : 'on',
-			'correct'              => $settings['correct_text'],
-			'incorrect'            => $settings['incorrect_text'],
-			'summaryPrefix'        => $settings['score_prefix_text'],
+			'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
+			'nonce'         => wp_create_nonce( '_wpnonce_epkb_ajax_action' ),
+			'correct'       => $settings['correct_text'],
+			'incorrect'     => $settings['incorrect_text'],
+			'summaryPrefix' => $settings['score_prefix_text'],
 		);
 	}
 
@@ -402,6 +402,114 @@ class EPKB_Quizzes_Utilities {
 		}
 
 		return $source_article_ids;
+	}
+
+	/**
+	 * Get admin URL of the Quizzes page.
+	 *
+	 * @param string $tab
+	 * @param array $args Optional extra query arguments
+	 * @return string
+	 */
+	public static function get_quizzes_page_url( $tab = '', $args = array() ) {
+		$url = admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( EPKB_KB_Config_DB::DEFAULT_KB_ID ) . '&page=epkb-quizzes' );
+		$url = empty( $args ) ? $url : add_query_arg( $args, $url );
+		return empty( $tab ) ? $url : $url . '#' . $tab;
+	}
+
+	/**
+	 * Store one completed quiz attempt as post meta.
+	 *
+	 * @param int $quiz_id
+	 * @param array $attempt
+	 * @return bool
+	 */
+	public static function add_quiz_attempt( $quiz_id, $attempt ) {
+
+		$quiz_id = absint( $quiz_id );
+		if ( empty( $quiz_id ) || ! is_array( $attempt ) ) {
+			return false;
+		}
+
+		$result = add_post_meta( $quiz_id, self::META_ATTEMPT, $attempt );
+		if ( empty( $result ) ) {
+			return false;
+		}
+
+		self::trim_quiz_attempts( $quiz_id );
+
+		return true;
+	}
+
+	/**
+	 * Get stored attempts for one quiz, newest first.
+	 *
+	 * @param int $quiz_id
+	 * @return array
+	 */
+	public static function get_quiz_attempts( $quiz_id ) {
+
+		$attempts = get_post_meta( absint( $quiz_id ), self::META_ATTEMPT );
+		if ( ! is_array( $attempts ) ) {
+			return array();
+		}
+
+		$attempts = array_filter( $attempts, 'is_array' );
+		usort( $attempts, array( __CLASS__, 'compare_attempts_newest_first' ) );
+
+		return $attempts;
+	}
+
+	/**
+	 * Get stored attempts across all quizzes, newest first.
+	 *
+	 * @param int $limit
+	 * @return array
+	 */
+	public static function get_all_quiz_attempts( $limit = 200 ) {
+
+		$all_attempts = array();
+		foreach ( self::get_quizzes() as $quiz ) {
+			foreach ( self::get_quiz_attempts( $quiz->ID ) as $attempt ) {
+				$attempt['quiz_id'] = (int) $quiz->ID;
+				$attempt['quiz_title'] = $quiz->post_title;
+				$all_attempts[] = $attempt;
+			}
+		}
+
+		usort( $all_attempts, array( __CLASS__, 'compare_attempts_newest_first' ) );
+
+		return array_slice( $all_attempts, 0, absint( $limit ) );
+	}
+
+	/**
+	 * Compare attempts by timestamp, newest first.
+	 *
+	 * @param array $attempt_a
+	 * @param array $attempt_b
+	 * @return int
+	 */
+	public static function compare_attempts_newest_first( $attempt_a, $attempt_b ) {
+		$time_a = empty( $attempt_a['timestamp'] ) ? 0 : (int) $attempt_a['timestamp'];
+		$time_b = empty( $attempt_b['timestamp'] ) ? 0 : (int) $attempt_b['timestamp'];
+		return $time_b <=> $time_a;
+	}
+
+	/**
+	 * Remove oldest attempts above the per-quiz storage cap.
+	 *
+	 * @param int $quiz_id
+	 */
+	private static function trim_quiz_attempts( $quiz_id ) {
+
+		$attempts = self::get_quiz_attempts( $quiz_id );
+		if ( count( $attempts ) <= self::MAX_STORED_ATTEMPTS_PER_QUIZ ) {
+			return;
+		}
+
+		foreach ( array_slice( $attempts, self::MAX_STORED_ATTEMPTS_PER_QUIZ ) as $old_attempt ) {
+			delete_post_meta( $quiz_id, self::META_ATTEMPT, $old_attempt );
+		}
 	}
 
 	/**

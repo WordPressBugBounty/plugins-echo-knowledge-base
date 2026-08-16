@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Knowledge Base for Documents and FAQs\n"
-"POT-Creation-Date: 2026-08-02 10:08-0700\n"
+"POT-Creation-Date: 2026-08-13 21:50-0700\n"
 "PO-Revision-Date: 2025-06-08 08:46-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -42,7 +42,7 @@ msgstr ""
 
 #: includes/admin/admin-functions.php:197
 #: includes/admin/settings/class-epkb-setup-steps.php:2099
-#: includes/system/scripts-registration-admin.php:275
+#: includes/system/scripts-registration-admin.php:276
 #: js/ai/admin-ai-chat.js:491 js/ai/admin-ai-chat.js:762
 #: js/ai/admin-ai-chat.js:763 js/ai/admin-ai-chat.js:1065
 msgid "Restore"
@@ -52,7 +52,7 @@ msgstr ""
 #: includes/admin/glossary/class-epkb-glossary-page.php:156
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:143
 #: includes/admin/pages/class-epkb-config-settings-page.php:968
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:208
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:219
 #: includes/admin/wizard/class-epkb-kb-wizard-cntrl.php:406
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:232
 #: includes/features/kbs/class-epkb-kb-handler.php:140
@@ -167,8 +167,8 @@ msgstr ""
 #: includes/admin/pages/class-epkb-dashboard-page.php:856
 #: includes/system/scripts-registration-admin.php:83
 #: includes/system/scripts-registration-admin.php:234
-#: includes/system/scripts-registration-admin.php:516
-#: includes/system/scripts-registration-admin.php:545
+#: includes/system/scripts-registration-admin.php:517
+#: includes/system/scripts-registration-admin.php:546
 #: includes/system/scripts-registration-public.php:92
 #: includes/system/scripts-registration-public.php:131
 msgid "Please try again later."
@@ -187,12 +187,12 @@ msgstr ""
 #: includes/class-epkb-utilities.php:1141
 #: includes/class-epkb-utilities.php:1146
 #: includes/class-epkb-utilities.php:1152
-#: includes/class-epkb-utilities.php:1941
-#: includes/class-epkb-utilities.php:1975
+#: includes/class-epkb-utilities.php:1984
+#: includes/class-epkb-utilities.php:2018
 #: includes/system/scripts-registration-admin.php:84
 #: includes/system/scripts-registration-admin.php:85
-#: includes/system/scripts-registration-admin.php:517
-#: includes/system/scripts-registration-admin.php:546
+#: includes/system/scripts-registration-admin.php:518
+#: includes/system/scripts-registration-admin.php:547
 #: includes/system/scripts-registration-public.php:132
 #: includes/system/scripts-registration-public.php:133
 msgid "Error occurred"
@@ -201,8 +201,8 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-abstract-block.php:759
 #: includes/admin/pages/class-epkb-dashboard-page.php:859
 #: includes/system/scripts-registration-admin.php:86
-#: includes/system/scripts-registration-admin.php:519
-#: includes/system/scripts-registration-admin.php:548
+#: includes/system/scripts-registration-admin.php:520
+#: includes/system/scripts-registration-admin.php:549
 #: includes/system/scripts-registration-public.php:134
 msgid "Unknown error"
 msgstr ""
@@ -210,8 +210,8 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-abstract-block.php:760
 #: includes/admin/pages/class-epkb-dashboard-page.php:860
 #: includes/system/scripts-registration-admin.php:87
-#: includes/system/scripts-registration-admin.php:520
-#: includes/system/scripts-registration-admin.php:549
+#: includes/system/scripts-registration-admin.php:521
+#: includes/system/scripts-registration-admin.php:550
 #: includes/system/scripts-registration-public.php:135
 msgid "Please reload the page and try again."
 msgstr ""
@@ -221,7 +221,7 @@ msgstr ""
 #: includes/admin/wizard/class-epkb-kb-wizard-global.php:91
 #: includes/admin/wizard/class-epkb-kb-wizard-ordering.php:52
 #: includes/system/scripts-registration-admin.php:88
-#: includes/system/scripts-registration-admin.php:521
+#: includes/system/scripts-registration-admin.php:522
 #: includes/system/scripts-registration-public.php:136
 msgid "Saving configuration"
 msgstr ""
@@ -229,14 +229,14 @@ msgstr ""
 #: includes/admin/blocks/class-epkb-abstract-block.php:762
 #: includes/admin/pages/class-epkb-dashboard-page.php:862
 #: includes/system/scripts-registration-admin.php:89
-#: includes/system/scripts-registration-admin.php:522
-#: includes/system/scripts-registration-admin.php:550
+#: includes/system/scripts-registration-admin.php:523
+#: includes/system/scripts-registration-admin.php:551
 #: includes/system/scripts-registration-public.php:137
 msgid "Input is required"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-abstract-block.php:764
-#: includes/system/scripts-registration-admin.php:558
+#: includes/system/scripts-registration-admin.php:559
 #: includes/system/scripts-registration-public.php:141
 msgid ""
 "Creating a Knowledge Base with demo categories and articles. It will be "
@@ -272,7 +272,7 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-settings-page.php:3229
 #: includes/admin/pages/class-epkb-config-settings-page.php:3240
 #: includes/admin/pages/class-epkb-config-settings-page.php:3255
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:79
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:90
 #: includes/admin/settings/class-epkb-setup-steps.php:1673
 #: includes/ai/admin/class-epkb-ai-chat-tab.php:61 js/ai/admin-ai-chat.js:2413
 #: js/ai/admin-ai-dashboard.js:353
@@ -1380,7 +1380,7 @@ msgid "Group Title Typography"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-faqs-block.php:380
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:289
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:304
 #: includes/admin/settings/class-epkb-setup-steps.php:1634
 msgid "Questions"
 msgstr ""
@@ -1390,6 +1390,7 @@ msgid "Question Typography"
 msgstr ""
 
 #: includes/admin/blocks/class-epkb-faqs-block.php:409
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:362
 msgid "Answers"
 msgstr ""
 
@@ -1738,7 +1739,7 @@ msgstr ""
 
 #: includes/admin/convert/class-epkb-convert.php:20
 #: includes/admin/convert/class-epkb-convert.php:23
-#: includes/class-epkb-utilities.php:2341
+#: includes/class-epkb-utilities.php:2384
 msgid "Post"
 msgstr ""
 
@@ -1938,7 +1939,7 @@ msgstr ""
 
 #: includes/admin/editor/class-epkb-frontend-editor.php:164
 #: includes/admin/editor/class-epkb-frontend-editor.php:235
-#: includes/class-epkb-utilities.php:2345
+#: includes/class-epkb-utilities.php:2388
 #: includes/system/class-epkb-ui-table.php:165 js/ai/admin-ai-chat.js:891
 #: js/ai/admin-ai-chat.js:1088 js/ai/admin-ai-content-analysis-table.js:2778
 #: js/ai/admin-ai-search.js:500 js/ai/admin-ai-training-data-table.js:1728
@@ -2232,7 +2233,6 @@ msgstr ""
 
 #: includes/admin/faqs/class-epkb-faqs-page.php:648
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2760
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:458
 #: includes/system/scripts-registration-admin.php:247
 #: includes/system/scripts-registration-admin.php:251
 msgid "Question"
@@ -2645,7 +2645,7 @@ msgstr ""
 #: includes/admin/glossary/class-epkb-glossary-page.php:306
 #: includes/admin/glossary/class-epkb-glossary-page.php:474
 #: includes/admin/pages/class-epkb-config-tools-page.php:1003
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:625
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:741
 #: includes/class-epkb-utilities.php:21
 #: includes/system/scripts-registration-admin.php:135
 #: includes/system/scripts-registration-admin.php:236
@@ -2658,8 +2658,8 @@ msgstr ""
 #: includes/admin/kb-configuration/class-epkb-kb-config-category.php:44
 #: includes/admin/kb-configuration/class-epkb-kb-config-category.php:481
 #: includes/admin/pages/class-epkb-config-tools-page.php:999
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:187
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:625
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:198
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:741
 #: includes/class-epkb-utilities.php:20
 #: includes/system/scripts-registration-admin.php:136
 #: includes/system/scripts-registration-admin.php:237
@@ -2694,7 +2694,7 @@ msgid "No glossary terms found. Click \"Add Term\" to create one."
 msgstr ""
 
 #: includes/admin/glossary/class-epkb-glossary-page.php:362
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:330
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:446
 #: includes/ai/admin/class-epkb-ai-admin-page.php:520
 #: includes/ai/admin/class-epkb-ai-admin-page.php:580
 #: includes/class-epkb-html-admin.php:315 js/ai/admin-ai-chat.js:1801
@@ -2769,7 +2769,7 @@ msgstr ""
 #: includes/admin/pages/class-epkb-dashboard-page.php:453
 #: includes/admin/pages/class-epkb-dashboard-page.php:455
 #: includes/admin/pages/class-epkb-dashboard-page.php:1042
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:618
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:726
 msgid "Upgrade to PRO"
 msgstr ""
 
@@ -2787,12 +2787,12 @@ msgid ""
 msgstr ""
 
 #: includes/admin/glossary/class-epkb-glossary-page.php:483
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:648
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:764
 msgid "Edit"
 msgstr ""
 
 #: includes/admin/glossary/class-epkb-glossary-page.php:486
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:302
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:317
 #: includes/system/class-epkb-ui-table.php:139
 #: includes/system/class-epkb-ui-table.php:212 js/ai/admin-ai-chat.js:405
 #: js/ai/admin-ai-chat.js:777 js/ai/admin-ai-chat.js:778
@@ -4056,12 +4056,12 @@ msgid "Take Quiz"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2767
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:418
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:534
 msgid "True"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2774
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:424
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:540
 msgid "False"
 msgstr ""
 
@@ -4070,12 +4070,10 @@ msgid "Quiz Complete"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2788
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:444
 msgid "Correct"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:2795
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:444
 msgid "Incorrect"
 msgstr ""
 
@@ -5060,17 +5058,17 @@ msgid "AI Features"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4582
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:391
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:507
 msgid "Eyebrow Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4583
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:398
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:514
 msgid "Start Button Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4584
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:405
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:521
 msgid "Question Label"
 msgstr ""
 
@@ -5083,22 +5081,22 @@ msgid "False Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4587
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:433
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:549
 msgid "Summary Title"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4588
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:440
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:556
 msgid "Correct Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4589
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:447
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:563
 msgid "Incorrect Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4590
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:454
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:570
 msgid "Score Prefix"
 msgstr ""
 
@@ -5107,67 +5105,67 @@ msgid "Quiz Notification Email"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4592
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:469
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:585
 msgid "Accent"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4593
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:475
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:591
 msgid "Button Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4594
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:481
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:597
 msgid "Card Border"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4595
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:487
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:603
 msgid "Card Background"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4596
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:493
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:609
 msgid "Heading Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4597
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:499
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:615
 msgid "Body Text"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4598
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:505
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:621
 msgid "Intro Background"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4599
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:511
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:627
 msgid "Correct Background"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4600
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:517
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:633
 msgid "Correct Border"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4601
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:523
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:639
 msgid "Incorrect Background"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4602
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:529
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:645
 msgid "Incorrect Border"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4603
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:535
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:651
 msgid "Summary Background"
 msgstr ""
 
 #: includes/admin/kb-configuration/class-epkb-kb-config-specs.php:4604
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:541
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:657
 msgid "Summary Text"
 msgstr ""
 
@@ -8976,7 +8974,7 @@ msgid "Enable Quizzes"
 msgstr ""
 
 #: includes/admin/pages/class-epkb-dashboard-page.php:631
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:342
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:458
 msgid "Quizzes Enabled"
 msgstr ""
 
@@ -8994,7 +8992,7 @@ msgstr ""
 
 #: includes/admin/pages/class-epkb-dashboard-page.php:636
 #: includes/admin/pages/class-epkb-dashboard-page.php:662
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:567
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:683
 #: includes/ai/admin/class-epkb-ai-dashboard-tab.php:959
 #: includes/ai/admin/class-epkb-ai-dashboard-tab.php:1059
 #: includes/ai/admin/class-epkb-ai-pro-features-tab.php:224
@@ -9374,7 +9372,7 @@ msgid "Quiz deleted."
 msgstr ""
 
 #: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:178
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:629
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:737
 msgid "You do not have permission to use AI quiz generation."
 msgstr ""
 
@@ -9394,115 +9392,99 @@ msgstr ""
 msgid "Quizzes are disabled."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:271
-msgid "Quiz notification email is invalid."
-msgstr ""
-
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:276
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:519
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:266
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:521
 msgid "Quiz not found."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:282
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:272
 msgid "Quiz cannot be submitted."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:295
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:315
 #, php-format
 msgid "Quiz Taken: %s"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:314
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:335
 msgid "Quiz questions could not be read."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:330
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:351
 msgid "Refresh the page and try again."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:346
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:367
 msgid "Quiz answers could not be read."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:352
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:357
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:387
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:373
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:378
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:408
 msgid "Quiz answers are invalid."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:381
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:402
 msgid "Answer every quiz question before submitting."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:423
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:445
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:399
 msgid "Anonymous visitor"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:450
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:461
 msgid "Quiz Taken"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:451
-msgid "Article:"
-msgstr ""
-
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:452
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:462
 msgid "Quiz:"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:453
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:463
 msgid "User:"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:454
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:464
 msgid "When Taken:"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:455
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:465
 msgid "Result:"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:459
-msgid "Selected Answer"
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:466
+msgid "View the full attempt details on the Quiz Results page"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:460
-msgid "Result"
-msgstr ""
-
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:461
-#: includes/system/scripts-registration-admin.php:248
-msgid "Correct Answer"
-msgstr ""
-
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:465
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:467
 msgid "Site:"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:480
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:556
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:482
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:558
 msgid "Select a source article."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:488
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:490
 msgid "The selected source article is not eligible for quizzes."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:492
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:494
 msgid "The selected source article cannot be used to generate a quiz."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:497
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:499
 msgid "A quiz already exists for this article."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:574
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:576
 msgid ""
 "Another quiz update is already in progress for that article. Please try "
 "again in a moment."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:599
+#: includes/admin/quizzes/class-epkb-quizzes-ctrl.php:601
 msgid "That article already has a quiz. Opening the existing quiz instead."
 msgstr ""
 
@@ -9514,201 +9496,264 @@ msgstr ""
 msgid "Add and Edit Quiz"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:105
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:79
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:345
+msgid "Quiz Results"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:116
 msgid "Quiz Workflow"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:109
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:120
 msgid "Each quiz is linked to exactly one KB article."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:110
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:121
 msgid ""
 "Create a draft manually or generate one from an article with AI when AI "
 "features are available."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:111
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:122
 msgid ""
 "Review and edit the title, intro, questions, answers, and explanations "
 "before publishing."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:112
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:123
 msgid ""
 "Published quizzes appear only on their source article page, below the "
 "article content."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:123
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:159
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:134
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:170
 msgid "Quizzes are Disabled"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:126
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:137
 msgid ""
 "Turn on the Quizzes feature in the Settings tab to view the quiz library and "
 "edit quizzes here."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:162
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:173
 msgid "Enable the Quizzes feature in the Settings tab to manage quizzes here."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:179
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:190
 #: includes/features/quizzes/class-epkb-quizzes-cpt-setup.php:30
 #: includes/system/scripts-registration-admin.php:254
 msgid "New Quiz"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:180
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:191
 msgid ""
 "Create a new quiz or update one from the Quiz Library on the Overview tab."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:185
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:196
 msgid "Add Quiz"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:190
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:654
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:201
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:770
 msgid "View Quiz"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:201
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:212
 msgid "Quiz Title"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:202
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:213
 msgid "Enter quiz title..."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:210
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:221
 msgid "Select a Knowledge Base"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:219
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:230
 msgid "Article Selection"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:222
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:228
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:233
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:239
 #: includes/system/scripts-registration-admin.php:258
 msgid "Select a source article"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:234
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:245
 #: includes/system/scripts-registration-admin.php:260
 msgid "Search articles..."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:234
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:245
 msgid "Search articles"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:242
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:253
 msgid "Multiple Choices per Question"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:244
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:255
 msgid "Auto"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:253
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:264
 msgid "Intro / Instructions"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:264
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:273
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:275
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:288
+#: includes/system/scripts-registration-admin.php:264
 msgid "Generate Quiz"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:265
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:276
 msgid "Create or replace quiz questions from the selected source article."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:292
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:307
 msgid "Add Question"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:297
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:312
 msgid ""
 "No questions yet. Add one manually or generate a quiz from the source "
 "article."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:300
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:315
 msgid "Save Draft"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:301
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:316
 msgid "Publish"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:335
-msgid "Feature Settings"
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:350
+msgid ""
+"Turn on the Quizzes feature in the Settings tab to record and view quiz "
+"results here."
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:352
+msgid "No quiz results yet. Completed quizzes will appear here automatically."
 msgstr ""
 
 #: includes/admin/quizzes/class-epkb-quizzes-page.php:354
-msgid "Quiz Notifications"
+msgid ""
+"Most recent quiz completions are listed first. Expand a row to see the "
+"answers."
 msgstr ""
 
 #: includes/admin/quizzes/class-epkb-quizzes-page.php:358
-msgid "Send Completed Quiz Details To"
+msgid "When Taken"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:359
+#: includes/features/quizzes/class-epkb-quizzes-cpt-setup.php:27
+msgid "Quiz"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:360
+#: includes/system/scripts-registration-public.php:237
+#: js/ai/admin-ai-chat.js:689 js/ai/admin-ai-chat.js:1161
+#: js/ai/admin-ai-search.js:371 js/ai/admin-ai-search.js:637
+msgid "User"
 msgstr ""
 
 #: includes/admin/quizzes/class-epkb-quizzes-page.php:361
+#: js/ai/admin-ai-content-analysis-table.js:2283
+msgid "Score"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:398
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:366
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:545
+msgid "(no title)"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:406
+msgid "Show answers"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:416
+#, php-format
+msgid "Selected: %s"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:418
+#, php-format
+msgid "Correct: %s"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:451
+msgid "Feature Settings"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:470
+msgid "Quiz Notifications"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:474
+msgid "Send Completed Quiz Details To"
+msgstr ""
+
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:477
 msgid "Leave empty to disable quiz completion notifications."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:370
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:486
 msgid "AI Generation"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:376
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:492
 #, php-format
 msgid "Quiz drafts use your active AI provider: %s."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:386
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:502
 msgid "Frontend Text"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:408
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:524
 msgid "Displayed before the number, for example: Question 1"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:413
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:529
 msgid "True / False Text"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:464
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:580
 msgid "Frontend Colors"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:562
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:678
 msgid "See the Demo Quiz"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:563
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:679
 msgid ""
 "Open our live demo quiz to see how the quiz experience looks for your "
 "readers."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:581
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:697
 msgid "Quiz Library"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:582
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:698
 msgid "Open a quiz to edit it or start a new draft."
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:586
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:702
 msgid "Create Quiz"
 msgstr ""
 
-#: includes/admin/quizzes/class-epkb-quizzes-page.php:592
+#: includes/admin/quizzes/class-epkb-quizzes-page.php:708
 #: includes/system/scripts-registration-admin.php:253
 msgid "No quizzes yet."
 msgstr ""
@@ -9778,7 +9823,7 @@ msgid "AI Live Help + Video Guides"
 msgstr ""
 
 #: includes/admin/settings/class-epkb-setup-pointers.php:270
-#: includes/system/scripts-registration-admin.php:279
+#: includes/system/scripts-registration-admin.php:280
 #: js/ai/admin-ai-util.js:884
 msgid "Got it!"
 msgstr ""
@@ -10802,7 +10847,7 @@ msgid "steps completed"
 msgstr ""
 
 #: includes/admin/settings/class-epkb-setup-steps.php:1846
-#: includes/system/scripts-registration-admin.php:280
+#: includes/system/scripts-registration-admin.php:281
 msgid "Congratulations!"
 msgstr ""
 
@@ -10845,12 +10890,12 @@ msgstr ""
 
 #: includes/admin/settings/class-epkb-setup-steps.php:2082
 #: includes/admin/wizard/class-epkb-kb-wizard-setup.php:202
-#: includes/system/scripts-registration-admin.php:278
+#: includes/system/scripts-registration-admin.php:279
 msgid "Later"
 msgstr ""
 
 #: includes/admin/settings/class-epkb-setup-steps.php:2093
-#: includes/system/scripts-registration-admin.php:277
+#: includes/system/scripts-registration-admin.php:278
 msgid "Complete Now"
 msgstr ""
 
@@ -11145,7 +11190,7 @@ msgstr ""
 #: includes/ai/search-results/class-epkb-ai-search-results-display.php:65
 #: includes/ai/search-results/class-epkb-ai-search-results-display.php:66
 #: includes/ai/search-results/class-epkb-ai-search-results-display.php:319
-#: includes/system/scripts-registration-admin.php:523
+#: includes/system/scripts-registration-admin.php:524
 #: js/ai/admin-ai-content-analysis-app.js:51
 #: js/ai/admin-ai-content-analysis-table.js:2401
 #: js/ai/admin-ai-training-data-table.js:1886 js/ai/admin-ai-util.js:1190
@@ -16498,31 +16543,31 @@ msgstr ""
 msgid "We'd love to hear your feedback!"
 msgstr ""
 
-#: includes/class-epkb-utilities.php:1953
-#: includes/class-epkb-utilities.php:1957
-#: includes/class-epkb-utilities.php:1967
-#: includes/class-epkb-utilities.php:1971
+#: includes/class-epkb-utilities.php:1996
+#: includes/class-epkb-utilities.php:2000
+#: includes/class-epkb-utilities.php:2010
+#: includes/class-epkb-utilities.php:2014
 msgid "Invalid email"
 msgstr ""
 
-#: includes/class-epkb-utilities.php:1983
+#: includes/class-epkb-utilities.php:2026
 msgid "New message"
 msgstr ""
 
-#: includes/class-epkb-utilities.php:1983
+#: includes/class-epkb-utilities.php:2026
 msgctxt "email sent from someone"
 msgid "from"
 msgstr ""
 
-#: includes/class-epkb-utilities.php:1987
+#: includes/class-epkb-utilities.php:2030
 msgid "Invalid subject"
 msgstr ""
 
-#: includes/class-epkb-utilities.php:1991
+#: includes/class-epkb-utilities.php:2034
 msgid "Email message is too long"
 msgstr ""
 
-#: includes/class-epkb-utilities.php:2035
+#: includes/class-epkb-utilities.php:2078
 msgid "Failed to send the email."
 msgstr ""
 
@@ -17372,10 +17417,6 @@ msgstr ""
 msgid "Knowledge Base Quiz"
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-cpt-setup.php:27
-msgid "Quiz"
-msgstr ""
-
 #: includes/features/quizzes/class-epkb-quizzes-cpt-setup.php:29
 msgid "Add New Quiz"
 msgstr ""
@@ -17409,102 +17450,97 @@ msgstr ""
 msgid "KB %d"
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:366
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:437
-msgid "(no title)"
-msgstr ""
-
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:432
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:540
 #, php-format
 msgid "Deleted Article (#%d)"
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:433
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:541
 msgid ""
 "The source article no longer exists. This quiz is kept as a record, but it "
 "will not render on the frontend."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:442
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:550
 msgid ""
 "The selected source article is no longer a KB article, so this quiz cannot "
 "render on the frontend."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:448
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:556
 #, php-format
 msgid ""
 "The source article is not published (current status: %s). The quiz record is "
 "kept, but frontend rendering is suppressed."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:454
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:562
 msgid ""
 "The source article is password protected. The quiz record is kept, but "
 "frontend rendering is suppressed."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:460
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:568
 msgid ""
 "Linked articles cannot be used as quiz sources. The quiz record is kept, but "
 "frontend rendering is suppressed."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:534
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:642
 msgid "Quiz questions are invalid."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:542
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:650
 msgid "One or more quiz questions are invalid."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:551
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:659
 msgid "Quiz questions must use either multiple choice or true/false."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:556
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:664
 #, php-format
 msgid "Question %d is missing the question text."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:570
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:678
 #, php-format
 msgid "Question %d must use True or False as the correct answer."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:583
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:691
 #, php-format
 msgid "Question %d must include exactly 4 answer choices."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:587
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:695
 #, php-format
 msgid "Question %d must have a valid correct answer selected."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:616
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:724
 msgid "Upgrade to AI Features Pro to generate quizzes from articles."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:639
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:747
 msgid ""
 "Configure your AI provider and accept the data privacy agreement before "
 "generating quizzes."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:641
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:749
 msgid "Configure AI"
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:786
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:894
 msgid "AI quiz generation returned an invalid quiz payload."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:796
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:904
 msgid "AI quiz generation must return between 3 and 10 questions."
 msgstr ""
 
-#: includes/features/quizzes/class-epkb-quizzes-utilities.php:800
+#: includes/features/quizzes/class-epkb-quizzes-utilities.php:908
 msgid "AI quiz generation returned the wrong number of questions."
 msgstr ""
 
@@ -18097,6 +18133,10 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
+#: includes/system/scripts-registration-admin.php:248
+msgid "Correct Answer"
+msgstr ""
+
 #: includes/system/scripts-registration-admin.php:249
 msgid "Question ID"
 msgstr ""
@@ -18129,51 +18169,51 @@ msgstr ""
 msgid "No matching articles found."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:273
+#: includes/system/scripts-registration-admin.php:274
 msgid "Show Completed Steps"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:274
+#: includes/system/scripts-registration-admin.php:275
 msgid "Hide Completed Steps"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:276
+#: includes/system/scripts-registration-admin.php:277
 msgid "Explore"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:281
+#: includes/system/scripts-registration-admin.php:282
 msgid ""
 "You have completed all setup steps. Your Knowledge Base is now fully "
 "configured!"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:518
-#: includes/system/scripts-registration-admin.php:547
+#: includes/system/scripts-registration-admin.php:519
+#: includes/system/scripts-registration-admin.php:548
 msgid "Error occurred - configuration NOT saved"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:551
+#: includes/system/scripts-registration-admin.php:552
 #: includes/system/scripts-registration-public.php:144
 msgid "Sending, please wait"
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:552
+#: includes/system/scripts-registration-admin.php:553
 #: includes/system/scripts-registration-public.php:145
 msgid "Could not submit the error."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:553
+#: includes/system/scripts-registration-admin.php:554
 msgid "Setup Wizard encountered an error."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:554
+#: includes/system/scripts-registration-admin.php:555
 #: includes/system/scripts-registration-public.php:143
 msgid ""
 "We have detected an error. Please report the issue so that we can help you "
 "resolve it."
 msgstr ""
 
-#: includes/system/scripts-registration-admin.php:557
+#: includes/system/scripts-registration-admin.php:558
 msgid "Saving changes..."
 msgstr ""
 
@@ -18218,12 +18258,6 @@ msgstr ""
 
 #: includes/system/scripts-registration-public.php:236
 msgid "Copy failed"
-msgstr ""
-
-#: includes/system/scripts-registration-public.php:237
-#: js/ai/admin-ai-chat.js:689 js/ai/admin-ai-chat.js:1161
-#: js/ai/admin-ai-search.js:371 js/ai/admin-ai-search.js:637
-msgid "User"
 msgstr ""
 
 #: includes/system/scripts-registration-public.php:239
@@ -19142,10 +19176,6 @@ msgstr ""
 
 #: js/ai/admin-ai-content-analysis-table.js:2248
 msgid "Loading content analysis data..."
-msgstr ""
-
-#: js/ai/admin-ai-content-analysis-table.js:2283
-msgid "Score"
 msgstr ""
 
 #: js/ai/admin-ai-content-analysis-table.js:2289

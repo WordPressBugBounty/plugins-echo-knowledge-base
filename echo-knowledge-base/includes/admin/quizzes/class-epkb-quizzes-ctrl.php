@@ -248,7 +248,7 @@ class EPKB_Quizzes_Ctrl {
 	}
 
 	/**
-	 * Send quiz completion notification.
+	 * Record quiz attempt and send completion notification.
 	 */
 	public function submit_quiz_attempt() {
 
@@ -259,16 +259,6 @@ class EPKB_Quizzes_Ctrl {
 
 		if ( ! EPKB_Quizzes_Utilities::is_feature_enabled() ) {
 			wp_send_json_error( array( 'message' => __( 'Quizzes are disabled.', 'echo-knowledge-base' ) ), 400 );
-		}
-
-		$kb_config = EPKB_Quizzes_Utilities::get_shared_config();
-		$to_email = empty( $kb_config['quizzes_notification_email'] ) ? '' : sanitize_email( $kb_config['quizzes_notification_email'] );
-		if ( empty( $to_email ) ) {
-			wp_send_json_success( array( 'email_sent' => false ) );
-		}
-
-		if ( ! is_email( $to_email ) ) {
-			wp_send_json_error( array( 'message' => __( 'Quiz notification email is invalid.', 'echo-knowledge-base' ) ), 400 );
 		}
 
 		$quiz = EPKB_Quizzes_Utilities::get_quiz( absint( EPKB_Utilities::post( 'quiz_id', 0 ) ) );
@@ -292,13 +282,44 @@ class EPKB_Quizzes_Ctrl {
 			wp_send_json_error( array( 'message' => $attempt_result->get_error_message() ), 400 );
 		}
 
+		$attempt_stored = EPKB_Quizzes_Utilities::add_quiz_attempt( $quiz_payload['quiz_id'], $attempt_result );
+		if ( ! $attempt_stored ) {
+			EPKB_Logging::add_log( 'Failed to store quiz attempt', $quiz_payload['quiz_id'] );
+		}
+
+		$email_sent = $this->send_quiz_attempt_notification( $quiz_payload, $attempt_result );
+
+		wp_send_json_success( array( 'attempt_stored' => $attempt_stored, 'email_sent' => $email_sent ) );
+	}
+
+	/**
+	 * Email quiz attempt notification if configured. Email failure is logged and does not fail the request.
+	 *
+	 * @param array $quiz_payload
+	 * @param array $attempt_result
+	 * @return bool
+	 */
+	private function send_quiz_attempt_notification( $quiz_payload, $attempt_result ) {
+
+		$kb_config = EPKB_Quizzes_Utilities::get_shared_config();
+		$to_email = empty( $kb_config['quizzes_notification_email'] ) ? '' : sanitize_email( $kb_config['quizzes_notification_email'] );
+		if ( empty( $to_email ) ) {
+			return false;
+		}
+
+		if ( ! is_email( $to_email ) ) {
+			EPKB_Logging::add_log( 'Quiz notification email address is invalid', $to_email );
+			return false;
+		}
+
 		$subject = sprintf( __( 'Quiz Taken: %s', 'echo-knowledge-base' ), $quiz_payload['title'] );
 		$email_error = EPKB_Utilities::send_email( $this->get_quiz_attempt_email_message( $quiz_payload, $attempt_result ), true, $to_email, '', '', $subject );
 		if ( ! empty( $email_error ) ) {
-			wp_send_json_error( array( 'message' => $email_error ), 500 );
+			EPKB_Logging::add_log( 'Quiz notification email failed to send', $email_error );
+			return false;
 		}
 
-		wp_send_json_success( array( 'email_sent' => true ) );
+		return true;
 	}
 
 	/**
@@ -398,6 +419,7 @@ class EPKB_Quizzes_Ctrl {
 		}
 
 		return array(
+			'timestamp'     => time(),
 			'completed_at'  => wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
 			'user_label'    => $this->get_quiz_attempt_user_label(),
 			'correct_count' => $correct_count,
@@ -424,7 +446,7 @@ class EPKB_Quizzes_Ctrl {
 	}
 
 	/**
-	 * Build quiz attempt notification email.
+	 * Build quiz attempt notification email with a link to the Quiz Results tab.
 	 *
 	 * @param array $quiz_payload
 	 * @param array $attempt_result
@@ -432,36 +454,16 @@ class EPKB_Quizzes_Ctrl {
 	 */
 	private function get_quiz_attempt_email_message( $quiz_payload, $attempt_result ) {
 
-		$article_link = empty( $quiz_payload['source_article_url'] )
-			? esc_html( $quiz_payload['source_article_label'] )
-			: '<a href="' . esc_url( $quiz_payload['source_article_url'] ) . '">' . esc_html( $quiz_payload['source_article_label'] ) . '</a>';
-
-		$rows_html = '';
-		foreach ( $attempt_result['rows'] as $row ) {
-			$rows_html .= '<tr>' .
-				'<td style="padding:8px;border:1px solid #ddd;">' . esc_html( $row['question'] ) . '</td>' .
-				'<td style="padding:8px;border:1px solid #ddd;">' . esc_html( $row['selected_answer'] ) . '</td>' .
-				'<td style="padding:8px;border:1px solid #ddd;">' . esc_html( $row['is_correct'] ? __( 'Correct', 'echo-knowledge-base' ) : __( 'Incorrect', 'echo-knowledge-base' ) ) . '</td>' .
-				'<td style="padding:8px;border:1px solid #ddd;">' . esc_html( $row['correct_answer'] ) . '</td>' .
-			'</tr>';
-		}
+		$attempt_key = $quiz_payload['quiz_id'] . '-' . (int) $attempt_result['timestamp'];
+		$results_url = EPKB_Quizzes_Utilities::get_quizzes_page_url( 'quizzes-results', array( 'epkb-attempt' => $attempt_key ) );
 
 		return '<html><body style="font-family:Arial,sans-serif;color:#222;">' .
 			'<h2>' . esc_html__( 'Quiz Taken', 'echo-knowledge-base' ) . '</h2>' .
-			'<p><strong>' . esc_html__( 'Article:', 'echo-knowledge-base' ) . '</strong> ' . $article_link . '</p>' .
 			'<p><strong>' . esc_html__( 'Quiz:', 'echo-knowledge-base' ) . '</strong> ' . esc_html( $quiz_payload['title'] ) . '</p>' .
 			'<p><strong>' . esc_html__( 'User:', 'echo-knowledge-base' ) . '</strong> ' . esc_html( $attempt_result['user_label'] ) . '</p>' .
 			'<p><strong>' . esc_html__( 'When Taken:', 'echo-knowledge-base' ) . '</strong> ' . esc_html( $attempt_result['completed_at'] ) . '</p>' .
 			'<p><strong>' . esc_html__( 'Result:', 'echo-knowledge-base' ) . '</strong> ' . esc_html( $attempt_result['correct_count'] . '/' . $attempt_result['total_count'] . ' (' . $attempt_result['percent'] . '%)' ) . '</p>' .
-			'<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;max-width:900px;">' .
-				'<thead><tr>' .
-					'<th style="padding:8px;border:1px solid #ddd;text-align:left;">' . esc_html__( 'Question', 'echo-knowledge-base' ) . '</th>' .
-					'<th style="padding:8px;border:1px solid #ddd;text-align:left;">' . esc_html__( 'Selected Answer', 'echo-knowledge-base' ) . '</th>' .
-					'<th style="padding:8px;border:1px solid #ddd;text-align:left;">' . esc_html__( 'Result', 'echo-knowledge-base' ) . '</th>' .
-					'<th style="padding:8px;border:1px solid #ddd;text-align:left;">' . esc_html__( 'Correct Answer', 'echo-knowledge-base' ) . '</th>' .
-				'</tr></thead>' .
-				'<tbody>' . $rows_html . '</tbody>' .
-			'</table>' .
+			'<p><a href="' . esc_url( $results_url ) . '">' . esc_html__( 'View the full attempt details on the Quiz Results page', 'echo-knowledge-base' ) . '</a></p>' .
 			'<p><strong>' . esc_html__( 'Site:', 'echo-knowledge-base' ) . '</strong> <a href="' . esc_url( home_url() ) . '">' . esc_html( get_bloginfo( 'name' ) ) . '</a></p>' .
 		'</body></html>';
 	}

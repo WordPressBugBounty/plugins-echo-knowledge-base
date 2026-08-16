@@ -5,9 +5,9 @@ Contributors: echoplugins
 Donate link: https://www.echoknowledgebase.com
 Tags: knowledge base, documentation, ai, chat, faq
 Requires at least: 5.3
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 5.6
-Stable tag: 17.212.0
+Stable tag: 17.213.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -349,6 +349,12 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 18. Glossary 
 
 == Changelog ==
+
+= 17.213.1 =
+Release Date: Aug 16, 2026
+* New: Quizzes - save submitted quiz results and display them in a new admin tab
+* Update: WordPress 7.1
+* Fix: Cleanup and minor fixes
 
 = 17.212.0 =
 Release Date: Aug 2, 2026
