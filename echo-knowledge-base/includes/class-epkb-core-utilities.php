@@ -1462,6 +1462,17 @@ class EPKB_Core_Utilities {
 	}
 
 	/**
+	 * Get URL of the Add-ons admin page
+	 *
+	 * @param int $kb_id
+	 * @param string $hash - optional anchor on the Add-ons page e.g. 'licenses'
+	 * @return string
+	 */
+	public static function get_add_ons_page_url( $kb_id=EPKB_KB_Config_DB::DEFAULT_KB_ID, $hash='' ) {
+		return admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_id ) . '&page=epkb-add-ons' . ( empty( $hash ) ? '' : '#' . $hash ) );
+	}
+
+	/**
 	 * Show list of KBs.
 	 *
 	 * @param $kb_config

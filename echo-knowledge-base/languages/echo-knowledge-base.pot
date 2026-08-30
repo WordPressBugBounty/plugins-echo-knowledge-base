@@ -796,6 +796,7 @@ msgstr ""
 #: includes/admin/pages/class-epkb-config-settings-page.php:1278
 #: includes/ai/services/class-epkb-ai-provider.php:828
 #: includes/ai/services/class-epkb-ai-provider.php:834
+#: includes/ai/services/class-epkb-ai-provider.php:841
 msgid "Medium"
 msgstr ""
 
@@ -14576,12 +14577,12 @@ msgid "Vector store ID and file ID are required"
 msgstr ""
 
 #: includes/ai/chatgpt/class-epkb-ai-chatgpt-vector-store.php:337
-#: includes/ai/services/class-epkb-ai-provider.php:1059
+#: includes/ai/services/class-epkb-ai-provider.php:1061
 msgid "AI provider failed to process the uploaded file."
 msgstr ""
 
 #: includes/ai/chatgpt/class-epkb-ai-chatgpt-vector-store.php:351
-#: includes/ai/services/class-epkb-ai-provider.php:1048
+#: includes/ai/services/class-epkb-ai-provider.php:1050
 #: includes/ai/support/class-epkb-ai-log.php:290
 msgid "AI provider is still processing the uploaded file. Please try again."
 msgstr ""
@@ -14622,12 +14623,12 @@ msgstr ""
 msgid "CHATGPT ERROR: Invalid response from ChatGPT API"
 msgstr ""
 
-#: includes/ai/chatgpt/class-epkb-chatgpt-model-catalog.php:65
-msgid "Balanced frontier model for most AI chat and search workloads."
+#: includes/ai/chatgpt/class-epkb-chatgpt-model-catalog.php:67
+msgid "Balanced GPT-5.6 model for most AI chat and search workloads."
 msgstr ""
 
-#: includes/ai/chatgpt/class-epkb-chatgpt-model-catalog.php:84
-msgid "Fastest low-cost GPT-5 option for lightweight responses."
+#: includes/ai/chatgpt/class-epkb-chatgpt-model-catalog.php:86
+msgid "Cost-efficient GPT-5.6 model for fast, lightweight responses."
 msgstr ""
 
 #: includes/ai/config/class-epkb-ai-chat-widget-config-specs.php:39
@@ -14941,12 +14942,12 @@ msgstr ""
 msgid "Model, prompt, and store ID are required"
 msgstr ""
 
-#: includes/ai/gemini/class-epkb-gemini-model-catalog.php:63
-msgid "Fast, cost-effective Gemini model for general-purpose use."
+#: includes/ai/gemini/class-epkb-gemini-model-catalog.php:66
+msgid "Fast, cost-effective Gemini model for high-volume lightweight tasks."
 msgstr ""
 
-#: includes/ai/gemini/class-epkb-gemini-model-catalog.php:86
-msgid "Default balanced Gemini model for chat and search."
+#: includes/ai/gemini/class-epkb-gemini-model-catalog.php:83
+msgid "Latest balanced Gemini model for chat and search."
 msgstr ""
 
 #: includes/ai/rest/class-epkb-ai-rest-admin-controller.php:30
@@ -15588,13 +15589,13 @@ msgstr ""
 
 #: includes/ai/services/class-epkb-ai-provider.php:827
 #: includes/ai/services/class-epkb-ai-provider.php:833
-#: includes/ai/services/class-epkb-ai-provider.php:839
+#: includes/ai/services/class-epkb-ai-provider.php:840
 msgid "Low"
 msgstr ""
 
 #: includes/ai/services/class-epkb-ai-provider.php:829
 #: includes/ai/services/class-epkb-ai-provider.php:835
-#: includes/ai/services/class-epkb-ai-provider.php:840
+#: includes/ai/services/class-epkb-ai-provider.php:842
 msgid "High"
 msgstr ""
 
@@ -15602,21 +15603,25 @@ msgstr ""
 msgid "Extra High"
 msgstr ""
 
-#: includes/ai/services/class-epkb-ai-provider.php:879
+#: includes/ai/services/class-epkb-ai-provider.php:839
+msgid "Minimal"
+msgstr ""
+
+#: includes/ai/services/class-epkb-ai-provider.php:881
 msgid "File content is empty."
 msgstr ""
 
-#: includes/ai/services/class-epkb-ai-provider.php:960
-#: includes/ai/services/class-epkb-ai-provider.php:994
-#: includes/ai/services/class-epkb-ai-provider.php:1016
+#: includes/ai/services/class-epkb-ai-provider.php:962
+#: includes/ai/services/class-epkb-ai-provider.php:996
+#: includes/ai/services/class-epkb-ai-provider.php:1018
 msgid "Failed to upload file to AI storage."
 msgstr ""
 
-#: includes/ai/services/class-epkb-ai-provider.php:1280
+#: includes/ai/services/class-epkb-ai-provider.php:1282
 msgid "(default)"
 msgstr ""
 
-#: includes/ai/services/class-epkb-ai-provider.php:1309
+#: includes/ai/services/class-epkb-ai-provider.php:1311
 #, php-format
 msgid "Applied \"%s\" preset"
 msgstr ""

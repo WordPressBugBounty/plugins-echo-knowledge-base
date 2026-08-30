@@ -571,7 +571,7 @@ class EPKB_Gemini_Client {
 	 * Uses the Gemini generateContent endpoint with file_search tool for
 	 * retrieval-augmented generation from documents in a File Search Store.
 	 *
-	 * @param string $model Model name (e.g., 'gemini-2.5-flash')
+	 * @param string $model Model name (e.g., 'gemini-3.7-flash')
 	 * @param string $prompt User prompt/question
 	 * @param string $store_id File Search Store ID
 	 * @param array $options Additional options (system_instruction, model_parameters, etc.)

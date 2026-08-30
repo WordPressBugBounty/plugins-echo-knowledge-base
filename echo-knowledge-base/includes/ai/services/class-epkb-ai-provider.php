@@ -225,13 +225,13 @@ class EPKB_AI_Provider {
 		if ( $provider === self::PROVIDER_CHATGPT ) {
 			return array(
 				self::FASTEST_PRESET => array(
-					'model' => 'gpt-5.4-mini',
+					'model' => 'gpt-5.6-luna',
 				),
 				self::BALANCED_PRESET => array(
-					'model' => 'gpt-5.4',
+					'model' => 'gpt-5.6-terra',
 				),
 				self::SMARTEST_PRESET => array(
-					'model'  => 'gpt-5.4',
+					'model'  => 'gpt-5.6-terra',
 					'params' => array(
 						'reasoning'         => 'high',
 						'verbosity'         => 'medium',
@@ -243,13 +243,13 @@ class EPKB_AI_Provider {
 
 		return array(
 			self::FASTEST_PRESET => array(
-				'model' => 'gemini-2.5-flash',
+				'model' => 'gemini-3.5-flash-lite',
 			),
 			self::BALANCED_PRESET => array(
-				'model' => 'gemini-3-flash-preview',
+				'model' => 'gemini-3.7-flash',
 			),
 			self::SMARTEST_PRESET => array(
-				'model'  => 'gemini-3-flash-preview',
+				'model'  => 'gemini-3.7-flash',
 				'params' => array(
 					'thinking_level'    => 'high',
 					'max_output_tokens' => 4096,
@@ -836,8 +836,10 @@ class EPKB_AI_Provider {
 				'xhigh'  => __( 'Extra High', 'echo-knowledge-base' ),
 			),
 			'thinking_level' => array(
-				'low'  => __( 'Low', 'echo-knowledge-base' ),
-				'high' => __( 'High', 'echo-knowledge-base' ),
+				'minimal' => __( 'Minimal', 'echo-knowledge-base' ),
+				'low'     => __( 'Low', 'echo-knowledge-base' ),
+				'medium'  => __( 'Medium', 'echo-knowledge-base' ),
+				'high'    => __( 'High', 'echo-knowledge-base' ),
 			),
 		);
 

@@ -247,7 +247,13 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			if ( is_wp_error( $result ) ) {
 				// Include chat_id so the frontend can attach the retry to the same conversation the user message was recorded in
 				$error_payload = $conversation_obj->get_chat_id() ? array( 'chat_id' => $conversation_obj->get_chat_id() ) : array();
-				return $this->create_rest_response( $error_payload, EPKB_AI_Log::get_error_status_code( $result->get_error_code() ), $result );
+				$response = $this->create_rest_response( $error_payload, EPKB_AI_Log::get_error_status_code( $result->get_error_code() ), $result );
+				if ( ! current_user_can( 'manage_options' ) ) {
+					$response_data = $response->get_data();
+					unset( $response_data['admin_message'], $response_data['details'] );
+					$response->set_data( $response_data );
+				}
+				return $response;
 			}
 			
 			// Return successful response
@@ -647,14 +653,21 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 	 */
 	private function format_messages_for_response( $messages ) {
 		$formatted = array();
+		$is_admin = current_user_can( 'manage_options' );
 
 		foreach ( $messages as $message ) {
+			$metadata = isset( $message['metadata'] ) && is_array( $message['metadata'] ) ? $message['metadata'] : null;
+			if ( ! $is_admin && ! empty( $metadata['error'] ) ) {
+				unset( $metadata['error'] );
+				$metadata = empty( $metadata ) ? null : $metadata;
+			}
+
 			$formatted[] = array(
 				'id'        => isset( $message['id'] ) ? $message['id'] : '',
 				'role'      => $message['role'],
 				'content'   => EPKB_AI_Security::sanitize_output( $message['content'] ),
 				'timestamp' => isset( $message['timestamp'] ) ? $message['timestamp'] : '',
-				'metadata'  => isset( $message['metadata'] ) && is_array( $message['metadata'] ) ? $message['metadata'] : null
+				'metadata'  => $metadata
 			);
 		}
 

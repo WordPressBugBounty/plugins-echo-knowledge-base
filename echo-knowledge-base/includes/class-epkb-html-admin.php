@@ -139,15 +139,19 @@ class EPKB_HTML_Admin {
 					// Do not render toolbar tab if the user does not have permission
 					if ( ! current_user_can( $page_view['minimum_required_capability'] ) ) {
 						continue;
-					}   ?>
+					}
 
-					<div class="epkb-admin__top-panel__item epkb-admin__top-panel__item--<?php echo esc_attr( $page_view['list_key'] );
+					// Tab with URL is a plain link that opens the URL in a new browser tab; other tabs switch content on the page
+					$tag = empty( $page_view['url'] ) ? 'div' : 'a';   ?>
+
+					<<?php echo tag_escape( $tag ); ?> class="epkb-admin__top-panel__item epkb-admin__top-panel__item--<?php echo esc_attr( $page_view['list_key'] );
 					echo empty( $page_view['secondary_tabs'] ) ? '' : ' epkb-admin__top-panel__item--parent ';
 					echo esc_attr( $page_view['main_class'] ); ?>"
-						<?php echo empty( $page_view['list_id'] ) ? '' : ' id="' . esc_attr( $page_view['list_id'] ) . '"'; ?> data-target="<?php echo esc_attr( $page_view['list_key'] ); ?>">
+						<?php echo empty( $page_view['list_id'] ) ? '' : ' id="' . esc_attr( $page_view['list_id'] ) . '"';
+						echo empty( $page_view['url'] ) ? ' data-target="' . esc_attr( $page_view['list_key'] ) . '"' : ' href="' . esc_url( $page_view['url'] ) . '" target="_blank" rel="noopener"'; ?>>
 						<div class="epkb-admin__top-panel__icon epkb-admin__top-panel__icon--<?php echo esc_attr( $page_view['list_key'] ); ?> <?php echo esc_attr( $page_view['icon_class'] ); ?>"></div>
 						<p class="epkb-admin__top-panel__label epkb-admin__boxes-list__label--<?php echo esc_attr( $page_view['list_key'] ); ?>"><?php echo wp_kses_post( $page_view['label_text'] ); ?></p>
-					</div> <?php
+					</<?php echo tag_escape( $tag ); ?>> <?php
 				}       ?>
 
 			</div>
@@ -202,8 +206,7 @@ class EPKB_HTML_Admin {
 
 							<div class="epkb-admin__secondary-panel__item epkb-admin__secondary-panel__<?php echo esc_attr( $secondary['list_key'] ); ?> <?php
 							echo ( $secondary['active'] ? 'epkb-admin__secondary-panel__item--active' : '' );
-							echo esc_attr( $secondary['main_class'] ); ?>" data-target="<?php echo esc_attr( $page_view['list_key'] ) . '__' .esc_attr( $secondary['list_key'] ); ?>"<?php
-							echo empty( $secondary['url'] ) ? '' : ' data-url="' . esc_url( $secondary['url'] ) . '"'; ?>>     <?php
+							echo esc_attr( $secondary['main_class'] ); ?>" data-target="<?php echo esc_attr( $page_view['list_key'] ) . '__' .esc_attr( $secondary['list_key'] ); ?>">     <?php
 
 								// Optional icon for secondary panel item
 								if ( ! empty( $secondary['icon_class'] ) ) {        ?>
@@ -245,6 +248,11 @@ class EPKB_HTML_Admin {
 
 			// Do not render view if the user does not have permission
 			if ( ! current_user_can( $page_view['minimum_required_capability'] ) ) {
+				continue;
+			}
+
+			// Link tabs (with 'url') open a separate page and have no content on this page
+			if ( ! empty( $page_view['url'] ) ) {
 				continue;
 			}   ?>
 
@@ -552,6 +560,7 @@ class EPKB_HTML_Admin {
 			'list_id'                       => '',
 			'list_key'                      => '',
 			'kb_config_id'				    => '',
+			'url'                           => '',  // Optional URL - if set, the tab is a link that opens the URL in a new browser tab
 
 			// Top Panel Item
 			'label_text'                    => '',
@@ -578,7 +587,6 @@ class EPKB_HTML_Admin {
 			// Shared
 			'active'                    => false,
 			'list_key'                  => '',
-			'url'                       => '',  // Optional URL - if set, clicking the tab will redirect to this URL
 
 			// Secondary Panel Item
 			'label_text'                => '',

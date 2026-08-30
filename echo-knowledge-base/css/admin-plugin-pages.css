@@ -8952,6 +8952,10 @@ html:not(:lang(en)) #ekb-admin-page-wrap .epkb-settings-control-type-toggle .epk
   cursor: pointer;
   border-bottom: 4px solid transparent;
 }
+.epkb-admin__top-panel .epkb-admin__top-panel__item:is(a) {
+  color: inherit;
+  text-decoration: none;
+}
 .epkb-admin__top-panel .epkb-admin__top-panel__item:hover {
   color: #509FE2;
   border-bottom: 4px solid #509FE2;
@@ -29190,115 +29194,8 @@ html:not(:lang(en)) #ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-ad
   background: linear-gradient(135deg, #764BA2 0%, #F43B47 100%);
   transform: scale(1.05);
 }
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) {
-  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2)::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  animation: shimmer 3s infinite;
-}
-@keyframes shimmer {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) .top_heading {
-  color: white;
-  position: relative;
-  z-index: 1;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) .top_heading h3 {
-  color: white;
-  font-weight: 700;
-  font-size: 20px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) .top_heading p {
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 500;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) .description {
-  color: rgba(255, 255, 255, 0.95);
-  position: relative;
-  z-index: 1;
-  font-weight: 400;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) .description strong {
-  color: white;
-  font-weight: 600;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) .epkb-ad-discount-text {
-  color: white;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) .epkb-ad-discount-text code {
-  color: white;
-  background: rgba(255, 255, 255, 0.2);
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) .epkb-primary-btn {
-  background: white;
-  color: #667EEA;
-  font-weight: 700;
-  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.2);
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2) .epkb-primary-btn:hover {
-  color: #764BA2;
-  transform: scale(1.08);
-  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.3);
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product:nth-child(2)::after {
-  content: "HOT";
-  position: absolute;
-  top: 20px;
-  right: -30px;
-  background: linear-gradient(135deg, #F43B47 0%, #FF8A00 100%);
-  color: white;
-  padding: 5px 40px;
-  font-size: 12px;
-  font-weight: 700;
-  transform: rotate(45deg);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-}
 #ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product#epkb-add-on-bundle {
-  background: linear-gradient(135deg, #F093FB 0%, #F5576C 100%);
-  color: white;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product#epkb-add-on-bundle .top_heading {
-  color: white;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product#epkb-add-on-bundle .top_heading h3 {
-  color: white;
-  font-weight: 700;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product#epkb-add-on-bundle .top_heading p {
-  color: rgba(255, 255, 255, 0.95);
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product#epkb-add-on-bundle .description {
-  color: rgba(255, 255, 255, 0.95);
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product#epkb-add-on-bundle .description strong {
-  color: white;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product#epkb-add-on-bundle .epkb-primary-btn {
-  background: white;
-  color: #F5576C;
-  font-weight: 700;
-}
-#ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product#epkb-add-on-bundle .epkb-primary-btn:hover {
-  background: #F3F4F6;
-  transform: scale(1.08);
+  background: #D1FAE5;
 }
 #ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .add_on_product .top_heading {
   padding: 24px 20px 12px;
@@ -29408,7 +29305,7 @@ html:not(:lang(en)) #ekb-admin-page-wrap .epkb-kb-config-page-container #epkb-ad
   background: rgba(255, 255, 255, 0.1);
 }
 #ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container #epkb-add-on-bundle .epkb-primary-btn {
-  color: #000000 !important;
+  color: #FFFFFF !important;
 }
 #ekb-admin-page-wrap .epkb-add-ons-page-container .add_on_container .epkb-input-group .epkb-checkbox-input {
   float: left;

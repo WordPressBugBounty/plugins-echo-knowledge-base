@@ -8,17 +8,20 @@
  */
 class EPKB_Gemini_Model_Catalog implements EPKB_AI_Model_Catalog_Interface {
 
-	const DEFAULT_MODEL = 'gemini-3-flash-preview';
+	const DEFAULT_MODEL = 'gemini-3.7-flash';
 	const DEFAULT_MAX_OUTPUT_TOKENS = 8192;
 	const DEFAULT_MAX_NUM_RESULTS = 10;
 
 	const DEPRECATED_MODELS = array(
-		'gemini-2.5-flash-lite'         => 'gemini-2.5-flash',
-		'gemini-2.5-pro'                => 'gemini-3-flash-preview',
-		'gemini-3-pro-preview'          => 'gemini-3-flash-preview',
-		'gemini-3.1-pro'                => 'gemini-3-flash-preview',
-		'gemini-3.1-pro-preview'        => 'gemini-3-flash-preview',
-		'gemini-3.1-flash-lite-preview' => 'gemini-3-flash-preview',
+		'gemini-2.5-flash'              => 'gemini-3.5-flash-lite',
+		'gemini-2.5-flash-lite'         => 'gemini-3.5-flash-lite',
+		'gemini-2.5-pro'                => 'gemini-3.7-flash',
+		'gemini-3-flash-preview'        => 'gemini-3.7-flash',
+		'gemini-3-pro-preview'          => 'gemini-3.7-flash',
+		'gemini-3.1-flash-lite'         => 'gemini-3.5-flash-lite',
+		'gemini-3.1-flash-lite-preview' => 'gemini-3.5-flash-lite',
+		'gemini-3.1-pro'                => 'gemini-3.7-flash',
+		'gemini-3.1-pro-preview'        => 'gemini-3.7-flash',
 	);
 
 	/**
@@ -57,47 +60,39 @@ class EPKB_Gemini_Model_Catalog implements EPKB_AI_Model_Catalog_Interface {
 	public static function get_models( $model_name = null ) {
 
 		$models = array(
-			'gemini-2.5-flash' => array(
-				'name'                       => 'Gemini 2.5 Flash',
+			'gemini-3.5-flash-lite' => array(
+				'name'                       => 'Gemini 3.5 Flash-Lite',
 				'type'                       => 'gemini',
-				'description'                => __( 'Fast, cost-effective Gemini model for general-purpose use.', 'echo-knowledge-base' ),
+				'description'                => __( 'Fast, cost-effective Gemini model for high-volume lightweight tasks.', 'echo-knowledge-base' ),
 				'default_params'             => array(
-					'temperature'       => 1.0,
-					'top_p'             => 0.95,
-					'thinking_level'    => 'low',
+					'thinking_level'    => 'minimal',
 					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
 				),
-				'supports_temperature'       => true,
-				'supports_top_p'             => true,
-				'supports_thinking_level'    => true,
-				'supports_max_output_tokens' => true,
-				'max_output_tokens_limit'    => 65536,
-				'thinking_config_format'     => 'budget',
-				'thinking_budget_map'        => array(
-					'low'  => 2048,
-					'high' => 8192
-				),
-				'thinking_level_options'     => array( 'low', 'high' ),
-				'parameters'                 => array( 'temperature', 'top_p', 'thinking_level', 'max_output_tokens' )
-			),
-			'gemini-3-flash-preview' => array(
-				'name'                       => 'Gemini 3 Flash',
-				'type'                       => 'gemini',
-				'description'                => __( 'Default balanced Gemini model for chat and search.', 'echo-knowledge-base' ),
-				'default_params'             => array(
-					'temperature'       => 1.0,
-					'top_p'             => 0.95,
-					'thinking_level'    => 'low',
-					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
-				),
-				'supports_temperature'       => true,
-				'supports_top_p'             => true,
+				'supports_temperature'       => false,
+				'supports_top_p'             => false,
 				'supports_thinking_level'    => true,
 				'supports_max_output_tokens' => true,
 				'max_output_tokens_limit'    => 65536,
 				'thinking_config_format'     => 'level',
-				'thinking_level_options'     => array( 'low', 'high' ),
-				'parameters'                 => array( 'temperature', 'top_p', 'thinking_level', 'max_output_tokens' )
+				'thinking_level_options'     => array( 'minimal', 'low', 'medium', 'high' ),
+				'parameters'                 => array( 'thinking_level', 'max_output_tokens' )
+			),
+			'gemini-3.7-flash' => array(
+				'name'                       => 'Gemini 3.7 Flash',
+				'type'                       => 'gemini',
+				'description'                => __( 'Latest balanced Gemini model for chat and search.', 'echo-knowledge-base' ),
+				'default_params'             => array(
+					'thinking_level'    => 'low',
+					'max_output_tokens' => self::DEFAULT_MAX_OUTPUT_TOKENS
+				),
+				'supports_temperature'       => false,
+				'supports_top_p'             => false,
+				'supports_thinking_level'    => true,
+				'supports_max_output_tokens' => true,
+				'max_output_tokens_limit'    => 65536,
+				'thinking_config_format'     => 'level',
+				'thinking_level_options'     => array( 'low', 'medium', 'high' ),
+				'parameters'                 => array( 'thinking_level', 'max_output_tokens' )
 			),
 		);
 

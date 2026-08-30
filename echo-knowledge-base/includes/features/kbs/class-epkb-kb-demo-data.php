@@ -889,7 +889,7 @@ class EPKB_KB_Demo_Data {
 			"<p>" .
 				sprintf(
 					esc_html__( '%1$sView PRO Features%2$s', 'echo-knowledge-base' ),
-					'<a href="' . esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . '1&page=epkb-add-ons' ) ) . '" class="epkb-demo-cta-link">',
+					'<a href="' . esc_url( EPKB_Core_Utilities::get_add_ons_page_url() ) . '" class="epkb-demo-cta-link">',
 					'</a>'
 				) .
 			"</p>" .

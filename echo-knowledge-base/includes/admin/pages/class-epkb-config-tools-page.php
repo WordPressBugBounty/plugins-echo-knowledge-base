@@ -71,13 +71,6 @@ class EPKB_Config_Tools_Page {
 			'boxes_list' => self::get_other_boxes( $kb_config )
 		);
 
-		// SECONDARY VIEW: ADD-ONS (redirects to Add-ons page)
-		$secondary_tabs[] = array(
-			'list_key'   => 'add-ons',
-			'label_text' => '<span style="color:#5cb85c;">' . esc_html__( 'Add-ons', 'echo-knowledge-base' ) . '</span>',
-			'url'        => admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) . '&page=epkb-add-ons#add-ons' ),
-		);
-
 		// SECONDARY VIEW: MENU ACCESS CONTROL
 		$secondary_tabs[] = array(
 
@@ -1333,7 +1326,7 @@ class EPKB_Config_Tools_Page {
 
 				echo wp_kses_post( self::display_debug_data() ); ?>
 
-				<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . '1&page=epkb-add-ons' ) ); ?>" method="post" dir="ltr">
+				<form action="<?php echo esc_url( EPKB_Core_Utilities::get_add_ons_page_url() ); ?>" method="post" dir="ltr">
 					<section style="padding-top: 20px;" class="save-settings checkbox-input"><?php
 						EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Download System Information', 'echo-knowledge-base' ), 'epkb_download_debug_info', 'epkb_download_debug_info', '', true, '' , 'epkb-primary-btn' ); ?>
 					</section>
@@ -1341,7 +1334,7 @@ class EPKB_Config_Tools_Page {
 					<input type="hidden" name="kb_id" value="<?php echo esc_attr( $kb_config['id'] ); ?>">
 				</form>
 
-				<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . '1&page=epkb-add-ons' ) ); ?>" method="post" dir="ltr">
+				<form action="<?php echo esc_url( EPKB_Core_Utilities::get_add_ons_page_url() ); ?>" method="post" dir="ltr">
 					<section class="save-settings checkbox-input"><?php
 						EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Export AI Configuration', 'echo-knowledge-base' ), 'epkb_download_ai_config', 'epkb_download_ai_config', '', true, '' , 'epkb-primary-btn' ); ?>
 					</section>
@@ -1863,7 +1856,7 @@ class EPKB_Config_Tools_Page {
 
 				echo wp_kses_post( self::display_asea_debug_data() ); ?>
 
-				<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . '1&page=epkb-add-ons' ) ); ?>" method="post" dir="ltr">
+				<form action="<?php echo esc_url( EPKB_Core_Utilities::get_add_ons_page_url() ); ?>" method="post" dir="ltr">
 					<section style="padding-top: 20px;" class="save-settings checkbox-input"><?php
 						EPKB_HTML_Elements::submit_button_v2( esc_html__( 'Download Advanced Search Information', 'echo-knowledge-base' ), 'epkb_download_debug_info', 'epkb_download_debug_info', '', true, '', 'epkb-primary-btn' ); ?>
 					</section>

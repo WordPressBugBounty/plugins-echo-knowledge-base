@@ -290,6 +290,20 @@ class EPKB_Config_Page {
 		 */
 		$tools_view_config = EPKB_Config_Tools_Page::get_tools_view_config( $this->kb_config );
 
+		/**
+		 * PRIMARY TAB: ADD-ONS - link tab that opens the Add-ons page; visible to admins only (default capability)
+		 */
+		$add_ons_view_config = array(
+
+			// Shared
+			'list_key' => 'add-ons',
+			'url' => EPKB_Core_Utilities::get_add_ons_page_url( $this->kb_config['id'], 'add-ons' ),
+
+			// Top Panel Item
+			'label_text' => esc_html__( 'Add-ons', 'echo-knowledge-base' ),
+			'icon_class' => 'epkbfa epkbfa-cubes',
+		);
+
 
 		/**
 		 * OUTPUT PRIMARY TABS
@@ -321,6 +335,11 @@ class EPKB_Config_Page {
 		}
 
 		$all_views = array_merge( $core_views, $add_on_views );
+
+		// The Add-ons link tab is always the last one, after any add-on views
+		if ( ! EPKB_Core_Utilities::is_kb_archived( $this->kb_config['status'] ) ) {
+			$all_views[] = $add_ons_view_config;
+		}
 
 		// Full config for published KBs
 		return $all_views;
@@ -920,7 +939,7 @@ class EPKB_Config_Page {
 		$add_on_messages = apply_filters( 'epkb_add_on_license_message', array() );
 		if ( ! $is_staging && ( ( ! empty( $add_on_messages ) && is_array( $add_on_messages ) ) || did_action( 'kb_overview_add_on_errors' ) ) ) {
 
-			$licenses_tab_url = admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::get_post_type( EPKB_KB_Handler::get_current_kb_id() ) . '&page=epkb-add-ons#licenses' );
+			$licenses_tab_url = EPKB_Core_Utilities::get_add_ons_page_url( EPKB_KB_Handler::get_current_kb_id(), 'licenses' );
 			$licenses_tab_button = '<a href="' . esc_url( $licenses_tab_url ) . '" class="epkb-fix-btn epkb-primary-btn"> ' . esc_html__( 'Fix the Issue', 'echo-knowledge-base' ) . '</a>';
 
 			foreach ( $add_on_messages as $add_on_name => $add_on_message ) {

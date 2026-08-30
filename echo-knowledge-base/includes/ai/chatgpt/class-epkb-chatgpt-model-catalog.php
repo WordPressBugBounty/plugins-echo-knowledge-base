@@ -8,19 +8,21 @@
  */
 class EPKB_ChatGPT_Model_Catalog implements EPKB_AI_Model_Catalog_Interface {
 
-	const DEFAULT_MODEL = 'gpt-5.4';
+	const DEFAULT_MODEL = 'gpt-5.6-terra';
 	const DEFAULT_MAX_OUTPUT_TOKENS = 5000;
 	const DEFAULT_MAX_NUM_RESULTS = 10;
 
 	const DEPRECATED_MODELS = array(
-		'gpt-4.1-mini'       => 'gpt-5.4-mini',
-		'gpt-5-nano'         => 'gpt-5.4-mini',
-		'gpt-5'              => 'gpt-5.4',
-		'gpt-5.1'            => 'gpt-5.4',
-		'gpt-5.2'            => 'gpt-5.4',
-		'gpt-5.2-chat-latest'=> 'gpt-5.4',
-		'gpt-5.2-pro'        => 'gpt-5.4',
-		'gpt-5.4-pro'        => 'gpt-5.4',
+		'gpt-4.1-mini'        => 'gpt-5.6-luna',
+		'gpt-5-nano'          => 'gpt-5.6-luna',
+		'gpt-5'               => 'gpt-5.6-terra',
+		'gpt-5.1'             => 'gpt-5.6-terra',
+		'gpt-5.2'             => 'gpt-5.6-terra',
+		'gpt-5.2-chat-latest' => 'gpt-5.6-terra',
+		'gpt-5.2-pro'         => 'gpt-5.6-terra',
+		'gpt-5.4'             => 'gpt-5.6-terra',
+		'gpt-5.4-mini'        => 'gpt-5.6-luna',
+		'gpt-5.4-pro'         => 'gpt-5.6-terra',
 	);
 
 	/**
@@ -59,10 +61,10 @@ class EPKB_ChatGPT_Model_Catalog implements EPKB_AI_Model_Catalog_Interface {
 	public static function get_models( $model_name = null ) {
 
 		$models = array(
-			'gpt-5.4' => array(
-				'name'                       => 'GPT-5.4',
+			'gpt-5.6-terra' => array(
+				'name'                       => 'GPT-5.6 Terra',
 				'type'                       => 'gpt5',
-				'description'                => __( 'Balanced frontier model for most AI chat and search workloads.', 'echo-knowledge-base' ),
+				'description'                => __( 'Balanced GPT-5.6 model for most AI chat and search workloads.', 'echo-knowledge-base' ),
 				'default_params'             => array(
 					'reasoning'         => 'medium',
 					'verbosity'         => 'medium',
@@ -78,10 +80,10 @@ class EPKB_ChatGPT_Model_Catalog implements EPKB_AI_Model_Catalog_Interface {
 				'reasoning_options'          => array( 'none', 'low', 'medium', 'high', 'xhigh' ),
 				'parameters'                 => array( 'verbosity', 'reasoning', 'max_output_tokens' )
 			),
-			'gpt-5.4-mini' => array(
-				'name'                       => 'GPT-5.4 mini',
+			'gpt-5.6-luna' => array(
+				'name'                       => 'GPT-5.6 Luna',
 				'type'                       => 'gpt5',
-				'description'                => __( 'Fastest low-cost GPT-5 option for lightweight responses.', 'echo-knowledge-base' ),
+				'description'                => __( 'Cost-efficient GPT-5.6 model for fast, lightweight responses.', 'echo-knowledge-base' ),
 				'default_params'             => array(
 					'reasoning'         => 'none',
 					'verbosity'         => 'low',

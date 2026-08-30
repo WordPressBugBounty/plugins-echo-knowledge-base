@@ -39,7 +39,7 @@ function epkb_add_plugin_menus() {
 	add_submenu_page( $parent_slug, esc_html__( 'Analytics - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'Analytics', 'echo-knowledge-base' ),
 		EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_search_analytics_read'] ), 'epkb-plugin-analytics', array( new EPKB_Analytics_Page(), 'display_plugin_analytics_page' ) );
 
-	// Add-ons page is hidden from menu but accessible via Tools > Add-ons sub-tab
+	// Add-ons page is hidden from the WordPress menu but accessible from the Configuration page
 	if ( isset( $_GET['page'] ) && $_GET['page'] == 'epkb-add-ons' ) {
 		add_submenu_page( $parent_slug, esc_html__( 'Add-ons - Echo Knowledge Base', 'echo-knowledge-base' ), esc_html__( 'Add-ons', 'echo-knowledge-base' ),
 			EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_addons_news_read'] ), 'epkb-add-ons', array( new EPKB_Add_Ons_Page(), 'display_add_ons_page') );

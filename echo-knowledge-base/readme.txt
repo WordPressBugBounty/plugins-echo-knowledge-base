@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chat, faq
 Requires at least: 5.3
 Tested up to: 7.1
 Requires PHP: 5.6
-Stable tag: 17.213.1
+Stable tag: 17.214.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -266,7 +266,7 @@ For detailed setup and configuration instructions, please visit our [Documentati
 *(For more details, see our [AI Integration Guide](https://www.echoknowledgebase.com/documentation/setup-ai-provider-and-key/) in the documentation.)*
 
 **Q: What AI models do you support?**
-**A:** We support both OpenAI models (GPT-5, GPT-5-nano, GPT-4.1-mini) and Google Gemini models. Gemini models can speed up AI Chat and AI Search by up to 50%, making them an excellent choice for performance-focused deployments.
+**A:** We support current OpenAI models (GPT-5.6 Terra and GPT-5.6 Luna) and Google Gemini models (Gemini 3.7 Flash and Gemini 3.5 Flash-Lite). Gemini models can speed up AI Chat and AI Search by up to 50%, making them an excellent choice for performance-focused deployments.
 
 ### Support & Updates
 
@@ -349,6 +349,13 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 18. Glossary 
 
 == Changelog ==
+
+= 17.214.0 =
+Release Date: Aug 29, 2026
+* Update: Latest GPT and Gemini models
+* Update: Add-ons page is now opened from the Add-ons tab on the Configuration page
+* Fix: AI Chat no longer shows error details to non-admin users
+* Fix: Cleanup and minor fixes
 
 = 17.213.1 =
 Release Date: Aug 16, 2026

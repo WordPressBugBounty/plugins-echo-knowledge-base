@@ -242,11 +242,16 @@ jQuery(document).ready(function($) {
 		let active_secondary_panel_class = 'epkb-admin__secondary-panel--active';
 		let active_secondary_item_class = 'epkb-admin__secondary-panel__item--active';
 
+		// Link tabs (e.g. Add-ons) are plain anchors - let the browser open them
+		if ( $( this ).is( 'a' ) ) {
+			return;
+		}
+
 		// Do nothing for already active item, only trigger secondary item to make sure we have correct hash in URL
 		if ( $( this ).hasClass( active_top_panel_item_class ) ) {
-			let active_secondary_item = $( active_secondary_panel_class ).find( '.' + active_secondary_item_class ).length
-				? $( active_secondary_panel_class ).find( '.' + active_secondary_item_class )
-				: $( $( active_secondary_panel_class ).find( '.epkb-admin__secondary-panel__item' )[0] );
+			let active_secondary_item = $( '.' + active_secondary_panel_class ).find( '.' + active_secondary_item_class ).length
+				? $( '.' + active_secondary_panel_class ).find( '.' + active_secondary_item_class )
+				: $( $( '.' + active_secondary_panel_class ).find( '.epkb-admin__secondary-panel__item' )[0] );
 			setTimeout( function () { active_secondary_item.trigger( 'click' ); }, 100 );
 			return;
 		}
@@ -307,9 +312,9 @@ jQuery(document).ready(function($) {
 	(function(){
 		let url_parts = window.location.href.split( '#' );
 
-		// Set first item as active if there is no any anchor
+		// Set first item as active if there is no any anchor; ignore link tabs which have no content on the page
 		if ( url_parts.length === 1 ) {
-			$( $( '.epkb-admin__top-panel__item' )[0] ).trigger( 'click' );
+			$( $( '.epkb-admin__top-panel__item' ).not( 'a' )[0] ).trigger( 'click' );
 			return;
 		}
 
@@ -320,9 +325,9 @@ jQuery(document).ready(function($) {
 
 		let target_main_items = $( '.epkb-admin__top-panel__item[data-target="' + target_keys[0] + '"]' );
 
-		// If no target items was found, then set the first item as active
+		// If no target items was found, then set the first item as active; ignore link tabs which have no content on the page
 		if ( target_main_items.length === 0 ) {
-			$( $( '.epkb-admin__top-panel__item' )[0] ).trigger( 'click' );
+			$( $( '.epkb-admin__top-panel__item' ).not( 'a' )[0] ).trigger( 'click' );
 			return;
 		}
 
@@ -392,13 +397,6 @@ jQuery(document).ready(function($) {
 
 		let active_secondary_panel_item_class = 'epkb-admin__secondary-panel__item--active';
 		let active_secondary_boxes_list_class = 'epkb-setting-box__list--active';
-
-		// If the tab has a URL, open it in a new browser tab
-		let redirect_url = $( this ).attr( 'data-url' );
-		if ( redirect_url ) {
-			window.open( redirect_url, '_blank' );
-			return;
-		}
 
 		// Do nothing for already active item, only make sure we have correct hash in URL
 		if ( $( this ).hasClass( active_secondary_panel_item_class ) ) {
@@ -2597,8 +2595,8 @@ jQuery(document).ready(function($) {
 		if ( location_parts.length > 1 ) {
 			const tabs_path = location_parts[1].split( '__' );
 
-			// Top tab
-			let target_top_tab = $( '.epkb-admin__top-panel__item--' + tabs_path[0] );
+			// Top tab; ignore link tabs which navigate to their own URL
+			let target_top_tab = $( '.epkb-admin__top-panel__item--' + tabs_path[0] ).not( 'a' );
 			if ( target_top_tab.length ) {
 				e.preventDefault();
 

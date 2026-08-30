@@ -11,7 +11,7 @@ class EPKB_ChatGPT_Client {
 	const API_BASE_URL = 'https://api.openai.com';
 	const API_VERSION = 'v1';
 	// TODO AI PRO LEGACY: Remove after AI PRO and other add-ons stop reading EPKB_ChatGPT_Client::DEFAULT_MODEL directly.
-	const DEFAULT_MODEL = 'gpt-5.4'; // Keep in sync with EPKB_ChatGPT_Model_Catalog::DEFAULT_MODEL.
+	const DEFAULT_MODEL = 'gpt-5.6-terra'; // Keep in sync with EPKB_ChatGPT_Model_Catalog::DEFAULT_MODEL.
 	const DEFAULT_MAX_RETRIES = 3;
 	const DEFAULT_CONVERSATION_EXPIRY_DAYS = 29; // 29 days
 	const MAX_FILE_SIZE = 51380224; // 49 MB.

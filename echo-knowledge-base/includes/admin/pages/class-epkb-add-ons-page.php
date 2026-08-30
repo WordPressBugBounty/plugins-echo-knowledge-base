@@ -118,7 +118,6 @@ class EPKB_Add_Ons_Page {
 				'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2025/08/ai-features-banner.jpg',
 				'desc'              => esc_html__( 'Enhance your site with AI training from posts, pages, custom post types, and private notes, plus smart daily email notifications summarizing AI Chat and Search activity.', 'echo-knowledge-base' ),
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/ai-features/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=ai-features',
-				'discount_coupon'   => EPKB_AI_PRO_Features_Tab::get_discount_coupon(),
 			) );
 
 			self::add_on_product( array(
@@ -198,22 +197,6 @@ class EPKB_Add_Ons_Page {
 				'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/kb-import-export//?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=kb-import-export/',
 			) );   ?>
 
-		</div>      <?php
-
-		return ob_get_clean();
-	}
-
-	/**
-	 * Show Elementor plugin box
-	 *
-	 * @return false|string
-	 */
-	private static function show_elementor_plugin_box() {
-
-		ob_start();     ?>
-
-		<div class="epkb-features-container">   <?php
-			EPKB_Add_Ons_Features::display_crel_features_details();    ?>
 		</div>      <?php
 
 		return ob_get_clean();
@@ -717,34 +700,6 @@ class EPKB_Add_Ons_Page {
 			// Boxes List
 			'boxes_list' => self::get_our_free_plugins_boxes(),
 		];
-
-		/**
-		 * View: Elementor Plugin
-		 */
-		if ( ! EPKB_Utilities::is_creative_addons_widgets_enabled() ) {
-			$views_config[] = [
-
-				// Shared
-				'minimum_required_capability' => EPKB_Admin_UI_Access::get_context_required_capability( ['admin_eckb_access_addons_news_read'] ),
-				'list_key' => 'elementor-plugin',
-
-				// Top Panel Item
-				'label_text' => esc_html__( 'Elementor Plugin', 'echo-knowledge-base' ),
-				'icon_class' => 'epkbfa epkbfa-info-circle',
-
-				// Boxes List
-				'boxes_list' => array(
-
-					// Box: Create Amazing Articles
-					array(
-						'title' => esc_html__( 'Create Amazing Articles', 'echo-knowledge-base' ),
-						'description' => esc_html__( 'Create amazing documentation using our Elementor Widgets from our new plugin called Creative Add-ons', 'echo-knowledge-base' ),
-						'html' => self::show_elementor_plugin_box(),
-						'extra_tags' => ['iframe']
-					)
-				),
-			];
-		}
 
 		/**
 		 * View: New Features
