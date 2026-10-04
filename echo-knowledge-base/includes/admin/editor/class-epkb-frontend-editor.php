@@ -514,7 +514,7 @@ class EPKB_Frontend_Editor {
 		$selected_categories_preset = EPKB_Utilities::post( 'selected_categories_preset', 'current' );
 
 		// do not use the self::update_module_position() here because on preview the rows numbers in HTML remain original
-		$config = self::merge_new_and_old_kb_config( false );
+		$config = self::merge_new_and_old_kb_config( false, false, true );
 		$orig_config = $config['orig_config'];
 		$new_config = $config['new_config'];
 		$unmerged_new_config = $config['unmerged_new_config'];
@@ -725,6 +725,9 @@ class EPKB_Frontend_Editor {
 				if ( empty( $original_post ) ) {
 					if ( $article_id > 0 ) {
 						$demo_article = get_post( $article_id );
+						if ( $demo_article && ! EPKB_KB_Handler::is_kb_post_type( $demo_article->post_type ) ) {
+							$demo_article = null;
+						}
 					}
 					if ( empty( $demo_article ) ) {
 						$demo_article = new Stdclass();
@@ -858,13 +861,19 @@ class EPKB_Frontend_Editor {
 			return $kb_config;
 		}
 
+		// the preview form is posted by the Frontend Editor itself; the nonce stops a crafted link from injecting config into a logged-in user's page
+		$nonce = EPKB_Utilities::post( '_wpnonce_epkb_ajax_action' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, '_wpnonce_epkb_ajax_action' ) ) {
+			return $kb_config;
+		}
+
 		// use cache
 		static $cached_kb_config = null;
 		if ( ! empty( $cached_kb_config ) ) {
 			return $cached_kb_config;
 		}
 
-		$config = self::merge_new_and_old_kb_config( true, true );
+		$config = self::merge_new_and_old_kb_config( true, true, true );
 		$new_config = $config['new_config'];
 
 		$cached_kb_config = $new_config;
@@ -1055,7 +1064,7 @@ class EPKB_Frontend_Editor {
 		wp_send_json_success();
 	}
 
-	private static function merge_new_and_old_kb_config( $merge_module_position=true, $page_reload=false ) {
+	private static function merge_new_and_old_kb_config( $merge_module_position=true, $page_reload=false, $is_preview=false ) {
 
 		// use cache
 		static $cached_kb_config = null;
@@ -1074,6 +1083,11 @@ class EPKB_Frontend_Editor {
 		if ( isset( $new_config['general_typography_font_family'] ) ) {
 			$new_config['general_typography']['font-family'] = $new_config['general_typography_font_family'] == 'Inherit' ? '' : $new_config['general_typography_font_family'];
 			unset( $new_config['general_typography_font_family'] );
+		}
+
+		// saves are validated by update_kb_configuration() which reports errors to the user; previews render unsaved values and must filter them here
+		if ( $is_preview ) {
+			$new_config = self::sanitize_preview_config( $kb_id, $new_config );
 		}
 
 		$orig_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id, true );
@@ -1120,6 +1134,34 @@ class EPKB_Frontend_Editor {
 		$cached_kb_config = [ 'kb_id' => $kb_id, 'orig_config' => $orig_config, 'new_config' => $new_config, 'unmerged_new_config' => $unmerged_new_config ];
 
 		return $cached_kb_config;
+	}
+
+	/**
+	 * Preview config arrives unsanitized from the browser and is rendered into inline CSS and templates; filter it with the same specs used on save.
+	 * Fields unknown to the specs are UI-only helpers (e.g. nav_sidebar_left, toc_content) and are reduced to plain text.
+	 * @param int $kb_id
+	 * @param array $new_config
+	 * @return array
+	 */
+	private static function sanitize_preview_config( $kb_id, $new_config ) {
+
+		$field_specs = EPKB_Core_Utilities::retrieve_all_kb_specs( $kb_id );
+		if ( empty( $field_specs ) ) {
+			return [];
+		}
+
+		$spec_fields = array_intersect_key( $new_config, $field_specs );
+		$sanitized_config = empty( $spec_fields ) ? [] : ( new EPKB_Input_Filter() )->validate_and_sanitize_specs( $spec_fields, $field_specs );
+		if ( is_wp_error( $sanitized_config ) ) {
+			EPKB_Logging::add_log( 'Invalid Frontend Editor preview config', $kb_id, $sanitized_config );
+			$sanitized_config = [];
+		}
+
+		foreach ( array_diff_key( $new_config, $field_specs ) as $key => $value ) {
+			$sanitized_config[ sanitize_key( $key ) ] = is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : sanitize_text_field( $value );
+		}
+
+		return $sanitized_config;
 	}
 
 	/**
@@ -1298,7 +1340,7 @@ class EPKB_Frontend_Editor {
 
 		return array(
 			'inline_styles'			=> EPKB_Utilities::minify_css( $inline_styles ),
-			'custom_inline_styles'	=> $kb_page_type != 'main-page' || empty( $new_config['epkb_ml_custom_css'] ) ? '' : EPKB_Utilities::minify_css( $new_config['epkb_ml_custom_css'] ),
+			'custom_inline_styles'	=> $kb_page_type != 'main-page' || empty( $new_config['epkb_ml_custom_css'] ) ? '' : EPKB_Utilities::minify_css( strip_tags( $new_config['epkb_ml_custom_css'] ) ),
 			'link_css'				=> $link_css,
 			'link_css_rtl'			=> $link_css_rtl,
 			'elay_link_css'			=> empty( $elay_link_css['elay_link_css'] ) ? '' : $elay_link_css['elay_link_css'],

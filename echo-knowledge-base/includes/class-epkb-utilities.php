@@ -352,9 +352,13 @@ class EPKB_Utilities {
 			return;
 		}
 
-		// ensure user has correct permission
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( $context ) ) {
-			self::ajax_show_error_die(__( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (E02)');
+		// ensure user has correct permission for the KB being changed (access levels are per KB with Multiple KBs add-on); handlers read the KB ID from
+		// different parameters, so every KB ID present in the request must pass - otherwise a KB the user may edit could authorize changes to another KB
+		$kb_ids = array_unique( array_filter( array_map( 'absint', array( self::post( 'epkb_kb_id' ), self::post( 'epkb_wizard_kb_id' ), self::post( 'kb_id' ) ) ) ) );
+		foreach ( ( empty( $kb_ids ) ? array( 0 ) : $kb_ids ) as $kb_id ) {
+			if ( ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( $context, $kb_id ) ) {
+				self::ajax_show_error_die(__( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (E02)');
+			}
 		}
 	}
 
@@ -423,6 +427,9 @@ class EPKB_Utilities {
 		if ( defined('DOING_AJAX') ) {
 			wp_die( wp_json_encode( array( 'error' => true, 'message' => EPKB_HTML_Forms::notification_box_bottom( $message, $title, 'error' ), 'error_code' => $error_code ) ) );
 		}
+
+		// regular form submissions (admin page POST) must stop as well so that nonce and permission failures are never silently ignored
+		wp_die( wp_kses_post( $message ), esc_html( $title ) );
 	}
 
 	public static function user_not_logged_in() {

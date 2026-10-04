@@ -56,7 +56,7 @@ class EPKB_Site_Builders {
 
 		// check elementor
 		if ( ! $this->check_elementor_cpt() ) {
-			$this->show_builder_notice( esc_html__( 'Elementor', 'echo-knowledge-base' ), '?page=elementor', esc_html__( 'Post types', 'echo-knowledge-base' ), self::ELEMENTOR_OPTION_NAME );
+			$this->show_builder_notice( esc_html__( 'Elementor', 'echo-knowledge-base' ), '?page=elementor-settings', esc_html__( 'Post types', 'echo-knowledge-base' ), self::ELEMENTOR_OPTION_NAME );
 		}
 
 		// check divi

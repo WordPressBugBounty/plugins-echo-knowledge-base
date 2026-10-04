@@ -782,8 +782,9 @@
   margin: 0;
   padding: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
 }
 #epkb-ai-sr-dialog .epkb-ai-sr-section--ai-answer .epkb-ai-sr-sources__item {
   margin: 0;

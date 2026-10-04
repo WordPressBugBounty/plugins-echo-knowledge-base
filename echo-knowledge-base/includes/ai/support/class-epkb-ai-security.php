@@ -9,6 +9,8 @@ class EPKB_AI_Security {
 	const GLOBAL_RATE_LIMIT_TRANSIENT = 'epkb_ai_chat_global_rate';
 	const SEARCH_RATE_LIMIT_TRANSIENT_PREFIX = 'epkb_ai_search_rate_';
 	const SEARCH_GLOBAL_RATE_LIMIT_TRANSIENT = 'epkb_ai_search_global_rate';
+	const CONTACT_RATE_LIMIT_TRANSIENT_PREFIX = 'epkb_ai_contact_rate_';
+	const CONTACT_GLOBAL_RATE_LIMIT_TRANSIENT = 'epkb_ai_contact_global_rate';
 	const SESSION_COOKIE_NAME = 'epkb_ai_session';
 	const SESSION_COOKIE_EXPIRY = 0; // Browser session
 	const CHAT_ID_PREFIX = 'chat_';
@@ -432,7 +434,8 @@ class EPKB_AI_Security {
 	 ****************************************************************************************/
 
 	/**
-	 * Rate limit helper shared by chat and search.
+	 * Rate limit helper shared by chat, search and contact support. Each bucket is a fixed one-hour window counted from its first request;
+	 * the transient expiry is set relative to that start so later requests do not extend the window.
 	 *
 	 * @param string $user_identifier
 	 * @param string $global_transient
@@ -448,61 +451,64 @@ class EPKB_AI_Security {
 		if ( empty( $user_identifier ) ) {
 			$user_identifier = self::get_user_identifier();
 		}
-
-		$global_count = (int) get_transient( $global_transient );
-		if ( $global_count >= $global_limit ) {
-			return new WP_Error( 'global_rate_limit', $global_message, array( 'retry_after' => 60 ) );
-		}
-
 		$user_transient = $user_transient_prefix . $user_identifier;
-		$user_count = (int) get_transient( $user_transient );
-		if ( $user_count >= $user_limit ) {
-			return new WP_Error( 'user_rate_limit', $user_message, array( 'retry_after' => 60 ) );
+
+		$global_bucket = self::get_rate_limit_window( $global_transient );
+		if ( $global_bucket['count'] >= $global_limit ) {
+			return new WP_Error( 'global_rate_limit', $global_message, array( 'retry_after' => self::get_rate_limit_retry_after( $global_bucket ) ) );
 		}
 
-		set_transient( $global_transient, $global_count + 1, HOUR_IN_SECONDS );
-		set_transient( $user_transient, $user_count + 1, HOUR_IN_SECONDS );
+		$user_bucket = self::get_rate_limit_window( $user_transient );
+		if ( $user_bucket['count'] >= $user_limit ) {
+			return new WP_Error( 'user_rate_limit', $user_message, array( 'retry_after' => self::get_rate_limit_retry_after( $user_bucket ) ) );
+		}
+
+		self::increment_rate_limit_window( $global_transient, $global_bucket );
+		self::increment_rate_limit_window( $user_transient, $user_bucket );
 
 		return true;
 	}
 
 	/**
-	 * Check if user has exceeded rate limits
+	 * @param string $transient
+	 * @return array [ 'count' => int, 'start' => timestamp of the first request in the window ]
+	 */
+	private static function get_rate_limit_window( $transient ) {
+		$bucket = get_transient( $transient );
+		return is_array( $bucket ) && isset( $bucket['count'], $bucket['start'] ) ? $bucket : array( 'count' => 0, 'start' => time() );
+	}
+
+	private static function increment_rate_limit_window( $transient, $bucket ) {
+		$bucket['count']++;
+		set_transient( $transient, $bucket, max( 1, $bucket['start'] + HOUR_IN_SECONDS - time() ) );
+	}
+
+	private static function get_rate_limit_retry_after( $bucket ) {
+		return max( 1, $bucket['start'] + HOUR_IN_SECONDS - time() );
+	}
+
+	/**
+	 * Check if user has exceeded AI Chat rate limits
 	 *
 	 * @param string $user_identifier - Can be user ID or IP hash
 	 * @return bool|WP_Error - True if allowed, WP_Error if rate limited
 	 */
 	public static function check_rate_limit( $user_identifier = '' ) {
 
-		// Get user identifier
-		if ( empty( $user_identifier ) ) {
-			$user_identifier = self::get_user_identifier();
+		// admins are not limited so they can test the feature
+		if ( current_user_can( 'manage_options' ) ) {
+			return true;
 		}
 
-		// Check global rate limit first
-		$global_limit = apply_filters( 'epkb_ai_chat_global_rate_limit', 1000 ); // 1000 requests per hour globally
-		$global_count = get_transient( self::GLOBAL_RATE_LIMIT_TRANSIENT );
-		$global_count = $global_count === false ? 0 : (int) $global_count;
-
-		if ( $global_count >= $global_limit ) {
-			return new WP_Error( 'global_rate_limit', __( 'Chat service is temporarily unavailable due to high demand. Please try again later.', 'echo-knowledge-base' ), array( 'retry_after' => 60 ) );  // 1 minute
-		}
-
-		// Check user rate limit
-		$user_limit = apply_filters( 'epkb_ai_chat_user_rate_limit', 50 ); // 50 requests per hour per user
-		$user_transient = self::RATE_LIMIT_TRANSIENT_PREFIX . $user_identifier;
-		$user_count = get_transient( $user_transient );
-		$user_count = $user_count === false ? 0 : (int) $user_count;
-
-		if ( $user_count >= $user_limit ) {
-			return new WP_Error( 'user_rate_limit', __( 'You have reached the chat limit. Please try again in a minute.', 'echo-knowledge-base' ), array( 'retry_after' => 60 ) );  // 1 minute
-		}
-
-		// Increment counters
-		set_transient( self::GLOBAL_RATE_LIMIT_TRANSIENT, $global_count + 1, HOUR_IN_SECONDS );
-		set_transient( $user_transient, $user_count + 1, HOUR_IN_SECONDS );
-
-		return true;
+		return self::check_rate_limit_bucket(
+			$user_identifier,
+			self::GLOBAL_RATE_LIMIT_TRANSIENT,
+			self::RATE_LIMIT_TRANSIENT_PREFIX,
+			apply_filters( 'epkb_ai_chat_global_rate_limit', 500 ),
+			apply_filters( 'epkb_ai_chat_user_rate_limit', 25 ),
+			__( 'Chat service is temporarily unavailable due to high demand. Please try again later.', 'echo-knowledge-base' ),
+			__( 'You have reached the chat limit. Please try again later.', 'echo-knowledge-base' )
+		);
 	}
 
 	/**
@@ -513,17 +519,40 @@ class EPKB_AI_Security {
 	 */
 	public static function check_search_rate_limit( $user_identifier = '' ) {
 
-		$global_limit = apply_filters( 'epkb_ai_search_global_rate_limit', 5000 );
-		$user_limit = apply_filters( 'epkb_ai_search_user_rate_limit', 300 );
+		if ( current_user_can( 'manage_options' ) ) {
+			return true;
+		}
 
 		return self::check_rate_limit_bucket(
 			$user_identifier,
 			self::SEARCH_GLOBAL_RATE_LIMIT_TRANSIENT,
 			self::SEARCH_RATE_LIMIT_TRANSIENT_PREFIX,
-			$global_limit,
-			$user_limit,
+			apply_filters( 'epkb_ai_search_global_rate_limit', 500 ),
+			apply_filters( 'epkb_ai_search_user_rate_limit', 20 ),
 			__( 'AI Search is temporarily unavailable due to high demand. Please try again later.', 'echo-knowledge-base' ),
-			__( 'You have reached the AI Search limit. Please try again in a minute.', 'echo-knowledge-base' )
+			__( 'You have reached the AI Search limit. Please try again later.', 'echo-knowledge-base' )
+		);
+	}
+
+	/**
+	 * Contact support relays email, so it gets a much stricter limit than regular searches.
+	 *
+	 * @return bool|WP_Error
+	 */
+	public static function check_contact_support_rate_limit() {
+
+		if ( current_user_can( 'manage_options' ) ) {
+			return true;
+		}
+
+		return self::check_rate_limit_bucket(
+			'',
+			self::CONTACT_GLOBAL_RATE_LIMIT_TRANSIENT,
+			self::CONTACT_RATE_LIMIT_TRANSIENT_PREFIX,
+			apply_filters( 'epkb_ai_contact_support_global_rate_limit', 100 ),
+			apply_filters( 'epkb_ai_contact_support_user_rate_limit', 5 ),
+			__( 'Contact support is temporarily unavailable. Please try again later.', 'echo-knowledge-base' ),
+			__( 'You have sent too many requests. Please try again later.', 'echo-knowledge-base' )
 		);
 	}
 }

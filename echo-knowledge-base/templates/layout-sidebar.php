@@ -11,10 +11,7 @@ $kb_id = EPKB_Utilities::get_eckb_kb_id();
 $kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
 
 // FE preview
-if ( EPKB_Utilities::post( 'epkb_fe_reload_mode' ) == 'on' ) {
-	$new_config = EPKB_Utilities::post( 'new_kb_config', [], 'db-config-json' );
-	$kb_config = array_merge( $kb_config, $new_config );
-}
+$kb_config = EPKB_Frontend_Editor::fe_preview_config( $kb_config );
 
 /**
  * Display MAIN PAGE content

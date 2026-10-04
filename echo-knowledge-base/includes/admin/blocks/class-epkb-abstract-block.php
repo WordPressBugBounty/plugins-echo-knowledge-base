@@ -117,6 +117,9 @@ abstract class EPKB_Abstract_Block {
 			$block_attributes[ $block_setting_name ] = isset( $block_attributes[ $block_setting_name ] ) ? $block_attributes[ $block_setting_name ] : $default;
 		}
 
+		// SECURITY: block attributes come from post content and can be tampered with, so sanitize them (colors, numbers, etc.) before they reach CSS/HTML rendering
+		$block_attributes = $this->sanitize_block_attributes( $block_attributes );
+
 		$custom_css_class_escaped = empty( $block_attributes['custom_css_class'] ) ? '' : ' ' . esc_attr( $block_attributes['custom_css_class'] );
 
 		ob_start(); ?>
@@ -428,6 +431,9 @@ abstract class EPKB_Abstract_Block {
 		}
 
 		$block_attributes = $this->get_parsed_block_attributes_or_defaults( $post );
+
+		// SECURITY: block attributes come from post content and can be tampered with, so sanitize them before merging into the KB config used for rendering
+		$block_attributes = $this->sanitize_block_attributes( $block_attributes );
 
 		return empty( $block_attributes ) ? $kb_config : array_merge( $kb_config, $this->add_internal_kb_settings( $block_attributes ) );
 	}

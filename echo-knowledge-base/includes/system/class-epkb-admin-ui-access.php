@@ -103,7 +103,7 @@ class EPKB_Admin_UI_Access {
 
 		// retrieve access configuration
 		$kb_id = EPKB_Utilities::is_positive_int( $kb_id ) ? absint( $kb_id ) : null;
-		$config = empty( $kb_id ) ? epkb_get_instance()->kb_config_obj->get_current_kb_configuration() : epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
+		$config = empty( $kb_id ) ? epkb_get_instance()->kb_config_obj->get_current_kb_configuration() : epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id, true );
 		if ( is_wp_error( $config ) || empty( $config ) || ! is_array( $config ) ) {
 			return false;
 		}

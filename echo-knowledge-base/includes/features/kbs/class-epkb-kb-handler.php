@@ -738,16 +738,17 @@ class EPKB_KB_Handler {
 				continue;
 			}
 
-			// remove page that does not contain KB shortcode or KB layout block anymore
+			// remove page only if it now belongs to another KB; a page without detectable KB shortcode or layout block is kept because
+			// in block themes the layout block can live in the page template, template part or synced pattern rather than in the page content
 			$kb_id = self::get_kb_id_from_kb_main_page( $post );
-			if ( empty( $kb_id ) || $kb_id != $kb_config['id'] ) {
+			if ( ! empty( $kb_id ) && $kb_id != $kb_config['id'] ) {
 				unset( $kb_main_pages[ $post_id ] );
 				continue;
 			}
 
 			$kb_post_slug = get_page_uri( $post_id );  // includes PARENT directory slug
 			if ( is_wp_error( $kb_post_slug ) || empty( $kb_post_slug ) || is_array( $kb_post_slug ) ) {
-				$kb_post_slug = EPKB_KB_Handler::get_default_slug( $kb_id );
+				$kb_post_slug = EPKB_KB_Handler::get_default_slug( $kb_config['id'] );  // use config ID because $kb_id is empty when the page has no detectable block
 			}
 
 			$kb_main_pages_info[$post_id] = array( 'post_title' => $post_title, 'post_status' => EPKB_Utilities::get_post_status_text( $post_status ), 'post_slug' => urldecode($kb_post_slug) );

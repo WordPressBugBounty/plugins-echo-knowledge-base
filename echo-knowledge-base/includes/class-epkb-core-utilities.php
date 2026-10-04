@@ -287,7 +287,7 @@ class EPKB_Core_Utilities {
 		// save Modular Main Page custom CSS if defined
 		$new_config['modular_main_page_custom_css_toggle'] = 'off';
 		if ( isset( $new_config['epkb_ml_custom_css'] ) ) {
-			$ml_custom_css = trim( wp_kses( $new_config['epkb_ml_custom_css'], [] ) );
+			$ml_custom_css = trim( strip_tags( $new_config['epkb_ml_custom_css'] ) );	// not wp_kses: it encodes '>' and breaks child selectors
 			unset( $new_config['epkb_ml_custom_css'] );
 			$new_config['modular_main_page_custom_css_toggle'] = empty( $ml_custom_css ) ? 'off' : 'on';
 			if ( $new_config['modular_main_page_custom_css_toggle'] == 'on' ) {
@@ -769,7 +769,13 @@ class EPKB_Core_Utilities {
 
 		$article_sidebar_priority = isset( $new_config['article_sidebar_component_priority'] ) ? $new_config['article_sidebar_component_priority'] : $orig_config['article_sidebar_component_priority'];
 
-		$new_kb_main_pages = $new_config['kb_main_pages'];
+		// kb_main_pages is an internal array of post ID => title and bypasses the specs filter below; keep only existing posts
+		$new_kb_main_pages = array();
+		foreach ( (array) $new_config['kb_main_pages'] as $post_id => $post_title ) {
+			if ( get_post_status( $post_id ) ) {
+				$new_kb_main_pages[ absint( $post_id ) ] = $post_title;
+			}
+		}
 
 		// sanitize all fields in POST message
 		$form_fields = EPKB_Utilities::retrieve_and_sanitize_form( $new_config, $field_specs );

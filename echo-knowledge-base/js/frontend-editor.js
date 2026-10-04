@@ -825,6 +825,7 @@ jQuery( document ).ready( function( $ ) {
 
 		let $preview_form = $( '<form method="post" action="' + action_url + '" style="display: none !important;">' +
 			'<input type="hidden" name="epkb_fe_reload_mode" value="on">' +
+			'<input type="hidden" name="_wpnonce_epkb_ajax_action" value="' + epkb_vars.nonce + '">' +
 			'<input type="hidden" name="kb_id" value="' + frontendEditor.data( 'kbid' ) + '">' +
 			'<input type="hidden" name="is_article_page" value="' + (kb_page_type === 'article-page' ? 1 : 0) + '">' +
 			'<input type="text" name="new_kb_config" value="">' +

@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 17.214.0
+ * Version: 17.311.0
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '17.214.0';
+	public static $version = '17.311.0';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -200,9 +200,15 @@ final class Echo_Knowledge_Base {
 	 */
 	private function handle_ajax_requests( $action ) {
 
-        if ( empty( $action ) ) {
-            return;
-        }
+		if ( empty( $action ) ) {
+			return;
+		}
+
+		// Quick Edit re-renders the article row via AJAX, so the Views column must be registered for the response
+		if ( $action == 'inline-save' && EPKB_KB_Handler::is_kb_post_type( EPKB_Utilities::post( 'post_type' ) ) ) {
+			new EPKB_Article_Count_Handler();
+			return;
+		}
 
 		if ( $action == 'epkb-search-kb' ) {  // user searching KB
 			new EPKB_KB_Search();

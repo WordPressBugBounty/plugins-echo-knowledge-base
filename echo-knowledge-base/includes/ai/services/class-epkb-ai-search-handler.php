@@ -38,12 +38,6 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 			return new WP_Error( 'ai_search_disabled', __( 'AI Search feature is not enabled', 'echo-knowledge-base' ) );
 		}
 
-		// Check rate limit
-		/* $rate_limit_check = EPKB_AI_Security::check_rate_limit();
-		if ( is_wp_error( $rate_limit_check ) ) {
-			return $rate_limit_check;
-		} */
-
 		// Get or create session
 		$session_id = EPKB_AI_Security::get_or_create_session();
 		if ( is_wp_error( $session_id ) ) {
@@ -91,7 +85,7 @@ class EPKB_AI_Search_Handler extends EPKB_AI_Base_Handler {
 		// Return format matching what JavaScript expects (same as AI Chat)
 		return array(
 			'success'     => true,
-			'response'    => $ai_response['content'],  // Using 'response' to match AI Chat
+			'response'    => EPKB_AI_Security::sanitize_output( $ai_response['content'] ),  // Using 'response' to match AI Chat
 			'query'       => $question,
 			'chat_id'     => $conversation->get_chat_id(),
 			'conversation_id' => $conversation->get_chat_id(),

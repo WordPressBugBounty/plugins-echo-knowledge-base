@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chat, faq
 Requires at least: 5.3
 Tested up to: 7.1
 Requires PHP: 5.6
-Stable tag: 17.214.0
+Stable tag: 17.311.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -349,6 +349,18 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 18. Glossary 
 
 == Changelog ==
+
+= 17.311.0 =
+Release Date: Oct 4, 2026
+* Update: Security hardening across admin, AI and frontend features
+* Fix: AI Chat resumes the latest conversation in a new tab
+* Fix: Custom CSS child selectors were broken on save
+* Fix: Accessibility improvements
+* Fix: Cleanup and minor fixes
+
+= 17.214.1 =
+Release Date: Sep 17, 2026
+* Fix: Cleanup and minor fixes
 
 = 17.214.0 =
 Release Date: Aug 29, 2026

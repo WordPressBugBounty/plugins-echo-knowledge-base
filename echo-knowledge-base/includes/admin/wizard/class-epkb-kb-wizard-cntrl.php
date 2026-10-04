@@ -38,9 +38,7 @@ class EPKB_KB_Wizard_Cntrl {
 		// wp_die if nonce invalid or user does not have correct permission
 		if ( $wizard_type == 'ordering' ) {
 			EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_order_articles_write' );
-		} else if ( $wizard_type == 'global' ) {   // KB URLs page
-			EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
-		} else {
+		} else {   // KB URLs page and others: admins only
 			EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
 		}
 
@@ -193,7 +191,7 @@ class EPKB_KB_Wizard_Cntrl {
 	public function wizard_update_order_view() {
 		global $eckb_is_kb_main_page;
 
-		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die();
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_order_articles_write' );
 
 		$sequence_settings = EPKB_Utilities::post( 'sequence_settings', [] );
 		$kb_id = EPKB_Utilities::post( 'epkb_kb_id', 0 );
@@ -413,7 +411,7 @@ class EPKB_KB_Wizard_Cntrl {
 
 		// allow change slug only for users with admin capability
 		$kb_slug_changed = $is_setup_run_first_time;
-		if ( EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' ) ) {
+		if ( current_user_can( EPKB_Admin_UI_Access::EPKB_ADMIN_CAPABILITY ) ) {
 
 			// allow change slug if Setup Wizard is running for the first time or no KB Main Pages detected
 			if ( $is_setup_run_first_time || EPKB_Utilities::get_wp_option( 'epkb_not_completed_setup_wizard_' . $kb_id, false ) || empty( EPKB_KB_Handler::get_kb_main_pages( $orig_config ) ) ) {
@@ -586,8 +584,8 @@ class EPKB_KB_Wizard_Cntrl {
 
 		// add items to menus if needed
 		$menu_ids = EPKB_Utilities::post( 'menu_ids', [] );
-		if ( $menu_ids && ! empty( $kb_main_pages ) ) {
-			foreach ( $menu_ids as $id ) {
+		if ( $menu_ids && ! empty( $kb_main_pages ) && current_user_can( 'edit_theme_options' ) ) {
+			foreach ( array_map( 'absint', (array) $menu_ids ) as $id ) {
 				$itemData =  array(
 					'menu-item-object-id'   => key($kb_main_pages),
 					'menu-item-parent-id'   => 0,
@@ -609,7 +607,7 @@ class EPKB_KB_Wizard_Cntrl {
 	public function get_wizard_preset_preview() {
 		global $eckb_is_kb_main_page, $eckb_kb_id;
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( 'admin_eckb_access_frontend_editor_write' );
 
 		$kb_id = EPKB_Utilities::post( 'epkb_wizard_kb_id' );
 		if ( empty( $kb_id ) || ! EPKB_Utilities::is_positive_int( $kb_id ) ) {

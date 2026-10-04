@@ -33,6 +33,9 @@ class EPKB_FAQs_Ctrl {
 
 		$faq_status = 'publish';
 		$faq_id = (int)EPKB_Utilities::post( 'faq_id' );
+		if ( ! empty( $faq_id ) ) {
+			$this->get_faq_post_or_die( $faq_id, 731 );
+		}
 		$faq_question = stripslashes( EPKB_Utilities::post( 'faq_title' ) );
 		$faq_answer = stripslashes( wpautop( EPKB_Utilities::post( 'faq_content', '', 'wp_editor' ) ) );
 
@@ -93,10 +96,7 @@ class EPKB_FAQs_Ctrl {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 730 ) );
 		}
 
-		$faq = get_post( $faq_id );
-		if ( empty( $faq ) ) {
-			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 731 ) );
-		}
+		$faq = $this->get_faq_post_or_die( $faq_id, 731 );
 
 		$faq_esc = [
 			'faq_id'    => esc_attr( $faq->ID ),
@@ -123,6 +123,8 @@ class EPKB_FAQs_Ctrl {
 		if ( empty( $faq_id ) ) {
 			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( 740 ) );
 		}
+
+		$this->get_faq_post_or_die( $faq_id, 741 );
 
 		$result = wp_delete_post( $faq_id, true );
 		if ( empty( $result ) || is_wp_error( $result ) ) {
@@ -293,5 +295,22 @@ class EPKB_FAQs_Ctrl {
 			'status'    => 'success',
 			'message'   => esc_html__( 'FAQ Group Deleted', 'echo-knowledge-base' ),
 		) ) );
+	}
+
+	/**
+	 * Ensure the given ID belongs to an FAQ post so that FAQ handlers cannot read, overwrite or delete other post types
+	 *
+	 * @param int $faq_id
+	 * @param int $error_code
+	 * @return WP_Post
+	 */
+	private function get_faq_post_or_die( $faq_id, $error_code ) {
+
+		$faq = get_post( $faq_id );
+		if ( empty( $faq ) || $faq->post_type != EPKB_FAQs_CPT_Setup::FAQS_POST_TYPE ) {
+			EPKB_Utilities::ajax_show_error_die( EPKB_Utilities::report_generic_error( $error_code ) );
+		}
+
+		return $faq;
 	}
 }

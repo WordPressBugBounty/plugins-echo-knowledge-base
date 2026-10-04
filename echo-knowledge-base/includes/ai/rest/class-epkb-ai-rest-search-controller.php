@@ -105,10 +105,10 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 			return $this->create_rest_response( array(), 403, $collection_access );
 		}
 
-		/* $rate_limit_check = EPKB_AI_Security::check_search_rate_limit();
+		$rate_limit_check = EPKB_AI_Security::check_search_rate_limit();
 		if ( is_wp_error( $rate_limit_check ) ) {
 			return $this->create_rest_response( array(), 429, $rate_limit_check );
-		} */
+		}
 
 		// Validate collection configuration (provider match, vector store exists)
 		$config_error = $this->get_collection_configuration_error( $collection_id );
@@ -271,7 +271,7 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 				'type'              => 'string',
 				'description'       => __( 'The search query', 'echo-knowledge-base' ),
 				'validate_callback' => function( $param ) {
-					return is_string( $param ) && strlen( trim( $param ) ) >= 3;
+					return EPKB_AI_Validation::validate_search_query( $param, 3 );
 				},
 				'sanitize_callback' => 'sanitize_text_field',
 			),

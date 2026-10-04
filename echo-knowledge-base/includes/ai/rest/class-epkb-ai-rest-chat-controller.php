@@ -7,41 +7,6 @@
  */
 class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 
-	public function __construct() {
-		parent::__construct();
-		// Bypass WordPress core nonce check for start-session endpoint
-		add_filter( 'rest_authentication_errors', array( $this, 'bypass_nonce_for_start_session' ), 99 );
-	}
-
-	/**
-	 * Bypass WordPress nonce validation for the start-session endpoint.
-	 * This allows the endpoint to work even with expired/invalid nonces from cached pages,
-	 * which is necessary for the nonce refresh mechanism to work.
-	 *
-	 * @param WP_Error|null|true $result Authentication result
-	 * @return WP_Error|null|true
-	 */
-	public function bypass_nonce_for_start_session( $result ) {
-
-		if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
-			return $result;
-		}
-
-		// Only bypass for the start-session endpoint
-		if ( strpos( $_SERVER['REQUEST_URI'], '/ai-chat/start-session' ) === false ) {
-			return $result;
-		}
-
-		// If WordPress rejected due to invalid nonce, clear the error and authenticate from cookies
-		if ( is_wp_error( $result ) && $result->get_error_code() === 'rest_cookie_invalid_nonce' ) {
-			$user_id = wp_validate_auth_cookie( '', 'logged_in' );
-			wp_set_current_user( $user_id ? $user_id : 0 );
-			return true;
-		}
-
-		return $result;
-	}
-
 	/**
 	 * Register the routes for the AI Chat
 	 */
@@ -165,11 +130,10 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 	 */
 	public function start_session( $request ) {
 		try {
-			// Authenticate user from cookies since WordPress may have set user to an undefined state
-			// when the nonce check was bypassed. We need the correct user context to generate
-			// a nonce that will work for subsequent authenticated requests.
-			// For guests (no valid login cookie), explicitly set to user 0.
-			$user_id = wp_validate_auth_cookie( '', 'logged_in' );
+			// This endpoint is called without X-WP-Nonce (the page may be cached with a stale nonce), so core leaves the user unset.
+			// Authenticate from the login cookie to mint a nonce valid for the real user; guests are explicitly user 0.
+			// Only for same-origin requests: the REST API reflects any Origin with credentials, so a foreign page could otherwise read a logged-in user's nonce.
+			$user_id = is_allowed_http_origin() ? wp_validate_auth_cookie( '', 'logged_in' ) : 0;
 			wp_set_current_user( $user_id ? $user_id : 0 );
 
 			// Get or create session (this sets the httpOnly cookie)
@@ -213,6 +177,11 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 			}
 			if ( ! EPKB_AI_Chat_Frontend::is_user_allowed_for_collection( $collection_id ) ) {
 				return $this->create_rest_response( array(), 403, new WP_Error( 'access_denied', __( 'You do not have permission to use AI Chat.', 'echo-knowledge-base' ) ) );
+			}
+
+			$rate_limit_check = EPKB_AI_Security::check_rate_limit();
+			if ( is_wp_error( $rate_limit_check ) ) {
+				return $this->create_rest_response( array(), 429, $rate_limit_check );
 			}
 
 			$result = $this->retrieve_conversation( $request, true );
@@ -402,15 +371,6 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 
 		if ( ! EPKB_AI_Utilities::is_ai_chat_enabled() ) {
 			return new WP_Error( 'ai_chat_disabled', __( 'AI chat is not enabled', 'echo-knowledge-base' ), array( 'status' => 403 ) );
-		}
-
-		// Check rate limit before processing
-		/** @disregard P1011 */
-		if ( ! is_admin() && ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-			/* $result = EPKB_AI_Security::check_rate_limit();   // TODO
-			if ( is_wp_error( $result ) ) {
-				return new WP_Error( 'rate_limit' ); //$this->create_rest_response( array(), 429, $result );
-			} */
 		}
 
 		return EPKB_AI_Security::check_rest_nonce( $request );

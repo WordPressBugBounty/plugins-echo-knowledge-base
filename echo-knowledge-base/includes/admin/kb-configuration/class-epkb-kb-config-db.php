@@ -301,6 +301,19 @@ class EPKB_KB_Config_DB {
 		// use defaults for missing configuration
 		$sanitized_config = wp_parse_args( $sanitized_config, EPKB_KB_Config_Specs::get_default_kb_config( $kb_id ) );
 
+		// Access Control settings can only be changed by admins (see EPKB_Admin_UI_Access::save_access_control()); keep stored values for other
+		// logged-in users. Requests without a user (WP-CLI, cron, activation) are not subject to this because they cannot come from a KB user.
+		if ( get_current_user_id() && ! current_user_can( EPKB_Utilities::ADMIN_CAPABILITY ) ) {
+			$stored_config = $this->get_kb_config( $kb_id, true );
+			if ( ! is_wp_error( $stored_config ) && is_array( $stored_config ) ) {
+				foreach ( EPKB_Admin_UI_Access::ADMIN_UI_CONTEXTS as $context ) {
+					if ( isset( $stored_config[$context] ) ) {
+						$sanitized_config[$context] = $stored_config[$context];
+					}
+				}
+			}
+		}
+
 		return $this->save_kb_config( $sanitized_config, $kb_id );
 	}
 

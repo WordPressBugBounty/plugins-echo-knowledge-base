@@ -40,17 +40,16 @@ $button_style2_escaped = EPKB_Utilities::get_inline_style(
 echo '<div class="eckb-navigation-back  ' . //$kb_config['back_navigation_hover'] .  // what is the hover for? not in configuration specs
           '" ' . $button_style1_escaped . '>';
 
-if ( $kb_config['back_navigation_mode'] == 'navigate_kb_main_page' ) {
-	echo '<div class="eckb-navigation-button">';
-    echo '<a tabindex="0" href="' . esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '" ' . $button_style2_escaped . '>' . esc_html( $kb_config['back_navigation_text'] ) .  '</a>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-    echo '</div>';
-} else {
-	
-	if (  empty( $_REQUEST['epkb-editor-page-loaded'] ) ) {
-		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2_escaped . ' onclick="history.go(-1);" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	} else {
-		echo '<div tabindex="0" class="eckb-navigation-button" ' . $button_style2_escaped . ' onclick="return false;" >' . esc_html( $kb_config['back_navigation_text'] ) . '</div>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
+// do not leave the page being configured; "Previous Page" mode goes back in history but falls through to the KB Main Page link when there is no history or the user opens a new tab/window
+$onclick = '';
+if ( EPKB_Utilities::get( 'epkb-editor-page-loaded' ) == '1' ) {
+	$onclick = ' onclick="return false;"';
+} else if ( $kb_config['back_navigation_mode'] != 'navigate_kb_main_page' ) {
+	$onclick = ' onclick="if ( history.length < 2 || event.ctrlKey || event.metaKey || event.shiftKey ) return; history.back(); return false;"';
 }
+
+echo '<div class="eckb-navigation-button">';
+echo '<a href="' . esc_url( EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config ) ) . '" ' . $button_style2_escaped . $onclick . '>' . esc_html( $kb_config['back_navigation_text'] ) .  '</a>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo '</div>';
 
 echo '</div>';

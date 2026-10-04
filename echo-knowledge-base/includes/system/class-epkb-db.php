@@ -787,8 +787,8 @@ abstract class EPKB_DB {
 				if ( ! isset( $value['value'] ) ) {
 					return false;
 				}
-				$value = $value['value'];
 				$operator_escaped = isset( $value['operator'] ) ? $value['operator'] : '=';
+				$value = $value['value'];
 			} else {
 				$operator_escaped = '=';
 			}

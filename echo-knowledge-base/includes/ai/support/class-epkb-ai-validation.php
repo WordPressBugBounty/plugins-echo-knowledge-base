@@ -11,6 +11,28 @@ class EPKB_AI_Validation {
 	const MAX_METADATA_KEYS = 100;
 	const MAX_METADATA_KEY_LENGTH = 64;
 	const MAX_METADATA_VALUE_LENGTH = 255;
+	const MAX_SEARCH_QUERY_LENGTH = 1000;
+
+	/**
+	 * REST validate_callback for AI search queries
+	 *
+	 * @param mixed $query
+	 * @param int $min_length
+	 * @return true|WP_Error
+	 */
+	public static function validate_search_query( $query, $min_length ) {
+
+		if ( ! is_string( $query ) || strlen( trim( $query ) ) < $min_length ) {
+			return new WP_Error( 'query_too_short', __( 'Please enter a longer search query.', 'echo-knowledge-base' ) );
+		}
+
+		if ( strlen( $query ) > self::MAX_SEARCH_QUERY_LENGTH ) {
+			// translators: %d is the maximum allowed character count
+			return new WP_Error( 'query_too_long', sprintf( __( 'Search query is too long. Please keep it under %d characters.', 'echo-knowledge-base' ), self::MAX_SEARCH_QUERY_LENGTH ) );
+		}
+
+		return true;
+	}
 
 	/**
 	 * Validate and sanitize chat message

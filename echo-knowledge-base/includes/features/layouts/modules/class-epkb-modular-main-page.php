@@ -542,10 +542,10 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 				if ( ! empty( $kb_config[ $head_typography_setting_name ]['font-size'] ) || ! empty( $kb_config[ $head_typography_setting_name ]['font-weight'] ) ) {
 					$output .= '#epkb-ml-cat-article-sidebar .epkb-ml-article-section__head {';
 					if ( ! empty( $kb_config[ $head_typography_setting_name ]['font-size'] ) ) {
-						$output .= 'font-size: ' . $kb_config[ $head_typography_setting_name ]['font-size'] . 'px !important;';
+						$output .= 'font-size: ' . intval( $kb_config[ $head_typography_setting_name ]['font-size'] ) . 'px !important;';
 					}
 					if ( ! empty( $kb_config[ $head_typography_setting_name ]['font-weight'] ) ) {
-						$output .= 'font-weight: ' . $kb_config[ $head_typography_setting_name ]['font-weight'] . ' !important;';
+						$output .= 'font-weight: ' . EPKB_Utilities::sanitize_css_value( $kb_config[ $head_typography_setting_name ]['font-weight'] ) . ' !important;';
 					}
 					$output .= '}';
 				}
@@ -553,7 +553,7 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 
 			$output .= '
 			#epkb-ml__module-categories-articles #epkb-ml-cat-article-sidebar .epkb-ml-article-section__head {
-			        color: ' . $kb_config[ $head_font_color_setting_name ] . ' !important;
+			        color: ' . EPKB_Utilities::sanitize_hex_color( $kb_config[ $head_font_color_setting_name ] ) . ' !important;
 			    }';
 
 			// Articles  -----------------------------------------/
@@ -561,10 +561,10 @@ class EPKB_Modular_Main_Page extends EPKB_Layout {
 				if ( ! empty( $kb_config[ $article_typography_setting_name ]['font-size'] ) || ! empty( $kb_config[ $article_typography_setting_name ]['font-weight'] ) ) {
 					$output .= '#epkb-ml-cat-article-sidebar .epkb-article-inner {';
 					if ( ! empty( $kb_config[ $article_typography_setting_name ]['font-size'] ) ) {
-						$output .= 'font-size: ' . $kb_config[ $article_typography_setting_name ]['font-size'] . 'px !important;';
+						$output .= 'font-size: ' . intval( $kb_config[ $article_typography_setting_name ]['font-size'] ) . 'px !important;';
 					}
 					if ( ! empty( $kb_config[$article_typography_setting_name]['font-weight'] ) ) {
-						$output .= 'font-weight: ' . $kb_config[ $article_typography_setting_name ]['font-weight'] . ' !important;';
+						$output .= 'font-weight: ' . EPKB_Utilities::sanitize_css_value( $kb_config[ $article_typography_setting_name ]['font-weight'] ) . ' !important;';
 					}
 					$output .= '}';
 				}

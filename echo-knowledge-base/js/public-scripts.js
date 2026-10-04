@@ -1300,43 +1300,31 @@ jQuery(document).ready(function($) {
 			return headers;
 		},
 		
-		// return html from headers object 
+		// return TOC element from headers object; built with DOM APIs because heading text and data-id come from article content
 		getToCHTML: function ( headers, titleTag='h2' ) {
-			let html;
 			let $articleTocLocal = $( '.eckb-article-toc' );
-				
+			let $inner = $( '<div>', { 'class': 'eckb-article-toc__inner' } );
+			let $list = $( '<ul>' );
+
 			if ( $articleTocLocal.find('.eckb-article-toc__title').length ) {
-					
 				let title = $articleTocLocal.find('.eckb-article-toc__title').html();
-				html = `
-					<div class="eckb-article-toc__inner">
-						<${titleTag} class="eckb-article-toc__title">${title}</${titleTag}>
-						<nav class="eckb-article-toc-outline" role="navigation" aria-label="${epkb_vars.toc_aria_label}">
-						<ul>
-					`;
-					
+				$inner.append( $( '<' + titleTag + '>', { 'class': 'eckb-article-toc__title' } ).html( title ) );
+				$inner.append( $( '<nav>', { 'class': 'eckb-article-toc-outline', role: 'navigation', 'aria-label': epkb_vars.toc_aria_label } ).append( $list ) );
 			} else {
-					
-				html = `
-					<div class="eckb-article-toc__inner">
-						<ul>
-					`;
+				// No title element to wrap, so name the existing container. role="navigation" exposes it as a nav without adding a wrapper.
+				$inner.attr( { role: 'navigation', 'aria-label': epkb_vars.toc_aria_label } );
+				$inner.append( $list );
 			}
 
 			headers.forEach( function( header ) {
 				let url = new URL( location.href );
 				url.hash = header.id;
-				url = url.toString();
-				html += `<li class="eckb-article-toc__level eckb-article-toc__level-${header.level}"><a href="${url}" data-target="${header.id}">${header.title}</a></li>`;
+				$( '<li>', { 'class': 'eckb-article-toc__level eckb-article-toc__level-' + header.level } )
+					.append( $( '<a>', { href: url.toString(), 'data-target': header.id } ).text( header.title ) )
+					.appendTo( $list );
 			});
-				
-			html += `
-						</ul>
-						</nav>
-					</div>
-				`;
-				
-			return html;
+
+			return $inner;
 		},
 		
 		// highlight needed element

@@ -171,17 +171,17 @@ class EPKB_AI_Messages_DB extends EPKB_DB {
 	 * @return Object|WP_Error - null if no active conversation found
 	 */
 	public function get_latest_active_chat_for_session( $session_id ) {
-		
+		global $wpdb;
+
 		// Define active conversation criteria - only time-based
 		$max_age_hours = apply_filters( 'epkb_ai_chat_max_age_hours', 24 );
 		$cutoff_time = gmdate( 'Y-m-d H:i:s', strtotime( "-{$max_age_hours} hours" ) );
 		
-		// Get the latest CHAT conversation for this session within the time window
-		// Must filter by mode='chat' to avoid returning search conversations		
-		$row = $this->get_a_row_by_where_clause( array( 'session_id' => $session_id, 'mode' => 'chat', 'updated' => array( 'value' => $cutoff_time, 'operator' => '>' ) ) );
+		// Get the most recently updated CHAT conversation for this session within the time window (mode filter excludes search conversations)
+		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE session_id = %s AND mode = 'chat' AND updated > %s ORDER BY updated DESC LIMIT 1", $session_id, $cutoff_time ) );
 		$this->handle_db_error( $row, 'get_latest_active_chat_for_session' );
-		if ( is_wp_error( $row ) ) {
-			return $row;
+		if ( $row === null && ! empty( $wpdb->last_error ) ) {
+			return new WP_Error( 'db_error', $wpdb->last_error );
 		}
 		if ( empty( $row ) ) {
 			return null;

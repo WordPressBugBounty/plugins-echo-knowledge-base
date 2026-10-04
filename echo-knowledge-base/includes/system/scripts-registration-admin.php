@@ -337,7 +337,7 @@ function epkb_load_admin_plugin_pages_resources() {
 
 		// Training data table component (must load before main training data file)
 		wp_enqueue_script( 'epkb-admin-ai-training-data-table', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-training-data-table' . $ai_suffix . '.js',
-			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-marked'), Echo_Knowledge_Base::$version );
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-admin-ai-util', 'epkb-ai-chat-util', 'epkb-marked'), Echo_Knowledge_Base::$version );
 
 		// Training data notes and PDF components (must load before main training data file)
 		wp_enqueue_script( 'epkb-admin-ai-training-data-notes', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-training-data-notes' . $ai_suffix . '.js',
@@ -360,7 +360,7 @@ function epkb_load_admin_plugin_pages_resources() {
 
 		// Content analysis details component (displays detailed analysis when Improve button is clicked)
 		wp_enqueue_script( 'epkb-admin-ai-content-analysis-details', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-content-analysis-details' . $ai_suffix . '.js',
-			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch'), Echo_Knowledge_Base::$version );
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-ai-chat-util', 'epkb-marked'), Echo_Knowledge_Base::$version );
 
 		// Load Content Analysis tab component
 		wp_enqueue_script( 'epkb-admin-ai-content-analysis', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-content-analysis' . $ai_suffix . '.js',
@@ -474,7 +474,7 @@ function epkb_load_admin_plugin_pages_resources() {
 
 		// Content analysis details component (displays detailed analysis when Improve button is clicked)
 		wp_enqueue_script( 'epkb-admin-ai-content-analysis-details', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-content-analysis-details' . $ai_suffix . '.js',
-			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch'), Echo_Knowledge_Base::$version );
+			array('jquery', 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch', 'epkb-ai-chat-util', 'epkb-marked'), Echo_Knowledge_Base::$version );
 
 		// Load Content Analysis tab component
 		wp_enqueue_script( 'epkb-admin-ai-content-analysis', Echo_Knowledge_Base::$plugin_url . 'js/ai/admin-ai-content-analysis' . $ai_suffix . '.js',

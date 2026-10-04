@@ -101,10 +101,10 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 			return $this->create_rest_response( array( 'section_id' => $section_id ), 403, $collection_access );
 		}
 
-		/* $rate_limit_check = EPKB_AI_Security::check_search_rate_limit();
+		$rate_limit_check = EPKB_AI_Security::check_search_rate_limit();
 		if ( is_wp_error( $rate_limit_check ) ) {
 			return $this->create_rest_response( array( 'section_id' => $section_id ), 429, $rate_limit_check );
-		} */
+		}
 
 		// Validate collection exists and has vector store - check BEFORE processing to fail fast
 		$config_error = $this->get_collection_configuration_error( $collection_id );
@@ -185,7 +185,7 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 				'type'              => 'string',
 				'description'       => __( 'Search query', 'echo-knowledge-base' ),
 				'validate_callback' => function( $param ) {
-					return is_string( $param ) && strlen( trim( $param ) ) >= 2;
+					return EPKB_AI_Validation::validate_search_query( $param, 2 );
 				},
 				'sanitize_callback' => 'sanitize_text_field',
 			),
@@ -224,29 +224,48 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 	 */
 	public function record_feedback( $request ) {
 
-		/* $rate_limit_check = EPKB_AI_Security::check_rate_limit();
+		$rate_limit_check = EPKB_AI_Security::check_search_rate_limit();
 		if ( is_wp_error( $rate_limit_check ) ) {
 			return $this->create_rest_response( array(), 429, $rate_limit_check );
-		} */
+		}
 
 		$chat_id = $request->get_param( 'chat_id' );
 		$vote = sanitize_text_field( $request->get_param( 'vote' ) );
-		$db = new EPKB_AI_Messages_DB();
 
-		// Get conversation from database
-		$conversation = $db->get_conversation_by_chat_id( $chat_id );
+		// only the session that ran the search can vote on it
+		$conversation = $this->get_session_conversation( $chat_id );
 		if ( empty( $conversation ) ) {
 			return $this->create_rest_response( array(), 404, new WP_Error( 'not_found', __( 'Conversation not found', 'echo-knowledge-base' ) ) );
 		}
 
 		// Update metadata with vote (merge handled in update_metadata method)
 		$metadata = array( 'vote' => $vote );
+		$db = new EPKB_AI_Messages_DB();
 		$result = $db->update_metadata( $conversation->get_id(), $metadata );
 		if ( is_wp_error( $result ) ) {
 			return $this->create_rest_response( array(), 500, $result );
 		}
 
 		return $this->create_rest_response( array( 'success' => true, 'vote' => $vote ) );
+	}
+
+	/**
+	 * Retrieve a conversation only if it belongs to the current AI session
+	 *
+	 * @param string $chat_id
+	 * @return EPKB_AI_Conversation_Model|null
+	 */
+	private function get_session_conversation( $chat_id ) {
+
+		$session_id = EPKB_AI_Security::get_session_id();
+		if ( empty( $chat_id ) || is_wp_error( $session_id ) ) {
+			return null;
+		}
+
+		$db = new EPKB_AI_Messages_DB();
+		$conversation = $db->get_conversation_by_chat_and_session( $chat_id, $session_id );
+
+		return is_wp_error( $conversation ) ? null : $conversation;
 	}
 	
 	/**
@@ -285,10 +304,10 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 	 */
 	public function submit_contact_support( $request ) {
 
-		/* $rate_limit_check = EPKB_AI_Security::check_rate_limit();
+		$rate_limit_check = EPKB_AI_Security::check_contact_support_rate_limit();
 		if ( is_wp_error( $rate_limit_check ) ) {
 			return $this->create_rest_response( array(), 429, $rate_limit_check );
-		} */
+		}
 
 		$query = $request->get_param( 'query' );
 		$name = sanitize_text_field( $request->get_param( 'name' ) );
@@ -328,7 +347,7 @@ class EPKB_AI_REST_Search_Results_Controller extends EPKB_AI_REST_Base_Controlle
 		// Update database entry with submission data if chat_id provided
 		if ( ! empty( $chat_id ) ) {
 			$db = new EPKB_AI_Messages_DB();
-			$conversation = $db->get_conversation_by_chat_id( $chat_id );
+			$conversation = $this->get_session_conversation( $chat_id );
 			if ( ! empty( $conversation ) ) {
 				// Update metadata with contact submission (merge handled in update_metadata method)
 				$metadata = array(

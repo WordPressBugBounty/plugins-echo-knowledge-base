@@ -181,12 +181,12 @@ class EPKB_Delete_KB {
 	 */
     public static function reset_config_button_handler( $kb_id ) {
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
-
 		$action = EPKB_Utilities::post( 'action' );
 		if ( $action != 'epkb_reset_config' ) {
 			return;
 		}
+
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
 
 		// reset KB configuration
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config_or_default( $kb_id );
