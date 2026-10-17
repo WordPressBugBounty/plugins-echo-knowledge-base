@@ -43,7 +43,7 @@ class EPKB_KB_Search {
 			$search_result = '
                     <div class="epkb-ml-search-results__no-results">
                         <span class="epkb-ml-search-results__no-results__icon epkbfa epkbfa-exclamation-circle"></span>
-                        <span class="epkb-ml-search-results__no-results__text">' . $kb_config['no_results_found'] . '</span>
+                        <span class="epkb-ml-search-results__no-results__text">' . wp_kses( $kb_config['no_results_found'], EPKB_KB_Config_Specs::get_fields_specification( $kb_id )['no_results_found']['allowed_tags'] ) . '</span>
                     </div>';
                     
 			// Add AI search section if enabled and in simple_search mode
@@ -114,7 +114,8 @@ class EPKB_KB_Search {
 				'no_found_rows' => true,        // query only posts_per_page rather than finding total nof posts for pagination etc.
 				'cache_results' => false,       // don't need that for mostly unique searches
 				'orderby' => 'relevance',
-				'perm'  => 'readable'           // only show posts that are readable by the current user
+				'perm'  => 'readable',          // only show posts that are readable by the current user
+				'has_password' => false         // core excludes password-protected posts from search only for visitors; logged-in users must not see them either
 		);
 
 		// OLD installation or Access Manager

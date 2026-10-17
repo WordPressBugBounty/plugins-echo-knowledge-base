@@ -379,7 +379,7 @@ class EPKB_Articles_CPT_Setup {
 		}
 		
 		$url = empty( $kb_config['kb_articles_common_path'] ) ? home_url() : home_url( $kb_config['kb_articles_common_path'] );
-		wp_redirect( $url, '301', 'Echo Knowledge Base' );
+		wp_safe_redirect( $url, 301, 'Echo Knowledge Base' );
 		exit();
 	}
 }

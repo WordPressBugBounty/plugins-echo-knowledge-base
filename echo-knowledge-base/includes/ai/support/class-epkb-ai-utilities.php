@@ -122,6 +122,16 @@ class EPKB_AI_Utilities {
 	}
 
 	/**
+	 * Check if AI Chat is available to the current user; Preview mode is limited to admins
+	 *
+	 * @return bool
+	 */
+	public static function is_ai_chat_enabled_for_frontend() {
+		$ai_chat_enabled = EPKB_AI_Config_Specs::get_ai_config_value( 'ai_chat_enabled', 'off' );
+		return $ai_chat_enabled == 'on' || ( $ai_chat_enabled == 'preview' && current_user_can( 'manage_options' ) );
+	}
+
+	/**
 	 * Check if any AI features are enabled (including preview mode)
 	 *
 	 * @return bool True if either AI Search or AI Chat is not 'off'
@@ -404,7 +414,7 @@ class EPKB_AI_Utilities {
 			                    </tr>
 			                    <tr style="background-color:#FFFFFF;">
 									<td width="20" style="padding:3px;">&nbsp;</td>
-									<td style="font-family: sans-serif; font-size:12px;padding:3px;"><a href="mailto:' . esc_html( $email ) . '">' . esc_html( $email ) . '</a></td>
+									<td style="font-family: sans-serif; font-size:12px;padding:3px;"><a href="' . esc_url( 'mailto:' . $email ) . '">' . esc_html( $email ) . '</a></td>
 			                    </tr>
 			                    <tr style="background-color:#EAF2FA;">
 									<td colspan="2" style="font-family: sans-serif; font-size:12px;padding:3px;"><strong>' . esc_html__( 'Subject', 'echo-knowledge-base' ) . '</strong></td>
@@ -559,6 +569,60 @@ class EPKB_AI_Utilities {
 	}
 
 	/**
+	 * Check if a post is eligible for AI training data.
+	 * Centralizes all eligibility checks for posts being added to AI training.
+	 *
+	 * @param WP_Post|int $post Post object or post ID
+	 * @return true|WP_Error True if eligible, WP_Error with reason if not
+	 */
+	public static function is_post_eligible_for_ai_training( $post ) {
+		
+		// Get post object if ID was passed
+		$was_numeric = is_numeric( $post );
+		if ( $was_numeric ) {
+			$post = get_post( $post );
+		}
+
+		// Validate post object
+		if ( ! $post || ! is_object( $post ) || empty( $post->ID ) ) {
+			$message = $was_numeric
+				? __( 'Post not found. It may have been deleted.', 'echo-knowledge-base' )
+				: __( 'Invalid post object provided', 'echo-knowledge-base' );
+			return new WP_Error( 'invalid_post', $message );
+		}
+
+		// Check post status - allow 'publish' for all, and 'private' for AI Notes
+		$allowed_statuses = array( 'publish' );
+		if ( $post->post_type === self::AI_PRO_NOTES_POST_TYPE ) {
+			$allowed_statuses[] = 'private';
+		}
+		if ( ! in_array( $post->post_status, $allowed_statuses, true ) ) {
+			return new WP_Error( 'post_not_published', sprintf( __( 'Post is not published (current status: %s)', 'echo-knowledge-base' ), $post->post_status ) );
+		}
+		
+		// Check if post is password protected
+		if ( ! empty( $post->post_password ) ) {
+			return new WP_Error( 'post_password_protected', __( 'Post is password protected', 'echo-knowledge-base' ) );
+		}
+		
+		// Check if it's a linked article (from echo-links-editor plugin)
+		if ( $post->post_mime_type === 'kb_link' ) {
+			return new WP_Error( 'linked_article', __( 'Linked articles are excluded from AI training data', 'echo-knowledge-base' ) );
+		}
+
+		// FUTURE: let Access Manager and other visibility plugins exclude restricted content
+		/* $is_eligible = apply_filters( 'epkb_ai_is_post_eligible_for_training', true, $post );
+		if ( is_wp_error( $is_eligible ) ) {
+			return $is_eligible;
+		}
+		if ( ! $is_eligible ) {
+			return new WP_Error( 'post_restricted', __( 'Post is restricted and excluded from AI training data', 'echo-knowledge-base' ) );
+		} */
+
+		return true;
+	}
+
+	/**
 	 * Check whether auto-sync is enabled.
 	 *
 	 * @return bool
@@ -680,6 +744,24 @@ class EPKB_AI_Utilities {
 	}
 
 	/**
+	 * Clean up the provider file and mark the row skipped when its source post is no longer eligible for AI training.
+	 *
+	 * @param object                    $training_row Training data row.
+	 * @param EPKB_AI_Training_Data_DB  $training_data_db Training data DB instance.
+	 * @return string|WP_Error Unavailable source code; empty string when the post is still eligible.
+	 */
+	public static function skip_training_row_if_source_unavailable( $training_row, $training_data_db ) {
+
+		$unavailable_source_code = self::get_training_row_unavailable_source_code( get_post( absint( $training_row->item_id ) ) );
+		if ( empty( $unavailable_source_code ) ) {
+			return '';
+		}
+
+		$result = self::mark_unavailable_training_row_as_skipped( $training_row, $unavailable_source_code, $training_data_db );
+		return is_wp_error( $result ) ? $result : $unavailable_source_code;
+	}
+
+	/**
 	 * Get the refresh reconciliation error code for an unavailable source post.
 	 *
 	 * @param WP_Post|null $post Source post.
@@ -691,7 +773,7 @@ class EPKB_AI_Utilities {
 			return 'post_not_found';
 		}
 
-		$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
+		$eligibility_check = self::is_post_eligible_for_ai_training( $post );
 		if ( ! is_wp_error( $eligibility_check ) ) {
 			return '';
 		}
@@ -727,7 +809,7 @@ class EPKB_AI_Utilities {
 	 * @return array
 	 */
 	private static function get_refresh_reconcilable_training_statuses() {
-		return array( 'pending', 'added', 'updated', 'outdated' );
+		return array( 'pending', 'added', 'updated', 'outdated', 'removing' );
 	}
 
 	/**
@@ -1342,9 +1424,9 @@ class EPKB_AI_Utilities {
 				continue;
 			}
 
-			// Notes use private status; articles/pages must be published
+			// cite only content that is still eligible (published, not password-protected, not excluded by Access Manager filter)
 			$is_note = ( $type === 'aipro_ai_note' );
-			if ( ! $is_note && $post->post_status !== 'publish' ) {
+			if ( is_wp_error( self::is_post_eligible_for_ai_training( $post ) ) ) {
 				continue;
 			}
 
@@ -1393,7 +1475,7 @@ class EPKB_AI_Utilities {
 			}
 
 			$is_note = $post->post_type === self::AI_PRO_NOTES_POST_TYPE;
-			if ( ! $is_note && $post->post_status !== 'publish' ) {
+			if ( is_wp_error( self::is_post_eligible_for_ai_training( $post ) ) ) {
 				return array();
 			}
 

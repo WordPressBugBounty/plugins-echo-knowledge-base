@@ -110,6 +110,7 @@ final class EPKB_Drill_Down_Layout_Block extends EPKB_Abstract_Block {
 				font-weight: ' . intval( EPKB_Blocks_Settings::get_font_appearance_weight( $block_attributes['article_typography_controls'], $block_ui_specs['article_typography_controls'] ) ) . ' !important;
 			}' .
 			/* Article Title Font */
+			$block_selector . ' ' . '.epkb-show-all-articles,' .
 			$block_selector . ' ' . '.epkb-article__text,' .
 			$block_selector . ' ' . '.eckb-article-title__text,' .
 			$sidebar_selector . ' ' . '.epkb-article__text, ' .
@@ -228,6 +229,7 @@ final class EPKB_Drill_Down_Layout_Block extends EPKB_Abstract_Block {
 			}';
 
 		$output .=
+			$block_selector . ' ' . '.epkb-show-all-articles,' .
 			$block_selector . ' ' . '.epkb-ml-articles-list li {
 		        padding-top: ' . intval( $block_attributes['article_list_spacing'] ) . 'px !important;
 		        padding-bottom: ' . intval( $block_attributes['article_list_spacing'] ) . 'px !important;
@@ -261,6 +263,7 @@ final class EPKB_Drill_Down_Layout_Block extends EPKB_Abstract_Block {
 		$section_gap = isset( $block_attributes['section_box_gap'] ) ? intval( $block_attributes['section_box_gap'] ) : 20;
 		$output .= '
 			' . $block_selector . ' .epkb-ml-top-categories-button-container {
+				--epkb-drill-down-gap: ' . $section_gap . 'px;
 				gap: ' . $section_gap . 'px !important;
 			}';
 
@@ -337,6 +340,24 @@ final class EPKB_Drill_Down_Layout_Block extends EPKB_Abstract_Block {
 								'setting_type' => 'toggle',
 							),
 							'category_empty_msg' => array(
+								'setting_type' => 'text',
+							),
+						),
+					),
+
+					// GROUP: Articles List
+					'articles-list' => array(
+						'title' => esc_html__( 'Articles List', 'echo-knowledge-base' ),
+						'fields' => array(
+							'nof_articles_displayed' => array(
+								'setting_type' => 'number',
+								'min' => 1,
+								'max' => 100,
+							),
+							'collapse_articles_msg' => array(
+								'setting_type' => 'text',
+							),
+							'show_all_articles_msg' => array(
 								'setting_type' => 'text',
 							),
 						),

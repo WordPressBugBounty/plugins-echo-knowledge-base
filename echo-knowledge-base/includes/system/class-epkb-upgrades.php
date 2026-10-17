@@ -253,7 +253,7 @@ class EPKB_Upgrades {
 	}
 
 	/**
-	 * AI configuration migrations. Runs on every admin_init; idempotent via static flag.
+	 * AI configuration migrations. Runs once per plugin version upgrade via invoke_upgrades(); idempotent via static flag.
 	 *
 	 * =========================================================================
 	 * AI Provider/Model Maintenance Playbooks
@@ -334,17 +334,6 @@ class EPKB_Upgrades {
 	private static function upgrade_to_v16_011_1( &$kb_config ) {
 
 		$kb_config['glossary_enable'] = 'off';
-	}
-
-	/**
-	 * Run AI migration if legacy ai_key exists (for users who bypassed upgrade)
-	 */
-	public static function maybe_run_ai_migration() {
-		$raw_config = get_option( 'epkb_ai_configuration', array() );
-		if ( ! empty( $raw_config['ai_key'] ) ) {
-			$dummy = array();
-			self::upgrade_to_v15_700_0( $dummy );
-		}
 	}
 
 	/**

@@ -342,7 +342,9 @@ class EPKB_AI_Log {
 				break;
 				
 			case 'validation_failed':
-				// For validation errors, use the original error message as-is
+			case 'user_rate_limit':
+			case 'global_rate_limit':
+				// For validation and plugin rate limit errors, use the original error message as-is
 				$friendly_message = $error_message;
 				break;
 
@@ -362,7 +364,7 @@ class EPKB_AI_Log {
 		}
 		
 		// Keep certain validation/content errors as plain messages for admins too.
-		if ( current_user_can( 'manage_options' ) && ! in_array( $error_code, array( 'validation_failed', 'empty_markdown' ), true ) ) {
+		if ( current_user_can( 'manage_options' ) && ! in_array( $error_code, array( 'validation_failed', 'empty_markdown', 'user_rate_limit', 'global_rate_limit' ), true ) ) {
 			$technical_details = '';
 			
 			// Add error code if available

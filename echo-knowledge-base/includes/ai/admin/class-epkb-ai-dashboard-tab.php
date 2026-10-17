@@ -124,11 +124,10 @@ add_action( 'wp_ajax_epkb_check_training_data_sync', array( $this, 'ajax_check_t
 		);
 
 		$response = wp_remote_post(
-			esc_url_raw( add_query_arg( $report_data, 'https://www.echoknowledgebase.com' ) ),
+			'https://www.echoknowledgebase.com',
 			array(
 				'timeout'   => 15,
 				'body'      => $report_data,
-				'sslverify' => false
 			)
 		);
 

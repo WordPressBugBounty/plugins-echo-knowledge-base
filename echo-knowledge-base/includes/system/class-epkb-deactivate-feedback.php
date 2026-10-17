@@ -92,11 +92,10 @@ class EPKB_Deactivate_Feedback {
 
 		// Call the API
 		wp_remote_post(
-			esc_url_raw( add_query_arg( $api_params, 'https://www.echoknowledgebase.com' ) ),
+			'https://www.echoknowledgebase.com',
 			array(
 				'timeout'   => 15,
 				'body'      => $api_params,
-				'sslverify' => false
 			)
 		);
 

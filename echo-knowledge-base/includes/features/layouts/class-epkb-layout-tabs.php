@@ -709,6 +709,7 @@ class EPKB_Layout_Tabs extends EPKB_Layout {
 		$section_gap = isset( $kb_config['section_box_gap'] ) ? intval( $kb_config['section_box_gap'] ) : 20;
 		$output .= '
 			#epkb-content-container .epkb-ml__module-categories-articles__row {
+				--epkb-section-gap: ' . $section_gap . 'px;
 				gap: ' . $section_gap . 'px !important;
 				margin-bottom: ' . $section_gap . 'px !important;
 			}

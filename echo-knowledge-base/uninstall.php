@@ -65,6 +65,7 @@ class EPKB_Uninstall {
 
 	    // Clear AI cron jobs
 	    wp_clear_scheduled_hook( 'epkb_do_sync_cron_event' );
+	    wp_clear_scheduled_hook( 'epkb_do_remove_training_files_cron_event' );
 	    wp_clear_scheduled_hook( 'epkb_do_content_analysis_cron_event' );
 
 	    // Delete AI transients

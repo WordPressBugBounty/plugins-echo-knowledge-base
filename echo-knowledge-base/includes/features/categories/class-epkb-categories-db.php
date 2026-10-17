@@ -107,7 +107,7 @@ class EPKB_Categories_DB {
 
 		$article_db = new EPKB_Articles_DB();
 
-		$articles = $article_db->get_articles_by_sub_or_category( $kb_id, $category_id, 'date', 500, $include_sub_categories );
+		$articles = $article_db->get_articles_by_sub_or_category( $kb_id, $category_id, 'date', 500, $include_sub_categories, false );
 
 		return count( $articles );
 	}

@@ -364,6 +364,7 @@ final class EPKB_Classic_Layout_Block extends EPKB_Abstract_Block {
 		$top_icon_row_margin_bottom = max( 60, $section_gap + 20 );
 		$output .= '
 			' . $block_selector . ' .epkb-ml__module-categories-articles__row {
+				--epkb-section-gap: ' . $section_gap . 'px;
 				gap: ' . $section_gap . 'px !important;
 				margin-bottom: ' . $section_gap . 'px !important;
 			}

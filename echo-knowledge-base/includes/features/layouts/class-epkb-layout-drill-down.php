@@ -35,7 +35,7 @@ class EPKB_Layout_Drill_Down extends EPKB_Layout {
 			<div class="epkb-ml-drill-down-layout-categories-container">
 
 				<!-- Top Level Categories Button -->
-				<div class="epkb-ml-top-categories-button-container <?php echo esc_html( $col_class ); ?>">                    <?php
+				<div class="epkb-ml-top-categories-button-container <?php echo esc_attr( $col_class ); ?>">                    <?php
 					foreach ( $this->category_seq_data as $category_id => $level_2_categories ) {
 
 						$category_name = isset( $this->articles_seq_data[ $category_id ][0] ) ? $this->articles_seq_data[ $category_id ][0] : '';
@@ -218,7 +218,7 @@ class EPKB_Layout_Drill_Down extends EPKB_Layout {
 
 					// DISPLAY ARTICLES - BEFORE CATEGORIES
 					if ( ! empty( $articles_list ) && $show_articles_before_categories ) {
-						$this->display_drill_down_articles_list( $articles_list, $category_lvl );
+						$this->display_drill_down_articles_list( $articles_list, $category_lvl, $category_id );
 					}   ?>
 				</div>            <?php
 			}
@@ -266,38 +266,61 @@ class EPKB_Layout_Drill_Down extends EPKB_Layout {
 		if ( ! empty( $articles_list ) && ! $show_articles_before_categories ) {    ?>
 			<div class="epkb-ml__cat-content epkb-ml-<?php echo esc_attr( $category_lvl ); ?>-lvl__cat-content epkb-ml__cat-content--articles-after" data-cat-level="<?php echo esc_attr( $category_lvl ); ?>" data-cat-id="<?php echo esc_attr( $category_id ); ?>" data-parent-cat-id="<?php echo esc_attr( $parent_category_id ); ?>">
 				<div class="epkb-ml-<?php echo esc_attr( $category_lvl ); ?>-lvl-desc-articles epkb-ml-<?php echo esc_attr( $category_lvl ); ?>-lvl-desc-articles--no-desc">    <?php
-					$this->display_drill_down_articles_list( $articles_list, $category_lvl );   ?>
+					$this->display_drill_down_articles_list( $articles_list, $category_lvl, $category_id );   ?>
 				</div>
 			</div>  <?php
 		}
 	}
 
 	/**
-	 * Display articles list for Drill Down Layout
+	 * Display articles list for Drill Down Layout; articles beyond the configured limit are hidden behind a "show all" toggle
 	 *
 	 * @param $articles_list
 	 * @param $category_lvl
+	 * @param $category_id
 	 */
-	private function display_drill_down_articles_list( $articles_list, $category_lvl ) {    ?>
-		<div class="epkb-ml-<?php echo esc_attr( $category_lvl ); ?>-lvl__articles">
+	private function display_drill_down_articles_list( $articles_list, $category_lvl, $category_id ) {
+
+		// count only articles the current user can see so that the limit matches what is displayed
+		$articles_list = array_filter( $articles_list, array( 'EPKB_Utilities', 'is_article_allowed_for_current_user' ), ARRAY_FILTER_USE_KEY );
+		$nof_articles_displayed = $this->kb_config['nof_articles_displayed'];
+		$nof_hidden_articles = count( $articles_list ) - $nof_articles_displayed;    ?>
+
+		<div class="epkb-ml-<?php echo esc_attr( $category_lvl ); ?>-lvl__articles" data-list-id="<?php echo esc_attr( $category_id ); ?>">
 			<div class="epkb-ml-articles-list">    <?php
 
-				// limit number of article columns
-				$columns = $this->get_articles_listed_in_columns( $articles_list );
+				// hidden articles get their own column group below the visible one so that the article sequence is preserved and both groups stay balanced
+				$this->display_drill_down_articles_columns( array_slice( $articles_list, 0, $nof_articles_displayed, true ) );
 
-				// display the articles in the columns  ?>
-				<div class="epkb-ml-articles-list epkb-total-columns-<?php echo esc_attr( count( $columns ) ); ?>">   <?php
-					$column_number = 1;
-					foreach ( $columns as $articles_in_column ) {			 ?>
-						<ul class="epkb-list-column epkb-list-column-<?php echo esc_attr( $column_number ); ?>">   <?php
-							foreach ( $articles_in_column as $article ) { ?>
-								<li><?php $this->single_article_link( $article['title'], $article['id'], EPKB_Layout::DRILL_DOWN_LAYOUT ); ?></li>  <?php
-							} ?>
-						</ul>   <?php
-						$column_number ++;
-					} ?>
-				</div>
+				if ( $nof_hidden_articles > 0 ) {
+					$this->display_drill_down_articles_columns( array_slice( $articles_list, $nof_articles_displayed, null, true ), 'epkb-hide-elem' );   ?>
+					<button class="epkb-show-all-articles" aria-expanded="false" data-btn-id="<?php echo esc_attr( $category_id ); ?>">
+						<span class="epkb-show-text"><?php echo esc_html( $this->kb_config['show_all_articles_msg'] . ' ( ' . $nof_hidden_articles ); ?> )</span>
+						<span class="epkb-hide-text epkb-hide-elem"><?php echo esc_html( $this->kb_config['collapse_articles_msg'] ); ?></span>
+					</button>   <?php
+				} ?>
 			</div>
+		</div>  <?php
+	}
+
+	/**
+	 * Display articles split into columns for Drill Down Layout
+	 *
+	 * @param $articles_list
+	 * @param $li_class
+	 */
+	private function display_drill_down_articles_columns( $articles_list, $li_class = '' ) {
+
+		$columns = $this->get_articles_listed_in_columns( $articles_list );   ?>
+
+		<div class="epkb-ml-articles-list epkb-total-columns-<?php echo esc_attr( count( $columns ) ); ?>">   <?php
+			foreach ( $columns as $column_index => $articles_in_column ) {			 ?>
+				<ul class="epkb-list-column epkb-list-column-<?php echo esc_attr( $column_index + 1 ); ?>">   <?php
+					foreach ( $articles_in_column as $article ) { ?>
+						<li class="<?php echo esc_attr( $li_class ); ?>"><?php $this->single_article_link( $article['title'], $article['id'], EPKB_Layout::DRILL_DOWN_LAYOUT ); ?></li>  <?php
+					} ?>
+				</ul>   <?php
+			} ?>
 		</div>  <?php
 	}
 
@@ -327,7 +350,8 @@ class EPKB_Layout_Drill_Down extends EPKB_Layout {
 		if ( ! empty( $kb_config['general_typography']['font-family'] ) ) {
 			$output .= '
 			#epkb-ml-drill-down-layout .epkb-ml-top__cat-title,
-			#epkb-ml-drill-down-layout .epkb-back-button__text {
+			#epkb-ml-drill-down-layout .epkb-back-button__text,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-show-all-articles {
 				    ' . 'font-family:' . $kb_config['general_typography']['font-family'] . ' !important;' . '
 				}';
 		}
@@ -457,7 +481,8 @@ class EPKB_Layout_Drill_Down extends EPKB_Layout {
 
 		$article_spacing = intval( $kb_config['article_list_spacing'] );
 		$output .= '
-			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-articles-coming-soon {
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-articles-coming-soon,
+			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-show-all-articles {
 				font-size: ' . ( ! empty( $kb_config['article_typography']['font-size'] ) ? $kb_config['article_typography']['font-size'] . 'px !important' : 'inherit !important' ) . ';
 				font-weight: ' . ( ! empty( $kb_config['article_typography']['font-weight'] ) ? $kb_config['article_typography']['font-weight'] : 'inherit !important' ) . ';
 				padding-top: ' . $article_spacing . 'px !important;
@@ -499,6 +524,7 @@ class EPKB_Layout_Drill_Down extends EPKB_Layout {
 		$section_gap = isset( $kb_config['section_box_gap'] ) ? intval( $kb_config['section_box_gap'] ) : 20;
 		$output .= '
 			#epkb-ml__module-categories-articles #epkb-ml-drill-down-layout .epkb-ml-top-categories-button-container {
+				--epkb-drill-down-gap: ' . $section_gap . 'px;
 				gap: ' . $section_gap . 'px !important;
 			}';
 

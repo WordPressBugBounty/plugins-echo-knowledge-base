@@ -285,8 +285,14 @@ class EPKB_AI_Sync_Job_Manager {
 			return 'error';
 		}
 
-		// For empty content errors, mark as skipped — retrying won't help
 		$wp_error_code = $wp_error->get_error_code();
+
+		// sync_post already cleaned up the provider file and marked the row skipped
+		if ( $wp_error_code === 'post_ineligible' ) {
+			return 'skipped';
+		}
+
+		// For empty content errors, mark as skipped — retrying won't help
 		if ( in_array( $wp_error_code, array( 'empty_markdown', 'empty_content' ), true ) ) {
 			$training_data_db->mark_as_skipped( $training_data_id, 500, $wp_error_code );
 			EPKB_AI_Log::add_log( $wp_error, array( 'item_id' => $training_data_id, 'message' => 'Sync warning: empty content' ) );

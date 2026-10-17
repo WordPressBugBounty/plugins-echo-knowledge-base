@@ -143,7 +143,7 @@ function epkb_does_path_for_articles_need_update( $post_id, $post ) {
 	EPKB_Admin_Notices::remove_dismissed_ongoing_notice( $notice_id );
 	EPKB_Admin_Notices::add_ongoing_notice( 'warning', $notice_id,
 			__( 'We detected that your KB Main Page slug has changed. Please update slug for your articles for KB', 'echo-knowledge-base' ) . ' #' . $kb_config['id'] .
-	        ' <a class="epkb-admin__step-cta-box__link" data-target="kb-url" href="' . esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_config['id'] . '&page=epkb-kb-configuration#kb-url' ) ) . '">' .
+	        ' <a class="epkb-admin__step-cta-box__link" href="' . esc_url( admin_url( 'edit.php?post_type=epkb_post_type_' . $kb_config['id'] . '&page=epkb-kb-configuration#kb-url' ) ) . '">' .
 	        esc_html__( 'Update Slug here', 'echo-knowledge-base' ) . '</a> ' );
 	
 }
@@ -198,6 +198,23 @@ function epkb_add_delete_kb_page_warning( $post_id ) {
 	}
 }
 add_action( 'wp_trash_post', 'epkb_add_delete_kb_page_warning', 15, 2 ); 
+
+/**
+ * WordPress restores trashed pages as drafts; a draft KB Main Page has no pretty permalink (?page_id=X), so restore its original status
+ * @param string $new_status
+ * @param int $post_id
+ * @param string $previous_status
+ * @return string
+ */
+function epkb_restore_kb_main_page_status( $new_status, $post_id, $previous_status ) {
+	$post = get_post( $post_id );
+	if ( empty( $post ) || $post->post_type != 'page' || empty( EPKB_KB_Handler::get_kb_id_from_kb_main_page( $post ) ) ) {
+		return $new_status;
+	}
+
+	return $previous_status;
+}
+add_filter( 'wp_untrash_post_status', 'epkb_restore_kb_main_page_status', 10, 3 );
 
 // Add "KB Page" to the page's list 
 function epkb_add_post_state( $post_states, $post ) {

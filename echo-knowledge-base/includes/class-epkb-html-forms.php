@@ -51,7 +51,7 @@ class EPKB_HTML_Forms {
 		<div <?php echo isset( $args['id'] ) ? 'id="' . esc_attr( $args['id'] ) . '"' : ''; ?> class="epkb-notification-box-popup <?php echo 'epkb-notification-box-popup--' . esc_attr( $args['type'] ); ?>">
 
 			<div class="epkb-notification-box-popup__icon">
-				<div class="epkb-notification-box-popup__icon__inner epkbfa <?php echo esc_html( $icon ); ?>"></div>
+				<div class="epkb-notification-box-popup__icon__inner epkbfa <?php echo esc_attr( $icon ); ?>"></div>
 			</div>
 
 			<div class="epkb-notification-box-popup__body">     <?php
@@ -88,7 +88,7 @@ class EPKB_HTML_Forms {
 
 				if ( ! empty( $args['id'] ) ) {  ?>
 					<div class="epkb-notification-box-popup__buttons-wrap">
-						<span class="epkb-notification-box-popup__button-confirm epkb-notice-dismiss"<?php echo empty( $args['close_target'] ) ? '' : ' data-target="' . esc_html( $args['close_target'] ) . '"'; ?>
+						<span class="epkb-notification-box-popup__button-confirm epkb-notice-dismiss"<?php echo empty( $args['close_target'] ) ? '' : ' data-target="' . esc_attr( $args['close_target'] ) . '"'; ?>
 						      data-notice-id="<?php echo esc_attr( $args['id'] ); ?>"><?php echo esc_html( $args['button_confirm'] ); ?></span>
 					</div>     <?php
 				}   ?>
@@ -133,7 +133,7 @@ class EPKB_HTML_Forms {
 		<div <?php echo isset( $args['id'] ) ? 'id="' . esc_attr( $args['id'] ) . '"' : ''; ?> class="epkb-notification-box-top <?php echo 'epkb-notification-box-top--' . esc_attr( $args['type'] ); ?>">
 
 			<div class="epkb-notification-box-top__icon">
-				<div class="epkb-notification-box-top__icon__inner epkbfa <?php echo esc_html( $icon ); ?>"></div>
+				<div class="epkb-notification-box-top__icon__inner epkbfa <?php echo esc_attr( $icon ); ?>"></div>
 			</div>
 
 			<div class="epkb-notification-box-top__body">                <?php
@@ -169,7 +169,7 @@ class EPKB_HTML_Forms {
 
 				if ( ! empty( $args['id'] ) ) {  ?>
 					<div class="epkb-notification-box-top__buttons-wrap">
-						<span class="epkb-notification-box-top__button-confirm epkb-notice-dismiss"<?php echo empty( $args['close_target'] ) ? '' : ' data-target="' . esc_html( $args['close_target'] ) . '"'; ?>
+						<span class="epkb-notification-box-top__button-confirm epkb-notice-dismiss"<?php echo empty( $args['close_target'] ) ? '' : ' data-target="' . esc_attr( $args['close_target'] ) . '"'; ?>
 						      data-notice-id="<?php echo esc_attr( $args['id'] ); ?>"><?php echo esc_html( $args['button_confirm'] ); ?></span>
 					</div>     <?php
 				}   ?>
@@ -221,7 +221,7 @@ class EPKB_HTML_Forms {
 		<div <?php echo isset( $args['id'] ) ? 'id="' . esc_attr( $args['id'] ) . '"' : ''; ?> class="epkb-notification-box-middle <?php echo 'epkb-notification-box-middle--' . esc_attr( $box_type ); ?>">
 
 			<div class="epkb-notification-box-middle__icon">
-				<div class="epkb-notification-box-middle__icon__inner epkbfa <?php echo esc_html( $icon ); ?>"></div>
+				<div class="epkb-notification-box-middle__icon__inner epkbfa <?php echo esc_attr( $icon ); ?>"></div>
 			</div>
 
 			<div class="epkb-notification-box-middle__body">                <?php
@@ -264,7 +264,7 @@ class EPKB_HTML_Forms {
 
 				if ( ! empty( $args['id'] ) && ! empty( $args['button_confirm'] ) ) {  ?>
 					<div class="epkb-notification-box-middle__buttons-wrap">
-						<span class="epkb-notification-box-middle__button-confirm epkb-notice-dismiss"<?php echo empty( $args['close_target'] ) ? '' : ' data-target="' . esc_html( $args['close_target'] ) . '"'; ?>>
+						<span class="epkb-notification-box-middle__button-confirm epkb-notice-dismiss"<?php echo empty( $args['close_target'] ) ? '' : ' data-target="' . esc_attr( $args['close_target'] ) . '"'; ?>>
 							<?php echo esc_html( $args['button_confirm'] ); ?></span>
 					</div>     <?php
 				}
@@ -807,7 +807,7 @@ class EPKB_HTML_Forms {
 
 								<!-- Image -->
 								<div class="epkb-feature-img">    <?php
-									echo '<img class="epkb-featured-img-url" src="' . esc_html( $item[3] ) . '" >'; ?>
+									echo '<img class="epkb-featured-img-url" src="' . esc_url( $item[3] ) . '" >'; ?>
 								</div>
 
 								<div class="epkb-feature-footer">

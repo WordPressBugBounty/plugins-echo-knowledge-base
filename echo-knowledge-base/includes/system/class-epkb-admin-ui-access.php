@@ -33,51 +33,6 @@ class EPKB_Admin_UI_Access {
 	);
 
 	/**
-	 * Check if a post is eligible for AI training data.
-	 * Centralizes all eligibility checks for posts being added to AI training.
-	 *
-	 * @param WP_Post|int $post Post object or post ID
-	 * @return true|WP_Error True if eligible, WP_Error with reason if not
-	 */
-	public static function is_post_eligible_for_ai_training( $post ) {
-		
-		// Get post object if ID was passed
-		$was_numeric = is_numeric( $post );
-		if ( $was_numeric ) {
-			$post = get_post( $post );
-		}
-
-		// Validate post object
-		if ( ! $post || ! is_object( $post ) || empty( $post->ID ) ) {
-			$message = $was_numeric
-				? __( 'Post not found. It may have been deleted.', 'echo-knowledge-base' )
-				: __( 'Invalid post object provided', 'echo-knowledge-base' );
-			return new WP_Error( 'invalid_post', $message );
-		}
-
-		// Check post status - allow 'publish' for all, and 'private' for AI Notes
-		$allowed_statuses = array( 'publish' );
-		if ( $post->post_type === EPKB_AI_Utilities::AI_PRO_NOTES_POST_TYPE ) {
-			$allowed_statuses[] = 'private';
-		}
-		if ( ! in_array( $post->post_status, $allowed_statuses, true ) ) {
-			return new WP_Error( 'post_not_published', sprintf( __( 'Post is not published (current status: %s)', 'echo-knowledge-base' ), $post->post_status ) );
-		}
-		
-		// Check if post is password protected
-		if ( ! empty( $post->post_password ) ) {
-			return new WP_Error( 'post_password_protected', __( 'Post is password protected', 'echo-knowledge-base' ) );
-		}
-		
-		// Check if it's a linked article (from echo-links-editor plugin)
-		if ( $post->post_mime_type === 'kb_link' ) {
-			return new WP_Error( 'linked_article', __( 'Linked articles are excluded from AI training data', 'echo-knowledge-base' ) );
-		}
-
-		return true;
-	}
-
-	/**
 	 * Check if the current user has access to the current context
 	 *
 	 * @param string $context

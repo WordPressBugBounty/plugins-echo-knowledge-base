@@ -256,13 +256,6 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 		if ( isset( $data['conversation'] ) && $data['conversation'] instanceof EPKB_AI_Conversation_Model ) {
 			$conversation = $data['conversation'];
 
-			// Check collection access from stored metadata
-			$metadata = $conversation->get_metadata();
-			$collection_id = isset( $metadata['collection_id'] ) ? absint( $metadata['collection_id'] ) : 0;
-			if ( ! empty( $collection_id ) && ! EPKB_AI_Chat_Frontend::is_user_allowed_for_collection( $collection_id ) ) {
-				return $this->create_rest_response( array(), 403, new WP_Error( 'access_denied', __( 'You do not have permission to use AI Chat.', 'echo-knowledge-base' ) ) );
-			}
-
 			$messages = $conversation->get_messages();
 			$data = array(
 				'chat_id' => $conversation->get_chat_id(),
@@ -362,6 +355,14 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 		if ( is_wp_error( $user_validation ) ) {
 			return [ 'status' => 403, 'wp_error' => $user_validation ];
 		}
+
+		// A conversation on a collection that is no longer an active location (admin changed settings) cannot be resumed; start fresh instead of locking the visitor out
+		$metadata = $conversation->get_metadata();
+		$collection_id = isset( $metadata['collection_id'] ) ? absint( $metadata['collection_id'] ) : 0;
+		if ( ! EPKB_AI_Chat_Frontend::is_user_allowed_for_collection( $collection_id ) ) {
+			$request_data['chat_id'] = '';
+			return [ 'status' => 200, 'wp_error' => null, 'data' => [], 'request_data' => $request_data ];
+		}
 		
 		return [ 'status' => 200, 'wp_error' => null, 'data' => [ 'conversation' => $conversation ], 'request_data' => $request_data ];
 	}
@@ -369,7 +370,7 @@ class EPKB_AI_REST_Chat_Controller extends EPKB_AI_REST_Base_Controller {
 	// access by WP_REST_Server
 	public function check_rest_nonce( $request ) {
 
-		if ( ! EPKB_AI_Utilities::is_ai_chat_enabled() ) {
+		if ( ! EPKB_AI_Utilities::is_ai_chat_enabled_for_frontend() ) {
 			return new WP_Error( 'ai_chat_disabled', __( 'AI chat is not enabled', 'echo-knowledge-base' ), array( 'status' => 403 ) );
 		}
 

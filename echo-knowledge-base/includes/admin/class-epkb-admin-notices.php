@@ -45,6 +45,9 @@ class EPKB_Admin_Notices {
 			$notices += $notice;
 		}
 
+		// KB URLs tab is on the KB Configuration page so the slug notice should point to it instead of linking to the same page
+		$is_kb_config_page = EPKB_Utilities::get( 'page' ) == 'epkb-kb-configuration';
+
 		$update_notices = false;
 		foreach ( $notices as $key => $notice ) {
 
@@ -58,6 +61,10 @@ class EPKB_Admin_Notices {
 				unset( $notices[ $key ] );
 				$update_notices = true;
 				continue;
+			}
+
+			if ( $is_kb_config_page && strpos( $notice['id'], 'epkb_changed_slug_' ) === 0 ) {
+				$notice['text'] = preg_replace( '/<a [^>]*>.*?<\/a>/', esc_html__( 'below', 'echo-knowledge-base' ), $notice['text'] );
 			}
 
             EPKB_HTML_Forms::notification_box_top( array(
@@ -156,11 +163,19 @@ class EPKB_Admin_Notices {
 	 * User dismissed ongoing notice so record it
 	 */
 	public static function ajax_dismiss_ongoing_notice() {
+
+		EPKB_Utilities::ajax_verify_nonce_and_capability_or_error_die( 'edit_posts' );
+
+		// accept only ids of notices that actually exist so arbitrary user meta cannot be written
 		$dismiss_id = EPKB_Utilities::post( 'epkb_dismiss_id' );
-		if ( ! empty( $dismiss_id ) ) {
-			update_user_meta( get_current_user_id(), $dismiss_id, 1 );
-		   self::dismiss_ongoing_notice( $dismiss_id );
+		$notices = get_option( 'epkb_ongoing_notices', array() );
+		if ( empty( $dismiss_id ) || ! is_array( $notices ) || ! isset( $notices[ $dismiss_id ] ) ) {
+			wp_die();
 		}
+
+		update_user_meta( get_current_user_id(), $dismiss_id, 1 );
+		self::dismiss_ongoing_notice( $dismiss_id );
+		wp_die();
 	}
 
 	/**

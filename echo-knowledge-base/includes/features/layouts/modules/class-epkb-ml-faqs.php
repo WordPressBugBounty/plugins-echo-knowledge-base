@@ -103,7 +103,7 @@ class EPKB_ML_FAQs {
 		// remove epkb filter
 		remove_filter( 'the_content', array( 'EPKB_Layouts_Setup', 'get_kb_page_output_hook' ), 99999 );    ?>
 
-		<div id="epkb-ml-faqs-<?php echo esc_attr( strtolower( $this->kb_config['kb_main_page_layout'] ) ); ?>-layout" class="epkb-ml-faqs-container <?php echo esc_html( $this->kb_config['ml_faqs_custom_css_class'] ); ?>">
+		<div id="epkb-ml-faqs-<?php echo esc_attr( strtolower( $this->kb_config['kb_main_page_layout'] ) ); ?>-layout" class="epkb-ml-faqs-container <?php echo esc_attr( $this->kb_config['ml_faqs_custom_css_class'] ); ?>">
 
 			<div class="epkb-ml-faqs__row"> <?php
 

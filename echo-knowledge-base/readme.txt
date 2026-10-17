@@ -7,7 +7,7 @@ Tags: knowledge base, documentation, ai, chat, faq
 Requires at least: 5.3
 Tested up to: 7.1
 Requires PHP: 5.6
-Stable tag: 17.311.0
+Stable tag: 17.311.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -349,6 +349,14 @@ For a full comparison and pricing, visit our [Pricing Page](https://www.echoknow
 18. Glossary 
 
 == Changelog ==
+
+= 17.311.1 =
+Release Date: Oct 17, 2026
+* Update: Additional security hardening
+* Fix: Drill Down layout column settings and article limit
+* Fix: AI training data sync when articles are deleted
+* Fix: Restored KB Main Page stays published instead of becoming a draft
+* Fix: Cleanup and minor fixes
 
 = 17.311.0 =
 Release Date: Oct 4, 2026

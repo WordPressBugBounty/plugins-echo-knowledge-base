@@ -140,10 +140,12 @@ class EPKB_Glossary_Frontend {
 						: 'style_1';
 					$style_class = 'epkb-glossary-term epkb-glossary-term--highlight-style-' . str_replace( 'style_', '', $style_slug );
 					$aria_label = $term->name . '. ' . $term->description;
-					$replacement = '<span class="' . esc_attr( $style_class ) . '" role="button" tabindex="0" aria-label="' . esc_attr( $aria_label ) . '" data-glossary-term="' . $tooltip_name . '" data-glossary-definition="' . $tooltip_text . '">$1</span>';
+					$span_open = '<span class="' . esc_attr( $style_class ) . '" role="button" tabindex="0" aria-label="' . esc_attr( $aria_label ) . '" data-glossary-term="' . $tooltip_name . '" data-glossary-definition="' . $tooltip_text . '">';
 
-					// Replace first occurrence only
-					$parts[$i] = preg_replace( $pattern, $replacement, $parts[$i], 1 );
+					// Replace first occurrence only; a callback (not a replacement string) so that "$1" in a term description cannot expand into the matched text
+					$parts[$i] = preg_replace_callback( $pattern, function( $matches ) use ( $span_open ) {
+						return $span_open . $matches[1] . '</span>';
+					}, $parts[$i], 1 );
 					$matched_terms[$term->term_id] = true;
 					$matched_any = true;
 

@@ -25,8 +25,8 @@ class EPKB_AI_Tools_Debug_Tab {
 	public static function ajax_get_php_error_logs() {
 		
 
-		// Security check
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
+		// Security check - verify CSRF nonce and AI admin permission
+		if ( ! check_ajax_referer( 'epkb_ai_tools_debug', '_wpnonce', false ) || ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access denied', 'echo-knowledge-base' ) ) );
 			return;
 		}
@@ -42,8 +42,8 @@ class EPKB_AI_Tools_Debug_Tab {
 	 */
 	public static function ajax_get_wp_error_logs() {
 
-		// Security check
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
+		// Security check - verify CSRF nonce and AI admin permission
+		if ( ! check_ajax_referer( 'epkb_ai_tools_debug', '_wpnonce', false ) || ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access denied', 'echo-knowledge-base' ) ) );
 			return;
 		}
@@ -59,8 +59,8 @@ class EPKB_AI_Tools_Debug_Tab {
 	 */
 	public static function ajax_get_ai_logs() {
 
-		// Security check
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
+		// Security check - verify CSRF nonce and AI admin permission
+		if ( ! check_ajax_referer( 'epkb_ai_tools_debug', '_wpnonce', false ) || ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access denied', 'echo-knowledge-base' ) ) );
 			return;
 		}
@@ -76,8 +76,8 @@ class EPKB_AI_Tools_Debug_Tab {
 	 */
 	public static function ajax_clear_ai_logs() {
 
-		// Security check
-		if ( ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
+		// Security check - verify CSRF nonce and AI admin permission
+		if ( ! check_ajax_referer( 'epkb_ai_tools_debug', '_wpnonce', false ) || ! EPKB_Admin_UI_Access::is_user_access_to_ai_feature_allowed( 'admin' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access denied', 'echo-knowledge-base' ) ) );
 			return;
 		}
@@ -167,11 +167,7 @@ class EPKB_AI_Tools_Debug_Tab {
 				}
 			}
 
-			// Escape log data for display
-			$parsed['timestamp'] = esc_html( $parsed['timestamp'] );
-			$parsed['level'] = esc_html( $parsed['level'] );
-			$parsed['message'] = esc_html( $parsed['message'] );
-
+			// no escaping here: React renders these as text nodes, escaping again would show &lt;strong&gt; literally
 			$logs[] = $parsed;
 		}
 
@@ -254,11 +250,11 @@ class EPKB_AI_Tools_Debug_Tab {
 			// Parse log line
 			$parsed = self::parse_php_log_line( $line );
 			if ( ! $parsed ) {
-				// If we can't parse it, add it as raw log entry with escaping
+				// If we can't parse it, add it as raw log entry
 				$logs[] = array(
 					'timestamp' => current_time( 'mysql' ),
 					'level' => 'info',
-					'message' => esc_html( $line )
+					'message' => $line
 				);
 				continue;
 			}
@@ -272,11 +268,7 @@ class EPKB_AI_Tools_Debug_Tab {
 				}
 			}
 
-			// Escape log data for display
-			$parsed['timestamp'] = esc_html( $parsed['timestamp'] );
-			$parsed['level'] = esc_html( $parsed['level'] );
-			$parsed['message'] = esc_html( $parsed['message'] );
-
+			// no escaping here: React renders these as text nodes, escaping again would show &lt;strong&gt; literally
 			$logs[] = $parsed;
 		}
 
@@ -308,16 +300,11 @@ class EPKB_AI_Tools_Debug_Tab {
 				continue;
 			}
 
-			// Escape message for display
-			$escaped_message = isset( $log['message'] ) ? esc_html( $log['message'] ) : '';
-
-			// Context values are not escaped here because they're already sanitized
-			// by EPKB_AI_Log and will be safely rendered by React in the frontend
-
+			// Values are not escaped here because they are rendered as text nodes by React in the frontend
 			$formatted_logs[] = array(
-				'timestamp' => isset( $log['timestamp'] ) ? esc_html( $log['timestamp'] ) : current_time( 'mysql' ),
-				'level' => esc_html( $level ),
-				'message' => $escaped_message,
+				'timestamp' => isset( $log['timestamp'] ) ? $log['timestamp'] : current_time( 'mysql' ),
+				'level' => $level,
+				'message' => isset( $log['message'] ) ? $log['message'] : '',
 				'context' => isset( $log['context'] ) && is_array( $log['context'] ) ? $log['context'] : array()
 			);
 		}

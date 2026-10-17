@@ -54,9 +54,10 @@ class EPKB_Site_Builders {
 			return;
 		}
 
-		// check elementor
+		// check elementor; Elementor 3.34.2 moved its settings page from ?page=elementor to ?page=elementor-settings
 		if ( ! $this->check_elementor_cpt() ) {
-			$this->show_builder_notice( esc_html__( 'Elementor', 'echo-knowledge-base' ), '?page=elementor-settings', esc_html__( 'Post types', 'echo-knowledge-base' ), self::ELEMENTOR_OPTION_NAME );
+			$elementor_settings_page = version_compare( ELEMENTOR_VERSION, '3.34.2', '>=' ) ? '?page=elementor-settings' : '?page=elementor';
+			$this->show_builder_notice( esc_html__( 'Elementor', 'echo-knowledge-base' ), $elementor_settings_page, esc_html__( 'Post types', 'echo-knowledge-base' ), self::ELEMENTOR_OPTION_NAME );
 		}
 
 		// check divi

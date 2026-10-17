@@ -111,27 +111,36 @@ class EPKB_Dashboard_Page {
 						</a>
 						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=epkb_post_type_1&page=epkb-faqs#faqs-overview' ) ); ?>" class="epkb-btn epkb-btn-add-faq">
 							<?php esc_html_e( '+ Add New FAQs', 'echo-knowledge-base' ); ?>
-						</a>						<?php 
-						
+						</a>						<?php
+
 						$kb_main_page_url = EPKB_KB_Handler::get_first_kb_main_page_url( $kb_config );
-						if ( empty( $kb_main_page_url ) ) { ?>
+						$has_fe_access = EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write' );
+						if ( $has_fe_access && empty( $kb_main_page_url ) ) { ?>
 							<a href="#" class="epkb-btn epkb-btn-frontend-editor epkb-btn-no-kb-main-page" data-setup-wizard-url="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&setup-wizard-on=true' ) ); ?>">
 								<?php esc_html_e( 'Frontend Editor', 'echo-knowledge-base' ); ?>
 							</a>						<?php 
-						} else { ?>
+						} else if ( $has_fe_access ) { ?>
 							<a href="<?php echo esc_url( $kb_main_page_url . '?action=epkb_load_editor&epkb_kb_id=' . $kb_config['id'] ); ?>" class="epkb-btn epkb-btn-frontend-editor" target="_blank">
 								<?php esc_html_e( 'Frontend Editor', 'echo-knowledge-base' ); ?>
 							</a>						<?php 
-						} ?>						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&setup-wizard-on=true' ) ); ?>" class="epkb-btn epkb-btn-setup-wizard">
-							<?php esc_html_e( 'Setup Wizard', 'echo-knowledge-base' ); ?>
-						</a>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&ekb-main-page-loc=tools&ekb-secondary-page-loc=import#tools__import' ) ); ?>" class="epkb-btn epkb-btn-import-data">
-							<?php esc_html_e( 'Import Data', 'echo-knowledge-base' ); ?>
-						</a>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&ekb-main-page-loc=tools&ekb-secondary-page-loc=convert#tools__convert' ) ); ?>" class="epkb-btn epkb-btn-convert-posts">
-							<?php esc_html_e( 'Convert Posts', 'echo-knowledge-base' ); ?>
-						</a>
-						
+						}
+
+						if ( $has_fe_access ) { ?>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&setup-wizard-on=true' ) ); ?>" class="epkb-btn epkb-btn-setup-wizard">
+								<?php esc_html_e( 'Setup Wizard', 'echo-knowledge-base' ); ?>
+							</a>						<?php
+						}
+
+						// Tools (Import / Convert) are admin-only
+						if ( current_user_can( EPKB_Admin_UI_Access::get_admin_capability() ) ) { ?>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&ekb-main-page-loc=tools&ekb-secondary-page-loc=import#tools__import' ) ); ?>" class="epkb-btn epkb-btn-import-data">
+								<?php esc_html_e( 'Import Data', 'echo-knowledge-base' ); ?>
+							</a>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&ekb-main-page-loc=tools&ekb-secondary-page-loc=convert#tools__convert' ) ); ?>" class="epkb-btn epkb-btn-convert-posts">
+								<?php esc_html_e( 'Convert Posts', 'echo-knowledge-base' ); ?>
+							</a>						<?php
+						} ?>
+
 					</div>
 				</div>
 				
@@ -220,7 +229,7 @@ class EPKB_Dashboard_Page {
 													<i class="epkbfa epkbfa-external-link"></i>
 													<?php esc_html_e( 'View KB Frontend', 'echo-knowledge-base' ); ?>
 												</a>
-											<?php } else { ?>
+											<?php } else if ( $has_fe_access ) { ?>
 												<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type . '&page=epkb-kb-configuration&setup-wizard-on=true' ) ); ?>" class="epkb-btn" style="background: white; color: #667eea; padding: 12px 30px; font-size: 16px; font-weight: 600; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s;">
 													<i class="epkbfa epkbfa-play-circle"></i>
 													<?php esc_html_e( 'Create KB Main Page', 'echo-knowledge-base' ); ?>
@@ -1056,7 +1065,7 @@ class EPKB_Dashboard_Page {
 	 */
 	public function ajax_enable_glossary() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
 
 		$this->enable_default_kb_feature(
 			'glossary_enable',
@@ -1070,7 +1079,7 @@ class EPKB_Dashboard_Page {
 	 */
 	public function ajax_enable_quizzes() {
 
-		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die( '_wpnonce_epkb_ajax_action' );
+		EPKB_Utilities::ajax_verify_nonce_and_admin_permission_or_error_die();
 
 		$kb_id = EPKB_KB_Config_DB::DEFAULT_KB_ID;
 		$kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );

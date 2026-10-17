@@ -493,6 +493,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			), 400 );
 		}
 
+		// Ensure Content Analysis table exists before analysis results are saved
+		new EPKB_AI_Content_Analysis_DB( true );
+
 		$article_id = $request->get_param( 'article_id' );
 
 		// Get article post
@@ -501,9 +504,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article not found', 'echo-knowledge-base' ) ), 404 );
 		}
 
-		$is_post_eligible_for_ai_training = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-		if ( ! $is_post_eligible_for_ai_training ) {
-			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article is not eligible for AI training', 'echo-knowledge-base' ) ), 400 );
+		$is_post_eligible_for_ai_training = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $is_post_eligible_for_ai_training ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'message' => $is_post_eligible_for_ai_training->get_error_message() ), 400 );
 		}
 
 		// Validate article has valid content for analysis
@@ -574,6 +577,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			), 400 );
 		}
 
+		// Ensure Content Analysis table exists before analysis results are saved
+		new EPKB_AI_Content_Analysis_DB( true );
+
 		$article_id = $request->get_param( 'article_id' );
 
 		// Get article post
@@ -582,9 +588,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article not found', 'echo-knowledge-base' ) ), 404 );
 		}
 
-		$is_post_eligible_for_ai_training = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-		if ( ! $is_post_eligible_for_ai_training ) {
-			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article is not eligible for AI training', 'echo-knowledge-base' ) ), 400 );
+		$is_post_eligible_for_ai_training = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $is_post_eligible_for_ai_training ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'message' => $is_post_eligible_for_ai_training->get_error_message() ), 400 );
 		}
 
 		// Validate article has valid content for analysis
@@ -661,6 +667,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			), 400 );
 		}
 
+		// Ensure Content Analysis table exists before analysis results are saved
+		new EPKB_AI_Content_Analysis_DB( true );
+
 		$article_id = $request->get_param( 'article_id' );
 
 		// Get article post
@@ -669,9 +678,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article not found', 'echo-knowledge-base' ) ), 404 );
 		}
 
-		$is_post_eligible_for_ai_training = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-		if ( ! $is_post_eligible_for_ai_training ) {
-			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article is not eligible for AI training', 'echo-knowledge-base' ) ), 400 );
+		$is_post_eligible_for_ai_training = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $is_post_eligible_for_ai_training ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'message' => $is_post_eligible_for_ai_training->get_error_message() ), 400 );
 		}
 
 		// Validate article has valid content for analysis
@@ -887,8 +896,8 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 		$articles = array();
 		foreach ( $query->posts as $post ) {
 
-			$is_post_eligible_for_ai_training = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-			if ( ! $is_post_eligible_for_ai_training ) {
+			$is_post_eligible_for_ai_training = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
+			if ( is_wp_error( $is_post_eligible_for_ai_training ) ) {
 				continue;
 			}
 
@@ -1017,6 +1026,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			), 400 );
 		}
 
+		// Ensure Content Analysis table exists before analysis results are saved
+		new EPKB_AI_Content_Analysis_DB( true );
+
 		$article_id = $request->get_param( 'article_id' );
 		$kb_id = $request->get_param( 'kb_id' );
 
@@ -1026,9 +1038,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article not found', 'echo-knowledge-base' ) ), 404 );
 		}
 
-		$is_post_eligible_for_ai_training = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-		if ( ! $is_post_eligible_for_ai_training ) {
-			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article is not eligible for AI training', 'echo-knowledge-base' ) ), 400 );
+		$is_post_eligible_for_ai_training = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $is_post_eligible_for_ai_training ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'message' => $is_post_eligible_for_ai_training->get_error_message() ), 400 );
 		}
 
 		// Get analysis data from database
@@ -1175,9 +1187,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article not found', 'echo-knowledge-base' ) ), 404 );
 		}
 
-		$is_post_eligible_for_ai_training = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-		if ( ! $is_post_eligible_for_ai_training ) {
-			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article is not eligible for AI training', 'echo-knowledge-base' ) ), 400 );
+		$is_post_eligible_for_ai_training = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $is_post_eligible_for_ai_training ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'message' => $is_post_eligible_for_ai_training->get_error_message() ), 400 );
 		}
 
 		// Validate article has valid content for analysis
@@ -1272,9 +1284,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article not found', 'echo-knowledge-base' ) ), 404 );
 		}
 
-		$is_post_eligible_for_ai_training = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-		if ( ! $is_post_eligible_for_ai_training ) {
-			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article is not eligible for AI training', 'echo-knowledge-base' ) ), 400 );
+		$is_post_eligible_for_ai_training = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $is_post_eligible_for_ai_training ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'message' => $is_post_eligible_for_ai_training->get_error_message() ), 400 );
 		}
 
 		// Derive KB ID from article's post type
@@ -1333,9 +1345,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article not found', 'echo-knowledge-base' ) ), 404 );
 		}
 
-		$is_post_eligible_for_ai_training = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-		if ( ! $is_post_eligible_for_ai_training ) {
-			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article is not eligible for AI training', 'echo-knowledge-base' ) ), 400 );
+		$is_post_eligible_for_ai_training = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $is_post_eligible_for_ai_training ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'message' => $is_post_eligible_for_ai_training->get_error_message() ), 400 );
 		}
 
 		// Derive KB ID from article's post type
@@ -1389,9 +1401,9 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article not found', 'echo-knowledge-base' ) ), 404 );
 		}
 
-		$is_post_eligible_for_ai_training = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-		if ( ! $is_post_eligible_for_ai_training ) {
-			return $this->create_rest_response( array( 'success' => false, 'message' => __( 'Article is not eligible for AI training', 'echo-knowledge-base' ) ), 400 );
+		$is_post_eligible_for_ai_training = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
+		if ( is_wp_error( $is_post_eligible_for_ai_training ) ) {
+			return $this->create_rest_response( array( 'success' => false, 'message' => $is_post_eligible_for_ai_training->get_error_message() ), 400 );
 		}
 
 		// Derive KB ID from article's post type
@@ -1433,6 +1445,13 @@ class EPKB_AI_REST_Content_Analysis_Controller extends EPKB_AI_REST_Base_Control
 	 * @return bool|WP_Error
 	 */
 	public function check_admin_permission( $request ) {
+
+		// a request naming a post that is not a KB article must not fall back to the kb_id parameter for the permission check
+		$article_id = absint( $request->get_param( 'article_id' ) );
+		if ( ! empty( $article_id ) && empty( $this->get_article_kb_id( $article_id ) ) ) {
+			return new WP_Error( 'rest_forbidden', __( 'Article is not a knowledge base article', 'echo-knowledge-base' ), array( 'status' => 403 ) );
+		}
+
 		return $this->check_ai_admin_permission( $request, 'content-analysis', __( 'You do not have permission to perform this action.', 'echo-knowledge-base' ), $this->get_request_kb_id( $request ) );
 	}
 

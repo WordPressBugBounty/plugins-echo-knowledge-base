@@ -1121,12 +1121,11 @@ class EPKB_Core_Utilities {
 		/** @var wpdb $wpdb */
 		global $wpdb;
 
-		$order = $order_by == 'name' ? 'ASC' : 'DESC';
-		$order_by = $order_by == 'date' ? 'term_id' : $order_by;   // terms don't have date so use id
+		$order_by_sql = $order_by == 'name' ? 't.name ASC' : 't.term_id DESC';   // terms don't have date so use id
 		$kb_category_taxonomy_name = EPKB_KB_Handler::get_category_taxonomy_name( $kb_id );
 		$result = $wpdb->get_results( $wpdb->prepare( "SELECT t.*, tt.* " .
 												   " FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id " .
-												   " WHERE tt.taxonomy = %s ORDER BY " . esc_sql( 't.' . $order_by ) . ' ' . esc_sql( $order ), $kb_category_taxonomy_name ) );
+												   " WHERE tt.taxonomy = %s ORDER BY " . $order_by_sql, $kb_category_taxonomy_name ) );
 		return isset($result) && is_array($result) ? $result : null;
 	}
 
@@ -1564,32 +1563,6 @@ class EPKB_Core_Utilities {
 		$nav_right_priority = empty( $sidebar_priority['nav_sidebar_right'] ) ? '0' : $sidebar_priority['nav_sidebar_right'];
 
 		return $side == 'left' ? $nav_left_priority : $nav_right_priority;
-	}
-
-	/**
-	 * Retrieve user IP address if possible.
-	 *
-	 * @return string
-	 */
-	public static function get_ip_address() {
-
-		$ip_params = array( 'HTTP_CF_CONNECTING_IP', 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' );
-		foreach ( $ip_params as $ip_param ) {
-			//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			if ( ! empty( $_SERVER[$ip_param] ) ) {
-				//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				foreach ( explode( ',', sanitize_text_field( wp_unslash( $_SERVER[$ip_param] ) ) ) as $ip ) {
-					$ip = trim( $ip );
-
-					// validate IP address
-					if ( filter_var( $ip, FILTER_VALIDATE_IP ) !== false ) {
-						return esc_attr( $ip );
-					}
-				}
-			}
-		}
-
-		return '';
 	}
 
 	public static function display_missing_css_message( $kb_config=[] ) {

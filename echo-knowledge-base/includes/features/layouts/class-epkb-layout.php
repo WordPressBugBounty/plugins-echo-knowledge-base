@@ -251,27 +251,17 @@ abstract class EPKB_Layout {
 	protected function get_articles_listed_in_columns( $articles_list, $max_columns=3 ) {
 
 		// exclude private and inaccessible articles
-		$nof_articles = 0;
-		foreach ( $articles_list as $article_id => $article_title ) {
-			if ( ! EPKB_Utilities::is_article_allowed_for_current_user( $article_id ) ) {
-				continue;
-			}
-			$nof_articles++;
-		}
+		$articles_list = array_filter( $articles_list, array( 'EPKB_Utilities', 'is_article_allowed_for_current_user' ), ARRAY_FILTER_USE_KEY );
 
 		$nof_columns_int = $this->get_nof_columns_int();
 		$nof_columns_int = $nof_columns_int > $max_columns ? $max_columns : $nof_columns_int;
-		$articles_per_column = (int) ceil( $nof_articles / $nof_columns_int );
+		$articles_per_column = (int) ceil( count( $articles_list ) / $nof_columns_int );
 
 		// create a nested array of articles for each column
 		$column_count = 0;
 		$column_articles_count = 0;
 		$columns = array_fill( 0, $nof_columns_int, [] );
 		foreach ( $articles_list as $article_id => $article_title ) {
-			if ( ! EPKB_Utilities::is_article_allowed_for_current_user( $article_id ) ) {
-				continue;
-			}
-
 			$columns[ $column_count ][] = [
 				'title'  => $article_title,
 				'id'     => $article_id,

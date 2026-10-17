@@ -946,6 +946,15 @@ function epkb_get_block_attributes( $block_name ) {
 			'nof_columns' => [
 				'type' => 'string'
 			],
+			'nof_articles_displayed' => [
+				'type' => 'number'
+			],
+			'collapse_articles_msg' => [
+				'type' => 'string'
+			],
+			'show_all_articles_msg' => [
+				'type' => 'string'
+			],
 			'section_desc_text_on' => [
 				'type' => 'string'
 			],

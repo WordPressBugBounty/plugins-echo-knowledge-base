@@ -811,7 +811,7 @@ class EPKB_Quizzes_Utilities {
 	public static function generate_quiz_from_article( $article, $question_count_mode ) {
 
 		$question_count_mode = self::sanitize_question_count_mode( $question_count_mode );
-		$eligibility = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $article );
+		$eligibility = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $article );
 		if ( is_wp_error( $eligibility ) ) {
 			return $eligibility;
 		}

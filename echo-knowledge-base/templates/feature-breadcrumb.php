@@ -120,7 +120,7 @@ $breadcrumb_style3_escaped = EPKB_Utilities::get_inline_style( 'typography::brea
 						} else {
 							echo '<a tabindex="0" href="' . esc_url( $link ) . '"><span ' . $breadcrumb_style2_escaped . ' >' . esc_html( $text ) . '</span></a>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						}
-						echo '<span class="eckb-breadcrumb-link-icon ' . esc_html( $kb_config['breadcrumb_icon_separator'] ) . '" aria-hidden="true"></span>';
+						echo '<span class="eckb-breadcrumb-link-icon ' . esc_attr( $kb_config['breadcrumb_icon_separator'] ) . '" aria-hidden="true"></span>';
 					} else {
 						echo '<span aria-current="page"' . $breadcrumb_style2_escaped . ' >' . esc_html( $text ) . '</span>';//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					}

@@ -3029,7 +3029,7 @@ class EPKB_Config_Settings_Page {
 				'title'         => esc_html__( 'List of Articles', 'echo-knowledge-base' ),
 				'css_class'     => 'epkb-admin__form-tab-content--module-box epkb-admin__form-tab-content--categories_articles-box epkb-admin__form-tab-content--hide',
 				'fields'        => [
-					'nof_articles_displayed' => [ 'not_classic', 'not_grid', 'not_sidebar', 'not_drill_down' ],
+					'nof_articles_displayed' => [ 'not_classic', 'not_grid', 'not_sidebar' ],
 					'article_list_margin' => [ 'not_grid', 'not_sidebar', 'not_drill_down' ],
 					'sub_article_list_margin' => [ 'not_categories', 'not_grid', 'not_sidebar', 'not_drill_down' ],
 					'section_box_shadow' => [ [ 'only_basic', 'only_tabs', 'only_categories' ] ],

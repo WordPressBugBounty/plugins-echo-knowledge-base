@@ -370,7 +370,7 @@ class EPKB_Layout_Classic extends EPKB_Layout {
 	            if ( $sub_cat_icon['type'] == 'image' ) { ?>
 		            <img class="epkb-cat-icon epkb-cat-icon--image" src="<?php echo esc_url( $sub_cat_icon['image_thumbnail_url'] ); ?>" alt="<?php echo esc_attr( $sub_cat_icon['image_alt'] ); ?>"> <?php
 	            } else { ?>
-		            <span class="epkb-cat-icon epkbfa <?php echo esc_html( $sub_cat_icon['name'] ); ?>" data-kb-category-icon="<?php echo esc_attr( $sub_cat_icon['name'] ); ?>"></span>    <?php
+		            <span class="epkb-cat-icon epkbfa <?php echo esc_attr( $sub_cat_icon['name'] ); ?>" data-kb-category-icon="<?php echo esc_attr( $sub_cat_icon['name'] ); ?>"></span>    <?php
 	            } ?>
             </span>
 			<span class="epkb-ml-<?php echo esc_attr( $cat_level ); ?>-lvl-category__text"><?php echo esc_html( $sub_category_name ); ?></span> <?php
@@ -705,6 +705,7 @@ class EPKB_Layout_Classic extends EPKB_Layout {
 		$top_icon_row_margin_bottom = max( 60, $section_gap + 20 );
 		$output .= '
 			#epkb-ml__module-categories-articles #epkb-ml-classic-layout .epkb-ml__module-categories-articles__row {
+				--epkb-section-gap: ' . $section_gap . 'px;
 				gap: ' . $section_gap . 'px !important;
 				margin-bottom: ' . $section_gap . 'px !important;
 			}

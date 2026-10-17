@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Create Echo Knowledge Base articles, docs and FAQs.
- * Version: 17.311.0
+ * Version: 17.311.1
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '17.311.0';
+	public static $version = '17.311.1';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -122,6 +122,7 @@ final class Echo_Knowledge_Base {
 		$this->security_obj = new EPKB_AI_Security();
 		new EPKB_AI_REST_Search_Controller();
 		new EPKB_AI_REST_Chat_Controller();
+		EPKB_AI_Sync_Hooks::init();
 
 		// Setup Steps and Pointers for Help Resources page
 		new EPKB_Setup_Steps();
@@ -157,10 +158,14 @@ final class Echo_Knowledge_Base {
 			return;
 		}
 
-		// catch saving and creating of Post in Gutenberg
+		// catch saving and creating of Post in Gutenberg (REST request with wp-admin referer); only logged-in users can save posts
 		$server_referrer = isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '';
 		if ( ! empty( $server_referrer ) && ( strpos( $server_referrer, '/wp-admin/post.php' ) !== false || strpos( $server_referrer, '/wp-admin/post-new.php' ) !== false ) ) {
-			require_once self::$plugin_dir . 'includes/admin/admin-functions.php';
+			add_action( 'init', function() {
+				if ( is_user_logged_in() ) {
+					require_once self::$plugin_dir . 'includes/admin/admin-functions.php';
+				}
+			} );
 		}
 
 		// FRONT-END (no ajax, possibly admin bar)
@@ -387,7 +392,6 @@ final class Echo_Knowledge_Base {
 		}
 
 		new EPKB_AI_Admin_Page();
-		// TODO new EPKB_AI_Sync_Hooks();
 
 		// Initialize Analytics Page to register AJAX handlers
 		new EPKB_Analytics_Page();

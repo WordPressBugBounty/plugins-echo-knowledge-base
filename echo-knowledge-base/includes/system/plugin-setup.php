@@ -60,6 +60,7 @@ function epkb_deactivation() {
 	// Clear any single event hooks
 	wp_unschedule_hook( 'epkb_ai_run_sync' );
 	wp_unschedule_hook( 'epkb_ai_run_cleanup_now' );
+	wp_unschedule_hook( 'epkb_do_remove_training_files_cron_event' );
 	
 	// Clear any sync locks
 	delete_transient( 'epkb_ai_sync_lock' );

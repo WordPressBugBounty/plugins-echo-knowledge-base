@@ -41,6 +41,24 @@ class EPKB_AI_Sync_Manager {
 			return $collection_id;
 		}
 
+		// a post that is no longer eligible (deleted, unpublished, private, password-protected) must also leave the provider so the AI stops answering from it;
+		// same cleanup as the Training Data refresh: provider file removed, row marked skipped
+		$existing_record = $this->training_data_db->get_training_data_record_by_item_id( $collection_id, $post_id );
+		if ( is_wp_error( $existing_record ) ) {
+			return $existing_record;
+		}
+		if ( ! empty( $existing_record ) ) {
+			$unavailable_source_code = EPKB_AI_Utilities::skip_training_row_if_source_unavailable( $existing_record, $this->training_data_db );
+			if ( is_wp_error( $unavailable_source_code ) ) {
+				return $unavailable_source_code;
+			}
+			if ( ! empty( $unavailable_source_code ) ) {
+				EPKB_AI_Log::add_log( 'Post excluded from sync: ' . $unavailable_source_code, array( 'post_id' => $post_id, 'collection_id' => $collection_id ) );
+				// translators: %s is the reason code, e.g. post_not_published
+				return new WP_Error( 'post_ineligible', sprintf( __( 'Post is no longer eligible for AI training (%s)', 'echo-knowledge-base' ), $unavailable_source_code ) );
+			}
+		}
+
 		// Get or create vector store (use $this->vector_store to ensure current_store_id is set for Gemini)
 		$vector_store_id = $this->vector_store->get_or_create_vector_store( $collection_id );
 		if ( is_wp_error( $vector_store_id ) ) {
@@ -379,13 +397,6 @@ class EPKB_AI_Sync_Manager {
 		if ( ! $post ) {
 			$error_msg = __( 'Post not found. It may have been deleted.', 'echo-knowledge-base' );
 			return new WP_Error( 'invalid_post', $error_msg, array( 'post_id' => $post_id ) );
-		}
-
-		// Use centralized eligibility check.
-		$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
-		if ( is_wp_error( $eligibility_check ) ) {
-			EPKB_AI_Log::add_log( 'Post excluded from sync: ' . $eligibility_check->get_error_message(), array( 'post_id' => $post_id, 'title' => $post->post_title ) );
-			return $eligibility_check;
 		}
 
 		// Prepare content for regular posts.

@@ -1177,7 +1177,8 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
 }
 #epkb-ml__module-categories-articles #epkb-ml-tabs-layout .epkb-tab-panel .epkb-ml__module-categories-articles__row {
   display: flex;
-  gap: 20px;
+  --epkb-section-gap: 20px;
+  gap: var(--epkb-section-gap);
   justify-content: center;
   margin-bottom: 20px;
   clear: both;
@@ -1490,15 +1491,23 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
 }
 #epkb-ml__module-categories-articles #epkb-ml-tabs-layout .epkb-one-col .epkb-top-category-box {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 #epkb-ml__module-categories-articles #epkb-ml-tabs-layout .epkb-two-col .epkb-top-category-box {
-  width: 50%;
+  width: calc((100% - var(--epkb-section-gap)) / 2);
+  max-width: calc((100% - var(--epkb-section-gap)) / 2);
+  min-width: 0;
 }
 #epkb-ml__module-categories-articles #epkb-ml-tabs-layout .epkb-three-col .epkb-top-category-box {
-  width: 33.33%;
+  width: calc((100% - (var(--epkb-section-gap) * 2)) / 3);
+  max-width: calc((100% - (var(--epkb-section-gap) * 2)) / 3);
+  min-width: 0;
 }
 #epkb-ml__module-categories-articles #epkb-ml-tabs-layout .epkb-four-col .epkb-top-category-box {
-  width: 25%;
+  width: calc((100% - (var(--epkb-section-gap) * 3)) / 4);
+  max-width: calc((100% - (var(--epkb-section-gap) * 3)) / 4);
+  min-width: 0;
 }
 #epkb-ml__module-categories-articles #epkb-ml-tabs-layout .epkb-top-category-box.epkb-tab-top-articles {
   width: 100%;
@@ -1834,6 +1843,7 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
   }
   #epkb-modular-main-page-container #epkb-ml-tabs-layout #epkb-content-container .epkb-section-container .epkb-ml__module-categories-articles__row .epkb-top-category-box {
     width: 90% !important;
+    max-width: 90% !important;
     margin: 0 auto 0 auto !important;
     flex-wrap: wrap;
   }
@@ -1908,6 +1918,7 @@ body.wp-theme-hueman[class*=-epkb_post_type] .main::before, body.wp-theme-hueman
   }
   .epkb-block-main-page-container #epkb-ml-tabs-layout #epkb-content-container .epkb-section-container .epkb-ml__module-categories-articles__row .epkb-top-category-box {
     width: 90% !important;
+    max-width: 90% !important;
     margin: 0 auto 0 auto !important;
     flex-wrap: wrap;
   }

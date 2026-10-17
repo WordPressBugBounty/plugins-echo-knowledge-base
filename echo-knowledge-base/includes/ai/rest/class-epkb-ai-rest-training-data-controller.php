@@ -43,7 +43,7 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 				),
 				'status' => array(
 					'type' => 'string',
-					'enum' => array( '', 'pending', 'adding', 'added', 'updating', 'updated', 'outdated', 'error', 'skipped' )
+					'enum' => array( '', 'pending', 'adding', 'added', 'updating', 'updated', 'outdated', 'error', 'skipped', 'removing' )
 				),
 				'type' => array(
 					'type' => 'string'
@@ -1340,7 +1340,7 @@ class EPKB_AI_REST_Training_Data_Controller extends EPKB_AI_REST_Base_Controller
 				continue;
 			}
 			
-			$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
+			$eligibility_check = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
 			if ( $eligibility_check === true ) {
 				if ( $stats_only ) {
 					$eligible_count++;

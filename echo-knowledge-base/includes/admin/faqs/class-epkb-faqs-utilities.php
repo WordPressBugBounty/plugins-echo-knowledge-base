@@ -60,7 +60,7 @@ class EPKB_FAQs_Utilities {
 			</style>	<?php
 		} ?>
 
-		<div id="epkb-ml-faqs-<?php echo esc_attr( strtolower( $kb_config['kb_main_page_layout'] ) ); ?>-layout" class="epkb-faqs-container <?php echo esc_html( implode( ' ', $container_classes ) ) ?>"> <?php
+		<div id="epkb-ml-faqs-<?php echo esc_attr( strtolower( $kb_config['kb_main_page_layout'] ) ); ?>-layout" class="epkb-faqs-container <?php echo esc_attr( implode( ' ', $container_classes ) ) ?>"> <?php
 
 			// Display the FAQs Title set in the FAQ Module or shortcode Parameter (could be empty)
 			if ( $kb_config['ml_faqs_title_location'] != 'none' && ! empty( $faq_title ) ) { ?>

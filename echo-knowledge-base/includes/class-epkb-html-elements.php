@@ -93,7 +93,7 @@ class EPKB_HTML_Elements {
 		$group_data_escaped = self::get_data_escaped( $args['group_data'] );
 		$data_escaped = self::get_data_escaped( $args['data'] );	?>
 
-		<div class="epkb-input-group epkb-admin__text-field <?php echo esc_html( $args['input_group_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>_group" <?php echo $group_data_escaped;  /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>>
+		<div class="epkb-input-group epkb-admin__text-field <?php echo esc_attr( $args['input_group_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>_group" <?php echo $group_data_escaped;  /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>>
 
 			<label class="<?php echo esc_attr( $args['label_class'] ); ?>" for="<?php echo esc_attr( $args['name'] ); ?>">  <?php
 			    echo wp_kses_post( $args['label'] );
@@ -897,7 +897,7 @@ class EPKB_HTML_Elements {
 					<label class="<?php echo esc_attr( $args['label_class'] ); ?>" for="<?php echo esc_attr( $input_id ); ?>">			<?php
 						echo wp_kses_post( $label ); ?>
 					</label>
-					<div class="input_container <?php echo esc_html( $args['input_class'] ); ?>">
+					<div class="input_container <?php echo esc_attr( $args['input_class'] ); ?>">
 						<input type="checkbox"
 						       name="<?php echo esc_attr( $args['name'] ); ?>"
 						       id="<?php echo esc_attr( $input_id ); ?>"
@@ -974,7 +974,7 @@ class EPKB_HTML_Elements {
 		}
 		if ( ! empty( $args['input_wrapper'] ) ) {
 			$label_wrap_open_escaped   = '<' . esc_html( $args['input_wrapper'] ) . ' class="' . esc_attr( $args['input_group_class'] ) . '" ' . $group_data_escaped . '>';
-			$label_wrap_close_escaped  = '<' . esc_html( $args['input_wrapper'] ) . '>';
+			$label_wrap_close_escaped  = '</' . esc_html( $args['input_wrapper'] ) . '>';
 		}
 
 		if ( ! empty( $args['return_html'] ) ) {
@@ -1167,7 +1167,7 @@ class EPKB_HTML_Elements {
 		$group_data_escaped = self::get_data_escaped( $args['group_data'] );
 		$data_escaped = self::get_data_escaped( $args['data'] );  ?>
 
-		<div class="epkb-input-group epkb-admin__color-field <?php echo esc_html( $args['input_group_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>_group" <?php echo $group_data_escaped; ?>>
+		<div class="epkb-input-group epkb-admin__color-field <?php echo esc_attr( $args['input_group_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>_group" <?php echo $group_data_escaped; ?>>
 
 			<label class="<?php echo esc_attr( $args['label_class'] ); ?>" for="<?php echo esc_attr( $args['name'] ); ?>">  <?php
 				echo esc_html( $args['label'] );
@@ -1227,7 +1227,7 @@ class EPKB_HTML_Elements {
 			$tinymce_options = array_merge( $tinymce_options, $args['editor_options'] );
 		} ?>
 
-		<div class="epkb-input-group epkb-admin__wp-editor-field <?php echo esc_html( $args['input_group_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>_group" <?php echo $group_data_escaped; ?>>
+		<div class="epkb-input-group epkb-admin__wp-editor-field <?php echo esc_attr( $args['input_group_class'] ); ?>" id="<?php echo esc_attr( $args['name'] ); ?>_group" <?php echo $group_data_escaped; ?>>
 
 			<label class="<?php echo esc_attr( $args['label_class'] ); ?>" for="<?php echo esc_attr( $args['name'] ); ?>">  <?php
 				echo wp_kses_post( $args['label'] );

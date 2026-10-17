@@ -11,10 +11,10 @@ class EPKB_KB_Config_Controller {
 		add_action( 'wp_ajax_nopriv_epkb_wpml_enable', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
 		add_action( 'wp_ajax_eckb_update_category_slug_parameter', array( $this, 'update_category_slug_param' ) );
-		add_action( 'wp_ajax_nopriv_eckb_update_query_parameter', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+		add_action( 'wp_ajax_nopriv_eckb_update_category_slug_parameter', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
 		add_action( 'wp_ajax_eckb_update_tag_slug_parameter', array( $this, 'update_tag_slug_param' ) );
-		add_action( 'wp_ajax_nopriv_eckb_update_query_parameter', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
+		add_action( 'wp_ajax_nopriv_eckb_update_tag_slug_parameter', array( 'EPKB_Utilities', 'user_not_logged_in' ) );
 
 		add_action( 'wp_ajax_epkb_preload_fonts', array( $this, 'preload_fonts' ) );
 		add_action( 'wp_ajax_nopriv_epkb_preload_fonts', array( 'EPKB_Utilities', 'user_not_logged_in' ) );

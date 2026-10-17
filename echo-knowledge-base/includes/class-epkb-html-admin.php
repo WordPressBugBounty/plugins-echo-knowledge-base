@@ -371,8 +371,7 @@ class EPKB_HTML_Admin {
 
 		// Optional buttons row displayed at the top of the boxes list
 		if ( ! empty( $page_view['list_top_actions_html'] ) ) {
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo $page_view['list_top_actions_html'];
+			echo wp_kses( $page_view['list_top_actions_html'], EPKB_Utilities::get_admin_ui_extended_html_tags() );
 		}
 
 		// Admin Boxes with configuration
@@ -459,7 +458,7 @@ class EPKB_HTML_Admin {
 							<div class="epkb-admin__form-tab-content-title">    <?php
 								echo empty( $content['title_before_icon'] ) ? '' : esc_html( $content['title'] );
 								if ( ! empty( $content['icon'] ) || ! empty( $content['icon_text'] ) ) {    ?>
-									<span class="<?php echo esc_html( $content['icon'] ); ?> epkb-admin__form-tab-content-icon"><?php echo esc_html( $content['icon_text'] ); ?></span>   <?php
+									<span class="<?php echo esc_attr( $content['icon'] ); ?> epkb-admin__form-tab-content-icon"><?php echo esc_html( $content['icon_text'] ); ?></span>   <?php
 								}
 								echo empty( $content['title_before_icon'] ) ? esc_html( $content['title'] ) : '';
 						        if ( ! empty( $content['help_links_html'] ) ) {
@@ -498,7 +497,7 @@ class EPKB_HTML_Admin {
 
 									<div class="epkb-admin__form-tab-content-title">    <?php
 										if ( ! empty( $content['icon'] ) || ! empty( $content['icon_text'] ) ) {    ?>
-											<span class="<?php echo esc_html( $content['icon'] ); ?> epkb-admin__form-tab-content-icon"><?php echo esc_html( $content['icon_text'] ); ?></span>   <?php
+											<span class="<?php echo esc_attr( $content['icon'] ); ?> epkb-admin__form-tab-content-icon"><?php echo esc_html( $content['icon_text'] ); ?></span>   <?php
 										}
 										echo esc_html( $content['title'] );
 										if ( ! empty( $content['setting_help_text'] ) ) {

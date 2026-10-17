@@ -877,7 +877,7 @@ jQuery(document).ready(function($) {
 				// Fallback: find the last visible article in the visible content section
 				let $visibleContent = $( '.epkb-ml__cat-content.epkb-ml__cat-content--show' );
 				if ( $visibleContent.length ) {
-					let $lastArticle = $visibleContent.find( '.epkb-ml-article-container' ).last();
+					let $lastArticle = $visibleContent.find( '.epkb-ml-article-container:visible' ).last();
 					if ( $lastArticle.length ) {
 						$lastArticle.focus();
 						return;
@@ -1413,8 +1413,10 @@ jQuery(document).ready(function($) {
 			
 			let highlightPosition = $highlightedEl.position().top;
 			
-			if ( highlightPosition < 0 || highlightPosition > $highlightedEl.closest('.eckb-article-toc__inner').height() ) {
-				$highlightedEl.closest('.eckb-article-toc__inner').scrollTop( highlightPosition - $highlightedEl.closest('.eckb-article-toc__inner').find( '.eckb-article-toc__title' ).position().top );
+			let $tocInner = $highlightedEl.closest('.eckb-article-toc__inner');
+			if ( highlightPosition < 0 || highlightPosition > $tocInner.height() ) {
+				let $tocTitle = $tocInner.find( '.eckb-article-toc__title' );   // TOC may be rendered without a title
+				$tocInner.scrollTop( highlightPosition - ( $tocTitle.length ? $tocTitle.position().top : 0 ) );
 			}
 		},
 	};

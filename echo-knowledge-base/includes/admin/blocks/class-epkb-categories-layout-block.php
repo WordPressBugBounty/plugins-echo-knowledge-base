@@ -166,6 +166,7 @@ final class EPKB_Categories_Layout_Block extends EPKB_Abstract_Block {
 		$section_gap = isset( $block_attributes['section_box_gap'] ) ? intval( $block_attributes['section_box_gap'] ) : 20;
 		$output .= '
 			' . $block_selector . ' .epkb-ml__module-categories-articles__row {
+				--epkb-section-gap: ' . $section_gap . 'px;
 				gap: ' . $section_gap . 'px !important;
 				margin-bottom: ' . $section_gap . 'px !important;
 			}

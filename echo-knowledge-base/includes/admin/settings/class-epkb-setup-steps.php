@@ -418,7 +418,7 @@ class EPKB_Setup_Steps {
 			if ( ! empty( $step['is_transition'] ) ) {
 				continue;
 			}
-			if ( self::check_condition( $step['condition'], $kb_id ) ) {
+			if ( self::is_step_eligible( $step, $kb_id ) ) {
 				$eligible[ $key ] = $step;
 			}
 		}
@@ -479,7 +479,7 @@ class EPKB_Setup_Steps {
 
 		foreach ( $category_steps as $key => $step ) {
 			// Check condition is met
-			if ( ! self::check_condition( $step['condition'], $kb_id ) ) {
+			if ( ! self::is_step_eligible( $step, $kb_id ) ) {
 				continue;
 			}
 
@@ -790,6 +790,18 @@ class EPKB_Setup_Steps {
 	}
 
 	/**
+	 * Step is eligible when its condition is met and the user can open its "Show Me" target; Frontend Editor and Setup Wizard targets require Frontend Editor access
+	 */
+	private static function is_step_eligible( $step, $kb_id ) {
+		$target_page = empty( $step['show_me'][0]['target_page'] ) ? '' : $step['show_me'][0]['target_page'];
+		$needs_fe_access = strpos( $target_page, 'frontend_editor' ) === 0 || strpos( $target_page, 'setup-wizard-on' ) !== false;
+		if ( $needs_fe_access && ! EPKB_Admin_UI_Access::is_user_access_to_context_allowed( 'admin_eckb_access_frontend_editor_write', $kb_id ) ) {
+			return false;
+		}
+		return self::check_condition( $step['condition'], $kb_id );
+	}
+
+	/**
 	 * Get visible steps (next 8 eligible incomplete steps)
 	 */
 	public static function get_visible_steps( $kb_id ) {
@@ -809,7 +821,7 @@ class EPKB_Setup_Steps {
 			}
 
 			// Skip steps where condition is not met
-			if ( ! self::check_condition( $step['condition'], $kb_id ) ) {
+			if ( ! self::is_step_eligible( $step, $kb_id ) ) {
 				continue;
 			}
 
@@ -831,7 +843,7 @@ class EPKB_Setup_Steps {
 		$count = 0;
 
 		foreach ( self::$steps as $step_key => $step ) {
-			if ( self::check_condition( $step['condition'], $kb_id ) ) {
+			if ( self::is_step_eligible( $step, $kb_id ) ) {
 				$count++;
 			}
 		}
@@ -847,7 +859,7 @@ class EPKB_Setup_Steps {
 		$count = 0;
 
 		foreach ( self::$steps as $step_key => $step ) {
-			if ( in_array( $step_key, $completed_keys ) && self::check_condition( $step['condition'], $kb_id ) ) {
+			if ( in_array( $step_key, $completed_keys ) && self::is_step_eligible( $step, $kb_id ) ) {
 				$count++;
 			}
 		}
@@ -1043,7 +1055,7 @@ class EPKB_Setup_Steps {
 
 		$step_num = 1;
 		foreach ( $all_steps as $step_key => $step ) {
-			$is_eligible = self::check_condition( $step['condition'], $kb_id );
+			$is_eligible = self::is_step_eligible( $step, $kb_id );
 			$texts = self::get_step_texts( $step_key );
 			$title = $texts['title'];
 			$is_optional = ! empty( $step['optional'] );
@@ -1961,7 +1973,7 @@ class EPKB_Setup_Steps {
 					<?php
 					$row_num = 1;
 					foreach ( $all_steps as $step_key => $step ) {
-						$is_eligible = self::check_condition( $step['condition'], $kb_id );
+						$is_eligible = self::is_step_eligible( $step, $kb_id );
 						$is_completed = in_array( $step_key, $completed_keys );
 						$condition_text = $step['condition']['type'];
 						if ( $step['condition']['type'] === 'articles_min' ) {

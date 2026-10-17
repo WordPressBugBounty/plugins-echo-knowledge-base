@@ -12,6 +12,24 @@ class EPKB_AI_Smart_Search_Shortcode {
 	}
 
 	/**
+	 * The shortcode attribute may only name a collection the current viewer can already reach (a KB's Smart Search collection or an AI Chat location
+	 * whose access setting allows them); otherwise a post author could mint an access token for any internal or restricted collection.
+	 * @param int|string $collection_id
+	 * @return bool
+	 */
+	private static function is_public_collection( $collection_id ) {
+
+		$collection_id = absint( $collection_id );
+		foreach ( epkb_get_instance()->kb_config_obj->get_kb_configs() as $kb_config ) {
+			if ( ! empty( $kb_config['kb_ai_collection_id'] ) && absint( $kb_config['kb_ai_collection_id'] ) === $collection_id ) {
+				return true;
+			}
+		}
+
+		return EPKB_AI_Chat_Frontend::is_user_allowed_for_collection( $collection_id );
+	}
+
+	/**
 	 * Outputs the shortcode content.
 	 *
 	 * @param array $attributes Shortcode attributes:
@@ -48,7 +66,7 @@ class EPKB_AI_Smart_Search_Shortcode {
 
 		// Get collection ID from attribute or KB config
 		$collection_id = '';
-		if ( ! empty( $attributes['kb_ai_collection_id'] ) ) {
+		if ( ! empty( $attributes['kb_ai_collection_id'] ) && self::is_public_collection( $attributes['kb_ai_collection_id'] ) ) {
 			$collection_id = absint( $attributes['kb_ai_collection_id'] );
 		} else {
 			// Get from KB configuration

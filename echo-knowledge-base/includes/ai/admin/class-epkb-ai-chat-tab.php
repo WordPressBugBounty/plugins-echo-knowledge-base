@@ -177,36 +177,10 @@ class EPKB_AI_Chat_Tab {
 	 */
 	private static function get_collection_fields_to_validate( $ai_config ) {
 
-		$display_mode = isset( $ai_config['ai_chat_display_mode'] ) ? $ai_config['ai_chat_display_mode'] : 'all_pages';
-
-		if ( $display_mode === 'all_pages' ) {
-			return array( 'ai_chat_display_collection' );
-		}
-
 		$collection_fields = array();
-
-		for ( $slot_num = 1; $slot_num <= 5; $slot_num++ ) {
+		foreach ( EPKB_AI_Chat_Frontend::get_active_chat_slots( $ai_config ) as $slot_num ) {
 			$suffix = $slot_num === 1 ? '' : "_{$slot_num}";
-			$collection_field = "ai_chat_display_collection{$suffix}";
-
-			if ( empty( $ai_config[ $collection_field ] ) ) {
-				continue;
-			}
-
-			$page_rules = isset( $ai_config["ai_chat_display_page_rules{$suffix}"] ) ? $ai_config["ai_chat_display_page_rules{$suffix}"] : array();
-			$post_types = isset( $ai_config["ai_chat_display_other_post_types{$suffix}"] ) ? $ai_config["ai_chat_display_other_post_types{$suffix}"] : array();
-			$url_patterns = isset( $ai_config["ai_chat_display_url_patterns{$suffix}"] ) ? $ai_config["ai_chat_display_url_patterns{$suffix}"] : '';
-			$has_rules = ! empty( $page_rules ) || ! empty( $post_types ) || ! empty( $url_patterns );
-
-			if ( $display_mode === 'selected_only' && ! $has_rules ) {
-				continue;
-			}
-
-			if ( $slot_num > 1 && ! $has_rules ) {
-				continue;
-			}
-
-			$collection_fields[] = $collection_field;
+			$collection_fields[] = "ai_chat_display_collection{$suffix}";
 		}
 
 		return $collection_fields;

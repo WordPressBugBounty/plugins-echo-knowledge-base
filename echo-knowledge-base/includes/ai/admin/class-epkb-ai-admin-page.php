@@ -486,6 +486,7 @@ class EPKB_AI_Admin_Page {
 						'doc_link'    => 'https://www.echoknowledgebase.com/documentation/step-2-add-ai-training-data/'
 					),
 					array(
+						'key'              => 'configure_chat',
 						'title'            => __( 'Configure AI Chat', 'echo-knowledge-base' ),
 						'description'      => __( 'Set up display mode, select training data, and enable AI Chat.', 'echo-knowledge-base' ),
 						'completed'        => $ai_chat_enabled && $chat_collection_selected,
@@ -649,6 +650,7 @@ class EPKB_AI_Admin_Page {
 						'pointer_content' => __( 'Click here to create a new Training Data Collection. Collections let you organize different sets of content to train AI for specific purposes.', 'echo-knowledge-base' )
 					),
 					array(
+						'key'             => 'choose_data',
 						'title'           => __( 'Choose Training Data', 'echo-knowledge-base' ),
 						'description'     => __( 'Select which content to include in your collection.', 'echo-knowledge-base' ),
 						'completed'       => $active_collection_has_data,
@@ -659,6 +661,7 @@ class EPKB_AI_Admin_Page {
 						'pointer_content' => __( 'Click this button to select the content you want to train AI with. You can include Knowledge Base articles, FAQs, pages, and custom content.', 'echo-knowledge-base' )
 					),
 					array(
+						'key'             => 'sync_data',
 						'title'           => __( 'Send Data to AI', 'echo-knowledge-base' ),
 						'description'     => __( 'Sync your training data to the AI provider.', 'echo-knowledge-base' ),
 						'completed'       => $active_collection_has_synced_data,

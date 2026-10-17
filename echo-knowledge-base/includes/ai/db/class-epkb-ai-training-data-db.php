@@ -504,6 +504,39 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	}
 
 	/**
+	 * Queue all synced rows of a trashed or deleted post for provider file removal by the cron worker
+	 *
+	 * @param int $post_id
+	 * @return int|false Number of affected rows
+	 */
+	public function mark_post_as_removing( $post_id ) {
+		global $wpdb;
+
+		// uploaded PDF/HTML rows are not post-backed, so their item_id must not be matched against a post ID
+		$result = $wpdb->query( $wpdb->prepare( "UPDATE {$this->table_name} SET status = 'removing', retry_count = 0, updated = %s WHERE item_id = %s AND type NOT IN ( 'PDF', 'HTML' ) AND file_id <> ''",
+			gmdate( 'Y-m-d H:i:s' ), (string) $post_id ) );
+		$this->handle_db_error( $result, 'mark_post_as_removing' );
+
+		return $result;
+	}
+
+	/**
+	 * Get rows queued for provider file removal that have not exhausted their retries
+	 *
+	 * @param int $max_retries
+	 * @param int $limit
+	 * @return array
+	 */
+	public function get_rows_pending_removal( $max_retries, $limit ) {
+		global $wpdb;
+
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE status = 'removing' AND retry_count < %d ORDER BY id LIMIT %d", $max_retries, $limit ) );
+		$this->handle_db_error( $rows, 'get_rows_pending_removal' );
+
+		return is_array( $rows ) ? $rows : array();
+	}
+
+	/**
 	 * Mark items as outdated by source
 	 *
 	 * @param string $type Source type (post, page, etc.)
@@ -617,6 +650,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 			'outdated'  => 0,
 			'error'     => 0,
 			'skipped'   => 0,
+			'removing'  => 0,
 			'pending'   => 0
 		);
 		
@@ -982,7 +1016,7 @@ class EPKB_AI_Training_Data_DB extends EPKB_DB {
 	 * - last_synced: Timestamp of last successful sync
 	 * - title: Post/page/attachment/note title; file name
 	 * - type: Post, page, CPT, attachment, file, note, PDF, CSV, XML, AI-generated, URL
-	 * - status: 'error', 'skipped', 'adding' → 'added', 'updating' → 'updated', 'outdated', 'pending'
+	 * - status: 'error', 'skipped', 'removing', 'adding' → 'added', 'updating' → 'updated', 'outdated', 'pending'
 	 * - error_code: HTTP error code (e.g. 429, 503)
 	 * - error_message: Error description
 	 * - retry_count: Number of sync retry attempts

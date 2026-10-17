@@ -240,7 +240,7 @@ class EPKB_AI_Training_Data_Tab {
 		$preloaded = array();
 		
 		// Status tabs to pre-load (all, pending, added, updated, outdated, error)
-		$statuses = array( 'all', 'pending', 'added', 'updated', 'outdated', 'error', 'skipped' );
+		$statuses = array( 'all', 'pending', 'added', 'updated', 'outdated', 'error', 'skipped', 'removing' );
 		
 		foreach ( $statuses as $status ) {
 			// Pre-load first page with default settings for each status

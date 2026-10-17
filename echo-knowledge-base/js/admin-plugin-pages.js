@@ -2336,7 +2336,8 @@ jQuery(document).ready(function($) {
 
 		var postData = {
 			action: 'epkb_dismiss_ongoing_notice',
-			epkb_dismiss_id: $(this).data('notice-id')
+			epkb_dismiss_id: $(this).data('notice-id'),
+			_wpnonce_epkb_ajax_action: epkb_vars.nonce
 		};
 		$.ajax({
 			type: 'POST',
@@ -3677,24 +3678,25 @@ jQuery(document).ready(function($) {
 				let status_label = data.status === 'publish' ? ( epkb_vars.glossary_published || 'Published' ) : ( epkb_vars.glossary_draft || 'Draft' );
 				let status_class = data.status === 'publish' ? 'epkb-glossary-status--publish' : 'epkb-glossary-status--draft';
 
+				// name and definition arrive HTML-escaped from the server (same as the PHP-rendered rows), so insert them as HTML to avoid double-encoding entities
 				let existing_row = $( '.epkb-glossary-term-row[data-term-id="' + data.term_id + '"]' );
 				if ( existing_row.length ) {
 					existing_row.attr( 'data-status', data.status ).attr( 'data-sort-key', data.sort_key || '' );
-					existing_row.find( '.epkb-glossary-term-row__name' ).text( data.name );
-					existing_row.find( '.epkb-glossary-term-row__definition' ).text( data.definition );
+					existing_row.find( '.epkb-glossary-term-row__name' ).html( data.name );
+					existing_row.find( '.epkb-glossary-term-row__definition' ).html( data.definition );
 					existing_row.find( '.epkb-glossary-term-row__status' ).html( '<span class="' + status_class + '" title="' + status_label + '"></span>' );
 				} else {
 					$( '.epkb-glossary-empty-row' ).remove();
-					let new_row = '<tr class="epkb-glossary-term-row" data-term-id="' + data.term_id + '" data-status="' + data.status + '" data-sort-key="' + $( '<span>' ).text( data.sort_key || '' ).html() + '">' +
+					let new_row = '<tr class="epkb-glossary-term-row" data-term-id="' + data.term_id + '" data-status="' + data.status + '">' +
 						'<td class="epkb-glossary-term-row__checkbox"><input type="checkbox" class="epkb-glossary-term-select"></td>' +
-						'<td class="epkb-glossary-term-row__name">' + $( '<span>' ).text( data.name ).html() + '</td>' +
-						'<td class="epkb-glossary-term-row__definition">' + $( '<span>' ).text( data.definition ).html() + '</td>' +
+						'<td class="epkb-glossary-term-row__name">' + data.name + '</td>' +
+						'<td class="epkb-glossary-term-row__definition">' + data.definition + '</td>' +
 						'<td class="epkb-glossary-term-row__status"><span class="' + status_class + '" title="' + status_label + '"></span></td>' +
 						'<td class="epkb-glossary-term-row__actions">' +
 							'<button class="epkb-glossary-edit-btn epkb-primary-btn" title="Edit"><span class="epkbfa epkbfa-edit"></span></button>' +
 							'<button class="epkb-glossary-delete-btn epkb-error-btn" title="Delete"><span class="epkbfa epkbfa-trash"></span></button>' +
 						'</td></tr>';
-					$( '.epkb-glossary-terms-table tbody' ).append( new_row );
+					$( '.epkb-glossary-terms-table tbody' ).append( $( new_row ).attr( 'data-sort-key', data.sort_key || '' ) );
 				}
 
 				glossary_sort_table();
@@ -3738,12 +3740,15 @@ jQuery(document).ready(function($) {
 
 		// Build inline edit cells
 		let checkbox_cell = '<td class="epkb-glossary-term-row__checkbox"><input type="checkbox" class="epkb-glossary-term-select" disabled></td>';
-		let name_cell = '<td class="epkb-glossary-term-row__name">' +
-			'<input type="text" class="epkb-glossary-inline-input epkb-glossary-inline-name" value="' + $( '<span>' ).text( name ).html() + '" maxlength="100">' +
-			( is_cjk ? '<input type="text" class="epkb-glossary-inline-input epkb-glossary-inline-sort-key" value="' + $( '<span>' ).text( sort_key ).html() + '" maxlength="100" placeholder="' + ( epkb_vars.glossary_sort_key_placeholder || 'Sort key (reading)' ) + '">' : '' ) +
-			'</td>';
-		let def_cell = '<td class="epkb-glossary-term-row__definition">' +
-			'<textarea class="epkb-glossary-inline-textarea" maxlength="500" rows="3">' + $( '<span>' ).text( definition ).html() + '</textarea></td>';
+		// term values are set with .val() so quotes in a term name cannot break out of the input attributes
+		let name_cell = $( '<td class="epkb-glossary-term-row__name"></td>' ).append(
+			$( '<input type="text" class="epkb-glossary-inline-input epkb-glossary-inline-name" maxlength="100">' ).val( name ) );
+		if ( is_cjk ) {
+			name_cell.append( $( '<input type="text" class="epkb-glossary-inline-input epkb-glossary-inline-sort-key" maxlength="100">' )
+				.attr( 'placeholder', epkb_vars.glossary_sort_key_placeholder || 'Sort key (reading)' ).val( sort_key ) );
+		}
+		let def_cell = $( '<td class="epkb-glossary-term-row__definition"></td>' ).append(
+			$( '<textarea class="epkb-glossary-inline-textarea" maxlength="500" rows="3"></textarea>' ).val( definition ) );
 		let publish_selected = status === 'publish' ? ' selected' : '';
 		let draft_selected = status === 'draft' ? ' selected' : '';
 		let status_cell = '<td class="epkb-glossary-term-row__status">' +
@@ -3756,7 +3761,7 @@ jQuery(document).ready(function($) {
 			'<button class="epkb-glossary-inline-cancel-btn epkb-primary-btn" title="Cancel"><span class="epkbfa epkbfa-times"></span></button>' +
 			'</td>';
 
-		row.html( checkbox_cell + name_cell + def_cell + status_cell + actions_cell );
+		row.empty().append( checkbox_cell, name_cell, def_cell, status_cell, actions_cell );
 		row.find( '.epkb-glossary-inline-name' ).focus();
 	});
 
@@ -3802,8 +3807,8 @@ jQuery(document).ready(function($) {
 				row.attr( 'data-status', data.status ).attr( 'data-sort-key', data.sort_key || '' );
 				row.html(
 					'<td class="epkb-glossary-term-row__checkbox"><input type="checkbox" class="epkb-glossary-term-select"></td>' +
-					'<td class="epkb-glossary-term-row__name">' + $( '<span>' ).text( data.name ).html() + '</td>' +
-					'<td class="epkb-glossary-term-row__definition">' + $( '<span>' ).text( data.definition ).html() + '</td>' +
+					'<td class="epkb-glossary-term-row__name">' + data.name + '</td>' +
+					'<td class="epkb-glossary-term-row__definition">' + data.definition + '</td>' +
 					'<td class="epkb-glossary-term-row__status"><span class="' + status_class + '" title="' + status_label + '"></span></td>' +
 					'<td class="epkb-glossary-term-row__actions">' +
 						'<button class="epkb-glossary-edit-btn epkb-primary-btn" title="Edit"><span class="epkbfa epkbfa-edit"></span></button>' +

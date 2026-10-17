@@ -16,7 +16,7 @@ class EPKB_AI_Content_Processor {
 	public function prepare_post( $post ) {
 		
 		// Use centralized eligibility check
-		$eligibility_check = EPKB_Admin_UI_Access::is_post_eligible_for_ai_training( $post );
+		$eligibility_check = EPKB_AI_Utilities::is_post_eligible_for_ai_training( $post );
 		if ( is_wp_error( $eligibility_check ) ) {
 			return $eligibility_check;
 		}

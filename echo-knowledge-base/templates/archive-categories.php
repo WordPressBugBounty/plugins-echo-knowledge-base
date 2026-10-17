@@ -491,7 +491,7 @@ function epkb_main_content( $args ) {
 
 						<a href="<?php echo esc_url( $article_link ); ?>" class="eckb-article-read-more">
 							<div class="eckb-article-read-more-text"><?php echo esc_html( $read_more ); ?></div>
-							<div class="eckb-article-read-more-icon <?php echo esc_html( $read_more_icon ); ?>"></div>
+							<div class="eckb-article-read-more-icon <?php echo esc_attr( $read_more_icon ); ?>"></div>
 						</a>    <?php
 					}	    ?>
 

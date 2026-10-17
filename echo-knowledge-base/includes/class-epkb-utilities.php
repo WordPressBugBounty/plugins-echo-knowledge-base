@@ -756,7 +756,7 @@ class EPKB_Utilities {
 
 		// config is sanitizing with its own specs separately
 		if ( $value_type == 'db-config-json' ) {
-			$decoded_value = $key == 'epkb_article_views_counter' ? json_decode( stripslashes( (string)$_COOKIE[$key] ), true ) : json_decode( stripcslashes( $_POST[$key] ), true );
+			$decoded_value = json_decode( stripcslashes( $_POST[$key] ), true );
 			return empty( $decoded_value ) ? $default : $decoded_value;
 		}
 

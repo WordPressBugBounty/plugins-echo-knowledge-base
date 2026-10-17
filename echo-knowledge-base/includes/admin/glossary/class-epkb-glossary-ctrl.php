@@ -88,10 +88,10 @@ class EPKB_Glossary_Ctrl {
 			'message' => esc_html__( 'Term Saved', 'echo-knowledge-base' ),
 			'data'    => array(
 				'term_id'    => esc_attr( $term_id ),
-				'name'       => esc_html( $term_name ),
+				'name'       => esc_html( $term_name ),  // JS inserts name and definition as HTML, matching display_term_row()
 				'definition' => esc_html( $definition ),
 				'status'     => esc_attr( $status ),
-				'sort_key'   => esc_html( $sort_key ),
+				'sort_key'   => $sort_key,  // sanitized above; JS sets it with .attr(), so HTML entities would be stored literally
 			),
 		) ) );
 	}

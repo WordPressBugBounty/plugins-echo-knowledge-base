@@ -250,6 +250,7 @@ final class EPKB_Featured_Articles_Block extends EPKB_Abstract_Block {
 		$section_gap = isset( $block_attributes['section_box_gap'] ) ? intval( $block_attributes['section_box_gap'] ) : 20;
 		$output .= '
 			' . $block_selector . ' .epkb-ml-article-list-container .epkb-ml-articles-list__row {
+				--epkb-section-gap: ' . $section_gap . 'px;
 				gap: ' . $section_gap . 'px !important;
 			}';
 

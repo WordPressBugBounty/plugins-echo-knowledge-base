@@ -68,7 +68,7 @@ class EPKB_AI_REST_Search_Controller extends EPKB_AI_REST_Base_Controller {
 
 	public function check_rest_nonce( $request ) {
 
-		if ( ! EPKB_AI_Utilities::is_ai_search_enabled() ) {
+		if ( ! EPKB_AI_Utilities::is_ai_search_enabled_for_frontend() ) {
 			return new WP_Error( 'ai_search_disabled', __( 'AI search is not enabled', 'echo-knowledge-base' ), array( 'status' => 403 ) );
 		}
 

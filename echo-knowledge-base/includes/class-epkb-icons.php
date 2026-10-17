@@ -2294,9 +2294,9 @@ class EPKB_Icons {
 			foreach ( $all_icons as $key => $label ) { ?>
 				<div class="epkb-icon-pack__icon <?php echo ( $checked == $key ) ? 'epkb-icon-pack__icon--checked' : ''; ?>" 
 					data-key="<?php echo esc_attr( $key ); ?>"
-					data-label="<?php echo esc_html( self::format_font_awesome_icon_name( $label ) );        ?>"
+					data-label="<?php echo esc_attr( self::format_font_awesome_icon_name( $label ) );        ?>"
 				>
-					<i class="epkbfa <?php echo esc_html( $key );  ?>"></i>
+					<i class="epkbfa <?php echo esc_attr( $key );  ?>"></i>
 				</div><?php 
 			} ?>
 		</div> <?php 

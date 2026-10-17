@@ -505,7 +505,7 @@ class EPKB_AI_Security {
 			self::GLOBAL_RATE_LIMIT_TRANSIENT,
 			self::RATE_LIMIT_TRANSIENT_PREFIX,
 			apply_filters( 'epkb_ai_chat_global_rate_limit', 500 ),
-			apply_filters( 'epkb_ai_chat_user_rate_limit', 25 ),
+			apply_filters( 'epkb_ai_chat_user_rate_limit', 50 ), // TEMP: revert to 25 after testing
 			__( 'Chat service is temporarily unavailable due to high demand. Please try again later.', 'echo-knowledge-base' ),
 			__( 'You have reached the chat limit. Please try again later.', 'echo-knowledge-base' )
 		);

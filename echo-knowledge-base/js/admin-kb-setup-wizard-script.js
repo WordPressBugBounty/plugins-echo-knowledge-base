@@ -1068,7 +1068,8 @@ jQuery(document).ready(function($) {
 
 		var postData = {
 			action: 'epkb_dismiss_ongoing_notice',
-			epkb_dismiss_id: $(this).data('notice-id')
+			epkb_dismiss_id: $(this).data('notice-id'),
+			_wpnonce_epkb_ajax_action: $('#_wpnonce_epkb_ajax_action').val()
 		};
 		$.ajax({
 			type: 'POST',
